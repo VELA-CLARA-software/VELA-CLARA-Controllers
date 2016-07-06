@@ -1,0 +1,3 @@
+import velaINJBeamPositionMonitorControl as VIBPMC
+
+p=VIBPMC.velaINJBeamPositionMonitorController()

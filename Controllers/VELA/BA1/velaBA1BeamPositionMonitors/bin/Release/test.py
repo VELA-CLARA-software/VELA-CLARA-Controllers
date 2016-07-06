@@ -1,0 +1,3 @@
+import velaBA1BeamPositionMonitorControl as VBA1BPMC
+
+p=VBA1BPMC.velaBA1BeamPositionMonitorController()
