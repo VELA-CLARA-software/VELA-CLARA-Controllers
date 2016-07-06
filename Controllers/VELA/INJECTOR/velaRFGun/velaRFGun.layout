@@ -7,6 +7,11 @@
 			<Cursor1 position="147" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="..\..\..\..\Hardware\RFGun\RFGunInterface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1511" topLine="30" />
+		</Cursor>
+	</File>
 	<File name="main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="565" topLine="0" />
@@ -17,12 +22,12 @@
 			<Cursor1 position="1282" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Config\velaRFGunLLRF.config" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Config\velaRFGunLLRF.config" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="611" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Config\velaRFGunModulator.config" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Config\velaRFGunModulator.config" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="0" />
 		</Cursor>
@@ -44,12 +49,12 @@
 	</File>
 	<File name="..\..\..\..\Hardware\RFGun\RFGunController.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3419" topLine="69" />
+			<Cursor1 position="2817" topLine="30" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Config\velaRFGunPower.config" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Config\velaRFGunPower.config" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="465" topLine="11" />
+			<Cursor1 position="465" topLine="8" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -26,10 +26,6 @@ class velaINJMagnetController : public magnetController
                                  const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJMagnetController( );
 
-        std::string magnetConfigFile = "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaINJMagnets.config",
-               magnetDegaussConfigFile = "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaINJMagnetsDegauss.config",
-               magnetPSUConfigFile = "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaINJMagnetsNRpsu.config";
-
 #ifdef BUILD_DLL
         /// Include a function to export enum definitions to a python dictionary
         boost::python::dict getMagPSUStateDefinition();
@@ -184,6 +180,7 @@ BOOST_PYTHON_MODULE( velaINJMagnetControl )
 	boost::python::class_<velaINJMagnetController, boost::python::bases<controller>, boost::noncopyable> ("velaINJMagnetController")
 	        .def(boost::python::init<const std::string, const std::string, const std::string, optional<  const bool, const bool > >())
             .def(boost::python::init< optional< const bool, const bool> >())
+            .def("getILockStates", &velaINJMagnetController::getILockStates_Py )
             .def("getMagPSUStateDefinition", &velaINJMagnetController::getMagPSUStateDefinition )
             .def("getILockStatesDefinition", &velaINJMagnetController::getILockStatesDefinition  )
             .def("get_CA_PEND_IO_TIMEOUT",   &velaINJMagnetController::get_CA_PEND_IO_TIMEOUT    )
