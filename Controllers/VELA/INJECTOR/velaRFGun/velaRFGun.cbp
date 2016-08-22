@@ -36,7 +36,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="/debug" />
-					<Add option="/DEBUG" />
 					<Add option="/INCREMENTAL:NO" />
 					<Add library="user32" />
 				</Linker>
