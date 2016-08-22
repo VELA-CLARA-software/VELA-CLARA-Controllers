@@ -1,15 +1,18 @@
 #include "velaRFGunController.h"
+#include <fstream>
+#include <iostream>
+
 // stl
 velaRFGunController::velaRFGunController( const std::string configFileLocation1,
                                   const std::string configFileLocation2,
                                   const std::string configFileLocation3, const  bool show_messages, const bool show_debug_messages )
-:RFGunController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
+: RFGunController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaRFGunController::velaRFGunController( const  bool show_messages, const bool show_debug_messages  )
-: RFGunController( "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaRFGunPower.config",
-                   "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaRFGunLLRF.config",
-                   "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaRFGunModulator.config",
+velaRFGunController::velaRFGunController( const  bool show_messages, const bool show_debug_messages, const std::string pydDirec )
+: RFGunController( pydDirec+"\\Config\\velaRFGunPower.config",
+                   pydDirec+"\\Config\\velaRFGunLLRF.config",
+                   pydDirec+"\\Config\\velaRFGunModulator.config",
                    show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________

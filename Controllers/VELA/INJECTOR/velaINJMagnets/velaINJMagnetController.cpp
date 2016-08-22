@@ -2,6 +2,7 @@
 #include "velaINJMagnetController.h"
 #include <fstream>
 #include <iostream>
+
 // stl
 velaINJMagnetController::velaINJMagnetController( const std::string configFileLocation1,
                                     const std::string configFileLocation2,
@@ -9,10 +10,10 @@ velaINJMagnetController::velaINJMagnetController( const std::string configFileLo
 : magnetController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaINJMagnetController::velaINJMagnetController( const  bool show_messages, const bool show_debug_messages  )
-: magnetController( "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\velaINJMagnetsNRpsu.config",
-                    "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\velaINJMagnets.config",
-                    "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\velaINJMagnetsDegauss.config",
+velaINJMagnetController::velaINJMagnetController( const  bool show_messages, const bool show_debug_messages , const std::string pydDirec )
+: magnetController( pydDirec+"\\Config\\velaINJMagnetsNRpsu.config",
+                    pydDirec+"\\Config\\velaINJMagnets.config",
+                    pydDirec+"\\Config\\velaINJMagnetsDegauss.config",
                     show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________

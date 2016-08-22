@@ -295,7 +295,7 @@ void magnetInterface::updateSI( const double value, const std::string & magName 
 {
     if( entryExists( allMagnetData, magName ) )
     {
-        allMagnetData[magName].si = roundToN( value, 4 ); /// MAGIC_NUMBER;
+        allMagnetData[magName].si = value;//roundToN( value, 4 ); /// MAGIC_NUMBER;
         updateSI_WithPol( magName );
         debugMessage(magName," NEW SI = ", allMagnetData[magName].siWithPol);
     }
