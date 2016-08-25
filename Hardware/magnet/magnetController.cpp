@@ -125,7 +125,7 @@ bool magnetController::isAVCor( const std::string & magName )
 //______________________________________________________________________________
 bool magnetController::isADip ( const std::string & magName )
 {
-    return localInterface.isAQuad( magName );
+    return localInterface.isADip( magName );
 }
 //______________________________________________________________________________
 bool magnetController::isASol ( const std::string & magName )
@@ -321,7 +321,7 @@ void   magnetController::set_CA_PEND_IO_TIMEOUT( double val )
 //______________________________________________________________________________
 std::vector< std::string > magnetController::getQuadNames()
 {
-    return localInterface.getMagnetNames( );
+    return localInterface.getQuadNames( );
 }
 //______________________________________________________________________________
 std::vector< std::string > magnetController::getHCorNames()

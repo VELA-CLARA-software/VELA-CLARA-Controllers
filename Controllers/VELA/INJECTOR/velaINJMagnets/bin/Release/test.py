@@ -1,16 +1,12 @@
 import sys,os
-
+import numpy as np
+os.environ["EPICS_CA_AUTO_ADDR_LIST"] = "NO"
 os.environ["EPICS_CA_ADDR_LIST"] = "192.168.82.10"
-os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = "100000000"
-
+os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = "10000000000"
 
 import velaINJMagnetControl as VIMC
 
-a = VIMC.velaINJMagnetController(True,False)
-a.switchONpsu('SOL')
-#print(a.isON('HVCOR'))
-print(a.getRI('SOL'))
-#print(a.getILockStates('HVxhfjsfhk01'))
-a.switchONpsu('SOL')
-#print(a.isON('HVCOR'))
-print(a.isON('SOL'))
+a = VIMC.velaINJMagnetController(True,False,'C:\Users\wln24624\Documents\VELA-CLARA-Controllers')
+
+
+print( np.array(a.getQuadNames()))
