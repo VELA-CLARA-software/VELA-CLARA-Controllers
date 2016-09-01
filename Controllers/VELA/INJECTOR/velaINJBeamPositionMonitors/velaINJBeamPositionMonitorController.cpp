@@ -8,8 +8,8 @@ velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( cons
 : beamPositionMonitorController( configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages  )
-:beamPositionMonitorController( "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaINJBeamPositionMonitors.config",
+velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages, const std::string Direc   )
+:beamPositionMonitorController( Direc+"\\Config\\velaINJBeamPositionMonitors.config",
                                 show_messages, show_debug_messages )
 {}
 

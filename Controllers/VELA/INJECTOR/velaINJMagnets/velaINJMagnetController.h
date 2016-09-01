@@ -21,7 +21,7 @@ class velaINJMagnetController : public magnetController
 {
     public:
         /// we have overloaded constructors to specify config-file location
-        velaINJMagnetController( const bool show_messages = true , const bool show_debug_messages = true, const std::string pydDirec="");
+        velaINJMagnetController( const bool show_messages = true , const bool show_debug_messages = true, const std::string Direc="");
         velaINJMagnetController( const std::string configFileLocation1,  const std::string configFileLocation2, const std::string configFileLocation3,
                                  const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJMagnetController( );
