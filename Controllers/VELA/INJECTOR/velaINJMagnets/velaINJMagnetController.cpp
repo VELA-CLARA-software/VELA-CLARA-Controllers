@@ -10,10 +10,10 @@ velaINJMagnetController::velaINJMagnetController( const std::string configFileLo
 : magnetController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaINJMagnetController::velaINJMagnetController( const  bool show_messages, const bool show_debug_messages , const std::string Direc )
-: magnetController( Direc+"\\Config\\velaINJMagnetsNRpsu.config",
-                    Direc+"\\Config\\velaINJMagnets.config",
-                    Direc+"\\Config\\velaINJMagnetsDegauss.config",
+velaINJMagnetController::velaINJMagnetController( const  bool show_messages, const bool show_debug_messages)
+: magnetController( "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJMagnetsNRpsu.config",
+                    "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJMagnets.config",
+                    "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJMagnetsDegauss.config",
                     show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________

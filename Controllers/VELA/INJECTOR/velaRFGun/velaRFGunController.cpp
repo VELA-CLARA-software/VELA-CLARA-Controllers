@@ -9,10 +9,10 @@ velaRFGunController::velaRFGunController( const std::string configFileLocation1,
 : RFGunController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaRFGunController::velaRFGunController( const  bool show_messages, const bool show_debug_messages, const std::string pydDirec )
-: RFGunController( pydDirec+"\\Config\\velaRFGunPower.config",
-                   pydDirec+"\\Config\\velaRFGunLLRF.config",
-                   pydDirec+"\\Config\\velaRFGunModulator.config",
+velaRFGunController::velaRFGunController( const  bool show_messages, const bool show_debug_messages)
+: RFGunController( "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaRFGunPower.config",
+                   "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaRFGunLLRF.config",
+                   "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaRFGunModulator.config",
                    show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________

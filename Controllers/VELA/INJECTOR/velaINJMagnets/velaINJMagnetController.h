@@ -21,7 +21,7 @@ class velaINJMagnetController : public magnetController
 {
     public:
         /// we have overloaded constructors to specify config-file location
-        velaINJMagnetController( const bool show_messages = true , const bool show_debug_messages = true, const std::string Direc="");
+        velaINJMagnetController( const bool show_messages = true , const bool show_debug_messages = true);
         velaINJMagnetController( const std::string configFileLocation1,  const std::string configFileLocation2, const std::string configFileLocation3,
                                  const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJMagnetController( );
@@ -179,7 +179,7 @@ BOOST_PYTHON_MODULE( velaINJMagnetControl )
 //  boost::python::class_<controller,       boost::python::bases<baseObject    >, boost::noncopyable> ("controller", boost::python::no_init)
 	boost::python::class_<velaINJMagnetController, boost::python::bases<controller>, boost::noncopyable> ("velaINJMagnetController")
 	        .def(boost::python::init<const std::string, const std::string, const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool, const std::string> >())
+            .def(boost::python::init< optional< const bool, const bool> >())
             .def("getILockStates", &velaINJMagnetController::getILockStates_Py )
             .def("getMagPSUStateDefinition", &velaINJMagnetController::getMagPSUStateDefinition )
             .def("getILockStatesDefinition", &velaINJMagnetController::getILockStatesDefinition  )
