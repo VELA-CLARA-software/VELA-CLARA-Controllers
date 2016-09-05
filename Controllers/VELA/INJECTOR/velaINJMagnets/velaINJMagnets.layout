@@ -2,6 +2,41 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
+	<File name="..\..\..\..\Utilities\magnetConfigReader.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12400" topLine="289" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="830" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="499" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="velaINJMagnetController.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="913" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="velaINJMagnetController.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1103" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\..\..\Config\velaINJMagnets.config" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="995" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="..\..\..\..\Config\velaINJMagnetsDegauss.config" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="..\..\..\..\Config\velaINJMagnetsNRpsu.config" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="573" topLine="0" />
@@ -12,9 +47,9 @@
 			<Cursor1 position="263" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Hardware\interface.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Hardware\interface.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3078" topLine="206" />
+			<Cursor1 position="3078" topLine="14" />
 		</Cursor>
 	</File>
 	<File name="..\..\..\..\Hardware\interface.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -22,69 +57,34 @@
 			<Cursor1 position="2758" topLine="20" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Hardware\magnet\magnetController.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Hardware\magnet\magnetController.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="13141" topLine="40" />
+			<Cursor1 position="1982" topLine="16" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Hardware\magnet\magnetController.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Hardware\magnet\magnetController.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2036" topLine="30" />
+			<Cursor1 position="2036" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Hardware\magnet\magnetInterface.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Hardware\magnet\magnetInterface.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="19554" topLine="407" />
+			<Cursor1 position="35238" topLine="607" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Hardware\magnet\magnetInterface.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Hardware\magnet\magnetInterface.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7030" topLine="127" />
+			<Cursor1 position="7030" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Utilities\baseObject.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1091" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="93" topLine="111" />
-		</Cursor>
-	</File>
-	<File name="..\..\..\..\Config\velaINJMagnetsDegauss.config" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\..\..\Config\velaINJMagnets.config" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="995" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="main.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="499" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="velaINJMagnetController.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8032" topLine="161" />
-		</Cursor>
-	</File>
-	<File name="..\..\..\..\Utilities\magnetConfigReader.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="12400" topLine="289" />
-		</Cursor>
-	</File>
-	<File name="velaINJMagnetController.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1103" topLine="110" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="830" topLine="0" />
+			<Cursor1 position="1575" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

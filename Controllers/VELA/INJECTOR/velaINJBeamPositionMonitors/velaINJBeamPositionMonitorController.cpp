@@ -9,7 +9,7 @@ velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( cons
 {}
 //______________________________________________________________________________
 velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages)
-:beamPositionMonitorController( "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJBeamPositionMonitors.config",
+:beamPositionMonitorController( UTL::CONFIG_PATH+UTL::VELA_INJ_BPM_CONFIG,
                                 show_messages, show_debug_messages )
 {}
 

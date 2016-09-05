@@ -14,25 +14,25 @@ namespace UTL
     const char EQUALS_SIGN_C      = '=';
     const char COLON_C            = ':';
 
-    const std::string CONFIG_PATH = "D:\\VELA-CLARA-Controllers-master\\Config\\";
+    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\";
 
-    const std::string PIL_SHUTTER_CONFIG     = "velaPhotoInjectorLaserShutter.config";
-    const std::string INJ_IMG_CONFIG         = "velaInvertedMagnetronGauge.config";
-    const std::string VALVE_CONFIG           = "velaVacuumValve.config";
-    const std::string QBOX_CONFIG            = "qbox.config";
-    const std::string BPM_CONFIG             = "velaINJBeamPositionMonitors.config";
-    const std::string SCOPE_CONFIG           = "velaQScope.config";
-    const std::string SCOPE_TRACE_CONFIG     = "velaQScopeTrace.config";
-    const std::string RF_GUN_PWR_CONFIG      = "velaRFGunPower.config";
-    const std::string RF_GUN_MOD_CONFIG      = "velaRFGunModulator.config";
-    const std::string RF_GUN_LLRF_CONFIG     = "velaRFGunLLRF.config";
-    const std::string INJ_MAG_NR_PSU_CONFIG  = "velaINJMagnetsNRpsu.config";
-    const std::string INJ_MAG_CONFIG         = "velaINJMagnets.config";
-    const std::string INJ_MAG_DEGUASS_CONFIG = "velaINJMagnetsDegauss.config";
-    const std::string COMPLEX_SCREENS_CONFIG = "velaINJComplexScreens.config";
-    const std::string SIMPLE_SCREENS_CONFIG  = "velaINJSimpleScreens.config";
-    const std::string CAMERA_CONFIG          = "velaCamera.config";
-    const std::string CAMERA_IOC_CONFIG      = "velaCameraIOC.config";
+    const std::string VELA_PIL_SHUTTER_CONFIG     = "velaPhotoInjectorLaserShutter.config";
+    const std::string VELA_IMG_CONFIG         = "velaInvertedMagnetronGauge.config";
+    const std::string VELA_VALVE_CONFIG           = "velaVacuumValve.config";
+    const std::string VELA_QBOX_CONFIG            = "qbox.config";
+    const std::string VELA_INJ_BPM_CONFIG             = "velaINJBeamPositionMonitors.config";
+    const std::string VELA_SCOPE_CONFIG           = "velaQScope.config";
+    const std::string VELA_SCOPE_TRACE_CONFIG     = "velaQScopeTrace.config";
+    const std::string VELA_RF_GUN_PWR_CONFIG      = "velaRFGunPower.config";
+    const std::string VELA_RF_GUN_MOD_CONFIG      = "velaRFGunModulator.config";
+    const std::string VELA_RF_GUN_LLRF_CONFIG     = "velaRFGunLLRF.config";
+    const std::string VELA_INJ_MAG_NR_PSU_CONFIG  = "velaINJMagnetsNRpsu.config";
+    const std::string VELA_INJ_MAG_CONFIG         = "velaINJMagnets.config";
+    const std::string VELA_INJ_MAG_DEGUASS_CONFIG = "velaINJMagnetsDegauss.config";
+    const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG = "velaINJComplexScreens.config";
+    const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG  = "velaINJSimpleScreens.config";
+    const std::string VELA_CAMERA_CONFIG          = "velaCamera.config";
+    const std::string VELA_CAMERA_IOC_CONFIG      = "velaCameraIOC.config";
     /// These are the keywords used in hardware config files
 
     /// General Keywords

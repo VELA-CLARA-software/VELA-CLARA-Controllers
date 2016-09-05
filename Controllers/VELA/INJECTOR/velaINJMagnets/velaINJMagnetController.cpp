@@ -11,9 +11,9 @@ velaINJMagnetController::velaINJMagnetController( const std::string configFileLo
 {}
 //______________________________________________________________________________
 velaINJMagnetController::velaINJMagnetController( const  bool show_messages, const bool show_debug_messages)
-: magnetController( "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJMagnetsNRpsu.config",
-                    "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJMagnets.config",
-                    "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\velaINJMagnetsDegauss.config",
+: magnetController( UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_NR_PSU_CONFIG,
+                    UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_CONFIG,
+                    UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_DEGUASS_CONFIG,
                     show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
