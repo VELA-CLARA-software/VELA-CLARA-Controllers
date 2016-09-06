@@ -33,6 +33,7 @@ namespace scopeStructs
     {
         SCOPE_PV_TYPE             pvType;
         VELA_ENUM::DIAG_TYPE      diagType;
+        SCOPE_TYPE                scopeType;
         chid                      CHID;
         std::string               pvSuffix, objName;
         unsigned long             COUNT, MASK;
@@ -44,10 +45,11 @@ namespace scopeStructs
     {
         scopeNumObject() : p1ShotCount( 0 ), p2ShotCount( 0 ), p3ShotCount( 0 ), p4ShotCount( 0 ), numShots( 0 ) {}
         std::string                name, pvRoot;
+        VELA_ENUM::DIAG_TYPE       diagType;
         bool                       isAContinuousMonitorStruct, isATemporaryMonitorStruct;
         bool                       isMonitoring;
         double                     p1, p2, p3, p4;
-        int                        p1ShotCount, p2ShotCount, p3ShotCount, p4ShotCount, numShots;
+        int                        p1ShotCount, p2ShotCount, p3ShotCount, p4ShotCount, numShots, shotCount;
         double                     p1TimeStamp, p2TimeStamp, p3TimeStamp, p4TimeStamp;
         std::vector< double >      p1Vec, p2Vec, p3Vec, p4Vec;
         std::vector< std::string > strP1TimeStamps, strP2TimeStamps, strP3TimeStamps, strP4TimeStamps;
@@ -55,6 +57,11 @@ namespace scopeStructs
 //        double *p1Mon, *p2Mon;
     #ifndef __CINT__
         std::map< SCOPE_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< SCOPE_PV_TYPE, std::vector< double > > numData;
+        std::map< SCOPE_PV_TYPE, std::vector< double > > numTimeStamps;
+        std::map< SCOPE_PV_TYPE, std::vector< std::string > > numStrTimeStamps;
+        std::map< SCOPE_PV_TYPE, int > shotCounts;
+        std::map< SCOPE_PV_TYPE, bool > isMonitoringMap;
     #endif
     };
 
@@ -85,7 +92,8 @@ namespace scopeStructs
     struct scopeObject
     {
         std::string name;
-        scopeNumObject numObject;
+//        scopeNumObject numObject;
+        std::map< std::string, scopeNumObject > numObjects;
         std::map< std::string, scopeTraceData > traceObjects; /// There are four scope trace objects
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
