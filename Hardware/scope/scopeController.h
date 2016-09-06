@@ -35,6 +35,14 @@ class scopeController : public controller
 //
 //        bool hasTrig( const std::string & scopeName );
 //        bool hasNoTrig( const std::string & scopeName );
+
+        bool monitoringTraces;
+        bool monitoringNums;
+        bool isMonitoringScopeTraces();
+        bool isMonitoringScopeNums();
+        bool isNotMonitoringScopeTraces();
+        bool isNotMonitoringScopeNums();
+
         double getScopeP1( const std::string & scopeName );
         double getScopeP2( const std::string & scopeName );
         double getScopeP3( const std::string & scopeName );
@@ -45,6 +53,11 @@ class scopeController : public controller
         double getFCUPQ()  ;
         double getEDFCUPQ();
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeP1Vec( const std::string & name );
+        std::vector< double > getScopeP2Vec( const std::string & name );
+        std::vector< double > getScopeP3Vec( const std::string & name );
+        std::vector< double > getScopeP4Vec( const std::string & name );
         std::vector< double > getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getMaxOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
