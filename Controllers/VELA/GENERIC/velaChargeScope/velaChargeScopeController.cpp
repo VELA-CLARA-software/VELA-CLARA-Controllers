@@ -9,8 +9,8 @@ velaChargeScopeController::velaChargeScopeController( const std::string configFi
 {}
 //______________________________________________________________________________
 velaChargeScopeController::velaChargeScopeController( const  bool show_messages, const bool show_debug_messages  )
-: scopeController("C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaQScope.config",
-                  "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaQScopeTrace.config",
+: scopeController("D:\\VELA-CLARA-Controllers-master\\Config\\velaQScope.config",
+                  "D:\\VELA-CLARA-Controllers-master\\Config\\velaQScopeTrace.config",
                   show_messages, show_debug_messages )
 {}
 
@@ -21,8 +21,8 @@ boost::python::dict velaChargeScopeController::getScopeStateDefinition()
 {
     std::map< VELA_ENUM::TRIG_STATE,  std::string  > m;
 
-    m[ VELA_ENUM::TRIG_STATE::NOTRIG ] = ENUM_TO_STRING( VELA_ENUM::TRIG_STATE::NOTRIG  ); // ENUM_TO_STRING MACRO in structs.h
-    m[ VELA_ENUM::TRIG_STATE::TRIG   ] = ENUM_TO_STRING( VELA_ENUM::TRIG_STATE::TRIG    );
+    m[ VELA_ENUM::TRIG_STATE::NOTRIG      ] = ENUM_TO_STRING( VELA_ENUM::TRIG_STATE::NOTRIG  ); // ENUM_TO_STRING MACRO in structs.h
+    m[ VELA_ENUM::TRIG_STATE::TRIG        ] = ENUM_TO_STRING( VELA_ENUM::TRIG_STATE::TRIG    );
     m[ VELA_ENUM::TRIG_STATE::TRIG_ERROR  ] = ENUM_TO_STRING( VELA_ENUM::TRIG_STATE::TRIG_ERROR   );
     return enumStringMapToPythonDict( m );
 }
@@ -40,6 +40,31 @@ void velaChargeScopeController::monitorNumsForNShots_Py( size_t N )
 std::vector< std::vector< double > > velaChargeScopeController::getScopeTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return getScopeTraces( name, pvType );
+}
+//______________________________________________________________________________
+std::vector< double > velaChargeScopeController::getScopeNums_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return getScopeNums( name, pvType );
+}
+//______________________________________________________________________________
+std::vector< double > velaChargeScopeController::getScopeP1Vec_Py( const std::string & name )
+{
+    return getScopeP1Vec( name );
+}
+//______________________________________________________________________________
+std::vector< double > velaChargeScopeController::getScopeP2Vec_Py( const std::string & name )
+{
+    return getScopeP2Vec( name );
+}
+//______________________________________________________________________________
+std::vector< double > velaChargeScopeController::getScopeP3Vec_Py( const std::string & name )
+{
+    return getScopeP3Vec( name );
+}
+//______________________________________________________________________________
+std::vector< double > velaChargeScopeController::getScopeP4Vec_Py( const std::string & name )
+{
+    return getScopeP4Vec( name );
 }
 //______________________________________________________________________________
 std::vector< double > velaChargeScopeController::getMinOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -67,6 +92,26 @@ std::vector< std::string > velaChargeScopeController::getStrTimeStamps_Py( const
     return getStrTimeStamps( name, pvType );
 }
 //______________________________________________________________________________
+bool velaChargeScopeController::isMonitoringScopeTraces_Py()
+{
+    return isMonitoringScopeTraces();
+}
+//______________________________________________________________________________
+bool velaChargeScopeController::isNotMonitoringScopeTraces_Py()
+{
+    return isNotMonitoringScopeTraces();
+}
+//______________________________________________________________________________
+bool velaChargeScopeController::isMonitoringScopeNums_Py()
+{
+    return isMonitoringScopeNums();
+}
+//______________________________________________________________________________
+bool velaChargeScopeController::isNotMonitoringScopeNums_Py()
+{
+    return isNotMonitoringScopeNums();
+}
+//______________________________________________________________________________
 double velaChargeScopeController::getScopeP1_Py( const std::string & name )
 {
     return getScopeP1( name );
@@ -75,6 +120,16 @@ double velaChargeScopeController::getScopeP1_Py( const std::string & name )
 double velaChargeScopeController::getScopeP2_Py( const std::string & name )
 {
     return getScopeP2( name );
+}
+//______________________________________________________________________________
+double velaChargeScopeController::getScopeP3_Py( const std::string & name )
+{
+    return getScopeP3( name );
+}
+//______________________________________________________________________________
+double velaChargeScopeController::getScopeP4_Py( const std::string & name )
+{
+    return getScopeP4( name );
 }
 //______________________________________________________________________________
 double velaChargeScopeController::getWCMQ_Py()
