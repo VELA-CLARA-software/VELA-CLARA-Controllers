@@ -34,6 +34,10 @@ class scopeInterface : public interface
 
         bool monitoringTraces = false;
         bool monitoringNums = false;
+        bool isMonitoringScopeTraces();
+        bool isMonitoringScopeNums();
+        bool isNotMonitoringScopeTraces();
+        bool isNotMonitoringScopeNums();
 
         ~scopeInterface();
 
@@ -48,6 +52,11 @@ class scopeInterface : public interface
         double getFCUPQ()  ;
         double getEDFCUPQ();
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeNums(   const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeP1Vec(  const std::string & name );
+        std::vector< double > getScopeP2Vec(  const std::string & name );
+        std::vector< double > getScopeP3Vec(  const std::string & name );
+        std::vector< double > getScopeP4Vec(  const std::string & name );
         std::vector< double > getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getMaxOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
@@ -64,14 +73,16 @@ class scopeInterface : public interface
 //        bool hasTrig( const std::string & scope );
 //        bool hasNoTrig( const std::string & scope );
 
-        void addToMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeTraceData * traobj );
+        void addToTraceMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeTraceData * traobj );
+        void addToNumMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeNumObject * numobj );
 
         scopeStructs::scopeObject getScopeObject( const std::string & scopeName );
 
         VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
         scopeStructs::scopeObject scopeObject;
 
-        void killCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeTraceData * td );
+        void killTraceCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeTraceData * td );
+        void killNumCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeNumObject * scno );
         bool killTraceMonitors();
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...

@@ -9,11 +9,10 @@ velaChargeScopeController::velaChargeScopeController( const std::string configFi
 {}
 //______________________________________________________________________________
 velaChargeScopeController::velaChargeScopeController( const  bool show_messages, const bool show_debug_messages  )
-: scopeController("C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaQScope.config",
-                  "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaQScopeTrace.config",
+: scopeController(UTL::CONFIG_PATH+UTL::VELA_SCOPE_CONFIG,
+                  UTL::CONFIG_PATH+UTL::VELA_SCOPE_TRACE_CONFIG,
                   show_messages, show_debug_messages )
 {}
-
 velaChargeScopeController::~velaChargeScopeController(){}    //dtor
 
 #ifdef BUILD_DLL
@@ -124,3 +123,4 @@ std::vector< std::string > velaChargeScopeController::getScopeNames_Py()
 #endif //BUILD_DLL
 
 
+0

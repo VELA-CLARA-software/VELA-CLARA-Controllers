@@ -55,9 +55,54 @@ void scopeController::monitorNumsForNShots( size_t N )
     localInterface.monitorNumsForNShots( N );
 }
 //______________________________________________________________________________
+bool scopeController::isMonitoringScopeTraces()
+{
+    return localInterface.isMonitoringScopeTraces();
+}
+//______________________________________________________________________________
+bool scopeController::isNotMonitoringScopeTraces()
+{
+    return localInterface.isNotMonitoringScopeTraces();
+}
+//______________________________________________________________________________
+bool scopeController::isMonitoringScopeNums()
+{
+    return localInterface.isMonitoringScopeNums();
+}
+//______________________________________________________________________________
+bool scopeController::isNotMonitoringScopeNums()
+{
+    return localInterface.isNotMonitoringScopeNums();
+}
+//______________________________________________________________________________
 std::vector< std::vector< double > > scopeController::getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.getScopeTraces( name, pvType );
+}
+//______________________________________________________________________________
+std::vector< double > scopeController::getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return localInterface.getScopeNums( name, pvType );
+}
+//______________________________________________________________________________
+std::vector< double > scopeController::getScopeP1Vec( const std::string & name )
+{
+    return localInterface.getScopeP1Vec( name );
+}
+//______________________________________________________________________________
+std::vector< double > scopeController::getScopeP2Vec( const std::string & name )
+{
+    return localInterface.getScopeP2Vec( name );
+}
+//______________________________________________________________________________
+std::vector< double > scopeController::getScopeP3Vec( const std::string & name )
+{
+    return localInterface.getScopeP3Vec( name );
+}
+//______________________________________________________________________________
+std::vector< double > scopeController::getScopeP4Vec( const std::string & name )
+{
+    return localInterface.getScopeP4Vec( name );
 }
 //______________________________________________________________________________
 std::vector< double > scopeController::getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -93,6 +138,16 @@ double scopeController::getScopeP1( const std::string & name )
 double scopeController::getScopeP2( const std::string & name )
 {
     return localInterface.getScopeP2( name );
+}
+//______________________________________________________________________________
+double scopeController::getScopeP3( const std::string & name )
+{
+    return localInterface.getScopeP3( name );
+}
+//______________________________________________________________________________
+double scopeController::getScopeP4( const std::string & name )
+{
+    return localInterface.getScopeP4( name );
 }
 //______________________________________________________________________________
 double scopeController::getWCMQ()

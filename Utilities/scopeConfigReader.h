@@ -47,8 +47,8 @@ class scopeConfigReader : public configReader
         void addToScopeTraceDataObjectsV1( const std::vector<std::string> &keyVal );
         void addToScopeTraceDataMonStructsV1( const std::vector<std::string> &keyVal );
         // NUM objects
+        std::vector< scopeStructs::scopeNumObject > scopeNumObjects;
         std::vector< scopeStructs::pvStruct > scopeNumMonStructs;
-        scopeStructs::scopeNumObject scopeNumObject;
         void addToScopeNumObjectsV1( const std::vector<std::string> &keyVal );
         void addToScopeNumMonStructsV1( const std::vector<std::string> &keyVal );
 
@@ -58,8 +58,12 @@ class scopeConfigReader : public configReader
         VELA_ENUM::DIAG_TYPE getDiagType( const std::string & val );
 
         std::vector< double >                tstamps;
+        std::vector< double >                numtstamps;
         std::vector< std::string >           strtstamps;
+        std::vector< std::string >           numstrtstamps;
         std::vector< std::vector< double > > traces;
+        std::vector< double >                nums;
         int                                  shotcounts;
+        int                                  numshotcounts;
 };
 #endif //scopeConfigReader2_H_

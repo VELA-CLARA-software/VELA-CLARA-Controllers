@@ -31,16 +31,30 @@ scopeStructs::scopeObject scopeConfigReader::getScopeObject()
 
     obj.name = "VELA_SCOPE";
 
-    /// there are only 1 scopeNumObject and 1 scopeTraceDataObject
+//    /// there are only 1 scopeNumObject and 1 scopeTraceDataObject
+//
+//    obj.numObject = scopeNumObject;
+//    for( auto && it : scopeNumMonStructs )
+//        obj.numObject.pvMonStructs[ it.pvType ] = it;
+//
 
-    obj.numObject = scopeNumObject;
-    for( auto && it : scopeNumMonStructs )
-        obj.numObject.pvMonStructs[ it.pvType ] = it;
+    for( auto && it : scopeNumObjects )
+        obj.numObjects[ it.name ] = it;
 
+    /// Then we add in the monitor structs, for each num object ...
 
-//    obj.traceObject = scopeTraceDataObject;
-//    for( auto && it : scopeTraceDataMonStructs )
-//        obj.traceObject.pvMonStructs[ it.pvType ] = it;
+    for( auto && it : obj.numObjects )
+    {
+        for( auto it2 : scopeNumMonStructs )
+        {
+            it.second.pvMonStructs[ it2.pvType ] = it2;
+            it.second.isMonitoringMap[ it2.pvType ] = false;
+            it.second.numData[ it2.pvType ] = nums;
+            it.second.numTimeStamps[ it2.pvType ] = numtstamps;
+            it.second.numStrTimeStamps[ it2.pvType ] = numstrtstamps;
+            it.second.shotCounts[ it2.pvType ] = numshotcounts;
+        }
+    }
 
     /// scopeTraceDataObjects are in a map keyed by name ...
 
@@ -72,15 +86,17 @@ bool scopeConfigReader::readConfigFiles()
     /// They are defined in seperate config files to seperate the data more clearly
     /// they still all end up in an scopeObject
     //NUM
+    scopeNumObjects.clear();
     scopeNumMonStructs.clear();
     bool numSuccess = readConfig( *this,  configFile1, &scopeConfigReader::addToScopeNumObjectsV1,nullptr, &scopeConfigReader::addToScopeNumMonStructsV1 );
     if( !numSuccess )
         success = false;
-    if( numObjs == 1 ) /// MAGIC NUMBER
-        debugMessage( "*** Created ", numObjs, " scope num Objects, As Expected ***" );
+//    if( numObjs == scopeTraceDataObject.size() )
+    if( numObjs == scopeNumObjects.size() )
+        debugMessage( "*** Created ", numObjs, " scope num Objects, As Expected ***", "\n" );
     else
     {
-        debugMessage( "*** Created ", 1 ," scope num Objects, Expected ", numObjs,  " ERROR ***"  ); /// MAGIC NUMBER
+        debugMessage( "*** Created ", scopeNumObjects.size() ," scope num Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
         success = false;
     }
     //TRACE
@@ -115,15 +131,25 @@ void scopeConfigReader::addToScopeNumObjectsV1( const std::vector<std::string> &
 {
     if( keyVal[0] == UTL::NAME )
     {
-        scopeNumObject.name = keyVal[ 1 ];
-//        velaRFStructs::rfLLRFObject rfob = velaRFStructs::rfLLRFObject();
-//        rfob.name = keyVal[ 1 ];
-//        rfLLRFObjects.push_back( rfob );
-        debugMessage("Added ", scopeNumObject.name );
+        scopeStructs::scopeNumObject sconumob = scopeStructs::scopeNumObject();
+        sconumob.name = keyVal[ 1 ];
+        scopeNumObjects.push_back( sconumob );
+        debugMessage("Added ", scopeNumObjects.back().name );
     }
     else if( keyVal[0] == UTL::PV_ROOT )
-        scopeNumObject.pvRoot = keyVal[ 1 ];
-        //rfLLRFObjects.back().pvRoot = keyVal[ 1 ];
+    {
+        scopeNumObjects.back().pvRoot = keyVal[ 1 ];
+    }
+
+//    else if( keyVal[0] == UTL::TIMEBASE )
+//    {
+//        scopeNumObjects.back().timebase = getNumD( keyVal[ 1 ] );
+//    }
+
+    else if( keyVal[0] == UTL::DIAG_TYPE )
+    {
+        scopeNumObjects.back().diagType = getDiagType( keyVal[ 1 ] );
+    }
 }
 //______________________________________________________________________________
 void scopeConfigReader::addToScopeTraceDataObjectsV1( const std::vector<std::string> &keyVal )
@@ -159,22 +185,46 @@ void scopeConfigReader::addToPVStruct( std::vector< scopeStructs::pvStruct >  & 
         pvStruct_v.back().pvSuffix = keyVal[1];
         // NUMBER PVs
         if( keyVal[0] == UTL::PV_SUFFIX_P1  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::P1;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::P1;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::NUM;
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_P2  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::P2;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::P2;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::NUM;
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_P3  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::P3;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::P3;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::NUM;
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_P4  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::P4;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::P4;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::NUM;
+        }
         // TRACE PVs
         else if( keyVal[0] == UTL::PV_SUFFIX_TR1  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::TR1;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::TR1;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::ARRAY;
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_TR2  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::TR2;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::TR2;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::ARRAY;
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_TR3  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::TR3;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::TR3;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::ARRAY;
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_TR4  )
-            pvStruct_v.back().pvType = scopeStructs::SCOPE_PV_TYPE::TR4;
+        {
+            pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::TR4;
+            pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::ARRAY;
+        }
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
     else
