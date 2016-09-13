@@ -1,0 +1,137 @@
+# depslib dependency file v1.0
+1473761123 source:d:\vela-clara-controllers-master\hardware\beampositionmonitor\beampositionmonitorcontroller.cpp
+	"beamPositionMonitorController.h"
+	<iostream>
+	"beamPositionMonitorInterface.h"
+
+1473761143 d:\vela-clara-controllers-master\hardware\beampositionmonitor\beampositionmonitorcontroller.h
+	"beamPositionMonitorStructs.h"
+	"beamPositionMonitorInterface.h"
+	"controller.h"
+	<string>
+	<vector>
+
+1472706018 d:\vela-clara-controllers-master\structs\beampositionmonitorstructs.h
+	"structs.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1473252956 d:\vela-clara-controllers-master\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1473760975 d:\vela-clara-controllers-master\hardware\beampositionmonitor\beampositionmonitorinterface.h
+	"interface.h"
+	"beamPositionMonitorStructs.h"
+	"beamPositionMonitorConfigReader.h"
+	<vector>
+	<string>
+
+1472706018 d:\vela-clara-controllers-master\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1472706018 d:\vela-clara-controllers-master\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1472706018 d:\vela-clara-controllers-master\utilities\beampositionmonitorconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"beamPositionMonitorStructs.h"
+
+1472706018 d:\vela-clara-controllers-master\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1473259355 d:\vela-clara-controllers-master\utilities\configdefinitions.h
+	<string>
+
+1472706018 d:\vela-clara-controllers-master\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1473761031 source:d:\vela-clara-controllers-master\hardware\beampositionmonitor\beampositionmonitorinterface.cpp
+	"beamPositionMonitorInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<thread>
+	<ctime>
+	<string>
+	<cstring>
+	<cmath>
+	<stdlib.h>
+	<epicsTime.h>
+
+1472706018 source:d:\vela-clara-controllers-master\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1472706018 source:d:\vela-clara-controllers-master\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1472706018 source:d:\vela-clara-controllers-master\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1472706018 source:d:\vela-clara-controllers-master\utilities\beampositionmonitorconfigreader.cpp
+	"beamPositionMonitorConfigReader.h"
+	"configDefinitions.h"
+	"beamPositionMonitorStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1472706018 source:d:\vela-clara-controllers-master\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1472706018 source:d:\vela-clara-controllers-master\controllers\vela\injector\velainjbeampositionmonitors\main.cpp
+
+1473761194 source:d:\vela-clara-controllers-master\controllers\vela\injector\velainjbeampositionmonitors\velainjbeampositionmonitorcontroller.cpp
+	"velaINJBeamPositionMonitorController.h"
+	<iostream>
+
+1473762711 d:\vela-clara-controllers-master\controllers\vela\injector\velainjbeampositionmonitors\velainjbeampositionmonitorcontroller.h
+	"beamPositionMonitorController.h"
+	<string>
+	<vector>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+

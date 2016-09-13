@@ -8,8 +8,8 @@ velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( cons
 : beamPositionMonitorController( configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages  )
-:beamPositionMonitorController( "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaINJBeamPositionMonitors.config",
+velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages, const std::string Direc   )
+:beamPositionMonitorController( UTL::CONFIG_PATH+UTL::BPM_CONFIG,
                                 show_messages, show_debug_messages )
 {}
 
@@ -76,6 +76,16 @@ std::vector< double > velaINJBeamPositionMonitorController::getTimeStamps_Py( co
 std::vector< std::string > velaINJBeamPositionMonitorController::getStrTimeStamps_Py( const std::string & name )
 {
     return getStrTimeStamps( name );
+}
+//______________________________________________________________________________
+bool velaINJBeamPositionMonitorController::isMonitoringBPMData_Py( const std::string & name )
+{
+    return isMonitoringBPMData( name );
+}
+//______________________________________________________________________________
+bool velaINJBeamPositionMonitorController::isNotMonitoringBPMData_Py( const std::string & name )
+{
+    return isNotMonitoringBPMData( name );
 }
 //______________________________________________________________________________
 void velaINJBeamPositionMonitorController::monitorDataForNShots_Py( size_t N, const std::string & bpmNames )

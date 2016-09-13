@@ -22,7 +22,7 @@ class velaINJBeamPositionMonitorController : public beamPositionMonitorControlle
 
         /// we have overloaded constructors to specify config-file location
 
-        velaINJBeamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true );
+        velaINJBeamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true, const std::string Direc="" );
         velaINJBeamPositionMonitorController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJBeamPositionMonitorController();
 
@@ -38,6 +38,8 @@ class velaINJBeamPositionMonitorController : public beamPositionMonitorControlle
 
         bool hasTrig_Py( const std::string & name );
         bool hasNoTrig_Py( const std::string & name );
+        bool isMonitoringBPMData_Py( const std::string & name );
+        bool isNotMonitoringBPMData_Py( const std::string & name );
         double getX_Py( const std::string & bpm );
         double getY_Py( const std::string & bpm  );
         double getQ_Py( const std::string & bpm  );
@@ -142,7 +144,7 @@ BOOST_PYTHON_MODULE( velaINJBeamPositionMonitorControl )
 
 	boost::python::class_<velaINJBeamPositionMonitorController, boost::python::bases<controller>>("velaINJBeamPositionMonitorController")
             .def(boost::python::init<const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional< const bool, const bool, const std::string > >())
             .def("getBPMStateDefinition",           &velaINJBeamPositionMonitorController::getBPMStateDefinition                     )
             .def("getILockStatesDefinition",        &velaINJBeamPositionMonitorController::getILockStatesDefinition                  )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaINJBeamPositionMonitorController::get_CA_PEND_IO_TIMEOUT                    )
@@ -151,6 +153,8 @@ BOOST_PYTHON_MODULE( velaINJBeamPositionMonitorControl )
             .def("getILockStates",                  &velaINJBeamPositionMonitorController::getILockStates_Py                         )
 //            .def("hasNoTrig",                       &velaINJBeamPositionMonitorController::hasNoTrig_Py, boost::python::args("name") )
 //            .def("hasTrig",                         &velaINJBeamPositionMonitorController::hasTrig_Py, boost::python::args("name")   )
+            .def("isMonitoringBPMData",             &velaINJBeamPositionMonitorController::isMonitoringBPMData_Py                    )
+            .def("isNotMonitoringBPMData",          &velaINJBeamPositionMonitorController::isNotMonitoringBPMData_Py                 )
             .def("getX",                            &velaINJBeamPositionMonitorController::getX_Py                                   )
             .def("getY",                            &velaINJBeamPositionMonitorController::getY_Py                                   )
             .def("getQ",                            &velaINJBeamPositionMonitorController::getQ_Py                                   )
@@ -162,7 +166,7 @@ BOOST_PYTHON_MODULE( velaINJBeamPositionMonitorControl )
             .def("getAllBPMData",                   &velaINJBeamPositionMonitorController::getAllBPMData_Py                          )
             .def("getTimeStamps",                   &velaINJBeamPositionMonitorController::getTimeStamps_Py                          )
             .def("getStrTimeStamps",                &velaINJBeamPositionMonitorController::getStrTimeStamps_Py                       )
-//            .def("getBPMRawData",                   &velaINJBeamPositionMonitorController::getBPMRawData_Py                          )
+            .def("getBPMRawData",                   &velaINJBeamPositionMonitorController::getBPMRawData_Py                          )
             .def("getRA1",                          &velaINJBeamPositionMonitorController::getRA1_Py                                 )
             .def("getRA2",                          &velaINJBeamPositionMonitorController::getRA2_Py                                 )
             .def("getRD1",                          &velaINJBeamPositionMonitorController::getRD1_Py                                 )
