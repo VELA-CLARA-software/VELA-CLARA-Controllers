@@ -34,6 +34,9 @@ class beamPositionMonitorInterface : public interface
         ~beamPositionMonitorInterface();
 
         bool monitoringData = false;
+        bool isMonitoringBPMData( const std::string & bpmName );
+        bool isNotMonitoringBPMData( const std::string & bpmName );
+
 
         double calcX( const std::string & bpm, double u11, double u12, double u13, double u14 );
         double calcY( const std::string & bpm, double u21, double u22, double u23, double u24 );
@@ -73,7 +76,7 @@ class beamPositionMonitorInterface : public interface
         beamPositionMonitorStructs::bpmObject bpmObj;
         beamPositionMonitorStructs::bpmObject getBPMObject( const std::string & bpmName );
 
-        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
+        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
 
         VELA_ENUM::TRIG_STATE getBPMState( const std::string & bpmName );
 
