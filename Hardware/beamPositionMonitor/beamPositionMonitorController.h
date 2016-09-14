@@ -33,6 +33,9 @@ class beamPositionMonitorController : public controller
         beamPositionMonitorController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~beamPositionMonitorController();
 
+        bool isMonitoringBPMData( const std::string & name );
+        bool isNotMonitoringBPMData( const std::string & name );
+
         double getX( const std::string & bpm );
         double getY(  const std::string & bpm  );
         double getQ(  const std::string & bpm  );

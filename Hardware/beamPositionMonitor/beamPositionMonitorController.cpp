@@ -74,6 +74,16 @@ std::vector< std::string > beamPositionMonitorController::getStrTimeStamps( cons
     return localInterface.getStrTimeStamps( name );
 }
 //______________________________________________________________________________
+bool beamPositionMonitorController::isMonitoringBPMData( const std::string & name )
+{
+    return localInterface.isMonitoringBPMData( name );
+}
+//______________________________________________________________________________
+bool beamPositionMonitorController::isNotMonitoringBPMData( const std::string & name )
+{
+    return localInterface.isNotMonitoringBPMData( name );
+}
+//______________________________________________________________________________
 void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::string & bpmNames )
 {
     localInterface.monitorDataForNShots( N, bpmNames );

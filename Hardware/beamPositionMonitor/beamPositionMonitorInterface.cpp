@@ -325,7 +325,7 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
         {
             bpmdo->appendingData = false;
 //            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo->name );
-            ms->interface->killCallBack( ms );//, bpmdo );
+            ms->interface->killCallBack( ms, bpmdo );//, bpmdo );
             monitoringData = false;
             bpmdo -> shotCount = 0;
         }
@@ -359,7 +359,7 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
     }
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
+void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
 {
     int status = ca_clear_subscription( *ms -> EVID );
     if( status == ECA_NORMAL)
@@ -368,7 +368,8 @@ void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::mon
 
         isMonitoringMap[ ms -> bpmObject ] = false;
 //        bpmdo -> isMonitoring = false;
-//        bpmdo -> appendingData = false;
+        bpmdo -> appendingData = false;
+
         monitoringData = false;
 
         delete ms;
@@ -558,6 +559,19 @@ double beamPositionMonitorInterface::calcQ( const std::string & bpmName, std::ve
     return q;
 }
 //______________________________________________________________________________
+bool beamPositionMonitorInterface::isMonitoringBPMData( const std::string & name )
+{
+    if( bpmObj.dataObjects.at( name ).bpmRawData.appendingData == true )
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+bool beamPositionMonitorInterface::isNotMonitoringBPMData( const std::string & name )
+{
+    return !isMonitoringBPMData( name );
+}
+//______________________________________________________________________________
 beamPositionMonitorStructs::rawDataStruct beamPositionMonitorInterface::getAllBPMData( const std::string & name, size_t N )
 {
     if( !monitoringData )
@@ -583,36 +597,36 @@ beamPositionMonitorStructs::rawDataStruct beamPositionMonitorInterface::getAllBP
 //    }
 
 //    time_t timeToAbort = time( 0 ) + (int) ceil( (double) numrecords / 1.0 );
-    while( bpmObj.dataObjects.at( name ).bpmRawData.appendingData )
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 10 ));
-    }
+//    while( bpmObj.dataObjects.at( name ).bpmRawData.appendingData )
+//    {
+//        std::this_thread::sleep_for(std::chrono::milliseconds( 10 ));
+//    }
 
     return bpmObj.dataObjects.at( name ).bpmRawData;
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::setSA1( const std::string & bpmName, long val)
+void beamPositionMonitorInterface::setSA1( const std::string & bpmName, long val )
 {
     caput( bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SA1 ).CHTYPE,
            bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SA1 ).CHID,
            val, "" , "!!beamPositionMonitorInterface TIMEOUT!! In setSA1() ");
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::setSA2( const std::string & bpmName, long val)
+void beamPositionMonitorInterface::setSA2( const std::string & bpmName, long val )
 {
     caput( bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SA2 ).CHTYPE,
            bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SA2 ).CHID,
            val, "" , "!!beamPositionMonitorInterface TIMEOUT!! In setSA2() ");
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::setSD1( const std::string & bpmName, long val)
+void beamPositionMonitorInterface::setSD1( const std::string & bpmName, long val )
 {
     caput( bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SD1 ).CHTYPE,
            bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SD1 ).CHID,
            val, "" , "!!beamPositionMonitorInterface TIMEOUT!! In setSD1() ");
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::setSD2( const std::string & bpmName, long val)
+void beamPositionMonitorInterface::setSD2( const std::string & bpmName, long val )
 {
     caput( bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SD2 ).CHTYPE,
            bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::SD2 ).CHID,
