@@ -36,7 +36,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="/debug" />
-					<Add option="/DEBUG" />
 					<Add option="/INCREMENTAL:NO" />
 					<Add library="user32" />
 				</Linker>
@@ -95,6 +94,7 @@
 		<Unit filename="../../../../Structs/structs.h" />
 		<Unit filename="../../../../Utilities/baseObject.cpp" />
 		<Unit filename="../../../../Utilities/baseObject.h" />
+		<Unit filename="../../../../Utilities/configDefinitions.h" />
 		<Unit filename="../../../../Utilities/configReader.cpp" />
 		<Unit filename="../../../../Utilities/configReader.h" />
 		<Unit filename="../../../../Utilities/screenConfigReader.cpp" />
