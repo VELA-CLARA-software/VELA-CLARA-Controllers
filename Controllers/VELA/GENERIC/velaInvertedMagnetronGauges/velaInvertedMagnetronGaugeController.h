@@ -22,7 +22,7 @@ class velaInvertedMagnetronGaugeController : public invertedMagnetronGaugeContro
 
         /// we have overloaded constructors to specify config-file location
 
-        velaInvertedMagnetronGaugeController( const bool show_messages = true, const bool show_debug_messages = true );
+        velaInvertedMagnetronGaugeController(const bool RealMachine = false, const bool show_messages = true, const bool show_debug_messages = true );
         velaInvertedMagnetronGaugeController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaInvertedMagnetronGaugeController();
 
@@ -114,7 +114,7 @@ BOOST_PYTHON_MODULE( velaInvertedMagnetronGaugeControl )
 
 	boost::python::class_<velaInvertedMagnetronGaugeController, boost::python::bases<controller>>("velaInvertedMagnetronGaugeController")
             .def(boost::python::init<const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
             .def("getImgStateDefinition",        &velaInvertedMagnetronGaugeController::getImgStateDefinition                 )
             .def("getILockStatesDefinition",        &velaInvertedMagnetronGaugeController::getILockStatesDefinition                 )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaInvertedMagnetronGaugeController::get_CA_PEND_IO_TIMEOUT                   )

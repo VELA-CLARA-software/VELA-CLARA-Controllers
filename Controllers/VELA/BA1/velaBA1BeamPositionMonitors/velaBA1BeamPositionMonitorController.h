@@ -22,7 +22,7 @@ class velaBA1BeamPositionMonitorController : public beamPositionMonitorControlle
 
         /// we have overloaded constructors to specify config-file location
 
-        velaBA1BeamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true );
+        velaBA1BeamPositionMonitorController(const bool RealMachine = false, const bool show_messages = true, const bool show_debug_messages = true );
         velaBA1BeamPositionMonitorController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaBA1BeamPositionMonitorController();
 
@@ -142,7 +142,7 @@ BOOST_PYTHON_MODULE( velaBA1BeamPositionMonitorControl )
 
 	boost::python::class_<velaBA1BeamPositionMonitorController, boost::python::bases<controller>>("velaBA1BeamPositionMonitorController")
             .def(boost::python::init<const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
             .def("getBPMStateDefinition",           &velaBA1BeamPositionMonitorController::getBPMStateDefinition                     )
             .def("getILockStatesDefinition",        &velaBA1BeamPositionMonitorController::getILockStatesDefinition                  )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaBA1BeamPositionMonitorController::get_CA_PEND_IO_TIMEOUT                    )

@@ -22,7 +22,7 @@ class velaVacuumValveController : public vacuumValveController
 
         /// we have overloaded constructors to specify config-file location
 
-        velaVacuumValveController( const bool show_messages = true, const bool show_debug_messages = true );
+        velaVacuumValveController(const bool RealMachine = false, const bool show_messages = true, const bool show_debug_messages = true );
         velaVacuumValveController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaVacuumValveController();
 
@@ -145,7 +145,7 @@ BOOST_PYTHON_MODULE( velaVacuumValveControl )
 
 	boost::python::class_<velaVacuumValveController, boost::python::bases<controller>>("velaVacuumValveController")
             .def(boost::python::init<const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
             .def("getVacValveStateDefinition",      &velaVacuumValveController::getVacValveStateDefinition               )
             .def("getILockStatesDefinition",        &velaVacuumValveController::getILockStatesDefinition                 )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaVacuumValveController::get_CA_PEND_IO_TIMEOUT                   )

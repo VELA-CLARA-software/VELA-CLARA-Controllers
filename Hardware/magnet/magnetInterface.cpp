@@ -41,6 +41,7 @@ magnetInterface::magnetInterface( const bool* show_messages_ptr, const bool * sh
 : configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  ),
 degaussNum( 0 ), dummyName("DUMMY")
 {
+    //config file setting here
     initialise();
 }
 //magnetInterface::magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr )

@@ -36,7 +36,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="/debug" />
-					<Add option="/DEBUG" />
 					<Add option="/INCREMENTAL:NO" />
 					<Add library="user32" />
 				</Linker>
@@ -96,6 +95,7 @@
 		<Unit filename="../../../../Utilities/baseObject.h" />
 		<Unit filename="../../../../Utilities/beamPositionMonitorConfigReader.cpp" />
 		<Unit filename="../../../../Utilities/beamPositionMonitorConfigReader.h" />
+		<Unit filename="../../../../Utilities/configDefinitions.h" />
 		<Unit filename="../../../../Utilities/configReader.cpp" />
 		<Unit filename="../../../../Utilities/configReader.h" />
 		<Unit filename="main.cpp" />

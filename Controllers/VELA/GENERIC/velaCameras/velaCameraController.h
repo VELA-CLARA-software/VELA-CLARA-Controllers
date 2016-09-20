@@ -20,7 +20,7 @@ class velaCameraController  : public cameraController
 {
     public:
         /// we have overloaded constructors to specify config-file location
-        velaCameraController( const bool show_messages = true , const bool show_debug_messages = true );
+        velaCameraController(const bool RealMachine = false, const bool show_messages = true , const bool show_debug_messages = true );
         velaCameraController( const std::string configFileLocation,  const std::string configIOCFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaCameraController( );
 
@@ -119,7 +119,7 @@ BOOST_PYTHON_MODULE( velaCameraControl ) /// This name MUST match the dll file n
     /// as well as boost::python::dict <int, int>
     boost::python::class_<velaCameraController, boost::python::bases<controller>, boost::noncopyable >("velaCameraController")
             .def(boost::python::init<const std::string, const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
             .def("isON",                     &velaCameraController::isON_Py            )
             .def("isOFF",                    &velaCameraController::isOFF_Py           )
             .def("isMonitoring",             &velaCameraController::isMonitoring_Py    )

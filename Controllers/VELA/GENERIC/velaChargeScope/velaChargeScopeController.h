@@ -21,7 +21,7 @@ class velaChargeScopeController : public scopeController
 
         /// we have overloaded constructors to specify config-file location
 
-        velaChargeScopeController( const bool show_messages = true, const bool show_debug_messages = true );
+        velaChargeScopeController(const bool RealMachine = false, const bool show_messages = true, const bool show_debug_messages = true );
         velaChargeScopeController( const std::string configFileLocation1,
                                    const std::string configFileLocation2, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaChargeScopeController();
@@ -39,26 +39,26 @@ class velaChargeScopeController : public scopeController
 //        bool hasTrig_Py( const std::string & name );
 //        bool hasNoTrig_Py( const std::string & name );
 
-        bool isMonitoringScopeTraces_Py();
-        bool isMonitoringScopeNums_Py();
-        bool isNotMonitoringScopeTraces_Py();
-        bool isNotMonitoringScopeNums_Py();
+       /// bool isMonitoringScopeTraces_Py();
+        ///bool isMonitoringScopeNums_Py();
+        ///bool isNotMonitoringScopeTraces_Py();
+        ///bool isNotMonitoringScopeNums_Py();
 
         double getScopeP1_Py( const std::string & name );
         double getScopeP2_Py( const std::string & name );
-        double getScopeP3_Py( const std::string & name );
-        double getScopeP4_Py( const std::string & name );
+        ///double getScopeP3_Py( const std::string & name );
+       /// double getScopeP4_Py( const std::string & name );
         double getWCMQ_Py()   ;
         double getICT1Q_Py()  ;
         double getICT2Q_Py()  ;
         double getFCUPQ_Py()  ;
         double getEDFCUPQ_Py();
         std::vector< std::vector< double > > getScopeTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
-        std::vector< double > getScopeNums_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
-        std::vector< double > getScopeP1Vec_Py( const std::string & name );
-        std::vector< double > getScopeP2Vec_Py( const std::string & name );
-        std::vector< double > getScopeP3Vec_Py( const std::string & name );
-        std::vector< double > getScopeP4Vec_Py( const std::string & name );
+        ///std::vector< double > getScopeNums_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        ///std::vector< double > getScopeP1Vec_Py( const std::string & name );
+        ///std::vector< double > getScopeP2Vec_Py( const std::string & name );
+        ///std::vector< double > getScopeP3Vec_Py( const std::string & name );
+        ///std::vector< double > getScopeP4Vec_Py( const std::string & name );
         std::vector< double > getMinOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getMaxOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
@@ -154,7 +154,7 @@ BOOST_PYTHON_MODULE( velaChargeScopeControl )
 
 	boost::python::class_<velaChargeScopeController, boost::python::bases<controller>>("velaChargeScopeController")
             .def(boost::python::init<const std::string, const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
             .def("getScopeStateDefinition",         &velaChargeScopeController::getScopeStateDefinition                   )
             .def("getILockStatesDefinition",        &velaChargeScopeController::getILockStatesDefinition                  )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaChargeScopeController::get_CA_PEND_IO_TIMEOUT                    )
@@ -163,19 +163,19 @@ BOOST_PYTHON_MODULE( velaChargeScopeControl )
 //            .def("getILockStates",                  &velaChargeScopeController::getILockStates_Py                         )
 //            .def("hasNoTrig",                       &velaChargeScopeController::hasNoTrig_Py, boost::python::args("name") )
 //            .def("hasTrig",                         &velaChargeScopeController::hasTrig_Py, boost::python::args("name")   )
-            .def("isMonitoringScopeTraces",         &velaChargeScopeController::isMonitoringScopeTraces_Py                )
-            .def("isMonitoringScopeNums",           &velaChargeScopeController::isMonitoringScopeNums_Py                  )
-            .def("isNotMonitoringScopeTraces",      &velaChargeScopeController::isNotMonitoringScopeTraces_Py             )
-            .def("isNotMonitoringScopeNums",        &velaChargeScopeController::isNotMonitoringScopeNums_Py               )
-            .def("getScopeNums",                    &velaChargeScopeController::getScopeNums_Py                           )
-            .def("getScopeP1Vec",                   &velaChargeScopeController::getScopeP1Vec_Py                          )
-            .def("getScopeP2Vec",                   &velaChargeScopeController::getScopeP2Vec_Py                          )
-            .def("getScopeP3Vec",                   &velaChargeScopeController::getScopeP3Vec_Py                          )
-            .def("getScopeP4Vec",                   &velaChargeScopeController::getScopeP4Vec_Py                          )
+            ///.def("isMonitoringScopeTraces",         &velaChargeScopeController::isMonitoringScopeTraces_Py                )
+            ///.def("isMonitoringScopeNums",           &velaChargeScopeController::isMonitoringScopeNums_Py                  )
+            ///.def("isNotMonitoringScopeTraces",      &velaChargeScopeController::isNotMonitoringScopeTraces_Py             )
+            ///.def("isNotMonitoringScopeNums",        &velaChargeScopeController::isNotMonitoringScopeNums_Py               )
+            ///.def("getScopeNums",                    &velaChargeScopeController::getScopeNums_Py                           )
+            ///.def("getScopeP1Vec",                   &velaChargeScopeController::getScopeP1Vec_Py                          )
+            ///.def("getScopeP2Vec",                   &velaChargeScopeController::getScopeP2Vec_Py                          )
+            ///.def("getScopeP3Vec",                   &velaChargeScopeController::getScopeP3Vec_Py                          )
+            ///.def("getScopeP4Vec",                   &velaChargeScopeController::getScopeP4Vec_Py                          )
             .def("getScopeP1",                      &velaChargeScopeController::getScopeP1_Py                             )
             .def("getScopeP2",                      &velaChargeScopeController::getScopeP2_Py                             )
-            .def("getScopeP3",                      &velaChargeScopeController::getScopeP3_Py                             )
-            .def("getScopeP4",                      &velaChargeScopeController::getScopeP4_Py                             )
+            ///.def("getScopeP3",                      &velaChargeScopeController::getScopeP3_Py                             )
+            ///.def("getScopeP4",                      &velaChargeScopeController::getScopeP4_Py                             )
             .def("getWCMQ",                         &velaChargeScopeController::getWCMQ_Py                                )
             .def("getICT1Q",                        &velaChargeScopeController::getICT1Q_Py                               )
             .def("getICT2Q",                        &velaChargeScopeController::getICT2Q_Py                               )

@@ -4,9 +4,9 @@ velaCameraController::velaCameraController( const std::string configFileLocation
 : cameraController( configFileLocation, configIOCFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaCameraController::velaCameraController( const  bool show_messages, const bool show_debug_messages  )
-: cameraController("C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaCamera.config",
-                   "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaCameraIOC.config",
+velaCameraController::velaCameraController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
+: cameraController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_CAMERA_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_CAMERA_CONFIG,
+                   (RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_CAMERA_IOC_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_CAMERA_IOC_CONFIG,
                    show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________

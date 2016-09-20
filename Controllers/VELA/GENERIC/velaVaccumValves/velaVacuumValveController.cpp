@@ -8,8 +8,8 @@ velaVacuumValveController::velaVacuumValveController( const std::string configFi
 : vacuumValveController(configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaVacuumValveController::velaVacuumValveController( const  bool show_messages, const bool show_debug_messages  )
-:  vacuumValveController("C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaVacuumValve.config",
+velaVacuumValveController::velaVacuumValveController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
+:  vacuumValveController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_VALVE_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_VALVE_CONFIG,
                          show_messages, show_debug_messages )
 {}
 velaVacuumValveController::~velaVacuumValveController()

@@ -8,9 +8,8 @@ velaBA1BeamPositionMonitorController::velaBA1BeamPositionMonitorController( cons
 : beamPositionMonitorController( configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaBA1BeamPositionMonitorController::velaBA1BeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages  )
-:beamPositionMonitorController( "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaINJBeamPositionMonitors.config",
-                                show_messages, show_debug_messages )
+velaBA1BeamPositionMonitorController::velaBA1BeamPositionMonitorController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
+:beamPositionMonitorController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_BA1_BPM_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_BA1_BPM_CONFIG, show_messages, show_debug_messages )
 {}
 
 //______________________________________________________________________________

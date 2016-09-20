@@ -19,7 +19,7 @@ class velaRFGunController : public RFGunController
 {
     public:
         /// we have overloaded constructors to specify config-file location
-        velaRFGunController( const bool show_messages = true , const bool show_debug_messages = true);
+        velaRFGunController(const bool RealMachine = false, const bool show_messages = true , const bool show_debug_messages = true);
         velaRFGunController( const std::string configFileLocation1,
                          const std::string configFileLocation2,
                          const std::string configFileLocation3, const  bool show_messages = true, const bool show_debug_messages = true );
@@ -123,7 +123,7 @@ BOOST_PYTHON_MODULE( velaRFGunControl ) /// This name MUST match the dll file na
     /// as well as boost::python::dict <int, int>
     boost::python::class_<velaRFGunController, boost::python::bases<controller>>("velaRFGunController")
             .def(boost::python::init<const std::string, const std::string, const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
 
             .def("monitorTracesForNShots",       &velaRFGunController::monitorTracesForNShots    )
             .def("isModILockStateGood",       &velaRFGunController::isModILockStateGood    )

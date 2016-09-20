@@ -10,9 +10,9 @@ velaBA2ScreenController::velaBA2ScreenController( const std::string configFileLo
 :screenController( configFileLocation1, configFileLocation2, show_messages, show_debug_messages )
 {}
 //__________________________________________________________________________
-velaBA2ScreenController::velaBA2ScreenController( const bool show_messages, const bool show_debug_messages )
-:screenController( "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaBA2ComplexScreens.config",
-                   "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaBA2SimpleScreens.config",
+velaBA2ScreenController::velaBA2ScreenController(const bool RealMachine, const bool show_messages, const bool show_debug_messages )
+:screenController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_BA2_COMPLEX_SCREENS_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_BA2_COMPLEX_SCREENS_CONFIG,
+                   (RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_BA2_SIMPLE_SCREENS_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_BA2_SIMPLE_SCREENS_CONFIG,
                     show_messages, show_debug_messages )
 {}
 //_____________________________________________________________________________

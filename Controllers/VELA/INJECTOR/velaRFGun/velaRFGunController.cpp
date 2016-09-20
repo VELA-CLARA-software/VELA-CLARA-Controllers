@@ -9,12 +9,13 @@ velaRFGunController::velaRFGunController( const std::string configFileLocation1,
 : RFGunController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaRFGunController::velaRFGunController( const  bool show_messages, const bool show_debug_messages)
-: RFGunController( UTL::CONFIG_PATH+UTL::VELA_RF_GUN_PWR_CONFIG,
-                   UTL::CONFIG_PATH+UTL::VELA_RF_GUN_LLRF_CONFIG,
-                   UTL::CONFIG_PATH+UTL::VELA_RF_GUN_MOD_CONFIG,
-                   show_messages, show_debug_messages )
+velaRFGunController::velaRFGunController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages)
+: RFGunController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_RF_GUN_PWR_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_RF_GUN_PWR_CONFIG,
+                   (RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_RF_GUN_LLRF_CONFIG : UTL::CONFIG_PATH+UTL::VELA_RF_GUN_LLRF_CONFIG,
+                   (RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_RF_GUN_MOD_CONFIG : UTL::CONFIG_PATH+UTL::VELA_RF_GUN_MOD_CONFIG,
+                    show_messages, show_debug_messages )
 {}
+
 //______________________________________________________________________________
 velaRFGunController::~velaRFGunController(){}    //dtor
 

@@ -21,9 +21,9 @@ class velaINJBeamPositionMonitorController : public beamPositionMonitorControlle
     public:
 
         /// we have overloaded constructors to specify config-file location
+        velaINJBeamPositionMonitorController(const std::string configFileLocation, const bool show_messages = true, const bool show_debug_messages = true );
+        velaINJBeamPositionMonitorController(const bool RealMachine = false, const bool show_messages = true, const bool show_debug_messages = true );
 
-        velaINJBeamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true );
-        velaINJBeamPositionMonitorController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJBeamPositionMonitorController();
 
 #ifdef BUILD_DLL
@@ -143,8 +143,8 @@ BOOST_PYTHON_MODULE( velaINJBeamPositionMonitorControl )
 
 
 	boost::python::class_<velaINJBeamPositionMonitorController, boost::python::bases<controller>>("velaINJBeamPositionMonitorController")
-            .def(boost::python::init<const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool >())
+            .def(boost::python::init<const std::string, optional<const bool, const bool > >())
+            .def(boost::python::init< optional<const bool, const bool, const bool >>())
             .def("getBPMStateDefinition",           &velaINJBeamPositionMonitorController::getBPMStateDefinition                     )
             .def("getILockStatesDefinition",        &velaINJBeamPositionMonitorController::getILockStatesDefinition                  )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaINJBeamPositionMonitorController::get_CA_PEND_IO_TIMEOUT                    )

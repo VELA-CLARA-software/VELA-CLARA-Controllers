@@ -10,12 +10,27 @@ velaINJMagnetController::velaINJMagnetController( const std::string configFileLo
 : magnetController( configFileLocation1, configFileLocation2, configFileLocation3, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaINJMagnetController::velaINJMagnetController( const  bool show_messages, const bool show_debug_messages)
-: magnetController( UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_NR_PSU_CONFIG,
-                    UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_CONFIG,
-                    UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_DEGUASS_CONFIG,
+velaINJMagnetController::velaINJMagnetController(const bool RealMachine, const bool show_messages, const bool show_debug_messages )
+: magnetController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_INJ_MAG_NR_PSU_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_INJ_MAG_NR_PSU_CONFIG,
+                   (RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_INJ_MAG_CONFIG : UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_CONFIG,
+                   (RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_INJ_MAG_DEGUASS_CONFIG : UTL::CONFIG_PATH+UTL::VELA_INJ_MAG_DEGUASS_CONFIG,
                     show_messages, show_debug_messages )
-{}
+{
+//    std::string path;
+//    if (RealMachine==false)
+//    {
+//        path=UTL::CONFIG_PATH_VM;
+//    }
+//    else if (RealMachine==true)
+//    {
+//        path=UTL::CONFIG_PATH;
+//    }
+//    magnetController(path+UTL::VELA_INJ_MAG_NR_PSU_CONFIG,
+//                     path+UTL::VELA_INJ_MAG_CONFIG,
+//                     path+UTL::VELA_INJ_MAG_DEGUASS_CONFIG,
+//                     show_messages, show_debug_messages );
+}
+
 //______________________________________________________________________________
 velaINJMagnetController::~velaINJMagnetController(){}    //dtor
 //______________________________________________________________________________

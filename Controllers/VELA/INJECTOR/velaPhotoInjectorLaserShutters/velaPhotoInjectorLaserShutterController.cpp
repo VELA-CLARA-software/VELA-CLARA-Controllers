@@ -6,9 +6,8 @@ velaPhotoInjectorLaserShutterController::velaPhotoInjectorLaserShutterController
 :shutterController( configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaPhotoInjectorLaserShutterController::velaPhotoInjectorLaserShutterController( const  bool show_messages, const bool show_debug_messages  )
-: shutterController( "C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaPhotoInjectorLaserShutter.config",
-                     show_messages, show_debug_messages )
+velaPhotoInjectorLaserShutterController::velaPhotoInjectorLaserShutterController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
+:  shutterController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_PIL_SHUTTER_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_PIL_SHUTTER_CONFIG, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
 velaPhotoInjectorLaserShutterController::~velaPhotoInjectorLaserShutterController(){}    //dtor

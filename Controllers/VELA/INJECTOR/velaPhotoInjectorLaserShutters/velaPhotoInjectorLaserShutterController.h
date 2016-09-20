@@ -24,7 +24,7 @@ class velaPhotoInjectorLaserShutterController : public shutterController
     public:
 
         /// we have overloaded constructors to specify config-file location
-        velaPhotoInjectorLaserShutterController( const bool show_messages = true , const bool show_debug_messages = true );
+        velaPhotoInjectorLaserShutterController(const bool RealMachine = false, const bool show_messages = true , const bool show_debug_messages = true );
         velaPhotoInjectorLaserShutterController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaPhotoInjectorLaserShutterController( );
 
@@ -126,7 +126,7 @@ BOOST_PYTHON_MODULE( velaPhotoInjectorLaserShutterControl )
     /// as well as boost::python::dict <int, int>
 	boost::python::class_<velaPhotoInjectorLaserShutterController, boost::python::bases<controller>>("velaPhotoInjectorLaserShutterController")
             .def(boost::python::init<const std::string, optional<  const bool, const bool > >())
-            .def(boost::python::init< optional< const bool, const bool> >())
+            .def(boost::python::init< optional<const bool, const bool, const bool> >())
             .def("getShutterStateDefinition",       &velaPhotoInjectorLaserShutterController::getShutterStateDefinition )
             .def("getILockStatesDefinition",        &velaPhotoInjectorLaserShutterController::getILockStatesDefinition  )
             .def("get_CA_PEND_IO_TIMEOUT",          &velaPhotoInjectorLaserShutterController::get_CA_PEND_IO_TIMEOUT    )

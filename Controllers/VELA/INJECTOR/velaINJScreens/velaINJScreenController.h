@@ -25,7 +25,7 @@ class velaINJScreenController : public screenController
 {
     public:
     ///we have overloaded constructors to specify config-file location
-        velaINJScreenController( const bool show_messages = true , const bool show_debug_messages = true );
+        velaINJScreenController(const bool RealMachine = false, const bool show_messages = true , const bool show_debug_messages = true );
         velaINJScreenController( const std::string configFileLocation1,
                           const std::string configFileLocation2, const bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJScreenController();
@@ -162,7 +162,7 @@ BOOST_PYTHON_MODULE( velaINJScreenControl )
 
     boost::python::class_<velaINJScreenController, boost::python::bases<controller>>("velaINJScreenController")
                 .def(boost::python::init<const std::string, const std::string, optional< const bool, const bool > >())
-                .def(boost::python::init< optional< const bool, const bool> >())
+                .def(boost::python::init< optional<const bool, const bool, const bool> >())
                 .def("getScreenStateDefinition",            &velaINJScreenController::getScreenStateDefinition )
                 .def("detILockStatesDefinition",            &velaINJScreenController::getILockStatesDefinition )
                 .def("get_CA_PEND_IO_TIMEOUT",              &velaINJScreenController::get_CA_PEND_IO_TIMEOUT    )

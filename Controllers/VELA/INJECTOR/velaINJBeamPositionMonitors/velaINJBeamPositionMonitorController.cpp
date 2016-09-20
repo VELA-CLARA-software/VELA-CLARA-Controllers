@@ -1,17 +1,27 @@
 #include "velaINJBeamPositionMonitorController.h"
 // stl
-#include <iostream>
 
+#include <iostream>
 
 //______________________________________________________________________________
 velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const std::string configFileLocation, const  bool show_messages, const bool show_debug_messages )
 : beamPositionMonitorController( configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const  bool show_messages, const bool show_debug_messages   )
-:beamPositionMonitorController( UTL::CONFIG_PATH+UTL::BPM_CONFIG,
-                                show_messages, show_debug_messages )
-{}
+velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
+: beamPositionMonitorController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_INJ_BPM_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_INJ_BPM_CONFIG, show_messages, show_debug_messages )
+{
+//    std::string path;
+//    if (RealMachine==false)
+//    {
+//        path=UTL::CONFIG_PATH_VM;
+//    }
+//    else if (RealMachine==true)
+//    {
+//        path=UTL::CONFIG_PATH;
+//    }
+//    beamPositionMonitorController(path+UTL::VELA_INJ_BPM_CONFIG,show_messages, show_debug_messages );
+}
 
 //______________________________________________________________________________
 velaINJBeamPositionMonitorController::~velaINJBeamPositionMonitorController(){}    //dtor

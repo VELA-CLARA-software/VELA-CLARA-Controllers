@@ -7,8 +7,8 @@ velaInvertedMagnetronGaugeController::velaInvertedMagnetronGaugeController( cons
 : invertedMagnetronGaugeController(configFileLocation, show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
-velaInvertedMagnetronGaugeController::velaInvertedMagnetronGaugeController( const  bool show_messages, const bool show_debug_messages  )
-: invertedMagnetronGaugeController("C:\\Users\\wln24624\\Documents\\VELA\\Software\\c++\\Config\\velaInvertedMagnetronGauge.config",
+velaInvertedMagnetronGaugeController::velaInvertedMagnetronGaugeController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
+: invertedMagnetronGaugeController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_IMG_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_IMG_CONFIG,
                                    show_messages, show_debug_messages )
 {}
 //______________________________________________________________________________
