@@ -164,18 +164,20 @@ namespace UTL
 
     const std::string MAG_SET_MAX_WAIT_TIME  = "MAG_SET_MAX_WAIT_TIME";
     // deguass
-    const std::string NUM_DEGAUSS_ELEMENTS = "NUM_DEGAUSS_ELEMENTS";
+    //const std::string NUM_DEGAUSS_ELEMENTS = "NUM_DEGAUSS_ELEMENTS";
     const std::string NUM_DEGAUSS_STEPS = "NUM_DEGAUSS_STEPS";
-    const std::string BSOL_DEGAUSS_VALUES = "BSOL_DEGAUSS_VALUES";
-    const std::string DIP_DEGAUSS_VALUES = "DIP_DEGAUSS_VALUES";
-    const std::string SOL_DEGAUSS_VALUES = "SOL_DEGAUSS_VALUES";
-    const std::string COR_DEGAUSS_VALUES = "COR_DEGAUSS_VALUES";
-    const std::string QUAD_DEGAUSS_VALUES = "QUAD_DEGAUSS_VALUES";
-    const std::string QUAD_DEGAUSS_TOLERANCE = "QUAD_DEGAUSS_TOLERANCE";
-    const std::string BSOL_DEGAUSS_TOLERANCE = "BSOL_DEGAUSS_TOLERANCE";
-    const std::string DIP_DEGAUSS_TOLERANCE = "DIP_DEGAUSS_TOLERANCE";
-    const std::string SOL_DEGAUSS_TOLERANCE = "SOL_DEGAUSS_TOLERANCE";
-    const std::string COR_DEGAUSS_TOLERANCE = "COR_DEGAUSS_TOLERANCE";
+    const std::string DEGAUSS_VALUES = "DEGAUSS_VALUES";
+    const std::string DEGAUSS_TOLERANCE = "DEGAUSS_TOLERANCE";
+    //const std::string BSOL_DEGAUSS_VALUES = "BSOL_DEGAUSS_VALUES";
+    //const std::string DIP_DEGAUSS_VALUES = "DIP_DEGAUSS_VALUES";
+    //const std::string SOL_DEGAUSS_VALUES = "SOL_DEGAUSS_VALUES";
+    //const std::string COR_DEGAUSS_VALUES = "COR_DEGAUSS_VALUES";
+    //const std::string QUAD_DEGAUSS_VALUES = "QUAD_DEGAUSS_VALUES";
+    //const std::string QUAD_DEGAUSS_TOLERANCE = "QUAD_DEGAUSS_TOLERANCE";
+    //const std::string BSOL_DEGAUSS_TOLERANCE = "BSOL_DEGAUSS_TOLERANCE";
+    //const std::string DIP_DEGAUSS_TOLERANCE = "DIP_DEGAUSS_TOLERANCE";
+    //const std::string SOL_DEGAUSS_TOLERANCE = "SOL_DEGAUSS_TOLERANCE";
+    //const std::string COR_DEGAUSS_TOLERANCE = "COR_DEGAUSS_TOLERANCE";
 
     const std::string RI_TOLERANCE = "RI_TOLERANCE";
     // chtypes

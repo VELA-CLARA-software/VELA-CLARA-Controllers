@@ -40,7 +40,7 @@ class magnetConfigReader : public configReader
         bool readConfig( magnetConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 );
 
         magnetStructs::degaussValues degstruct;
-        void addToDegaussObj( const std::vector<std::string> &keyVal );
+        //void addToDegaussObj( const std::vector<std::string> &keyVal );
 
 
         //void copyPartOfMagObj( magnetStructs::magnetObject & to, magnetStructs::magnetObject & from);

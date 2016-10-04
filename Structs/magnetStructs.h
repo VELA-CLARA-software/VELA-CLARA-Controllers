@@ -77,7 +77,9 @@ namespace magnetStructs
                 si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999),
                 /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
                 /// ... which is probably evil && dangerous
-                numIlocks( 0 ) {} // proviude a default constructor
+                numIlocks( 0 ),
+                //added deguassing initialisers here
+                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0) {} // proviude a default constructor
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
         VELA_ENUM::MAG_PSU_STATE psuState;
@@ -87,6 +89,13 @@ namespace magnetStructs
         bool isGanged, canNRFlip, samePSURoot;
         std::vector< std::string > gangMembers;
         double si, ri, siWithPol, riWithPol, riTolerance;
+
+        //DEGUASSING: added here by Tim Price
+
+        size_t numDegaussSteps, maxWaitTime, numDegaussElements;
+        std::vector< double > degValues;
+        double  degTolerance;
+
 //        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__

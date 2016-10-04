@@ -91,6 +91,7 @@
 		<Unit filename="../../../../Hardware/magnet/magnetController.h" />
 		<Unit filename="../../../../Hardware/magnet/magnetInterface.cpp" />
 		<Unit filename="../../../../Hardware/magnet/magnetInterface.h" />
+		<Unit filename="../../../../Structs/magnetStructs.h" />
 		<Unit filename="../../../../Utilities/baseObject.cpp" />
 		<Unit filename="../../../../Utilities/baseObject.h" />
 		<Unit filename="../../../../Utilities/configDefinitions.h" />

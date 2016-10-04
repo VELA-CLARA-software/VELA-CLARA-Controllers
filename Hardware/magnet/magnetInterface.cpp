@@ -398,7 +398,7 @@ magnetInterface::vec_s magnetInterface::setSI( const vec_s & magNames, const vec
 
     if( carryOn )
     {
-        magsToReturn = waitForMagnetsToSettle( magNames, values, tolerances, degStruct.maxWaitTime );
+        magsToReturn = waitForMagnetsToSettle( magNames, values, tolerances, 45 );///MMMMMAAAGIIC NUMBER
 
         if( magsToReturn.size() == magNames.size() )
             message( "All Magnets Probably Settled." );
@@ -472,10 +472,11 @@ void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
         /// First, zero the magnets that require NR flipping
 
         if( magnetsToFlipThenSet.size() > 0 )
-        {
+        {   std::cout<<"HI"<<std::endl;
 //            debugMessage(" ZERO FLIPPING MAGNETS " );
             const vec_d zeros( magnetsToFlipThenSet.size(), 0.0 );
             setSINoFlip( magnetsToFlipThenSet, zeros);
+            //waitForMagnetsToSettle( magnetsToFlipThenSet, zeros, tol, 45 );
         }
 
         /// Second, send out values to magnets that DO NOT require flipping
@@ -976,7 +977,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->message("\n", "\tDEGAUSS UPDATE: Vectors Initialised Starting Degaussing","\n" );
 
-    for( size_t j = 0; j < ds.interface->degStruct.numDegaussSteps; ++j )
+    for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[j]].numDegaussSteps; ++j )
     {
         if( magToDeg.size() == 0 )
         {
@@ -994,7 +995,8 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
         ds.interface->setSI_MAIN( magToDeg, values );
 
-        magToDeg = ds.interface->waitForMagnetsToSettle( magToDeg, values, tolerances, ds.interface->degStruct.maxWaitTime );
+
+        magToDeg = ds.interface->waitForMagnetsToSettle( magToDeg, values, tolerances, 45 );
         //check for lost magnets
 
         if( magToDeg.size() != magToDegOLD.size() )
@@ -1082,32 +1084,33 @@ void magnetInterface::checkGangedMagnets( vec_s & magToDeg, vec_s & gangedMagToZ
 //______________________________________________________________________________
 void magnetInterface::getDegaussValues( vec_s & magToDeg, vec_d & values, vec_d & tolerances, size_t step)
 {
+
     for( auto && it : magToDeg )
     {
         if( isACor( it ) )
         {
-            values.push_back( degStruct.degValues[ UTL::COR_DEGAUSS_VALUES ][ step ]  );
-            tolerances.push_back( degStruct.degTolerance[ UTL::COR_DEGAUSS_TOLERANCE ] );
+            values.push_back( allMagnetData[ it ].degValues[ step ]  );
+            tolerances.push_back( allMagnetData[ it ].degTolerance );
         }
         else if( isAQuad( it ) )
         {
-            values.push_back( degStruct.degValues[ UTL::QUAD_DEGAUSS_VALUES ][ step ]  );
-            tolerances.push_back( degStruct.degTolerance[ UTL::QUAD_DEGAUSS_TOLERANCE ] );
+            values.push_back( allMagnetData[ it ].degValues[ step ]  );
+            tolerances.push_back( allMagnetData[ it ].degTolerance );
         }
         else if( isADip( it ) )
         {
-            values.push_back( degStruct.degValues[ UTL::DIP_DEGAUSS_VALUES ][ step ]   );
-            tolerances.push_back( degStruct.degTolerance[ UTL::DIP_DEGAUSS_TOLERANCE ] );
+            values.push_back( allMagnetData[ it ].degValues[ step ]  );
+            tolerances.push_back( allMagnetData[ it ].degTolerance );
         }
         else if( isABSol( it ) )
         {
-            values.push_back( degStruct.degValues[ UTL::BSOL_DEGAUSS_VALUES ][ step ]   );
-            tolerances.push_back( degStruct.degTolerance[ UTL::BSOL_DEGAUSS_TOLERANCE ] );
+            values.push_back( allMagnetData[ it ].degValues[ step ]  );
+            tolerances.push_back( allMagnetData[ it ].degTolerance );;
         }
         else if( isASol( it ) )
         {
-            values.push_back( degStruct.degValues[ UTL::SOL_DEGAUSS_VALUES ][ step ]   );
-            tolerances.push_back( degStruct.degTolerance[ UTL::SOL_DEGAUSS_TOLERANCE ] );
+            values.push_back( allMagnetData[ it ].degValues[ step ]  );
+            tolerances.push_back( allMagnetData[ it ].degTolerance );
         }
         else
         {
