@@ -142,7 +142,7 @@ namespace magnetStructs
         size_t numMags;
         std::vector< std::string > magNames;
         std::vector< VELA_ENUM::MAG_PSU_STATE > psuStates;
-        std::vector< double > siValues;
+        std::vector< double > siValues,riValues;
     };
 }
 #endif // _VELA_MAGNET_STRUCTS_H_

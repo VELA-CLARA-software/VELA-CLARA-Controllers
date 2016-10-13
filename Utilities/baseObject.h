@@ -15,13 +15,15 @@ class baseObject
         /// Each derived has access to two bools, that tell it whether to print messagesor not,
         /// We provide NO default constructors...
 
+        baseObject();
         baseObject(const bool* show_messages_ptr,const bool * show_debug_messages_ptr );
 //        /// protected destructor to make sure this class is never instantiated
 //        ///  the compiler won't let us call delete on any base class pointers
 
-        ~baseObject();
 
     protected:
+
+        ~baseObject();
 
         /// These are const pointers set at instantiation. They point to bools held in the controller
 

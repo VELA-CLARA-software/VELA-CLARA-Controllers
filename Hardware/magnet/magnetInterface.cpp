@@ -21,35 +21,18 @@
 #include <sstream>
 #include <chrono>
 #include <algorithm>
-
-
 //  __  ___  __   __    /  __  ___  __   __
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-magnetInterface::magnetInterface( const std::string configFileLocation1,
-                                  const std::string configFileLocation2,
-                                  const std::string configFileLocation3, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
-: configReader( configFileLocation1, configFileLocation2, configFileLocation3, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr ),
-degaussNum( 0 ), dummyName("DUMMY")
-
+magnetInterface::magnetInterface( const std::string &magConf, const std::string &NRConf,
+                                  const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
+                                  const bool shouldStartEPICs ):
+configReader( magConf, NRConf, show_messages_ptr, show_debug_messages_ptr ),
+interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY")
 {
-    initialise();
+        initialise(shouldStartEPICs);
 }
-//______________________________________________________________________________
-magnetInterface::magnetInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  ),
-degaussNum( 0 ), dummyName("DUMMY")
-{
-    //config file setting here
-    initialise();
-}
-//magnetInterface::magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-//: _atomicVar(0) //zero-initialize _atomicVar
-//,configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  ),
-//degaussNum( 0 ), dummyName("DUMMY")
-//{
-//}
 //______________________________________________________________________________
 magnetInterface::~magnetInterface()
 {
@@ -79,7 +62,7 @@ void magnetInterface::killMonitor( magnetStructs::monitorStruct * ms )
         debugMessage("ERROR magnetInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
 }
 //______________________________________________________________________________
-void magnetInterface::initialise()
+void magnetInterface::initialise(const bool shouldStartEPICs)
 {
     /// The config file reader
     configFileRead = configReader.readConfig();
@@ -90,12 +73,18 @@ void magnetInterface::initialise()
         bool getDataSuccess = initObjects();
         if( getDataSuccess )
         {
-            /// subscribe to the channel ids
-            initChids();
-            /// start the monitors: set up the callback functions
-            startMonitors();
-            /// The pause allows EPICS to catch up.
-            std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+            if( shouldStartEPICs )
+            {
+                std::cout << "WE ARE HERE" << std::endl;
+                /// subscribe to the channel ids
+                initChids();
+                /// start the monitors: set up the callback functions
+                startMonitors();
+                /// The pause allows EPICS to catch up.
+                std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+            }
+            else
+                message("The magnetInterface Read Config files, Not Starting EPICS Monitors" );
         }
         else
             message( "!!!The magnetInterface received an Error while getting magnet data!!!" );
@@ -249,7 +238,7 @@ void magnetInterface::startMonitors()
             /// void * usrArg = reinterpret_cast< void *>( continuousMonitorStructs.back() );
         }
     }
-    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Shutter Monitors", "!!TIMEOUT!! Subscription to Shutter monitors failed" );
+    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Magnet Monitors", "!!TIMEOUT!! Subscription to Magnet monitors failed" );
     if ( status == ECA_NORMAL )
         allMonitorsStarted = true; /// interface base class member
 }
@@ -1013,7 +1002,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
     if( ds.resetToZero  )
     {
         ds.interface->message( "\tDEGAUSS UPDATE: Re-setting zero." );
-        size_t i = 0;
+        //size_t i = 0;
         for( auto  i = 0; i < init_PSU_N_State.size(); ++i )
         {
             vec_s N_On_list;
@@ -1586,13 +1575,14 @@ magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState()
     {
         ret.magNames.push_back( it.first );
         ret.siValues.push_back( it.second.siWithPol );
+        ret.riValues.push_back( it.second.riWithPol );
         ret.psuStates.push_back( it.second.psuState );
         ++ret.numMags;
     }
     return ret;
 }
 //______________________________________________________________________________
-magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState( vec_s & s )
+magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState( const vec_s & s )
 {
     magnetStructs::magnetStateStruct ret;
     for( auto && it : s )
@@ -1601,6 +1591,7 @@ magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState( vec_s &
         {
             ret.magNames.push_back( it );
             ret.siValues.push_back( allMagnetData[ it ].siWithPol );
+            ret.riValues.push_back( allMagnetData[ it ].riWithPol );
             ret.psuStates.push_back( allMagnetData[ it ].psuState );
             ++ret.numMags;
         }

@@ -18,6 +18,7 @@
 class configReader : public baseObject
 {
     public:
+        configReader();
         configReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr );
         configReader( const std::string & configFile_Location1, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr );
         configReader( const std::string & configFile_Location1,
@@ -34,6 +35,8 @@ class configReader : public baseObject
                       const std::string & configFile_Location3,
                       const std::string & configFile_Location4,
                       const std::string & configFile_Location5, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr );
+
+
         void setConfigFilePath( const std::string & path );
 
     protected:

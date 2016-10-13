@@ -12,17 +12,24 @@
 #include <algorithm>
 #include <ctype.h>
 
-magnetConfigReader::magnetConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
-: configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
+magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
+              const bool*show_messages_ptr,const bool*show_debug_messages_ptr ):
+magConf(magConf),NRConf(NRConf),
+configReader( show_messages_ptr, show_debug_messages_ptr )
 {
+
 }
-//______________________________________________________________________________
-magnetConfigReader::magnetConfigReader( const std::string configFileLocation1,
-                                        const std::string configFileLocation2,
-                                        const std::string configFileLocation3, const bool* show_messages_ptr, const bool * show_debug_messages_ptr  )
-:  configReader(configFileLocation1, configFileLocation2, configFileLocation3, show_messages_ptr, show_debug_messages_ptr )
-{
-}
+//magnetConfigReader::magnetConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
+//: configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
+//{
+//}
+////______________________________________________________________________________
+//magnetConfigReader::magnetConfigReader( const std::string configFileLocation1,
+//                                        const std::string configFileLocation2,
+//                                        const std::string configFileLocation3, const bool* show_messages_ptr, const bool * show_debug_messages_ptr  )
+//:  configReader(configFileLocation1, configFileLocation2, configFileLocation3, show_messages_ptr, show_debug_messages_ptr )
+//{
+//}
 //______________________________________________________________________________
 magnetConfigReader::~magnetConfigReader(){}
 //______________________________________________________________________________
@@ -109,7 +116,7 @@ bool magnetConfigReader::readConfig()
     magPSUObjects_R.clear();
     pvPSUMonStructs.clear();
     pvPSUComStructs.clear();
-    bool psuSuccess = readConfig(*this, configFile1, &magnetConfigReader::addToMagPSUObjectsV1, &magnetConfigReader::addToMagPSUComStructsV1,&magnetConfigReader::addToMagPSUMonStructsV1 );
+    bool psuSuccess = readConfig(*this, NRConf, &magnetConfigReader::addToMagPSUObjectsV1, &magnetConfigReader::addToMagPSUComStructsV1,&magnetConfigReader::addToMagPSUMonStructsV1 );
 
     if( !psuSuccess )
         success = false;
@@ -123,7 +130,7 @@ bool magnetConfigReader::readConfig()
         debugMessage( "*** Created ", numObjs, " NR-PSU Objects, As Expected ***", "\n" );
     else
     {
-        debugMessage( "*** Created ", magPSUObjects_N.size() ," RF Power Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
+        debugMessage( "*** Created ", magPSUObjects_N.size() ," MAG PSU Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
         success = false;
     }
     //Magnets
@@ -131,10 +138,10 @@ bool magnetConfigReader::readConfig()
     pvMagMonStructs.clear();
     pvMagComStructs.clear();
 
-    bool magSuccess = readConfig( *this, configFile2, &magnetConfigReader::addToMagObjectsV1,&magnetConfigReader::addToMagComStructsV1, &magnetConfigReader::addToMagMonStructsV1 );
+    bool magSuccess = readConfig( *this, magConf, &magnetConfigReader::addToMagObjectsV1,&magnetConfigReader::addToMagComStructsV1, &magnetConfigReader::addToMagMonStructsV1 );
     if( !magSuccess )
         success = false;
-    if( numObjs == magObjects.size() ) /// MAGIC_NUMBER
+    if( numObjs == magObjects.size() )
         debugMessage( "*** Created ", numObjs, " Magnet Objects, As Expected ***" );
     else
     {

@@ -31,7 +31,7 @@ class interface : public baseObject
         interface( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr );
         ~interface();
 
-        /// This pure virtual method MUST be overwritten in the derived interface ( making this an abstract base class)
+        /// These pure virtual methods MUST be overwritten in the derived interface ( making this an abstract base class)
         /// This also means the destructor need not be protected
 
         virtual std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) = 0;
@@ -41,7 +41,7 @@ class interface : public baseObject
         void   set_CA_PEND_IO_TIMEOUT( double val );
 
         /// this reports back if the main init tasks: reading config, finding chids, setting up monitors (add your own if needed) has worked
-        bool interfaceInitReport();
+        bool interfaceInitReport(bool shouldStartEPICs = true);
 
 
 
@@ -102,7 +102,7 @@ class interface : public baseObject
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
-        /// tough... maybe one day we re-factor, for now remember to delete in the destructor
+        /// though... maybe one day we re-factor, for now remember to delete in the destructor
 
         std::vector< VELA_ENUM::iLockMonitorStruct * > continuousILockMonitorStructs;
     private:

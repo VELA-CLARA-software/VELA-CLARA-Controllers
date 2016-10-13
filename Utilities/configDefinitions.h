@@ -33,7 +33,7 @@ namespace UTL
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
     const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
-    const std::string VELA_INJ_MAG_DEGUASS_CONFIG      = "velaINJMagnetsDegauss.config";
+    //const std::string VELA_INJ_MAG_DEGUASS_CONFIG      = "velaINJMagnetsDegauss.config";
     const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
     const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";
     const std::string VELA_BA2_COMPLEX_SCREENS_CONFIG  = "velaBA2ComplexScreens.config";
@@ -166,7 +166,7 @@ namespace UTL
     // deguass
     //const std::string NUM_DEGAUSS_ELEMENTS = "NUM_DEGAUSS_ELEMENTS";
     const std::string NUM_DEGAUSS_STEPS = "NUM_DEGAUSS_STEPS";
-    const std::string DEGAUSS_VALUES = "DEGAUSS_VALUES";
+    const std::string DEGAUSS_VALUES    = "DEGAUSS_VALUES";
     const std::string DEGAUSS_TOLERANCE = "DEGAUSS_TOLERANCE";
     //const std::string BSOL_DEGAUSS_VALUES = "BSOL_DEGAUSS_VALUES";
     //const std::string DIP_DEGAUSS_VALUES = "DIP_DEGAUSS_VALUES";

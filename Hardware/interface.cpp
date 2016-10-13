@@ -16,6 +16,7 @@
 // stl
 #include <iostream>
 #include <sstream>
+//interface::interface():EPICS_ACTIVATE (1), EPICS_SEND(0), EPICS_RESET( 1 ),DBL_ERR_NUM( -9999.9999){}
 
 interface::interface( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
 : thisCaContext( nullptr  ), configFileRead( false ), CA_PEND_IO_TIMEOUT( 5.0 ), baseObject( show_messages_ptr, show_debug_messages_ptr ),
@@ -238,7 +239,7 @@ void interface::checkCHIDState( const chid & CHID, const std::string & name )
    }
 }
 //______________________________________________________________________________
-bool interface::interfaceInitReport()
+bool interface::interfaceInitReport( bool shouldStartEPICs )
 {
     bool ret = true;
 
@@ -247,16 +248,21 @@ bool interface::interfaceInitReport()
         ret = false;
         message("Error Reading Config File");
     }
-    if( !allChidsInitialised )
+    if( shouldStartEPICs )
     {
-        ret = false;
-        message("Error Initilaising Chids.");
+        if( !allChidsInitialised )
+        {
+            ret = false;
+            message("Error Initilaising Chids.");
+        }
+        if( !allMonitorsStarted )
+        {
+            ret = false;
+            message("Error Staring Monitors.");
+        }
     }
-    if( !allMonitorsStarted )
-    {
-        ret = false;
-        message("Error Staring Monitors.");
-    }
+    else
+        message("Controller Initiliased with NO Monitoring");
     return ret;
 }
 //______________________________________________________________________________

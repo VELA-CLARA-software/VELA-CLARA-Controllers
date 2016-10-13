@@ -16,16 +16,13 @@
 #include <fstream>
 #include <iostream>
 // stl
-magnetController::magnetController( const std::string configFileLocation1,
-                                    const std::string configFileLocation2,
-                                    const std::string configFileLocation3, const  bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation1, configFileLocation2, configFileLocation3, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-    initialise();
-}
-//______________________________________________________________________________
-magnetController::magnetController( const  bool show_messages, const bool show_debug_messages  )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+magnetController::magnetController(
+    const bool show_messages, const bool show_debug_messages,
+    const std::string & magConf,  const std::string & NRConf, const bool shouldStartEPICs
+):
+shouldStartEPICs(shouldStartEPICs),
+controller( show_messages, show_debug_messages ),
+localInterface( magConf, NRConf, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs )
 {
     initialise();
 }
@@ -34,7 +31,7 @@ magnetController::~magnetController(){}    //dtor
 //______________________________________________________________________________
 void magnetController::initialise()
 {
-    if( localInterface.interfaceInitReport() )
+    if( localInterface.interfaceInitReport(shouldStartEPICs) )
         message("magnetController instantiation success.");
 }
 //______________________________________________________________________________
@@ -239,6 +236,16 @@ std::vector< double > magnetController::getRI( const std::vector< std::string > 
 //    return localInterface.switchOFFpsu( magName );
 //}
 //______________________________________________________________________________
+magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState( const std::vector< std::string > & s )
+{
+    return localInterface.getCurrentMagnetState( s );
+}
+//______________________________________________________________________________
+magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState()
+{
+        return localInterface.getCurrentMagnetState( );
+}
+//______________________________________________________________________________
 void magnetController::applyMagnetStateStruct( const magnetStructs::magnetStateStruct & ms  )
 {
     return localInterface.applyMagnetStateStruct( ms );
@@ -274,7 +281,7 @@ void magnetController::applyDBURTQuadOnly( const std::string & fileName )
     return localInterface.applyDBURTQuadOnly( fileName );
 }
 //______________________________________________________________________________
-bool magnetController::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName, const std::string & comments )
+bool magnetController::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName, const std::string &comments)
 {
     return localInterface.writeDBURT( ms, fileName, comments );
 }
@@ -343,6 +350,31 @@ std::vector< std::string > magnetController::getSolNames()
 {
     return localInterface.getSolNames( );
 }
-    /// These bits will need re-writing...
-    /// probably put in the controller and use the config reader to read in a dBURT ???
-    /// Basically the c++ is now done, next the boost.Python bindings...
+#ifdef BUILD_DLL
+//______________________________________________________________________________
+boost::python::dict magnetController::getILockStatesStr_Py( std::string magName )
+{
+    return enumStringMapToPythonDict( getILockStatesStr( magName ) );
+}
+//______________________________________________________________________________
+boost::python::dict magnetController::getILockStates_Py( std::string magName )
+{
+    return enumMapToPythonDict( getILockStates( magName ) );
+}
+//______________________________________________________________________________
+boost::python::dict magnetController::getMagPSUStateDefinition()
+{
+    std::map< VELA_ENUM::MAG_PSU_STATE,  std::string  > m;
+
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
+
+    return enumStringMapToPythonDict( m );
+}
+//______________________________________________________________________________
+#endif // BUILD_DLL
+
+
