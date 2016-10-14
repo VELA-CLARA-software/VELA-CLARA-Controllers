@@ -47,7 +47,7 @@
 	<fstream>
 	<iostream>
 
-1476359340 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetcontroller.h
+1476444536 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -183,7 +183,7 @@
 	"VCmagnets.h"
 	<iostream>
 
-1476431841 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
+1476459612 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
 	<string>
 	"magnetController.h"
 	<boost/python/detail/wrap_python.hpp>

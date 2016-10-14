@@ -103,7 +103,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
                 .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
                 ;
         /// and enums, remember we have a enum to string python dictionary macro too!
-        enum_<magnetStructs::MAG_TYPE>("MAG_PSU_STATE")
+        enum_<magnetStructs::MAG_TYPE>("MAG_TYPE")
                 .value("QUAD", magnetStructs::MAG_TYPE::QUAD )
                 .value("DIP" , magnetStructs::MAG_TYPE::DIP  )
                 .value("HCOR", magnetStructs::MAG_TYPE::HCOR )
@@ -113,6 +113,15 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
                 .value("SEXT", magnetStructs::MAG_TYPE::SEXT )
                 .value("UNKNOWN_MAGNET_TYPE",  magnetStructs::MAG_TYPE::UNKNOWN_MAGNET_TYPE  )
                 ;
+        /// and enums, remember we have a enum to string python dictionary macro too!
+        enum_<magnetStructs::MAG_REV_TYPE>("MAG_REV_TYPE")
+                .value("NR"       , magnetStructs::MAG_REV_TYPE::NR )
+                .value("BIPOLAR"  , magnetStructs::MAG_REV_TYPE::BIPOLAR  )
+                .value("NR_GANGED", magnetStructs::MAG_REV_TYPE::NR_GANGED )/// hopefully never again....
+                .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
+                .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
+                ;
+
 
     /// structs (this one is a one-stop shop for comomn parameters)
     boost::python::class_<magnetStructs::magnetStateStruct>

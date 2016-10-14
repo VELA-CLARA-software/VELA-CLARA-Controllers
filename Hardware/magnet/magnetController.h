@@ -86,7 +86,7 @@ class magnetController : public controller
 
       /// Set SI, 4 versions of this
         bool setSI( const std::string & magName, const double value);
-        bool setSI( const  std::vector< std::string > & magNames, const std::vector< double >& values);
+        bool setSI( const std::vector< std::string > & magNames, const std::vector< double >& values);
         bool setSI( const std::string & magNames, const double values, const double tolerances, const size_t timeOUT );
         std::vector< std::string >  setSI( const std::vector< std::string > & magNames, const std::vector< double > & values, const std::vector< double > & tolerances, const size_t timeOUT );
 
