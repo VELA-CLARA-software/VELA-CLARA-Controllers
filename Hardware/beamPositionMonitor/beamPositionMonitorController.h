@@ -29,8 +29,9 @@ class beamPositionMonitorController : public controller
 
         /// we have overloaded constructors to specify config-file location
 
-        beamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true );
-        beamPositionMonitorController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
+        beamPositionMonitorController();// const bool show_messages = true, const bool show_debug_messages = true );
+//        beamPositionMonitorController();
+        beamPositionMonitorController( const std::string & configFileLocation, const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS );
         ~beamPositionMonitorController();
 
         bool isMonitoringBPMData( const std::string & name );
@@ -41,7 +42,8 @@ class beamPositionMonitorController : public controller
         double getQ(  const std::string & bpm  );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
-        beamPositionMonitorStructs::rawDataStruct getAllBPMData( const std::string & name, size_t N );
+        double getBPMResolution( const std::string & name );
+        const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );
@@ -89,6 +91,8 @@ class beamPositionMonitorController : public controller
         /// No singletons, no pointers, let's just have an object
 
         beamPositionMonitorInterface localInterface;
+
+        bool shouldStartEPICS;
 
         std::vector< std::string > bpmNames;
 };

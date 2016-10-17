@@ -28,8 +28,9 @@ class beamPositionMonitorInterface : public interface
 
         /// Not a singleton, two construction methods....
 
-        beamPositionMonitorInterface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        beamPositionMonitorInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
+                                      const bool * show_debug_messages_ptr,   const bool shouldStartEPICS  );
 
         ~beamPositionMonitorInterface();
 
@@ -41,12 +42,13 @@ class beamPositionMonitorInterface : public interface
         double calcX( const std::string & bpm, double u11, double u12, double u13, double u14 );
         double calcY( const std::string & bpm, double u21, double u22, double u23, double u24 );
         double calcQ( const std::string & bpm, std::vector< double > rawData );
+        double getBPMResolution( const std::string & bpm );
         double getX( const std::string & bpm );
         double getY( const std::string & bpm );
         double getQ( const std::string & bpm );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
-        beamPositionMonitorStructs::rawDataStruct getAllBPMData( const std::string & name, size_t N );
+        const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );
@@ -90,11 +92,11 @@ class beamPositionMonitorInterface : public interface
 
         /// called from constructor to set-up chids, montiros, etc.
 
-        void initialise();
+        void initialise( const bool shouldStartEPICS );
 
         beamPositionMonitorConfigReader configReader;
 
-        void initBPMObjects();
+        bool initBPMObjects();
         void initBPMChids();
         //void addChannel( std::map< std::string, beamPositionMonitorStructs::bpmObject >::iterator & it1, std::map< beamPositionMonitorStructs::BPM_PV_TYPE, std::string >::const_iterator & it2 );
         void addChannel( const std::string & pvRoot, beamPositionMonitorStructs::pvStruct & pv );
