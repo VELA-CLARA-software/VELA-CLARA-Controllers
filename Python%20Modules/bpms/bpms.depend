@@ -1,0 +1,142 @@
+# depslib dependency file v1.0
+1476696510 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\beampositionmonitor\beampositionmonitorcontroller.cpp
+	"beamPositionMonitorController.h"
+	<iostream>
+	"beamPositionMonitorInterface.h"
+
+1476696205 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\beampositionmonitor\beampositionmonitorcontroller.h
+	"beamPositionMonitorStructs.h"
+	"beamPositionMonitorInterface.h"
+	"controller.h"
+	<string>
+	<vector>
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\structs\beampositionmonitorstructs.h
+	"structs.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1476696855 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\beampositionmonitor\beampositionmonitorinterface.h
+	"interface.h"
+	"beamPositionMonitorStructs.h"
+	"beamPositionMonitorConfigReader.h"
+	<vector>
+	<string>
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1476695571 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\beampositionmonitorconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"beamPositionMonitorStructs.h"
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1476694966 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\configdefinitions.h
+	<string>
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1476696946 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\beampositionmonitor\beampositionmonitorinterface.cpp
+	"beamPositionMonitorInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<numeric>
+	<thread>
+	<ctime>
+	<string>
+	<cstring>
+	<cmath>
+	<stdlib.h>
+	<epicsTime.h>
+
+1476416598 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1476416598 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1476416598 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1476694746 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\beampositionmonitorconfigreader.cpp
+	"beamPositionMonitorConfigReader.h"
+	"configDefinitions.h"
+	"beamPositionMonitorStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1476416598 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1476416598 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\bpms\main.cpp
+	"main.h"
+
+1476416598 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\bpms\main.h
+	<windows.h>
+
+1476696270 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\bpms\src\vcbpms.cpp
+	"VCBPMs.h"
+	<iostream>
+
+1476463326 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\bpms\include\vcbpms.h
+	"beamPositionMonitorController.h"
+	<string>
+	<vector>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
