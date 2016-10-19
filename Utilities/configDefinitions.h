@@ -31,8 +31,17 @@ namespace UTL
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
     const std::string VELA_RF_GUN_MOD_CONFIG           = "velaRFGunModulator.config";
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
+
     const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
+
+    const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
+    const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
+    const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
+    const std::string VELA_BA2_MAG_NR_PSU_CONFIG       = "velaBA2MagnetsNRpsu.config";
+    const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";
+    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnets.config";
+
     //const std::string VELA_INJ_MAG_DEGUASS_CONFIG      = "velaINJMagnetsDegauss.config";
     const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
     const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";

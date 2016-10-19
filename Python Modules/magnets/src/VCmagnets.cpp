@@ -2,11 +2,20 @@
 #include <iostream>
 
 VCmagnets::VCmagnets():
-virtual_VELA_INJ_Magnet_Controller_Obj_Exists(false),
 virtual_VELA_INJ_Magnet_Controller_Obj(nullptr),
-virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj_Exists(false),
-virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj(nullptr)
+virtual_VELA_BA1_Magnet_Controller_Obj(nullptr),
+virtual_VELA_BA2_Magnet_Controller_Obj(nullptr),
+virtual_CLARA_INJ_Magnet_Controller_Obj(nullptr),
+physical_VELA_INJ_Magnet_Controller_Obj(nullptr),
+physical_VELA_BA1_Magnet_Controller_Obj(nullptr),
+physical_VELA_BA2_Magnet_Controller_Obj(nullptr),
+physical_CLARA_INJ_Magnet_Controller_Obj(nullptr),
+offline_VELA_INJ_Magnet_Controller_Obj(nullptr),
+offline_VELA_BA1_Magnet_Controller_Obj(nullptr),
+offline_VELA_BA2_Magnet_Controller_Obj(nullptr),
+offline_CLARA_INJ_Magnet_Controller_Obj(nullptr)
 {
+   std::cout << "Instantiated a VCmagnets " << std::endl;
     //ctor
 }
 //______________________________________________________________________________
@@ -18,21 +27,76 @@ VCmagnets::~VCmagnets()
         delete virtual_VELA_INJ_Magnet_Controller_Obj;
                virtual_VELA_INJ_Magnet_Controller_Obj = nullptr;
     }
-    if(virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj)
+    if(offline_VELA_INJ_Magnet_Controller_Obj)
     {
-        delete virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj;
-               virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj = nullptr;
+        delete offline_VELA_INJ_Magnet_Controller_Obj;
+               offline_VELA_INJ_Magnet_Controller_Obj = nullptr;
     }
+    if(physical_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete physical_VELA_INJ_Magnet_Controller_Obj;
+               physical_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+
+
+    if(virtual_VELA_BA1_Magnet_Controller_Obj)
+    {
+        delete virtual_VELA_BA1_Magnet_Controller_Obj;
+               virtual_VELA_BA1_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_VELA_BA2_Magnet_Controller_Obj)
+    {
+        delete offline_VELA_BA2_Magnet_Controller_Obj;
+               offline_VELA_BA2_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_VELA_BA2_Magnet_Controller_Obj)
+    {
+        delete physical_VELA_BA2_Magnet_Controller_Obj;
+               physical_VELA_BA2_Magnet_Controller_Obj = nullptr;
+    }
+
+    if(virtual_CLARA_INJ_Magnet_Controller_Obj)
+    {
+        delete virtual_CLARA_INJ_Magnet_Controller_Obj;
+               virtual_CLARA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_CLARA_INJ_Magnet_Controller_Obj)
+    {
+        delete offline_CLARA_INJ_Magnet_Controller_Obj;
+               offline_CLARA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_CLARA_INJ_Magnet_Controller_Obj)
+    {
+        delete physical_CLARA_INJ_Magnet_Controller_Obj;
+               physical_CLARA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+
+        if(virtual_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete virtual_VELA_INJ_Magnet_Controller_Obj;
+               virtual_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete offline_VELA_INJ_Magnet_Controller_Obj;
+               offline_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete physical_VELA_INJ_Magnet_Controller_Obj;
+               physical_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 //void VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 {
-    std::cout << "creating object" << std::endl;
+    std::cout << "creating virtual_VELA_INJ_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
 
-    if( virtual_VELA_INJ_Magnet_Controller_Obj_Exists )
+    if( virtual_VELA_INJ_Magnet_Controller_Obj )
     {
 
     }
@@ -43,20 +107,201 @@ magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
     return *virtual_VELA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
-//magnetController VCmagnets::virtual_VELA_INJ_Magnet_Controller_NOEPICS()
-magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller_NOEPICS()
+//magnetController VCmagnets::offline_VELA_INJ_Magnet_Controller()
+magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
-    if( virtual_VELA_INJ_Magnet_Controller_Obj_Exists )
+    std::cout << "creating physical_VELA_INJ_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
+    if( physical_VELA_INJ_Magnet_Controller_Obj )
     {
 
     }
     else
     {
-        virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj = new magnetController( true, true, mconf, nconf, false );
+        physical_VELA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
     }
-    return *virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj;
+    return *physical_VELA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
+magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
+{
+    std::cout << "creating offline_VELA_INJ_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
+    if( offline_VELA_INJ_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+    }
+    return *offline_VELA_INJ_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
+{
+    std::cout << "creating virtual_VELA_BA1_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
+
+    if( virtual_VELA_BA1_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        virtual_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+    }
+    return *virtual_VELA_BA1_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_VELA_BA1_Magnet_Controller()
+{
+    std::cout << "creating offline_VELA_BA1_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
+    if( offline_VELA_BA1_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        offline_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+    }
+    return *offline_VELA_BA1_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
+{
+    std::cout << "creating physical_VELA_BA1_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
+    if( physical_VELA_BA1_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+    }
+    return *physical_VELA_BA1_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
+{
+    std::cout << "creating virtual_VELA_BA2_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
+
+    if( virtual_VELA_BA2_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        virtual_VELA_BA2_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+    }
+    return *virtual_VELA_BA2_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_VELA_BA2_Magnet_Controller()
+{
+    std::cout << "creating offline_VELA_BA2_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
+    if( offline_VELA_BA2_Magnet_Controller_Obj )
+    {
+    }
+    else
+    {
+        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+    }
+    return *offline_VELA_BA2_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
+{
+    std::cout << "creating physical_VELA_BA2_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
+    if( physical_VELA_BA1_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+    }
+    return *physical_VELA_BA1_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_CLARA_INJ_Magnet_Controller()
+{
+    std::cout << "creating virtual_CLARA_INJ_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
+
+    if( virtual_CLARA_INJ_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        virtual_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+    }
+    return *virtual_CLARA_INJ_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_CLARA_INJ_Magnet_Controller()
+{
+    std::cout << "creating offline_CLARA_INJ_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
+    if( offline_CLARA_INJ_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+    }
+    return *offline_CLARA_INJ_Magnet_Controller_Obj;
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_CLARA_INJ_Magnet_Controller()
+{
+    std::cout << "creating physical_CLARA_INJ_Magnet_Controller object" << std::endl;
+    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
+    if( physical_CLARA_INJ_Magnet_Controller_Obj )
+    {
+
+    }
+    else
+    {
+        physical_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+    }
+    return *physical_CLARA_INJ_Magnet_Controller_Obj;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

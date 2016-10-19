@@ -2,7 +2,7 @@ import VELA_CLARA_MagnetControl as mag
 
 vc = mag.init()
 
-a  = vc.virtual_VELA_INJ_Magnet_Controller_NOEPICS();
+a  = vc.virtual_VELA_INJ_Magnet_Controller();
 
 b = a.getMagnetNames()
 

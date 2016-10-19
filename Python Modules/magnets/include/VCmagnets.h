@@ -20,7 +20,20 @@ class VCmagnets
         ~VCmagnets();
 
         magnetController& virtual_VELA_INJ_Magnet_Controller();
-        magnetController& virtual_VELA_INJ_Magnet_Controller_NOEPICS();
+        magnetController& offline_VELA_INJ_Magnet_Controller();
+        magnetController& physical_VELA_INJ_Magnet_Controller();
+
+        magnetController& virtual_VELA_BA1_Magnet_Controller();
+        magnetController& offline_VELA_BA1_Magnet_Controller();
+        magnetController& physical_VELA_BA1_Magnet_Controller();
+
+        magnetController& virtual_VELA_BA2_Magnet_Controller();
+        magnetController& offline_VELA_BA2_Magnet_Controller();
+        magnetController& physical_VELA_BA2_Magnet_Controller();
+
+        magnetController& virtual_CLARA_INJ_Magnet_Controller();
+        magnetController& offline_CLARA_INJ_Magnet_Controller();
+        magnetController& physical_CLARA_INJ_Magnet_Controller();
 
     protected:
 
@@ -28,11 +41,37 @@ class VCmagnets
 
      /// we just need to decide good names for these things...
         magnetController * virtual_VELA_INJ_Magnet_Controller_Obj;
-        magnetController * virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj;
+        magnetController * offline_VELA_INJ_Magnet_Controller_Obj;
+        magnetController * physical_VELA_INJ_Magnet_Controller_Obj;
 
+        magnetController * virtual_VELA_BA1_Magnet_Controller_Obj;
+        magnetController * offline_VELA_BA1_Magnet_Controller_Obj;
+        magnetController * physical_VELA_BA1_Magnet_Controller_Obj;
 
-        bool virtual_VELA_INJ_Magnet_Controller_Obj_Exists;
-        bool virtual_VELA_INJ_Magnet_Controller_NOEPICS_Obj_Exists;
+        magnetController * virtual_VELA_BA2_Magnet_Controller_Obj;
+        magnetController * offline_VELA_BA2_Magnet_Controller_Obj;
+        magnetController * physical_VELA_BA2_Magnet_Controller_Obj;
+
+        magnetController * virtual_CLARA_INJ_Magnet_Controller_Obj;
+        magnetController * offline_CLARA_INJ_Magnet_Controller_Obj;
+        magnetController * physical_CLARA_INJ_Magnet_Controller_Obj;
+
+//        bool virtual_VELA_INJ_Magnet_Controller_Obj_Exists;
+//        bool offline_VELA_INJ_Magnet_Controller_Obj_Exists;
+//        bool physical_VELA_INJ_Magnet_Controller_Obj_Exists;
+//
+//        bool virtual_VELA_BA1_Magnet_Controller_Obj_Exists;
+//        bool offline_VELA_BA1_Magnet_Controller_Obj_Exists;
+//        bool physical_VELA_BA1_Magnet_Controller_Obj_Exists;
+//
+//        bool virtual_VELA_BA2_Magnet_Controller_Obj_Exists;
+//        bool offline_VELA_BA2_Magnet_Controller_Obj_Exists;
+//        bool physical_VELA_BA2_Magnet_Controller_Obj_Exists;
+//
+//        bool virtual_CLARA_INJ_Magnet_Controller_Obj_Exists;
+//        bool offline_CLARA_INJ_Magnet_Controller_Obj_Exists;
+//        bool physical_CLARA_INJ_Magnet_Controller_Obj_Exists;
+
 };
 
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
@@ -291,8 +330,32 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
     boost::python::class_<VCmagnets,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_Magnet_Controller",  &VCmagnets::virtual_VELA_INJ_Magnet_Controller,
              return_value_policy<reference_existing_object>())
-        .def("virtual_VELA_INJ_Magnet_Controller_NOEPICS",  &VCmagnets::virtual_VELA_INJ_Magnet_Controller_NOEPICS,        return_value_policy<reference_existing_object>())
-    ;
+        .def("offline_VELA_INJ_Magnet_Controller",  &VCmagnets::offline_VELA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_Magnet_Controller",  &VCmagnets::physical_VELA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA1_Magnet_Controller",  &VCmagnets::virtual_VELA_BA1_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA1_Magnet_Controller",  &VCmagnets::offline_VELA_BA1_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA1_Magnet_Controller",  &VCmagnets::physical_VELA_BA1_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA2_Magnet_Controller",  &VCmagnets::virtual_VELA_BA2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA2_Magnet_Controller",  &VCmagnets::offline_VELA_BA2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA2_Magnet_Controller",  &VCmagnets::physical_VELA_BA2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_INJ_Magnet_Controller",  &VCmagnets::virtual_CLARA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_INJ_Magnet_Controller",  &VCmagnets::offline_CLARA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_INJ_Magnet_Controller",  &VCmagnets::physical_CLARA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+                ;
+
+
+
 
 }
 
