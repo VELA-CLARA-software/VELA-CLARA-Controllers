@@ -51,7 +51,7 @@ beamPositionMonitorInterface::~beamPositionMonitorInterface()
 //    }
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::initialise(const bool shouldStartEPICs)
+void beamPositionMonitorInterface::initialise( const bool shouldStartEPICs )
 {
     /// The config file reader
     configFileRead = configReader.readConfigFiles();
@@ -76,7 +76,7 @@ void beamPositionMonitorInterface::initialise(const bool shouldStartEPICs)
                 message("The bpmInterface Read Config files, Not Starting EPICS Monitors" );
         }
         else
-            message( "!!!The bpmInterface received an Error while getting magnet data!!!" );
+            message( "!!!The bpmInterface received an Error while getting BPM data!!!" );
     }
 }
 ////______________________________________________________________________________
@@ -134,6 +134,7 @@ void beamPositionMonitorInterface::addChannel( const std::string & pvRoot, beamP
 void beamPositionMonitorInterface::monitorBPMs()
 {
     continuousMonitorStructs.clear();
+    dataMonitorStructs.clear();
 
     for( auto && it1 : bpmObj.dataObjects )
         for( auto && it2 : it1.second.pvMonStructs )
@@ -301,9 +302,11 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             it1.second.shotCount = 0;
         }
     }
+
     const dbr_double_t * value = &(p  -> value);
     size_t i = 0;
     updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ], bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
+
     for( auto && it : bpmdo->rawBPMData[ bpmdo->shotCount ] )
     {
         it = *( &p->value + i);
@@ -331,14 +334,12 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
         }
         if( bpmdo->shotCount == bpmdo->numShots )
         {
-            bpmdo->appendingData = false;
-//            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo->name );
+            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo->name );
             ms->interface->killCallBack( ms, bpmdo );//, bpmdo );
             monitoringData = false;
             bpmdo -> shotCount = 0;
         }
     }
-
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
@@ -373,12 +374,10 @@ void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::mon
 //        debugMessage( ms -> scopeObject, " monitoring = false ");
 
         isMonitoringMap[ ms -> bpmObject ] = false;
-//        bpmdo -> isMonitoring = false;
         bpmdo -> appendingData = false;
 
-        monitoringData = false;
-
         delete ms;
+        message( bpmdo->name, "callback deleted" );
     }
     else
     {
@@ -427,6 +426,37 @@ void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::st
         message( "Already Monitoring Data " ); /// make more useful
     }
 
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::monitorMultipleDataForNShots( size_t N, std::vector< std::string > names )
+{
+    resetDataVectors( N );
+    for( auto it : names )
+    {
+        if( !bpmObj.dataObjects.at( it ).bpmRawData.appendingData )
+        {
+            message( "Starting bpm data Monitor " );
+
+
+
+            bpmObj.dataObjects.at( it ).bpmRawData.numShots = N;
+            bpmObj.dataObjects.at( it ).bpmRawData.isAContinuousMonitorStruct=false;
+            bpmObj.dataObjects.at( it ).bpmRawData.isATemporaryMonitorStruct=true;
+            bpmObj.dataObjects.at( it ).bpmRawData.appendingData=true;
+
+
+            addToMonitorStructs( dataMonitorStructs, bpmObj.dataObjects.at( it ).pvMonStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::DATA ) , &bpmObj.dataObjects.at( it )  );
+    //            }
+    //        }
+            int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to bpm data Monitors failed" );
+            if ( status == ECA_NORMAL )
+                monitoringData = true; /// interface base class member
+        }
+        else
+        {
+            message( "Already Monitoring Data " ); /// make more useful
+        }
+    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::resetDataVectors( size_t N )
@@ -600,7 +630,7 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
     }
     else
     {
-        std::cout << "didn't work" << std::endl;
+        message( "BPM resolution calculation didn't work" );
         return res;
     }
 }
@@ -608,9 +638,13 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
 bool beamPositionMonitorInterface::isMonitoringBPMData( const std::string & name )
 {
     if( bpmObj.dataObjects.at( name ).bpmRawData.appendingData == true )
+    {
         return true;
+    }
     else
+    {
         return false;
+    }
 }
 //______________________________________________________________________________
 bool beamPositionMonitorInterface::isNotMonitoringBPMData( const std::string & name )
@@ -793,7 +827,7 @@ double beamPositionMonitorInterface::getYFromPV( const std::string & bpmName )
         return r;
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::reCalAtt( const std::string & bpmName, double qScope )
+void beamPositionMonitorInterface::reCalAttenuation( const std::string & bpmName, double qScope )
 {
     /// For this function we get a charge value from somewhere else ( e.g. a scopeInterface ) and pass it in
     double att1Cal, att2Cal, v1Cal, v2Cal, qCal, qqC;

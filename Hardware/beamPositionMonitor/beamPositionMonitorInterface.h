@@ -29,7 +29,7 @@ class beamPositionMonitorInterface : public interface
         /// Not a singleton, two construction methods....
 
         beamPositionMonitorInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
+        beamPositionMonitorInterface( const std::string & configFileLocation, const bool * show_messages_ptr,
                                       const bool * show_debug_messages_ptr,   const bool shouldStartEPICS  );
 
         ~beamPositionMonitorInterface();
@@ -37,7 +37,6 @@ class beamPositionMonitorInterface : public interface
         bool monitoringData = false;
         bool isMonitoringBPMData( const std::string & bpmName );
         bool isNotMonitoringBPMData( const std::string & bpmName );
-
 
         double calcX( const std::string & bpm, double u11, double u12, double u13, double u14 );
         double calcY( const std::string & bpm, double u21, double u22, double u23, double u24 );
@@ -55,17 +54,19 @@ class beamPositionMonitorInterface : public interface
         std::vector< double > getBPMQVec( const std::string & bpmName );
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
-        long getRA1(  const std::string & bpm  );
-        long getRA2(  const std::string & bpm  );
-        long getRD1(  const std::string & bpm  );
-        long getRD2(  const std::string & bpm  );
-        void setSA1(  const std::string & bpmName, long sa1 );
-        void setSA2(  const std::string & bpmName, long sa1 );
-        void setSD1(  const std::string & bpmName, long sa1 );
-        void setSD2(  const std::string & bpmName, long sa1 );
-        void reCalAtt( const std::string & bpmName, double qScope );
-        void addToMonitorStructs( std::vector< beamPositionMonitorStructs::monitorStruct * > & msv, beamPositionMonitorStructs::pvStruct & pv,  beamPositionMonitorStructs::bpmDataObject * bpmObj );
-        void monitorDataForNShots( size_t N, const std::string & bpmNames );
+        long getRA1( const std::string & bpm );
+        long getRA2( const std::string & bpm );
+        long getRD1( const std::string & bpm );
+        long getRD2( const std::string & bpm );
+        void setSA1( const std::string & bpmName, long sa1 );
+        void setSA2( const std::string & bpmName, long sa1 );
+        void setSD1( const std::string & bpmName, long sa1 );
+        void setSD2( const std::string & bpmName, long sa1 );
+        void reCalAttenuation( const std::string & bpmName, double qScope );
+        void addToMonitorStructs( std::vector< beamPositionMonitorStructs::monitorStruct * > & msv, beamPositionMonitorStructs::pvStruct & pv,
+                                  beamPositionMonitorStructs::bpmDataObject * bpmObj );
+        void monitorMultipleDataForNShots( size_t N, std::vector< std::string > bpmNames );
+        void monitorDataForNShots( size_t N, const std::string & name );
 
         std::vector< std::string > getBPMNames();
 
@@ -103,11 +104,11 @@ class beamPositionMonitorInterface : public interface
 
         void monitorBPMs();
 
-        /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the bpm is now easy
+        /// As an overly complicated example let's try some function pointers. Toggling (open / close) the bpm is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
 
-        typedef  bool (beamPositionMonitorInterface::*isOCMemFn)( const std::string & );
-        typedef  void (beamPositionMonitorInterface::*OCMemFn)  ( const std::string & );
+        typedef bool (beamPositionMonitorInterface::*isOCMemFn)( const std::string & );
+        typedef void (beamPositionMonitorInterface::*OCMemFn)  ( const std::string & );
         bool toggleAndWait( isOCMemFn f1, isOCMemFn f2, OCMemFn f3, const std::string & name, const time_t waitTime, beamPositionMonitorInterface & obj );
 
         /// static function that can be called back from epics to update values
@@ -116,12 +117,9 @@ class beamPositionMonitorInterface : public interface
         void resetDataVectors( size_t N );
         bool isADataPV( beamPositionMonitorStructs::BPM_PV_TYPE pv );
 
-
         std::vector< beamPositionMonitorStructs::monitorStruct* > temporaryMonitorStructs;
 
         void * addTemporaryMonitorStruct( beamPositionMonitorStructs::bpmObject * bpmObjp , beamPositionMonitorStructs::BPM_PV_TYPE monType, std::vector< std::vector< double > > & bpmData, beamPositionMonitorStructs::dataCollectionResult * stat);
-
-//        velaScopeInterface localScopeInterface;
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern

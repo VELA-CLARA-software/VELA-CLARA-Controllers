@@ -85,14 +85,19 @@ bool beamPositionMonitorController::isNotMonitoringBPMData( const std::string & 
     return localInterface.isNotMonitoringBPMData( name );
 }
 //______________________________________________________________________________
-void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::string & bpmNames )
+void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::string & name )
 {
-    localInterface.monitorDataForNShots( N, bpmNames );
+    localInterface.monitorDataForNShots( N, name );
 }
 //______________________________________________________________________________
-void beamPositionMonitorController::reCalAtt( const std::string & name, double qScope )
+void beamPositionMonitorController::monitorMultipleDataForNShots( size_t N, std::vector< std::string > names )
 {
-    localInterface.reCalAtt( name, qScope );
+    localInterface.monitorMultipleDataForNShots( N, names );
+}
+//______________________________________________________________________________
+void beamPositionMonitorController::reCalAttenuation( const std::string & name, double qScope )
+{
+    localInterface.reCalAttenuation( name, qScope );
 }
 //______________________________________________________________________________
 double beamPositionMonitorController::getX( const std::string & name )

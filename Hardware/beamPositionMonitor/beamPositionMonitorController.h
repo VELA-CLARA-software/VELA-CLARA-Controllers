@@ -38,10 +38,10 @@ class beamPositionMonitorController : public controller
         bool isNotMonitoringBPMData( const std::string & name );
 
         double getX( const std::string & bpm );
-        double getY(  const std::string & bpm  );
-        double getQ(  const std::string & bpm  );
-        double getXFromPV(  const std::string & bpm  );
-        double getYFromPV(  const std::string & bpm  );
+        double getY( const std::string & bpm );
+        double getQ( const std::string & bpm );
+        double getXFromPV( const std::string & bpm );
+        double getYFromPV( const std::string & bpm );
         double getBPMResolution( const std::string & name );
         const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
@@ -50,16 +50,17 @@ class beamPositionMonitorController : public controller
         std::vector< double > getBPMQVec( const std::string & bpmName );
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
-        long getRA1(  const std::string & bpmName           );
-        long getRA2(  const std::string & bpmName           );
-        long getRD1(  const std::string & bpmName           );
-        long getRD2(  const std::string & bpmName           );
-        void setSA1(  const std::string & bpmName, long sa1 );
-        void setSA2(  const std::string & bpmName, long sa2 );
-        void setSD1(  const std::string & bpmName, long sd1 );
-        void setSD2(  const std::string & bpmName, long sd2 );
-        void reCalAtt( const std::string & bpmName, double qScope );
-        void monitorDataForNShots( size_t N, const std::string & bpmNames );
+        long getRA1( const std::string & bpmName );
+        long getRA2( const std::string & bpmName );
+        long getRD1( const std::string & bpmName );
+        long getRD2( const std::string & bpmName );
+        void setSA1( const std::string & bpmName, long sa1 );
+        void setSA2( const std::string & bpmName, long sa2 );
+        void setSD1( const std::string & bpmName, long sd1 );
+        void setSD2( const std::string & bpmName, long sd2 );
+        void reCalAttenuation( const std::string & bpmName, double qScope );
+        void monitorDataForNShots( size_t N, const std::string & name );
+        void monitorMultipleDataForNShots( size_t N, std::vector< std::string > names );
 
         std::vector< std::string > getBPMNames();
 
@@ -79,9 +80,6 @@ class beamPositionMonitorController : public controller
 
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
         std::map< VELA_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & objName );
-
-
-
 
     protected:
     private:
