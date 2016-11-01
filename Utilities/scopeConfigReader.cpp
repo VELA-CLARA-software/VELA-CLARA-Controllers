@@ -12,15 +12,11 @@
 #include <algorithm>
 #include <ctype.h>
 
-scopeConfigReader::scopeConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
-: configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
+scopeConfigReader::scopeConfigReader( const std::string & scopeConf1, const std::string & scopeConf2, const bool *show_messages_ptr, const bool *show_debug_messages_ptr ):
+scopeConf1(scopeConf1), scopeConf2(scopeConf2),
+configReader( show_messages_ptr, show_debug_messages_ptr )
 {
-}
-//______________________________________________________________________________
-scopeConfigReader::scopeConfigReader( const std::string configFileLocation1,
-                                      const std::string configFileLocation2, const bool* show_messages_ptr, const bool * show_debug_messages_ptr  )
-:  configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr )
-{
+
 }
 //______________________________________________________________________________
 scopeConfigReader::~scopeConfigReader(){}
@@ -88,7 +84,7 @@ bool scopeConfigReader::readConfigFiles()
     //NUM
     scopeNumObjects.clear();
     scopeNumMonStructs.clear();
-    bool numSuccess = readConfig( *this,  configFile1, &scopeConfigReader::addToScopeNumObjectsV1,nullptr, &scopeConfigReader::addToScopeNumMonStructsV1 );
+    bool numSuccess = readConfig( *this,  scopeConf1, &scopeConfigReader::addToScopeNumObjectsV1,nullptr, &scopeConfigReader::addToScopeNumMonStructsV1 );
     if( !numSuccess )
         success = false;
 //    if( numObjs == scopeTraceDataObject.size() )
@@ -102,7 +98,7 @@ bool scopeConfigReader::readConfigFiles()
     //TRACE
     scopeTraceDataObjects.clear();
     scopeTraceDataMonStructs.clear();
-    bool traceSuccess = readConfig( *this,  configFile2, &scopeConfigReader::addToScopeTraceDataObjectsV1,nullptr, &scopeConfigReader::addToScopeTraceDataMonStructsV1 );
+    bool traceSuccess = readConfig( *this,  scopeConf2, &scopeConfigReader::addToScopeTraceDataObjectsV1,nullptr, &scopeConfigReader::addToScopeTraceDataMonStructsV1 );
     if( !traceSuccess )
         success = false;
 //    if( numObjs == scopeTraceDataObject.size() )

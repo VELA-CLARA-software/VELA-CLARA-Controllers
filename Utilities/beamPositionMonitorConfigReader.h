@@ -20,7 +20,7 @@ class beamPositionMonitorConfigReader : public configReader
 {
     public:
         beamPositionMonitorConfigReader();// const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        beamPositionMonitorConfigReader( const std::string & bpmConf,  const bool * showMessages, const  bool * showDebugMessages );
+        beamPositionMonitorConfigReader( const std::string & bpmConf,  const bool * showMessages, const bool * showDebugMessages );
         ~beamPositionMonitorConfigReader();
 
         bool readConfigFiles( );
@@ -49,7 +49,7 @@ class beamPositionMonitorConfigReader : public configReader
 
         const std::string bpmConf;
 
-        void addToPVStruct( std::vector< beamPositionMonitorStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
+        void addToPVStruct( std::vector< beamPositionMonitorStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal );
         void addCOUNT_MASK_OR_CHTYPE(  std::vector< beamPositionMonitorStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
 
 };

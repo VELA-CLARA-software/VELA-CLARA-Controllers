@@ -13,7 +13,7 @@
 #include <ctype.h>
 
 beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & bpmConf, const bool*show_messages_ptr, const bool*show_debug_messages_ptr ):
-bpmConf(bpmConf),
+bpmConf( bpmConf ),
 configReader( show_messages_ptr, show_debug_messages_ptr )
 {
 
@@ -52,10 +52,6 @@ beamPositionMonitorStructs::bpmObject beamPositionMonitorConfigReader::getBPMObj
 bool beamPositionMonitorConfigReader::readConfigFiles()
 {
     bool success = true;
-    /// There are 2 types of objects in the bpm, a trace monitor and a number monitor;
-    /// They are defined in seperate config files to seperate the data more clearly
-    /// they still all end up in an bpmObject
-    //NUM
     bpmDataMonStructs.clear();
     bpmDataObjects.clear();
     bool bpmSuccess = readConfig( *this, bpmConf, &beamPositionMonitorConfigReader::addToBPMDataObjectsV1, &beamPositionMonitorConfigReader::addToBPMPVComStructsV1, &beamPositionMonitorConfigReader::addToBPMPVMonStructsV1 );
