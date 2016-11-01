@@ -287,6 +287,7 @@ void interface::detachFrom_thisCAContext()
     ca_detach_context( );
 }
 /// WRITTEN THIS WAY, THIS FUNCTION COULD GO IN THE INTERFACE BASE CLASS
+//______________________________________________________________________________
 void interface::updateTime( const epicsTimeStamp & stamp, double & val, std::string & str )
 {// look in epicsTime.h
 //    const dbr_time_char * pTD = ( const struct dbr_time_char * ) args.dbr;
