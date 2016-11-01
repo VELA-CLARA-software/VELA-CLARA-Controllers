@@ -217,6 +217,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def_readonly("name",       &magnetStructs::magnetObject::name)
         .def_readonly("nPSU",       &magnetStructs::magnetObject::nPSU)
         .def_readonly("rPSU",       &magnetStructs::magnetObject::rPSU)
+        .def_readonly("degValues",  &magnetStructs::magnetObject::degValues)
         ;
 
 //     struct  magnetObject
