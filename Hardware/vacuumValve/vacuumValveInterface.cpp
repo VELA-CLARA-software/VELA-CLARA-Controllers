@@ -21,17 +21,18 @@
 #include <chrono>
 #include <thread>
 
-vacuumValveInterface::vacuumValveInterface( const std::string & configFile_Location, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
-: configReader( configFile_Location, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
+vacuumValveInterface::vacuumValveInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
+                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS ):
+    configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
 {
-    initialise();
+    initialise( shouldStartEPICS );
 }
-//______________________________________________________________________________
-vacuumValveInterface::vacuumValveInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  )
-{
-    initialise();
-}
+////______________________________________________________________________________
+//vacuumValveInterface::vacuumValveInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
+//: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  )
+//{
+//    initialise();
+//}
 //______________________________________________________________________________
 vacuumValveInterface::~vacuumValveInterface()
 {
@@ -42,25 +43,38 @@ vacuumValveInterface::~vacuumValveInterface()
     }
 }
 //______________________________________________________________________________
-void vacuumValveInterface::initialise()
+void vacuumValveInterface::initialise( const bool shouldStartEPICS )
 {
     /// The config file reader
 
-    configFileRead = configReader.readVacValveConfig();
-
+    configFileRead = configReader.readConfigFiles();
+    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
 
-        initVacValveObjects();
+        bool getDataSuccess = initVacValveObjects();
+        if( getDataSuccess )
+        {
+            /// subscribe to the channel ids
+            if( shouldStartEPICS )
+            {
+            initVacValveChids();
 
-        /// subscribe to the channel ids
+            /// start the monitors: set up the callback functions
 
-        initVacValveChids();
+            monitorVacValves();
 
-        /// start the monitors: set up the callback functions
-
-        monitorVacValves();
+            }
+            else
+            {
+                message("The vacValveInterface Read Config files, Not Starting EPICS Monitors" );
+            }
+        }
+        else
+        {
+            message( "!!!The vacValveInterface received an Error while getting vac valve data!!!" );
+        }
 
         std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); /// MAGIC NUMBER
     }
@@ -73,11 +87,12 @@ void vacuumValveInterface::findVacValveNames( std::vector< std::string >  & vacV
         vacValveNames.push_back( it.first );
 }
 //______________________________________________________________________________
-void vacuumValveInterface::initVacValveObjects()
+bool vacuumValveInterface::initVacValveObjects()
 {
     const std::vector< vacuumValveStructs::vacValveObject > vacValveObjs = configReader.getVacValveObjects();
     for( auto const & it : vacValveObjs )
         allVacValveData[ it.name ] = it;
+    return true;
 }
 //______________________________________________________________________________
 void vacuumValveInterface::initVacValveChids()

@@ -12,8 +12,8 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#ifndef velaQBOX_CONTROLLER_H
-#define velaQBOX_CONTROLLER_H
+#ifndef vela_VAC_VALVE_CONTROLLER_H
+#define vela_VAC_VALVE_CONTROLLER_H
 
 // project
 #include "vacuumValveStructs.h"
@@ -31,8 +31,8 @@ class vacuumValveController : public controller
 
         /// we have overloaded constructors to specify config-file location
 
-        vacuumValveController( const bool show_messages = true, const bool show_debug_messages = true );
-        vacuumValveController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
+        vacuumValveController();// const bool show_messages = true, const bool show_debug_messages = true );
+        vacuumValveController( const std::string configFileLocation, const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS );
         ~vacuumValveController();
 
         void openVacValve( const std::string & vacValveName );
@@ -95,6 +95,8 @@ class vacuumValveController : public controller
         /// No singletons, no pointers, let's just have an object
 
         vacuumValveInterface localInterface;
+
+        bool shouldStartEPICS;
 
         std::vector< std::string > vacValveNames;
 };

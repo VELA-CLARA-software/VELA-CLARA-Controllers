@@ -28,8 +28,9 @@ class vacuumValveInterface : public interface
 
         /// Not a singleton, two construction methods....
 
-        vacuumValveInterface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        vacuumValveInterface( const std::string & configFile_Location, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        vacuumValveInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        vacuumValveInterface( const std::string & configFile_Location, const bool * show_messages_ptr,
+                              const bool * show_debug_messages_ptr,    const bool shouldStartEPICS );
 
         ~vacuumValveInterface();
 
@@ -61,11 +62,11 @@ class vacuumValveInterface : public interface
 
         /// called from constructor to set-up chids, montiros, etc.
 
-        void initialise();
+        void initialise( const bool shouldStartEPICS );
 
         vacuumValveConfigReader configReader;
 
-        void initVacValveObjects();
+        bool initVacValveObjects();
         void initVacValveChids();
         //void addChannel( std::map< std::string, vacuumValveStructs::vacValveObject >::iterator & it1, std::map< vacuumValveStructs::VAC_VALVE_PV_TYPE, std::string >::const_iterator & it2 );
         void addChannel( const std::string & pvRoot, vacuumValveStructs::pvStruct & pv );
