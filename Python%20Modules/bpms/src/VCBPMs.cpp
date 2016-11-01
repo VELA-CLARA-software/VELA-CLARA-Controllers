@@ -3,24 +3,13 @@
 
 #include <iostream>
 
-////______________________________________________________________________________
-//velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController( const std::string configFileLocation, const  bool show_messages, const bool show_debug_messages )
-//: beamPositionMonitorController( configFileLocation, show_messages, show_debug_messages )
-//    virtual_VELA_INJ_BPM_Controller_Obj_Exists(false),
-//    virtual_VELA_INJ_BPM_Controller_Obj(nullptr),
-//
-//{}
-////______________________________________________________________________________
-//velaINJBeamPositionMonitorController::velaINJBeamPositionMonitorController(const bool RealMachine, const  bool show_messages, const bool show_debug_messages  )
-//: beamPositionMonitorController((RealMachine==false)? UTL::CONFIG_PATH_VM+UTL::VELA_INJ_BPM_CONFIG : UTL::CONFIG_PATH_VM+UTL::VELA_INJ_BPM_CONFIG, show_messages, show_debug_messages )
-//    virtual_VELA_INJ_BPM_Controller_Obj_Exists(false),
-//    virtual_VELA_INJ_BPM_Controller_Obj(nullptr),
-//{
-//
-//}
 VCBPMs::VCBPMs():
 virtual_VELA_INJ_BPM_Controller_Obj_Exists(false),
-virtual_VELA_INJ_BPM_Controller_Obj(nullptr)
+virtual_VELA_INJ_BPM_Controller_Obj(nullptr),
+offline_VELA_INJ_BPM_Controller_Obj_Exists(false),
+offline_VELA_INJ_BPM_Controller_Obj(nullptr),
+physical_VELA_INJ_BPM_Controller_Obj_Exists(false),
+physical_VELA_INJ_BPM_Controller_Obj(nullptr)
 {
     //ctor
 }
@@ -31,6 +20,16 @@ VCBPMs::~VCBPMs()
     {
         delete virtual_VELA_INJ_BPM_Controller_Obj;
                virtual_VELA_INJ_BPM_Controller_Obj = nullptr;
+    }
+    if(offline_VELA_INJ_BPM_Controller_Obj)
+    {
+        delete offline_VELA_INJ_BPM_Controller_Obj;
+               offline_VELA_INJ_BPM_Controller_Obj = nullptr;
+    }
+    if(physical_VELA_INJ_BPM_Controller_Obj)
+    {
+        delete physical_VELA_INJ_BPM_Controller_Obj;
+               physical_VELA_INJ_BPM_Controller_Obj = nullptr;
     }
 }    //dtor
 //______________________________________________________________________________
@@ -48,6 +47,38 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_INJ_BPM_Controller()
         virtual_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
     }
     return *virtual_VELA_INJ_BPM_Controller_Obj;
+}
+//______________________________________________________________________________
+beamPositionMonitorController & VCBPMs::offline_VELA_INJ_BPM_Controller()
+{
+    std::cout << "creating object" << std::endl;
+    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_BPM_CONFIG;
+
+    if( offline_VELA_INJ_BPM_Controller_Obj_Exists )
+    {
+
+    }
+    else
+    {
+        offline_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, false );
+    }
+    return *offline_VELA_INJ_BPM_Controller_Obj;
+}
+//______________________________________________________________________________
+beamPositionMonitorController & VCBPMs::physical_VELA_INJ_BPM_Controller()
+{
+    std::cout << "creating object" << std::endl;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+
+    if( physical_VELA_INJ_BPM_Controller_Obj_Exists )
+    {
+
+    }
+    else
+    {
+        physical_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+    }
+    return *physical_VELA_INJ_BPM_Controller_Obj;
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
@@ -206,5 +237,3 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_INJ_BPM_Controller()
 //    return getBPMState( name );
 //}
 #endif //BUILD_DLL
-
-

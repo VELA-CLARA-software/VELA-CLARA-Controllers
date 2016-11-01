@@ -2,7 +2,6 @@
 #define vela_INJ_BPM_CONTROLLER_H
 
 // project
-
 #include "beamPositionMonitorController.h"
 // stl
 #include <string>
@@ -26,20 +25,10 @@ class VCBPMs// : public beamPositionMonitorController
         ~VCBPMs();
 
         beamPositionMonitorController & virtual_VELA_INJ_BPM_Controller();
-
-
-
-
+        beamPositionMonitorController & offline_VELA_INJ_BPM_Controller();
+        beamPositionMonitorController & physical_VELA_INJ_BPM_Controller();
 
 #ifdef BUILD_DLL
-
-        /// Include a function to export enum definitions to a python dictionary
-
-//        boost::python::dict getBPMStateDefinition();
-
-        /// python does not do pass-by-reference
-        /// so we create some thin wrappers to those functions that boost.python can use
-        /// (retain pass by reference versions for c++ applications)
 
 #endif // BUILD_DLL
 
@@ -47,8 +36,29 @@ class VCBPMs// : public beamPositionMonitorController
     private:
 
         bool virtual_VELA_INJ_BPM_Controller_Obj_Exists;
-        beamPositionMonitorController * virtual_VELA_INJ_BPM_Controller_Obj;
+        bool offline_VELA_INJ_BPM_Controller_Obj_Exists;
+        bool physical_VELA_INJ_BPM_Controller_Obj_Exists;
 
+        beamPositionMonitorController * virtual_VELA_INJ_BPM_Controller_Obj;
+        beamPositionMonitorController * offline_VELA_INJ_BPM_Controller_Obj;
+        beamPositionMonitorController * physical_VELA_INJ_BPM_Controller_Obj;
+
+};
+
+typedef std::vector<std::string> vecString;
+
+class getVecString
+{
+    public:
+
+    vecString returnVecString()
+    {
+     return vecString();
+    }
+    void setVecString(vecString & lis, std::string & name)
+    {
+        lis.push_back(name);
+    }
 };
 
 #ifdef BUILD_DLL
@@ -79,15 +89,26 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
     /// Include ALL the enums you want to expose to Python
 
-    class_<std::vector< std::string > >("std_vector_string")
-        .def( vector_indexing_suite< std::vector< std::string >>() )
+    class_< std::vector< std::string > >("std_vector_string")
+        .def( vector_indexing_suite< std::vector< std::string > >() )
         ;
 
     class_< std::vector< std::vector< double > > > ("v2_double")
-        .def( vector_indexing_suite< std::vector< std::vector< double > > >());
+        .def( vector_indexing_suite< std::vector< std::vector< double > > >())
+        ;
 
-    class_< std::vector< double> > ("v_double")
-        .def( vector_indexing_suite< std::vector< double > >());
+    class_< std::vector< double > > ("v_double")
+        .def( vector_indexing_suite< std::vector< double > >())
+        ;
+
+//    class_< vecString >("vecString")
+//        .def(vector_indexing_suite< vecString >() )
+//        ;
+//
+//    class_< getVecString >("getVecString")
+//        .def("returnVecString", &getVecString::returnVecString)
+//        .def("setVecString",    &getVecString::setVecString)
+//        ;
 
 //    enum_<VELA_ENUM::TRIG_STATE>("TRIG_STATE")
 //            .value("NOTRIG",      VELA_ENUM::TRIG_STATE::NOTRIG )
@@ -156,48 +177,52 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 //            .def(boost::python::init< optional<const bool, const bool, const bool >>())
             .def("getAllBPMData",                   &beamPositionMonitorController::getAllBPMData, return_value_policy<reference_existing_object>())
 //            .def("getBPMStateDefinition",           &beamPositionMonitorController::getBPMStateDefinition                     )
-            .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition                  )
-            .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT                    )
-            .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT                    )
+            .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition    )
+            .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT      )
+            .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT      )
 //            .def("getBPMState",                     &velaINJBeamPositionMonitorController::getBPMState_Py                            )
-            .def("getILockStates",                  &beamPositionMonitorController::getILockStates                         )
+            .def("getILockStates",                  &beamPositionMonitorController::getILockStates              )
 //            .def("hasNoTrig",                       &velaINJBeamPositionMonitorController::hasNoTrig_Py, boost::python::args("name") )
 //            .def("hasTrig",                         &velaINJBeamPositionMonitorController::hasTrig_Py, boost::python::args("name")   )
-            .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData                    )
-            .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData                 )
-            .def("getX",                            &beamPositionMonitorController::getX                                   )
-            .def("getY",                            &beamPositionMonitorController::getY                                   )
-            .def("getQ",                            &beamPositionMonitorController::getQ                                   )
-            .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV                             )
-            .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV                             )
-//            .def("getBPMResolution",                &beamPositionMonitorController::getBPMResolution                       )
-            .def("getBPMXVec",                      &beamPositionMonitorController::getBPMXVec                             )
-            .def("getBPMYVec",                      &beamPositionMonitorController::getBPMYVec                             )
-            .def("getBPMQVec",                      &beamPositionMonitorController::getBPMQVec                             )
-            .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps                          )
-            .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps                       )
-            .def("getBPMRawData",                   &beamPositionMonitorController::getBPMRawData                          )
-            .def("getRA1",                          &beamPositionMonitorController::getRA1                                 )
-            .def("getRA2",                          &beamPositionMonitorController::getRA2                                 )
-            .def("getRD1",                          &beamPositionMonitorController::getRD1                                 )
-            .def("getRD2",                          &beamPositionMonitorController::getRD2                                 )
-            .def("setSA1",                          &beamPositionMonitorController::setSA1                                 )
-            .def("setSA2",                          &beamPositionMonitorController::setSA2                                 )
-            .def("setSD1",                          &beamPositionMonitorController::setSD1                                 )
-            .def("setSD2",                          &beamPositionMonitorController::setSD2                                 )
-            .def("monitorDataForNShots",            &beamPositionMonitorController::monitorDataForNShots                   )
-            .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames                            )
+            .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData         )
+            .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData      )
+            .def("getX",                            &beamPositionMonitorController::getX                        )
+            .def("getY",                            &beamPositionMonitorController::getY                        )
+            .def("getQ",                            &beamPositionMonitorController::getQ                        )
+            .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation            )
+            .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV                  )
+            .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV                  )
+            .def("getBPMResolution",                &beamPositionMonitorController::getBPMResolution            )
+            .def("getBPMXVec",                      &beamPositionMonitorController::getBPMXVec                  )
+            .def("getBPMYVec",                      &beamPositionMonitorController::getBPMYVec                  )
+            .def("getBPMQVec",                      &beamPositionMonitorController::getBPMQVec                  )
+            .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps               )
+            .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps            )
+            .def("getBPMRawData",                   &beamPositionMonitorController::getBPMRawData               )
+            .def("getRA1",                          &beamPositionMonitorController::getRA1                      )
+            .def("getRA2",                          &beamPositionMonitorController::getRA2                      )
+            .def("getRD1",                          &beamPositionMonitorController::getRD1                      )
+            .def("getRD2",                          &beamPositionMonitorController::getRD2                      )
+            .def("setSA1",                          &beamPositionMonitorController::setSA1                      )
+            .def("setSA2",                          &beamPositionMonitorController::setSA2                      )
+            .def("setSD1",                          &beamPositionMonitorController::setSD1                      )
+            .def("setSD2",                          &beamPositionMonitorController::setSD2                      )
+            .def("monitorDataForNShots",            &beamPositionMonitorController::monitorDataForNShots        )
+            .def("monitorMultipleDataForNShots",    &beamPositionMonitorController::monitorMultipleDataForNShots)
+            .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames                 )
             /// Don't forget functions in the base class we want to expose....
-            .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff                          )
-            .def("debugMessagesOn",                 &beamPositionMonitorController::debugMessagesOn                           )
-            .def("messagesOff",                     &beamPositionMonitorController::messagesOff                               )
-            .def("messagesOn",                      &beamPositionMonitorController::messagesOn                                )
-            .def("silence",                         &beamPositionMonitorController::silence                                   )
-            .def("verbose",                         &beamPositionMonitorController::verbose                                   )
+            .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )
+            .def("debugMessagesOn",                 &beamPositionMonitorController::debugMessagesOn             )
+            .def("messagesOff",                     &beamPositionMonitorController::messagesOff                 )
+            .def("messagesOn",                      &beamPositionMonitorController::messagesOn                  )
+            .def("silence",                         &beamPositionMonitorController::silence                     )
+            .def("verbose",                         &beamPositionMonitorController::verbose                     )
 		;
 
     boost::python::class_<VCBPMs,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_BPM_Controller",  &VCBPMs::virtual_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_INJ_BPM_Controller",  &VCBPMs::offline_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_BPM_Controller", &VCBPMs::offline_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
         ;
 };
 
