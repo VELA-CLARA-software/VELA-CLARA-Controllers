@@ -19,22 +19,18 @@
 #include "scopeInterface.h"
 
 //______________________________________________________________________________
-scopeController::scopeController( const std::string configFileLocation1,
-                                  const std::string configFileLocation2, const  bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation1, configFileLocation2, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-    initialise();
-}
-//______________________________________________________________________________
-scopeController::scopeController( const  bool show_messages, const bool show_debug_messages  )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+scopeController::scopeController( const std::string configFileLocation1, const std::string configFileLocation2,
+                                  const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS )
+:controller( show_messages, show_debug_messages ),
+ localInterface( configFileLocation1, configFileLocation2, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS ),
+ shouldStartEPICS( shouldStartEPICS )
 {
     initialise();
 }
 //______________________________________________________________________________
 void scopeController::initialise()
 {
-    if( localInterface.interfaceInitReport() )
+    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
         message("scopeController instantiation success.");
 }
 //______________________________________________________________________________
@@ -55,24 +51,34 @@ void scopeController::monitorNumsForNShots( size_t N )
     localInterface.monitorNumsForNShots( N );
 }
 //______________________________________________________________________________
-bool scopeController::isMonitoringScopeTraces()
+bool scopeController::isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    return localInterface.isMonitoringScopeTraces();
+    return localInterface.isMonitoringScopeTrace( scopeName, pvType );
 }
 //______________________________________________________________________________
-bool scopeController::isNotMonitoringScopeTraces()
+bool scopeController::isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    return localInterface.isNotMonitoringScopeTraces();
+    return localInterface.isNotMonitoringScopeTrace( scopeName, pvType );
 }
 //______________________________________________________________________________
-bool scopeController::isMonitoringScopeNums()
+bool scopeController::isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    return localInterface.isMonitoringScopeNums();
+    return localInterface.isMonitoringScopeNum( scopeName, pvType );
 }
 //______________________________________________________________________________
-bool scopeController::isNotMonitoringScopeNums()
+bool scopeController::isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    return localInterface.isNotMonitoringScopeNums();
+    return localInterface.isNotMonitoringScopeNum( scopeName, pvType );
+}
+//______________________________________________________________________________
+const scopeStructs::scopeTraceData & scopeController::getScopeTraceDataStruct( const std::string & scopeName )
+{
+    return localInterface.getScopeTraceDataStruct( scopeName );
+}
+//______________________________________________________________________________
+const scopeStructs::scopeNumObject & scopeController::getScopeNumDataStruct( const std::string & scopeName )
+{
+    return localInterface.getScopeNumDataStruct( scopeName );
 }
 //______________________________________________________________________________
 std::vector< std::vector< double > > scopeController::getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )

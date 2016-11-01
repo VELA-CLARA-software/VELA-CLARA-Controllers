@@ -28,9 +28,9 @@ class scopeController : public controller
 
         /// we have overloaded constructors to specify config-file location
 
-        scopeController( const bool show_messages = true, const bool show_debug_messages = true );
-        scopeController( const std::string configFileLocation1,
-                         const std::string configFileLocation2, const  bool show_messages = true, const bool show_debug_messages = true );
+        scopeController();// const bool show_messages = true, const bool show_debug_messages = true );
+        scopeController( const std::string configFileLocation1, const std::string configFileLocation2,
+                         const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS );
         ~scopeController();
 //
 //        bool hasTrig( const std::string & scopeName );
@@ -38,10 +38,10 @@ class scopeController : public controller
 
         bool monitoringTraces;
         bool monitoringNums;
-        bool isMonitoringScopeTraces();
-        bool isMonitoringScopeNums();
-        bool isNotMonitoringScopeTraces();
-        bool isNotMonitoringScopeNums();
+        bool isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
 
         double getScopeP1( const std::string & scopeName );
         double getScopeP2( const std::string & scopeName );
@@ -52,6 +52,8 @@ class scopeController : public controller
         double getICT2Q()  ;
         double getFCUPQ()  ;
         double getEDFCUPQ();
+        const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
+        const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getScopeP1Vec( const std::string & name );
@@ -91,6 +93,8 @@ class scopeController : public controller
         scopeInterface localInterface;
 
         std::vector< std::string > scopeNames;
+
+        const bool shouldStartEPICS;
 };
 
 

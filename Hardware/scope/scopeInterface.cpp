@@ -28,17 +28,11 @@
 #include <stdlib.h>
 #include <epicsTime.h>
 
-scopeInterface::scopeInterface( const std::string configFileLocation1,
-                                const std::string configFileLocation2, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
+scopeInterface::scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
+                                const bool* show_messages_ptr, const  bool * show_debug_messages_ptr, const bool shouldStartEPICS )
 : configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
 {
-    initialise();
-}
-//______________________________________________________________________________
-scopeInterface::scopeInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  )
-{
-    initialise();
+    initialise( shouldStartEPICS );
 }
 //______________________________________________________________________________
 scopeInterface::~scopeInterface()
@@ -50,33 +44,60 @@ scopeInterface::~scopeInterface()
 //    }
 }
 //______________________________________________________________________________
-void scopeInterface::initialise()
+void scopeInterface::initialise( const bool shouldStartEPICS )
 {
     /// The config file reader
-
     configFileRead = configReader.readConfigFiles();
-
+    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
-
-        initScopeObjects();
-
-        /// subscribe to the channel ids
-
-        initScopeChids();
-
-        /// start the monitors: set up the callback functions
-
-        monitorScopes();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));
+        bool getDataSuccess = initScopeObjects();
+        if( getDataSuccess )
+        {
+            if( shouldStartEPICS )
+            {
+                std::cout << "WE ARE HERE" << std::endl;
+                /// subscribe to the channel ids
+                initScopeChids();
+                /// start the monitors: set up the callback functions
+                monitorScopes();
+                /// The pause allows EPICS to catch up.
+                std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+            }
+            else
+                message("The scopeInterface Read Config files, Not Starting EPICS Monitors" );
+        }
+        else
+            message( "!!!The scopeInterface received an Error while getting scope data!!!" );
     }
 }
+//    /// The config file reader
+//
+//    configFileRead = configReader.readConfigFiles();
+//
+//    if( configFileRead )
+//    {
+//        /// initialise the objects based on what is read from the config file
+//
+//        initScopeObjects();
+//
+//        /// subscribe to the channel ids
+//
+//        initScopeChids();
+//
+//        /// start the monitors: set up the callback functions
+//
+//        monitorScopes();
+//
+//        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));
+//    }
+//}
 //______________________________________________________________________________
-void scopeInterface::initScopeObjects()
+bool scopeInterface::initScopeObjects()
 {
     scopeObj = configReader.getScopeObject();
+    return true;
 }
 //______________________________________________________________________________
 void scopeInterface::initScopeChids()
@@ -346,10 +367,10 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
         }
         if( td->shotCounts.at( ms -> monType ) == td->numShots )
         {
-            td->isMonitoringMap.at( ms -> monType ) = false;
-            message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot );
+//            td->isMonitoringMap.at( ms -> monType ) = false;
+            message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ms->monType );
             ms->interface->killTraceCallBack( ms, td );
-            monitoringTraces = false;
+//            monitoringTraces = false;
     //        td -> shotCounts.at( ms -> monType ) = zero;
         }
     }
@@ -381,12 +402,6 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
 
     scno->numData.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ] = *( &p -> value );
 
-//    for( auto && it : scno->numData.at( ms -> monType)[ scno->shotCounts.at( ms -> monType ) ] )
-//    {
-//        it = *( &p->value + i);
-//        ++i;
-//    }
-
     if( scno -> isATemporaryMonitorStruct )
     {
 //        td->isMonitoringMap.at( ms -> monType ) = true;
@@ -396,10 +411,10 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
         }
         if( scno->shotCounts.at( ms -> monType ) == scno->numShots )
         {
-            scno->isMonitoringMap.at( ms -> monType ) = false;
-            message( "Collected ", scno->shotCounts.at( ms -> monType ), " shots for ", scno -> pvRoot );
+//            scno->isMonitoringMap.at( ms -> monType ) = false;
+            message( "Collected ", scno->shotCounts.at( ms -> monType ), " shots for ", scno -> pvRoot, ":", ms->monType );
             ms->interface->killNumCallBack( ms, scno );
-            monitoringNums = false;
+//            monitoringNums = false;
     //        td -> shotCounts.at( ms -> monType ) = zero;
         }
     }
@@ -437,7 +452,7 @@ void scopeInterface::monitorTracesForNShots( size_t N )
             for( auto && it : scopeObj.traceObjects )
                 for( auto && it1: it.second.isMonitoringMap )
                     it1.second = true;
-            monitoringTraces = true; /// interface base class member
+//            monitoringTraces = true; /// interface base class member
     }
     else
     {
@@ -504,10 +519,10 @@ void scopeInterface::monitorNumsForNShots( size_t N )
             {
                 if( isANumPV( it2.first ) )
                 {
-                    for( auto it3 : it1.second.isMonitoringMap )
-                    {
-                        it3.second = true;
-                    }
+//                    for( auto it3 : it1.second.isMonitoringMap )
+//                    {
+//                        it3.second = true;
+//                    }
 //                    monitoringTraces = true;
 
                     addToNumMonitorStructs( traceMonitorStructs, it2.second, &it1.second  );
@@ -519,7 +534,7 @@ void scopeInterface::monitorNumsForNShots( size_t N )
             for( auto && it : scopeObj.numObjects )
                 for( auto && it1: it.second.isMonitoringMap )
                     it1.second = true;
-            monitoringNums = true; /// interface base class member
+//            monitoringNums = true; /// interface base class member
     }
     else
     {
@@ -565,30 +580,46 @@ void scopeInterface::resetNumVectors( size_t N )
     }
 }
 //______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeTraces()
+bool scopeInterface::isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    if( monitoringTraces == true )
+    if( scopeObj.traceObjects.at( scopeName ).isMonitoringMap.at( pvType ) == true )
         return true;
     else
         return false;
 }
 //______________________________________________________________________________
-bool scopeInterface::isNotMonitoringScopeTraces()
+bool scopeInterface::isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    return !isMonitoringScopeTraces();
+    return !isMonitoringScopeTrace( scopeName, pvType );
 }
 //______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeNums()
+bool scopeInterface::isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    if( monitoringNums == true )
+    if( scopeObj.numObjects.at( scopeName ).isMonitoringMap.at( pvType ) == true )
         return true;
     else
         return false;
 }
 //______________________________________________________________________________
-bool scopeInterface::isNotMonitoringScopeNums()
+bool scopeInterface::isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    return !isMonitoringScopeNums();
+    return !isMonitoringScopeNum( scopeName, pvType );
+}
+//______________________________________________________________________________
+const scopeStructs::scopeTraceData & scopeInterface::getScopeTraceDataStruct( const std::string & scopeName )
+{
+    if( entryExists( scopeObj.traceObjects, scopeName ) && scopeObj.traceObjects.at( scopeName ).traceData.size() != 0 )
+    {
+        return scopeObj.traceObjects.at( scopeName );
+    }
+}
+//______________________________________________________________________________
+const scopeStructs::scopeNumObject & scopeInterface::getScopeNumDataStruct( const std::string & scopeName )
+{
+    if( entryExists( scopeObj.numObjects, scopeName ) && scopeObj.numObjects.at( scopeName ).numData.size() != 0 )
+    {
+        return scopeObj.numObjects.at( scopeName );
+    }
 }
 //______________________________________________________________________________
 std::vector< std::vector< double > > scopeInterface::getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -712,10 +743,10 @@ void scopeInterface::killTraceCallBack( scopeStructs::monitorStruct * ms, scopeS
     if( status == ECA_NORMAL)
     {
 //        debugMessage( ms -> scopeObject, " monitoring = false ");
-        td->isMonitoring = false;
+        td->isMonitoringMap.at( ms -> monType ) = false;
 
 //        isMonitoringMap[ ms -> scopeObject ] = false;
-        monitoringTraces = false;
+//        monitoringTraces = false;
 //        monitoringNums = false;
         delete ms;
     }
@@ -731,10 +762,10 @@ void scopeInterface::killNumCallBack( scopeStructs::monitorStruct * ms, scopeStr
     if( status == ECA_NORMAL)
     {
 //        debugMessage( ms -> scopeObject, " monitoring = false ");
-        scno->isMonitoring = false;
+        scno->isMonitoringMap.at( ms -> monType ) = false;
 
 //        isMonitoringMap[ ms -> scopeObject ] = false;
-        monitoringNums = false;
+//        monitoringNums = false;
 //        monitoringNums = false;
         delete ms;
     }
