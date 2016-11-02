@@ -32,10 +32,9 @@ class screenInterface: public interface
             ///Not a singleton, two construction methods...
 
 
-            screenInterface( const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
-            screenInterface( const std::string & configFileLocation1,
-                             const std::string & configFileLocation2, const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
-
+            screenInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
+                             const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
+                             const bool shouldStartEPICs );
             ~screenInterface();
 
             void Screen_Out( const std::string & name );
@@ -90,8 +89,9 @@ class screenInterface: public interface
     private:
 
         /// called from the constructor to set-up chids, monitors, etc.
-        void initialise();
+        void initialise(const bool shouldStartEPIC);
         screenConfigReader configReader; ///class member so we can pass in file path in ctor
+
         void initScreenObjects();
         void initScreenChids();
 

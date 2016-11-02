@@ -56,22 +56,6 @@ class VCmagnets
         magnetController * offline_CLARA_INJ_Magnet_Controller_Obj;
         magnetController * physical_CLARA_INJ_Magnet_Controller_Obj;
 
-//        bool virtual_VELA_INJ_Magnet_Controller_Obj_Exists;
-//        bool offline_VELA_INJ_Magnet_Controller_Obj_Exists;
-//        bool physical_VELA_INJ_Magnet_Controller_Obj_Exists;
-//
-//        bool virtual_VELA_BA1_Magnet_Controller_Obj_Exists;
-//        bool offline_VELA_BA1_Magnet_Controller_Obj_Exists;
-//        bool physical_VELA_BA1_Magnet_Controller_Obj_Exists;
-//
-//        bool virtual_VELA_BA2_Magnet_Controller_Obj_Exists;
-//        bool offline_VELA_BA2_Magnet_Controller_Obj_Exists;
-//        bool physical_VELA_BA2_Magnet_Controller_Obj_Exists;
-//
-//        bool virtual_CLARA_INJ_Magnet_Controller_Obj_Exists;
-//        bool offline_CLARA_INJ_Magnet_Controller_Obj_Exists;
-//        bool physical_CLARA_INJ_Magnet_Controller_Obj_Exists;
-
 };
 
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters

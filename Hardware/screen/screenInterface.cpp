@@ -31,19 +31,13 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 
-screenInterface::screenInterface( const std::string & configFileLocation1,
-                                  const std::string & configFileLocation2, const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
+screenInterface::screenInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
+                 const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
+                 const bool shouldStartEPICs )
 :configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
 
 {
-    initialise();
-}
-//_____________________________________________________________________________________
-screenInterface::screenInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-:configReader( show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
-
-{
-    initialise();
+    initialise(shouldStartEPICs);
 }
 //__________________________________________________________________________________
 screenInterface::~screenInterface()///This is the destructor for the class
@@ -55,7 +49,7 @@ screenInterface::~screenInterface()///This is the destructor for the class
     }
 }
 //____________________________________________________________________________________
-void screenInterface::initialise()
+void screenInterface::initialise( const bool shouldStartEPICs)
 {
     /// The config file reader
     message("Attempting to read through Screen Config files." );
@@ -64,16 +58,19 @@ void screenInterface::initialise()
     {
         ///initialise the objects based on what is read from the config file
         initScreenObjects();
-        ///subscribe to the channel ids
-        initScreenChids();
-        ///start the monitors: set up the callback functions
-        if( allChidsInitialised )
-            monitorScreens();
-        ///The pause allows EPICS to catch up.
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
+
+        if( shouldStartEPICs )
+        {
+            ///subscribe to the channel ids
+            initScreenChids();
+            ///start the monitors: set up the callback functions
+            if( allChidsInitialised )
+                monitorScreens();
+            ///The pause allows EPICS to catch up.
+            std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
+        }
     }
 }
-
 //_______________________________________________________________________________________
 void screenInterface::initScreenObjects()
 {
@@ -152,10 +149,6 @@ void screenInterface::initScreenChids()
 
     else if ( status == ECA_NORMAL )
         allChidsInitialised = true; /// interface base class member
-
-
-
-
 }
 //________________________________________________________________________________________________________________
 void screenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )
@@ -205,10 +198,10 @@ void screenInterface::addToComplexMonitorStructs( std::vector< screenStructs::mo
 void screenInterface::addToSimpleMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  )
 {
     cms.push_back( new screenStructs::monitorStruct() );
-    cms.back() -> simpObj = SIMPLE_YAG;
+    cms.back() -> simpObj   = SIMPLE_YAG;
     cms.back() -> interface = this;
-    cms.back() -> monType = pv.pvType;
-    cms.back() -> CHTYPE = pv.CHTYPE;
+    cms.back() -> monType   = pv.pvType;
+    cms.back() -> CHTYPE    = pv.CHTYPE;
 
     ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
 }

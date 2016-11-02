@@ -25,20 +25,15 @@
 ///Get Stuff
 
 
-screenController::screenController( const std::string configFileLocation1,
-                                    const std::string configFileLocation2, const bool show_messages, const bool show_debug_messages )
-:controller( show_messages, show_debug_messages ),
-localInterface( configFileLocation1, configFileLocation2, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+screenController::screenController(
+    const bool show_messages, const bool show_debug_messages,
+    const std::string & magConf,  const std::string & NRConf, const bool shouldStartEPICs
+):
+shouldStartEPICs(shouldStartEPICs),
+controller( show_messages, show_debug_messages ),
+localInterface( magConf, NRConf, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs )
 {
-   initialise();
-}
-//__________________________________________________________________________
-screenController::screenController( const bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-
-
-   initialise();
+    initialise();
 }
 //_____________________________________________________________________________
 screenController::~screenController(){}

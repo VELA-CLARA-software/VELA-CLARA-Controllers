@@ -28,10 +28,10 @@
 class screenController : public controller
 {
     public:
-    ///we have overloaded constructors to specify config-file location
-        screenController( const bool show_messages = true , const bool show_debug_messages = true );
-        screenController( const std::string configFileLocation1,
-                          const std::string configFileLocation2, const bool show_messages = true, const bool show_debug_messages = true );
+        screenController();
+        screenController( const bool show_messages,    const bool show_debug_messagese,
+                          const std::string & magConf, const std::string & NRConf,
+                          const bool shouldStartEPICs );
         ~screenController();
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
@@ -87,7 +87,7 @@ class screenController : public controller
         ///No singletons, no pointers, let's just have an object
         screenInterface localInterface;
         std::vector< std::string > ScreenNames;
-
+        bool shouldStartEPICs;
 };
 
 
