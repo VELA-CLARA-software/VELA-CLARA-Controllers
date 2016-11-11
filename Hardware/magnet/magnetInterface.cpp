@@ -104,7 +104,7 @@ void magnetInterface::initChids()
     message( "\n", "Searching for Magnet chids...");
     for( auto && magObjIt : allMagnetData )
     {   // The correctors and BSOL PSU are all EBT-INJ-MAG-HVCOR-01, they have the psuRoot field non-empty
-        // to make thsi more clever we should just have one value they all point to... ?
+        // to make this more clever we should just have one value they all point to... ?
         if( isACor( magObjIt.first ) || isABSol( magObjIt.first ) )
         {
             addILockChannels( magObjIt.second.numIlocks, magObjIt.second.psuRoot, magObjIt.first, magObjIt.second.iLockPVStructs );

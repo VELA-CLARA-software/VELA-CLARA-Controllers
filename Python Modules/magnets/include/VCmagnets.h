@@ -35,6 +35,8 @@ class VCmagnets
         magnetController& offline_CLARA_INJ_Magnet_Controller();
         magnetController& physical_CLARA_INJ_Magnet_Controller();
 
+        magnetController& getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
+
     protected:
 
     private:
@@ -120,10 +122,21 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
                 .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
                 .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
                 ;
-        boost::python::enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+
+        enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
                 .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
                 .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
                 .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+                ;
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+                .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE   )
+                .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+                .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+                ;
+        enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+                .value("VELA_INJ", VELA_ENUM::MACHINE_AREA::VELA_INJ )
+                .value("VELA_BA1", VELA_ENUM::MACHINE_AREA::VELA_BA1 )
+                .value("VELA_BA2", VELA_ENUM::MACHINE_AREA::VELA_BA2 )
                 ;
         /// and enums, remember we have a enum to string python dictionary macro too!
         enum_<magnetStructs::MAG_TYPE>("MAG_TYPE")
@@ -336,6 +349,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("offline_CLARA_INJ_Magnet_Controller",  &VCmagnets::offline_CLARA_INJ_Magnet_Controller,
              return_value_policy<reference_existing_object>())
         .def("physical_CLARA_INJ_Magnet_Controller",  &VCmagnets::physical_CLARA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("getMagnetController",  &VCmagnets::getMagnetController,
              return_value_policy<reference_existing_object>())
                 ;
 

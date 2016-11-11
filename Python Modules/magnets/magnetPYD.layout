@@ -2,34 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="..\..\Hardware\magnet\magnetController.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1463" topLine="3" />
+			<Cursor1 position="1092" topLine="7" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+	<File name="..\..\Structs\structs.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="11429" topLine="240" />
+			<Cursor1 position="3930" topLine="40" />
 		</Cursor>
 	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+	<File name="..\..\Utilities\magnetConfigReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="310" topLine="55" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1811" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\magnet\magnetInterface.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1902" topLine="25" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\magnet\magnetController.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7630" topLine="112" />
+			<Cursor1 position="5155" topLine="231" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\magnetStructs.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
@@ -37,62 +22,14 @@
 			<Cursor1 position="819" topLine="22" />
 		</Cursor>
 	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+	<File name="..\..\Hardware\magnet\magnetInterface.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="14370" topLine="236" />
+			<Cursor1 position="1902" topLine="25" />
 		</Cursor>
 	</File>
-	<File name="include\VCmagnets.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="386" topLine="21" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\magnet\magnetInterface.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3316" topLine="20" />
-		</Cursor>
-		<Folding>
-			<Collapse line="56" />
-		</Folding>
-	</File>
-	<File name="src\VCmagnets.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="8" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9339" topLine="143" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\baseObject.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="621" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="933" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\magnetConfigReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3119" topLine="57" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1810" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1467" topLine="19" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1092" topLine="7" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\magnetConfigReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4704" topLine="102" />
+			<Cursor1 position="1811" topLine="12" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\dburt.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -100,9 +37,69 @@
 			<Cursor1 position="776" topLine="9" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\interface.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2092" topLine="78" />
+			<Cursor1 position="14370" topLine="236" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\magnet\magnetInterface.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13295" topLine="154" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="621" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\magnet\magnetController.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7511" topLine="100" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4259" topLine="60" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\magnet\magnetController.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1374" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\magnetConfigReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3119" topLine="57" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2092" topLine="62" />
+		</Cursor>
+	</File>
+	<File name="include\VCmagnets.h" open="1" top="1" tabpos="7" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6482" topLine="111" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11429" topLine="240" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1467" topLine="19" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1810" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="src\VCmagnets.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12339" topLine="265" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -285,9 +285,30 @@ magnetController& VCmagnets::physical_CLARA_INJ_Magnet_Controller()
     }
     return *physical_CLARA_INJ_Magnet_Controller_Obj;
 }
+//______________________________________________________________________________
+magnetController& VCmagnets::getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
+{
 
+    if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
+        return offline_VELA_INJ_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
+        return virtual_VELA_INJ_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ )
+        return physical_VELA_INJ_Magnet_Controller();
+    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1 )
+        return offline_VELA_BA1_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1 )
+        return virtual_VELA_BA1_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1 )
+        return physical_VELA_BA1_Magnet_Controller();
+    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2 )
+        return offline_VELA_BA2_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2 )
+        return virtual_VELA_BA2_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2 )
+        return physical_VELA_BA2_Magnet_Controller();
 
-
+}
 
 
 
