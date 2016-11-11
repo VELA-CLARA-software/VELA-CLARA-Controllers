@@ -14,11 +14,8 @@ namespace UTL
     const char EQUALS_SIGN_C      = '=';
     const char COLON_C            = ':';
 
-    //const std::string CONFIG_PATH = "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\";
-    //const std::string CONFIG_PATH_VM = "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\VM\\";
-
-    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\";
-    const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\VM\\";
+    const std::string CONFIG_PATH    = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
 
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
     const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";

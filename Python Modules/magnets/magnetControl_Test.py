@@ -1,6 +1,6 @@
 import sys,os
 
-sys.path.append('\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\bin\\Stage\\')
+sys.path.append('\\\\fed.cclrc.ac.uk\\org\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\bin\\Stage\\')
 
 
 from VELA_CLARA_MagnetControl import MAG_PSU_STATE, MAG_TYPE, MAG_REV_TYPE
