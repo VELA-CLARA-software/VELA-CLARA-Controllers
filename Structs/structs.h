@@ -68,7 +68,7 @@ namespace VELA_ENUM
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( ILOCK_STATE, (ILOCK_BAD) (ILOCK_GOOD) (ILOCK_ERROR) )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_MODE, (OFFLINE) (VIRTUAL) (PHYSICAL) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_AREA, (VELA_INJ) (VELA_BA1) (VELA_BA2) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_AREA, (VELA_INJ) (VELA_BA1) (VELA_BA2) (CLARA_INJ) (C2V) )
 
 
     /// PV stricts are used to set up the channels and subscriptions
@@ -100,6 +100,9 @@ namespace VELA_ENUM
         interface * interface;            /// this allows us to access hardware base class members, e.g. debugMessage;
         evid                EVID;
     };
+
+
+
 
 }
 #endif // _VELA_ENUM_H_
