@@ -16,13 +16,17 @@ def main():
 	bpmlist = vbpmc.std_vector_string()
 	bpmlist.append('BPM02')
 	bpmlist.append('BPM01')
+	names = p.getBPMNames()
+	print len(names)
+	for name in names:
+		print name
 	print bpmlist
 	p.monitorDataForNShots(numShots,'BPM02')
 	for i in bpmlist:
 		while p.isMonitoringBPMData(i):
 			time.sleep(0.01)
 	bpm2x = p.getBPMXVec('BPM02')
-	for i in range(numShots)
+	for i in range(numShots):
 		print bpm2x[i]
 	while True:
 		q = p.getAllBPMData('BPM02')
