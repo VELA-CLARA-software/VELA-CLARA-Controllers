@@ -13,10 +13,19 @@ physical_CLARA_INJ_Magnet_Controller_Obj(nullptr),
 offline_VELA_INJ_Magnet_Controller_Obj(nullptr),
 offline_VELA_BA1_Magnet_Controller_Obj(nullptr),
 offline_VELA_BA2_Magnet_Controller_Obj(nullptr),
-offline_CLARA_INJ_Magnet_Controller_Obj(nullptr)
+offline_CLARA_INJ_Magnet_Controller_Obj(nullptr),
+withEPICS(true),
+withoutEPICS(false),
+withoutVM(false),
+withVM(true),
+showdebugMessage(true),
+dontShowMessage(false),
+showDebugMessage(true),
+dontShowDebugMessage(false)
 {
    std::cout << "Instantiated a VCmagnets " << std::endl;
     //ctor
+
 }
 //______________________________________________________________________________
 VCmagnets::~VCmagnets()
@@ -93,8 +102,8 @@ magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 //void VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 {
     std::cout << "creating virtual_VELA_INJ_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
 
     if( virtual_VELA_INJ_Magnet_Controller_Obj )
     {
@@ -102,7 +111,7 @@ magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
     }
     else
     {
-        virtual_VELA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        virtual_VELA_INJ_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withEPICS );
     }
     return *virtual_VELA_INJ_Magnet_Controller_Obj;
 }
@@ -119,7 +128,7 @@ magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
     }
     else
     {
-        physical_VELA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        physical_VELA_INJ_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withoutVM, withEPICS );
     }
     return *physical_VELA_INJ_Magnet_Controller_Obj;
 }
@@ -127,15 +136,15 @@ magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
 magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
 {
     std::cout << "creating offline_VELA_INJ_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
     if( offline_VELA_INJ_Magnet_Controller_Obj )
     {
 
     }
     else
     {
-        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withoutEPICS );
     }
     return *offline_VELA_INJ_Magnet_Controller_Obj;
 }
@@ -143,8 +152,8 @@ magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
 magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
 {
     std::cout << "creating virtual_VELA_BA1_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
 
     if( virtual_VELA_BA1_Magnet_Controller_Obj )
     {
@@ -152,7 +161,7 @@ magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
     }
     else
     {
-        virtual_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        virtual_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withEPICS );
     }
     return *virtual_VELA_BA1_Magnet_Controller_Obj;
 }
@@ -160,15 +169,15 @@ magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
 magnetController& VCmagnets::offline_VELA_BA1_Magnet_Controller()
 {
     std::cout << "creating offline_VELA_BA1_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
     if( offline_VELA_BA1_Magnet_Controller_Obj )
     {
 
     }
     else
     {
-        offline_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+        offline_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withoutEPICS );
     }
     return *offline_VELA_BA1_Magnet_Controller_Obj;
 }
@@ -184,7 +193,7 @@ magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
     }
     else
     {
-        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withoutVM, withEPICS );
     }
     return *physical_VELA_BA1_Magnet_Controller_Obj;
 }
@@ -192,8 +201,8 @@ magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
 magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
 {
     std::cout << "creating virtual_VELA_BA2_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
 
     if( virtual_VELA_BA2_Magnet_Controller_Obj )
     {
@@ -201,7 +210,7 @@ magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
     }
     else
     {
-        virtual_VELA_BA2_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        virtual_VELA_BA2_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withEPICS );
     }
     return *virtual_VELA_BA2_Magnet_Controller_Obj;
 }
@@ -209,14 +218,14 @@ magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
 magnetController& VCmagnets::offline_VELA_BA2_Magnet_Controller()
 {
     std::cout << "creating offline_VELA_BA2_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
     if( offline_VELA_BA2_Magnet_Controller_Obj )
     {
     }
     else
     {
-        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withoutEPICS );
     }
     return *offline_VELA_BA2_Magnet_Controller_Obj;
 }
@@ -232,7 +241,7 @@ magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
     }
     else
     {
-        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withoutVM, withEPICS );
     }
     return *physical_VELA_BA1_Magnet_Controller_Obj;
 }
@@ -240,8 +249,8 @@ magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
 magnetController& VCmagnets::virtual_CLARA_INJ_Magnet_Controller()
 {
     std::cout << "creating virtual_CLARA_INJ_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
 
     if( virtual_CLARA_INJ_Magnet_Controller_Obj )
     {
@@ -249,7 +258,7 @@ magnetController& VCmagnets::virtual_CLARA_INJ_Magnet_Controller()
     }
     else
     {
-        virtual_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        virtual_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, withVM, withEPICS );
     }
     return *virtual_CLARA_INJ_Magnet_Controller_Obj;
 }
@@ -257,15 +266,15 @@ magnetController& VCmagnets::virtual_CLARA_INJ_Magnet_Controller()
 magnetController& VCmagnets::offline_CLARA_INJ_Magnet_Controller()
 {
     std::cout << "creating offline_CLARA_INJ_Magnet_Controller object" << std::endl;
-    std::string mconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
+    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
     if( offline_CLARA_INJ_Magnet_Controller_Obj )
     {
 
     }
     else
     {
-        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, false );
+        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, withVM, withoutEPICS );
     }
     return *offline_CLARA_INJ_Magnet_Controller_Obj;
 }
@@ -281,31 +290,30 @@ magnetController& VCmagnets::physical_CLARA_INJ_Magnet_Controller()
     }
     else
     {
-        physical_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, true );
+        physical_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, withoutVM, withEPICS );
     }
     return *physical_CLARA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
-magnetController& VCmagnets::getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
+magnetController& VCmagnets::getMagnetController( VC_ENUM::MACHINE_MODE mode, VC_ENUM::MACHINE_AREA area )
 {
-
-    if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
+    if( mode == VC_ENUM::OFFLINE && area == VC_ENUM::VELA_INJ )
         return offline_VELA_INJ_Magnet_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
+    else if( mode == VC_ENUM::VIRTUAL && area == VC_ENUM::VELA_INJ )
         return virtual_VELA_INJ_Magnet_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ )
+    else if( mode == VC_ENUM::PHYSICAL && area == VC_ENUM::VELA_INJ )
         return physical_VELA_INJ_Magnet_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == VC_ENUM::OFFLINE && area == VC_ENUM::VELA_BA1 )
         return offline_VELA_BA1_Magnet_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == VC_ENUM::VIRTUAL && area == VC_ENUM::VELA_BA1 )
         return virtual_VELA_BA1_Magnet_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == VC_ENUM::PHYSICAL && area == VC_ENUM::VELA_BA1 )
         return physical_VELA_BA1_Magnet_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == VC_ENUM::OFFLINE && area == VC_ENUM::VELA_BA2 )
         return offline_VELA_BA2_Magnet_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == VC_ENUM::VIRTUAL && area == VC_ENUM::VELA_BA2 )
         return virtual_VELA_BA2_Magnet_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == VC_ENUM::PHYSICAL && area == VC_ENUM::VELA_BA2 )
         return physical_VELA_BA2_Magnet_Controller();
 
 }

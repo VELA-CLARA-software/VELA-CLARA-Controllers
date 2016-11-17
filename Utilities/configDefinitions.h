@@ -14,8 +14,8 @@ namespace UTL
     const char EQUALS_SIGN_C      = '=';
     const char COLON_C            = ':';
 
-    const std::string CONFIG_PATH    = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
-    const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
+    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    const std::string VM_PREFIX   = "VM-";
 
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
     const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
@@ -187,6 +187,10 @@ namespace UTL
     //const std::string COR_DEGAUSS_TOLERANCE = "COR_DEGAUSS_TOLERANCE";
 
     const std::string RI_TOLERANCE = "RI_TOLERANCE";
+    const std::string POSITION  = "POSITION";
+    const std::string SLOPE     = "SLOPE";
+    const std::string INTERCEPT = "INTERCEPT";
+
     // chtypes
 
      const std::string DBR_STRING_STR = "DBR_STRING";

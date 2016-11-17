@@ -39,7 +39,7 @@ namespace magnetStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_TYPE, (PSU) (PSU_N) (PSU_R) (UNKOWN_MAG_PSU_TYPE) )
 
 
-    /// These can't go in VELA_ENUM as they need a pvType.
+    /// These can't go in VC_ENUM as they need a pvType.
     struct pvStruct
     {   // proviude a default constructor
         pvStruct() : pvSuffix( "UNKNOWN" ), objName( "UNKNOWN"),COUNT( 0 ), MASK(0), pvType(UNKOWN_MAG_PV_TYPE) {} // proviude a default constructor
@@ -54,25 +54,25 @@ namespace magnetStructs
     struct  nrPSUObject
     {   // proviude a default constructor
         nrPSUObject() : isGanged( false ), parentMagnet( "UNKNOWN" ), pvRoot( "UNKNOWN"),
-                        psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
+                        psuState( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
                         numIlocks( 0 ) {} // proviude a default constructor
         std::string  parentMagnet, pvRoot;
         bool isGanged;//, canFlip;/// canflip? probably refactor as function...
-        VELA_ENUM::MAG_PSU_STATE psuState;
+        VC_ENUM::MAG_PSU_STATE psuState;
         size_t numIlocks;
         std::vector< std::string > gangMembers;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+        std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__
         std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
         std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > iLockPVStructs;
     #endif
     };
 
     struct  magnetObject
     {   // proviude a default constructor
         magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN"),pvRoot( "UNKNOWN"),
-                psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
+                psuState( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
                 magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
                 si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999),
                 /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
@@ -82,13 +82,13 @@ namespace magnetStructs
                 numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0) {} // proviude a default constructor
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
-        VELA_ENUM::MAG_PSU_STATE psuState;
+        VC_ENUM::MAG_PSU_STATE psuState;
         size_t numIlocks;
         nrPSUObject nPSU, rPSU;
         std::string  name, pvRoot, psuRoot;
         bool isGanged, canNRFlip, samePSURoot;
         std::vector< std::string > gangMembers;
-        double si, ri, siWithPol, riWithPol, riTolerance;
+        double si, ri, siWithPol, riWithPol, riTolerance,position,slope,intercept;
 
         //DEGUASSING: added here by Tim Price
 
@@ -97,11 +97,11 @@ namespace magnetStructs
         double  degTolerance;
 
 //        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+        std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__
         std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
         std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > iLockPVStructs;
     #endif
     };
 
@@ -141,7 +141,7 @@ namespace magnetStructs
         magnetStateStruct():numMags(0) {};
         size_t numMags;
         std::vector< std::string > magNames;
-        std::vector< VELA_ENUM::MAG_PSU_STATE > psuStates;
+        std::vector< VC_ENUM::MAG_PSU_STATE > psuStates;
         std::vector< double > siValues,riValues;
     };
 }

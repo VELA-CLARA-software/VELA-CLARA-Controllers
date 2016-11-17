@@ -22,7 +22,8 @@ class magnetConfigReader : public configReader
 
         magnetConfigReader();
         magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
-                      const bool*show_messages_ptr,const bool*show_debug_messages_ptr );
+                                                const bool startVirtualMachine,
+                                                const bool*show_messages_ptr,const bool*show_debug_messages_ptr );
 
         ~magnetConfigReader();
 
@@ -73,6 +74,8 @@ class magnetConfigReader : public configReader
         void addRevType( const std::vector<std::string> &keyVal );
 
         const std::string magConf,NRConf;
+
+        const bool usingVirtualMachine;
 
 
 //        void addMagType( std::string & str );

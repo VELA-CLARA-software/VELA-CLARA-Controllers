@@ -35,7 +35,7 @@ class VCmagnets
         magnetController& offline_CLARA_INJ_Magnet_Controller();
         magnetController& physical_CLARA_INJ_Magnet_Controller();
 
-        magnetController& getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
+        magnetController& getMagnetController( VC_ENUM::MACHINE_MODE mode, VC_ENUM::MACHINE_AREA area );
 
     protected:
 
@@ -58,6 +58,8 @@ class VCmagnets
         magnetController * offline_CLARA_INJ_Magnet_Controller_Obj;
         magnetController * physical_CLARA_INJ_Magnet_Controller_Obj;
 
+        const bool withEPICS, withoutEPICS, withoutVM, withVM, showdebugMessage, dontShowMessage, showDebugMessage, dontShowDebugMessage;
+
 };
 
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
@@ -72,35 +74,63 @@ typedef const double cdou;
 typedef const size_t csiz;
 typedef const std::string cstr ;
 typedef std::vector<double> vecd;
+typedef std::vector<std::vector<double>> vvcd;
 typedef const std::vector<double> cved;
 typedef std::vector<std::string> vecs;
 typedef const std::vector<std::string> cves;
 typedef magnetStructs::magnetStateStruct msst;
-
+typedef magnetStructs::MAG_REV_TYPE mgrt;
+typedef magnetStructs::MAG_TYPE     magt;
+typedef VC_ENUM::MAG_PSU_STATE      mpsu;
+typedef std::vector<magnetStructs::MAG_REV_TYPE> vmgrt;
+typedef std::vector<magnetStructs::MAG_TYPE> vmgt;
+typedef std::vector<VC_ENUM::MAG_PSU_STATE>  vpsu;
+///
 doub(magnetController::*getRI_1)(cstr&) = &magnetController::getRI;
 vecd(magnetController::*getRI_2)(cves&) = &magnetController::getRI;
-
+///
 vecd(magnetController::*getSI_2)(cves&) = &magnetController::getSI;
 doub(magnetController::*getSI_1)(cstr&) = &magnetController::getSI;
-
+///
 bool(magnetController::*setSI_1)(cstr&, cdou ) = &magnetController::setSI;
 bool(magnetController::*setSI_2)(cves&, cved&) = &magnetController::setSI;
 bool(magnetController::*setSI_3)(cstr&, cdou , cdou , csiz) = &magnetController::setSI;
 vecs(magnetController::*setSI_4)(cves&, cved&, cved&, csiz) = &magnetController::setSI;
-
+///
 bool(magnetController::*switchONpsu_1 )(cstr&) = &magnetController::switchONpsu;
 bool(magnetController::*switchONpsu_2 )(cves&) = &magnetController::switchONpsu;
 bool(magnetController::*switchOFFpsu_1)(cstr&) = &magnetController::switchOFFpsu;
 bool(magnetController::*switchOFFpsu_2)(cves&) = &magnetController::switchOFFpsu;
-
+///
 size_t(magnetController::*degauss_1)(cstr&, bool ) = &magnetController::degauss;
 size_t(magnetController::*degauss_2)(cves&, bool ) = &magnetController::degauss;
-
+///
 bool(magnetController::*writeDBURT_1)( const msst&, cstr&, cstr&) = &magnetController::writeDBURT;
 bool(magnetController::*writeDBURT_2)(              cstr&, cstr&) = &magnetController::writeDBURT;
-
+///
 msst(magnetController::*getCurrentMagnetState_1)( cves&) = &magnetController::getCurrentMagnetState;
 msst(magnetController::*getCurrentMagnetState_2)(      ) = &magnetController::getCurrentMagnetState;
+///
+mgrt (magnetController::*getMagRevType_1)( cstr& ) = &magnetController::getMagRevType;
+vmgrt(magnetController::*getMagRevType_2)( cves& ) = &magnetController::getMagRevType;
+///
+magt (magnetController::*getMagType_1)( cstr& ) = &magnetController::getMagType;
+vmgt (magnetController::*getMagType_2)( cves& ) = &magnetController::getMagType;
+///
+mpsu (magnetController::*getMagPSUState_1)( cstr& ) = &magnetController::getMagPSUState;
+vpsu (magnetController::*getMagPSUState_2)( cves& ) = &magnetController::getMagPSUState;
+///
+doub (magnetController::*getPosition_1)( cstr & ) = &magnetController::getPosition;
+vecd (magnetController::*getPosition_2)( cves & ) = &magnetController::getPosition;
+///
+doub (magnetController::*getSlope_1)( cstr & ) = &magnetController::getSlope;
+vecd (magnetController::*getSlope_2)( cves & ) = &magnetController::getSlope;
+///
+doub (magnetController::*getIntercept_1)( cstr & ) = &magnetController::getIntercept;
+vecd (magnetController::*getIntercept_2)( cves & ) = &magnetController::getIntercept;
+///
+vecd (magnetController::*getDegValues_1)( cstr & ) = &magnetController::getDegValues;
+vvcd (magnetController::*getDegValues_2)( cves & ) = &magnetController::getDegValues;
 
 using namespace boost::python;
 
@@ -112,31 +142,40 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
                 .def( vector_indexing_suite< std::vector< std::string >>() )
                 ;
         class_<std::vector< double> >("std_vector_double")
-        .def( vector_indexing_suite< std::vector< double>>() )
-        ;
+                .def( vector_indexing_suite< std::vector< double>>() )
+                ;
+        class_<std::vector< magnetStructs::MAG_REV_TYPE> >("std_vector_mag_rev_type ")
+                .def( vector_indexing_suite< std::vector< magnetStructs::MAG_REV_TYPE>>() )
+                ;
+        class_<std::vector< magnetStructs::MAG_TYPE > >("std_vector_mag_type ")
+                .def( vector_indexing_suite< std::vector< magnetStructs::MAG_TYPE>>() )
+                ;
+        class_<std::vector< VC_ENUM::MAG_PSU_STATE > >("std_vector_mag_psu_state ")
+                .def( vector_indexing_suite< std::vector< VC_ENUM::MAG_PSU_STATE>>() )
+                ;
         /// and enums, remember we have a enum to string python dictionary macro too!
-        enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE")
-                .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
-                .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
-                .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
-                .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
-                .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
+        enum_<VC_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE")
+                .value("MAG_PSU_OFF",   VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
+                .value("MAG_PSU_ON",    VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
+                .value("MAG_PSU_TIMING",VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
+                .value("MAG_PSU_ERROR", VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
+                .value("MAG_PSU_NONE",  VC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
                 ;
 
-        enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-                .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-                .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-                .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+        enum_<VC_ENUM::ILOCK_STATE>("ILOCK_STATE")
+                .value("ILOCK_BAD",   VC_ENUM::ILOCK_STATE::ILOCK_BAD   )
+                .value("ILOCK_GOOD",  VC_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+                .value("ILOCK_ERROR", VC_ENUM::ILOCK_STATE::ILOCK_ERROR )
                 ;
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-                .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE   )
-                .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-                .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+        enum_<VC_ENUM::MACHINE_MODE>("MACHINE_MODE")
+                .value("OFFLINE",  VC_ENUM::MACHINE_MODE::OFFLINE  )
+                .value("VIRTUAL",  VC_ENUM::MACHINE_MODE::VIRTUAL  )
+                .value("PHYSICAL", VC_ENUM::MACHINE_MODE::PHYSICAL )
                 ;
-        enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-                .value("VELA_INJ", VELA_ENUM::MACHINE_AREA::VELA_INJ )
-                .value("VELA_BA1", VELA_ENUM::MACHINE_AREA::VELA_BA1 )
-                .value("VELA_BA2", VELA_ENUM::MACHINE_AREA::VELA_BA2 )
+        enum_<VC_ENUM::MACHINE_AREA>("MACHINE_AREA")
+                .value("VELA_INJ", VC_ENUM::MACHINE_AREA::VELA_INJ )
+                .value("VELA_BA1", VC_ENUM::MACHINE_AREA::VELA_BA1 )
+                .value("VELA_BA2", VC_ENUM::MACHINE_AREA::VELA_BA2 )
                 ;
         /// and enums, remember we have a enum to string python dictionary macro too!
         enum_<magnetStructs::MAG_TYPE>("MAG_TYPE")
@@ -157,8 +196,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
                 .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
                 .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
                 ;
-
-
     /// structs (this one is a one-stop shop for comomn parameters)
     boost::python::class_<magnetStructs::magnetStateStruct>
         ("magnetStateStruct")
@@ -168,7 +205,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .add_property("siValues",  &magnetStructs::magnetStateStruct::siValues)
         .add_property("riValues",  &magnetStructs::magnetStateStruct::riValues)
         ;
-
     /// Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
@@ -180,7 +216,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
         ;
-
     boost::python::class_<magnetStructs::nrPSUObject,boost::noncopyable>
         ("nrPSUObject", boost::python::no_init)
         .def_readonly("psuState", &magnetStructs::nrPSUObject::psuState)
@@ -189,18 +224,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //    struct  nrPSUObject
 //    {   // proviude a default constructor
 //        nrPSUObject() : isGanged( false ), parentMagnet( "UNKNOWN" ), pvRoot( "UNKNOWN"),
-//                        psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
+//                        psuState( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
 //                        numIlocks( 0 ) {} // proviude a default constructor
 //        std::string  parentMagnet, pvRoot;
 //        bool isGanged;//, canFlip;/// canflip? probably refactor as function...
-//        VELA_ENUM::MAG_PSU_STATE psuState;
+//        VC_ENUM::MAG_PSU_STATE psuState;
 //        size_t numIlocks;
 //        std::vector< std::string > gangMembers;
-//        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+//        std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > iLockStates;
 //    #ifndef __CINT__
 //        std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
 //        std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+//        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > iLockPVStructs;
 //    #endif
 //    };
 
@@ -211,16 +246,20 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def_readonly("magRevType", &magnetStructs::magnetObject::magRevType)
         .def_readonly("siWithPol",  &magnetStructs::magnetObject::siWithPol)
         .def_readonly("riWithPol",  &magnetStructs::magnetObject::riWithPol)
+        .def_readonly("riTolerance",  &magnetStructs::magnetObject::riTolerance)
         .def_readonly("name",       &magnetStructs::magnetObject::name)
         .def_readonly("nPSU",       &magnetStructs::magnetObject::nPSU)
         .def_readonly("rPSU",       &magnetStructs::magnetObject::rPSU)
         .def_readonly("degValues",  &magnetStructs::magnetObject::degValues)
+        .def_readonly("position",   &magnetStructs::magnetObject::position)
+        .def_readonly("slope",      &magnetStructs::magnetObject::slope)
+        .def_readonly("intercept",  &magnetStructs::magnetObject::intercept)
         ;
 
 //     struct  magnetObject
 //    {   // proviude a default constructor
 //        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN"),pvRoot( "UNKNOWN"),
-//                psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
+//                psuState( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
 //                magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
 //                si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999),
 //                /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
@@ -230,7 +269,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0) {} // proviude a default constructor
 //        MAG_TYPE magType;           /// dipole, quad etc.
 //        MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
-//        VELA_ENUM::MAG_PSU_STATE psuState;
+//        VC_ENUM::MAG_PSU_STATE psuState;
 //        size_t numIlocks;
 //        nrPSUObject nPSU, rPSU;
 //        std::string  name, pvRoot, psuRoot;
@@ -245,11 +284,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //        double  degTolerance;
 //
 ////        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
-//        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+//        std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > iLockStates;
 //    #ifndef __CINT__
 //        std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
 //        std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+//        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > iLockPVStructs;
 //    #endif
 //    };
 
@@ -310,7 +349,21 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("applyDBURT",               &magnetController::applyDBURT         )
         .def("applyDBURTCorOnly",        &magnetController::applyDBURTCorOnly  )
         .def("applyDBURTQuadOnly",       &magnetController::applyDBURTQuadOnly )
-        .def("getDBURT",                 &magnetController::getDBURT        )
+        .def("getDBURT",                 &magnetController::getDBURT           )
+        .def("getMagRevType",  getMagRevType_1   )
+        .def("getMagRevType",  getMagRevType_2   )
+        .def("getMagType",     getMagType_1      )
+        .def("getMagType",     getMagType_2      )
+        .def("getMagPSUState", getMagPSUState_1  )
+        .def("getMagPSUState", getMagPSUState_2  )
+        .def("getPosition",    getPosition_1     )
+        .def("getPosition",    getPosition_2     )
+        .def("getSlope",       getSlope_1        )
+        .def("getSlope",       getSlope_2        )
+        .def("getIntercept",   getIntercept_1    )
+        .def("getIntercept",   getIntercept_2    )
+        .def("getDegValues",   getDegValues_1    )
+        .def("getDegValues",   getDegValues_2    )
         /// Don't forget functions in the base class we want to expose....
         .def("debugMessagesOff",         &magnetController::debugMessagesOff )
         .def("debugMessagesOn",          &magnetController::debugMessagesOn )

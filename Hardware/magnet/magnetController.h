@@ -32,7 +32,7 @@ class magnetController : public controller
         /// New scheem - we just have 1 constructor, but we h vae higher level class that create these objects 9hopefully
         magnetController();
         magnetController( const bool show_messages,    const bool show_debug_messagese,
-                          const std::string & magConf, const std::string & NRConf,
+                          const std::string & magConf, const std::string & NRConf, const bool startVirtualMachine,
                           const bool shouldStartEPICs );
 
         ~magnetController( );
@@ -75,11 +75,7 @@ class magnetController : public controller
       /// you can also get copies of the data - these can be exposed with Python bindings
         magnetStructs::magnetStateStruct getCurrentMagnetState( const std::vector< std::string > & s );
         magnetStructs::magnetStateStruct getCurrentMagnetState();
-      /// Get RI and SI
-        double getSI( const std::string & magName );
-        double getRI( const std::string & magName );
-        std::vector< double > getSI( const std::vector< std::string > & magNames );
-        std::vector< double > getRI( const std::vector< std::string > & magNames );
+
       /// Wriote magnet data in DBURT format to file
         bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName="", const std::string &comments="");
         bool writeDBURT( const std::string &fileName="", const std::string &comments="" );
@@ -122,9 +118,39 @@ class magnetController : public controller
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT( double val );
 
+      /// get objectdata
+
+      /// Get RI and SI
+        double getSI( const std::string & magName );
+        double getRI( const std::string & magName );
+        std::vector< double > getSI( const std::vector< std::string > & magNames );
+        std::vector< double > getRI( const std::vector< std::string > & magNames );
+      /// Reverse types
+        magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
+      ///
+        magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
+      ///
+        VC_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
+        std::vector<  VC_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
+      ///
+        double                getPosition( const std::string & magName );
+        std::vector< double > getPosition( const std::vector< std::string > & magNames );
+      ///
+        double                getSlope( const std::string & magName );
+        std::vector< double > getSlope( const std::vector< std::string > & magNames );
+      ///
+        double                getIntercept( const std::string & magName );
+        std::vector< double > getIntercept( const std::vector< std::string > & magNames );
+      ///
+        std::vector< double >                getDegValues( const std::string & magName );
+        std::vector< std::vector< double > > getDegValues( const std::vector< std::string > & magName );
+
+
       /// These are pure virtual methods, so need to have some implmentation in derived classes
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
+        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
+        std::map< VC_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
       /// any functions that return a map need a wrapper to convert to a python dictionary
       /// (we need the functions that return std::map types when building c++ applications)
 #ifdef BUILD_DLL

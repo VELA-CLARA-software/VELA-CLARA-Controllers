@@ -7,8 +7,8 @@
 		<Option compiler="ms_visual_c_2012" />
 		<Build>
 			<Target title="Debug">
-				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VM-Controllers\VELA-CLARA-Controllers\bin\Debug\VELA_CLARA_MagnetControl" prefix_auto="1" extension_auto="1" />
-				<Option object_output="../../../VELA-CLARA-Controllers/bin/obj/Debug/" />
+				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VELA_CLARA_PYDs\bin\Debug\VELA_CLARA_MagnetControl" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
 				<Option createDefFile="1" />
@@ -31,7 +31,7 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
-				<Option output="../../../VELA-CLARA-Controllers/bin/Release/VELA_CLARA_MagnetControl" prefix_auto="1" extension_auto="1" />
+				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VELA_CLARA_PYDs\bin\stage\VELA_CLARA_MagnetControl" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -64,7 +64,7 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='cmd /c copy /y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
+					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
 			</Target>
 		</Build>

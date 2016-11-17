@@ -130,11 +130,11 @@ magnetStructs::magnetStateStruct dburt::readDBURTv1( const char* fileName, const
                     magState.magNames.push_back( keyvalval[0] );
 
                     if( keyvalval[1] == UTL::ON )
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON );
+                        magState.psuStates.push_back( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON );
                     else if( keyvalval[1] == UTL::OFF )
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF );
+                        magState.psuStates.push_back( VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF );
                     else
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR );
+                        magState.psuStates.push_back( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR );
 
                     magState.siValues.push_back( getNumD( keyvalval[2] ) );
                 }
@@ -195,23 +195,23 @@ bool dburt::writeDBURT( const magnetStructs::magnetStateStruct & magState, const
             outputFile << magState.magNames[i] << UTL::COLON_C;
             switch( magState.psuStates[i] )
             {
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF:
+                case VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF:
                     outputFile << UTL::OFF << UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON:
+                case VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON:
                     outputFile << UTL::ON << UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING:
+                case VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING:
                     outputFile << UTL::TIMING<< UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR:
+                case VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR:
                     outputFile << UTL::ERROR<< UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE:
+                case VC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE:
                      outputFile << UTL::NONE<< UTL::COLON_C;
                     break;
 

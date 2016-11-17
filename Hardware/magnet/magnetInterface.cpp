@@ -26,9 +26,10 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 magnetInterface::magnetInterface( const std::string &magConf, const std::string &NRConf,
+                                  const bool startVirtualMachine,
                                   const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs ):
-configReader( magConf, NRConf, show_messages_ptr, show_debug_messages_ptr ),
+configReader( magConf, NRConf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY")
 {
         initialise(shouldStartEPICs);
@@ -306,20 +307,20 @@ void magnetInterface::updatePSUSta( const unsigned short value, const std::strin
 {
     if( entryExists(allMagnetData, magName ) )
     {
-        VELA_ENUM::MAG_PSU_STATE newstate = VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
+        VC_ENUM::MAG_PSU_STATE newstate = VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
         switch( value )
         {
             case 0:
-                newstate = VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF;
+                newstate = VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF;
                 break;
             case 1:
-                newstate =  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON;
+                newstate =  VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON;
                 break;
             case 2:
-                newstate =  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING;
+                newstate =  VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING;
                 break;
             default:
-                newstate =  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
+                newstate =  VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
         }
         switch( psuType )
         {
@@ -1386,7 +1387,7 @@ bool magnetInterface::isON_psuN( const std::string & magName )
 {
     bool ans = false;
     if( entryExists( allMagnetData, magName ) )
-        if( allMagnetData[ magName ].nPSU.psuState == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        if( allMagnetData[ magName ].nPSU.psuState == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
              ans = true;
     return ans;
 }
@@ -1395,7 +1396,7 @@ bool magnetInterface::isON_psuR( const std::string & magName )
 {
     bool ans = false;
     if( entryExists( allMagnetData, magName ) )
-        if( allMagnetData[ magName ].rPSU.psuState == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        if( allMagnetData[ magName ].rPSU.psuState == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
              ans = true;
     return ans;
 }
@@ -1404,7 +1405,7 @@ bool magnetInterface::isON(const std::string & magName )
 {
     bool ans = false;
     if( entryExists( allMagnetData, magName ) )
-        if( allMagnetData[ magName ].psuState == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        if( allMagnetData[ magName ].psuState == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
             ans = true;
     return ans;
 }
@@ -1605,9 +1606,9 @@ void magnetInterface::applyMagnetStateStruct( const magnetStructs::magnetStateSt
     vec_s magsToSwitchOn, magsToSwitchOff;
     for( size_t i = 0; i < magState.numMags; ++i )
     {
-        if(  magState.psuStates[i] == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF )
+        if(  magState.psuStates[i] == VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF )
             magsToSwitchOff.push_back( magState.magNames[i] );
-        else if(  magState.psuStates[i]  == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        else if(  magState.psuStates[i]  == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
             magsToSwitchOn.push_back( magState.magNames[i] );
 
         message("Found ", magState.magNames[i] );
@@ -1688,19 +1689,123 @@ bool magnetInterface::writeDBURT( const std::string & fileName, const std::strin
     magnetStructs::magnetStateStruct ms =  magnetInterface::getCurrentMagnetState();
     return writeDBURT( ms, fileName, comments );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
+//______________________________________________________________________________
+/// Reverse types
+magnetStructs::MAG_REV_TYPE magnetInterface::getMagRevType( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].magRevType;
+    else
+        return magnetStructs::UNKNOWN_MAG_REV_TYPE;
+}
+//______________________________________________________________________________
+std::vector<  magnetStructs::MAG_REV_TYPE >  magnetInterface::getMagRevType( const std::vector< std::string > & magNames )
+{
+    std::vector< magnetStructs::MAG_REV_TYPE > a;
+    for( auto && it : magNames )
+        a.push_back( getMagRevType(it) );
+    return a;
+}
+//______________________________________________________________________________
+magnetStructs::MAG_TYPE magnetInterface::getMagType( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].magType;
+    else
+        return magnetStructs::UNKNOWN_MAGNET_TYPE;
+}
+//______________________________________________________________________________
+std::vector< magnetStructs::MAG_TYPE > magnetInterface::getMagType( const std::vector< std::string > & magNames )
+{
+    std::vector<  magnetStructs::MAG_TYPE > a;
+    for( auto && it : magNames )
+        a.push_back( getMagType(it) );
+    return a;
+}
+//______________________________________________________________________________
+VC_ENUM::MAG_PSU_STATE magnetInterface::getMagPSUState( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].psuState;
+    else
+        return VC_ENUM::MAG_PSU_NONE;
+}
+//______________________________________________________________________________
+std::vector<  VC_ENUM::MAG_PSU_STATE > magnetInterface::getMagPSUState( const std::vector< std::string > & magNames )
+{
+    std::vector< VC_ENUM::MAG_PSU_STATE >  a;
+    for( auto && it : magNames )
+        a.push_back( getMagPSUState(it) );
+    return a;
+}
+//______________________________________________________________________________
+double magnetInterface::getPosition( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].position;
+    else
+        return UTL::DUMMY_DOUBLE;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getPosition( const std::vector< std::string > & magNames )
+{
+    std::vector< double >  a;
+    for( auto && it : magNames )
+        a.push_back( getPosition(it) );
+    return a;
+}
+//______________________________________________________________________________
+double magnetInterface::getSlope( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].slope;
+    else
+        return UTL::DUMMY_DOUBLE;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getSlope( const std::vector< std::string > & magNames )
+{
+    std::vector< double >  a;
+    for( auto && it : magNames )
+        a.push_back( getSlope(it) );
+    return a;
+}
+//______________________________________________________________________________
+double magnetInterface::getIntercept( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].intercept;
+    else
+        return UTL::DUMMY_DOUBLE;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getIntercept( const std::vector< std::string > & magNames )
+{
+    std::vector< double >  a;
+    for( auto && it : magNames )
+        a.push_back( getIntercept(it) );
+    return a;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getDegValues( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].degValues;
+    else
+    {
+        std::vector< double > r;
+        r.push_back( UTL::DUMMY_DOUBLE );
+        return r;
+    }
+}
+//______________________________________________________________________________
+std::vector< std::vector< double > > magnetInterface::getDegValues( const std::vector< std::string > & magNames )
+{
+    std::vector< std::vector< double > >  a;
+    for( auto && it : magNames )
+        a.push_back( getDegValues(it) );
+    return a;
+}
 
 //______________________________________________________________________________
 void magnetInterface::printDegauss()

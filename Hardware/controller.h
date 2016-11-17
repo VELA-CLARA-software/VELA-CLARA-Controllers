@@ -64,8 +64,8 @@ class controller : public baseObject
         /// This pure virtual method MUST be overwritten in the derived controller ( making this an abstract base class)
         /// This also means the destructor need not be protected
 
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name ) = 0;
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name ) = 0;
+        virtual std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE > getILockStates( const std::string & name ) = 0;
+        virtual std::map< VC_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name ) = 0;
         virtual double get_CA_PEND_IO_TIMEOUT() = 0;
         virtual void   set_CA_PEND_IO_TIMEOUT( double val ) = 0;
 
@@ -127,10 +127,10 @@ class controller : public baseObject
 ////    : controller(rhs)
 ////  {}
 //
-//    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name )
+//    std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE > getILockStates( const std::string & name )
 //    {return this->get_override("getILockStates")();}
 //
-//    std::map< VELA_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & name )
+//    std::map< VC_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & name )
 //    {return this->get_override("getILockStatesStr")();}
 //
 //    double get_CA_PEND_IO_TIMEOUT()

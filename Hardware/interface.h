@@ -34,8 +34,8 @@ class interface : public baseObject
         /// These pure virtual methods MUST be overwritten in the derived interface ( making this an abstract base class)
         /// This also means the destructor need not be protected
 
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) = 0;
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) = 0;
+        virtual std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) = 0;
+        virtual std::map< VC_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) = 0;
 
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT( double val );
@@ -79,8 +79,8 @@ class interface : public baseObject
         void attachTo_thisCAContext();
         void detachFrom_thisCAContext();
 
-        void addILockChannels( const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > & iLockPVStructs );
-        void monitorIlocks( std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct >  & iLockPVStructs, std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > & iLockStates );
+        void addILockChannels( const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > & iLockPVStructs );
+        void monitorIlocks( std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct >  & iLockPVStructs, std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE > & iLockStates );
         static void staticEntryILockMonitor( event_handler_args args);
 
         template< class T, class U >
@@ -95,7 +95,7 @@ class interface : public baseObject
         int sendToEpics( std::string & ca, std::string & mess1, std::string & mess2 );
 #endif
 
-        bool iLocksAreGood( std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > & iLockStates );
+        bool iLocksAreGood( std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > & iLockStates );
 
 
         void printStatusResult( const int status, const char * success, const char * timeout );
@@ -104,7 +104,7 @@ class interface : public baseObject
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// though... maybe one day we re-factor, for now remember to delete in the destructor
 
-        std::vector< VELA_ENUM::iLockMonitorStruct * > continuousILockMonitorStructs;
+        std::vector< VC_ENUM::iLockMonitorStruct * > continuousILockMonitorStructs;
     private:
 
 };

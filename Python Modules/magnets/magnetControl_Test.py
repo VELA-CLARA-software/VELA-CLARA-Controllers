@@ -21,9 +21,7 @@ vc = mag.init()
 
 #a  = vc.virtual_VELA_INJ_Magnet_Controller();
 
-
-
-c  = vc.getMagnetController(MACHINE_MODE.OFFLINE, MACHINE_AREA.VELA_INJ);
+c  = vc.getMagnetController( MACHINE_MODE.OFFLINE, MACHINE_AREA.VELA_INJ);
 
 raw_input('2')
 
@@ -34,17 +32,19 @@ raw_input()
 for i in b:
     print i
     
-d = c.getMagObjConstRef("QUAD01")
-
-raw_input()
+d = c.getMagObjConstRef("SOL")
 
 print''
-print 'QUAD 01 Data'
+print 'SOL Data'
 print 'magnet name = ', d.name
 print 'magnet type = ', d.magType
 print 'siWithPol   = ', d.siWithPol
 print 'riWithPol   = ', d.riWithPol
+print 'riTolerance   = ', d.riTolerance
 print 'd.nPSU.psuState   = ', d.nPSU.psuState
 print 'd.rPSU.psuState   = ', d.rPSU.psuState
+print 'd.position   = ', d.position
+print 'd.slope   = ', d.slope
+print 'd.intercept   = ', d.intercept
 
 raw_input()

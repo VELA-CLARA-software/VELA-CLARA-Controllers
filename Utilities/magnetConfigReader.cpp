@@ -13,11 +13,12 @@
 #include <ctype.h>
 
 magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
+                                        const bool startVirtualMachine,
               const bool*show_messages_ptr,const bool*show_debug_messages_ptr ):
 magConf(magConf),NRConf(NRConf),
-configReader( show_messages_ptr, show_debug_messages_ptr )
+configReader( show_messages_ptr, show_debug_messages_ptr ),
+usingVirtualMachine(startVirtualMachine)
 {
-
 }
 //magnetConfigReader::magnetConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
 //: configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
@@ -258,7 +259,7 @@ void magnetConfigReader::addToMagPSUObj_v( std::vector< magnetStructs::nrPSUObje
         magnetStructs::nrPSUObject psuob = magnetStructs::nrPSUObject();
         psuob.parentMagnet = parentMagnet;
         psuob.numIlocks    = (size_t)numIlocks;
-        psuob.psuState     = VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
+        psuob.psuState     = VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
 
         vec.push_back( psuob );
 }
@@ -273,7 +274,7 @@ void magnetConfigReader::addToMagComStructsV1( const std::vector<std::string> &k
     addToPVStruct( pvMagComStructs, keyVal);
 }
 //______________________________________________________________________________
-void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyVal )
+void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyVal ) // /V1 is a mechanism for having a new version of configs if needed
 {
     std::string temp = keyVal[1];
     if( keyVal[0] == UTL::NAME )
@@ -285,9 +286,19 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
         debugMessage("Added ", magObjects.back().name );
     }
     else if( keyVal[0] == UTL::PV_ROOT )
-        magObjects.back().pvRoot = keyVal[ 1 ];
+    {
+        if( usingVirtualMachine )
+            magObjects.back().pvRoot = UTL::VM_PREFIX + temp;
+        else
+            magObjects.back().pvRoot = temp;
+    }
     else if( keyVal[0] == UTL::PV_PSU_ROOT )
-        magObjects.back().psuRoot = keyVal[ 1 ];
+    {
+        if( usingVirtualMachine )
+            magObjects.back().psuRoot = UTL::VM_PREFIX + temp;
+        else
+            magObjects.back().psuRoot = temp;
+    }
     else if( keyVal[0] == UTL::MAG_TYPE )
         addMagType( keyVal );
     else if( keyVal[0] == UTL::MAG_REV_TYPE )
@@ -306,6 +317,26 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
         magObjects.back().degTolerance = getNumD( temp );
     else if( keyVal[0] == UTL::DEGAUSS_VALUES )
          magObjects.back().degValues = getDoubleVector( temp );
+    /// BJAS requests for magnet data  16/11/16
+    else if( keyVal[0] == UTL::POSITION )
+    {
+        std::cout << "FOUND POSITION " << temp << std::endl;
+         magObjects.back().position = getNumD( temp );
+
+    }
+    else if( keyVal[0] == UTL::SLOPE )
+    {
+        std::cout << "FOUND SLOPE " << temp << std::endl;
+         magObjects.back().slope = getNumD( temp );
+
+    }
+    else if( keyVal[0] == UTL::INTERCEPT )
+    {
+        std::cout << "FOUND INTERCEPT  " << temp <<  std::endl;
+        magObjects.back().intercept = getNumD( temp );
+
+    }
+
 }
 //______________________________________________________________________________
 void magnetConfigReader::addMagType( const std::vector<std::string> &keyVal )
@@ -377,6 +408,10 @@ void magnetConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< magnetStructs::pv
 bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 )
 {
     debugMessage( "\n", "**** Attempting to Read ", fn, " ****" );
+    if( usingVirtualMachine )
+        debugMessage( "\n", "**** Using VIRTUAL Machine  ****" );
+    else
+        debugMessage(  "**** Using PHYSICAL Machine  ****","\n" );
 
     std::string line, trimmedLine;
     bool success = false;

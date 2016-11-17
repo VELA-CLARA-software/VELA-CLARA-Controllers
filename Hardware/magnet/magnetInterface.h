@@ -35,6 +35,7 @@ class magnetInterface : public interface
 
         magnetInterface::magnetInterface();
         magnetInterface( const std::string &magConf, const std::string &NRConf,
+                        const bool startVirtualMachine,
                         const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
                         const bool shouldStartEPICs );
 
@@ -42,11 +43,11 @@ class magnetInterface : public interface
       //  magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) {
-            std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
+        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) {
+            std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE > r;
             return r;}
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) {
-            std::map< VELA_ENUM::ILOCK_NUMBER, std::string > r;
+        std::map< VC_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) {
+            std::map< VC_ENUM::ILOCK_NUMBER, std::string > r;
             return r;}
 
 
@@ -132,6 +133,28 @@ class magnetInterface : public interface
         /// These versions are for c++ applictions, we allow c++ users to have full read access to the entire magnetObject data
         const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
         const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
+
+      /// Reverse types
+        magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
+      ///
+        magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
+      ///
+        VC_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
+        std::vector<  VC_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
+      ///
+        double                getPosition( const std::string & magName );
+        std::vector< double > getPosition( const std::vector< std::string > & magNames );
+      ///
+        double                getSlope( const std::string & magName );
+        std::vector< double > getSlope( const std::vector< std::string > & magNames );
+      ///
+        double                getIntercept( const std::string & magName );
+        std::vector< double > getIntercept( const std::vector< std::string > & magNames );
+      ///
+        std::vector< double >                getDegValues( const std::string & magName );
+        std::vector< std::vector< double > > getDegValues( const std::vector< std::string > & magNames );
 
     private:
 
