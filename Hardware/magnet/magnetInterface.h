@@ -43,11 +43,11 @@ class magnetInterface : public interface
       //  magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
-        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) {
-            std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE > r;
+        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) {
+            std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
             return r;}
-        std::map< VC_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) {
-            std::map< VC_ENUM::ILOCK_NUMBER, std::string > r;
+        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) {
+            std::map< VELA_ENUM::ILOCK_NUMBER, std::string > r;
             return r;}
 
 
@@ -141,8 +141,8 @@ class magnetInterface : public interface
         magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
         std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
       ///
-        VC_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
-        std::vector<  VC_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
+        VELA_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
+        std::vector<  VELA_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
       ///
         double                getPosition( const std::string & magName );
         std::vector< double > getPosition( const std::vector< std::string > & magNames );

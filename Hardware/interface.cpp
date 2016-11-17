@@ -82,59 +82,59 @@ void interface::printStatusResult( const int status, const char * success, const
     }
 }
 //______________________________________________________________________________
-void interface::addILockChannels( const int numIlocks, const std::string & pvRoot,const std::string & objName, std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > & iLockPVStructs )
+void interface::addILockChannels( const int numIlocks, const std::string & pvRoot,const std::string & objName, std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > & iLockPVStructs )
 {
   for( int  i = 1; i < numIlocks + 1 ; ++i )
     {
         switch( i )
         {
             case 1:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_1 ].pv = pvRoot + "Ilk1";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_1 ].pv = pvRoot + "Ilk1";
                 break;
             case 2:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_2 ].pv = pvRoot + "Ilk2";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_2 ].pv = pvRoot + "Ilk2";
                 break;
             case 3:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_3 ].pv = pvRoot + "Ilk3";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_3 ].pv = pvRoot + "Ilk3";
                 break;
             case 4:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_4 ].pv = pvRoot + "Ilk4";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_4 ].pv = pvRoot + "Ilk4";
                 break;
             case 5:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_5 ].pv = pvRoot + "Ilk5";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_5 ].pv = pvRoot + "Ilk5";
                 break;
             case 6:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_6 ].pv = pvRoot + "Ilk6";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_6 ].pv = pvRoot + "Ilk6";
                 break;
             case 7:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_7 ].pv = pvRoot + "Ilk7";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_7 ].pv = pvRoot + "Ilk7";
                 break;
             case 8:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_8 ].pv = pvRoot + "Ilk8";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_8 ].pv = pvRoot + "Ilk8";
                 break;
             case 9:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_9 ].pv = pvRoot + "Ilk9";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_9 ].pv = pvRoot + "Ilk9";
                 break;
             case 10:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_10 ].pv = pvRoot + "Ilk10";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_10 ].pv = pvRoot + "Ilk10";
                 break;
             case 11:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_11 ].pv = pvRoot + "Ilk11";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_11 ].pv = pvRoot + "Ilk11";
                 break;
             case 12:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_12 ].pv = pvRoot + "Ilk12";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_12 ].pv = pvRoot + "Ilk12";
                 break;
             case 13:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_13 ].pv = pvRoot + "Ilk13";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_13 ].pv = pvRoot + "Ilk13";
                 break;
             case 14:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_14 ].pv = pvRoot + "Ilk14";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_14 ].pv = pvRoot + "Ilk14";
                 break;
             case 15:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_15 ].pv = pvRoot + "Ilk15";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_15 ].pv = pvRoot + "Ilk15";
                 break;
             case 16:
-                iLockPVStructs[ VC_ENUM::ILOCK_NUMBER::ILOCK_16 ].pv = pvRoot + "Ilk16";
+                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_16 ].pv = pvRoot + "Ilk16";
                 break;
         }
         //debugMessage( "Added Ilock_", i , " chid to ilkChidMap.");
@@ -148,13 +148,13 @@ void interface::addILockChannels( const int numIlocks, const std::string & pvRoo
     }
 }
 //______________________________________________________________________________
-void interface::monitorIlocks( std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > & iLockPVStructs, std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE > & iLockStates )
+void interface::monitorIlocks( std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > & iLockPVStructs, std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > & iLockStates )
 {
     ///!continuousILockMonitorStructs.clear();  NO don't call clear here, call in dervied class before loops
     iLockStates.clear();
     for( auto && it : iLockPVStructs )
     {
-        continuousILockMonitorStructs.push_back( new VC_ENUM::iLockMonitorStruct() );
+        continuousILockMonitorStructs.push_back( new VELA_ENUM::iLockMonitorStruct() );
         continuousILockMonitorStructs.back() -> iLockState   = &iLockStates[ it.first ];
         continuousILockMonitorStructs.back() -> interface    = this;
         continuousILockMonitorStructs.back() -> iLockNumber  = it.first;
@@ -176,7 +176,7 @@ void interface::staticEntryILockMonitor( event_handler_args args )
 {
     /// recast args.usr ( a void * ) to a monitor struct pointer, then dereference
 
-    VC_ENUM::iLockMonitorStruct ms = * reinterpret_cast< VC_ENUM::iLockMonitorStruct *> ( args.usr );
+    VELA_ENUM::iLockMonitorStruct ms = * reinterpret_cast< VELA_ENUM::iLockMonitorStruct *> ( args.usr );
 
     /// Not sure how to decode these apart from trial and error
     /// you can test with DBF_STRING as the callback type
@@ -191,13 +191,13 @@ void interface::staticEntryILockMonitor( event_handler_args args )
     switch( *(unsigned short*)args.dbr )
     {
         case 0:
-            *ms.iLockState = VC_ENUM::ILOCK_STATE::ILOCK_BAD;
+            *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_BAD;
             break;
         case 1:
-            *ms.iLockState = VC_ENUM::ILOCK_STATE::ILOCK_GOOD;
+            *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_GOOD;
             break;
         default:
-            *ms.iLockState = VC_ENUM::ILOCK_STATE::ILOCK_ERROR;
+            *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_ERROR;
     }
     /// make debug messages easier to understand by using ENUM_TO_STRING
     //ms.interface -> debugMessage( ms.objName, " new ILock_", ms.iLockNumber + 1 ,  " state = ", ENUM_TO_STRING(*ms.iLockState) );
@@ -266,11 +266,11 @@ bool interface::interfaceInitReport( bool shouldStartEPICs )
     return ret;
 }
 //______________________________________________________________________________
-bool interface::iLocksAreGood( std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > & iLockStates )
+bool interface::iLocksAreGood( std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > & iLockStates )
 {
     bool ret = true;
     for( auto && it : iLockStates )
-        if( it.second != VC_ENUM::ILOCK_STATE::ILOCK_GOOD )
+        if( it.second != VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
             ret = false;
 
     return ret;

@@ -307,20 +307,20 @@ void magnetInterface::updatePSUSta( const unsigned short value, const std::strin
 {
     if( entryExists(allMagnetData, magName ) )
     {
-        VC_ENUM::MAG_PSU_STATE newstate = VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
+        VELA_ENUM::MAG_PSU_STATE newstate = VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
         switch( value )
         {
             case 0:
-                newstate = VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF;
+                newstate = VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF;
                 break;
             case 1:
-                newstate =  VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON;
+                newstate =  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON;
                 break;
             case 2:
-                newstate =  VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING;
+                newstate =  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING;
                 break;
             default:
-                newstate =  VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
+                newstate =  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
         }
         switch( psuType )
         {
@@ -1387,7 +1387,7 @@ bool magnetInterface::isON_psuN( const std::string & magName )
 {
     bool ans = false;
     if( entryExists( allMagnetData, magName ) )
-        if( allMagnetData[ magName ].nPSU.psuState == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        if( allMagnetData[ magName ].nPSU.psuState == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
              ans = true;
     return ans;
 }
@@ -1396,7 +1396,7 @@ bool magnetInterface::isON_psuR( const std::string & magName )
 {
     bool ans = false;
     if( entryExists( allMagnetData, magName ) )
-        if( allMagnetData[ magName ].rPSU.psuState == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        if( allMagnetData[ magName ].rPSU.psuState == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
              ans = true;
     return ans;
 }
@@ -1405,7 +1405,7 @@ bool magnetInterface::isON(const std::string & magName )
 {
     bool ans = false;
     if( entryExists( allMagnetData, magName ) )
-        if( allMagnetData[ magName ].psuState == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        if( allMagnetData[ magName ].psuState == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
             ans = true;
     return ans;
 }
@@ -1606,9 +1606,9 @@ void magnetInterface::applyMagnetStateStruct( const magnetStructs::magnetStateSt
     vec_s magsToSwitchOn, magsToSwitchOff;
     for( size_t i = 0; i < magState.numMags; ++i )
     {
-        if(  magState.psuStates[i] == VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF )
+        if(  magState.psuStates[i] == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF )
             magsToSwitchOff.push_back( magState.magNames[i] );
-        else if(  magState.psuStates[i]  == VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+        else if(  magState.psuStates[i]  == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
             magsToSwitchOn.push_back( magState.magNames[i] );
 
         message("Found ", magState.magNames[i] );
@@ -1723,17 +1723,17 @@ std::vector< magnetStructs::MAG_TYPE > magnetInterface::getMagType( const std::v
     return a;
 }
 //______________________________________________________________________________
-VC_ENUM::MAG_PSU_STATE magnetInterface::getMagPSUState( const std::string & magName )
+VELA_ENUM::MAG_PSU_STATE magnetInterface::getMagPSUState( const std::string & magName )
 {
     if( entryExists( allMagnetData, magName ) )
         return allMagnetData[ magName ].psuState;
     else
-        return VC_ENUM::MAG_PSU_NONE;
+        return VELA_ENUM::MAG_PSU_NONE;
 }
 //______________________________________________________________________________
-std::vector<  VC_ENUM::MAG_PSU_STATE > magnetInterface::getMagPSUState( const std::vector< std::string > & magNames )
+std::vector<  VELA_ENUM::MAG_PSU_STATE > magnetInterface::getMagPSUState( const std::vector< std::string > & magNames )
 {
-    std::vector< VC_ENUM::MAG_PSU_STATE >  a;
+    std::vector< VELA_ENUM::MAG_PSU_STATE >  a;
     for( auto && it : magNames )
         a.push_back( getMagPSUState(it) );
     return a;

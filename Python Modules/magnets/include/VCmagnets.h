@@ -35,7 +35,7 @@ class VCmagnets
         magnetController& offline_CLARA_INJ_Magnet_Controller();
         magnetController& physical_CLARA_INJ_Magnet_Controller();
 
-        magnetController& getMagnetController( VC_ENUM::MACHINE_MODE mode, VC_ENUM::MACHINE_AREA area );
+        magnetController& getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
     protected:
 
@@ -81,10 +81,10 @@ typedef const std::vector<std::string> cves;
 typedef magnetStructs::magnetStateStruct msst;
 typedef magnetStructs::MAG_REV_TYPE mgrt;
 typedef magnetStructs::MAG_TYPE     magt;
-typedef VC_ENUM::MAG_PSU_STATE      mpsu;
+typedef VELA_ENUM::MAG_PSU_STATE      mpsu;
 typedef std::vector<magnetStructs::MAG_REV_TYPE> vmgrt;
 typedef std::vector<magnetStructs::MAG_TYPE> vmgt;
-typedef std::vector<VC_ENUM::MAG_PSU_STATE>  vpsu;
+typedef std::vector<VELA_ENUM::MAG_PSU_STATE>  vpsu;
 ///
 doub(magnetController::*getRI_1)(cstr&) = &magnetController::getRI;
 vecd(magnetController::*getRI_2)(cves&) = &magnetController::getRI;
@@ -150,32 +150,32 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         class_<std::vector< magnetStructs::MAG_TYPE > >("std_vector_mag_type ")
                 .def( vector_indexing_suite< std::vector< magnetStructs::MAG_TYPE>>() )
                 ;
-        class_<std::vector< VC_ENUM::MAG_PSU_STATE > >("std_vector_mag_psu_state ")
-                .def( vector_indexing_suite< std::vector< VC_ENUM::MAG_PSU_STATE>>() )
+        class_<std::vector< VELA_ENUM::MAG_PSU_STATE > >("std_vector_mag_psu_state ")
+                .def( vector_indexing_suite< std::vector< VELA_ENUM::MAG_PSU_STATE>>() )
                 ;
         /// and enums, remember we have a enum to string python dictionary macro too!
-        enum_<VC_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE")
-                .value("MAG_PSU_OFF",   VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
-                .value("MAG_PSU_ON",    VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
-                .value("MAG_PSU_TIMING",VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
-                .value("MAG_PSU_ERROR", VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
-                .value("MAG_PSU_NONE",  VC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
+        enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE")
+                .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
+                .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
+                .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
+                .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
+                .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
                 ;
 
-        enum_<VC_ENUM::ILOCK_STATE>("ILOCK_STATE")
-                .value("ILOCK_BAD",   VC_ENUM::ILOCK_STATE::ILOCK_BAD   )
-                .value("ILOCK_GOOD",  VC_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-                .value("ILOCK_ERROR", VC_ENUM::ILOCK_STATE::ILOCK_ERROR )
+        enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+                .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+                .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+                .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
                 ;
-        enum_<VC_ENUM::MACHINE_MODE>("MACHINE_MODE")
-                .value("OFFLINE",  VC_ENUM::MACHINE_MODE::OFFLINE  )
-                .value("VIRTUAL",  VC_ENUM::MACHINE_MODE::VIRTUAL  )
-                .value("PHYSICAL", VC_ENUM::MACHINE_MODE::PHYSICAL )
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+                .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
+                .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+                .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
                 ;
-        enum_<VC_ENUM::MACHINE_AREA>("MACHINE_AREA")
-                .value("VELA_INJ", VC_ENUM::MACHINE_AREA::VELA_INJ )
-                .value("VELA_BA1", VC_ENUM::MACHINE_AREA::VELA_BA1 )
-                .value("VELA_BA2", VC_ENUM::MACHINE_AREA::VELA_BA2 )
+        enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+                .value("VELA_INJ", VELA_ENUM::MACHINE_AREA::VELA_INJ )
+                .value("VELA_BA1", VELA_ENUM::MACHINE_AREA::VELA_BA1 )
+                .value("VELA_BA2", VELA_ENUM::MACHINE_AREA::VELA_BA2 )
                 ;
         /// and enums, remember we have a enum to string python dictionary macro too!
         enum_<magnetStructs::MAG_TYPE>("MAG_TYPE")
@@ -224,18 +224,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //    struct  nrPSUObject
 //    {   // proviude a default constructor
 //        nrPSUObject() : isGanged( false ), parentMagnet( "UNKNOWN" ), pvRoot( "UNKNOWN"),
-//                        psuState( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
+//                        psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
 //                        numIlocks( 0 ) {} // proviude a default constructor
 //        std::string  parentMagnet, pvRoot;
 //        bool isGanged;//, canFlip;/// canflip? probably refactor as function...
-//        VC_ENUM::MAG_PSU_STATE psuState;
+//        VELA_ENUM::MAG_PSU_STATE psuState;
 //        size_t numIlocks;
 //        std::vector< std::string > gangMembers;
-//        std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > iLockStates;
+//        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
 //    #ifndef __CINT__
 //        std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
 //        std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-//        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > iLockPVStructs;
+//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
 //    #endif
 //    };
 
@@ -259,7 +259,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //     struct  magnetObject
 //    {   // proviude a default constructor
 //        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN"),pvRoot( "UNKNOWN"),
-//                psuState( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
+//                psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
 //                magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
 //                si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999),
 //                /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
@@ -269,7 +269,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0) {} // proviude a default constructor
 //        MAG_TYPE magType;           /// dipole, quad etc.
 //        MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
-//        VC_ENUM::MAG_PSU_STATE psuState;
+//        VELA_ENUM::MAG_PSU_STATE psuState;
 //        size_t numIlocks;
 //        nrPSUObject nPSU, rPSU;
 //        std::string  name, pvRoot, psuRoot;
@@ -284,11 +284,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 //        double  degTolerance;
 //
 ////        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
-//        std::map< VC_ENUM::ILOCK_NUMBER , VC_ENUM::ILOCK_STATE > iLockStates;
+//        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
 //    #ifndef __CINT__
 //        std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
 //        std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-//        std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::iLockPVStruct > iLockPVStructs;
+//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
 //    #endif
 //    };
 

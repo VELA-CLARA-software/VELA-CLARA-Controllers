@@ -280,12 +280,12 @@ const magnetStructs::magnetObject* magnetController::getMagObjConstPtr( const st
     return localInterface.getMagObjConstPtr( magName );
 }
 //______________________________________________________________________________
-std::map< VC_ENUM::ILOCK_NUMBER, VC_ENUM::ILOCK_STATE >  magnetController::getILockStates( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  magnetController::getILockStates( const std::string & name )
 {
     return localInterface.getILockStates( name );
 }
 //______________________________________________________________________________
-std::map< VC_ENUM::ILOCK_NUMBER, std::string > magnetController::getILockStatesStr( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > magnetController::getILockStatesStr( const std::string & name )
 {
     return localInterface.getILockStatesStr( name );
 }
@@ -355,12 +355,12 @@ std::vector<  magnetStructs::MAG_TYPE >  magnetController::getMagType( const std
     return localInterface.getMagType( magNames );
 }
 //______________________________________________________________________________
-VC_ENUM::MAG_PSU_STATE magnetController::getMagPSUState( const std::string & magName )
+VELA_ENUM::MAG_PSU_STATE magnetController::getMagPSUState( const std::string & magName )
 {
     return localInterface.getMagPSUState( magName );
 }
 //______________________________________________________________________________
-std::vector<  VC_ENUM::MAG_PSU_STATE > magnetController::getMagPSUState( const std::vector< std::string > & magNames )
+std::vector<  VELA_ENUM::MAG_PSU_STATE > magnetController::getMagPSUState( const std::vector< std::string > & magNames )
 {
     return localInterface.getMagPSUState( magNames );
 }
@@ -420,13 +420,13 @@ boost::python::dict magnetController::getILockStates_Py( std::string magName )
 //______________________________________________________________________________
 boost::python::dict magnetController::getMagPSUStateDefinition()
 {
-    std::map< VC_ENUM::MAG_PSU_STATE,  std::string  > m;
+    std::map< VELA_ENUM::MAG_PSU_STATE,  std::string  > m;
 
-    m[ VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING( VC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING( VC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING( VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING( VC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
+    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
 
     return enumStringMapToPythonDict( m );
 }

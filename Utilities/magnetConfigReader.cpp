@@ -259,7 +259,7 @@ void magnetConfigReader::addToMagPSUObj_v( std::vector< magnetStructs::nrPSUObje
         magnetStructs::nrPSUObject psuob = magnetStructs::nrPSUObject();
         psuob.parentMagnet = parentMagnet;
         psuob.numIlocks    = (size_t)numIlocks;
-        psuob.psuState     = VC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
+        psuob.psuState     = VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR;
 
         vec.push_back( psuob );
 }
