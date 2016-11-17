@@ -30,9 +30,10 @@ magnetInterface::magnetInterface( const std::string &magConf, const std::string 
                                   const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs ):
 configReader( magConf, NRConf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY")
+interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY"),
+inOfflineMode(shouldStartEPICs )
 {
-        initialise(shouldStartEPICs);
+        initialise();
 }
 //______________________________________________________________________________
 magnetInterface::~magnetInterface()
@@ -63,7 +64,7 @@ void magnetInterface::killMonitor( magnetStructs::monitorStruct * ms )
         debugMessage("ERROR magnetInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
 }
 //______________________________________________________________________________
-void magnetInterface::initialise(const bool shouldStartEPICs)
+void magnetInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfig();
@@ -74,7 +75,7 @@ void magnetInterface::initialise(const bool shouldStartEPICs)
         bool getDataSuccess = initObjects();
         if( getDataSuccess )
         {
-            if( shouldStartEPICs )
+            if( !inOfflineMode )
             {
                 std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
@@ -326,7 +327,7 @@ void magnetInterface::updatePSUSta( const unsigned short value, const std::strin
         {
             case magnetStructs::MAG_PSU_TYPE::PSU:
                 allMagnetData[ magName ].psuState  = newstate;
-                debugMessage( magName, " New PSU State = ", ENUM_TO_STRING( allMagnetData[ magName ].psuState ) );
+                //debugMessage( magName, " New PSU State = ", ENUM_TO_STRING( allMagnetData[ magName ].psuState ) );
                 /// If the polarity has changed we need to change SI & RI
                 updateSI_WithPol( magName );
                 updateRI_WithPol( magName );
@@ -351,7 +352,7 @@ void magnetInterface::updatePSUSta( const unsigned short value, const std::strin
 /// (___)    \__ \ _)(_
 ///          (___/(____)
 ///
-/// These are wrapper functions that interface to the main setSI function
+/// These are wrapper functions that interface to the main setSI function setSI_MAIN()
 //______________________________________________________________________________
 bool magnetInterface::setSI( const std::string & magName, const double value)
 {// yay - c++11 has initilization lists ...
@@ -414,70 +415,83 @@ bool magnetInterface::setSI( const std::string & magName, const double value, co
 //_____________________________________________________________
 void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
 { /// THIS IS THE MAIN SET SI FUNCTION
-    if( magNames.size() == values.size() )
+
+    if( inOfflineMode)
     {
-        /// The magnets can be divided into two types
-        /// Those that can be set straight away and those that need N-R flipping
-        vec_s magnetsToSet;
-        vec_s magnetsToFlipThenSet;
-
-        vec_d magnetsToSetValues;
-        vec_d magnetsToFlipThenSetValues;
-        /// yeah - feck - it's 3 types... April 2015
-        vec_s presentGangMembers;
-        vec_d presentGangMembersValues;
-
-        /// Iterate over each magnet to decide if it is a set, or a flip-then-set, OR in a gang
-        size_t val_pos = 0;
-        for( auto & magNameIt : magNames )
+        for( auto i = 0; i < magNames.size(); ++i )
         {
-            switch( allMagnetData[ magNameIt ].magRevType )           /// First get the magnet reverse type,
+            if( entryExists( allMagnetData, magNames[i] ) )
+                allMagnetData[ magNames[i] ].siWithPol = values[i];
+        }
+    }
+    else
+    {
+
+        if( magNames.size() == values.size() )
+        {
+            /// The magnets can be divided into two types
+            /// Those that can be set straight away and those that need N-R flipping
+            vec_s magnetsToSet;
+            vec_s magnetsToFlipThenSet;
+
+            vec_d magnetsToSetValues;
+            vec_d magnetsToFlipThenSetValues;
+            /// yeah - feck - it's 3 types... April 2015
+            vec_s presentGangMembers;
+            vec_d presentGangMembersValues;
+
+            /// Iterate over each magnet to decide if it is a set, or a flip-then-set, OR in a gang
+            size_t val_pos = 0;
+            for( auto & magNameIt : magNames )
             {
-                case magnetStructs::MAG_REV_TYPE::NR_GANGED:
-                    presentGangMembers.push_back( magNameIt );
-                    presentGangMembersValues.push_back( values[ val_pos ] );
-                    break;
+                switch( allMagnetData[ magNameIt ].magRevType )           /// First get the magnet reverse type,
+                {
+                    case magnetStructs::MAG_REV_TYPE::NR_GANGED:
+                        presentGangMembers.push_back( magNameIt );
+                        presentGangMembersValues.push_back( values[ val_pos ] );
+                        break;
 
-                case magnetStructs::MAG_REV_TYPE::NR:/// Magnet PSU is of  N-R type
-                    setNRSIVectors( magNameIt, values[ val_pos ], magnetsToSet,magnetsToFlipThenSet,magnetsToSetValues, magnetsToFlipThenSetValues );
-                    break;
+                    case magnetStructs::MAG_REV_TYPE::NR:/// Magnet PSU is of  N-R type
+                        setNRSIVectors( magNameIt, values[ val_pos ], magnetsToSet,magnetsToFlipThenSet,magnetsToSetValues, magnetsToFlipThenSetValues );
+                        break;
 
-                case magnetStructs::MAG_REV_TYPE::BIPOLAR:  /// Magnet PSU can be set to negative values
-                    magnetsToSet.push_back( magNameIt);
-                    magnetsToSetValues.push_back( values[ val_pos ]  );
-                    break;
+                    case magnetStructs::MAG_REV_TYPE::BIPOLAR:  /// Magnet PSU can be set to negative values
+                        magnetsToSet.push_back( magNameIt);
+                        magnetsToSetValues.push_back( values[ val_pos ]  );
+                        break;
 
-                case magnetStructs::MAG_REV_TYPE::POS:      /// Magnet PSU can only be positive
-                    debugMessage(magNameIt, "  REALLY??? A POSITIVE ONLY MAGNET??? ");
-                    break;
+                    case magnetStructs::MAG_REV_TYPE::POS:      /// Magnet PSU can only be positive
+                        debugMessage(magNameIt, "  REALLY??? A POSITIVE ONLY MAGNET??? ");
+                        break;
+                }
+                ++val_pos;
             }
-            ++val_pos;
+
+            /// we need to do further checks on the N-R ganged members
+            if( presentGangMembers.size() > 0 )
+                setNRGangedSIVectors( presentGangMembers, presentGangMembersValues, magnetsToSet, magnetsToFlipThenSet,magnetsToSetValues,magnetsToFlipThenSetValues );
+
+            /// Now we can send out some values.
+            /// First, zero the magnets that require NR flipping
+
+            if( magnetsToFlipThenSet.size() > 0 )// MAGIC_NUMBER
+            {   //std::cout<<"HI"<<std::endl;
+    //            debugMessage(" ZERO FLIPPING MAGNETS " );
+                const vec_d zeros( magnetsToFlipThenSet.size(), 0.0 )// MAGIC_NUMBER;
+                setSINoFlip( magnetsToFlipThenSet, zeros);
+                //waitForMagnetsToSettle( magnetsToFlipThenSet, zeros, tol, 45 );
+            }
+
+            /// Second, send out values to magnets that DO NOT require flipping
+
+            if( magnetsToSet.size() > 0 )// MAGIC_NUMBER
+                setSINoFlip( magnetsToSet, magnetsToSetValues );
+
+            /// Finally, flip magnets and
+
+            if( magnetsToFlipThenSet.size() > 0 )// MAGIC_NUMBER
+                setSIWithFlip( magnetsToFlipThenSet, magnetsToFlipThenSetValues );
         }
-
-        /// we need to do further checks on the N-R ganged members
-        if( presentGangMembers.size() > 0 )
-            setNRGangedSIVectors( presentGangMembers, presentGangMembersValues, magnetsToSet, magnetsToFlipThenSet,magnetsToSetValues,magnetsToFlipThenSetValues );
-
-        /// Now we can send out some values.
-        /// First, zero the magnets that require NR flipping
-
-        if( magnetsToFlipThenSet.size() > 0 )
-        {   std::cout<<"HI"<<std::endl;
-//            debugMessage(" ZERO FLIPPING MAGNETS " );
-            const vec_d zeros( magnetsToFlipThenSet.size(), 0.0 );
-            setSINoFlip( magnetsToFlipThenSet, zeros);
-            //waitForMagnetsToSettle( magnetsToFlipThenSet, zeros, tol, 45 );
-        }
-
-        /// Second, send out values to magnets that DO NOT require flipping
-
-        if( magnetsToSet.size() > 0 )
-            setSINoFlip( magnetsToSet, magnetsToSetValues );
-
-        /// Finally, flip magnets and
-
-        if( magnetsToFlipThenSet.size() > 0 )
-            setSIWithFlip( magnetsToFlipThenSet, magnetsToFlipThenSetValues );
     }
 }
 //______________________________________________________________________________
@@ -511,8 +525,8 @@ bool magnetInterface::nrGanged_SI_Vals_AreSensible( const vec_s & magNames, cons
     gangMembers.push_back( magNames[0] );
     vec_d finalSIValues;
 
-    size_t count = 0;
-    for( size_t i = 0; i < gangMembers.size(); ++i  )
+    size_t count = 0;// MAGIC_NUMBER
+    for( size_t i = 0; i < gangMembers.size(); ++i  )// MAGIC_NUMBER
     {
         if ( std::find( magNames.begin(), magNames.end(), gangMembers[i] ) != magNames.end())
         {
@@ -559,7 +573,7 @@ bool magnetInterface::setSINoFlip( const vec_s & magNames, const vec_d & values)
     bool ret = false;
     if( magNames.size() == values.size() )
     {
-        for( size_t i = 0; i < magNames.size(); ++i)
+        for( size_t i = 0; i < magNames.size(); ++i)// MAGIC_NUMBER
             if( entryExists( allMagnetData, magNames[i] ) )
                 ca_put( allMagnetData[ magNames[i] ].pvMonStructs[ magnetStructs::MAG_PV_TYPE::SI ].CHTYPE,
                         allMagnetData[ magNames[i] ].pvMonStructs[ magnetStructs::MAG_PV_TYPE::SI ].CHID,
@@ -576,7 +590,7 @@ magnetInterface::vec_b magnetInterface::setSIWithFlip( const vec_s & magNames, c
     const vec_b ans = flipNR( magNames );
     vec_s flippedMagnets;
     vec_d flippedMagnetsVals ;
-    for( size_t i = 0; i < ans.size(); ++i )
+    for( size_t i = 0; i < ans.size(); ++i )// MAGIC_NUMBER
     {
         if( ans[ i ] )
         {
@@ -756,7 +770,7 @@ bool magnetInterface::togglePSU( const vec_s & magNames, magnetStructs::MAG_PV_T
                     break;
             }
 //        }
-    if( CHTYPE.size() > 0 )
+    if( CHTYPE.size() > 0 )// MAGIC_NUMBER
     {
         std::string m1 = "Timeout sending EPICS_ACTIVATE to inj Mag PSU";
         std::string m2 = "Timeout sending EPICS_SEND to inj Mag PSU";
@@ -774,7 +788,7 @@ bool magnetInterface::sendCommand( const std::vector< chtype* > & CHTYPE, const 
     int status = sendToEpics( "ca_put", "", m1.c_str() );
     if ( status == ECA_NORMAL )
     {
-        for( size_t i = 0; i < CHTYPE.size(); ++i )
+        for( size_t i = 0; i < CHTYPE.size(); ++i )// MAGIC_NUMBER
             ca_put( *CHTYPE[i], *CHID[i], &EPICS_SEND );
 
         int status = sendToEpics( "ca_put", "", m2.c_str());

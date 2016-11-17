@@ -8,12 +8,12 @@ raw_input('1')
 
 print MAG_PSU_STATE.MAG_PSU_ON
 
-raw_input('2')
+raw_input('wait')
 from VELA_CLARA_MagnetControl import MACHINE_MODE, MACHINE_AREA
 
 print MACHINE_MODE.OFFLINE 
 
-raw_input('2')
+raw_input('wait')
 
 import VELA_CLARA_MagnetControl as mag
 
@@ -21,9 +21,16 @@ vc = mag.init()
 
 #a  = vc.virtual_VELA_INJ_Magnet_Controller();
 
-c  = vc.getMagnetController( MACHINE_MODE.OFFLINE, MACHINE_AREA.VELA_INJ);
+c  = vc.getMagnetController( MACHINE_MODE.OFFLINE, MACHINE_AREA.VELA_INJ)
 
-raw_input('2')
+c.setSI("QUAD01",-3.4)
+
+raw_input('wait')
+
+print "QUAD01 SI = "
+print c.getSI("QUAD01")
+
+raw_input('wait')
 
 b = c.getMagnetNames()
 

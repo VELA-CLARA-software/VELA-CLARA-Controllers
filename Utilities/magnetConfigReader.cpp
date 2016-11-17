@@ -233,21 +233,32 @@ void magnetConfigReader::addToMagPSUComStructsV1( const std::vector<std::string>
 //______________________________________________________________________________
 void magnetConfigReader::addToMagPSUObjectsV1( const std::vector<std::string> &keyVal )
 {
+    std::string value = keyVal[ 1 ];
     if( keyVal[0] == UTL::PARENT_MAGNET )
     {
-        addToMagPSUObj_v( magPSUObjects_N, keyVal[ 1 ] );
+        addToMagPSUObj_v( magPSUObjects_N, value );
         debugMessage("Added ", magPSUObjects_N.back().parentMagnet, " N PSU" );
-        addToMagPSUObj_v( magPSUObjects_R, keyVal[ 1 ] );
+        addToMagPSUObj_v( magPSUObjects_R, value );
         debugMessage("Added ", magPSUObjects_R.back().parentMagnet, " R PSU" );
     }
     else if( keyVal[0] == UTL::PV_ROOT_N )
-        magPSUObjects_N.back().pvRoot = keyVal[ 1 ];
+    {
+        if( usingVirtualMachine )
+            magPSUObjects_N.back().pvRoot = UTL::VM_PREFIX + value;
+        else
+            magPSUObjects_N.back().pvRoot = value;
+    }
     else if( keyVal[0] == UTL::PV_ROOT_R )
-        magPSUObjects_R.back().pvRoot = keyVal[ 1 ];
+    {
+        if( usingVirtualMachine )
+            magPSUObjects_R.back().pvRoot = UTL::VM_PREFIX + value;
+        else
+            magPSUObjects_R.back().pvRoot = value;
+    }
     else if( keyVal[0] == UTL::MAG_GANG_MEMBER )
     {
-        magPSUObjects_N.back().gangMembers.push_back( keyVal[ 1 ] );
-        magPSUObjects_R.back().gangMembers.push_back( keyVal[ 1 ] );
+        magPSUObjects_N.back().gangMembers.push_back( value );
+        magPSUObjects_R.back().gangMembers.push_back( value );
         magPSUObjects_N.back().isGanged = true ;
         magPSUObjects_R.back().isGanged = true ;
         debugMessage("Added ", magPSUObjects_R.back().parentMagnet, " NR-PSU Gang Member ", magPSUObjects_N.back().gangMembers.back() );
@@ -276,11 +287,11 @@ void magnetConfigReader::addToMagComStructsV1( const std::vector<std::string> &k
 //______________________________________________________________________________
 void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyVal ) // /V1 is a mechanism for having a new version of configs if needed
 {
-    std::string temp = keyVal[1];
+    std::string value = keyVal[1];
     if( keyVal[0] == UTL::NAME )
     {
         magnetStructs::magnetObject mob = magnetStructs::magnetObject();
-        mob.name = keyVal[ 1 ];
+        mob.name = value;
         mob.numIlocks = (size_t)numIlocks;
         magObjects.push_back( mob );
         debugMessage("Added ", magObjects.back().name );
@@ -288,16 +299,16 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
     else if( keyVal[0] == UTL::PV_ROOT )
     {
         if( usingVirtualMachine )
-            magObjects.back().pvRoot = UTL::VM_PREFIX + temp;
+            magObjects.back().pvRoot = UTL::VM_PREFIX + value;
         else
-            magObjects.back().pvRoot = temp;
+            magObjects.back().pvRoot = value;
     }
     else if( keyVal[0] == UTL::PV_PSU_ROOT )
     {
         if( usingVirtualMachine )
-            magObjects.back().psuRoot = UTL::VM_PREFIX + temp;
+            magObjects.back().psuRoot = UTL::VM_PREFIX + value;
         else
-            magObjects.back().psuRoot = temp;
+            magObjects.back().psuRoot = value;
     }
     else if( keyVal[0] == UTL::MAG_TYPE )
         addMagType( keyVal );
@@ -305,37 +316,24 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
         addRevType( keyVal );
     else if( keyVal[0] == UTL::RI_TOLERANCE )
     {
-        std::string temp =  keyVal[ 1 ];
-        magObjects.back().riTolerance = getNumD( temp );
+        magObjects.back().riTolerance = getNumD( value );
     }
     //added by tim price (deguassing)
      else if( keyVal[0] == UTL::NUM_DEGAUSS_STEPS )
-        magObjects.back().numDegaussSteps =getSize( temp );
+        magObjects.back().numDegaussSteps =getSize( value );
     else if( keyVal[0] == UTL::MAG_SET_MAX_WAIT_TIME )
-        magObjects.back().maxWaitTime = getSize( temp );
+        magObjects.back().maxWaitTime = getSize( value );
     else if( keyVal[0] == UTL::DEGAUSS_TOLERANCE )
-        magObjects.back().degTolerance = getNumD( temp );
+        magObjects.back().degTolerance = getNumD( value );
     else if( keyVal[0] == UTL::DEGAUSS_VALUES )
-         magObjects.back().degValues = getDoubleVector( temp );
+         magObjects.back().degValues = getDoubleVector( value );
     /// BJAS requests for magnet data  16/11/16
     else if( keyVal[0] == UTL::POSITION )
-    {
-        std::cout << "FOUND POSITION " << temp << std::endl;
-         magObjects.back().position = getNumD( temp );
-
-    }
+         magObjects.back().position = getNumD( value );
     else if( keyVal[0] == UTL::SLOPE )
-    {
-        std::cout << "FOUND SLOPE " << temp << std::endl;
-         magObjects.back().slope = getNumD( temp );
-
-    }
+         magObjects.back().slope = getNumD( value );
     else if( keyVal[0] == UTL::INTERCEPT )
-    {
-        std::cout << "FOUND INTERCEPT  " << temp <<  std::endl;
-        magObjects.back().intercept = getNumD( temp );
-
-    }
+        magObjects.back().intercept = getNumD( value );
 
 }
 //______________________________________________________________________________

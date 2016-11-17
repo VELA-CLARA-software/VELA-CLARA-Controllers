@@ -158,12 +158,13 @@ class magnetInterface : public interface
 
     private:
 
+        const bool inOfflineMode;
         /// AllmagnetData gets a dummy magnet to return
         std::string dummyName;
 
         void killMonitor( magnetStructs::monitorStruct * ms );
 
-        void initialise(const bool shouldStartEPICs);
+        void initialise();
         bool initObjects();
         void addDummyElementToAllMAgnetData();
         void initChids();
