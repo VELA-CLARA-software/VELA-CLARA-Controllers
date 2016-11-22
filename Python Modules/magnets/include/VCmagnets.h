@@ -254,6 +254,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def_readonly("position",   &magnetStructs::magnetObject::position)
         .def_readonly("slope",      &magnetStructs::magnetObject::slope)
         .def_readonly("intercept",  &magnetStructs::magnetObject::intercept)
+        .def_readonly("manufacturer",  &magnetStructs::magnetObject::manufacturer)
+        .def_readonly("serialNumber",  &magnetStructs::magnetObject::serialNumber)
+        .def_readonly("measurementDataLocation",  &magnetStructs::magnetObject::measurementDataLocation)
+        .def_readonly("magneticLength",  &magnetStructs::magnetObject::magneticLength)
         ;
 
 //     struct  magnetObject

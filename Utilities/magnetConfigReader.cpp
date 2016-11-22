@@ -334,6 +334,15 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
          magObjects.back().slope = getNumD( value );
     else if( keyVal[0] == UTL::INTERCEPT )
         magObjects.back().intercept = getNumD( value );
+    /// BJAS requests 22/11/2016
+    else if( keyVal[0] == UTL::MANUFACTURER )
+        magObjects.back().manufacturer =  value ;
+    else if( keyVal[0] == UTL::SERIAL_NUMBER )
+        magObjects.back().serialNumber =  value ;
+    else if( keyVal[0] == UTL::MEASUREMENT_DATA_LOCATION )
+        magObjects.back().measurementDataLocation =  value ;
+    else if( keyVal[0] == UTL::MAGNETIC_LENGTH )
+        magObjects.back().magneticLength =  getNumD( value);
 
 }
 //______________________________________________________________________________

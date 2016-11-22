@@ -158,7 +158,7 @@ class magnetInterface : public interface
 
     private:
 
-        const bool inOfflineMode;
+        const bool shouldStartEPICs;
         /// AllmagnetData gets a dummy magnet to return
         std::string dummyName;
 

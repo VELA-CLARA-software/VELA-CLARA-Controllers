@@ -24,6 +24,10 @@ shouldStartEPICs(shouldStartEPICs),
 controller( show_messages, show_debug_messages ),
 localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs )
 {
+//    if( shouldStartEPICs )
+//    message("magnet controller shouldStartEPICs is true");
+//    else
+//    message("magnet controller shouldStartEPICs is false");
     initialise();
 }
 //______________________________________________________________________________
