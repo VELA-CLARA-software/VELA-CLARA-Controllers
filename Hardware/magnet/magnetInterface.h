@@ -33,17 +33,16 @@ class magnetInterface : public interface
         typedef std::vector< std::string > vec_s;
         typedef std::vector< double > vec_d;
 
-        /// Not a singleton, two construction methods....
+        magnetInterface::magnetInterface();
+        magnetInterface( const std::string &magConf, const std::string &NRConf,
+                        const bool startVirtualMachine,
+                        const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
+                        const bool shouldStartEPICs );
 
-        magnetInterface( const bool* show_messages_ptr, const bool* show_debug_messages_ptr  );
-        magnetInterface( const std::string configFileLocation1,
-                         const std::string configFileLocation2,
-                         const std::string configFileLocation3, const bool* show_messages_ptr, const bool* show_debug_messages_ptr  );
         ~magnetInterface();
       //  magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
 
-                /// These are pure virtual methods, so need to have some implmentation in derived classes
-
+        /// These are pure virtual methods, so need to have some implmentation in derived classes
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) {
             std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
             return r;}
@@ -51,6 +50,8 @@ class magnetInterface : public interface
             std::map< VELA_ENUM::ILOCK_NUMBER, std::string > r;
             return r;}
 
+
+        // /existentital quantifiers, and the like....
         bool isAQuad( const std::string & magName );
         bool isABSol( const std::string & magName );
         bool isAHCor( const std::string & magName );
@@ -58,18 +59,14 @@ class magnetInterface : public interface
         bool isADip ( const std::string & magName );
         bool isASol ( const std::string & magName );
         bool isACor ( const std::string & magName );
-
         bool isBipolar( const std::string & magName );
         bool isNR( const std::string & magName );
         bool isNRGanged( const std::string & magName );
         bool isNRorNRGanged( const std::string & magName );
-
         bool isDegaussing( const std::string & magName );
         bool isNotDegaussing( const std::string & magName );
-
         bool entryExistsAndIsDegaussing( const std::string & magName );
         bool entryExistsAndIsNotDegaussing( const std::string & magName );
-
         bool isON_psuN( const std::string & magName );
         bool isON_psuR( const std::string & magName );
         bool isON ( const std::string & magName );
@@ -77,17 +74,18 @@ class magnetInterface : public interface
         bool isOFF_psuR( const std::string & magName );
         bool isOFF ( const std::string & magName );
 
-
+        /// some outdated debugging function ?
+        void showMagRevType();
+        /// RI tolerances set how many decimal places on RI values (irl EPICS has 9 and they are continually changing)
         void setRITolerance( const std::string & magName, double val);
 
-        void showMagRevType();
-
+        /// main getters for magnet currents
         double getSI( const std::string & magName );
         double getRI( const std::string & magName );
-
         vec_d getSI( const vec_s & magNames );
         vec_d getRI( const vec_s & magNames );
 
+        /// getters for names
         vec_s getMagnetNames();
         vec_s getQuadNames();
         vec_s getHCorNames();
@@ -95,47 +93,72 @@ class magnetInterface : public interface
         vec_s getDipNames();
         vec_s getSolNames();
 
-        bool setSI( const std::string & magName, const double value);
-        bool setSI( const  vec_s & magNames, const vec_d& values );
-        bool setSI( const std::string & magName, const double value, const double tolerance, const size_t timeOUT );
-        vec_s setSI( const vec_s & magNames, const vec_d & values, const vec_d & tolerances, const size_t timeOUT );
+        /// setters for magnet current, in different flavours
+        bool setSI ( const std::string & magName, const double value);
+        bool setSI ( const vec_s & magNames     , const vec_d& values );
+        bool setSI ( const std::string & magName, const double value  , const double tolerance  , const size_t timeOUT );
+        vec_s setSI( const vec_s & magNames     , const vec_d & values, const vec_d & tolerances, const size_t timeOUT );
 
         /// These functions return wether the commands were sent to EPICS correctly, not if the oiperation was succesful
-
         bool switchONpsu ( const std::string & magName  );
         bool switchOFFpsu( const std::string & magName  );
         bool switchONpsu ( const vec_s     & magNames );
         bool switchOFFpsu( const vec_s     & magNames );
 
+        /// degaussing functions
         size_t deGauss( const std::string & mag, bool resetToZero = true );
         size_t deGauss( const vec_s & mag, bool resetToZero = true );
         size_t degaussAll( bool resetToZero = true );
-
-        //
+        /// Force kill a degaussing thread, if you know its ID number
         void killDegaussThread( size_t N );
 
+        /// get the states of the magnets: here in real life
         magnetStructs::magnetStateStruct getCurrentMagnetState();
-        magnetStructs::magnetStateStruct getCurrentMagnetState( vec_s & s );
+        magnetStructs::magnetStateStruct getCurrentMagnetState( const vec_s & s );
 
-        void applyMagnetStateStruct( const magnetStructs::magnetStateStruct & ms  );
-
+        /// and get the states of the magnets: here from a file
         magnetStructs::magnetStateStruct getDBURT( const std::string & fileName );
         magnetStructs::magnetStateStruct getDBURTCorOnly( const std::string & fileName );
         magnetStructs::magnetStateStruct getDBURTQuadOnly( const std::string & fileName );
 
-
-        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = ""  );
-        bool writeDBURT( const std::string & fileName = "", const std::string & comments = ""  );
-
+        /// apply a state struct to the machine
+        void applyMagnetStateStruct( const magnetStructs::magnetStateStruct & ms  );
+        /// applyt a DBURT to the machine
         void applyDBURT( const std::string & fileName );
         void applyDBURTCorOnly( const std::string & fileName );
         void applyDBURTQuadOnly( const std::string & fileName );
-
+        /// Write a DBURT
+        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = ""  );
+        bool writeDBURT( const std::string & fileName = "", const std::string & comments = ""  );
+        /// These versions are for c++ applictions, we allow c++ users to have full read access to the entire magnetObject data
         const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
         const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
 
+      /// Reverse types
+        magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
+      ///
+        magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
+      ///
+        VELA_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
+        std::vector<  VELA_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
+      ///
+        double                getPosition( const std::string & magName );
+        std::vector< double > getPosition( const std::vector< std::string > & magNames );
+      ///
+        double                getSlope( const std::string & magName );
+        std::vector< double > getSlope( const std::vector< std::string > & magNames );
+      ///
+        double                getIntercept( const std::string & magName );
+        std::vector< double > getIntercept( const std::vector< std::string > & magNames );
+      ///
+        std::vector< double >                getDegValues( const std::string & magName );
+        std::vector< std::vector< double > > getDegValues( const std::vector< std::string > & magNames );
+
     private:
 
+        const bool shouldStartEPICs;
         /// AllmagnetData gets a dummy magnet to return
         std::string dummyName;
 

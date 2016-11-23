@@ -12,15 +12,17 @@
 #include <algorithm>
 #include <ctype.h>
 
-beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
-: configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
+beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & bpmConf, const bool*show_messages_ptr, const bool*show_debug_messages_ptr ):
+bpmConf( bpmConf ),
+configReader( show_messages_ptr, show_debug_messages_ptr )
 {
+
 }
 //______________________________________________________________________________
-beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & configFileLocation, const bool* show_messages_ptr, const bool * show_debug_messages_ptr  )
-:  configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr )
-{
-}
+//beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & configFileLocation, const bool* show_messages_ptr, const bool * show_debug_messages_ptr  )
+//:  configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr )
+//{
+//}
 //______________________________________________________________________________
 beamPositionMonitorConfigReader::~beamPositionMonitorConfigReader(){}
 //______________________________________________________________________________
@@ -50,13 +52,9 @@ beamPositionMonitorStructs::bpmObject beamPositionMonitorConfigReader::getBPMObj
 bool beamPositionMonitorConfigReader::readConfigFiles()
 {
     bool success = true;
-    /// There are 2 types of objects in the bpm, a trace monitor and a number monitor;
-    /// They are defined in seperate config files to seperate the data more clearly
-    /// they still all end up in an bpmObject
-    //NUM
     bpmDataMonStructs.clear();
     bpmDataObjects.clear();
-    bool bpmSuccess = readConfig( *this, configFile1, &beamPositionMonitorConfigReader::addToBPMDataObjectsV1, &beamPositionMonitorConfigReader::addToBPMPVComStructsV1, &beamPositionMonitorConfigReader::addToBPMPVMonStructsV1 );
+    bool bpmSuccess = readConfig( *this, bpmConf, &beamPositionMonitorConfigReader::addToBPMDataObjectsV1, &beamPositionMonitorConfigReader::addToBPMPVComStructsV1, &beamPositionMonitorConfigReader::addToBPMPVMonStructsV1 );
     if( !bpmSuccess )
         success = false;
     if( numObjs == bpmDataObjects.size() )

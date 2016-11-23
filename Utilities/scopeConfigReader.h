@@ -19,9 +19,9 @@
 class scopeConfigReader : public configReader
 {
     public:
-        scopeConfigReader( const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        scopeConfigReader( const std::string configFileLocation1,
-                           const std::string configFileLocation2,  const bool * showMessages, const  bool * showDebugMessages );
+        scopeConfigReader();// const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
+        scopeConfigReader( const std::string & scopeConf1, const std::string & scopeConf2,
+                           const bool * showMessages,    const bool * showDebugMessages );
         ~scopeConfigReader();
 
         bool readConfigFiles( );
@@ -37,6 +37,9 @@ class scopeConfigReader : public configReader
 
         typedef void (scopeConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );
         bool readConfig( scopeConfigReader & obj, const std::string fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 );
+
+        const std::string & scopeConf1;
+        const std::string & scopeConf2;
 
         /// These are read into vectors as you can use the .back() member function, which i find handy.
         /// once all the data is read in we can construct the final map of objects

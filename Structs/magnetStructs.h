@@ -71,15 +71,18 @@ namespace magnetStructs
 
     struct  magnetObject
     {   // proviude a default constructor
-        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN"),pvRoot( "UNKNOWN"),
+        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN_NAME"),pvRoot( "UNKNOWN_PVROOT"),
                 psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
                 magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
-                si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999),
+                si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999), //MAGIC_NUMBER
                 /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
                 /// ... which is probably evil && dangerous
-                numIlocks( 0 ),
+                numIlocks( 0 ),degTolerance(0.1),//MAGIC_NUMBER
                 //added deguassing initialisers here
-                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0) {} // proviude a default constructor
+                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0),//MAGIC_NUMBER
+                magneticLength(0.0),slope(0.0),intercept(0.0),position(0.0),//MAGIC_NUMBER
+                manufacturer("UNKNOWN_MANUFACTURER"), serialNumber("UNKNOWN_SERIAL_NUMBER"),
+                measurementDataLocation("UNKNOWN_MEASUREMENT_DATA_LOCATION") {} // proviude a default constructor
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
         VELA_ENUM::MAG_PSU_STATE psuState;
@@ -88,13 +91,12 @@ namespace magnetStructs
         std::string  name, pvRoot, psuRoot;
         bool isGanged, canNRFlip, samePSURoot;
         std::vector< std::string > gangMembers;
-        double si, ri, siWithPol, riWithPol, riTolerance;
-
+        double si, ri, siWithPol, riWithPol, riTolerance,position,slope,intercept,magneticLength;
+        std::string manufacturer, serialNumber, measurementDataLocation;
         //DEGUASSING: added here by Tim Price
-
         size_t numDegaussSteps, maxWaitTime, numDegaussElements;
         std::vector< double > degValues;
-        double  degTolerance;
+        double  degTolerance;/// this is not initiliased here...
 
 //        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
@@ -120,7 +122,7 @@ namespace magnetStructs
     /// This holds all offline info about degaussing
     struct degaussValues
     {   // proviude a default constructor
-        degaussValues():numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0){}
+        degaussValues():numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0){}//MAGIC_NUMBER
         size_t numDegaussSteps, maxWaitTime, numDegaussElements;
         std::map< std::string, std::vector< double > > degValues;
         std::map< std::string, double > degTolerance;
@@ -142,7 +144,7 @@ namespace magnetStructs
         size_t numMags;
         std::vector< std::string > magNames;
         std::vector< VELA_ENUM::MAG_PSU_STATE > psuStates;
-        std::vector< double > siValues;
+        std::vector< double > siValues,riValues;
     };
 }
 #endif // _VELA_MAGNET_STRUCTS_H_

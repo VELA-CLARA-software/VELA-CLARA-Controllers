@@ -21,23 +21,23 @@
 // project
 #include "magnetInterface.h"
 #include "controller.h"
+// boost.python
+#ifdef BUILD_DLL
+#include <boost/python.hpp>
+#endif
 
 class magnetController : public controller
 {
     public:
-        /// we have overloaded constructors to specify config-file location
-        magnetController( const bool show_messages = true , const bool show_debug_messages = true );
-        magnetController( const std::string configFileLocation1,  const std::string configFileLocation2, const std::string configFileLocation3, const  bool show_messages = true, const bool show_debug_messages = true );
+        /// New scheem - we just have 1 constructor, but we h vae higher level class that create these objects 9hopefully
+        magnetController();
+        magnetController( const bool show_messages,    const bool show_debug_messagese,
+                          const std::string & magConf, const std::string & NRConf, const bool startVirtualMachine,
+                          const bool shouldStartEPICs );
+
         ~magnetController( );
 
-        /// These are pure virtual methods, so need to have some implmentation in derived classes
-
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
-
-        double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT( double val );
-
+      /// Magnet Type tests
         bool isAQuad( const std::string & magName );
         bool isABSol( const std::string & magName );
         bool isAHCor( const std::string & magName );
@@ -45,20 +45,22 @@ class magnetController : public controller
         bool isADip ( const std::string & magName );
         bool isASol ( const std::string & magName );
         bool isACor ( const std::string & magName );
-
-        bool isNR( const std::string & magName );
-        bool isBipolar( const std::string & magName );
-        bool isNRGanged( const std::string & magName );
+      /// Magnet reverse Type tests
         bool isNRorNRGanged( const std::string & magName );
-
-        bool isON_psuN( const std::string & magName );
-        bool isON_psuR( const std::string & magName );
-        bool isON ( const std::string & magName );
+        bool isNRGanged    ( const std::string & magName );
+        bool isBipolar     ( const std::string & magName );
+        bool isNR          ( const std::string & magName );
+      /// PSU State tests
         bool isOFF_psuN( const std::string & magName );
         bool isOFF_psuR( const std::string & magName );
-        bool isOFF ( const std::string & magName );
-
-
+        bool isON_psuN ( const std::string & magName );
+        bool isON_psuR ( const std::string & magName );
+        bool isOFF     ( const std::string & magName );
+        bool isON      ( const std::string & magName );
+      /// Deguassing tests
+        bool isNotDegaussing( const std::string & magName );
+        bool isDegaussing   ( const std::string & magName );
+      /// Magnet Name getters
         std::vector< std::string > getMagnetNames();
         std::vector< std::string > getQuadNames();
         std::vector< std::string > getHCorNames();
@@ -66,59 +68,104 @@ class magnetController : public controller
         std::vector< std::string > getDipNames();
         std::vector< std::string > getSolNames();
 
+      /// Get Magnet Data
+      /// For c++ we allow access to the raw data objects,
+        const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
+        const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
+      /// you can also get copies of the data - these can be exposed with Python bindings
+        magnetStructs::magnetStateStruct getCurrentMagnetState( const std::vector< std::string > & s );
+        magnetStructs::magnetStateStruct getCurrentMagnetState();
 
-        void setRITolerance( const std::string & magName, const double val);
+      /// Wriote magnet data in DBURT format to file
+        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName="", const std::string &comments="");
+        bool writeDBURT( const std::string &fileName="", const std::string &comments="" );
 
-        void showMagRevType();
-
-        double getSI( const std::string & magName );
-        double getRI( const std::string & magName );
-
-        std::vector< double > getSI( const std::vector< std::string > & magNames );
-        std::vector< double > getRI( const std::vector< std::string > & magNames );
-
+      /// Set SI, 4 versions of this
         bool setSI( const std::string & magName, const double value);
-        bool setSI( const  std::vector< std::string > & magNames, const std::vector< double >& values);
+        bool setSI( const std::vector< std::string > & magNames, const std::vector< double >& values);
         bool setSI( const std::string & magNames, const double values, const double tolerances, const size_t timeOUT );
         std::vector< std::string >  setSI( const std::vector< std::string > & magNames, const std::vector< double > & values, const std::vector< double > & tolerances, const size_t timeOUT );
 
-        /// These functions return wether the commands were sent to EPICS correctly, not if the oiperation was succesful
-
+      /// Switch On PSUs
+      /// These functions return wether the commands were sent to EPICS correctly, not if the oiperation was succesful
         bool switchONpsu ( const std::string & magName  );
         bool switchOFFpsu( const std::string & magName  );
         bool switchONpsu ( const std::vector< std::string >& magNames );
         bool switchOFFpsu( const std::vector< std::string >& magNames );
 
+      /// Degaussing
         size_t degauss( const std::string & mag, bool resetToZero = true );
         size_t degauss( const std::vector< std::string > & mag, bool resetToZero = true );
         size_t degaussAll( bool resetToZero = true );
 
-        magnetStructs::magnetStateStruct getCurrentMagnetState();
-        void applyMagnetStateStruct( const magnetStructs::magnetStateStruct & ms  );
-
-
-        const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
-        const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
-
+      /// get magnet data from DBURT
         magnetStructs::magnetStateStruct getDBURT( const std::string & fileName );
         magnetStructs::magnetStateStruct getDBURTCorOnly( const std::string & fileName );
         magnetStructs::magnetStateStruct getDBURTQuadOnly( const std::string & fileName );
 
+      /// apply DBURT  / magnetStateStruct
+        void applyMagnetStateStruct( const magnetStructs::magnetStateStruct & ms  );
         void applyDBURT( const std::string & fileName );
         void applyDBURTCorOnly( const std::string & fileName );
         void applyDBURTQuadOnly( const std::string & fileName );
 
-        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = "" );
-        bool writeDBURT( const std::string & fileName = "", const std::string & comments = "" );
+      /// This is an old function from setting up the project
+        void showMagRevType();
+      /// Manuallsettign RI tolerance...
+        void setRITolerance( const std::string & magName, const double val);
+
+      /// how long to wait when sending commands to EPICS
+        double get_CA_PEND_IO_TIMEOUT();
+        void   set_CA_PEND_IO_TIMEOUT( double val );
+
+      /// get objectdata
+
+      /// Get RI and SI
+        double getSI( const std::string & magName );
+        double getRI( const std::string & magName );
+        std::vector< double > getSI( const std::vector< std::string > & magNames );
+        std::vector< double > getRI( const std::vector< std::string > & magNames );
+      /// Reverse types
+        magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
+      ///
+        magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
+        std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
+      ///
+        VELA_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
+        std::vector<  VELA_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
+      ///
+        double                getPosition( const std::string & magName );
+        std::vector< double > getPosition( const std::vector< std::string > & magNames );
+      ///
+        double                getSlope( const std::string & magName );
+        std::vector< double > getSlope( const std::vector< std::string > & magNames );
+      ///
+        double                getIntercept( const std::string & magName );
+        std::vector< double > getIntercept( const std::vector< std::string > & magNames );
+      ///
+        std::vector< double >                getDegValues( const std::string & magName );
+        std::vector< std::vector< double > > getDegValues( const std::vector< std::string > & magName );
 
 
-        bool isDegaussing( const std::string & magName );
-        bool isNotDegaussing( const std::string & magName );
+      /// These are pure virtual methods, so need to have some implmentation in derived classes
+        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
+        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
+      /// any functions that return a map need a wrapper to convert to a python dictionary
+      /// (we need the functions that return std::map types when building c++ applications)
+#ifdef BUILD_DLL
+        boost::python::dict getILockStates_Py( std::string magName );
+        boost::python::dict getILockStatesStr_Py( std::string magName );
+        boost::python::dict getMagPSUStateDefinition();
+#endif // BUILD_DLL
 
     protected:
     private:
 
         void initialise();
+
+        bool shouldStartEPICs;
+
 
         magnetInterface localInterface;
 };

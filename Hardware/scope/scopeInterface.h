@@ -28,16 +28,16 @@ class scopeInterface : public interface
 
         /// Not a singleton, two construction methods....
 
-        scopeInterface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        scopeInterface( const std::string configFileLocation1,
-                        const std::string configFileLocation2, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        scopeInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
+                        const bool* show_messages_ptr, const  bool * show_debug_messages_ptr, const bool shouldStartEPICS  );
 
         bool monitoringTraces = false;
         bool monitoringNums = false;
-        bool isMonitoringScopeTraces();
-        bool isMonitoringScopeNums();
-        bool isNotMonitoringScopeTraces();
-        bool isNotMonitoringScopeNums();
+        bool isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
 
         ~scopeInterface();
 
@@ -69,6 +69,8 @@ class scopeInterface : public interface
         void cancelDataMonitors();
         std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType );
         std::vector< std::string > getScopeNames();
+        const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
+        const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
 //        char getTimestamp( std::string & scope );
 //        bool hasTrig( const std::string & scope );
 //        bool hasNoTrig( const std::string & scope );
@@ -95,11 +97,11 @@ class scopeInterface : public interface
 
         /// called from constructor to set-up chids, montiros, etc.
 
-        void initialise();
+        void initialise( const bool shouldStartEPICS );
 
         scopeConfigReader configReader;
 
-        void initScopeObjects();
+        bool initScopeObjects();
         void initScopeChids();
         //void addChannel( std::map< std::string, scopeStructs::scopeObject >::iterator & it1, std::map< scopeStructs::SCOPE_PV_TYPE, std::string >::const_iterator & it2 );
         void addChannel( const std::string & pvRoot, scopeStructs::pvStruct & pv );

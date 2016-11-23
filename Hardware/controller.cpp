@@ -17,7 +17,7 @@
 #include <iostream>
 #include <sstream>
 
-controller::controller() : SHOW_DEBUG_MESSAGES( true ) , SHOW_MESSAGES( true ), baseObject( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES ){}
+//controller::controller() : SHOW_DEBUG_MESSAGES( true ) , SHOW_MESSAGES( true ), baseObject( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES ){}
 controller::controller(bool show_messages, bool show_debug_messages):SHOW_DEBUG_MESSAGES(show_debug_messages),
 SHOW_MESSAGES(show_messages), baseObject( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES ){}
 //______________________________________________________________________________

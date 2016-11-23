@@ -14,11 +14,8 @@ namespace UTL
     const char EQUALS_SIGN_C      = '=';
     const char COLON_C            = ':';
 
-    //const std::string CONFIG_PATH = "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\";
-    //const std::string CONFIG_PATH_VM = "C:\\Users\\wln24624\\Documents\\VELA-CLARA-Controllers\\Config\\VM\\";
-
-    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\";
-    const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\Org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VM-Controllers\\VELA-CLARA-Controllers\\Config\\VM\\";
+    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    const std::string VM_PREFIX   = "VM-";
 
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
     const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
@@ -26,20 +23,30 @@ namespace UTL
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
     const std::string VELA_INJ_BPM_CONFIG              = "velaINJBeamPositionMonitors.config";
     const std::string VELA_BA1_BPM_CONFIG              = "velaBA1BeamPositionMonitors.config";
+/// Qscope
     const std::string VELA_SCOPE_CONFIG                = "velaQScope.config";
     const std::string VELA_SCOPE_TRACE_CONFIG          = "velaQScopeTrace.config";
+/// VELA Gun
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
     const std::string VELA_RF_GUN_MOD_CONFIG           = "velaRFGunModulator.config";
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
+/// Magnets
     const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
+    const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
+    const std::string VELA_BA2_MAG_NR_PSU_CONFIG       = "velaBA2MagnetsNRpsu.config";
+    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnetsNRpsu.config";
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
-    const std::string VELA_INJ_MAG_DEGUASS_CONFIG      = "velaINJMagnetsDegauss.config";
+    const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
+    const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
+    const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";
+/// Screens
     const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
     const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";
     const std::string VELA_BA2_COMPLEX_SCREENS_CONFIG  = "velaBA2ComplexScreens.config";
     const std::string VELA_BA2_SIMPLE_SCREENS_CONFIG   = "velaBA2SimpleScreens.config";
     const std::string VELA_BA1_COMPLEX_SCREENS_CONFIG  = "velaBA1ComplexScreens.config";
     const std::string VELA_BA1_SIMPLE_SCREENS_CONFIG   = "velaBA1SimpleScreens.config";
+/// Cameras
     const std::string VELA_CAMERA_CONFIG               = "velaCamera.config";
     const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
     /// These are the keywords used in hardware config files
@@ -166,7 +173,7 @@ namespace UTL
     // deguass
     //const std::string NUM_DEGAUSS_ELEMENTS = "NUM_DEGAUSS_ELEMENTS";
     const std::string NUM_DEGAUSS_STEPS = "NUM_DEGAUSS_STEPS";
-    const std::string DEGAUSS_VALUES = "DEGAUSS_VALUES";
+    const std::string DEGAUSS_VALUES    = "DEGAUSS_VALUES";
     const std::string DEGAUSS_TOLERANCE = "DEGAUSS_TOLERANCE";
     //const std::string BSOL_DEGAUSS_VALUES = "BSOL_DEGAUSS_VALUES";
     //const std::string DIP_DEGAUSS_VALUES = "DIP_DEGAUSS_VALUES";
@@ -180,6 +187,14 @@ namespace UTL
     //const std::string COR_DEGAUSS_TOLERANCE = "COR_DEGAUSS_TOLERANCE";
 
     const std::string RI_TOLERANCE = "RI_TOLERANCE";
+    const std::string POSITION  = "POSITION";
+    const std::string SLOPE     = "SLOPE";
+    const std::string INTERCEPT = "intercept";
+    const std::string MANUFACTURER = "MANUFACTURER";
+    const std::string SERIAL_NUMBER = "SERIAL_NUMBER";
+    const std::string MEASUREMENT_DATA_LOCATION = "MEASUREMENT_DATA_LOCATION";
+    const std::string MAGNETIC_LENGTH = "MAGNETIC_LENGTH";
+
     // chtypes
 
      const std::string DBR_STRING_STR = "DBR_STRING";

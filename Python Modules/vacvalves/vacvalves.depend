@@ -1,0 +1,121 @@
+# depslib dependency file v1.0
+1476412998 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1476412998 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1476412998 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1476412998 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1479221768 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1477999764 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1476884156 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\vacuumvalve\vacuumvalvecontroller.cpp
+	"vacuumValveController.h"
+	<iostream>
+	"vacuumValveInterface.h"
+
+1476883298 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\vacuumvalve\vacuumvalvecontroller.h
+	"vacuumValveStructs.h"
+	"vacuumValveInterface.h"
+	"controller.h"
+	"structs.h"
+	<string>
+	<vector>
+
+1476412998 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\structs\vacuumvalvestructs.h
+	"structs.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1476884659 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\vacuumvalve\vacuumvalveinterface.h
+	"interface.h"
+	"vacuumValveStructs.h"
+	"vacuumValveConfigReader.h"
+	<vector>
+	<string>
+
+1476884870 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\vacuumvalveconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"vacuumValveStructs.h"
+
+1476412998 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1479222753 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\configdefinitions.h
+	<string>
+
+1476884632 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\hardware\vacuumvalve\vacuumvalveinterface.cpp
+	"vacuumValveInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<thread>
+
+1476412998 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1476412998 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1476884854 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\utilities\vacuumvalveconfigreader.cpp
+	"vacuumValveConfigReader.h"
+	"vacuumValveStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1383686517 source:d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\vacvalves\main.cpp
+	"main.h"
+
+1383686517 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\vacvalves\main.h
+	<windows.h>
+

@@ -270,5 +270,15 @@ bool velaINJMagnetController::writeDBURT_Py( const std::string fileName, const s
 {
      return writeDBURT( fileName, comments );
 }
+//______________________________________________________________________________
+magnetStructs::magnetStateStruct velaINJMagnetController::getCurrentMagnetState_Py1()
+{
+    return getCurrentMagnetState( );
+}
+//______________________________________________________________________________
+magnetStructs::magnetStateStruct velaINJMagnetController::getCurrentMagnetState_Py2( const std::vector< std::string >& s )
+{
+    return getCurrentMagnetState( s );
+}
 
 #endif //BUILD_DLL

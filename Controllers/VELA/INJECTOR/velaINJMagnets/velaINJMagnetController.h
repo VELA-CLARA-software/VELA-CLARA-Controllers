@@ -26,11 +26,12 @@ class velaINJMagnetController : public magnetController
                                  const  bool show_messages = true, const bool show_debug_messages = true );
         ~velaINJMagnetController( );
 
+        static
+
+
 #ifdef BUILD_DLL
         /// Include a function to export enum definitions to a python dictionary
         boost::python::dict getMagPSUStateDefinition();
-
-
 
         magnetStructs::magnetStateStruct getDBURT_Py( const std::string fileName );
         magnetStructs::magnetStateStruct getDBURTCorOnly_Py( const std::string fileName );
@@ -44,7 +45,7 @@ class velaINJMagnetController : public magnetController
         bool writeDBURT_Py( const std::string fileName = "", const std::string comments = "" );
 
 
-        /// python does not do pass-by-reference
+        /// (apparently) python does not do pass-by-reference (but it seems to work anywya...)?!)
         /// so we create some thin wrappers to those functions that boost.python can use
         /// (retain pass by reference versions for c++ applications)
 
@@ -88,6 +89,10 @@ class velaINJMagnetController : public magnetController
         bool switchOFFpsu_Py1( const std::string magName  );
         bool switchONpsu_Py2 ( const std::vector< std::string > magNames );
         bool switchOFFpsu_Py2( const std::vector< std::string > magNames );
+
+        magnetStructs::magnetStateStruct getCurrentMagnetState_Py1();
+        magnetStructs::magnetStateStruct getCurrentMagnetState_Py2( const std::vector< std::string > & s );
+
 
         size_t degauss_Py1( const std::string mag );
         size_t degauss_Py2( const std::vector< std::string > mag );
@@ -151,11 +156,12 @@ BOOST_PYTHON_MODULE( velaINJMagnetControl )
             .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
             ;
 
-    class_<magnetStructs::magnetStateStruct>("magnetStateStruct")
-        .def_readwrite("numMags", &magnetStructs::magnetStateStruct::numMags)
-        .def_readwrite("magNames", &magnetStructs::magnetStateStruct::magNames)
-        .def_readwrite("psuStates", &magnetStructs::magnetStateStruct::psuStates)
-        .def_readwrite("siValues", &magnetStructs::magnetStateStruct::siValues)
+    boost::python::class_<magnetStructs::magnetStateStruct>("magnetStateStruct")
+        .add_property("numMags",   &magnetStructs::magnetStateStruct::numMags)
+        .add_property("magNames",  &magnetStructs::magnetStateStruct::magNames)
+        .add_property("psuStates", &magnetStructs::magnetStateStruct::psuStates)
+        .add_property("siValues",  &magnetStructs::magnetStateStruct::siValues)
+        .add_property("riValues",  &magnetStructs::magnetStateStruct::riValues)
         ;
 
     boost::python::enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
@@ -163,6 +169,7 @@ BOOST_PYTHON_MODULE( velaINJMagnetControl )
             .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
             .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
             ;
+
     /// Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
@@ -228,6 +235,8 @@ BOOST_PYTHON_MODULE( velaINJMagnetControl )
             .def("applyDBURTCorOnly",        &velaINJMagnetController::applyDBURTCorOnly  )
             .def("applyDBURTQuadOnly",       &velaINJMagnetController::applyDBURTQuadOnly )
             .def("getDBURT",                 &velaINJMagnetController::getDBURT_Py        )
+            //.def("getCurrentMagnetState",    &velaINJMagnetController::getCurrentMagnetState_Py1 )
+            //.def("getCurrentMagnetState",    &velaINJMagnetController::getCurrentMagnetState_Py2 )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",         &velaINJMagnetController::debugMessagesOff )
             .def("debugMessagesOn",          &velaINJMagnetController::debugMessagesOn )

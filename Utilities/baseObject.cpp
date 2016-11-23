@@ -5,7 +5,7 @@ baseObject::baseObject( const bool* show_messages_ptr,const bool * show_debug_me
 : SHOW_MESSAGES_PTR( show_messages_ptr ), SHOW_DEBUG_MESSAGES_PTR( show_debug_messages_ptr )
 {}
 //______________________________________________________________________________
-baseObject::~baseObject(){}
+baseObject::~baseObject(){};
 //______________________________________________________________________________
 bool baseObject::polaritiesMatch( const std::vector< double > & vals )
 {/// to make this a template need to think about the test comapring to 0.0

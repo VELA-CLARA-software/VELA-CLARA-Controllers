@@ -19,29 +19,30 @@
 #include "beamPositionMonitorInterface.h"
 
 //______________________________________________________________________________
-beamPositionMonitorController::beamPositionMonitorController( const std::string configFileLocation, const  bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+beamPositionMonitorController::beamPositionMonitorController( const std::string &configFileLocation, const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS )
+: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS ), shouldStartEPICS( shouldStartEPICS )
 {
     initialise();
 }
 //______________________________________________________________________________
-beamPositionMonitorController::beamPositionMonitorController( const  bool show_messages, const bool show_debug_messages  )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-    initialise();
-}
-//______________________________________________________________________________
-void beamPositionMonitorController::initialise()
-{
-    if( localInterface.interfaceInitReport() )
-        message("beamPositionMonitorController instantiation success.");
-}
+//beamPositionMonitorController::beamPositionMonitorController( const  bool show_messages, const bool show_debug_messages  )
+//: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+//{
+//    initialise();
+//}
 //______________________________________________________________________________
 beamPositionMonitorController::~beamPositionMonitorController(){}    //dtor
 //______________________________________________________________________________
-beamPositionMonitorStructs::rawDataStruct beamPositionMonitorController::getAllBPMData( const std::string & name, size_t N )
+void beamPositionMonitorController::initialise()
 {
-    return localInterface.getAllBPMData( name, N );
+    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
+        message("beamPositionMonitorController instantiation success.");
+}
+
+//______________________________________________________________________________
+const beamPositionMonitorStructs::rawDataStruct & beamPositionMonitorController::getAllBPMData( const std::string & name )
+{
+    return localInterface.getAllBPMData( name );
 }
 //______________________________________________________________________________
 std::vector< std::vector< double > > beamPositionMonitorController::getBPMRawData( const std::string & name )
@@ -84,14 +85,19 @@ bool beamPositionMonitorController::isNotMonitoringBPMData( const std::string & 
     return localInterface.isNotMonitoringBPMData( name );
 }
 //______________________________________________________________________________
-void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::string & bpmNames )
+void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::string & name )
 {
-    localInterface.monitorDataForNShots( N, bpmNames );
+    localInterface.monitorDataForNShots( N, name );
 }
 //______________________________________________________________________________
-void beamPositionMonitorController::reCalAtt( const std::string & name, double qScope )
+void beamPositionMonitorController::monitorMultipleDataForNShots( size_t N, std::vector< std::string > names )
 {
-    localInterface.reCalAtt( name, qScope );
+    localInterface.monitorMultipleDataForNShots( N, names );
+}
+//______________________________________________________________________________
+void beamPositionMonitorController::reCalAttenuation( const std::string & name, double qScope )
+{
+    localInterface.reCalAttenuation( name, qScope );
 }
 //______________________________________________________________________________
 double beamPositionMonitorController::getX( const std::string & name )
@@ -117,6 +123,11 @@ double beamPositionMonitorController::getXFromPV( const std::string & name )
 double beamPositionMonitorController::getYFromPV( const std::string & name )
 {
     return localInterface.getYFromPV( name );
+}
+//______________________________________________________________________________
+double beamPositionMonitorController::getBPMResolution( const std::string & name )
+{
+    return localInterface.getBPMResolution( name );
 }
 //______________________________________________________________________________
 long beamPositionMonitorController::getRA1( const std::string & name )

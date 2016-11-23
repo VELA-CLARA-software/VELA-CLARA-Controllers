@@ -42,7 +42,7 @@ class controller : public baseObject
 {
     public:
 
-        controller();
+        //controller();
         controller( bool show_messages, bool show_debug_messages );
         ~controller();
 

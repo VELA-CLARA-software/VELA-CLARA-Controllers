@@ -33,7 +33,6 @@
         }                                                                     \
     }                                                                         \
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 /// Another MACRO (!) for member-function-pointers
 /// https://isocpp.org/wiki/faq/pointers-to-members
 
@@ -47,6 +46,9 @@ namespace VELA_ENUM
    /// SHould these go here? should the names be rationalised?
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SHUTTER_STATE, (SHUTTER_CLOSED) (SHUTTER_OPEN) (SHUTTER_TIMING) (SHUTTER_ERROR) )
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_MODE, (OFFLINE ) (VIRTUAL ) (PHYSICAL) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_AREA, (VELA_INJ) (VELA_BA1) (VELA_BA2) )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_STATE, (MAG_PSU_OFF) (MAG_PSU_ON) (MAG_PSU_TIMING) (MAG_PSU_ERROR) (MAG_PSU_NONE) )
 
@@ -97,9 +99,5 @@ namespace VELA_ENUM
         interface * interface;            /// this allows us to access hardware base class members, e.g. debugMessage;
         evid                EVID;
     };
-
-
-
-
 }
 #endif // _VELA_ENUM_H_

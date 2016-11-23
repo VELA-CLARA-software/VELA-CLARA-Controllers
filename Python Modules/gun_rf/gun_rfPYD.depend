@@ -1,0 +1,123 @@
+# depslib dependency file v1.0
+1476266120 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1476266136 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1476354129 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1476265617 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1476087801 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1478002998 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1476265589 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1476087801 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1476265603 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1478088428 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+
+1476087801 source:d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguncontroller.cpp
+	"RFGunController.h"
+
+1476087801 d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguncontroller.h
+	<string>
+	<vector>
+	<map>
+	"RFGunInterface.h"
+	"controller.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1476087801 d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguninterface.h
+	"interface.h"
+	"RFGunStructs.h"
+	"RFGunConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
+1476087801 d:\vela\git projects\vela-clara-controllers\structs\rfgunstructs.h
+	"structs.h"
+	<vector>
+	<string>
+	<map>
+	<cadef.h>
+
+1476087801 d:\vela\git projects\vela-clara-controllers\utilities\rfgunconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"RFGunStructs.h"
+
+1476087801 source:d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguninterface.cpp
+	"RFGunInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<thread>
+	<time.h>
+
+1476087801 source:d:\vela\git projects\vela-clara-controllers\utilities\rfgunconfigreader.cpp
+	"RFGunConfigReader.h"
+	"configDefinitions.h"
+	"RFGunStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1476087799 source:d:\vela\git projects\vela-clara-controllers\python modules\gun_rf\main.cpp
+

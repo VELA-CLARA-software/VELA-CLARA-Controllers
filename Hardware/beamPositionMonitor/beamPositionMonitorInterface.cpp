@@ -20,6 +20,7 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include <numeric>
 #include <thread>
 #include <ctime>
 #include <string>
@@ -28,17 +29,18 @@
 #include <stdlib.h>
 #include <epicsTime.h>
 
-beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
-: configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
+beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
+                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS ):
+    configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
 {
-    initialise();
+    initialise( shouldStartEPICS );
 }
 //______________________________________________________________________________
-beamPositionMonitorInterface::beamPositionMonitorInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  )
-{
-    initialise();
-}
+//beamPositionMonitorInterface::beamPositionMonitorInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
+//: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  )
+//{
+//    initialise();
+//}
 //______________________________________________________________________________
 beamPositionMonitorInterface::~beamPositionMonitorInterface()
 {
@@ -49,27 +51,32 @@ beamPositionMonitorInterface::~beamPositionMonitorInterface()
 //    }
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::initialise()
+void beamPositionMonitorInterface::initialise( const bool shouldStartEPICs )
 {
     /// The config file reader
-
     configFileRead = configReader.readConfigFiles();
-
+    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
-
-        initBPMObjects();
-
-        /// subscribe to the channel ids
-
-        initBPMChids();
-
-        /// start the monitors: set up the callback functions
-
-        monitorBPMs();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); /// MAGIC NUMBER
+        bool getDataSuccess = initBPMObjects();
+        if( getDataSuccess )
+        {
+            if( shouldStartEPICs )
+            {
+                std::cout << "WE ARE HERE" << std::endl;
+                /// subscribe to the channel ids
+                initBPMChids();
+                /// start the monitors: set up the callback functions
+                monitorBPMs();
+                /// The pause allows EPICS to catch up.
+                std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+            }
+            else
+                message("The bpmInterface Read Config files, Not Starting EPICS Monitors" );
+        }
+        else
+            message( "!!!The bpmInterface received an Error while getting BPM data!!!" );
     }
 }
 ////______________________________________________________________________________
@@ -81,9 +88,10 @@ void beamPositionMonitorInterface::initialise()
 //        bpmNames.push_back( it.first );
 //}
 //______________________________________________________________________________
-void beamPositionMonitorInterface::initBPMObjects()
+bool beamPositionMonitorInterface::initBPMObjects()
 {
     bpmObj = configReader.getBPMObject();
+    return true;
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::initBPMChids()
@@ -126,6 +134,7 @@ void beamPositionMonitorInterface::addChannel( const std::string & pvRoot, beamP
 void beamPositionMonitorInterface::monitorBPMs()
 {
     continuousMonitorStructs.clear();
+    dataMonitorStructs.clear();
 
     for( auto && it1 : bpmObj.dataObjects )
         for( auto && it2 : it1.second.pvMonStructs )
@@ -285,7 +294,7 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     /// this could be better, with the type passed from the config
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
     beamPositionMonitorStructs::rawDataStruct * bpmdo = reinterpret_cast< beamPositionMonitorStructs::rawDataStruct *> (ms -> val);
-    if( bpmdo->isAContinuousMonitorStruct)
+    if( bpmdo->isAContinuousMonitorStruct )
     {
         for( auto && it1 : bpmObj.dataObjects )
         {
@@ -293,9 +302,11 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             it1.second.shotCount = 0;
         }
     }
+
     const dbr_double_t * value = &(p  -> value);
     size_t i = 0;
     updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ], bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
+
     for( auto && it : bpmdo->rawBPMData[ bpmdo->shotCount ] )
     {
         it = *( &p->value + i);
@@ -323,14 +334,12 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
         }
         if( bpmdo->shotCount == bpmdo->numShots )
         {
-            bpmdo->appendingData = false;
-//            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo->name );
+            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo->name );
             ms->interface->killCallBack( ms, bpmdo );//, bpmdo );
             monitoringData = false;
             bpmdo -> shotCount = 0;
         }
     }
-
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
@@ -340,13 +349,11 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
         case DBR_DOUBLE:
         {
             *(double*)ms -> val = *(double*)args.dbr;
-//            ms->interface->message(ms->bpmObject->name," ",ms->objName," ",ENUM_TO_STRING( ms -> monType), " = ", *(double*)ms -> val );
             break;
         }
         case DBR_LONG:
         {
             *(long*)ms -> val = *(long*)args.dbr;
-//            ms->interface->message(ms->bpmObject->name," ",ms->objName," ",ENUM_TO_STRING( ms -> monType), " = ", *(long*)ms -> val );
             break;
         }
         case DBR_TIME_DOUBLE:
@@ -367,12 +374,10 @@ void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::mon
 //        debugMessage( ms -> scopeObject, " monitoring = false ");
 
         isMonitoringMap[ ms -> bpmObject ] = false;
-//        bpmdo -> isMonitoring = false;
         bpmdo -> appendingData = false;
 
-        monitoringData = false;
-
         delete ms;
+        message( bpmdo->name, "callback deleted" );
     }
     else
     {
@@ -421,6 +426,37 @@ void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::st
         message( "Already Monitoring Data " ); /// make more useful
     }
 
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::monitorMultipleDataForNShots( size_t N, std::vector< std::string > names )
+{
+    resetDataVectors( N );
+    for( auto it : names )
+    {
+        if( !bpmObj.dataObjects.at( it ).bpmRawData.appendingData )
+        {
+            message( "Starting bpm data Monitor " );
+
+
+
+            bpmObj.dataObjects.at( it ).bpmRawData.numShots = N;
+            bpmObj.dataObjects.at( it ).bpmRawData.isAContinuousMonitorStruct=false;
+            bpmObj.dataObjects.at( it ).bpmRawData.isATemporaryMonitorStruct=true;
+            bpmObj.dataObjects.at( it ).bpmRawData.appendingData=true;
+
+
+            addToMonitorStructs( dataMonitorStructs, bpmObj.dataObjects.at( it ).pvMonStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::DATA ) , &bpmObj.dataObjects.at( it )  );
+    //            }
+    //        }
+            int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to bpm data Monitors failed" );
+            if ( status == ECA_NORMAL )
+                monitoringData = true; /// interface base class member
+        }
+        else
+        {
+            message( "Already Monitoring Data " ); /// make more useful
+        }
+    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::resetDataVectors( size_t N )
@@ -559,12 +595,56 @@ double beamPositionMonitorInterface::calcQ( const std::string & bpmName, std::ve
     return q;
 }
 //______________________________________________________________________________
+double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmName )
+{
+    double res;
+    double u11, u12, u13, u14, u21, u22, u23, u24, v11, v12, v21, v22;
+    std::vector< double > rmsVals;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData.size() != 0 )
+    {
+        std::cout << bpmObj.dataObjects.at(bpmName).bpmRawData.rawBPMData.size() << std::endl;
+        for( unsigned int i = 0; i < bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData.size(); i++ )
+        {
+            u11 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 1 ];
+            u12 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 2 ];
+            u13 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 3 ];
+            u14 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 4 ];
+            u21 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 5 ];
+            u22 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 6 ];
+            u23 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 7 ];
+            u24 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 8 ];
+            v11 = u11 - u14;
+            v12 = u12 - u14;
+            v21 = u21 - u24;
+            v22 = u22 - u24;
+            if( v11 && v12 && v21 && v22 != 0 )
+            {
+                rmsVals.push_back( ( ( v11 + v12 ) - ( v21 + v22 ) ) / ( ( v11 + v12 ) + ( v21 + v22 ) ) );
+            }
+            //std::cout << u11 << "   " << u12 << "   " << u21 << "   " << u22 << std::endl;
+        }
+        double rms = sqrt( ( std::inner_product( rmsVals.begin(), rmsVals.end(), rmsVals.begin(), 0 ) ) / static_cast<double>( rmsVals.size() ) );
+        res = rms * sqrt( 2 ) * bpmObj.dataObjects.at( bpmName ).mn;
+        std::cout << rmsVals.size() << std::endl;
+        return res;
+    }
+    else
+    {
+        message( "BPM resolution calculation didn't work" );
+        return res;
+    }
+}
+//______________________________________________________________________________
 bool beamPositionMonitorInterface::isMonitoringBPMData( const std::string & name )
 {
     if( bpmObj.dataObjects.at( name ).bpmRawData.appendingData == true )
+    {
         return true;
+    }
     else
+    {
         return false;
+    }
 }
 //______________________________________________________________________________
 bool beamPositionMonitorInterface::isNotMonitoringBPMData( const std::string & name )
@@ -572,37 +652,12 @@ bool beamPositionMonitorInterface::isNotMonitoringBPMData( const std::string & n
     return !isMonitoringBPMData( name );
 }
 //______________________________________________________________________________
-beamPositionMonitorStructs::rawDataStruct beamPositionMonitorInterface::getAllBPMData( const std::string & name, size_t N )
+const beamPositionMonitorStructs::rawDataStruct & beamPositionMonitorInterface::getAllBPMData( const std::string & bpmName )
 {
-    if( !monitoringData )
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData.size() != 0 )
     {
-        dataMonitorStructs.clear();
-//        debugMessage( "Starting bpm data Monitor " );
-        resetDataVectors( N );
-//        debugMessage( "Vectors Reset" );
-        bpmObj.dataObjects.at( name ).numShots = N;
-
-        monitoringData = true;
-//        bpmObj.dataObjects.at( name ).isAContinuousMonitorStruct=false;
-        bpmObj.dataObjects.at( name ).appendingData = true;
-        addToMonitorStructs( dataMonitorStructs, bpmObj.dataObjects.at( name ).pvMonStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::DATA ) , &bpmObj.dataObjects.at( name )  );
-
-        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to bpm data Monitors failed" );
-        if ( status == ECA_NORMAL )
-            monitoringData = true; /// interface base class member
+        return bpmObj.dataObjects.at( bpmName ).bpmRawData;
     }
-//    else
-//    {
-//        message( "Already Monitoring Data " ); /// make more useful
-//    }
-
-//    time_t timeToAbort = time( 0 ) + (int) ceil( (double) numrecords / 1.0 );
-//    while( bpmObj.dataObjects.at( name ).bpmRawData.appendingData )
-//    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 10 ));
-//    }
-
-    return bpmObj.dataObjects.at( name ).bpmRawData;
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::setSA1( const std::string & bpmName, long val )
@@ -772,7 +827,7 @@ double beamPositionMonitorInterface::getYFromPV( const std::string & bpmName )
         return r;
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::reCalAtt( const std::string & bpmName, double qScope )
+void beamPositionMonitorInterface::reCalAttenuation( const std::string & bpmName, double qScope )
 {
     /// For this function we get a charge value from somewhere else ( e.g. a scopeInterface ) and pass it in
     double att1Cal, att2Cal, v1Cal, v2Cal, qCal, qqC;

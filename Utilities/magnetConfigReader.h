@@ -19,10 +19,12 @@
 class magnetConfigReader : public configReader
 {
     public:
-        magnetConfigReader( const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        magnetConfigReader( const std::string configFileLocation1,
-                            const std::string configFileLocation2,
-                            const std::string configFileLocation3,  const bool * showMessages, const  bool * showDebugMessages );
+
+        magnetConfigReader();
+        magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
+                                                const bool startVirtualMachine,
+                                                const bool*show_messages_ptr,const bool*show_debug_messages_ptr );
+
         ~magnetConfigReader();
 
         bool readConfig( );
@@ -32,7 +34,7 @@ class magnetConfigReader : public configReader
     private:
 
         /// for inj_mag objects there are 2 types of hardware, we should be able to read in
-        /// the conig files with 1 function and function pointers, this can't go in the
+        /// the config files with 1 function and function pointers, this can't go in the
         /// base as the functions addToObjectsV1() etc. are in derived classes
         /// This seems like a "nice" use of function pointers (?)
 
@@ -70,6 +72,12 @@ class magnetConfigReader : public configReader
 
         void addMagType( const std::vector<std::string> &keyVal );
         void addRevType( const std::vector<std::string> &keyVal );
+
+        const std::string magConf,NRConf;
+
+        const bool usingVirtualMachine;
+
+
 //        void addMagType( std::string & str );
 //        void addMagType( std::string & str );
 

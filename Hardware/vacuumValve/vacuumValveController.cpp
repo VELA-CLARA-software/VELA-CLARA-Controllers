@@ -19,25 +19,22 @@
 #include "vacuumValveInterface.h"
 
 //______________________________________________________________________________
-vacuumValveController::vacuumValveController( const std::string configFileLocation, const  bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+vacuumValveController::vacuumValveController( const std::string configFileLocation, const  bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS )
+: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS ), shouldStartEPICS( shouldStartEPICS )
 {
     initialise();
 }
-//______________________________________________________________________________
-vacuumValveController::vacuumValveController( const  bool show_messages, const bool show_debug_messages  )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-    initialise();
-}
+////______________________________________________________________________________
+//vacuumValveController::vacuumValveController( const  bool show_messages, const bool show_debug_messages  )
+//: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+//{
+//    initialise();
+//}
 //______________________________________________________________________________
 void vacuumValveController::initialise()
 {
-    /// Keep a local copy of all the existing shutter names for openShutter1(), openShutter2(), etc...
-
-    localInterface.findVacValveNames( vacValveNames );
-
-    message("The vacuumValveController succesfully instantiated a vacuumValveInterface.");
+    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
+        message("vacuumValveController instantiation success.");
 }
 //______________________________________________________________________________
 vacuumValveController::~vacuumValveController(){}    //dtor
