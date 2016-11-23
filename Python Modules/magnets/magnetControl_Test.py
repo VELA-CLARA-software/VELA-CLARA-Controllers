@@ -53,5 +53,28 @@ print 'd.rPSU.psuState   = ', d.rPSU.psuState
 print 'd.position   = ', d.position
 print 'd.slope   = ', d.slope
 print 'd.intercept   = ', d.intercept
+print ''
+print ''
+
+
+d = c.getMagObjConstRef("HCOR01")
+
+print''
+print 'HCOR01 Data'
+print 'magnet name = ', d.name
+print 'magnet type = ', d.magType
+print 'siWithPol   = ', d.siWithPol
+print 'riWithPol   = ', d.riWithPol
+print 'riTolerance   = ', d.riTolerance
+print 'd.nPSU.psuState   = ', d.nPSU.psuState
+print 'd.rPSU.psuState   = ', d.rPSU.psuState
+print 'd.position   = ', d.position
+print 'd.slope   = ', d.slope
+print 'd.intercept   = ', d.intercept
+print 'd.manufacturer   = ', d.manufacturer
+print 'd.serialNumber   = ', d.serialNumber
+print 'd.measurementDataLocation   = ', d.measurementDataLocation
+print 'd.magneticLength   = ', d.magneticLength
+
 
 raw_input()

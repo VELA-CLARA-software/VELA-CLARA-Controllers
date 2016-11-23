@@ -30,10 +30,14 @@ magnetInterface::magnetInterface( const std::string &magConf, const std::string 
                                   const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs ):
 configReader( magConf, NRConf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY"),
-inOfflineMode(shouldStartEPICs )
+interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY"),//MAGIC_NUMBER
+shouldStartEPICs( shouldStartEPICs )
 {
-        initialise();
+//    if( shouldStartEPICs )
+//    message("magnet magnetInterface shouldStartEPICs is true");
+//    else
+//    message("magnet magnetInterface shouldStartEPICs is false");
+    initialise();
 }
 //______________________________________________________________________________
 magnetInterface::~magnetInterface()
@@ -75,7 +79,7 @@ void magnetInterface::initialise()
         bool getDataSuccess = initObjects();
         if( getDataSuccess )
         {
-            if( !inOfflineMode )
+            if( shouldStartEPICs )
             {
                 std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
@@ -147,7 +151,7 @@ void magnetInterface::initChids()
     int status = sendToEpics( "ca_create_channel", "Found Magnet ChIds.", "!!TIMEOUT!! Not all Magnet ChIds found." );
     if( status == ECA_TIMEOUT )
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));
+        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));//MAGIC_NUMBER
         for( const auto & magObjIt : allMagnetData )
         {
             message("\n", "Checking Chids for ", magObjIt.first );
@@ -416,7 +420,7 @@ bool magnetInterface::setSI( const std::string & magName, const double value, co
 void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
 { /// THIS IS THE MAIN SET SI FUNCTION
 
-    if( inOfflineMode)
+    if( !shouldStartEPICs )
     {
         for( auto i = 0; i < magNames.size(); ++i )
         {
@@ -468,7 +472,7 @@ void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
             }
 
             /// we need to do further checks on the N-R ganged members
-            if( presentGangMembers.size() > 0 )
+            if( presentGangMembers.size() > 0 )//MAGIC_NUMBER
                 setNRGangedSIVectors( presentGangMembers, presentGangMembersValues, magnetsToSet, magnetsToFlipThenSet,magnetsToSetValues,magnetsToFlipThenSetValues );
 
             /// Now we can send out some values.
@@ -477,7 +481,7 @@ void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
             if( magnetsToFlipThenSet.size() > 0 )// MAGIC_NUMBER
             {   //std::cout<<"HI"<<std::endl;
     //            debugMessage(" ZERO FLIPPING MAGNETS " );
-                const vec_d zeros( magnetsToFlipThenSet.size(), 0.0 )// MAGIC_NUMBER;
+                const vec_d zeros( magnetsToFlipThenSet.size(), 0.0 );// MAGIC_NUMBER;
                 setSINoFlip( magnetsToFlipThenSet, zeros);
                 //waitForMagnetsToSettle( magnetsToFlipThenSet, zeros, tol, 45 );
             }
@@ -618,7 +622,7 @@ const magnetInterface::vec_b  magnetInterface::flipNR( const vec_s & magNames )
         else
             initial_is_PSUN_ON.push_back( false);
 
-    time_t startTime   = time( 0 );
+    time_t startTime   = time( 0 );//MAGIC_NUMBER
     time_t waitTime    = 45; /// MAGIC_NUMBER
 
     bool shouldbreak = false;
@@ -869,7 +873,7 @@ size_t magnetInterface::deGauss( const  vec_s & mag, bool resetToZero  )
         else
             message( "ERROR: in deGauss", it, " name not known, can't degauss." );
     }
-    if( magToDegChecked.size() > 0 )
+    if( magToDegChecked.size() > 0 )//MAGIC_NUMBER
     {
         degaussStructsMap[ degaussNum ].resetToZero   = resetToZero;
         degaussStructsMap[ degaussNum ].interface     = this;
@@ -945,10 +949,10 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->checkGangedMagnets( magToDegOriginal, gangedMagToZero, gangedMagToZeroSIValues );
 
-    if( gangedMagToZero.size() > 0 )
+    if( gangedMagToZero.size() > 0 )//MAGIC_NUMBER
     {
         ds.interface->message("\n","\tDEGAUSS UPDATE: Attempting To Deguass NR-Ganged Magnet(s), zeroing gang memebrs ","\n" );
-        const vec_d zeros( gangedMagToZero.size(), 0.0 );
+        const vec_d zeros( gangedMagToZero.size(), 0.0 );//MAGIC_NUMBER
         ds.interface->setSI( gangedMagToZero, zeros );
     }
 
@@ -981,9 +985,9 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->message("\n", "\tDEGAUSS UPDATE: Vectors Initialised Starting Degaussing","\n" );
 
-    for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[j]].numDegaussSteps; ++j )
+    for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[j]].numDegaussSteps; ++j )//MAGIC_NUMBER
     {
-        if( magToDeg.size() == 0 )
+        if( magToDeg.size() == 0 )//MAGIC_NUMBER
         {
            ds.interface->message("\n","\tDEGAUSS UPDATE: Degaussing Has FAILED - all magnets lost during the procedure - ;o(","\n");
            break;
@@ -1000,7 +1004,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
         ds.interface->setSI_MAIN( magToDeg, values );
 
 
-        magToDeg = ds.interface->waitForMagnetsToSettle( magToDeg, values, tolerances, 45 );
+        magToDeg = ds.interface->waitForMagnetsToSettle( magToDeg, values, tolerances, 45 );//MAGIC_NUMBER
         //check for lost magnets
 
         if( magToDeg.size() != magToDegOLD.size() )
@@ -1010,7 +1014,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
                 ds.interface->message( "\tDEGAUSS ERROR : ", it, " lost during degaussing, SI probably did not settle.");
         }
         magToDegOLD = magToDeg;
-        ds.interface->message( "\n","\tDEGAUSS UPDATE: STAGE ", j + 1, " COMPLETE", "\n");
+        ds.interface->message( "\n","\tDEGAUSS UPDATE: STAGE ", j + 1, " COMPLETE", "\n");//MAGIC_NUMBER
     }
     ds.interface->printDegaussResults( magToDeg, magToDegOriginal );
 
@@ -1018,7 +1022,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
     {
         ds.interface->message( "\tDEGAUSS UPDATE: Re-setting zero." );
         //size_t i = 0;
-        for( auto  i = 0; i < init_PSU_N_State.size(); ++i )
+        for( auto  i = 0; i < init_PSU_N_State.size(); ++i )//MAGIC_NUMBER
         {
             vec_s N_On_list;
             vec_s R_On_list;
@@ -1039,7 +1043,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->printFinish();
 
-    if( gangedMagToZero.size() > 0 )
+    if( gangedMagToZero.size() > 0 )//MAGIC_NUMBER
     {
         ds.interface->message("\n","\tDEGAUSS UPDATE: Attempting To reset Gang Memeber SIs ","\n" );
         ds.interface->setSI( gangedMagToZero, gangedMagToZeroSIValues );
@@ -1055,7 +1059,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
         ds.interface->isDegaussingMap[it] = false;
 
 
-    time_t timeFinish = time( 0 ); /// start clock
+    time_t timeFinish = time( 0 ); /// start clock//MAGIC_NUMBER
 
     ds.interface->message( "Degaussing took ", timeFinish- timeStart, " seconds." );
 
@@ -1073,7 +1077,7 @@ void magnetInterface::checkGangedMagnets( vec_s & magToDeg, vec_s & gangedMagToZ
         if( isNRGanged( it ) )
             gangMembersInMagToDeg.push_back( it );
 
-    if( gangMembersInMagToDeg.size() > 0 )
+    if( gangMembersInMagToDeg.size() > 0 )//MAGIC_NUMBER
     {
         /// Now we find out which ganged magnets are in
 
@@ -1150,17 +1154,17 @@ void magnetInterface::printDegaussResults( const vec_s & magToDegSuccess, const 
 //______________________________________________________________________________
 void magnetInterface::printVec( const std::string & p1, const vec_s & v, size_t numPerLine )
 {
-    size_t counter = 0;
+    size_t counter = 0;//MAGIC_NUMBER
     std::stringstream s;
     for( auto && it : v )
     {
         ++counter;
         s << it << " ";
-        if( counter % numPerLine == 0 )
+        if( counter % numPerLine == 0 )//MAGIC_NUMBER
         {
             message(1);
             message( p1 , s.str() );
-            counter = 0;
+            counter = 0;//MAGIC_NUMBER
             s.str( std::string() ); // clear stringstream
         }
     }
@@ -1178,7 +1182,7 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle( const vec_s &mag
 
     bool timeOut     = false;
 
-    vec_d oldRIValues( mags.size(), -999.99 );
+    vec_d oldRIValues( mags.size(), -999.99 );//MAGIC_NUMBER
     vec_d currentRIValues( mags.size() );
     vec_b magnetSettledState( mags.size(), false );
     vec_s settledMags;
@@ -1189,7 +1193,7 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle( const vec_s &mag
     vec_b settingZero;
 
     for( auto && it : values )
-        settingZero.push_back( it == 0.0 );
+        settingZero.push_back( it == 0.0 );//MAGIC_NUMBER
 
     time_t timeStart = time( 0 ); /// start clock
 
@@ -1198,7 +1202,7 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle( const vec_s &mag
         currentRIValues = getRI( mags );
         bool shouldBreak = true;
 
-        for( size_t i = 0 ; i <  mags.size(); ++i )
+        for( size_t i = 0 ; i <  mags.size(); ++i )//MAGIC_NUMBER
         {
             if( magnetSettledState[ i ]  ) /// magnet has settled
             {
@@ -1223,11 +1227,11 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle( const vec_s &mag
                 }
                 else /// we are not setting zero...
                 {
-                    if( areSame( oldRIValues[i], currentRIValues[i], tolerances[i] ) && areSame( 0.0, currentRIValues[i], tolerances[i]  )  )
+                    if( areSame( oldRIValues[i], currentRIValues[i], tolerances[i] ) && areSame( 0.0, currentRIValues[i], tolerances[i]  )  )//MAGIC_NUMBER
                     {
                         /// RI is not changing, it's at zero, but zero isn't the final RI value we expect.
                     }
-                    else if( areSame( oldRIValues[i], currentRIValues[i], tolerances[i] ) && areNotSame( 0.0, currentRIValues[i], tolerances[i] ) )
+                    else if( areSame( oldRIValues[i], currentRIValues[i], tolerances[i] ) && areNotSame( 0.0, currentRIValues[i], tolerances[i] ) )//MAGIC_NUMBER
                     {
                         magnetSettledState[i] = true;
                         //debugMessage( mags[i], " RI_new != 0.0 && RI_new == RI_old RI. SETTLED = True ",currentRIValues[i], ", ", oldRIValues[i], ", ", tolerances[i] );
@@ -1259,7 +1263,7 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle( const vec_s &mag
         std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
 	} /// while
 
-    for( size_t i = 0; i < mags.size(); ++i )
+    for( size_t i = 0; i < mags.size(); ++i )//MAGIC_NUMBER
         if( magnetSettledState[i] )
             settledMags.push_back( mags[i] );
 
@@ -1373,7 +1377,7 @@ bool magnetInterface::shouldPolarityFlip( const std::string & magName, const dou
 //        message( "PSU_N on? = ", isON_psuN( magName ) );
 //        message( "PSU_R on? = ", isON_psuR( magName ) );
 //        message( "val       = ", val );
-        if( val < 0.0 )
+        if( val < 0.0 )//MAGIC_NUMBER
         {
             if( isON_psuN( magName ) && isOFF_psuR( magName ) )
             {
@@ -1383,7 +1387,7 @@ bool magnetInterface::shouldPolarityFlip( const std::string & magName, const dou
             //else
                 //message("isON_psuN( magName ) && isOFF_psuR( magName ) FALSE");
         }
-        else if( val > 0.0 )
+        else if( val > 0.0 )//MAGIC_NUMBER
         {
             if( isON_psuR( magName ) && isOFF_psuN( magName )  )
             {
@@ -1447,14 +1451,14 @@ bool magnetInterface::canNRFlip(const std::string & magName )
         if( isNRorNRGanged( magName ) )
         {
             ret = true; // change to true, but set back to false if tests fail
-            auto c = 0;
+            auto c = 0;//MAGIC_NUMBER
             for( const auto & it : allMagnetData[ magName].nPSU.iLockStates )
                 if( it.second )
                     ++c;
             if( allMagnetData[ magName].nPSU.iLockStates.size() != c )
                 ret = false;
 
-            c = 0;
+            c = 0;//MAGIC_NUMBER
             for( const auto & it : allMagnetData[ magName].rPSU.iLockStates )
                 if( it.second )
                     ++c;
@@ -1643,7 +1647,7 @@ magnetStructs::magnetStateStruct magnetInterface::getDBURTCorOnly( const std::st
 {
     magnetStructs::magnetStateStruct ms1 = getDBURT( fileName );
     magnetStructs::magnetStateStruct ms2;
-    size_t i = 0;
+    size_t i = 0;//MAGIC_NUMBER
     for( auto && it : ms1.magNames )
     {
         if( isACor( it ) )
@@ -1662,7 +1666,7 @@ magnetStructs::magnetStateStruct magnetInterface::getDBURTQuadOnly( const std::s
 {
     magnetStructs::magnetStateStruct ms1 = getDBURT( fileName );
     magnetStructs::magnetStateStruct ms2;
-    size_t i = 0;
+    size_t i = 0;//MAGIC_NUMBER
     for( auto && it : ms1.magNames )
     {
         if( isAQuad( it ) )

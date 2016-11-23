@@ -189,7 +189,11 @@ namespace UTL
     const std::string RI_TOLERANCE = "RI_TOLERANCE";
     const std::string POSITION  = "POSITION";
     const std::string SLOPE     = "SLOPE";
-    const std::string INTERCEPT = "INTERCEPT";
+    const std::string INTERCEPT = "intercept";
+    const std::string MANUFACTURER = "MANUFACTURER";
+    const std::string SERIAL_NUMBER = "SERIAL_NUMBER";
+    const std::string MEASUREMENT_DATA_LOCATION = "MEASUREMENT_DATA_LOCATION";
+    const std::string MAGNETIC_LENGTH = "MAGNETIC_LENGTH";
 
     // chtypes
 
