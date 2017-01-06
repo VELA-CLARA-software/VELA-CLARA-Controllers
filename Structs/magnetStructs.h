@@ -95,7 +95,7 @@ namespace magnetStructs
         std::string manufacturer, serialNumber, measurementDataLocation;
         //DEGUASSING: added here by Tim Price
         size_t numDegaussSteps, maxWaitTime, numDegaussElements;
-        std::vector< double > degValues;
+        std::vector< double > degValues, fieldIntegralCoefficients;
         double  degTolerance;/// this is not initiliased here...
 
 //        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint

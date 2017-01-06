@@ -13,6 +13,9 @@ namespace UTL
     const std::string EQUALS_SIGN = "=";
     const char EQUALS_SIGN_C      = '=';
     const char COLON_C            = ':';
+    const char DOUBLE_QUOTE_C     = '"';
+    const char SPACE_C            = ' ';
+    const char TAB_C              = '\t';
 
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
     const std::string VM_PREFIX   = "VM-";
@@ -175,21 +178,11 @@ namespace UTL
     const std::string NUM_DEGAUSS_STEPS = "NUM_DEGAUSS_STEPS";
     const std::string DEGAUSS_VALUES    = "DEGAUSS_VALUES";
     const std::string DEGAUSS_TOLERANCE = "DEGAUSS_TOLERANCE";
-    //const std::string BSOL_DEGAUSS_VALUES = "BSOL_DEGAUSS_VALUES";
-    //const std::string DIP_DEGAUSS_VALUES = "DIP_DEGAUSS_VALUES";
-    //const std::string SOL_DEGAUSS_VALUES = "SOL_DEGAUSS_VALUES";
-    //const std::string COR_DEGAUSS_VALUES = "COR_DEGAUSS_VALUES";
-    //const std::string QUAD_DEGAUSS_VALUES = "QUAD_DEGAUSS_VALUES";
-    //const std::string QUAD_DEGAUSS_TOLERANCE = "QUAD_DEGAUSS_TOLERANCE";
-    //const std::string BSOL_DEGAUSS_TOLERANCE = "BSOL_DEGAUSS_TOLERANCE";
-    //const std::string DIP_DEGAUSS_TOLERANCE = "DIP_DEGAUSS_TOLERANCE";
-    //const std::string SOL_DEGAUSS_TOLERANCE = "SOL_DEGAUSS_TOLERANCE";
-    //const std::string COR_DEGAUSS_TOLERANCE = "COR_DEGAUSS_TOLERANCE";
-
     const std::string RI_TOLERANCE = "RI_TOLERANCE";
     const std::string POSITION  = "POSITION";
-    const std::string SLOPE     = "SLOPE";
-    const std::string INTERCEPT = "intercept";
+    const std::string FIELD_INTEGRAL_COEFFICIENTS ="FIELD_INTEGRAL_COEFFICIENTS";
+//    const std::string SLOPE     = "SLOPE";
+//    const std::string INTERCEPT = "intercept";
     const std::string MANUFACTURER = "MANUFACTURER";
     const std::string SERIAL_NUMBER = "SERIAL_NUMBER";
     const std::string MEASUREMENT_DATA_LOCATION = "MEASUREMENT_DATA_LOCATION";

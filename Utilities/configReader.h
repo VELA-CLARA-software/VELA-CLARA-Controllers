@@ -62,6 +62,7 @@ class configReader : public baseObject
 
         std::vector<std::string> getKeyVal( const std::string & trimmedLine, const char delim = UTL::EQUALS_SIGN_C );
         std::string & trimAllWhiteSpace( std::string & source );
+        std::string & trimAllWhiteSpaceExceptBetweenDoubleQuotes( std::string & str);
         std::string trimWhiteSpaces(const  std::string & str );
         ///Allowed upto 5 config file paths
         std::string configFile1, configFile2, configFile3, configFile4, configFile5;

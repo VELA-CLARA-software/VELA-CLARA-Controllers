@@ -97,6 +97,58 @@ std::string & configReader::trimAllWhiteSpace( std::string & str)
     return str;
 }
 //______________________________________________________________________________
+std::string & configReader::trimAllWhiteSpaceExceptBetweenDoubleQuotes( std::string & str)
+{
+    bool ignore = false; // whether to ignore the current character or not
+
+    std::string::iterator endVal = str.end(); // a kind of NULL pointer
+    std::string::iterator type = endVal; // a  "
+
+    for( std::string::iterator it=str.begin(); it!=str.end(); )
+    {
+        if( (*it) == UTL::DOUBLE_QUOTE_C ) // we're in a string!
+        {
+            if(ignore)
+            {
+                if (type != endVal && (*it) == (*type))
+                {
+                    // end of the string
+                    ignore = false;
+                    type = endVal;
+                }
+            }
+            else /// this must be the start of a quoted string
+            {
+                ignore = true;
+                type = it;
+            }
+            if( (*it) == UTL::DOUBLE_QUOTE_C )
+                it = str.erase(it);
+            else
+                it++;
+        }
+        else
+        {
+            if (!ignore)
+            {
+                if( (*it) == UTL::SPACE_C ||  (*it) == UTL::TAB_C)
+                {
+                    it = str.erase(it);
+                }
+                else
+                {
+                    it++;
+                }
+            }
+            else
+            {
+                it++;
+            }
+        }
+    }
+    return str;
+}
+//______________________________________________________________________________
 bool configReader::stringIsSubString( const std::string & stringToCheck, const std::string & stringToLookFor )
 {
     return stringToCheck.find( stringToLookFor) != std::string::npos;
@@ -142,14 +194,25 @@ std::vector< double >  configReader::getDoubleVector( const std::string & str )
     std::vector< double > ret;
     std::stringstream ss( str );
     std::string s;
+    std::stringstream os;
+    double temp;
 
     while( ss )
     {
         if( !getline( ss, s, ',' ) )
             break;
         else
-            ret.push_back( atof( s.c_str() ) );
+        {
+            //ret.push_back( atof( s.c_str() ) );
+            // this way allows you to write numbers in scientific E notaiton, i.e. 6.3E+3 etc.
+            os << s;
+            os >> temp;
+            ret.push_back( temp );
+            os.clear();
+           //std::cout << ret.back() << " ";
+        }
     }
+//    std::cout << std::endl;
     return ret;
 }
 //______________________________________________________________________________

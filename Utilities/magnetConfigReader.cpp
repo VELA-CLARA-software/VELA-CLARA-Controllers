@@ -330,17 +330,23 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
     /// BJAS requests for magnet data  16/11/16
     else if( keyVal[0] == UTL::POSITION )
          magObjects.back().position = getNumD( value );
-    else if( keyVal[0] == UTL::SLOPE )
-         magObjects.back().slope = getNumD( value );
-    else if( keyVal[0] == UTL::INTERCEPT )
-        magObjects.back().intercept = getNumD( value );
+    /// BJAS requests for magnet data  16/11/16, the slope and intercept changed to a vector f fieldIntegralCoefficients
+    else if( keyVal[0] == UTL::FIELD_INTEGRAL_COEFFICIENTS )
+        magObjects.back().fieldIntegralCoefficients = getDoubleVector( value );
+//    else if( keyVal[0] == UTL::SLOPE )
+//         magObjects.back().slope = getNumD( value );
+//    else if( keyVal[0] == UTL::INTERCEPT )
+//        magObjects.back().intercept = getDoubleVector( value );
     /// BJAS requests 22/11/2016
     else if( keyVal[0] == UTL::MANUFACTURER )
         magObjects.back().manufacturer =  value ;
     else if( keyVal[0] == UTL::SERIAL_NUMBER )
         magObjects.back().serialNumber =  value ;
     else if( keyVal[0] == UTL::MEASUREMENT_DATA_LOCATION )
+    {
         magObjects.back().measurementDataLocation =  value ;
+        //debugMessage("HELLO,", value);
+    }
     else if( keyVal[0] == UTL::MAGNETIC_LENGTH )
         magObjects.back().magneticLength =  getNumD( value);
 
@@ -436,7 +442,8 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
         debugMessage( "File Opened from ", fn );
         while( std::getline( inputFile, line ) ) /// Go through, reading file line by line
         {
-            trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
+            //trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
+            trimmedLine = trimAllWhiteSpaceExceptBetweenDoubleQuotes( trimToDelimiter( line, UTL::END_OF_LINE ) );
             if( trimmedLine.size() > 0 )
             {
                 if( stringIsSubString( line, UTL::END_OF_DATA ) )
