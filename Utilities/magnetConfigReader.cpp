@@ -452,7 +452,9 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
             {
                 parameter = matches[1];
                 value = matches[2];
-                debugMessage("Parameter: ", parameter, ", Value: ", value);
+                keyVal.clear();
+                keyVal.push_back(parameter);
+                keyVal.push_back(value);
                 if( stringIsSubString( parameter, UTL::END_OF_DATA ) )
                 {
                     debugMessage( "Found END_OF_DATA" );
@@ -475,9 +477,6 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
                         switch( configVersion ) /// Actually this switch needs to come out of here and go in the beginning, we should look for version # first!
                         {
                             case 1:
-                                keyVal.push_back( parameter );
-                                keyVal.push_back( value );
-
                                 if( readingObjs )
                                     CALL_MEMBER_FN(obj, f1)( keyVal ) ;
 
@@ -488,7 +487,7 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
                                     CALL_MEMBER_FN(obj, f3)( keyVal ) ;
                                 break;
                             default:
-                                message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!"  );
+                                message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
                         }
                     }
                 }
