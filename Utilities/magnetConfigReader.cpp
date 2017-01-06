@@ -11,7 +11,7 @@
 #include <time.h>
 #include <algorithm>
 #include <ctype.h>
-//bjas
+//BJAS
 #include <regex>
 
 magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
@@ -112,7 +112,7 @@ bool magnetConfigReader::readConfig()
 {
     bool success = true;
     /// There are 2 types of objects for an inj_mag, the magnet and (maybe) and N-R switched PSU;
-    /// They are defined in seperate config files to seperate the data more clearly
+    /// They are defined in separate config files to separate the data more clearly
     /// they still all end up in an a magObj
     //PSU
     magPSUObjects_N.clear();
@@ -153,7 +153,7 @@ bool magnetConfigReader::readConfig()
     }
 
 
-///DO NOT READ DEGUASS FILE ANYMORE
+///DO NOT READ DEGAUSS FILE ANYMORE
    // bool degSuccess = readConfig( *this, configFile3, &magnetConfigReader::addToDegaussObj, nullptr, nullptr );
     //if( !degSuccess )
      //   success = false;
@@ -320,7 +320,7 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
     {
         magObjects.back().riTolerance = getNumD( value );
     }
-    //added by tim price (deguassing)
+    //added by tim price (degaussing)
      else if( keyVal[0] == UTL::NUM_DEGAUSS_STEPS )
         magObjects.back().numDegaussSteps =getSize( value );
     else if( keyVal[0] == UTL::MAG_SET_MAX_WAIT_TIME )
@@ -524,7 +524,7 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
         success = true;
     }
     else{
-        message( "!!!! Error Can't Open Mag Config File after searching for:  ", fn, " !!!!"  );
+        message( "!!!! Error Can't Open Magnet Config File after searching for:  ", fn, " !!!!"  );
     }
     return success;
 }
