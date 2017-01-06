@@ -286,7 +286,7 @@ bool beamPositionMonitorConfigReader::readConfig( beamPositionMonitorConfigReade
         success = true;
     }
     else{
-        message( "!!!! Error Can't Open Shutter Config File after searching in:  ", fn, " !!!!"  );
+        message( "!!!! Error Can't Open BPM Config File after searching in:  ", fn, " !!!!"  );
     }
     return success;
 }

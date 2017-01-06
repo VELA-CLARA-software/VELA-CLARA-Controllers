@@ -70,7 +70,7 @@ bool RFGunConfigReader::readConfigFiles()
 {
     bool success = true;
     /// There are 3 types of objects in the RF gun, a modulator, power (x2) and LLRF;
-    /// They are defined in seperate config files to seperate the data more clearly
+    /// They are defined in separate config files to separate the data more clearly
     /// they still all end up in an rfObject
     //Power
     rfPowerObjects.clear();

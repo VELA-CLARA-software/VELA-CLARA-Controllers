@@ -150,7 +150,7 @@ void interface::addILockChannels( const int numIlocks, const std::string & pvRoo
 //______________________________________________________________________________
 void interface::monitorIlocks( std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > & iLockPVStructs, std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > & iLockStates )
 {
-    ///!continuousILockMonitorStructs.clear();  NO don't call clear here, call in dervied class before loops
+    ///!continuousILockMonitorStructs.clear();  NO don't call clear here, call in derived class before loops
     iLockStates.clear();
     for( auto && it : iLockPVStructs )
     {
@@ -160,11 +160,11 @@ void interface::monitorIlocks( std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLo
         continuousILockMonitorStructs.back() -> iLockNumber  = it.first;
         continuousILockMonitorStructs.back() -> objName      = it.second.objName ;
 
-        /// ca_create_subscription accepts a void * user argument, we pass a poiniter to the monitor struct,
+        /// ca_create_subscription accepts a void * user argument, we pass a pointer to the monitor struct,
         /// in the callback function this is cast back and the data can then be updated
 
         /// If you pass DBF_STRING and recast as a char * in the callback you can get the state as GOOD, BAD, OPEN, CLOSED etc,
-        /// This is useful for debugging, but in general i'm just going to subscribe to the DBR_ENUM
+        /// This is useful for debugging, but in general I'm just going to subscribe to the DBR_ENUM
 
         ca_create_subscription( it.second.CHTYPE, it.second.COUNT, it.second.CHID, it.second.MASK, interface::staticEntryILockMonitor,
                                (void*)continuousILockMonitorStructs.back(), &continuousILockMonitorStructs.back() ->EVID );
@@ -253,7 +253,7 @@ bool interface::interfaceInitReport( bool shouldStartEPICs )
         if( !allChidsInitialised )
         {
             ret = false;
-            message("Error Initilaising Chids.");
+            message("Error Initialising Chids.");
         }
         if( !allMonitorsStarted )
         {
@@ -262,7 +262,7 @@ bool interface::interfaceInitReport( bool shouldStartEPICs )
         }
     }
     else
-        message("Controller Initiliased with NO Monitoring");
+        message("Controller Initialised with NO Monitoring");
     return ret;
 }
 //______________________________________________________________________________
