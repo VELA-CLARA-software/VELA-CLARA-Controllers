@@ -11,6 +11,8 @@
 #include <time.h>
 #include <algorithm>
 #include <ctype.h>
+//BJAS
+#include <regex>
 
 RFGunConfigReader::RFGunConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
 : configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
@@ -251,6 +253,12 @@ void RFGunConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< RFGunStructs::pvSt
 //______________________________________________________________________________
 bool RFGunConfigReader::readConfig( RFGunConfigReader & obj, const std::string fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 )
 {
+  	std::regex config_line("([A-Z_]+?)(?:\\s*=\\s*(.*))?;");
+ 	std::string parameter;
+ 	std::string value;
+	std::smatch matches;
+    std::vector<std::string> keyVal;
+
     debugMessage( "\n", "**** Attempting to Read ", fn, " ****" );
 
     std::string line, trimmedLine;
@@ -269,10 +277,16 @@ bool RFGunConfigReader::readConfig( RFGunConfigReader & obj, const std::string f
         debugMessage( "File Opened from ", fn );
         while( std::getline( inputFile, line ) ) /// Go through, reading file line by line
         {
-            trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
-            if( trimmedLine.size() > 0 )
+//            trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
+            //BJAS: use regex rather than parsing manually, it's more hygienic
+            if( regex_search(line, matches, config_line) )
             {
-                if( stringIsSubString( line, UTL::END_OF_DATA ) )
+                parameter = matches[1];
+                value = matches[2];
+                keyVal.clear();
+                keyVal.push_back(parameter);
+                keyVal.push_back(value);
+                if( stringIsSubString( parameter, UTL::END_OF_DATA ) )
                 {
                     debugMessage( "Found END_OF_DATA" );
                     readingData = false;
@@ -283,12 +297,12 @@ bool RFGunConfigReader::readConfig( RFGunConfigReader & obj, const std::string f
                 }
                 if( readingData )
                 {
-                    if( stringIsSubString( trimmedLine, UTL::VERSION ) )
-                        getVersion( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_OBJECTS ) )
-                        getNumObjs( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_ILOCKS ) )
-                        getNumIlocks( trimmedLine );
+                    if( stringIsSubString( parameter, UTL::VERSION ) )
+                        getVersion( value );
+                    else if( stringIsSubString( parameter, UTL::NUMBER_OF_OBJECTS ) )
+                        getNumObjs( value );
+                    else if( stringIsSubString( parameter, UTL::NUMBER_OF_ILOCKS ) )
+                        getNumIlocks( value );
                     else
                     {
                         switch( configVersion )
@@ -298,41 +312,40 @@ bool RFGunConfigReader::readConfig( RFGunConfigReader & obj, const std::string f
                                 {
                                     std::vector<std::string> keyVal = getKeyVal( trimmedLine );
 
-                                    if( readingObjs )
-                                        CALL_MEMBER_FN(obj, f1)( keyVal ) ;
+                                if( readingObjs )
+                                    CALL_MEMBER_FN(obj, f1)( keyVal ) ;
 
-                                    else if ( readingCommandPVs  )
-                                        CALL_MEMBER_FN(obj, f2)( keyVal ) ;
+                                else if ( readingCommandPVs  )
+                                    CALL_MEMBER_FN(obj, f2)( keyVal ) ;
 
-                                    else if ( readingMonitorPVs )
-                                        CALL_MEMBER_FN(obj, f3)( keyVal ) ;
-                                }
+                                else if ( readingMonitorPVs )
+                                    CALL_MEMBER_FN(obj, f3)( keyVal ) ;
                                 break;
                             default:
                                 message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
                         }
                     }
                 }
-                if( stringIsSubString( line, UTL::START_OF_DATA ) )
+                if( stringIsSubString( parameter, UTL::START_OF_DATA ) )
                 {
                     readingData = true;
                     debugMessage( "Found START_OF_DATA" );
                 }
-                if( stringIsSubString( line, UTL::PV_COMMANDS_START ) )
+                if( stringIsSubString( parameter, UTL::PV_COMMANDS_START ) )
                 {
                     readingCommandPVs  = true;
                     readingObjs = false;
                     readingMonitorPVs = false;
                     debugMessage( "Found PV_COMMANDS_START" );
                 }
-                if( stringIsSubString( line, UTL::PV_MONITORS_START ) )
+                if( stringIsSubString( parameter, UTL::PV_MONITORS_START ) )
                 {
                     readingCommandPVs = false;
                     readingObjs       = false;
                     readingMonitorPVs = true;
                     debugMessage( "Found PV_MONITORS_START" );
                 }
-                if( stringIsSubString( line, UTL::OBJECTS_START ) )
+                if( stringIsSubString( parameter, UTL::OBJECTS_START ) )
                 {
                     readingObjs        = true;
                     readingCommandPVs  = false;
