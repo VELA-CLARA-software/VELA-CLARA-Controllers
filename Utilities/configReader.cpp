@@ -53,20 +53,17 @@ std::string  configReader::getAfterEqualsSign( const std::string & str )
 //______________________________________________________________________________
 void configReader::getVersion( const std::string & str )
 {
-    std::string num = getAfterEqualsSign( str );
-    configVersion = atoi(num.c_str());
+    configVersion = atoi(str.c_str());
 }
 //______________________________________________________________________________
 void configReader::getNumObjs(const  std::string & str )
 {
-    std::string num = getAfterEqualsSign( str );
-    numObjs = atoi(num.c_str());
+    numObjs = atoi(str.c_str());
 }
 //______________________________________________________________________________
 void configReader::getNumIlocks( const std::string & str )
 {
-    std::string num = getAfterEqualsSign( str );
-    numIlocks = atoi(num.c_str());
+    numIlocks = atoi(str.c_str());
 }
 //______________________________________________________________________________
 int configReader::getNum( const std::string & str )

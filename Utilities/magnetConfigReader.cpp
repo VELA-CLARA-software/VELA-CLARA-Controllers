@@ -11,6 +11,8 @@
 #include <time.h>
 #include <algorithm>
 #include <ctype.h>
+//bjas
+#include <regex>
 
 magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
                                         const bool startVirtualMachine,
@@ -343,6 +345,8 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
         magObjects.back().measurementDataLocation =  value ;
     else if( keyVal[0] == UTL::MAGNETIC_LENGTH )
         magObjects.back().magneticLength =  getNumD( value);
+    else if( keyVal[0] == UTL::BRANCH )
+        magObjects.back().branch = getNumD( value);
 
 }
 //______________________________________________________________________________
@@ -414,6 +418,12 @@ void magnetConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< magnetStructs::pv
 //______________________________________________________________________________
 bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 )
 {
+ 	std::regex config_line("([A-Z_]+?)(?:\\s*=\\s*(.*))?;");
+ 	std::string parameter;
+ 	std::string value;
+	std::smatch matches;
+    std::vector<std::string> keyVal;
+
     debugMessage( "\n", "**** Attempting to Read ", fn, " ****" );
     if( usingVirtualMachine )
         debugMessage( "\n", "**** Using VIRTUAL Machine  ****" );
@@ -436,10 +446,14 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
         debugMessage( "File Opened from ", fn );
         while( std::getline( inputFile, line ) ) /// Go through, reading file line by line
         {
-            trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
-            if( trimmedLine.size() > 0 )
+//            trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
+            //BJAS: use regex rather than parsing manually, it's more hygienic
+            if( regex_search(line, matches, config_line) )
             {
-                if( stringIsSubString( line, UTL::END_OF_DATA ) )
+                parameter = matches[1];
+                value = matches[2];
+                debugMessage("Parameter: ", parameter, ", Value: ", value);
+                if( stringIsSubString( parameter, UTL::END_OF_DATA ) )
                 {
                     debugMessage( "Found END_OF_DATA" );
                     readingData = false;
@@ -450,56 +464,54 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
                 }
                 if( readingData )
                 {
-                    if( stringIsSubString( trimmedLine, UTL::VERSION ) )
-                        getVersion( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_OBJECTS ) )
-                        getNumObjs( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_ILOCKS ) )
-                        getNumIlocks( trimmedLine );
+                    if( stringIsSubString( parameter, UTL::VERSION ) )
+                        getVersion( value );
+                    else if( stringIsSubString( parameter, UTL::NUMBER_OF_OBJECTS ) )
+                        getNumObjs( value );
+                    else if( stringIsSubString( parameter, UTL::NUMBER_OF_ILOCKS ) )
+                        getNumIlocks( value );
                     else
                     {
                         switch( configVersion ) /// Actually this switch needs to come out of here and go in the beginning, we should look for version # first!
                         {
                             case 1:
-                                if( trimmedLine.find_first_of( UTL::EQUALS_SIGN ) != std::string::npos )
-                                {
-                                    std::vector<std::string> keyVal = getKeyVal( trimmedLine );
+                                keyVal.push_back( parameter );
+                                keyVal.push_back( value );
 
-                                    if( readingObjs )
-                                        CALL_MEMBER_FN(obj, f1)( keyVal ) ;
+                                if( readingObjs )
+                                    CALL_MEMBER_FN(obj, f1)( keyVal ) ;
 
-                                    else if ( readingCommandPVs  )
-                                        CALL_MEMBER_FN(obj, f2)( keyVal ) ;
+                                else if ( readingCommandPVs  )
+                                    CALL_MEMBER_FN(obj, f2)( keyVal ) ;
 
-                                    else if ( readingMonitorPVs )
-                                        CALL_MEMBER_FN(obj, f3)( keyVal ) ;
-                                }
+                                else if ( readingMonitorPVs )
+                                    CALL_MEMBER_FN(obj, f3)( keyVal ) ;
                                 break;
                             default:
-                                message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
+                                message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!"  );
                         }
                     }
                 }
-                if( stringIsSubString( line, UTL::START_OF_DATA ) )
+                if( stringIsSubString( parameter, UTL::START_OF_DATA ) )
                 {
                     readingData = true;
                     debugMessage( "Found START_OF_DATA" );
                 }
-                if( stringIsSubString( line, UTL::PV_COMMANDS_START ) )
+                if( stringIsSubString( parameter, UTL::PV_COMMANDS_START ) )
                 {
                     readingCommandPVs  = true;
                     readingObjs = false;
                     readingMonitorPVs = false;
                     debugMessage( "Found PV_COMMANDS_START" );
                 }
-                if( stringIsSubString( line, UTL::PV_MONITORS_START ) )
+                if( stringIsSubString( parameter, UTL::PV_MONITORS_START ) )
                 {
                     readingCommandPVs = false;
                     readingObjs       = false;
                     readingMonitorPVs = true;
                     debugMessage( "Found PV_MONITORS_START" );
                 }
-                if( stringIsSubString( line, UTL::OBJECTS_START ) )
+                if( stringIsSubString( parameter, UTL::OBJECTS_START ) )
                 {
                     readingObjs        = true;
                     readingCommandPVs  = false;
