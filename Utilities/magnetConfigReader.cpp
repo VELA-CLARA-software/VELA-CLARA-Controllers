@@ -349,7 +349,8 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
     }
     else if( keyVal[0] == UTL::MAGNETIC_LENGTH )
         magObjects.back().magneticLength =  getNumD( value);
-
+    else if( keyVal[0] == UTL::MAGNET_BRANCH )
+        magObjects.back().magnetBranch =   value;
 }
 //______________________________________________________________________________
 void magnetConfigReader::addMagType( const std::vector<std::string> &keyVal )

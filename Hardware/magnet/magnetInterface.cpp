@@ -1757,53 +1757,37 @@ std::vector<  VELA_ENUM::MAG_PSU_STATE > magnetInterface::getMagPSUState( const 
     return a;
 }
 //______________________________________________________________________________
-double magnetInterface::getPosition( const std::string & magName )
-{
-    if( entryExists( allMagnetData, magName ) )
-        return allMagnetData[ magName ].position;
-    else
-        return UTL::DUMMY_DOUBLE;
-}
-//______________________________________________________________________________
-std::vector< double > magnetInterface::getPosition( const std::vector< std::string > & magNames )
-{
-    std::vector< double >  a;
-    for( auto && it : magNames )
-        a.push_back( getPosition(it) );
-    return a;
-}
-//______________________________________________________________________________
-double magnetInterface::getSlope( const std::string & magName )
-{
-    if( entryExists( allMagnetData, magName ) )
-        return allMagnetData[ magName ].slope;
-    else
-        return UTL::DUMMY_DOUBLE;
-}
-//______________________________________________________________________________
-std::vector< double > magnetInterface::getSlope( const std::vector< std::string > & magNames )
-{
-    std::vector< double >  a;
-    for( auto && it : magNames )
-        a.push_back( getSlope(it) );
-    return a;
-}
-//______________________________________________________________________________
-double magnetInterface::getIntercept( const std::string & magName )
-{
-    if( entryExists( allMagnetData, magName ) )
-        return allMagnetData[ magName ].intercept;
-    else
-        return UTL::DUMMY_DOUBLE;
-}
-//______________________________________________________________________________
-std::vector< double > magnetInterface::getIntercept( const std::vector< std::string > & magNames )
-{
-    std::vector< double >  a;
-    for( auto && it : magNames )
-        a.push_back( getIntercept(it) );
-    return a;
-}
+//double magnetInterface::getSlope( const std::string & magName )
+//{
+//    if( entryExists( allMagnetData, magName ) )
+//        return allMagnetData[ magName ].slope;
+//    else
+//        return UTL::DUMMY_DOUBLE;
+//}
+////______________________________________________________________________________
+//std::vector< double > magnetInterface::getSlope( const std::vector< std::string > & magNames )
+//{
+//    std::vector< double >  a;
+//    for( auto && it : magNames )
+//        a.push_back( getSlope(it) );
+//    return a;
+//}
+////______________________________________________________________________________
+//double magnetInterface::getIntercept( const std::string & magName )
+//{
+//    if( entryExists( allMagnetData, magName ) )
+//        return allMagnetData[ magName ].intercept;
+//    else
+//        return UTL::DUMMY_DOUBLE;
+//}
+////______________________________________________________________________________
+//std::vector< double > magnetInterface::getIntercept( const std::vector< std::string > & magNames )
+//{
+//    std::vector< double >  a;
+//    for( auto && it : magNames )
+//        a.push_back( getIntercept(it) );
+//    return a;
+//}
 //______________________________________________________________________________
 std::vector< double > magnetInterface::getDegValues( const std::string & magName )
 {
@@ -1824,7 +1808,142 @@ std::vector< std::vector< double > > magnetInterface::getDegValues( const std::v
         a.push_back( getDegValues(it) );
     return a;
 }
+//______________________________________________________________________________
+size_t magnetInterface::getNumDegSteps( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].numDegaussSteps;
+    else
+        return UTL::ZERO_SIZET;
+}
+//______________________________________________________________________________
+std::vector< size_t > magnetInterface::getNumDegSteps( const std::vector< std::string > & magNames )
+{
+    std::vector< size_t >  a;
+    for( auto && it : magNames )
+        a.push_back( getNumDegSteps(it) );
+    return a;
+}
+/// BJAS ADDITIONS
+//______________________________________________________________________________
+double magnetInterface::getPosition( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].position;
+    else
+        return UTL::DUMMY_DOUBLE;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getPosition( const std::vector< std::string > & magNames )
+{
+    std::vector< double >  a;
+    for( auto && it : magNames )
+        a.push_back( getPosition(it) );
+    return a;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getFieldIntegralCoefficients( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].fieldIntegralCoefficients;
+    else
+    {
+        std::vector< double > r;
+        r.push_back( UTL::DUMMY_DOUBLE );
+        return r;
+    }
+}
+//______________________________________________________________________________
+std::vector<std::vector< double >> magnetInterface::getFieldIntegralCoefficients( const std::vector< std::string > & magNames )
+{
+    std::vector< std::vector< double > >  a;
+    for( auto && it : magNames )
+        a.push_back( getFieldIntegralCoefficients(it) );
+    return a;
+}
+//______________________________________________________________________________
+///
+double magnetInterface::getMagneticLength( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].magneticLength;
+    else
+        return UTL::DUMMY_DOUBLE;
+}
+//______________________________________________________________________________
+std::vector< double > magnetInterface::getMagneticLength( const std::vector< std::string > & magNames )
+{
+    std::vector< double >  a;
+    for( auto && it : magNames )
+        a.push_back( getMagneticLength(it) );
+    return a;
+}
+//______________________________________________________________________________
+std::string magnetInterface::getManufacturer( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].manufacturer;
+    else
+        return UTL::UNKNOWN_MAGNET_STRING;
+}
+//______________________________________________________________________________
+std::vector<std::string> magnetInterface::getManufacturer( const std::vector< std::string > & magNames )
+{
+    std::vector< std::string >  a;
+    for( auto && it : magNames )
+        a.push_back( getManufacturer(it) );
+    return a;
+}
+//______________________________________________________________________________
+std::string magnetInterface::getSerialNumber( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].serialNumber;
+    else
+        return UTL::UNKNOWN_MAGNET_STRING;
+}
+//______________________________________________________________________________
+std::vector<std::string>  magnetInterface::getSerialNumber( const std::vector< std::string > & magNames )
+{
+    std::vector< std::string >  a;
+    for( auto && it : magNames )
+        a.push_back( getSerialNumber(it) );
+    return a;
 
+}
+//______________________________________________________________________________
+std::string magnetInterface::getMagnetBranch( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].magnetBranch;
+    else
+        return UTL::UNKNOWN_MAGNET_STRING;
+}
+//______________________________________________________________________________
+std::vector<std::string>  magnetInterface::getMagnetBranch( const std::vector< std::string > & magNames )
+{
+    std::vector< std::string >  a;
+    for( auto && it : magNames )
+        a.push_back( getMagnetBranch(it) );
+    return a;
+
+}
+//______________________________________________________________________________
+std::string magnetInterface::getMeasurementDataLocation( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].measurementDataLocation;
+    else
+        return UTL::UNKNOWN_MAGNET_STRING;
+}
+std::vector<std::string>  magnetInterface::getMeasurementDataLocation( const std::vector< std::string > & magNames )
+{
+    std::vector< std::string >  a;
+    for( auto && it : magNames )
+        a.push_back( getMeasurementDataLocation(it) );
+    return a;
+
+}
 //______________________________________________________________________________
 void magnetInterface::printDegauss()
 {
