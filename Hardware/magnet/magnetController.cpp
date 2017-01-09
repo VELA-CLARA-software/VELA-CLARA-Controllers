@@ -369,6 +369,29 @@ std::vector<  VELA_ENUM::MAG_PSU_STATE > magnetController::getMagPSUState( const
     return localInterface.getMagPSUState( magNames );
 }
 //______________________________________________________________________________
+size_t magnetController::getNumDegSteps( const std::string & magName )
+{
+    return localInterface.getNumDegSteps( magName );
+}
+//______________________________________________________________________________
+std::vector< size_t > magnetController::getNumDegSteps( const std::vector< std::string > & magNames )
+{
+    return localInterface.getNumDegSteps( magNames );
+}
+//______________________________________________________________________________
+std::vector< double > magnetController::getDegValues( const std::string & magName )
+{
+    return localInterface.getDegValues( magName );
+}
+//______________________________________________________________________________
+std::vector< std::vector< double > > magnetController::getDegValues( const std::vector< std::string >  & magNames )
+{
+    return localInterface.getDegValues( magNames );
+}
+///
+/// BJAS ADDITIONS
+///
+//______________________________________________________________________________
 double magnetController::getPosition( const std::string & magName )
 {
     return localInterface.getPosition( magName );
@@ -379,35 +402,64 @@ std::vector< double > magnetController::getPosition( const std::vector< std::str
     return localInterface.getPosition( magNames );
 }
 //______________________________________________________________________________
-double magnetController::getSlope( const std::string & magName )
+double magnetController::getMagneticLength( const std::string & magName )
 {
-    return localInterface.getSlope( magName );
+    return localInterface.getMagneticLength( magName );
 }
 //______________________________________________________________________________
-std::vector< double > magnetController::getSlope( const std::vector< std::string > & magNames )
+std::vector< double > magnetController::getMagneticLength( const std::vector< std::string > & magNames )
 {
-    return localInterface.getSlope( magNames );
+    return localInterface.getMagneticLength( magNames );
 }
 //______________________________________________________________________________
-double magnetController::getIntercept( const std::string & magName )
+std::string magnetController::getManufacturer( const std::string & magName )
 {
-    return localInterface.getIntercept( magName );
+    return localInterface.getManufacturer( magName );
 }
 //______________________________________________________________________________
-std::vector< double > magnetController::getIntercept( const std::vector< std::string > & magNames )
+std::vector< double > magnetController::getFieldIntegralCoefficients( const std::string & magName )
 {
-    return localInterface.getIntercept( magNames );
+    return localInterface.getFieldIntegralCoefficients( magName );
 }
 //______________________________________________________________________________
-      ///
-std::vector< double > magnetController::getDegValues( const std::string & magName )
+std::vector<std::vector< double >> magnetController::getFieldIntegralCoefficients( const std::vector< std::string > & magNames )
 {
-    return localInterface.getDegValues( magName );
+    return localInterface.getFieldIntegralCoefficients( magNames );
 }
 //______________________________________________________________________________
-std::vector< std::vector< double > > magnetController::getDegValues( const std::vector< std::string >  & magNames )
+std::vector<std::string> magnetController::getManufacturer( const std::vector< std::string > & magNames )
 {
-    return localInterface.getDegValues( magNames );
+    return localInterface.getManufacturer( magNames );
+}
+//______________________________________________________________________________
+std::string magnetController::getSerialNumber( const std::string & magName )
+{
+    return localInterface.getSerialNumber( magName );
+}
+//______________________________________________________________________________
+std::vector<std::string> magnetController::getSerialNumber( const std::vector< std::string > & magName )
+{
+    return localInterface.getSerialNumber( magName );
+}
+//______________________________________________________________________________
+std::string magnetController::getMagnetBranch( const std::string & magName )
+{
+    return localInterface.getMagnetBranch( magName );
+}
+//______________________________________________________________________________
+std::vector<std::string>  magnetController::getMagnetBranch( const std::vector< std::string > & magName )
+{
+    return localInterface.getMagnetBranch( magName );
+}
+//______________________________________________________________________________
+std::string magnetController::getMeasurementDataLocation( const std::string & magName )
+{
+    return localInterface.getMeasurementDataLocation( magName );
+}
+//______________________________________________________________________________
+std::vector<std::string>  magnetController::getMeasurementDataLocation( const std::vector< std::string > & magName )
+{
+    return localInterface.getMeasurementDataLocation( magName );
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL

@@ -6,7 +6,13 @@
 namespace UTL
 {
     const double DUMMY_DOUBLE = -999.999;
+    const double ZERO_DOUBLE = 0.0;
+    const int    ZERO_INT = 0;
+    const size_t ZERO_SIZET = 0;
     const long   DUMMY_LONG   = -999;
+    const std::string  UNKNOWN_STRING = "UNKNOWN";
+    const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
+
 
     const std::string END_OF_LINE = ";";
     const std::string SLASH_SLASH = "\\";
@@ -152,10 +158,11 @@ namespace UTL
     const std::string PV_ROOT_N   = "PV_ROOT_N";
     const std::string PV_ROOT_R   = "PV_ROOT_R";
     // Magnet
+
+    const std::string UNKNOWN_MAGNET_STRING = "UNKNOWN_MAGNET";
     const std::string PV_SUFFIX_RI = "PV_SUFFIX_RI";
     const std::string PV_SUFFIX_SI = "PV_SUFFIX_SI";
     const std::string PV_PSU_ROOT  = "PV_PSU_ROOT";
-
 
     const std::string MAG_TYPE  = "MAG_TYPE";
     const std::string SOL   = "SOL";
@@ -171,6 +178,8 @@ namespace UTL
     const std::string BIPOLAR   = "BIPOLAR";
     const std::string NR_GANGED = "NR_GANGED";
     const std::string POS       = "POS";
+
+    const std::string MAGNET_BRANCH   = "MAGNET_BRANCH";
 
     const std::string MAG_SET_MAX_WAIT_TIME  = "MAG_SET_MAX_WAIT_TIME";
     // deguass

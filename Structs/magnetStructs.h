@@ -8,6 +8,7 @@
 #define _VELA_MAGNET_STRUCTS_H_
 //proj
 #include "structs.h"
+#include "configDefinitions.h"
 //stl
 #include <vector>
 #include <string>
@@ -42,7 +43,7 @@ namespace magnetStructs
     /// These can't go in VELA_ENUM as they need a pvType.
     struct pvStruct
     {   // proviude a default constructor
-        pvStruct() : pvSuffix( "UNKNOWN" ), objName( "UNKNOWN"),COUNT( 0 ), MASK(0), pvType(UNKOWN_MAG_PV_TYPE) {} // proviude a default constructor
+        pvStruct() : pvSuffix( "UNKNOWN_PV_SUFFIX" ), objName( "UNKNOWN_OBJECT_NAME"),COUNT( UTL::ZERO_INT ), MASK(UTL::ZERO_INT), pvType(UNKOWN_MAG_PV_TYPE) {} // proviude a default constructor
         MAG_PV_TYPE   pvType;
         chid          CHID;
         std::string   pvSuffix, objName;
@@ -53,9 +54,9 @@ namespace magnetStructs
 
     struct  nrPSUObject
     {   // proviude a default constructor
-        nrPSUObject() : isGanged( false ), parentMagnet( "UNKNOWN" ), pvRoot( "UNKNOWN"),
+        nrPSUObject() : isGanged( false ), parentMagnet( "UNKNOWN_PARENT_MAGNET" ), pvRoot( UTL::UNKNOWN_PVROOT),
                         psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),
-                        numIlocks( 0 ) {} // proviude a default constructor
+                        numIlocks(UTL::ZERO_INT ) {} // proviude a default constructor
         std::string  parentMagnet, pvRoot;
         bool isGanged;//, canFlip;/// canflip? probably refactor as function...
         VELA_ENUM::MAG_PSU_STATE psuState;
@@ -71,17 +72,18 @@ namespace magnetStructs
 
     struct  magnetObject
     {   // proviude a default constructor
-        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN_NAME"),pvRoot( "UNKNOWN_PVROOT"),
+        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN_NAME"),pvRoot( UTL::UNKNOWN_PVROOT),
                 psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
                 magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
-                si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999), //MAGIC_NUMBER
+                si(UTL::DUMMY_DOUBLE), ri(UTL::DUMMY_DOUBLE), siWithPol(UTL::DUMMY_DOUBLE), riWithPol(UTL::DUMMY_DOUBLE), riTolerance(UTL::DUMMY_DOUBLE),
                 /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
                 /// ... which is probably evil && dangerous
-                numIlocks( 0 ),degTolerance(0.1),//MAGIC_NUMBER
+                numIlocks( UTL::ZERO_INT ),degTolerance(0.1),//MAGIC_NUMBER
                 //added deguassing initialisers here
-                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0),//MAGIC_NUMBER
-                magneticLength(0.0),slope(0.0),intercept(0.0),position(0.0),//MAGIC_NUMBER
+                numDegaussSteps(UTL::ZERO_INT), maxWaitTime(UTL::ZERO_INT), numDegaussElements(UTL::ZERO_INT),
+                magneticLength(UTL::ZERO_DOUBLE),position(UTL::ZERO_DOUBLE),
                 manufacturer("UNKNOWN_MANUFACTURER"), serialNumber("UNKNOWN_SERIAL_NUMBER"),
+                magnetBranch("UNKNOWN_MAGNET_BRANCH"),
                 measurementDataLocation("UNKNOWN_MEASUREMENT_DATA_LOCATION") {} // proviude a default constructor
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
@@ -91,8 +93,8 @@ namespace magnetStructs
         std::string  name, pvRoot, psuRoot;
         bool isGanged, canNRFlip, samePSURoot;
         std::vector< std::string > gangMembers;
-        double si, ri, siWithPol, riWithPol, riTolerance,position,slope,intercept,magneticLength;
-        std::string manufacturer, serialNumber, measurementDataLocation;
+        double si, ri, siWithPol, riWithPol, riTolerance,position,magneticLength;
+        std::string manufacturer, serialNumber, measurementDataLocation,magnetBranch;
         //DEGUASSING: added here by Tim Price
         size_t numDegaussSteps, maxWaitTime, numDegaussElements;
         std::vector< double > degValues, fieldIntegralCoefficients;
@@ -122,7 +124,7 @@ namespace magnetStructs
     /// This holds all offline info about degaussing
     struct degaussValues
     {   // proviude a default constructor
-        degaussValues():numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0){}//MAGIC_NUMBER
+        degaussValues():numDegaussSteps(UTL::ZERO_INT), maxWaitTime(UTL::ZERO_INT), numDegaussElements(0){}//MAGIC_NUMBER
         size_t numDegaussSteps, maxWaitTime, numDegaussElements;
         std::map< std::string, std::vector< double > > degValues;
         std::map< std::string, double > degTolerance;
@@ -130,7 +132,7 @@ namespace magnetStructs
     /// This holds all info for actually degaussing some magnets, passed into new thread when degaussing
     struct degaussStruct
     {   // proviude a default constructor
-        degaussStruct():interface(nullptr),thread(nullptr),key(0),resetToZero(true){}
+        degaussStruct():interface(nullptr),thread(nullptr),key(UTL::ZERO_INT),resetToZero(true){}
         magnetInterface          *interface;
         std::vector< std::string > magsToDeguass;
         std::thread               *thread;
@@ -140,7 +142,7 @@ namespace magnetStructs
     /// one-stop shop for magnet state
     struct magnetStateStruct
     {   // proviude a default constructor
-        magnetStateStruct():numMags(0) {};
+        magnetStateStruct():numMags(UTL::ZERO_INT) {};
         size_t numMags;
         std::vector< std::string > magNames;
         std::vector< VELA_ENUM::MAG_PSU_STATE > psuStates;

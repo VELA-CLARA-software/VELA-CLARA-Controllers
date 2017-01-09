@@ -71,17 +71,24 @@ class VCmagnets
 /// just to make the function pointer overloading neater, lets make some typedefs, generally i don't like doing this
 typedef double doub;
 typedef const double cdou;
-typedef const size_t csiz;
-typedef const std::string cstr ;
 typedef std::vector<double> vecd;
 typedef std::vector<std::vector<double>> vvcd;
 typedef const std::vector<double> cved;
+
+typedef const size_t csiz;
+typedef size_t size;
+typedef std::vector<size_t> vsiz;
+
+typedef std::string stri;
+typedef const std::string cstr;
 typedef std::vector<std::string> vecs;
 typedef const std::vector<std::string> cves;
+
 typedef magnetStructs::magnetStateStruct msst;
 typedef magnetStructs::MAG_REV_TYPE mgrt;
 typedef magnetStructs::MAG_TYPE     magt;
 typedef VELA_ENUM::MAG_PSU_STATE      mpsu;
+
 typedef std::vector<magnetStructs::MAG_REV_TYPE> vmgrt;
 typedef std::vector<magnetStructs::MAG_TYPE> vmgt;
 typedef std::vector<VELA_ENUM::MAG_PSU_STATE>  vpsu;
@@ -120,17 +127,41 @@ vmgt (magnetController::*getMagType_2)( cves& ) = &magnetController::getMagType;
 mpsu (magnetController::*getMagPSUState_1)( cstr& ) = &magnetController::getMagPSUState;
 vpsu (magnetController::*getMagPSUState_2)( cves& ) = &magnetController::getMagPSUState;
 ///
-doub (magnetController::*getPosition_1)( cstr & ) = &magnetController::getPosition;
-vecd (magnetController::*getPosition_2)( cves & ) = &magnetController::getPosition;
-///
-doub (magnetController::*getSlope_1)( cstr & ) = &magnetController::getSlope;
-vecd (magnetController::*getSlope_2)( cves & ) = &magnetController::getSlope;
-///
-doub (magnetController::*getIntercept_1)( cstr & ) = &magnetController::getIntercept;
-vecd (magnetController::*getIntercept_2)( cves & ) = &magnetController::getIntercept;
-///
 vecd (magnetController::*getDegValues_1)( cstr & ) = &magnetController::getDegValues;
 vvcd (magnetController::*getDegValues_2)( cves & ) = &magnetController::getDegValues;
+///
+size (magnetController::*getNumDegSteps_1)( cstr & ) = &magnetController::getNumDegSteps;
+vsiz (magnetController::*getNumDegSteps_2)( cves & ) = &magnetController::getNumDegSteps;
+
+//// BJAS ADDITIONS
+///
+doub (magnetController::*getPosition_1)( cstr & ) = &magnetController::getPosition;
+vecd (magnetController::*getPosition_2)( cves & ) = &magnetController::getPosition;
+/////
+/// replaced by field integral coefficients
+//doub (magnetController::*getSlope_1)( cstr & ) = &magnetController::getSlope;
+//vecd (magnetController::*getSlope_2)( cves & ) = &magnetController::getSlope;
+/////
+//doub (magnetController::*getIntercept_1)( cstr & ) = &magnetController::getIntercept;
+//vecd (magnetController::*getIntercept_2)( cves & ) = &magnetController::getIntercept;
+///
+vecd (magnetController::*getFieldIntegralCoefficients_1)( cstr & ) = &magnetController::getFieldIntegralCoefficients;
+vvcd (magnetController::*getFieldIntegralCoefficients_2)( cves & ) = &magnetController::getFieldIntegralCoefficients;
+///
+doub (magnetController::*getMagneticLength_1)( cstr & ) = &magnetController::getMagneticLength;
+vecd (magnetController::*getMagneticLength_2)( cves & ) = &magnetController::getMagneticLength;
+///
+stri  (magnetController::*getManufacturer_1)( cstr & ) = &magnetController::getManufacturer;
+vecs  (magnetController::*getManufacturer_2)( cves & ) = &magnetController::getManufacturer;
+///
+stri  (magnetController::*getSerialNumber_1)( cstr & ) = &magnetController::getSerialNumber;
+vecs  (magnetController::*getSerialNumber_2)( cves & ) = &magnetController::getSerialNumber;
+///
+stri  (magnetController::*getMagnetBranch_1)( cstr & ) = &magnetController::getMagnetBranch;
+vecs  (magnetController::*getMagnetBranch_2)( cves & ) = &magnetController::getMagnetBranch;
+///
+stri  (magnetController::*getMeasurementDataLocation_1)( cstr & ) = &magnetController::getMeasurementDataLocation;
+vecs  (magnetController::*getMeasurementDataLocation_2)( cves & ) = &magnetController::getMeasurementDataLocation;
 
 using namespace boost::python;
 
@@ -253,49 +284,15 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def_readonly("degValues",  &magnetStructs::magnetObject::degValues)
         .def_readonly("position",   &magnetStructs::magnetObject::position)
         .def_readonly("fieldIntegralCoefficients",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
+        .def_readonly("numDegaussSteps",      &magnetStructs::magnetObject::numDegaussSteps)
 //        .def_readonly("slope",      &magnetStructs::magnetObject::slope)
 //        .def_readonly("intercept",  &magnetStructs::magnetObject::intercept)
         .def_readonly("manufacturer",  &magnetStructs::magnetObject::manufacturer)
         .def_readonly("serialNumber",  &magnetStructs::magnetObject::serialNumber)
         .def_readonly("measurementDataLocation",  &magnetStructs::magnetObject::measurementDataLocation)
         .def_readonly("magneticLength",  &magnetStructs::magnetObject::magneticLength)
+        .def_readonly("magnetBranch",  &magnetStructs::magnetObject::magnetBranch)
         ;
-
-//     struct  magnetObject
-//    {   // proviude a default constructor
-//        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN"),pvRoot( "UNKNOWN"),
-//                psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
-//                magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
-//                si(-999.999), ri(-999.999), siWithPol(-999.999), riWithPol(-999.999), riTolerance(-999.999),
-//                /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
-//                /// ... which is probably evil && dangerous
-//                numIlocks( 0 ),
-//                //added deguassing initialisers here
-//                numDegaussSteps(0), maxWaitTime(0), numDegaussElements(0) {} // proviude a default constructor
-//        MAG_TYPE magType;           /// dipole, quad etc.
-//        MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
-//        VELA_ENUM::MAG_PSU_STATE psuState;
-//        size_t numIlocks;
-//        nrPSUObject nPSU, rPSU;
-//        std::string  name, pvRoot, psuRoot;
-//        bool isGanged, canNRFlip, samePSURoot;
-//        std::vector< std::string > gangMembers;
-//        double si, ri, siWithPol, riWithPol, riTolerance;
-//
-//        //DEGUASSING: added here by Tim Price
-//
-//        size_t numDegaussSteps, maxWaitTime, numDegaussElements;
-//        std::vector< double > degValues;
-//        double  degTolerance;
-//
-////        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
-//        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
-//    #ifndef __CINT__
-//        std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
-//        std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
-//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
-//    #endif
-//    };
 
     /// and the class member functions to expose to python,
     /// remmeber to include enum definitions as boost::python::dict <int, string>
@@ -361,14 +358,29 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("getMagType",     getMagType_2      )
         .def("getMagPSUState", getMagPSUState_1  )
         .def("getMagPSUState", getMagPSUState_2  )
-        .def("getPosition",    getPosition_1     )
-        .def("getPosition",    getPosition_2     )
-        .def("getSlope",       getSlope_1        )
-        .def("getSlope",       getSlope_2        )
-        .def("getIntercept",   getIntercept_1    )
-        .def("getIntercept",   getIntercept_2    )
         .def("getDegValues",   getDegValues_1    )
         .def("getDegValues",   getDegValues_2    )
+        .def("getNumDegSteps",   getNumDegSteps_1    )
+        .def("getNumDegSteps",   getNumDegSteps_2    )
+        /// BJAS ADDITIONS
+        .def("getPosition",    getPosition_1     )
+        .def("getPosition",    getPosition_2     )
+//        .def("getSlope",       getSlope_1        )
+//        .def("getSlope",       getSlope_2        )
+//        .def("getIntercept",   getIntercept_1    )
+//        .def("getIntercept",   getIntercept_2    )
+        .def("getFieldIntegralCoefficients",    getFieldIntegralCoefficients_1     )
+        .def("getFieldIntegralCoefficients",    getFieldIntegralCoefficients_2     )
+        .def("getMagneticLength",    getMagneticLength_1     )
+        .def("getMagneticLength",    getMagneticLength_2     )
+        .def("getManufacturer",       getManufacturer_1        )
+        .def("getManufacturer",       getManufacturer_2        )
+        .def("getMagnetBranch",   getMagnetBranch_1    )
+        .def("getMagnetBranch",   getMagnetBranch_2    )
+        .def("getSerialNumber",   getSerialNumber_1    )
+        .def("getSerialNumber",   getSerialNumber_2    )
+        .def("getMeasurementDataLocation",   getMeasurementDataLocation_1    )
+        .def("getMeasurementDataLocation",   getMeasurementDataLocation_2    )
         /// Don't forget functions in the base class we want to expose....
         .def("debugMessagesOff",         &magnetController::debugMessagesOff )
         .def("debugMessagesOn",          &magnetController::debugMessagesOn )

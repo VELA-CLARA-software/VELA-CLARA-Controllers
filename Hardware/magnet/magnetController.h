@@ -129,24 +129,40 @@ class magnetController : public controller
         magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
         std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
       ///
+
         magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
         std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
       ///
         VELA_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
         std::vector<  VELA_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
       ///
-        double                getPosition( const std::string & magName );
-        std::vector< double > getPosition( const std::vector< std::string > & magNames );
-      ///
-        double                getSlope( const std::string & magName );
-        std::vector< double > getSlope( const std::vector< std::string > & magNames );
-      ///
-        double                getIntercept( const std::string & magName );
-        std::vector< double > getIntercept( const std::vector< std::string > & magNames );
+        size_t                getNumDegSteps( const std::string & magName );
+        std::vector< size_t > getNumDegSteps( const std::vector< std::string > & magNames );
       ///
         std::vector< double >                getDegValues( const std::string & magName );
         std::vector< std::vector< double > > getDegValues( const std::vector< std::string > & magName );
-
+      ///
+      /// BJAS additions
+        std::vector< double >              getFieldIntegralCoefficients( const std::string & magName );
+        std::vector<std::vector< double >> getFieldIntegralCoefficients( const std::vector< std::string > & magNames );
+      ///
+        double                getPosition( const std::string & magName );
+        std::vector< double > getPosition( const std::vector< std::string > & magNames );
+      ///
+        double                getMagneticLength( const std::string & magName );
+        std::vector< double > getMagneticLength( const std::vector< std::string > & magNames );
+      ///
+        std::string              getManufacturer( const std::string & magName );
+        std::vector<std::string> getManufacturer( const std::vector< std::string > & magNames );
+      ///
+        std::string               getSerialNumber( const std::string & magName );
+        std::vector<std::string>  getSerialNumber( const std::vector< std::string > & magName );
+      ///
+        std::string               getMagnetBranch( const std::string & magName );
+        std::vector<std::string>  getMagnetBranch( const std::vector< std::string > & magName );
+      ///
+        std::string               getMeasurementDataLocation( const std::string & magName );
+        std::vector<std::string>  getMeasurementDataLocation( const std::vector< std::string > & magName );
 
       /// These are pure virtual methods, so need to have some implmentation in derived classes
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
