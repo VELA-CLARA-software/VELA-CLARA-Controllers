@@ -602,7 +602,6 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
     std::vector< double > rmsVals;
     if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData.size() != 0 )
     {
-        std::cout << bpmObj.dataObjects.at(bpmName).bpmRawData.rawBPMData.size() << std::endl;
         for( unsigned int i = 0; i < bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData.size(); i++ )
         {
             u11 = bpmObj.dataObjects.at( bpmName ).bpmRawData.rawBPMData[ i ][ 1 ];
@@ -621,11 +620,9 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
             {
                 rmsVals.push_back( ( ( v11 + v12 ) - ( v21 + v22 ) ) / ( ( v11 + v12 ) + ( v21 + v22 ) ) );
             }
-            //std::cout << u11 << "   " << u12 << "   " << u21 << "   " << u22 << std::endl;
         }
         double rms = sqrt( ( std::inner_product( rmsVals.begin(), rmsVals.end(), rmsVals.begin(), 0 ) ) / static_cast<double>( rmsVals.size() ) );
         res = rms * sqrt( 2 ) * bpmObj.dataObjects.at( bpmName ).mn;
-        std::cout << rmsVals.size() << std::endl;
         return res;
     }
     else

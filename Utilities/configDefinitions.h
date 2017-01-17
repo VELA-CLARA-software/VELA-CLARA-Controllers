@@ -24,6 +24,7 @@ namespace UTL
     const char TAB_C              = '\t';
 
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
     const std::string VM_PREFIX   = "VM-";
 
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
@@ -32,6 +33,9 @@ namespace UTL
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
     const std::string VELA_INJ_BPM_CONFIG              = "velaINJBeamPositionMonitors.config";
     const std::string VELA_BA1_BPM_CONFIG              = "velaBA1BeamPositionMonitors.config";
+    const std::string VELA_BA2_BPM_CONFIG              = "velaBA2BeamPositionMonitors.config";
+    const std::string CLARA_INJ_BPM_CONFIG             = "claraINJBeamPositionMonitors.config";
+    const std::string CLARA_2_VELA_BPM_CONFIG          = "clara2VELABeamPositionMonitors.config";
 /// Qscope
     const std::string VELA_SCOPE_CONFIG                = "velaQScope.config";
     const std::string VELA_SCOPE_TRACE_CONFIG          = "velaQScopeTrace.config";
