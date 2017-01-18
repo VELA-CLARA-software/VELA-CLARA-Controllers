@@ -18,12 +18,15 @@ withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
 withVM(true),
-showdebugMessage(true),
-dontShowMessage(false),
-showDebugMessage(true),
-dontShowDebugMessage(false)
+VELA_INJ ( magnetStructs::MAG_CONTROLLER_TYPE::VELA_INJ ),
+VELA_BA1 ( magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA1 ),
+VELA_BA2 ( magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA2 ),
+CLARA_INJ( magnetStructs::MAG_CONTROLLER_TYPE::CLARA_INJ),
+UNKNOWN_CONTROLLER_TYPE(magnetStructs::MAG_CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
 {
-   std::cout << "Instantiated a VCmagnets " << std::endl;
+    std::cout << "Instantiated a VCmagnets in Quiet Mode" << std::endl;
+    shouldShowDebugMessage = false;
+    shouldShowMessage = false;
     //ctor
 
 }
@@ -98,20 +101,48 @@ VCmagnets::~VCmagnets()
 
 }
 //______________________________________________________________________________
+void VCmagnets::setQuiet()
+{
+    std::cout << "VCmagnets Quiet Mode Set." << std::endl;
+    shouldShowDebugMessage = false;
+    shouldShowMessage = false;
+}
+//______________________________________________________________________________
+void VCmagnets::setVerbose()
+{
+    std::cout << "VCmagnets Verbose Mode Set." << std::endl;
+    shouldShowDebugMessage = true;
+    shouldShowMessage = true;
+}
+//______________________________________________________________________________
+void VCmagnets::setMessage()
+{
+    std::cout << "VCmagnets Message Mode Set." << std::endl;
+    shouldShowDebugMessage = false;
+    shouldShowMessage = true;
+}
+//______________________________________________________________________________
+void VCmagnets::setDebugMessage()
+{
+    std::cout << "VCmagnets DebugMessage Mode Set." << std::endl;
+    shouldShowDebugMessage = true;
+    shouldShowMessage = false;
+}
+//______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 //void VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 {
-    std::cout << "creating virtual_VELA_INJ_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
 
     if( virtual_VELA_INJ_Magnet_Controller_Obj )
     {
-
+        std::cout << "virtual_VELA_INJ_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        virtual_VELA_INJ_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withEPICS );
+        std::cout << "Creating virtual_VELA_INJ_Magnet_Controller object" << std::endl;
+        virtual_VELA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withEPICS,VELA_INJ );
     }
     return *virtual_VELA_INJ_Magnet_Controller_Obj;
 }
@@ -119,81 +150,81 @@ magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 //magnetController VCmagnets::offline_VELA_INJ_Magnet_Controller()
 magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
 {
-    std::cout << "creating physical_VELA_INJ_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
     if( physical_VELA_INJ_Magnet_Controller_Obj )
     {
-
+        std::cout << "physical_VELA_INJ_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        physical_VELA_INJ_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withoutVM, withEPICS );
+        std::cout << "Creating physical_VELA_INJ_Magnet_Controller object" << std::endl;
+        physical_VELA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withEPICS,VELA_INJ );
     }
     return *physical_VELA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
 {
-    std::cout << "creating offline_VELA_INJ_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
     if( offline_VELA_INJ_Magnet_Controller_Obj )
     {
-
+        std::cout << "offline_VELA_INJ_Magnet_Controller_Obj object already exists," << std::endl;
     }
     else
     {
-        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withoutEPICS );
+        std::cout << "Creating offline_VELA_INJ_Magnet_Controller object" << std::endl;
+        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,VELA_INJ );
     }
     return *offline_VELA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
 {
-    std::cout << "creating virtual_VELA_BA1_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
 
     if( virtual_VELA_BA1_Magnet_Controller_Obj )
     {
-
+        std::cout << "virtual_VELA_BA1_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        virtual_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withEPICS );
+        std::cout << "Creating virtual_VELA_BA1_Magnet_Controller object" << std::endl;
+        virtual_VELA_BA1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withEPICS,VELA_BA1 );
     }
     return *virtual_VELA_BA1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_VELA_BA1_Magnet_Controller()
 {
-    std::cout << "creating offline_VELA_BA1_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_NR_PSU_CONFIG;
     if( offline_VELA_BA1_Magnet_Controller_Obj )
     {
-
+        std::cout << "offline_VELA_BA1_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        offline_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withoutEPICS );
+        std::cout << "Creating offline_VELA_BA1_Magnet_Controller object" << std::endl;
+        offline_VELA_BA1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,VELA_BA1 );
     }
     return *offline_VELA_BA1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
 {
-    std::cout << "creating physical_VELA_BA1_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
     if( physical_VELA_BA1_Magnet_Controller_Obj )
     {
-
+        std::cout << "physical_VELA_BA1_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withoutVM, withEPICS );
+        std::cout << "Creating physical_VELA_BA1_Magnet_Controller object" << std::endl;
+        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withEPICS,VELA_BA1 );
     }
     return *physical_VELA_BA1_Magnet_Controller_Obj;
 }
@@ -206,11 +237,12 @@ magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
 
     if( virtual_VELA_BA2_Magnet_Controller_Obj )
     {
-
+        std::cout << "virtual_VELA_BA2_Magnet_Controller_Obj object already exists," << std::endl;
     }
     else
     {
-        virtual_VELA_BA2_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withEPICS );
+        std::cout << "Creating virtual_VELA_BA2_Magnet_Controller_Obj object" << std::endl;
+        virtual_VELA_BA2_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withEPICS,VELA_BA2 );
     }
     return *virtual_VELA_BA2_Magnet_Controller_Obj;
 }
@@ -222,75 +254,79 @@ magnetController& VCmagnets::offline_VELA_BA2_Magnet_Controller()
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_NR_PSU_CONFIG;
     if( offline_VELA_BA2_Magnet_Controller_Obj )
     {
+        std::cout << "virtual_VELA_BA2_Magnet_Controller_Obj object already exists," << std::endl;
     }
     else
     {
-        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withVM, withoutEPICS );
+        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,VELA_BA2 );
     }
     return *offline_VELA_BA2_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
 {
-    std::cout << "creating physical_VELA_BA2_Magnet_Controller object" << std::endl;
+
     std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_NR_PSU_CONFIG;
     if( physical_VELA_BA1_Magnet_Controller_Obj )
     {
-
+        std::cout << "virtual_VELA_BA2_Magnet_Controller_Obj object already exists," << std::endl;
     }
     else
     {
-        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( showdebugMessage, showDebugMessage, mconf, nconf, withoutVM, withEPICS );
+        std::cout << "Creating physical_VELA_BA2_Magnet_Controller object" << std::endl;
+        physical_VELA_BA1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withEPICS,VELA_BA2 );
     }
     return *physical_VELA_BA1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_CLARA_INJ_Magnet_Controller()
 {
-    std::cout << "creating virtual_CLARA_INJ_Magnet_Controller object" << std::endl;
+
     std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
 
     if( virtual_CLARA_INJ_Magnet_Controller_Obj )
     {
-
+        std::cout << "virtual_CLARA_INJ_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        virtual_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, withVM, withEPICS );
+        std::cout << "Creating virtual_CLARA_INJ_Magnet_Controller object" << std::endl;
+        virtual_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withEPICS,CLARA_INJ );
     }
     return *virtual_CLARA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_CLARA_INJ_Magnet_Controller()
 {
-    std::cout << "creating offline_CLARA_INJ_Magnet_Controller object" << std::endl;
     std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
     if( offline_CLARA_INJ_Magnet_Controller_Obj )
     {
-
+        std::cout << "offline_CLARA_INJ_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, withVM, withoutEPICS );
+        std::cout << "Creating offline_CLARA_INJ_Magnet_Controller object" << std::endl;
+        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,CLARA_INJ );
     }
     return *offline_CLARA_INJ_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_CLARA_INJ_Magnet_Controller()
 {
-    std::cout << "creating physical_CLARA_INJ_Magnet_Controller object" << std::endl;
+
     std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
     std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
     if( physical_CLARA_INJ_Magnet_Controller_Obj )
     {
-
+        std::cout << "physical_CLARA_INJ_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        physical_CLARA_INJ_Magnet_Controller_Obj = new magnetController( true, true, mconf, nconf, withoutVM, withEPICS );
+        std::cout << "creating physical_CLARA_INJ_Magnet_Controller object" << std::endl;
+        physical_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withEPICS,CLARA_INJ );
     }
     return *physical_CLARA_INJ_Magnet_Controller_Obj;
 }

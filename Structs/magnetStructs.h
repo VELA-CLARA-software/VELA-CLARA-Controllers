@@ -39,6 +39,7 @@ namespace magnetStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_TYPE, (PSU) (PSU_N) (PSU_R) (UNKOWN_MAG_PSU_TYPE) )
 
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_CONTROLLER_TYPE, (VELA_INJ) (VELA_BA1) (VELA_BA2) (CLARA_INJ)(UNKNOWN_CONTROLLER_TYPE) )
 
     /// These can't go in VELA_ENUM as they need a pvType.
     struct pvStruct
@@ -74,6 +75,7 @@ namespace magnetStructs
     {   // proviude a default constructor
         magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN_NAME"),pvRoot( UTL::UNKNOWN_PVROOT),
                 psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
+                psuRoot("PROBABLY_SAME_AS_PV_ROOT"),
                 magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
                 si(UTL::DUMMY_DOUBLE), ri(UTL::DUMMY_DOUBLE), siWithPol(UTL::DUMMY_DOUBLE), riWithPol(UTL::DUMMY_DOUBLE), riTolerance(UTL::DUMMY_DOUBLE),
                 /// err... , an atomic_bool for isDegaussing( false ) does not work ... http://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
@@ -88,18 +90,13 @@ namespace magnetStructs
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
         VELA_ENUM::MAG_PSU_STATE psuState;
-        size_t numIlocks;
+        size_t numIlocks,numDegaussSteps, maxWaitTime, numDegaussElements;
         nrPSUObject nPSU, rPSU;
-        std::string  name, pvRoot, psuRoot;
         bool isGanged, canNRFlip, samePSURoot;
         std::vector< std::string > gangMembers;
-        double si, ri, siWithPol, riWithPol, riTolerance,position,magneticLength;
-        std::string manufacturer, serialNumber, measurementDataLocation,magnetBranch;
-        //DEGUASSING: added here by Tim Price
-        size_t numDegaussSteps, maxWaitTime, numDegaussElements;
+        double si, ri, siWithPol, riWithPol, riTolerance,position,magneticLength,degTolerance;
+        std::string name, pvRoot, psuRoot, manufacturer, serialNumber, measurementDataLocation,magnetBranch;
         std::vector< double > degValues, fieldIntegralCoefficients;
-        double  degTolerance;/// this is not initiliased here...
-
 //        std::atomic< bool > isDegaussing;/// NO thread safe copy constructor malarkey...  http://stackoverflow.com/questions/29332897/error-c2280-attempting-to-reference-a-deleted-function-atomicint
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__
@@ -132,18 +129,21 @@ namespace magnetStructs
     /// This holds all info for actually degaussing some magnets, passed into new thread when degaussing
     struct degaussStruct
     {   // proviude a default constructor
-        degaussStruct():interface(nullptr),thread(nullptr),key(UTL::ZERO_INT),resetToZero(true){}
+        degaussStruct():interface(nullptr),thread(nullptr),key(UTL::ZERO_INT),
+                        resetToZero(true),controllerType(UNKNOWN_CONTROLLER_TYPE){}
         magnetInterface          *interface;
-        std::vector< std::string > magsToDeguass;
-        std::thread               *thread;
-        size_t                     key;
-        bool                       resetToZero;
+        std::vector<std::string>  magsToDeguass;
+        std::thread              *thread;
+        size_t                    key;
+        bool                      resetToZero;
+        MAG_CONTROLLER_TYPE       controllerType;
     };
     /// one-stop shop for magnet state
     struct magnetStateStruct
     {   // proviude a default constructor
-        magnetStateStruct():numMags(UTL::ZERO_INT) {};
+        magnetStateStruct():numMags(UTL::ZERO_INT),controllerType(UNKNOWN_CONTROLLER_TYPE){};
         size_t numMags;
+        MAG_CONTROLLER_TYPE controllerType;
         std::vector< std::string > magNames;
         std::vector< VELA_ENUM::MAG_PSU_STATE > psuStates;
         std::vector< double > siValues,riValues;

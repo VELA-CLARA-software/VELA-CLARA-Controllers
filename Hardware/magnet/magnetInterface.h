@@ -29,27 +29,27 @@ class magnetInterface : public interface
 {
     public:
 
-        typedef std::vector< bool > vec_b;
+        typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
-        typedef std::vector< double > vec_d;
+        typedef std::vector<double> vec_d;
+        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         magnetInterface::magnetInterface();
-        magnetInterface( const std::string &magConf, const std::string &NRConf,
-                        const bool startVirtualMachine,
-                        const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
-                        const bool shouldStartEPICs );
+        magnetInterface( const std::string &magConf,
+                         const std::string &NRConf,
+                         const bool startVirtualMachine,
+                         const bool *show_messages_ptr,
+                         const bool* show_debug_messages_ptr,
+                         const bool shouldStartEPICs,
+                         const magnetStructs::MAG_CONTROLLER_TYPE myControllerType );
 
         ~magnetInterface();
       //  magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name ) {
-            std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
-            return r;}
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name ) {
-            std::map< VELA_ENUM::ILOCK_NUMBER, std::string > r;
-            return r;}
-
+        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
+        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
 
         // /existentital quantifiers, and the like....
         bool isAQuad( const std::string & magName );
@@ -74,10 +74,15 @@ class magnetInterface : public interface
         bool isOFF_psuR( const std::string & magName );
         bool isOFF ( const std::string & magName );
 
+        bool isRIequalVal( const std::string & magName, const  double value, const double tolerance );
+
         /// some outdated debugging function ?
         void showMagRevType();
         /// RI tolerances set how many decimal places on RI values (irl EPICS has 9 and they are continually changing)
-        void setRITolerance( const std::string & magName, double val);
+        void setRITolerance( const std::string & magName, const double val);
+        void setRITolerance(const vec_s & magNames, const vec_d & vals );
+        double getRITolerance( const std::string & magName );
+        std::vector< double >  getRITolerance( const std::vector< std::string > & magNames );
 
         /// main getters for magnet currents
         double getSI( const std::string & magName );
@@ -128,8 +133,8 @@ class magnetInterface : public interface
         void applyDBURTCorOnly( const std::string & fileName );
         void applyDBURTQuadOnly( const std::string & fileName );
         /// Write a DBURT
-        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = ""  );
-        bool writeDBURT( const std::string & fileName = "", const std::string & comments = ""  );
+        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = ""  ,const std::string & keywords = "");
+        bool writeDBURT( const std::string & fileName = "", const std::string & comments = "", const std::string & keywords = ""  );
         /// These versions are for c++ applictions, we allow c++ users to have full read access to the entire magnetObject data
         const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
         const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
@@ -185,6 +190,8 @@ class magnetInterface : public interface
 
 
     private:
+        // what flavor of controller am i ?
+        const magnetStructs::MAG_CONTROLLER_TYPE myControllerType;
 
         const bool shouldStartEPICs;
         /// AllmagnetData gets a dummy magnet to return
@@ -227,7 +234,7 @@ class magnetInterface : public interface
 
         vec_s waitForMagnetsToSettle(const vec_s & mags, const vec_d & values, const vec_d & tolerances, const time_t waitTime = 45 ); /// MAGIC_NUMBER
 
-        bool isRIequalVal( const std::string & magName, const  double value, const double tolerance );
+
         bool shouldPolarityFlip( const std::string & magName, const double val );
         bool canNRFlip(const std::string & magName );
         const vec_b flipNR( const vec_s & magNames );

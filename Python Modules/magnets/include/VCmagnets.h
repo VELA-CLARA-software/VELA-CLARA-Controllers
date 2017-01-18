@@ -35,6 +35,11 @@ class VCmagnets
         magnetController& offline_CLARA_INJ_Magnet_Controller();
         magnetController& physical_CLARA_INJ_Magnet_Controller();
 
+        void setQuiet();
+        void setVerbose();
+        void setMessage();
+        void setDebugMessage();
+
         magnetController& getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
     protected:
@@ -58,7 +63,11 @@ class VCmagnets
         magnetController * offline_CLARA_INJ_Magnet_Controller_Obj;
         magnetController * physical_CLARA_INJ_Magnet_Controller_Obj;
 
-        const bool withEPICS, withoutEPICS, withoutVM, withVM, showdebugMessage, dontShowMessage, showDebugMessage, dontShowDebugMessage;
+        const bool withEPICS, withoutEPICS, withoutVM, withVM;
+        bool  shouldShowDebugMessage, shouldShowMessage;
+
+        const magnetStructs::MAG_CONTROLLER_TYPE  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_CONTROLLER_TYPE;
+
 
 };
 
@@ -95,6 +104,15 @@ typedef std::vector<VELA_ENUM::MAG_PSU_STATE>  vpsu;
 ///
 doub(magnetController::*getRI_1)(cstr&) = &magnetController::getRI;
 vecd(magnetController::*getRI_2)(cves&) = &magnetController::getRI;
+
+///
+doub(magnetController::*getRITolerance_1)(cstr&) = &magnetController::getRITolerance;
+vecd(magnetController::*getRITolerance_2)(cves&) = &magnetController::getRITolerance;
+
+///
+void(magnetController::*setRITolerance_1)(cstr&, doub) = &magnetController::setRITolerance;
+void(magnetController::*setRITolerance_2)(cves&, cved&) = &magnetController::setRITolerance;
+
 ///
 vecd(magnetController::*getSI_2)(cves&) = &magnetController::getSI;
 doub(magnetController::*getSI_1)(cstr&) = &magnetController::getSI;
@@ -112,8 +130,8 @@ bool(magnetController::*switchOFFpsu_2)(cves&) = &magnetController::switchOFFpsu
 size_t(magnetController::*degauss_1)(cstr&, bool ) = &magnetController::degauss;
 size_t(magnetController::*degauss_2)(cves&, bool ) = &magnetController::degauss;
 ///
-bool(magnetController::*writeDBURT_1)( const msst&, cstr&, cstr&) = &magnetController::writeDBURT;
-bool(magnetController::*writeDBURT_2)(              cstr&, cstr&) = &magnetController::writeDBURT;
+bool(magnetController::*writeDBURT_1)( const msst&, cstr&, cstr&, cstr&) = &magnetController::writeDBURT;
+bool(magnetController::*writeDBURT_2)(              cstr&, cstr&, cstr&) = &magnetController::writeDBURT;
 ///
 msst(magnetController::*getCurrentMagnetState_1)( cves&) = &magnetController::getCurrentMagnetState;
 msst(magnetController::*getCurrentMagnetState_2)(      ) = &magnetController::getCurrentMagnetState;
@@ -162,6 +180,9 @@ vecs  (magnetController::*getMagnetBranch_2)( cves & ) = &magnetController::getM
 ///
 stri  (magnetController::*getMeasurementDataLocation_1)( cstr & ) = &magnetController::getMeasurementDataLocation;
 vecs  (magnetController::*getMeasurementDataLocation_2)( cves & ) = &magnetController::getMeasurementDataLocation;
+///
+bool  (magnetController::*setSIZero_1)( cstr & ) = &magnetController::setSIZero;
+bool  (magnetController::*setSIZero_2)( cves & ) = &magnetController::setSIZero;
 
 using namespace boost::python;
 
@@ -227,14 +248,24 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
                 .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
                 .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
                 ;
+        enum_<magnetStructs::MAG_CONTROLLER_TYPE>("MAG_CONTROLLER_TYPE")
+                .value("VELA_INJ"  , magnetStructs::MAG_CONTROLLER_TYPE::VELA_INJ )
+                .value("VELA_BA1"  , magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA1  )
+                .value("VELA_BA2"  , magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA2 )
+                .value("CLARA_INJ" , magnetStructs::MAG_CONTROLLER_TYPE::CLARA_INJ )
+                .value("UNKNOWN_CONTROLLER_TYPE", magnetStructs::MAG_CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE )
+                ;
+
+
     /// structs (this one is a one-stop shop for comomn parameters)
     boost::python::class_<magnetStructs::magnetStateStruct>
         ("magnetStateStruct")
-        .add_property("numMags",   &magnetStructs::magnetStateStruct::numMags)
-        .add_property("magNames",  &magnetStructs::magnetStateStruct::magNames)
-        .add_property("psuStates", &magnetStructs::magnetStateStruct::psuStates)
-        .add_property("siValues",  &magnetStructs::magnetStateStruct::siValues)
-        .add_property("riValues",  &magnetStructs::magnetStateStruct::riValues)
+        .add_property("numMags",        &magnetStructs::magnetStateStruct::numMags)
+        .add_property("controllerType", &magnetStructs::magnetStateStruct::controllerType)
+        .add_property("magNames",       &magnetStructs::magnetStateStruct::magNames)
+        .add_property("psuStates",      &magnetStructs::magnetStateStruct::psuStates)
+        .add_property("siValues",       &magnetStructs::magnetStateStruct::siValues)
+        .add_property("riValues",       &magnetStructs::magnetStateStruct::riValues)
         ;
     /// Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
@@ -272,6 +303,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 
     boost::python::class_<magnetStructs::magnetObject,boost::noncopyable>
         ("magnetObject", boost::python::no_init)
+        .def_readonly("pvRoot",    &magnetStructs::magnetObject::pvRoot)
+        .def_readonly("psuRoot",    &magnetStructs::magnetObject::psuRoot)
+        .def_readonly("maxWaitTime",    &magnetStructs::magnetObject::maxWaitTime)
+        .def_readonly("degTolerance",    &magnetStructs::magnetObject::degTolerance)
         .def_readonly("magType",    &magnetStructs::magnetObject::magType)
         .def_readonly("psuState",   &magnetStructs::magnetObject::psuState)
         .def_readonly("magRevType", &magnetStructs::magnetObject::magRevType)
@@ -285,8 +320,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def_readonly("position",   &magnetStructs::magnetObject::position)
         .def_readonly("fieldIntegralCoefficients",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
         .def_readonly("numDegaussSteps",      &magnetStructs::magnetObject::numDegaussSteps)
-//        .def_readonly("slope",      &magnetStructs::magnetObject::slope)
-//        .def_readonly("intercept",  &magnetStructs::magnetObject::intercept)
         .def_readonly("manufacturer",  &magnetStructs::magnetObject::manufacturer)
         .def_readonly("serialNumber",  &magnetStructs::magnetObject::serialNumber)
         .def_readonly("measurementDataLocation",  &magnetStructs::magnetObject::measurementDataLocation)
@@ -306,12 +339,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("set_CA_PEND_IO_TIMEOUT",   &magnetController::set_CA_PEND_IO_TIMEOUT   )
         .def("getSI", getSI_1)
         .def("getSI", getSI_2)
-        .def("getSI", getRI_2)
         .def("getRI", getRI_1)
+        .def("getRI", getRI_2)
         .def("setSI", setSI_1)
         .def("setSI", setSI_2)
         .def("setSI", setSI_3)
         .def("setSI",  setSI_4)
+        .def("setSIZero",  setSIZero_1)
+        .def("setSIZero",  setSIZero_2)
         .def("switchONpsu", switchONpsu_1)
         .def("switchONpsu", switchONpsu_2)
         .def("switchOFFpsu",switchOFFpsu_1)
@@ -319,7 +354,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("degauss",   degauss_1)
         .def("degauss",   degauss_2)
         .def("writeDBURT",     writeDBURT_1)
-        .def("writeDBURT",    writeDBURT_2)
+        .def("writeDBURT",     writeDBURT_2)
         .def("getCurrentMagnetState",    getCurrentMagnetState_1)
         .def("getCurrentMagnetState",    getCurrentMagnetState_2)
         .def("getMagObjConstRef",        &magnetController::getMagObjConstRef,return_value_policy<reference_existing_object>())
@@ -346,12 +381,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("getQuadNames",             &magnetController::getQuadNames       )
         .def("getHCorNames",             &magnetController::getHCorNames       )
         .def("getVCorNames",             &magnetController::getVCorNames       )
+        .def("setRITolerance",             setRITolerance_1     )
+        .def("setRITolerance",             setRITolerance_2     )
+        .def("getRITolerance",             getRITolerance_1     )
+        .def("getRITolerance",             getRITolerance_2     )
         .def("getDipNames",              &magnetController::getDipNames        )
         .def("getSolNames",              &magnetController::getSolNames        )
         .def("applyDBURT",               &magnetController::applyDBURT         )
         .def("applyDBURTCorOnly",        &magnetController::applyDBURTCorOnly  )
         .def("applyDBURTQuadOnly",       &magnetController::applyDBURTQuadOnly )
         .def("getDBURT",                 &magnetController::getDBURT           )
+        .def("isRIequalVal",                 &magnetController::isRIequalVal           )
+        .def("getMyControllerType",   &magnetController::getMyControllerType    )
         .def("getMagRevType",  getMagRevType_1   )
         .def("getMagRevType",  getMagRevType_2   )
         .def("getMagType",     getMagType_1      )
@@ -395,7 +436,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         ;
 
     /// Finally the main class that creates all the obejcts
-    boost::python::class_<VCmagnets,boost::noncopyable> ("init")
+        boost::python::class_<VCmagnets,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_Magnet_Controller",  &VCmagnets::virtual_VELA_INJ_Magnet_Controller,
              return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_Magnet_Controller",  &VCmagnets::offline_VELA_INJ_Magnet_Controller,
@@ -422,9 +463,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
              return_value_policy<reference_existing_object>())
         .def("getMagnetController",  &VCmagnets::getMagnetController,
              return_value_policy<reference_existing_object>())
-                ;
-
-
+        .def("setQuiet",         &VCmagnets::setQuiet )
+        .def("setVerbose",       &VCmagnets::setVerbose )
+        .def("setMessage",       &VCmagnets::setMessage )
+        .def("setDebugMessage",  &VCmagnets::setDebugMessage )
+        ;
 
 
 }

@@ -17,12 +17,17 @@
 #include <iostream>
 // stl
 magnetController::magnetController(
-    const bool show_messages, const bool show_debug_messages,
-    const std::string & magConf,  const std::string & NRConf, const bool startVirtualMachine, const bool shouldStartEPICs
-):
-shouldStartEPICs(shouldStartEPICs),
+    const bool show_messages,
+    const bool show_debug_messages,
+    const std::string & magConf,
+    const std::string & NRConf,
+    const bool startVirtualMachine,
+    const bool shouldStartEPICs,
+    const magnetStructs::MAG_CONTROLLER_TYPE myControllerType):
 controller( show_messages, show_debug_messages ),
-localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs )
+localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myControllerType ),
+shouldStartEPICs(shouldStartEPICs),
+myControllerType(myControllerType)
 {
 //    if( shouldStartEPICs )
 //    message("magnet controller shouldStartEPICs is true");
@@ -57,6 +62,17 @@ bool magnetController::setSI( const std::string & magName, const double value, c
 std::vector< std::string >  magnetController::setSI( const std::vector< std::string > & magNames, const std::vector< double > & values, const std::vector< double > & tolerances, const size_t timeOUT )
 {
     return localInterface.setSI( magNames, values, tolerances, timeOUT );
+}
+//______________________________________________________________________________
+bool magnetController::setSIZero( const std::string & magName)
+{
+    return setSI( magName, UTL::ZERO_DOUBLE );
+}
+//______________________________________________________________________________
+bool magnetController::setSIZero( const std::vector< std::string > & magNames)
+{
+    std::vector<double> zeros(magNames.size(), UTL::ZERO_DOUBLE);
+    return setSI( magNames, zeros );
 }
 //______________________________________________________________________________
 bool magnetController::switchONpsu ( const std::vector< std::string > & magNames)
@@ -198,11 +214,7 @@ bool magnetController::isNotDegaussing( const std::string & magName )
 {
     return localInterface.isNotDegaussing( magName );
 }
-//______________________________________________________________________________
-void magnetController::setRITolerance( const std::string & magName, const double val)
-{
-    return localInterface.setRITolerance( magName, val );
-}
+
 //______________________________________________________________________________
 void magnetController::showMagRevType()
 {
@@ -217,6 +229,31 @@ double magnetController::getRI( const std::string & magName )
 std::vector< double > magnetController::getRI( const std::vector< std::string > & magNames )
 {
     return localInterface.getRI( magNames );
+}
+//______________________________________________________________________________
+double magnetController::getRITolerance( const std::string & magName )
+{
+    return localInterface.getRITolerance( magName );
+}
+//______________________________________________________________________________
+std::vector< double >  magnetController::getRITolerance( const std::vector< std::string > & magNames )
+{
+    return localInterface.getRITolerance( magNames );
+}
+//______________________________________________________________________________
+void magnetController::setRITolerance( const std::string & magName, const double val)
+{
+    return localInterface.setRITolerance( magName, val );
+}
+//______________________________________________________________________________
+void magnetController::setRITolerance( const std::vector< std::string > & magNames, const std::vector< double > & vals )
+{
+    return localInterface.setRITolerance( magNames, vals );
+}
+//______________________________________________________________________________
+bool magnetController::isRIequalVal( const std::string & magName, const  double value, const double tolerance )
+{
+    return localInterface.isRIequalVal( magName, value, tolerance );
 }
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState( const std::vector< std::string > & s )
@@ -264,14 +301,14 @@ void magnetController::applyDBURTQuadOnly( const std::string & fileName )
     return localInterface.applyDBURTQuadOnly( fileName );
 }
 //______________________________________________________________________________
-bool magnetController::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName, const std::string &comments)
+bool magnetController::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName, const std::string &comments,const std::string & keywords)
 {
-    return localInterface.writeDBURT( ms, fileName, comments );
+    return localInterface.writeDBURT( ms, fileName, comments, keywords );
 }
 //______________________________________________________________________________
-bool magnetController::writeDBURT( const std::string & fileName, const std::string & comments )
+bool magnetController::writeDBURT( const std::string & fileName, const std::string & comments,const std::string & keywords  )
 {
-    return localInterface.writeDBURT( fileName, comments );
+    return localInterface.writeDBURT( fileName, comments, keywords );
 }
 //______________________________________________________________________________
 const magnetStructs::magnetObject& magnetController::getMagObjConstRef( const std::string & magName  )

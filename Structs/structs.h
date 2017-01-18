@@ -40,7 +40,7 @@
 
 class interface;
 
-namespace VELA_ENUM
+namespace VELA_ENUM/// this seems like a really out of date name now...
 {
    /// >>>> ???
    /// SHould these go here? should the names be rationalised?

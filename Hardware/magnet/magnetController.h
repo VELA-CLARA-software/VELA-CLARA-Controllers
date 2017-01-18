@@ -29,11 +29,11 @@
 class magnetController : public controller
 {
     public:
-        /// New scheem - we just have 1 constructor, but we h vae higher level class that create these objects 9hopefully
+        /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         magnetController();
         magnetController( const bool show_messages,    const bool show_debug_messagese,
                           const std::string & magConf, const std::string & NRConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs );
+                          const bool shouldStartEPICs, const magnetStructs::MAG_CONTROLLER_TYPE myControllerType  );
 
         ~magnetController( );
 
@@ -60,6 +60,8 @@ class magnetController : public controller
       /// Deguassing tests
         bool isNotDegaussing( const std::string & magName );
         bool isDegaussing   ( const std::string & magName );
+      /// RI test
+        bool isRIequalVal( const std::string & magName, const  double value, const double tolerance );
       /// Magnet Name getters
         std::vector< std::string > getMagnetNames();
         std::vector< std::string > getQuadNames();
@@ -77,14 +79,17 @@ class magnetController : public controller
         magnetStructs::magnetStateStruct getCurrentMagnetState();
 
       /// Wriote magnet data in DBURT format to file
-        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName="", const std::string &comments="");
-        bool writeDBURT( const std::string &fileName="", const std::string &comments="" );
+        bool writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string &fileName="", const std::string &comments="",const std::string & keywords = "");
+        bool writeDBURT( const std::string &fileName="", const std::string &comments="",const std::string & keywords = "" );
 
       /// Set SI, 4 versions of this
         bool setSI( const std::string & magName, const double value);
         bool setSI( const std::vector< std::string > & magNames, const std::vector< double >& values);
         bool setSI( const std::string & magNames, const double values, const double tolerances, const size_t timeOUT );
         std::vector< std::string >  setSI( const std::vector< std::string > & magNames, const std::vector< double > & values, const std::vector< double > & tolerances, const size_t timeOUT );
+        bool setSIZero( const std::string & magName);
+        bool setSIZero( const std::vector< std::string > & magNames);
+
 
       /// Switch On PSUs
       /// These functions return wether the commands were sent to EPICS correctly, not if the oiperation was succesful
@@ -111,8 +116,6 @@ class magnetController : public controller
 
       /// This is an old function from setting up the project
         void showMagRevType();
-      /// Manuallsettign RI tolerance...
-        void setRITolerance( const std::string & magName, const double val);
 
       /// how long to wait when sending commands to EPICS
         double get_CA_PEND_IO_TIMEOUT();
@@ -125,6 +128,13 @@ class magnetController : public controller
         double getRI( const std::string & magName );
         std::vector< double > getSI( const std::vector< std::string > & magNames );
         std::vector< double > getRI( const std::vector< std::string > & magNames );
+
+      /// Manual get/set RI tolerance
+        void setRITolerance(const std::string & magName, const double val );
+        void setRITolerance( const std::vector< std::string > & magNames, const std::vector< double > & vals);
+        double getRITolerance( const std::string & magName );
+        std::vector< double >  getRITolerance( const std::vector< std::string > & magNames );
+
       /// Reverse types
         magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
         std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
@@ -175,13 +185,19 @@ class magnetController : public controller
         boost::python::dict getMagPSUStateDefinition();
 #endif // BUILD_DLL
 
+        /// YOU CANNOT SET THE CONTROLLER TYPE, NO-WAY JOSE
+        magnetStructs::MAG_CONTROLLER_TYPE getMyControllerType(){return myControllerType;};
+        ///void setMyControllerType(){ no chance matey };
+
     protected:
     private:
 
         void initialise();
 
-        bool shouldStartEPICs;
+        const bool shouldStartEPICs;
 
+        /// what flavour of controller am i ?
+        const magnetStructs::MAG_CONTROLLER_TYPE myControllerType;
 
         magnetInterface localInterface;
 };

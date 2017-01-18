@@ -25,10 +25,15 @@ namespace UTL
     //const std::string DBURT_PARAMETERS_V1  = "PARAMETERS;";
 
 
-    const std::string DBURT_HEADER_V2 = "VELA DBURT (MAGNET SAVE FILE) v2.0";
-    const std::string DBURT_HEADER_DT = "DATE_TIME:\t";
-    const std::string DBURT_HEADER_COM = "COMMENTS:\t";
+    const std::string DBURT_HEADER_V2   = "VELA DBURT (MAGNET SAVE FILE) v2.0";
+    const std::string DBURT_HEADER_DT   = "DATE_TIME:\t";
+    const std::string DBURT_HEADER_COM  = "COMMENTS:\t";
+    const std::string DBURT_HEADER_AREA = "BEAM_AREA:\t";
+    const std::string DBURT_HEADER_KEYW = "KEY_WORDS:\t";
 
+
+
+    const std::string DBURT_HEADER_V3 = "VELA-CLARA DBURT (MAGNET SAVE FILE) v3";
 
     const std::string dotDBURT    = ".dburt";
 

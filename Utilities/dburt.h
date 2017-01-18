@@ -21,8 +21,9 @@
 class dburt : public configReader
 {
     public:
-        dburt( const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        dburt( const std::string & dBBURTFile_Location,  const bool * showMessages, const  bool * showDebugMessages );
+//        dburt( const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
+        dburt(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr,
+             const magnetStructs::MAG_CONTROLLER_TYPE myControllerType  );
         ~dburt();
 
 
@@ -32,11 +33,15 @@ class dburt : public configReader
 
 
 
-        bool writeDBURT( const magnetStructs::magnetStateStruct & magState, const std::string & fileName = "", const std::string & comments = ""  );
+        bool writeDBURT( const magnetStructs::magnetStateStruct & magState, const std::string & fileName = "", const std::string & comments = "", const std::string & keywords = ""  );
 
     private:
 
         magnetStructs::magnetStateStruct readDBURTv1( const char* fileName, const std::string & path = UTL::DBURT_PATH );
+
+        magnetStructs::magnetStateStruct dburt::readDBURTv3( const char* fileName, const std::string & path = UTL::DBURT_PATH );
+
+        const magnetStructs::MAG_CONTROLLER_TYPE myControllerType;
 
 
 };

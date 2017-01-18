@@ -28,10 +28,11 @@
 magnetInterface::magnetInterface( const std::string &magConf, const std::string &NRConf,
                                   const bool startVirtualMachine,
                                   const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
-                                  const bool shouldStartEPICs ):
+                                  const bool shouldStartEPICs,
+                                  const magnetStructs::MAG_CONTROLLER_TYPE myControllerType ):
 configReader( magConf, NRConf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY"),//MAGIC_NUMBER
-shouldStartEPICs( shouldStartEPICs )
+shouldStartEPICs( shouldStartEPICs ), myControllerType(myControllerType)
 {
 //    if( shouldStartEPICs )
 //    message("magnet magnetInterface shouldStartEPICs is true");
@@ -879,6 +880,7 @@ size_t magnetInterface::deGauss( const  vec_s & mag, bool resetToZero  )
         degaussStructsMap[ degaussNum ].interface     = this;
         degaussStructsMap[ degaussNum ].magsToDeguass = magToDegChecked;
         degaussStructsMap[ degaussNum ].key           = degaussNum;
+        degaussStructsMap[ degaussNum ].controllerType= myControllerType;
         degaussStructsMap[ degaussNum ].thread        = new std::thread( staticEntryDeGauss, std::ref(degaussStructsMap[ degaussNum ] ) );
         ++degaussNum;
     }
@@ -931,8 +933,8 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
 
     ds.interface->debugMessage("\n","\tDEGAUSS UPDATE: Saving Current Settings","\n");
-
     magnetStructs::magnetStateStruct originalState;
+    originalState.controllerType = ds.controllerType;
     originalState = ds.interface -> getCurrentMagnetState( magToDegOriginal );
 
     /// Do we reset the current settings? or leave at zero (making sure the N-R state gets set back).
@@ -1038,7 +1040,6 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
     else
     {
         ds.interface -> applyMagnetStateStruct( originalState );
-
     }
 
     ds.interface->printFinish();
@@ -1364,6 +1365,32 @@ void magnetInterface::setRITolerance( const std::string & magName, double val)
         allMagnetData[ magName ].riTolerance = val;
 }
 //______________________________________________________________________________
+void magnetInterface::setRITolerance(const vec_s & magNames, const vec_d & vals )
+{
+    for( auto  i = 0; i <  magNames.size(); ++i )
+        if( entryExists( allMagnetData, magNames[i] ) )
+            allMagnetData[  magNames[i] ].riTolerance = vals[i];
+}
+//______________________________________________________________________________
+double magnetInterface::getRITolerance( const std::string & magName )
+{
+    if( entryExists( allMagnetData, magName ) )
+        return allMagnetData[ magName ].riTolerance;
+    else
+        return UTL::DUMMY_DOUBLE;
+}
+//______________________________________________________________________________
+
+
+
+std::vector< double >  magnetInterface::getRITolerance( const std::vector< std::string > & magNames )
+{
+    std::vector< double > a;
+//    for( auto && it : magNames )
+//        a.push_back( getRI(it) );
+    return a;
+}
+//______________________________________________________________________________
 bool magnetInterface::shouldPolarityFlip( const std::string & magName, const double val )
 {
     /// This function checks the N - R State of a magnet and the
@@ -1486,11 +1513,16 @@ bool magnetInterface::isRIequalVal( const std::string & magName, const  double v
 //        std::cout << " NOT THE SAME " << std::endl;
     return ret;
 }
+
+
+
+
 ///
 ///   __   ___ ___ ___  ___  __   __
 ///  / _` |__   |   |  |__  |__) /__`
 ///  \__> |___  |   |  |___ |  \ .__/
 ///
+//______________________________________________________________________________
 magnetInterface::vec_s magnetInterface::getMagnetNames()
 {
     vec_s r;
@@ -1590,6 +1622,7 @@ magnetInterface::vec_d magnetInterface::getRI( const vec_s &magNames )
 magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState()
 {
     magnetStructs::magnetStateStruct ret;
+    ret.controllerType = myControllerType;
     for( auto && it : allMagnetData )
     {
         ret.magNames.push_back( it.first );
@@ -1604,6 +1637,7 @@ magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState()
 magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState( const vec_s & s )
 {
     magnetStructs::magnetStateStruct ret;
+    ret.controllerType = myControllerType;
     for( auto && it : s )
     {
         if( entryExists(allMagnetData, it) )
@@ -1620,26 +1654,40 @@ magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState( const v
 //______________________________________________________________________________
 void magnetInterface::applyMagnetStateStruct( const magnetStructs::magnetStateStruct & magState )
 {
-    message("applyMagnetStateStruct");
-    vec_s magsToSwitchOn, magsToSwitchOff;
-    for( size_t i = 0; i < magState.numMags; ++i )
+    if( shouldStartEPICs )
     {
-        if(  magState.psuStates[i] == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF )
-            magsToSwitchOff.push_back( magState.magNames[i] );
-        else if(  magState.psuStates[i]  == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
-            magsToSwitchOn.push_back( magState.magNames[i] );
 
-        message("Found ", magState.magNames[i] );
-
+        if( magState.controllerType == myControllerType )
+        {
+            message("applyMagnetStateStruct");
+            vec_s magsToSwitchOn, magsToSwitchOff;
+            for( size_t i = 0; i < magState.numMags; ++i )
+            {
+                if(  magState.psuStates[i] == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF )
+                    magsToSwitchOff.push_back( magState.magNames[i] );
+                else if(  magState.psuStates[i]  == VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON )
+                    magsToSwitchOn.push_back( magState.magNames[i] );
+                message("Found ", magState.magNames[i] );
+            }
+            switchONpsu( magsToSwitchOn );
+            switchOFFpsu( magsToSwitchOff  );
+            setSI( magState.magNames, magState.siValues );
+        }
+        else
+        {
+            message("Can't apply magnet settings, this is a ", ENUM_TO_STRING(myControllerType), " magnet controller and the magnet settings are for  ", ENUM_TO_STRING(magState.controllerType));
+        }
     }
-    switchONpsu( magsToSwitchOn );
-    switchOFFpsu( magsToSwitchOff  );
-    setSI( magState.magNames, magState.siValues );
+    else
+    {
+        message("Can't apply magnet settings - we are in offline mode");
+    }
 }
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetInterface::getDBURT( const std::string & fileName )
 {
-    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR);
+    /// create a dburt object
+    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myControllerType);
     return dbr.readDBURT( fileName );
 }
 //______________________________________________________________________________
@@ -1647,6 +1695,7 @@ magnetStructs::magnetStateStruct magnetInterface::getDBURTCorOnly( const std::st
 {
     magnetStructs::magnetStateStruct ms1 = getDBURT( fileName );
     magnetStructs::magnetStateStruct ms2;
+    ms2.controllerType = ms1.controllerType;
     size_t i = 0;//MAGIC_NUMBER
     for( auto && it : ms1.magNames )
     {
@@ -1666,6 +1715,7 @@ magnetStructs::magnetStateStruct magnetInterface::getDBURTQuadOnly( const std::s
 {
     magnetStructs::magnetStateStruct ms1 = getDBURT( fileName );
     magnetStructs::magnetStateStruct ms2;
+    ms2.controllerType = ms1.controllerType;
     size_t i = 0;//MAGIC_NUMBER
     for( auto && it : ms1.magNames )
     {
@@ -1696,16 +1746,19 @@ void magnetInterface::applyDBURTQuadOnly( const std::string & fileName )
     applyMagnetStateStruct( getDBURTQuadOnly(fileName) );
 }
 //______________________________________________________________________________
-bool magnetInterface::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName, const std::string & comments )
+bool magnetInterface::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName, const std::string & comments, const std::string & keywords )
 {
-    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR);
+    /// create a dburt object
+    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myControllerType);
+    /// write the file with the dburt  and return the result
     return dbr.writeDBURT( ms, fileName, comments );
 }
 //______________________________________________________________________________
-bool magnetInterface::writeDBURT( const std::string & fileName, const std::string & comments )
+bool magnetInterface::writeDBURT(const std::string & fileName, const std::string & comments,const std::string & keywords)
 {
     magnetStructs::magnetStateStruct ms =  magnetInterface::getCurrentMagnetState();
-    return writeDBURT( ms, fileName, comments );
+    ms.controllerType = myControllerType;
+    return writeDBURT( ms, fileName, comments,keywords );
 }
 //______________________________________________________________________________
 /// Reverse types
@@ -1756,38 +1809,6 @@ std::vector<  VELA_ENUM::MAG_PSU_STATE > magnetInterface::getMagPSUState( const 
         a.push_back( getMagPSUState(it) );
     return a;
 }
-//______________________________________________________________________________
-//double magnetInterface::getSlope( const std::string & magName )
-//{
-//    if( entryExists( allMagnetData, magName ) )
-//        return allMagnetData[ magName ].slope;
-//    else
-//        return UTL::DUMMY_DOUBLE;
-//}
-////______________________________________________________________________________
-//std::vector< double > magnetInterface::getSlope( const std::vector< std::string > & magNames )
-//{
-//    std::vector< double >  a;
-//    for( auto && it : magNames )
-//        a.push_back( getSlope(it) );
-//    return a;
-//}
-////______________________________________________________________________________
-//double magnetInterface::getIntercept( const std::string & magName )
-//{
-//    if( entryExists( allMagnetData, magName ) )
-//        return allMagnetData[ magName ].intercept;
-//    else
-//        return UTL::DUMMY_DOUBLE;
-//}
-////______________________________________________________________________________
-//std::vector< double > magnetInterface::getIntercept( const std::vector< std::string > & magNames )
-//{
-//    std::vector< double >  a;
-//    for( auto && it : magNames )
-//        a.push_back( getIntercept(it) );
-//    return a;
-//}
 //______________________________________________________________________________
 std::vector< double > magnetInterface::getDegValues( const std::string & magName )
 {
