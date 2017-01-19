@@ -7,18 +7,20 @@ VCBPMs::VCBPMs():
 virtual_VELA_INJ_BPM_Controller_Obj(nullptr),
 offline_VELA_INJ_BPM_Controller_Obj(nullptr),
 physical_VELA_INJ_BPM_Controller_Obj(nullptr),
-virtual_VELA_BA1_BPM_Controller_Obj(nullptr),
-offline_VELA_BA1_BPM_Controller_Obj(nullptr),
-physical_VELA_BA1_BPM_Controller_Obj(nullptr),
-virtual_VELA_BA2_BPM_Controller_Obj(nullptr),
-offline_VELA_BA2_BPM_Controller_Obj(nullptr),
-physical_VELA_BA2_BPM_Controller_Obj(nullptr),
-virtual_CLARA_INJ_BPM_Controller_Obj(nullptr),
-offline_CLARA_INJ_BPM_Controller_Obj(nullptr),
-physical_CLARA_INJ_BPM_Controller_Obj(nullptr),
-virtual_CLARA_2_VELA_BPM_Controller_Obj(nullptr),
-offline_CLARA_2_VELA_BPM_Controller_Obj(nullptr),
-physical_CLARA_2_VELA_BPM_Controller_Obj(nullptr)
+withEPICS(true),
+withoutEPICS(false),
+withoutVM(false),
+withVM(true),
+showMessages(true),
+dontShowMessages(false),
+showDebugMessages(true),
+dontShowDebugMessages(false),
+VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
+VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
+VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
+CLARA_INJ( VELA_ENUM::MACHINE_AREA::CLARA_INJ),
+CLARA_2_VELA( VELA_ENUM::MACHINE_AREA::CLARA_2_VELA ),
+UNKNOWN_AREA( VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
 {
     //ctor
 }
@@ -105,7 +107,7 @@ VCBPMs::~VCBPMs()
 beamPositionMonitorController & VCBPMs::virtual_VELA_INJ_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
 
     if( virtual_VELA_INJ_BPM_Controller_Obj )
     {
@@ -113,7 +115,7 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_INJ_BPM_Controller()
     }
     else
     {
-        virtual_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        virtual_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withVM, VELA_INJ );
     }
     return *virtual_VELA_INJ_BPM_Controller_Obj;
 }
@@ -121,7 +123,7 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_INJ_BPM_Controller()
 beamPositionMonitorController & VCBPMs::offline_VELA_INJ_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
 
     if( offline_VELA_INJ_BPM_Controller_Obj )
     {
@@ -129,7 +131,7 @@ beamPositionMonitorController & VCBPMs::offline_VELA_INJ_BPM_Controller()
     }
     else
     {
-        offline_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, false );
+        offline_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withoutEPICS, withoutVM, VELA_INJ );
     }
     return *offline_VELA_INJ_BPM_Controller_Obj;
 }
@@ -145,7 +147,7 @@ beamPositionMonitorController & VCBPMs::physical_VELA_INJ_BPM_Controller()
     }
     else
     {
-        physical_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        physical_VELA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withoutVM, VELA_INJ );
     }
     return *physical_VELA_INJ_BPM_Controller_Obj;
 }
@@ -153,7 +155,7 @@ beamPositionMonitorController & VCBPMs::physical_VELA_INJ_BPM_Controller()
 beamPositionMonitorController & VCBPMs::virtual_VELA_BA1_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
 
     if( virtual_VELA_BA1_BPM_Controller_Obj )
     {
@@ -161,7 +163,7 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_BA1_BPM_Controller()
     }
     else
     {
-        virtual_VELA_BA1_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        virtual_VELA_BA1_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withVM, VELA_BA1 );
     }
     return *virtual_VELA_BA1_BPM_Controller_Obj;
 }
@@ -169,7 +171,7 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_BA1_BPM_Controller()
 beamPositionMonitorController & VCBPMs::offline_VELA_BA1_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
 
     if( offline_VELA_BA1_BPM_Controller_Obj )
     {
@@ -177,7 +179,7 @@ beamPositionMonitorController & VCBPMs::offline_VELA_BA1_BPM_Controller()
     }
     else
     {
-        offline_VELA_BA1_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, false );
+        offline_VELA_BA1_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withoutEPICS, withoutVM, VELA_BA1 );
     }
     return *offline_VELA_BA1_BPM_Controller_Obj;
 }
@@ -193,7 +195,7 @@ beamPositionMonitorController & VCBPMs::physical_VELA_BA1_BPM_Controller()
     }
     else
     {
-        physical_VELA_BA1_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        physical_VELA_BA1_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withoutVM, VELA_BA1 );
     }
     return *physical_VELA_BA1_BPM_Controller_Obj;
 }
@@ -201,7 +203,7 @@ beamPositionMonitorController & VCBPMs::physical_VELA_BA1_BPM_Controller()
 beamPositionMonitorController & VCBPMs::virtual_VELA_BA2_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
 
     if( virtual_VELA_BA2_BPM_Controller_Obj )
     {
@@ -209,7 +211,7 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_BA2_BPM_Controller()
     }
     else
     {
-        virtual_VELA_BA2_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        virtual_VELA_BA2_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withVM, VELA_BA2 );
     }
     return *virtual_VELA_BA2_BPM_Controller_Obj;
 }
@@ -217,7 +219,7 @@ beamPositionMonitorController & VCBPMs::virtual_VELA_BA2_BPM_Controller()
 beamPositionMonitorController & VCBPMs::offline_VELA_BA2_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::VELA_BA2_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
 
     if( offline_VELA_BA2_BPM_Controller_Obj )
     {
@@ -225,7 +227,7 @@ beamPositionMonitorController & VCBPMs::offline_VELA_BA2_BPM_Controller()
     }
     else
     {
-        offline_VELA_BA2_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, false );
+        offline_VELA_BA2_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withoutEPICS, withoutVM, VELA_BA2 );
     }
     return *offline_VELA_BA2_BPM_Controller_Obj;
 }
@@ -241,7 +243,7 @@ beamPositionMonitorController & VCBPMs::physical_VELA_BA2_BPM_Controller()
     }
     else
     {
-        physical_VELA_BA2_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        physical_VELA_BA2_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withoutVM, VELA_BA2 );
     }
     return *physical_VELA_BA2_BPM_Controller_Obj;
 }
@@ -249,7 +251,7 @@ beamPositionMonitorController & VCBPMs::physical_VELA_BA2_BPM_Controller()
 beamPositionMonitorController & VCBPMs::virtual_CLARA_INJ_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_BPM_CONFIG;
 
     if( virtual_CLARA_INJ_BPM_Controller_Obj )
     {
@@ -257,7 +259,7 @@ beamPositionMonitorController & VCBPMs::virtual_CLARA_INJ_BPM_Controller()
     }
     else
     {
-        virtual_CLARA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        virtual_CLARA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withVM, CLARA_INJ );
     }
     return *virtual_CLARA_INJ_BPM_Controller_Obj;
 }
@@ -265,7 +267,7 @@ beamPositionMonitorController & VCBPMs::virtual_CLARA_INJ_BPM_Controller()
 beamPositionMonitorController & VCBPMs::offline_CLARA_INJ_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::CLARA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_BPM_CONFIG;
 
     if( offline_CLARA_INJ_BPM_Controller_Obj )
     {
@@ -273,7 +275,7 @@ beamPositionMonitorController & VCBPMs::offline_CLARA_INJ_BPM_Controller()
     }
     else
     {
-        offline_CLARA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, false );
+        offline_CLARA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withoutEPICS, withoutVM, CLARA_INJ );
     }
     return *offline_CLARA_INJ_BPM_Controller_Obj;
 }
@@ -289,7 +291,7 @@ beamPositionMonitorController & VCBPMs::physical_CLARA_INJ_BPM_Controller()
     }
     else
     {
-        physical_CLARA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        physical_CLARA_INJ_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withoutVM, CLARA_INJ );
     }
     return *physical_CLARA_INJ_BPM_Controller_Obj;
 }
@@ -297,7 +299,7 @@ beamPositionMonitorController & VCBPMs::physical_CLARA_INJ_BPM_Controller()
 beamPositionMonitorController & VCBPMs::virtual_CLARA_2_VELA_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::CLARA_2_VELA_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::CLARA_2_VELA_BPM_CONFIG;
 
     if( virtual_CLARA_2_VELA_BPM_Controller_Obj )
     {
@@ -305,7 +307,7 @@ beamPositionMonitorController & VCBPMs::virtual_CLARA_2_VELA_BPM_Controller()
     }
     else
     {
-        virtual_CLARA_2_VELA_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        virtual_CLARA_2_VELA_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withVM, CLARA_2_VELA );
     }
     return *virtual_CLARA_2_VELA_BPM_Controller_Obj;
 }
@@ -313,7 +315,7 @@ beamPositionMonitorController & VCBPMs::virtual_CLARA_2_VELA_BPM_Controller()
 beamPositionMonitorController & VCBPMs::offline_CLARA_2_VELA_BPM_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string bpmconf = UTL::CONFIG_PATH_VM + UTL::CLARA_2_VELA_BPM_CONFIG;
+    const std::string bpmconf = UTL::CONFIG_PATH + UTL::CLARA_2_VELA_BPM_CONFIG;
 
     if( offline_CLARA_2_VELA_BPM_Controller_Obj )
     {
@@ -321,7 +323,7 @@ beamPositionMonitorController & VCBPMs::offline_CLARA_2_VELA_BPM_Controller()
     }
     else
     {
-        offline_CLARA_2_VELA_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, false );
+        offline_CLARA_2_VELA_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withoutEPICS, withoutVM, CLARA_2_VELA );
     }
     return *offline_CLARA_2_VELA_BPM_Controller_Obj;
 }
@@ -337,7 +339,7 @@ beamPositionMonitorController & VCBPMs::physical_CLARA_2_VELA_BPM_Controller()
     }
     else
     {
-        physical_CLARA_2_VELA_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, true, true, true );
+        physical_CLARA_2_VELA_BPM_Controller_Obj = new beamPositionMonitorController( bpmconf, showMessages, showDebugMessages, withEPICS, withoutVM, CLARA_2_VELA );
     }
     return *physical_CLARA_2_VELA_BPM_Controller_Obj;
 }

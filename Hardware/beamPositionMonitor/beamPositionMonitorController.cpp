@@ -19,8 +19,13 @@
 #include "beamPositionMonitorInterface.h"
 
 //______________________________________________________________________________
-beamPositionMonitorController::beamPositionMonitorController( const std::string &configFileLocation, const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS ), shouldStartEPICS( shouldStartEPICS )
+beamPositionMonitorController::beamPositionMonitorController( const std::string &configFileLocation, const bool show_messages,
+                                                              const bool show_debug_messages, const bool shouldStartEPICS,
+                                                              const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+controller( show_messages, show_debug_messages ),
+localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS, startVirtualMachine, myMachineArea ),
+shouldStartEPICS( shouldStartEPICS ),
+machineArea( myMachineArea )
 {
     initialise();
 }

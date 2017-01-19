@@ -30,10 +30,14 @@
 #include <epicsTime.h>
 
 beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
-                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS ):
-    configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
+                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
+                                                            const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
+interface( show_messages_ptr, show_debug_messages_ptr ),
+shouldStartEPICS( shouldStartEPICS ),
+machineArea( myMachineArea )
 {
-    initialise( shouldStartEPICS );
+    initialise();
 }
 //______________________________________________________________________________
 //beamPositionMonitorInterface::beamPositionMonitorInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
@@ -51,7 +55,7 @@ beamPositionMonitorInterface::~beamPositionMonitorInterface()
 //    }
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::initialise( const bool shouldStartEPICs )
+void beamPositionMonitorInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfigFiles();
@@ -62,7 +66,7 @@ void beamPositionMonitorInterface::initialise( const bool shouldStartEPICs )
         bool getDataSuccess = initBPMObjects();
         if( getDataSuccess )
         {
-            if( shouldStartEPICs )
+            if( shouldStartEPICS )
             {
                 std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
@@ -137,6 +141,8 @@ void beamPositionMonitorInterface::monitorBPMs()
     dataMonitorStructs.clear();
 
     for( auto && it1 : bpmObj.dataObjects )
+    {
+        it1.second.machineArea = machineArea;
         for( auto && it2 : it1.second.pvMonStructs )
         {
 //            if( !isADataPV( it2.second.pvType ) )
@@ -151,6 +157,7 @@ void beamPositionMonitorInterface::monitorBPMs()
                 }
 //            }
         }
+    }
 
 
     for( auto && it1 : bpmObj.dataObjects )
