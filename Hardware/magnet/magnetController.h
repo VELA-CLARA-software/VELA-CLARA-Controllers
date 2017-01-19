@@ -33,7 +33,7 @@ class magnetController : public controller
         magnetController();
         magnetController( const bool show_messages,    const bool show_debug_messagese,
                           const std::string & magConf, const std::string & NRConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs, const magnetStructs::MAG_CONTROLLER_TYPE myControllerType  );
+                          const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea  );
 
         ~magnetController( );
 
@@ -186,8 +186,8 @@ class magnetController : public controller
 #endif // BUILD_DLL
 
         /// YOU CANNOT SET THE CONTROLLER TYPE, NO-WAY JOSE
-        magnetStructs::MAG_CONTROLLER_TYPE getMyControllerType(){return myControllerType;};
-        ///void setMyControllerType(){ no chance matey };
+        VELA_ENUM::MACHINE_AREA getmyMachineArea(){return myMachineArea;};
+        ///void setmyMachineArea(){ no chance matey };
 
     protected:
     private:
@@ -197,7 +197,7 @@ class magnetController : public controller
         const bool shouldStartEPICs;
 
         /// what flavour of controller am i ?
-        const magnetStructs::MAG_CONTROLLER_TYPE myControllerType;
+        const VELA_ENUM::MACHINE_AREA myMachineArea;
 
         magnetInterface localInterface;
 };

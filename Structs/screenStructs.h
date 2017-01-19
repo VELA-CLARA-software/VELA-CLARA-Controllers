@@ -29,7 +29,6 @@ namespace screenStructs
     struct SIMPLE_YAG_Object;
 
 
-
     ///Use this MACRO to define enums. COnsider putting ENUMS that are more 'global' in structs.h
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_STATE, (SCREEN_IN) (SCREEN_OUT) (SCREEN_ERROR) (SCREEN_UNKNOWN) (SCREEN_H_MIRROR) (SCREEN_H_50U_SLIT) (SCREEN_H_25U_SLIT)
@@ -39,9 +38,8 @@ namespace screenStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_PV_TYPE, (Sta) (On) (Off) (H_MABS) (V_MABS) (H_RPOS) (V_RPOS) (STOP) (H_PROT01) (V_PROT01)
                                         (PROT03) (PROT05) (H_RPWRLOSS) (V_RPWRLOSS) )
 
-//    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_POSITION, (YAG_01_V_YAG) (YAG_01_V_SLIT) (YAG_01_H_MIRROR) (YAG_01_H_50U_SLIT)
-//                                        (YAG_01_H_25U_SLIT) (YAG_01_H_63MMHOLE) (YAG_01_H_10MMHOLE) (YAG_02_V_YAG) (YAG_02_V_SLIT)
-//                                        (YAG_02_H_SLIT) (YAG_03_V_YAG) (YAG_03_H_SLIT) )
+        // This is a repeat i preseume we can simplfy this ald
+
 
     /// monType could be used to switch in the statisCallbackFunction
 

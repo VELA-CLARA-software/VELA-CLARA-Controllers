@@ -23,7 +23,7 @@ class dburt : public configReader
     public:
 //        dburt( const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
         dburt(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr,
-             const magnetStructs::MAG_CONTROLLER_TYPE myControllerType  );
+             const VELA_ENUM::MACHINE_AREA myMachineArea  );
         ~dburt();
 
 
@@ -41,7 +41,7 @@ class dburt : public configReader
 
         magnetStructs::magnetStateStruct dburt::readDBURTv3( const char* fileName, const std::string & path = UTL::DBURT_PATH );
 
-        const magnetStructs::MAG_CONTROLLER_TYPE myControllerType;
+        const VELA_ENUM::MACHINE_AREA myMachineArea;
 
 
 };

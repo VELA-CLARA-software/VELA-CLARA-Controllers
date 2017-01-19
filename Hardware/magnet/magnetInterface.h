@@ -42,7 +42,7 @@ class magnetInterface : public interface
                          const bool *show_messages_ptr,
                          const bool* show_debug_messages_ptr,
                          const bool shouldStartEPICs,
-                         const magnetStructs::MAG_CONTROLLER_TYPE myControllerType );
+                         const VELA_ENUM::MACHINE_AREA myMachineArea );
 
         ~magnetInterface();
       //  magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
@@ -191,7 +191,7 @@ class magnetInterface : public interface
 
     private:
         // what flavor of controller am i ?
-        const magnetStructs::MAG_CONTROLLER_TYPE myControllerType;
+        const VELA_ENUM::MACHINE_AREA myMachineArea;
 
         const bool shouldStartEPICs;
         /// AllmagnetData gets a dummy magnet to return

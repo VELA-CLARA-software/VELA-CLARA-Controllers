@@ -14,9 +14,9 @@
 
 dburt::dburt(const bool* show_messages_ptr,
              const  bool * show_debug_messages_ptr,
-             const magnetStructs::MAG_CONTROLLER_TYPE myControllerType  ):
+             const VELA_ENUM::MACHINE_AREA myMachineArea  ):
 configReader( UTL::DBURT_PATH, show_messages_ptr, show_debug_messages_ptr ),
-myControllerType( myControllerType )
+myMachineArea( myMachineArea )
 {
 }
 //______________________________________________________________________________
@@ -169,14 +169,14 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3( const char* fileName, const
                 trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
                 keyvalval = getKeyVal( trimmedLine, UTL::COLON_C );
 
-                if( keyvalval[1] == ENUM_TO_STRING( magnetStructs::MAG_CONTROLLER_TYPE::VELA_INJ))
-                    magState.controllerType = magnetStructs::MAG_CONTROLLER_TYPE::VELA_INJ;
-                else if( keyvalval[1] == ENUM_TO_STRING( magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA1 ))
-                    magState.controllerType = magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA1;
-                else if( keyvalval[1] == ENUM_TO_STRING( magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA2 ))
-                    magState.controllerType = magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA2;
-                else if( keyvalval[1] == ENUM_TO_STRING( magnetStructs::MAG_CONTROLLER_TYPE::CLARA_INJ ))
-                    magState.controllerType = magnetStructs::MAG_CONTROLLER_TYPE::CLARA_INJ;
+                if( keyvalval[1] == ENUM_TO_STRING( VELA_ENUM::MACHINE_AREA::VELA_INJ))
+                    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_INJ;
+                else if( keyvalval[1] == ENUM_TO_STRING( VELA_ENUM::MACHINE_AREA::VELA_BA1 ))
+                    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_BA1;
+                else if( keyvalval[1] == ENUM_TO_STRING( VELA_ENUM::MACHINE_AREA::VELA_BA2 ))
+                    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_BA2;
+                else if( keyvalval[1] == ENUM_TO_STRING( VELA_ENUM::MACHINE_AREA::CLARA_INJ ))
+                    magState.machineArea = VELA_ENUM::MACHINE_AREA::CLARA_INJ;
             }
 
         } // while
@@ -216,7 +216,7 @@ bool dburt::writeDBURT( const magnetStructs::magnetStateStruct & magState, const
         outputFile << std::endl;
         outputFile << UTL::DBURT_HEADER_COM  << comments << UTL::END_OF_LINE << std::endl;
         outputFile << std::endl;
-        outputFile << UTL::DBURT_HEADER_AREA << ENUM_TO_STRING(myControllerType)   << UTL::END_OF_LINE << std::endl;
+        outputFile << UTL::DBURT_HEADER_AREA << ENUM_TO_STRING(myMachineArea)   << UTL::END_OF_LINE << std::endl;
         outputFile << std::endl;
         outputFile << UTL::START_OF_DATA << std::endl;
 
@@ -277,7 +277,7 @@ magnetStructs::magnetStateStruct dburt::readDBURTv1( const char* fileName, const
 
 
     magnetStructs::magnetStateStruct magState;
-    magState.controllerType = magnetStructs::MAG_CONTROLLER_TYPE::VELA_INJ;
+    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_INJ;
 
     std::string line, trimmedLine;
     std::ifstream inputFile;

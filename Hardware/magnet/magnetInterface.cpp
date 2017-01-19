@@ -29,10 +29,10 @@ magnetInterface::magnetInterface( const std::string &magConf, const std::string 
                                   const bool startVirtualMachine,
                                   const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
-                                  const magnetStructs::MAG_CONTROLLER_TYPE myControllerType ):
+                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
 configReader( magConf, NRConf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface( show_messages_ptr, show_debug_messages_ptr ), degaussNum( 0 ), dummyName("DUMMY"),//MAGIC_NUMBER
-shouldStartEPICs( shouldStartEPICs ), myControllerType(myControllerType)
+shouldStartEPICs( shouldStartEPICs ), myMachineArea(myMachineArea)
 {
 //    if( shouldStartEPICs )
 //    message("magnet magnetInterface shouldStartEPICs is true");
@@ -880,7 +880,7 @@ size_t magnetInterface::deGauss( const  vec_s & mag, bool resetToZero  )
         degaussStructsMap[ degaussNum ].interface     = this;
         degaussStructsMap[ degaussNum ].magsToDeguass = magToDegChecked;
         degaussStructsMap[ degaussNum ].key           = degaussNum;
-        degaussStructsMap[ degaussNum ].controllerType= myControllerType;
+        degaussStructsMap[ degaussNum ].machineArea= myMachineArea;
         degaussStructsMap[ degaussNum ].thread        = new std::thread( staticEntryDeGauss, std::ref(degaussStructsMap[ degaussNum ] ) );
         ++degaussNum;
     }
@@ -934,7 +934,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->debugMessage("\n","\tDEGAUSS UPDATE: Saving Current Settings","\n");
     magnetStructs::magnetStateStruct originalState;
-    originalState.controllerType = ds.controllerType;
+    originalState.machineArea = ds.machineArea;
     originalState = ds.interface -> getCurrentMagnetState( magToDegOriginal );
 
     /// Do we reset the current settings? or leave at zero (making sure the N-R state gets set back).
@@ -1622,7 +1622,7 @@ magnetInterface::vec_d magnetInterface::getRI( const vec_s &magNames )
 magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState()
 {
     magnetStructs::magnetStateStruct ret;
-    ret.controllerType = myControllerType;
+    ret.machineArea = myMachineArea;
     for( auto && it : allMagnetData )
     {
         ret.magNames.push_back( it.first );
@@ -1637,7 +1637,7 @@ magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState()
 magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState( const vec_s & s )
 {
     magnetStructs::magnetStateStruct ret;
-    ret.controllerType = myControllerType;
+    ret.machineArea = myMachineArea;
     for( auto && it : s )
     {
         if( entryExists(allMagnetData, it) )
@@ -1657,7 +1657,7 @@ void magnetInterface::applyMagnetStateStruct( const magnetStructs::magnetStateSt
     if( shouldStartEPICs )
     {
 
-        if( magState.controllerType == myControllerType )
+        if( magState.machineArea == myMachineArea )
         {
             message("applyMagnetStateStruct");
             vec_s magsToSwitchOn, magsToSwitchOff;
@@ -1675,7 +1675,7 @@ void magnetInterface::applyMagnetStateStruct( const magnetStructs::magnetStateSt
         }
         else
         {
-            message("Can't apply magnet settings, this is a ", ENUM_TO_STRING(myControllerType), " magnet controller and the magnet settings are for  ", ENUM_TO_STRING(magState.controllerType));
+            message("Can't apply magnet settings, this is a ", ENUM_TO_STRING(myMachineArea), " magnet controller and the magnet settings are for  ", ENUM_TO_STRING(magState.machineArea));
         }
     }
     else
@@ -1687,7 +1687,7 @@ void magnetInterface::applyMagnetStateStruct( const magnetStructs::magnetStateSt
 magnetStructs::magnetStateStruct magnetInterface::getDBURT( const std::string & fileName )
 {
     /// create a dburt object
-    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myControllerType);
+    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myMachineArea);
     return dbr.readDBURT( fileName );
 }
 //______________________________________________________________________________
@@ -1695,7 +1695,7 @@ magnetStructs::magnetStateStruct magnetInterface::getDBURTCorOnly( const std::st
 {
     magnetStructs::magnetStateStruct ms1 = getDBURT( fileName );
     magnetStructs::magnetStateStruct ms2;
-    ms2.controllerType = ms1.controllerType;
+    ms2.machineArea = ms1.machineArea;
     size_t i = 0;//MAGIC_NUMBER
     for( auto && it : ms1.magNames )
     {
@@ -1715,7 +1715,7 @@ magnetStructs::magnetStateStruct magnetInterface::getDBURTQuadOnly( const std::s
 {
     magnetStructs::magnetStateStruct ms1 = getDBURT( fileName );
     magnetStructs::magnetStateStruct ms2;
-    ms2.controllerType = ms1.controllerType;
+    ms2.machineArea = ms1.machineArea;
     size_t i = 0;//MAGIC_NUMBER
     for( auto && it : ms1.magNames )
     {
@@ -1749,7 +1749,7 @@ void magnetInterface::applyDBURTQuadOnly( const std::string & fileName )
 bool magnetInterface::writeDBURT( const magnetStructs::magnetStateStruct & ms, const std::string & fileName, const std::string & comments, const std::string & keywords )
 {
     /// create a dburt object
-    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myControllerType);
+    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myMachineArea);
     /// write the file with the dburt  and return the result
     return dbr.writeDBURT( ms, fileName, comments );
 }
@@ -1757,7 +1757,7 @@ bool magnetInterface::writeDBURT( const magnetStructs::magnetStateStruct & ms, c
 bool magnetInterface::writeDBURT(const std::string & fileName, const std::string & comments,const std::string & keywords)
 {
     magnetStructs::magnetStateStruct ms =  magnetInterface::getCurrentMagnetState();
-    ms.controllerType = myControllerType;
+    ms.machineArea = myMachineArea;
     return writeDBURT( ms, fileName, comments,keywords );
 }
 //______________________________________________________________________________

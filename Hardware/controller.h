@@ -25,8 +25,8 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-
 /// ermmm... https://wiki.python.org/moin/boost.python/HowTo#Multithreading_Support_for_my_function
+/// never got this to work
 class ScopedGILRelease
 {
 // C & D -------------------------------------------------------------------------------------------
@@ -101,46 +101,5 @@ class controller : public baseObject
 
 
 }; // class controller
-
-
-//#ifdef BUILD_DLL
-//struct Base
-//{
-//    virtual ~Base() {}
-//    virtual int f() = 0;
-//};
-//
-//struct BaseWrap : Base, boost::python::wrapper<Base>
-//{
-//    int f()
-//    {
-//        return this->get_override("f")();
-//    }
-//};
-//class controllerWrap : public controller, public boost::python::wrapper<controller>
-//{
-//    public:
-//
-////    controllerWrap() {}
-////
-////  controllerWrap(const controller& rhs)
-////    : controller(rhs)
-////  {}
-//
-//    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name )
-//    {return this->get_override("getILockStates")();}
-//
-//    std::map< VELA_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & name )
-//    {return this->get_override("getILockStatesStr")();}
-//
-//    double get_CA_PEND_IO_TIMEOUT()
-//    {return this->get_override("get_CA_PEND_IO_TIMEOUT")();}
-//
-//    void   set_CA_PEND_IO_TIMEOUT( double val )
-//    { this->get_override("set_CA_PEND_IO_TIMEOUT")();}
-//
-//};
-//#endif
-//
 
 #endif // _VELA_CONTOLLER_H

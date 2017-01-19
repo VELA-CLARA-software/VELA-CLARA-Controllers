@@ -1,5 +1,5 @@
-#ifndef VCscreens_H
-#define VCscreens_H
+#ifndef _VCSCREENS_H
+#define _VCSCREENS_H
 //stl
 #include <string>
 //
@@ -12,7 +12,6 @@
 #include <boost/python/return_value_policy.hpp>
 
 
-/// we just need to decide good names for these things...
 class VCscreens
 {
     public:
@@ -49,6 +48,50 @@ class VCscreens
         screenController * offline_VELA_CLARA_Screen_Controller_Obj ;
 
 };
+
+BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
+{
+        /// Things that you want to use in python muct be exposed:
+        /// containers
+        class_<std::vector< std::string > >("std_vector_string")
+                .def( vector_indexing_suite< std::vector< std::string >>() )
+                ;
+        class_<std::vector< double> >("std_vector_double")
+                .def( vector_indexing_suite< std::vector< double>>() )
+                ;
+
+    boost::python::class_<magnetStructs::magnetObject,boost::noncopyable>
+        ("magnetObject", boost::python::no_init)
+        .def_readonly("pvRoot",    &magnetStructs::magnetObject::pvRoot)
+        .def_readonly("psuRoot",    &magnetStructs::magnetObject::psuRoot)
+        .def_readonly("maxWaitTime",    &magnetStructs::magnetObject::maxWaitTime)
+        .def_readonly("degTolerance",    &magnetStructs::magnetObject::degTolerance)
+        .def_readonly("magType",    &magnetStructs::magnetObject::magType)
+        .def_readonly("psuState",   &magnetStructs::magnetObject::psuState)
+        .def_readonly("magRevType", &magnetStructs::magnetObject::magRevType)
+        .def_readonly("siWithPol",  &magnetStructs::magnetObject::siWithPol)
+        .def_readonly("riWithPol",  &magnetStructs::magnetObject::riWithPol)
+        .def_readonly("riTolerance",  &magnetStructs::magnetObject::riTolerance)
+        .def_readonly("name",       &magnetStructs::magnetObject::name)
+        .def_readonly("nPSU",       &magnetStructs::magnetObject::nPSU)
+        .def_readonly("rPSU",       &magnetStructs::magnetObject::rPSU)
+        .def_readonly("degValues",  &magnetStructs::magnetObject::degValues)
+        .def_readonly("position",   &magnetStructs::magnetObject::position)
+        .def_readonly("fieldIntegralCoefficients",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
+        .def_readonly("numDegaussSteps",      &magnetStructs::magnetObject::numDegaussSteps)
+        .def_readonly("manufacturer",  &magnetStructs::magnetObject::manufacturer)
+        .def_readonly("serialNumber",  &magnetStructs::magnetObject::serialNumber)
+        .def_readonly("measurementDataLocation",  &magnetStructs::magnetObject::measurementDataLocation)
+        .def_readonly("magneticLength",  &magnetStructs::magnetObject::magneticLength)
+        .def_readonly("magnetBranch",  &magnetStructs::magnetObject::magnetBranch)
+        ;
+
+
+}
+
+#endif // _VCSCREENS_H
+
+
 //
 ///// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
 ///// Create a load of different function pointers and use them in the bindings
@@ -336,4 +379,3 @@ class VCscreens
 //
 //}
 
-#endif // VCscreens_H

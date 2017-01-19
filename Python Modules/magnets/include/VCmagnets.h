@@ -66,7 +66,7 @@ class VCmagnets
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
 
-        const magnetStructs::MAG_CONTROLLER_TYPE  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_CONTROLLER_TYPE;
+        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_AREA;
 
 
 };
@@ -188,80 +188,74 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 {
-        /// Things that you want to use in python muct be exposed:
-        /// containers
-        class_<std::vector< std::string > >("std_vector_string")
-                .def( vector_indexing_suite< std::vector< std::string >>() )
-                ;
-        class_<std::vector< double> >("std_vector_double")
-                .def( vector_indexing_suite< std::vector< double>>() )
-                ;
-        class_<std::vector< magnetStructs::MAG_REV_TYPE> >("std_vector_mag_rev_type ")
-                .def( vector_indexing_suite< std::vector< magnetStructs::MAG_REV_TYPE>>() )
-                ;
-        class_<std::vector< magnetStructs::MAG_TYPE > >("std_vector_mag_type ")
-                .def( vector_indexing_suite< std::vector< magnetStructs::MAG_TYPE>>() )
-                ;
-        class_<std::vector< VELA_ENUM::MAG_PSU_STATE > >("std_vector_mag_psu_state ")
-                .def( vector_indexing_suite< std::vector< VELA_ENUM::MAG_PSU_STATE>>() )
-                ;
-        /// and enums, remember we have a enum to string python dictionary macro too!
-        enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE")
-                .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
-                .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
-                .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
-                .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
-                .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
-                ;
+    /// Things that you want to use in python muct be exposed:
+    /// containers
+    class_<std::vector< std::string > >("std_vector_string")
+        .def( vector_indexing_suite< std::vector< std::string >>() )
+        ;
+    class_<std::vector< double> >("std_vector_double")
+        .def( vector_indexing_suite< std::vector< double>>() )
+        ;
+    class_<std::vector< magnetStructs::MAG_REV_TYPE> >("std_vector_mag_rev_type ")
+        .def( vector_indexing_suite< std::vector< magnetStructs::MAG_REV_TYPE>>() )
+        ;
+    class_<std::vector< magnetStructs::MAG_TYPE > >("std_vector_mag_type ")
+        .def( vector_indexing_suite< std::vector< magnetStructs::MAG_TYPE>>() )
+        ;
+    class_<std::vector< VELA_ENUM::MAG_PSU_STATE > >("std_vector_mag_psu_state ")
+        .def( vector_indexing_suite< std::vector< VELA_ENUM::MAG_PSU_STATE>>() )
+        ;
+    /// and enums, remember we have a enum to string python dictionary macro too!
+    enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE")
+        .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
+        .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
+        .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
+        .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
+        .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
+        ;
 
-        enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-                .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-                .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-                .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-                ;
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-                .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
-                .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-                .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
-                ;
-        enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-                .value("VELA_INJ", VELA_ENUM::MACHINE_AREA::VELA_INJ )
-                .value("VELA_BA1", VELA_ENUM::MACHINE_AREA::VELA_BA1 )
-                .value("VELA_BA2", VELA_ENUM::MACHINE_AREA::VELA_BA2 )
-                ;
-        /// and enums, remember we have a enum to string python dictionary macro too!
-        enum_<magnetStructs::MAG_TYPE>("MAG_TYPE")
-                .value("QUAD", magnetStructs::MAG_TYPE::QUAD )
-                .value("DIP" , magnetStructs::MAG_TYPE::DIP  )
-                .value("HCOR", magnetStructs::MAG_TYPE::HCOR )
-                .value("VCOR", magnetStructs::MAG_TYPE::VCOR )
-                .value("BSOL", magnetStructs::MAG_TYPE::BSOL )
-                .value("SOL" , magnetStructs::MAG_TYPE::SOL  )
-                .value("SEXT", magnetStructs::MAG_TYPE::SEXT )
-                .value("UNKNOWN_MAGNET_TYPE",  magnetStructs::MAG_TYPE::UNKNOWN_MAGNET_TYPE  )
-                ;
-        /// and enums, remember we have a enum to string python dictionary macro too!
-        enum_<magnetStructs::MAG_REV_TYPE>("MAG_REV_TYPE")
-                .value("NR"       , magnetStructs::MAG_REV_TYPE::NR )
-                .value("BIPOLAR"  , magnetStructs::MAG_REV_TYPE::BIPOLAR  )
-                .value("NR_GANGED", magnetStructs::MAG_REV_TYPE::NR_GANGED )/// hopefully never again....
-                .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
-                .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
-                ;
-        enum_<magnetStructs::MAG_CONTROLLER_TYPE>("MAG_CONTROLLER_TYPE")
-                .value("VELA_INJ"  , magnetStructs::MAG_CONTROLLER_TYPE::VELA_INJ )
-                .value("VELA_BA1"  , magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA1  )
-                .value("VELA_BA2"  , magnetStructs::MAG_CONTROLLER_TYPE::VELA_BA2 )
-                .value("CLARA_INJ" , magnetStructs::MAG_CONTROLLER_TYPE::CLARA_INJ )
-                .value("UNKNOWN_CONTROLLER_TYPE", magnetStructs::MAG_CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE )
-                ;
-
-
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+        ;
+    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+        ;
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
+        ;
+    /// and enums, remember we have a enum to string python dictionary macro too!
+    enum_<magnetStructs::MAG_TYPE>("MAG_TYPE")
+        .value("QUAD", magnetStructs::MAG_TYPE::QUAD )
+        .value("DIP" , magnetStructs::MAG_TYPE::DIP  )
+        .value("HCOR", magnetStructs::MAG_TYPE::HCOR )
+        .value("VCOR", magnetStructs::MAG_TYPE::VCOR )
+        .value("BSOL", magnetStructs::MAG_TYPE::BSOL )
+        .value("SOL" , magnetStructs::MAG_TYPE::SOL  )
+        .value("SEXT", magnetStructs::MAG_TYPE::SEXT )
+        .value("UNKNOWN_MAGNET_TYPE",  magnetStructs::MAG_TYPE::UNKNOWN_MAGNET_TYPE  )
+        ;
+    /// and enums, remember we have a enum to string python dictionary macro too!
+    enum_<magnetStructs::MAG_REV_TYPE>("MAG_REV_TYPE")
+        .value("NR"       , magnetStructs::MAG_REV_TYPE::NR )
+        .value("BIPOLAR"  , magnetStructs::MAG_REV_TYPE::BIPOLAR  )
+        .value("NR_GANGED", magnetStructs::MAG_REV_TYPE::NR_GANGED )/// hopefully never again....
+        .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
+        .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
+        ;
     /// structs (this one is a one-stop shop for comomn parameters)
     boost::python::class_<magnetStructs::magnetStateStruct>
         ("magnetStateStruct")
         .add_property("numMags",        &magnetStructs::magnetStateStruct::numMags)
-        .add_property("controllerType", &magnetStructs::magnetStateStruct::controllerType)
+        .add_property("machineArea", &magnetStructs::magnetStateStruct::machineArea)
         .add_property("magNames",       &magnetStructs::magnetStateStruct::magNames)
         .add_property("psuStates",      &magnetStructs::magnetStateStruct::psuStates)
         .add_property("siValues",       &magnetStructs::magnetStateStruct::siValues)
@@ -392,7 +386,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("applyDBURTQuadOnly",       &magnetController::applyDBURTQuadOnly )
         .def("getDBURT",                 &magnetController::getDBURT           )
         .def("isRIequalVal",                 &magnetController::isRIequalVal           )
-        .def("getMyControllerType",   &magnetController::getMyControllerType    )
+        .def("getmyMachineArea",   &magnetController::getmyMachineArea    )
         .def("getMagRevType",  getMagRevType_1   )
         .def("getMagRevType",  getMagRevType_2   )
         .def("getMagType",     getMagType_1      )

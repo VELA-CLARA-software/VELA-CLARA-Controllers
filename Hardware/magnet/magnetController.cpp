@@ -23,11 +23,11 @@ magnetController::magnetController(
     const std::string & NRConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
-    const magnetStructs::MAG_CONTROLLER_TYPE myControllerType):
+    const VELA_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages ),
-localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myControllerType ),
+localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
-myControllerType(myControllerType)
+myMachineArea(myMachineArea)
 {
 //    if( shouldStartEPICs )
 //    message("magnet controller shouldStartEPICs is true");

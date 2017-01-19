@@ -39,8 +39,6 @@ namespace magnetStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_TYPE, (PSU) (PSU_N) (PSU_R) (UNKOWN_MAG_PSU_TYPE) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_CONTROLLER_TYPE, (VELA_INJ) (VELA_BA1) (VELA_BA2) (CLARA_INJ)(UNKNOWN_CONTROLLER_TYPE) )
-
     /// These can't go in VELA_ENUM as they need a pvType.
     struct pvStruct
     {   // proviude a default constructor
@@ -130,20 +128,20 @@ namespace magnetStructs
     struct degaussStruct
     {   // proviude a default constructor
         degaussStruct():interface(nullptr),thread(nullptr),key(UTL::ZERO_INT),
-                        resetToZero(true),controllerType(UNKNOWN_CONTROLLER_TYPE){}
+                        resetToZero(true),machineArea(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA){}
         magnetInterface          *interface;
         std::vector<std::string>  magsToDeguass;
         std::thread              *thread;
         size_t                    key;
         bool                      resetToZero;
-        MAG_CONTROLLER_TYPE       controllerType;
+        VELA_ENUM::MACHINE_AREA   machineArea;
     };
     /// one-stop shop for magnet state
     struct magnetStateStruct
     {   // proviude a default constructor
-        magnetStateStruct():numMags(UTL::ZERO_INT),controllerType(UNKNOWN_CONTROLLER_TYPE){};
+        magnetStateStruct():numMags(UTL::ZERO_INT),machineArea(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA){};
         size_t numMags;
-        MAG_CONTROLLER_TYPE controllerType;
+        VELA_ENUM::MACHINE_AREA machineArea;
         std::vector< std::string > magNames;
         std::vector< VELA_ENUM::MAG_PSU_STATE > psuStates;
         std::vector< double > siValues,riValues;
