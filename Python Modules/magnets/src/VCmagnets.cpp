@@ -23,12 +23,11 @@ VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
 VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
 CLARA_INJ( VELA_ENUM::MACHINE_AREA::CLARA_INJ),
 UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+shouldShowDebugMessage(false),//default is quiet mode
+shouldShowMessage(false)//default is quiet mode
 {
     std::cout << "Instantiated a VCmagnets in Quiet Mode" << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = false;
     //ctor
-
 }
 //______________________________________________________________________________
 VCmagnets::~VCmagnets()

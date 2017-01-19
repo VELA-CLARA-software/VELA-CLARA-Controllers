@@ -11,10 +11,10 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
 
-
-/// we just need to decide good names for these things...
 class VCmagnets
 {
+        /// These VC classes could all be done more elegantly, with less copypasta
+        /// however we went for expliocit functions asa quick fix
     public:
         VCmagnets();
         ~VCmagnets();

@@ -14,38 +14,55 @@
 
 class VCscreens
 {
+        /// These VC classes could all be done more elegantly, with less copypasta
+        /// however we went for expliocit functions asa quick fix
+
     public:
         VCscreens();
         ~VCscreens();
+        screenController& virtual_VELA_INJ_Screen_Controller();
+        screenController& offline_VELA_INJ_Screen_Controller();
+        screenController& physical_VELA_INJ_Screen_Controller();
 
-        screenController& virtual_VELA_Screen_Controller();
-        screenController& physical_VELA_Screen_Controller();
-        screenController& offline_VELA_Screen_Controller();
+        screenController& virtual_VELA_BA1_Screen_Controller();
+        screenController& offline_VELA_BA1_Screen_Controller();
+        screenController& physical_VELA_BA1_Screen_Controller();
 
-        screenController& virtual_CLARA_Screen_Controller();
-        screenController& physical_CLARA_Screen_Controller();
-        screenController& offline_CLARA_Screen_Controller();
+        screenController& virtual_VELA_BA2_Screen_Controller();
+        screenController& offline_VELA_BA2_Screen_Controller();
+        screenController& physical_VELA_BA2_Screen_Controller();
 
-        screenController& virtual_VELA_CLARA_Screen_Controller();
-        screenController& physical_VELA_CLARA_Screen_Controller();
-        screenController& offline_VELA_CLARA_Screen_Controllerj();
+        screenController& virtual_CLARA_INJ_Screen_Controller();
+        screenController& offline_CLARA_INJ_Screen_Controller();
+        screenController& physical_CLARA_INJ_Screen_Controller();
 
     protected:
 
     private:
 
      /// we just need to decide good names for these things...
-        screenController * virtual_VELA_Screen_Controller_Obj ;
-        screenController * physical_VELA_Screen_Controller_Obj;
-        screenController * offline_VELA_Screen_Controller_Obj ;
+        screenController * virtual_VELA_INJ_Screen_Controller_Obj ;
+        screenController * physical_VELA_INJ_Screen_Controller_Obj;
+        screenController * offline_VELA_INJ_Screen_Controller_Obj ;
 
-        screenController * virtual_CLARA_Screen_Controller_Obj ;
-        screenController * physical_CLARA_Screen_Controller_Obj;
-        screenController * offline_CLARA_Screen_Controller_Obj ;
+        screenController * virtual_VELA_BA1_Screen_Controller_Obj ;
+        screenController * physical_VELA_BA1_Screen_Controller_Obj;
+        screenController * offline_VELA_BA2_Screen_Controller_Obj ;
 
-        screenController * virtual_VELA_CLARA_Screen_Controller_Obj ;
-        screenController * physical_VELA_CLARA_Screen_Controller_Obj;
-        screenController * offline_VELA_CLARA_Screen_Controller_Obj ;
+        screenController * virtual_VELA_BA2_Screen_Controller_Obj;
+        screenController * offline_VELA_BA2_Screen_Controller_Obj;
+        screenController * physical_VELA_BA2_Screen_Controller_Obj;
+
+        screenController * virtual_CLARA_INJ_Screen_Controller_Obj;
+        screenController * offline_CLARA_INJ_Screen_Controller_Obj;
+        screenController * physical_CLARA_INJ_Screen_Controller_Obj;
+
+        const bool withEPICS, withoutEPICS, withoutVM, withVM;
+        bool  shouldShowDebugMessage, shouldShowMessage;
+
+
+        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_AREA;
+
 
 };
 
