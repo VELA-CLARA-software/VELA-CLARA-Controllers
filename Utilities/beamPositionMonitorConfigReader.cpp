@@ -12,9 +12,11 @@
 #include <algorithm>
 #include <ctype.h>
 
-beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & bpmConf, const bool*show_messages_ptr, const bool*show_debug_messages_ptr ):
+beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & bpmConf, const bool*show_messages_ptr,
+                                                                  const bool*show_debug_messages_ptr, const bool startVirtualMachine ):
 bpmConf( bpmConf ),
-configReader( show_messages_ptr, show_debug_messages_ptr )
+configReader( show_messages_ptr, show_debug_messages_ptr ),
+usingVirtualMachine(startVirtualMachine)
 {
 
 }
@@ -90,7 +92,10 @@ void beamPositionMonitorConfigReader::addToBPMDataObjectsV1( const std::vector<s
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
-        bpmDataObjects.back().pvRoot = keyVal[ 1 ];
+        if( usingVirtualMachine )
+            bpmDataObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
+        else
+            bpmDataObjects.back().pvRoot = keyVal[ 1 ];
     }
 
     else if( keyVal[0] == UTL::ATT1CAL )

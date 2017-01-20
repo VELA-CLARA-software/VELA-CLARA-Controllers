@@ -79,6 +79,8 @@ namespace beamPositionMonitorStructs
         std::vector< std::string > strTimeStamps;
         std::vector< std::vector< double > > bpmData;
         VELA_ENUM::TRIG_STATE bpmState;
+        VELA_ENUM::MACHINE_AREA machineArea;
+        VELA_ENUM::MACHINE_MODE machineMode;
     #ifndef __CINT__
         std::map< BPM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< BPM_PV_TYPE, pvStruct > pvComStructs;

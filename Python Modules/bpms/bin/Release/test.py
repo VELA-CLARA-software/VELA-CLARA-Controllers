@@ -1,6 +1,6 @@
 import sys,os
 import time
-import randomPVs
+#import randomPVs
 os.environ["EPICS_CA_AUTO_ADDR_LIST"] = "NO"
 os.environ["EPICS_CA_ADDR_LIST"] = "10.10.0.12"
 os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = "10000000"

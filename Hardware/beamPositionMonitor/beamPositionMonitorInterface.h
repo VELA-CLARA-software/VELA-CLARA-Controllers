@@ -30,7 +30,8 @@ class beamPositionMonitorInterface : public interface
 
         beamPositionMonitorInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
         beamPositionMonitorInterface( const std::string & configFileLocation, const bool * show_messages_ptr,
-                                      const bool * show_debug_messages_ptr,   const bool shouldStartEPICS  );
+                                      const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
+                                      const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
 
         ~beamPositionMonitorInterface();
 
@@ -93,7 +94,9 @@ class beamPositionMonitorInterface : public interface
 
         /// called from constructor to set-up chids, montiros, etc.
 
-        void initialise( const bool shouldStartEPICS );
+        void initialise();
+        const bool shouldStartEPICS;
+        const VELA_ENUM::MACHINE_AREA machineArea;
 
         beamPositionMonitorConfigReader configReader;
 

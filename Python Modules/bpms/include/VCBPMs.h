@@ -48,9 +48,20 @@ class VCBPMs// : public beamPositionMonitorController
     protected:
     private:
 
-//        bool virtual_VELA_INJ_BPM_Controller_Obj_Exists;
-//        bool offline_VELA_INJ_BPM_Controller_Obj_Exists;
-//        bool physical_VELA_INJ_BPM_Controller_Obj_Exists;
+        bool withEPICS;
+        bool withoutEPICS;
+        bool withVM;
+        bool withoutVM;
+        bool showDebugMessages;
+        bool dontShowMessages;
+        bool showMessages;
+        bool dontShowDebugMessages;
+        VELA_ENUM::MACHINE_AREA VELA_INJ;
+        VELA_ENUM::MACHINE_AREA VELA_BA1;
+        VELA_ENUM::MACHINE_AREA VELA_BA2;
+        VELA_ENUM::MACHINE_AREA CLARA_INJ;
+        VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
+        VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
         beamPositionMonitorController * virtual_VELA_INJ_BPM_Controller_Obj;
         beamPositionMonitorController * offline_VELA_INJ_BPM_Controller_Obj;
@@ -67,6 +78,7 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController * virtual_CLARA_2_VELA_BPM_Controller_Obj;
         beamPositionMonitorController * offline_CLARA_2_VELA_BPM_Controller_Obj;
         beamPositionMonitorController * physical_CLARA_2_VELA_BPM_Controller_Obj;
+
 };
 
 typedef std::vector<std::string> vecString;
@@ -157,20 +169,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
 		;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
-
-    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
-            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-            .value("PHYSICAL",  VELA_ENUM::MACHINE_MODE::PHYSICAL )
-            ;
-
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-            .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ     )
-            .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1     )
-            .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2     )
-            .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ    )
-            .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-            ;
 
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject,boost::noncopyable>
         ("bpmDataObject", boost::python::no_init)

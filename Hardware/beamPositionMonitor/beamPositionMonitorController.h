@@ -31,7 +31,9 @@ class beamPositionMonitorController : public controller
 
         beamPositionMonitorController();// const bool show_messages = true, const bool show_debug_messages = true );
 //        beamPositionMonitorController();
-        beamPositionMonitorController( const std::string & configFileLocation, const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS );
+        beamPositionMonitorController( const std::string & configFileLocation, const bool show_messages,
+                                       const bool show_debug_messages, const bool shouldStartEPICS,
+                                       const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~beamPositionMonitorController();
 
         bool isMonitoringBPMData( const std::string & name );
@@ -91,6 +93,7 @@ class beamPositionMonitorController : public controller
         beamPositionMonitorInterface localInterface;
 
         bool shouldStartEPICS;
+        const VELA_ENUM::MACHINE_AREA machineArea;
 
         std::vector< std::string > bpmNames;
 };
