@@ -49,6 +49,7 @@ class beamPositionMonitorInterface : public interface
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
         const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
+        const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );
@@ -120,7 +121,7 @@ class beamPositionMonitorInterface : public interface
         void resetDataVectors( size_t N );
         bool isADataPV( beamPositionMonitorStructs::BPM_PV_TYPE pv );
 
-        std::vector< beamPositionMonitorStructs::monitorStruct* > temporaryMonitorStructs;
+        void killMonitor( beamPositionMonitorStructs::monitorStruct * ms );
 
         void * addTemporaryMonitorStruct( beamPositionMonitorStructs::bpmObject * bpmObjp , beamPositionMonitorStructs::BPM_PV_TYPE monType, std::vector< std::vector< double > > & bpmData, beamPositionMonitorStructs::dataCollectionResult * stat);
 

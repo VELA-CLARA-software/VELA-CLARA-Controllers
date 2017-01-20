@@ -46,6 +46,7 @@ class beamPositionMonitorController : public controller
         double getYFromPV( const std::string & bpm );
         double getBPMResolution( const std::string & name );
         const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
+        const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );

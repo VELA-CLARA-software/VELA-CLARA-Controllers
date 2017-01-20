@@ -50,6 +50,11 @@ const beamPositionMonitorStructs::rawDataStruct & beamPositionMonitorController:
     return localInterface.getAllBPMData( name );
 }
 //______________________________________________________________________________
+const beamPositionMonitorStructs::bpmDataObject & beamPositionMonitorController::getBPMDataObject( const std::string & name )
+{
+    return localInterface.getBPMDataObject( name );
+}
+//______________________________________________________________________________
 std::vector< std::vector< double > > beamPositionMonitorController::getBPMRawData( const std::string & name )
 {
     return localInterface.getBPMRawData( name );

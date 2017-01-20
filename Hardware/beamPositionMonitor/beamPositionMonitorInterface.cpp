@@ -48,11 +48,28 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 beamPositionMonitorInterface::~beamPositionMonitorInterface()
 {
-//    for( auto it : continuousMonitorStructs )
-//    {
-        debugMessage("delete beamPositionMonitorInterface continuousMonitorStructs entry.");
-//        delete it;
-//    }
+//    debugMessage( "magnetInterface DESTRUCTOR CALLED");
+    killILockMonitors();
+    for( auto && it : continuousMonitorStructs )
+    {
+        debugMessage("delete ", it -> objName, " ", ENUM_TO_STRING(it->monType), " continuousMonitorStructs entry.");
+        delete it;
+    }
+    for( auto && it : dataMonitorStructs )
+    {
+        debugMessage("delete ", it -> objName, " ", ENUM_TO_STRING(it->monType), " dataMonitorStructs entry.");
+        delete it;
+    }
+//    debugMessage( "magnetInterface DESTRUCTOR COMPLETE ");
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::killMonitor( beamPositionMonitorStructs::monitorStruct * ms )
+{
+    int status = ca_clear_subscription( *ms -> EVID );
+    if( status == ECA_NORMAL)
+        debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
+    else
+        debugMessage("ERROR bpmInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::initialise()
@@ -662,6 +679,14 @@ const beamPositionMonitorStructs::rawDataStruct & beamPositionMonitorInterface::
     {
         return bpmObj.dataObjects.at( bpmName ).bpmRawData;
     }
+}
+//______________________________________________________________________________
+const beamPositionMonitorStructs::bpmDataObject & beamPositionMonitorInterface::getBPMDataObject( const std::string & bpmName )
+{
+//    if( entryExists( bpmObj.dataObjects, bpmName ) )
+//    {
+        return bpmObj.dataObjects.at( bpmName );
+//    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::setSA1( const std::string & bpmName, long val )

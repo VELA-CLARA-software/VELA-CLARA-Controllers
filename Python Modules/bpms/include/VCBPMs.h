@@ -170,8 +170,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 		;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
-    boost::python::class_<beamPositionMonitorStructs::bpmDataObject,boost::noncopyable>
+    boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>
         ("bpmDataObject", boost::python::no_init)
+        .def_readonly("pvRoot",         &beamPositionMonitorStructs::bpmDataObject::pvRoot       )
         .def_readonly("appendingData",  &beamPositionMonitorStructs::bpmDataObject::appendingData)
         .def_readonly("xPV",            &beamPositionMonitorStructs::bpmDataObject::xPV          )
         .def_readonly("yPV",            &beamPositionMonitorStructs::bpmDataObject::yPV          )
@@ -186,7 +187,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("q",              &beamPositionMonitorStructs::bpmDataObject::q            )
         ;
 
-    boost::python::class_<beamPositionMonitorStructs::rawDataStruct,boost::noncopyable>
+    boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>
         ("rawDataStruct", boost::python::no_init)
         .def_readonly("name",           &beamPositionMonitorStructs::rawDataStruct::name         )
         .def_readonly("appendingData",  &beamPositionMonitorStructs::rawDataStruct::appendingData)
@@ -212,6 +213,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 //            .def(boost::python::init<const std::string, optional<const bool, const bool > >())
 //            .def(boost::python::init< optional<const bool, const bool, const bool >>())
             .def("getAllBPMData",                   &beamPositionMonitorController::getAllBPMData, return_value_policy<reference_existing_object>())
+            .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, return_value_policy<reference_existing_object>()            )
 //            .def("getBPMStateDefinition",           &beamPositionMonitorController::getBPMStateDefinition                     )
             .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition    )
             .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT      )
