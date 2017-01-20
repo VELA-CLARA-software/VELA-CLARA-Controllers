@@ -3,6 +3,7 @@
 
 //
 #include "structs.h"
+#include "configDefinitions.h"
 //stl
 #include <string>
 #include <map>
@@ -25,25 +26,28 @@ namespace screenStructs
     struct pvStruct;
     struct screenObject;
     struct monitorStruct;
+    struct screenObjectDEV;
+    struct screenDriver;
     struct COMPLEX_YAG_Object;
     struct SIMPLE_YAG_Object;
 
 
     ///Use this MACRO to define enums. COnsider putting ENUMS that are more 'global' in structs.h
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_STATE, (SCREEN_IN) (SCREEN_OUT) (SCREEN_ERROR) (SCREEN_UNKNOWN) (SCREEN_H_MIRROR) (SCREEN_H_50U_SLIT) (SCREEN_H_25U_SLIT)
-                                        (SCREEN_H_63MM_HOLE) (SCREEN_H_10MM_HOLE) (SCREEN_H_YAG)(SCREEN_V_YAG) (SCREEN_V_SLIT) (SCREEN_MOVING)  )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_STATE, (SCREEN_IN) (SCREEN_OUT) (SCREEN_ERROR)
+                                         (SCREEN_UNKNOWN) (SCREEN_H_MIRROR) (SCREEN_H_50U_SLIT)
+                                        (SCREEN_H_25U_SLIT) (SCREEN_H_63MM_HOLE) (SCREEN_H_10MM_HOLE)
+                                        (SCREEN_H_YAG)(SCREEN_V_YAG) (SCREEN_V_SLIT) (SCREEN_MOVING)  )
 
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_PV_TYPE, (Sta) (On) (Off) (H_MABS) (V_MABS) (H_RPOS) (V_RPOS) (STOP) (H_PROT01) (V_PROT01)
-                                        (PROT03) (PROT05) (H_RPWRLOSS) (V_RPWRLOSS) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_PV_TYPE, (Sta) (On) (Off) (H_MABS) (V_MABS) (H_RPOS)
+                                         (V_RPOS) (STOP) (H_PROT01) (V_PROT01) (PROT03) (PROT05)
+                                         (H_RPWRLOSS) (V_RPWRLOSS) (UNKNOWN_SCREEN_PV_TYPE) )
 
-        // This is a repeat i preseume we can simplfy this ald
 
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_TYPE, (VELA_PNEUMATIC) (VELA_HV_MOVER), (UNKNOWN_SCREEN_TYPE))
 
     /// monType could be used to switch in the statisCallbackFunction
-
-
     struct monitorStruct
     {
         SCREEN_PV_TYPE monType;
@@ -63,9 +67,11 @@ namespace screenStructs
 
     struct pvStruct
     {
+        pvStruct():pvSuffix( "UNKNOWN_PV_SUFFIX" ), objName( UTL::UNKNOWN_NAME ),
+                   COUNT( UTL::ZERO_INT ), MASK(UTL::ZERO_INT), pvType(UNKNOWN_SCREEN_PV_TYPE) {}
         SCREEN_PV_TYPE pvType;
         chid           CHID;
-        std::string    pvSuffix;
+        std::string    pvSuffix,objName;
         unsigned long  COUNT, MASK;
         chtype         CHTYPE;
         evid           EVID;
@@ -73,7 +79,45 @@ namespace screenStructs
     };
 
 
+    // some screens have a mover, with slits, mirrors etc, and a H and V position
+    struct screenDriver
+    {
+        screenDriver():
+            h_State(SCREEN_ERROR),v_State(SCREEN_ERROR),h_position(UTL::DUMMY_DOUBLE),
+            v_position(UTL::DUMMY_DOUBLE), H_MIRROR_POS(UTL::DUMMY_DOUBLE),
+            H_50U_SLIT_POS(UTL::DUMMY_DOUBLE), H_25U_SLIT_POS(UTL::DUMMY_DOUBLE),
+            H_63MM_HOLE_POS(UTL::DUMMY_DOUBLE), H_10MM_HOLE_POS(UTL::DUMMY_DOUBLE),
+            V_YAG_POS(UTL::DUMMY_DOUBLE), V_SLIT_POS(UTL::DUMMY_DOUBLE),
+            H_SLIT_POS(UTL::DUMMY_DOUBLE), H_OUT_POS(UTL::DUMMY_DOUBLE),
+            V_OUT_POS(UTL::DUMMY_DOUBLE){}
+        // these are the positions of each elemnt on the mover(offline data),
+        // and the mover's current position
+        double h_position, v_position, H_MIRROR_POS, H_50U_SLIT_POS, H_25U_SLIT_POS,
+               H_63MM_HOLE_POS, H_10MM_HOLE_POS, V_YAG_POS, V_SLIT_POS, H_SLIT_POS, H_OUT_POS, V_OUT_POS;
+        screenStructs::SCREEN_STATE h_State;
+        screenStructs::SCREEN_STATE v_State;
+    };
+
+
     /// The main hardware object holds
+    struct screenObjectDEV
+    {
+        screenObjectDEV():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE){}
+        std::string name, pvRoot;
+        screenStructs::SCREEN_TYPE screenType;
+        screenStructs::screenDriver mover;
+        screenStructs::SCREEN_STATE screenState;
+        int numIlocks;
+
+        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+    #ifndef __CINT__
+        std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< SCREEN_PV_TYPE, pvStruct > pvComStructs;
+        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+    #endif
+    };
+
+
 
 
     struct SIMPLE_YAG_Object ///remaining YAG object
@@ -145,14 +189,12 @@ namespace screenStructs
 
     };
 
-
     struct screenObject
     {
         std::string name;
         std::map< std::string, COMPLEX_YAG_Object > complexObjects;
         std::map< std::string, SIMPLE_YAG_Object > simpleObjects;
     };
-
 
 
 }

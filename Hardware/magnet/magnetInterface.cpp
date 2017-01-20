@@ -27,7 +27,7 @@
 //
 magnetInterface::magnetInterface( const std::string &magConf, const std::string &NRConf,
                                   const bool startVirtualMachine,
-                                  const bool *show_messages_ptr, const bool* show_debug_messages_ptr,
+                                  const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
                                   const VELA_ENUM::MACHINE_AREA myMachineArea ):
 configReader( magConf, NRConf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
@@ -82,7 +82,7 @@ void magnetInterface::initialise()
         {
             if( shouldStartEPICs )
             {
-                std::cout << "WE ARE HERE" << std::endl;
+                //std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
                 initChids();
                 /// start the monitors: set up the callback functions
@@ -100,7 +100,7 @@ void magnetInterface::initialise()
 //______________________________________________________________________________
 bool magnetInterface::initObjects()
 {
-    bool magDatSuccess = configReader.getInjMagData( allMagnetData );
+    bool magDatSuccess = configReader.getMagData( allMagnetData );
     degStruct = configReader.getDeguassStruct();
     addDummyElementToAllMAgnetData();
     return magDatSuccess;
@@ -188,7 +188,7 @@ void magnetInterface::initChids()
 void magnetInterface::addChannel( const std::string & pvRoot, magnetStructs::pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
-    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
+    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
     debugMessage( "Create channel to ", s1 );
 }
 //______________________________________________________________________________
@@ -457,7 +457,8 @@ void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
                         break;
 
                     case magnetStructs::MAG_REV_TYPE::NR:/// Magnet PSU is of  N-R type
-                        setNRSIVectors( magNameIt, values[ val_pos ], magnetsToSet,magnetsToFlipThenSet,magnetsToSetValues, magnetsToFlipThenSetValues );
+                        setNRSIVectors( magNameIt, values[ val_pos ], magnetsToSet,
+                                        magnetsToFlipThenSet,magnetsToSetValues, magnetsToFlipThenSetValues );
                         break;
 
                     case magnetStructs::MAG_REV_TYPE::BIPOLAR:  /// Magnet PSU can be set to negative values

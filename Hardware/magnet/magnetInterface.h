@@ -39,7 +39,7 @@ class magnetInterface : public interface
         magnetInterface( const std::string &magConf,
                          const std::string &NRConf,
                          const bool startVirtualMachine,
-                         const bool *show_messages_ptr,
+                         const bool* show_messages_ptr,
                          const bool* show_debug_messages_ptr,
                          const bool shouldStartEPICs,
                          const VELA_ENUM::MACHINE_AREA myMachineArea );
@@ -192,7 +192,7 @@ class magnetInterface : public interface
     private:
         // what flavor of controller am i ?
         const VELA_ENUM::MACHINE_AREA myMachineArea;
-
+        // MOVE TO BASE CLASS
         const bool shouldStartEPICs;
         /// AllmagnetData gets a dummy magnet to return
         std::string dummyName;
@@ -224,15 +224,18 @@ class magnetInterface : public interface
 
         vec_b setSIWithFlip( const vec_s & magNames, const vec_d & values);
 
-        void setNRGangedSIVectors( const vec_s & magNames, const vec_d & values, vec_s & magnetsToSet, vec_s & magnetsToFlipThenSet,
-                                                vec_d & magnetsToSetValues, vec_d & magnetsToFlipThenSetValues );
-        void setNRSIVectors( const std::string & magName, const double val, vec_s & magnetsToSet, vec_s & magnetsToFlipThenSet,
-                                   vec_d & magnetsToSetValues, vec_d & magnetsToFlipThenSetValues);
+        void setNRGangedSIVectors( const vec_s & magNames, const vec_d & values,
+                                   vec_s & magnetsToSet, vec_s & magnetsToFlipThenSet,
+                                   vec_d & magnetsToSetValues, vec_d & magnetsToFlipThenSetValues );
+        void setNRSIVectors( const std::string & magName, const double val, vec_s & magnetsToSet,
+                             vec_s & magnetsToFlipThenSet, vec_d & magnetsToSetValues,
+                             vec_d & magnetsToFlipThenSetValues);
         bool setSINoFlip( const vec_s & magNames, const vec_d & values);
         bool nrGanged_SI_Vals_AreSensible( const vec_s & magNames, const vec_d & values );
 
 
-        vec_s waitForMagnetsToSettle(const vec_s & mags, const vec_d & values, const vec_d & tolerances, const time_t waitTime = 45 ); /// MAGIC_NUMBER
+        vec_s waitForMagnetsToSettle( const vec_s & mags, const vec_d & values,
+                                     const vec_d & tolerances, const time_t waitTime = 45 ); /// MAGIC_NUMBER
 
 
         bool shouldPolarityFlip( const std::string & magName, const double val );

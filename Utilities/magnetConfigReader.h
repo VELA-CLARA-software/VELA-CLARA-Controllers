@@ -28,7 +28,7 @@ class magnetConfigReader : public configReader
         ~magnetConfigReader();
 
         bool readConfig( );
-        bool getInjMagData( std::map< std::string, magnetStructs::magnetObject > & mapToFill );
+        bool getMagData( std::map< std::string, magnetStructs::magnetObject > & mapToFill );
         magnetStructs::degaussValues getDeguassStruct();
 
     private:

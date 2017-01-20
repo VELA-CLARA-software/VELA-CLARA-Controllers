@@ -32,9 +32,28 @@ class screenInterface: public interface
             ///Not a singleton, two construction methods...
 
 
-            screenInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
-                             const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                             const bool shouldStartEPICs );
+        screenInterface(const std::string & conf1,
+                        const std::string & conf2,
+                        const bool startVirtualMachine,
+                        const bool* show_messages_ptr,
+                        const bool* show_debug_messages_ptr,
+                        const bool shouldStartEPICs,
+                        const VELA_ENUM::MACHINE_AREA myMachineArea );
+
+
+//            screenInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
+//                             const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
+//                             const bool shouldStartEPICs );
+//                              const bool show_messages,       const bool show_debug_messages,
+//                          const std::string & magConf,     const std::string & NRConf,
+//                          const bool startVirtualMachine,
+//                          const bool shouldStartEPICs,
+//                          const VELA_ENUM::MACHINE_AREA
+
+
+
+
+
             ~screenInterface();
 
             void Screen_Out( const std::string & name );
@@ -82,17 +101,14 @@ class screenInterface: public interface
             bool screenExists( const std::string & name );
 
 
-
-
-
     protected:
     private:
 
         /// called from the constructor to set-up chids, monitors, etc.
-        void initialise(const bool shouldStartEPIC);
+        void initialise();
         screenConfigReader configReader; ///class member so we can pass in file path in ctor
 
-        void initScreenObjects();
+        bool initScreenObjects();
         void initScreenChids();
 
         void addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv );//if this doesn't work then try commented out function in shutter program
@@ -102,6 +118,8 @@ class screenInterface: public interface
 
         void checkScreenCHIDStates();
 
+
+        std::map< std::string, screenStructs::screenObjectDEV > allScreentData;
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the shutter is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
@@ -124,6 +142,11 @@ class screenInterface: public interface
 
 
         screenStructs::screenObject ScreenObject;
+
+        const VELA_ENUM::MACHINE_AREA myMachineArea;
+        // MOVE TO BASE CLASS
+        const bool shouldStartEPICs;
+
 
 };
 #endif //VELA_PyIL_SCREEN_INTERFACE_H

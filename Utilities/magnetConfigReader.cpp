@@ -34,12 +34,12 @@ usingVirtualMachine(startVirtualMachine)
 //______________________________________________________________________________
 magnetConfigReader::~magnetConfigReader(){}
 //______________________________________________________________________________
-bool magnetConfigReader::getInjMagData( std::map< std::string, magnetStructs::magnetObject > & mapToFill )
+bool magnetConfigReader::getMagData( std::map< std::string, magnetStructs::magnetObject > & mapToFill )
 {
     bool success = true;
     mapToFill.clear();
 
-    size_t nCount = 0;
+    size_t nCount = 0; // this may actually be borke??
     size_t rCount = 0;
 
     for( auto && it : magObjects )
@@ -111,8 +111,8 @@ bool magnetConfigReader::readConfig()
     bool success = true;
     /// There are 2 types of objects for an inj_mag, the magnet and (maybe) and N-R switched PSU;
     /// They are defined in seperate config files to seperate the data more clearly
-    /// they still all end up in an a magObj
-    //PSU
+    /// they still all end up in a magObj
+    //clear local copies of objects
     magPSUObjects_N.clear();
     magPSUObjects_R.clear();
     pvPSUMonStructs.clear();
@@ -518,7 +518,9 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
         }
         inputFile.close( );
         debugMessage( "File Closed" );
-        success = true;
+
+        if( numObjs == magObjects.size() ) // MAY HVE BROKE THINGS HERE!
+            success = true;
     }
     else{
         message( "!!!! Error Can't Open Mag Config File after searching for:  ", fn, " !!!!"  );

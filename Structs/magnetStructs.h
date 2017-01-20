@@ -35,14 +35,14 @@ namespace magnetStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_REV_TYPE, (NR) (BIPOLAR) (NR_GANGED) (POS) (UNKNOWN_MAG_REV_TYPE) ) /// Yeah NR_GANGED, just when you thought it was already too complicated
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PV_TYPE, (SI) (RI) (Sta) (On) (Off) (UNKOWN_MAG_PV_TYPE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PV_TYPE, (SI) (RI) (Sta) (On) (Off) (UNKNOWN_MAG_PV_TYPE) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_TYPE, (PSU) (PSU_N) (PSU_R) (UNKOWN_MAG_PSU_TYPE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_TYPE, (PSU) (PSU_N) (PSU_R) (UNKNOWN_MAG_PSU_TYPE) )
 
     /// These can't go in VELA_ENUM as they need a pvType.
     struct pvStruct
     {   // proviude a default constructor
-        pvStruct() : pvSuffix( "UNKNOWN_PV_SUFFIX" ), objName( "UNKNOWN_OBJECT_NAME"),COUNT( UTL::ZERO_INT ), MASK(UTL::ZERO_INT), pvType(UNKOWN_MAG_PV_TYPE) {} // proviude a default constructor
+        pvStruct() : pvSuffix( "UNKNOWN_PV_SUFFIX" ), objName( UTL::UNKNOWN_NAME ),COUNT( UTL::ZERO_INT ), MASK(UTL::ZERO_INT), pvType(UNKNOWN_MAG_PV_TYPE) {}
         MAG_PV_TYPE   pvType;
         chid          CHID;
         std::string   pvSuffix, objName;
@@ -71,7 +71,7 @@ namespace magnetStructs
 
     struct  magnetObject
     {   // proviude a default constructor
-        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name("UNKNOWN_NAME"),pvRoot( UTL::UNKNOWN_PVROOT),
+        magnetObject() : magType (MAG_TYPE::UNKNOWN_MAGNET_TYPE), isGanged( false ), name( UTL::UNKNOWN_NAME ),pvRoot( UTL::UNKNOWN_PVROOT),
                 psuState( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ),canNRFlip( false ),samePSURoot( false ),
                 psuRoot("PROBABLY_SAME_AS_PV_ROOT"),
                 magRevType( MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE ),
@@ -106,8 +106,8 @@ namespace magnetStructs
 
     struct monitorStruct
     {   // proviude a default constructor
-        monitorStruct(): monType(UNKOWN_MAG_PV_TYPE),objName("UNKNOWN"),
-                         psuType( UNKOWN_MAG_PSU_TYPE ),interface( nullptr ),EVID( nullptr ){}
+        monitorStruct(): monType( UNKNOWN_MAG_PV_TYPE),objName("UNKNOWN"),
+                         psuType( UNKNOWN_MAG_PSU_TYPE ),interface( nullptr ),EVID( nullptr ){}
         MAG_PV_TYPE      monType;
         std::string          objName;
         chtype               CHTYPE;

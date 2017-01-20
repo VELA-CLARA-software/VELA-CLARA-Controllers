@@ -31,124 +31,158 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 
-screenInterface::screenInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
-                 const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                 const bool shouldStartEPICs )
-:configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
-
+screenInterface::screenInterface( const std::string & conf1,
+                                  const std::string & conf2,
+                                  const bool startVirtualMachine,
+                                  const bool* show_messages_ptr,
+                                  const bool* show_debug_messages_ptr,
+                                  const bool shouldStartEPICs,
+                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
+configReader( conf1, conf2, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
+interface( show_messages_ptr, show_debug_messages_ptr ),
+shouldStartEPICs( shouldStartEPICs ),
+myMachineArea(myMachineArea)
 {
-    initialise(shouldStartEPICs);
+    initialise();
 }
 //__________________________________________________________________________________
 screenInterface::~screenInterface()///This is the destructor for the class
 {
-    for( auto it : continuousMonitorStructs )
+    for( auto && it : continuousMonitorStructs )
     {
         debugMessage("delete screenInterface continuousMonitorStructs entry." );
         delete it;
     }
 }
 //____________________________________________________________________________________
-void screenInterface::initialise( const bool shouldStartEPICs)
+void screenInterface::initialise()
 {
     /// The config file reader
-    message("Attempting to read through Screen Config files." );
-    configFileRead = configReader.readConfigFiles();
+    message("Attempting to read Screen Config file." );
+    configFileRead = configReader.readConfig();
     if( configFileRead )
     {
+        message("Screen Config file read, getting screens" );
         ///initialise the objects based on what is read from the config file
-        initScreenObjects();
-
-        if( shouldStartEPICs )
+        if( initScreenObjects() )
         {
-            ///subscribe to the channel ids
-            initScreenChids();
-            ///start the monitors: set up the callback functions
-            if( allChidsInitialised )
-                monitorScreens();
-            ///The pause allows EPICS to catch up.
-            std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
+
+            if( shouldStartEPICs )
+            {
+                message("Screen abjects acquired, starting EPICS" );
+                ///subscribe to the channel ids
+                initScreenChids();
+                ///start the monitors: set up the callback functions
+                if( allChidsInitialised )
+                    monitorScreens();
+                ///The pause allows EPICS to catch up.
+                std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
+            }
+            else
+                message("Screen abjects acquired, not starting EPICS" );
         }
+        else
+            message("Failed to get Screen objects" );
     }
+    else
+        message("Failed to read Screen Config file" );
 }
 //_______________________________________________________________________________________
-void screenInterface::initScreenObjects()
+bool screenInterface::initScreenObjects()
 {
-    ScreenObject = configReader.getScreenObjects();
+    return configReader.getScreenObjects( allScreentData );
 }
 //_______________________________________________________________________________________________________________
 void screenInterface::initScreenChids()
 {
     message( "\n", "Searching for Screen Chids..." );
 
-    ///COMPLEX SCREENS
-    for(auto && it1 : ScreenObject.complexObjects )
+    for(auto && scr_IT : allScreentData )
     {
-    ///Add the ILock Channels
 
-        addILockChannels( it1.second.numIlocks, it1.second.pvRoot, it1.second.name, it1.second.iLockPVStructs );
-
-    ///Creating Monitor Channels
-        for( auto && it2 : it1.second.pvMonStructs )
-            addChannel( it1.second.pvRoot, it2.second );
-
-    ///Creating Command Channels
-        for( auto && it2 : it1.second.pvComStructs )
-            addChannel( it1.second.pvRoot, it2.second );
+        addILockChannels( scr_IT.second.numIlocks, scr_IT.second.pvRoot, scr_IT.first, scr_IT.second.iLockPVStructs );
+        for( auto && it2 : scr_IT.second.pvComStructs )
+        {
+            addChannel( scr_IT.second.pvRoot, it2.second );
+        }
+        for( auto && it2 : scr_IT.second.pvMonStructs  )
+        {
+            addChannel( scr_IT.second.pvRoot, it2.second );
+        }
     }
-    ///SIMPLE SCREENS
-    for( auto && it1 : ScreenObject.simpleObjects )
-    {
-    ///Add ILock Channels
-        addILockChannels( it1.second.numIlocks, it1.second.pvRoot, it1.second.name, it1.second.iLockPVStructs );
-    ///Creating Monitor Channels
-        for( auto && it2 : it1.second.pvMonStructs )
-            addChannel( it1.second.pvRoot, it2.second );
 
-    ///Creating Command Channels
-        for( auto && it2 : it1.second.pvComStructs )
-            addChannel( it1.second.pvRoot, it2.second );
-    }
     ///SENDING TO EPICS
     int status = sendToEpics( "ca_create_channel", "Found Screen Chids.", "!!!TIMEOUT!!! Not All Screen Chids Found." );
+
+
+//    ///COMPLEX SCREENS
+//    for(auto && it1 : ScreenObject.complexObjects )
+//    {
+//    ///Add the ILock Channels
+//
+//        addILockChannels( it1.second.numIlocks, it1.second.pvRoot, it1.second.name, it1.second.iLockPVStructs );
+//
+//    ///Creating Monitor Channels
+//        for( auto && it2 : it1.second.pvMonStructs )
+//            addChannel( it1.second.pvRoot, it2.second );
+//
+//    ///Creating Command Channels
+//        for( auto && it2 : it1.second.pvComStructs )
+//            addChannel( it1.second.pvRoot, it2.second );
+//    }
+//    ///SIMPLE SCREENS
+//    for( auto && it1 : ScreenObject.simpleObjects )
+//    {
+//    ///Add ILock Channels
+//        addILockChannels( it1.second.numIlocks, it1.second.pvRoot, it1.second.name, it1.second.iLockPVStructs );
+//    ///Creating Monitor Channels
+//        for( auto && it2 : it1.second.pvMonStructs )
+//            addChannel( it1.second.pvRoot, it2.second );
+//
+//    ///Creating Command Channels
+//        for( auto && it2 : it1.second.pvComStructs )
+//            addChannel( it1.second.pvRoot, it2.second );
+//    }
+//    ///SENDING TO EPICS
+//    int status = sendToEpics( "ca_create_channel", "Found Screen Chids.", "!!!TIMEOUT!!! Not All Screen Chids Found." );
     if( status == ECA_TIMEOUT )
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
-        ///COMPLEX OBJECTS
-        for( auto && it1 : ScreenObject.complexObjects )
-        {
-        ///Checking ILock Channels
-        for( auto & it2 : it1.second.iLockPVStructs )
-            checkCHIDState(it2.second.CHID, it2.second.pv );
-
-        ///Checking Monitor Channels
-            for( auto && it2 : it1.second.pvMonStructs )
-                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-
-        ///Checking Command Channels
-            for( auto && it2 : it1.second.pvComStructs )
-                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-        }
-        ///SIMPLE OBJECTS
-        for( auto && it1 : ScreenObject.simpleObjects )
-        {
-        ///Checking ILock Channels
-        for( auto & it2 : it1.second.iLockPVStructs )
-            checkCHIDState(it2.second.CHID, it2.second.pv );
-
-        ///Checking Monitor Channels
-            for( auto && it2 : it1.second.pvMonStructs )
-                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-
-        ///Checking Command Channels
-            for( auto && it2 : it1.second.pvComStructs )
-                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-        }
-        message("");
+//        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
+//        ///COMPLEX OBJECTS
+//        for( auto && it1 : ScreenObject.complexObjects )
+//        {
+//        ///Checking ILock Channels
+//        for( auto & it2 : it1.second.iLockPVStructs )
+//            checkCHIDState(it2.second.CHID, it2.second.pv );
+//
+//        ///Checking Monitor Channels
+//            for( auto && it2 : it1.second.pvMonStructs )
+//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
+//
+//        ///Checking Command Channels
+//            for( auto && it2 : it1.second.pvComStructs )
+//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
+//        }
+//        ///SIMPLE OBJECTS
+//        for( auto && it1 : ScreenObject.simpleObjects )
+//        {
+//        ///Checking ILock Channels
+//        for( auto & it2 : it1.second.iLockPVStructs )
+//            checkCHIDState(it2.second.CHID, it2.second.pv );
+//
+//        ///Checking Monitor Channels
+//            for( auto && it2 : it1.second.pvMonStructs )
+//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
+//
+//        ///Checking Command Channels
+//            for( auto && it2 : it1.second.pvComStructs )
+//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
+//        }
+        message("ERROR ECA_TIMEOUT");
     }
-
-    else if ( status == ECA_NORMAL )
-        allChidsInitialised = true; /// interface base class member
+    else if( status == ECA_NORMAL )
+        message("ERROR ECA_NORMAL");
+//        allChidsInitialised = true; /// interface base class member
 }
 //________________________________________________________________________________________________________________
 void screenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )

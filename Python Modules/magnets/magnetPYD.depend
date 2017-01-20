@@ -55,7 +55,7 @@
 	"controller.h"
 	<boost/python.hpp>
 
-1484821121 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
+1484839605 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
 	"interface.h"
 	"magnetStructs.h"
 	"structs.h"
@@ -65,7 +65,7 @@
 	<atomic>
 	<map>
 
-1484821209 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
+1484827942 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -74,7 +74,7 @@
 	<thread>
 	<cadef.h>
 
-1483526955 d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.h
+1484839727 d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -89,7 +89,7 @@
 	<vector>
 	<cadef.h>
 
-1484751235 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1484834419 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 
 1484821187 source:d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.cpp

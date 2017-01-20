@@ -36,6 +36,13 @@ class VCscreens
         screenController& offline_CLARA_INJ_Screen_Controller();
         screenController& physical_CLARA_INJ_Screen_Controller();
 
+        void setQuiet();
+        void setVerbose();
+        void setMessage();
+        void setDebugMessage();
+
+        screenController& getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
+
     protected:
 
     private:
@@ -47,7 +54,7 @@ class VCscreens
 
         screenController * virtual_VELA_BA1_Screen_Controller_Obj ;
         screenController * physical_VELA_BA1_Screen_Controller_Obj;
-        screenController * offline_VELA_BA2_Screen_Controller_Obj ;
+        screenController * offline_VELA_BA1_Screen_Controller_Obj ;
 
         screenController * virtual_VELA_BA2_Screen_Controller_Obj;
         screenController * offline_VELA_BA2_Screen_Controller_Obj;
@@ -60,47 +67,88 @@ class VCscreens
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
 
-
         const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_AREA;
-
-
 };
-
-BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
+using namespace boost::python;
+BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
 {
-        /// Things that you want to use in python muct be exposed:
-        /// containers
-        class_<std::vector< std::string > >("std_vector_string")
-                .def( vector_indexing_suite< std::vector< std::string >>() )
-                ;
-        class_<std::vector< double> >("std_vector_double")
-                .def( vector_indexing_suite< std::vector< double>>() )
-                ;
+    /// Things that you want to use in python muct be exposed:
+    /// containers
+    class_<std::vector< std::string > >("std_vector_string")
+            .def( vector_indexing_suite< std::vector< std::string >>() )
+            ;
+    class_<std::vector< double> >("std_vector_double")
+            .def( vector_indexing_suite< std::vector< double>>() )
+            ;
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+        ;
+    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+        ;
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
+        ;
+    /// Expose base classes
+    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
+        ;
+    /// we have to tell boost.python about pure virtual methods in abstract base classes
+    boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
+        ("controller", boost::python::no_init) /// forces Python to not be able to construct (init) this object
+        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
+        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
+        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
+        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
+        ;
+    boost::python::class_<screenController, boost::python::bases<controller>, boost::noncopyable>
+        ("screenController","screenController Doc String",boost::python::no_init)
+        .def("getILockStates",           &screenController::getILockStates        )
+        .def("getILockStatesDefinition", &screenController::getILockStatesDefinition )
+        .def("get_CA_PEND_IO_TIMEOUT",   &screenController::get_CA_PEND_IO_TIMEOUT   )
+        .def("set_CA_PEND_IO_TIMEOUT",   &screenController::set_CA_PEND_IO_TIMEOUT   )
+        ;
 
-    boost::python::class_<magnetStructs::magnetObject,boost::noncopyable>
-        ("magnetObject", boost::python::no_init)
-        .def_readonly("pvRoot",    &magnetStructs::magnetObject::pvRoot)
-        .def_readonly("psuRoot",    &magnetStructs::magnetObject::psuRoot)
-        .def_readonly("maxWaitTime",    &magnetStructs::magnetObject::maxWaitTime)
-        .def_readonly("degTolerance",    &magnetStructs::magnetObject::degTolerance)
-        .def_readonly("magType",    &magnetStructs::magnetObject::magType)
-        .def_readonly("psuState",   &magnetStructs::magnetObject::psuState)
-        .def_readonly("magRevType", &magnetStructs::magnetObject::magRevType)
-        .def_readonly("siWithPol",  &magnetStructs::magnetObject::siWithPol)
-        .def_readonly("riWithPol",  &magnetStructs::magnetObject::riWithPol)
-        .def_readonly("riTolerance",  &magnetStructs::magnetObject::riTolerance)
-        .def_readonly("name",       &magnetStructs::magnetObject::name)
-        .def_readonly("nPSU",       &magnetStructs::magnetObject::nPSU)
-        .def_readonly("rPSU",       &magnetStructs::magnetObject::rPSU)
-        .def_readonly("degValues",  &magnetStructs::magnetObject::degValues)
-        .def_readonly("position",   &magnetStructs::magnetObject::position)
-        .def_readonly("fieldIntegralCoefficients",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
-        .def_readonly("numDegaussSteps",      &magnetStructs::magnetObject::numDegaussSteps)
-        .def_readonly("manufacturer",  &magnetStructs::magnetObject::manufacturer)
-        .def_readonly("serialNumber",  &magnetStructs::magnetObject::serialNumber)
-        .def_readonly("measurementDataLocation",  &magnetStructs::magnetObject::measurementDataLocation)
-        .def_readonly("magneticLength",  &magnetStructs::magnetObject::magneticLength)
-        .def_readonly("magnetBranch",  &magnetStructs::magnetObject::magnetBranch)
+    /// The main class that creates all the controller obejcts
+        boost::python::class_<VCscreens,boost::noncopyable> ("init")
+        .def("virtual_VELA_INJ_Screen_Controller",  &VCscreens::virtual_VELA_INJ_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_VELA_INJ_Screen_Controller",  &VCscreens::offline_VELA_INJ_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_Screen_Controller",  &VCscreens::physical_VELA_INJ_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA1_Screen_Controller",  &VCscreens::virtual_VELA_BA1_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA1_Screen_Controller",  &VCscreens::offline_VELA_BA1_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA1_Screen_Controller",  &VCscreens::physical_VELA_BA1_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA2_Screen_Controller",  &VCscreens::virtual_VELA_BA2_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA2_Screen_Controller",  &VCscreens::offline_VELA_BA2_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA2_Screen_Controller",  &VCscreens::physical_VELA_BA2_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_INJ_Screen_Controller",  &VCscreens::virtual_CLARA_INJ_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_INJ_Screen_Controller",  &VCscreens::offline_CLARA_INJ_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_INJ_Screen_Controller",  &VCscreens::physical_CLARA_INJ_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("getScreenController",  &VCscreens::getScreenController,
+             return_value_policy<reference_existing_object>())
+        .def("setQuiet",         &VCscreens::setQuiet )
+        .def("setVerbose",       &VCscreens::setVerbose )
+        .def("setMessage",       &VCscreens::setMessage )
+        .def("setDebugMessage",  &VCscreens::setDebugMessage )
         ;
 
 

@@ -12,6 +12,7 @@ namespace UTL
     const long   DUMMY_LONG   = -999;
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
+    const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
 
 
     const std::string END_OF_LINE = ";";
@@ -24,7 +25,7 @@ namespace UTL
     const char TAB_C              = '\t';
 
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
-    const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
+    //const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
     const std::string VM_PREFIX   = "VM-";
 
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
@@ -53,12 +54,18 @@ namespace UTL
     const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
     const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";
 /// Screens
+    const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
+
+// the below has to go
     const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
     const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";
     const std::string VELA_BA2_COMPLEX_SCREENS_CONFIG  = "velaBA2ComplexScreens.config";
     const std::string VELA_BA2_SIMPLE_SCREENS_CONFIG   = "velaBA2SimpleScreens.config";
     const std::string VELA_BA1_COMPLEX_SCREENS_CONFIG  = "velaBA1ComplexScreens.config";
     const std::string VELA_BA1_SIMPLE_SCREENS_CONFIG   = "velaBA1SimpleScreens.config";
+    const std::string CLARA_INJ_SIMPLE_SCREENS_CONFIG  = "claraINJSimpleScreens.config";
+    const std::string CLARA_INJ_COMPLEX_SCREENS_CONFIG = "claraINJComplexScreens.config";
+
 /// Cameras
     const std::string VELA_CAMERA_CONFIG               = "velaCamera.config";
     const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
@@ -309,7 +316,6 @@ namespace UTL
 //    const std::string DIP_DEGAUSS_TOLERANCE  = "DIP_DEGAUSS_TOLERANCE";
 //    const std::string SOL_DEGAUSS_TOLERANCE  = "SOL_DEGAUSS_TOLERANCE";
 
-
     //Cameras
     const std::string PV_SUFFIX_START     ="PV_SUFFIX_START"    ;
     const std::string PV_SUFFIX_GAIN      ="PV_SUFFIX_GAIN"     ;
@@ -328,12 +334,10 @@ namespace UTL
     const std::string X_PIX_2_MM    =  "X_PIX_2_MM";
     const std::string Y_PIX_2_MM    =  "Y_PIX_2_MM";
 
- /// SCREEN YAG 1/2/3 COMMAND PVs
+    /// SCREEN YAG 1/2/3 COMMAND PVs
 
     const std::string PV_SUFFIX_H_MABS      = "PV_SUFFIX_H_MABS";
     const std::string PV_SUFFIX_V_MABS      = "PV_SUFFIX_V_MABS";
-    const std::string PV_SUFFIX_H_RPOS      = "PV_SUFFIX_H_RPOS";
-    const std::string PV_SUFFIX_V_RPOS      = "PV_SUFFIX_V_RPOS";
     const std::string PV_SUFFIX_STOP        = "PV_SUFFIX_STOP";
 
     ///SCREEN YAG 1/2/3 MONITOR PVs
@@ -345,19 +349,21 @@ namespace UTL
     const std::string PV_SUFFIX_H_RPWRLOSS  = "PV_SUFFIX_H_RPWRLOSS";
     const std::string PV_SUFFIX_V_RPWRLOSS  = "PV_SUFFIX_V_RPWRLOSS";
 
+    const std::string PV_SUFFIX_H_RPOS      = "PV_SUFFIX_H_RPOS";
+    const std::string PV_SUFFIX_V_RPOS      = "PV_SUFFIX_V_RPOS";
 
     /// SCREEN YAG 1/2/3 POSITIONS
 
-    const std::string H_MIRROR      = "H_MIRROR";
-    const std::string H_50U_SLIT    = "H_50U_SLIT";
-    const std::string H_25U_SLIT    = "H_25U_SLIT";
-    const std::string H_63MM_HOLE    = "H_63MM_HOLE";
-    const std::string H_10MM_HOLE   = "H_10MM_HOLE";
-    const std::string V_YAG         = "V_YAG";
-    const std::string V_SLIT        = "V_SLIT";
-    const std::string H_SLIT        = "H_SLIT";
-    const std::string H_OUT         = "H_OUT";
-    const std::string V_OUT         = "V_OUT";
+    const std::string H_MIRROR_POS      = "H_MIRROR_POS";
+    const std::string H_50U_SLIT_POS    = "H_50U_SLIT_POS";
+    const std::string H_25U_SLIT_POS    = "H_25U_SLIT_POS";
+    const std::string H_63MM_HOLE_POS    = "H_63MM_HOLE_POS";
+    const std::string H_10MM_HOLE_POS   = "H_10MM_HOLE_POS";
+    const std::string V_YAG_POS         = "V_YAG_POS";
+    const std::string V_SLIT_POS        = "V_SLIT_POS";
+    const std::string H_SLIT_POS        = "H_SLIT_POS";
+    const std::string H_OUT_POS         = "H_OUT_POS";
+    const std::string V_OUT_POS         = "V_OUT_POS";
     const std::string OUT           = "OUT";
     const std::string IN            = "IN";
 

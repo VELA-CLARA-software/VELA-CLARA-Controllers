@@ -22,7 +22,7 @@ VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
 VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
 VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
 CLARA_INJ( VELA_ENUM::MACHINE_AREA::CLARA_INJ),
-UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
 shouldShowDebugMessage(false),//default is quiet mode
 shouldShowMessage(false)//default is quiet mode
 {
@@ -174,7 +174,7 @@ magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
     else
     {
         std::cout << "Creating offline_VELA_INJ_Magnet_Controller object" << std::endl;
-        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,VELA_INJ );
+        offline_VELA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withoutEPICS,VELA_INJ );
     }
     return *offline_VELA_INJ_Magnet_Controller_Obj;
 }
@@ -257,7 +257,7 @@ magnetController& VCmagnets::offline_VELA_BA2_Magnet_Controller()
     }
     else
     {
-        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,VELA_BA2 );
+        offline_VELA_BA2_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withoutEPICS,VELA_BA2 );
     }
     return *offline_VELA_BA2_Magnet_Controller_Obj;
 }
@@ -308,7 +308,7 @@ magnetController& VCmagnets::offline_CLARA_INJ_Magnet_Controller()
     else
     {
         std::cout << "Creating offline_CLARA_INJ_Magnet_Controller object" << std::endl;
-        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withoutEPICS,CLARA_INJ );
+        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withoutEPICS,CLARA_INJ );
     }
     return *offline_CLARA_INJ_Magnet_Controller_Obj;
 }

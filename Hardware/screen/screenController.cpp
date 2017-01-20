@@ -28,12 +28,13 @@
 screenController::screenController(
     const bool show_messages,
     const bool show_debug_messages,
-    const std::string & screenConf,
+    const std::string & conf1,
+    const std::string & conf2,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
     const VELA_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages ),
-localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
+localInterface( conf1, conf2, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {

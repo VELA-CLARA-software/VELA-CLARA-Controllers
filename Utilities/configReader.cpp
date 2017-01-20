@@ -204,7 +204,7 @@ std::vector< double >  configReader::getDoubleVector( const std::string & str )
         else
         {
             //ret.push_back( atof( s.c_str() ) );
-            // this way allows you to write numbers in scientific E notaiton, i.e. 6.3E+3 etc.
+            // this way allows you to write numbers in scientific E notation, i.e. 6.3E+3 etc.
             os << s;
             os >> temp;
             ret.push_back( temp );
