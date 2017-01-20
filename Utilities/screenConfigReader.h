@@ -39,27 +39,31 @@ private:
     std::vector< screenStructs::pvStruct > pvScrMonStructs_VELA_PNEUMATIC;
     std::vector< screenStructs::pvStruct > pvScrMonStructs_VELA_HV_MOVER;
     // we keep a record of the last pcstruct type added, so we know where to put PV_CHTYPE etc.
-    screenStructs::SCREEN_TYPE lastPVStructScreenType;
-    void addToPVStruct(std::vector<screenStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal );
-    void addToPVStruct(std::vector< screenStructs::pvStruct > & pvs, screenStructs::SCREEN_PV_TYPE pvtype,
-                               screenStructs::SCREEN_TYPE scrType  )
+    std::vector< screenStructs::pvStruct > * lastPVStruct;
+    void addToPVStructMain( const std::vector<std::string> &keyVal );
+    void addToPVStruct(std::vector< screenStructs::pvStruct > & pvs,
+                                       const screenStructs::SCREEN_PV_TYPE pvtype,
+                                       screenStructs::SCREEN_TYPE scrType, const std::string& pvSuffix);
 
+    void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyVal );
+    screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string & val );
 //    void setLasttoVELA_HV_MOVER();
 //    void setLasttoVELA_PNEUMATIC();
 
     const bool usingVirtualMachine;
     // yay function pointers
     typedef void( screenConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );
-    bool readConfig( screenConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3);
+    bool readConfig( screenConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2);
 
-    void addToPVStruct( std::vector<screenStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal );
-    void addToPVCommandMapV1 ( std::vector<std::string> &keyVal );
-    void addToPVMonitorMapV1 ( std::vector<std::string> &keyVal );
 
-    void addToScrMonStructsV1( const std::vector<std::string> &keyVal );
-    void addToScComStructsV1( const std::vector<std::string> &keyVal );
-    void addToScrObjectsV1( const std::vector<std::string> &keyVal );
-    void addCOUNT_MASK_OR_CHTYPE(std::vector<screenStructs::pvStruct>& pvStruct_v, const std::vector<std::string> &keyVal);
+//    void addToPVCommandMapV1 ( std::vector<std::string> &keyVal );
+//    void addToPVMonitorMapV1 ( std::vector<std::string> &keyVal );
+//    void addToScrMonStructsV1( const std::vector<std::string> &keyVal );
+//    void addToScComStructsV1( const std::vector<std::string> &keyVal );
+//    void addToScrObjectsV1( const std::vector<std::string> &keyVal );
+
+    //void addCOUNT_MASK_OR_CHTYPE(std::vector<screenStructs::pvStruct>& pvStruct_v, const std::vector<std::string> &keyVal);
+    void addCOUNT_MASK_OR_CHTYPE(const std::vector<std::string> &keyVal);
 
     /// OLD
 

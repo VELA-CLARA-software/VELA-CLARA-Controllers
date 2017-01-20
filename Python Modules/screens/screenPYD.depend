@@ -50,7 +50,7 @@
 	<string>
 	<vector>
 
-1484924880 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
+1484927578 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -64,7 +64,7 @@
 	<vector>
 	<string>
 
-1484924448 d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.h
+1484932654 d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -78,7 +78,7 @@
 	<vector>
 	<cadef.h>
 
-1484923588 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1484929302 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 
 1484906835 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp

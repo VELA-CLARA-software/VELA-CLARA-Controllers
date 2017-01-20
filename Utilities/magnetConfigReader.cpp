@@ -287,7 +287,7 @@ void magnetConfigReader::addToMagComStructsV1( const std::vector<std::string> &k
 //______________________________________________________________________________
 void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyVal ) // /V1 is a mechanism for having a new version of configs if needed
 {
-    std::string value = keyVal[1];
+    std::string value = keyVal[1];//MAGIC_NUMBER
     if( keyVal[0] == UTL::NAME )
     {
         magnetStructs::magnetObject mob = magnetStructs::magnetObject();

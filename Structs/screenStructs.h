@@ -45,7 +45,7 @@ namespace screenStructs
                                          (H_RPWRLOSS) (V_RPWRLOSS) (UNKNOWN_SCREEN_PV_TYPE) )
 
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_TYPE, (VELA_PNEUMATIC) (VELA_HV_MOVER), (UNKNOWN_SCREEN_TYPE))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_TYPE, (VELA_PNEUMATIC) (VELA_HV_MOVER) (UNKNOWN_SCREEN_TYPE))
 
     /// monType could be used to switch in the statisCallbackFunction
     struct monitorStruct
@@ -102,7 +102,7 @@ namespace screenStructs
     /// The main hardware object holds
     struct screenObjectDEV
     {
-        screenObjectDEV():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE){}
+        screenObjectDEV():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE){}
         std::string name, pvRoot;
         screenStructs::SCREEN_TYPE screenType;
         screenStructs::screenDriver mover;

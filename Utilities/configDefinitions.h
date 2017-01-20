@@ -334,6 +334,12 @@ namespace UTL
     const std::string X_PIX_2_MM    =  "X_PIX_2_MM";
     const std::string Y_PIX_2_MM    =  "Y_PIX_2_MM";
 
+    /// SCREEN
+
+    const std::string SCREEN_TYPE            =  "SCREEN_TYPE";
+    const std::string VELA_HV_MOVER_SCREEN   =  "VELA_HV_MOVER_SCREEN";
+    const std::string VELA_PNEUMATIC_SCREEN  =  "VELA_PNEUMATIC_SCREEN";
+
     /// SCREEN YAG 1/2/3 COMMAND PVs
 
     const std::string PV_SUFFIX_H_MABS      = "PV_SUFFIX_H_MABS";

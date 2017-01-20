@@ -18,99 +18,123 @@ screenConfigReader::screenConfigReader( const std::string & configFileLocation1,
                                         const bool* show_debug_messages_ptr ):
 configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr ),
 usingVirtualMachine(startVirtualMachine),
-lastPVStructScreenType(screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE)
+lastPVStruct(nullptr)
 {
-
-    std::cout << configFileLocation1 << std::endl;
+//    std::cout << configFileLocation1 << std::endl;
 }
 //_____________________________________________________________________________________________________
-screenConfigReader::~screenConfigReader(){}
+screenConfigReader::~screenConfigReader()
+{
+    if( lastPVStruct )
+    {
+        delete lastPVStruct;
+        lastPVStruct = nullptr;
+    }
+}
 //______________________________________________________________________________________________________
 bool screenConfigReader::readConfig()
 {
     // clear local copies of structs
     scrObjects.clear();
-    pvScrMonStructs.clear();
-    pvScrComStructs.clear();
+    pvScrComStructs_VELA_HV_MOVER.clear();
+    pvScrComStructs_VELA_PNEUMATIC.clear();
+    pvScrMonStructs_VELA_HV_MOVER.clear();
+    pvScrMonStructs_VELA_PNEUMATIC.clear();
     // call the main read config funciton, pass in function pointers to the funcs
     // that know how to read a object, command or monitor
-    bool scrSuccess = readConfig( *this, configFile1, &screenConfigReader::addToScrObjectsV1,&screenConfigReader::addToPVStruct, &screenConfigReader::addToPVStruct );
+    bool scrSuccess = readConfig(*this, configFile1, &screenConfigReader::addToScrObjectsV1,&screenConfigReader::addToPVStructMain);
     return scrSuccess;
 }
 //______________________________________________________________________________
-void screenConfigReader::addToPVStruct( const std::vector<std::string> &keyVal )
+void screenConfigReader::addToPVStructMain( const std::vector<std::string> &keyVal )
 {
     if( stringIsSubString( keyVal[0], "SUFFIX" ) )
     {
-        pvStruct_v.push_back( screenStructs::pvStruct() );    /// Any way to avoid the ladders?
-        pvStruct_v.back().pvSuffix = keyVal[1];
-
+//        pvStruct_v.push_back( screenStructs::pvStruct() );    /// Any way to avoid the ladders?
+//        pvStruct_v.back().pvSuffix = keyVal[1];
         if( keyVal[0] == UTL::PV_SUFFIX_STA  )
             addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Sta,
-                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC  );
-
+                screenStructs::SCREEN_TYPE::VELA_PNEUMATIC, keyVal[1] );
         else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
             addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::On,
-                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC  );
+                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_OFF )
             addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Off,
-                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC  );
+                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_H_PROT01  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_PROT01 )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::H_PROT01,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_V_PROT01  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_PROT01 )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::V_PROT01,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_H_RPWRLOSS  )
-                        addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::H_RPWRLOSS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_RPWRLOSS )
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::H_RPWRLOSS,
+              screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_V_RPWRLOSS  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_RPWRLOSS )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::V_RPWRLOSS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_V_RPOS  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_RPOS )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::V_RPOS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_H_RPOS  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_RPOS )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::H_RPOS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_PROT05  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_PROT05 )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT05,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1]);
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_PROT03  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_PROT03 )
             addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT03,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER  );
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_MABS )
+            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::H_MABS,
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_MABS )
+            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::V_MABS,
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+
+        else if( keyVal[0] == UTL::PV_SUFFIX_STOP )
+            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STOP,
+                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
     }
-    else
+    else // must be a mask, chtype config entry, if the config file follows the rules
     {
-        switch( lastPVStructScreenType )
-        {
-            case screenStructs::SCREEN_TYPE::VELA_HV_MOVER:
-                addCOUNT_MASK_OR_CHTYPE( pvScrMonStructs_VELA_HV_MOVER, keyVal );
-                break;
-            case screenStructs::SCREEN_TYPE::VELA_PNEUMATIC;
-                addCOUNT_MASK_OR_CHTYPE( pvScrMonStructs_VELA_PNEUMATIC, keyVal );
-                break;
-        }
+        addCOUNT_MASK_OR_CHTYPE( keyVal );
     }
 
 }
 //______________________________________________________________________________
-void screenConfigReader::addToPVStruct(std::vector< screenStructs::pvStruct > & pvs, screenStructs::SCREEN_PV_TYPE pvtype,
-                               screenStructs::SCREEN_TYPE scrType  )
+void screenConfigReader::addToPVStruct(std::vector< screenStructs::pvStruct > & pvs,
+                                       const screenStructs::SCREEN_PV_TYPE pvtype,
+                                       screenStructs::SCREEN_TYPE scrType, const std::string& pvSuffix)
 {
     pvs.push_back( screenStructs::pvStruct() );
-    pvs.back().pvType = pvtype;
-    lastPVStructScreenType = scrType;
+    pvs.back().pvType      = pvtype;
+    pvs.back().pvSuffix    = pvSuffix;
+    // we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
+    // so store a ref to which vector to update with that info. (this does make sense)
+    lastPVStruct = &pvs;
     debugMessage("Added ", pvs.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvs.back().pvType) );
+}
+//______________________________________________________________________________
+void screenConfigReader::addCOUNT_MASK_OR_CHTYPE(  const std::vector<std::string> &keyVal  )
+{
+    if( keyVal[0] == UTL::PV_COUNT )
+        (*lastPVStruct).back().COUNT = getCOUNT( keyVal[ 1 ] );
+    else if( keyVal[0] == UTL::PV_MASK )
+        (*lastPVStruct).back().MASK = getMASK( keyVal[ 1 ] );
+    else if( keyVal[0] == UTL::PV_CHTYPE )
+        (*lastPVStruct).back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
 }
 
 //______________________________________________________________________________
@@ -124,43 +148,43 @@ void screenConfigReader::addToPVStruct(std::vector< screenStructs::pvStruct > & 
 //    lastPVStructScreenType = screenStructs::SCREEN_TYPE::VELA_PNEUMATIC;
 //}
 //______________________________________________________________________________
-void screenConfigReader::addToScComStructsV1( const std::vector<std::string> &keyVal )
-{
-    PV_SUFFIX_H_MABS
-    PV_SUFFIX_V_MABS
-    PV_SUFFIX_H_RPOS
-    PV_SUFFIX_V_RPOS
-    PV_SUFFIX_STOP
-
-        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-        {
-            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
-            setLasttoVELA_PNEUMATIC();
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-        {
-            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
-            setLasttoVELA_PNEUMATIC();
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-        {
-            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
-            setLasttoVELA_PNEUMATIC();
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-        {
-            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
-            setLasttoVELA_PNEUMATIC();
-        }
-
-
-
-    addToPVStruct( pvScrComStructs, keyVal);
-}
+//void screenConfigReader::addToScComStructsV1( const std::vector<std::string> &keyVal )
+//{
+//    PV_SUFFIX_H_MABS
+//    PV_SUFFIX_V_MABS
+//    PV_SUFFIX_H_RPOS
+//    PV_SUFFIX_V_RPOS
+//    PV_SUFFIX_STOP
+//
+//        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
+//        {
+//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
+//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
+//            setLasttoVELA_PNEUMATIC();
+//        }
+//        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
+//        {
+//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
+//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
+//            setLasttoVELA_PNEUMATIC();
+//        }
+//        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
+//        {
+//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
+//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
+//            setLasttoVELA_PNEUMATIC();
+//        }
+//        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
+//        {
+//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
+//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
+//            setLasttoVELA_PNEUMATIC();
+//        }
+//
+//
+//
+//    addToPVStruct( pvScrComStructs, keyVal);
+//}
 //______________________________________________________________________________
 void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyVal )
 {
@@ -173,8 +197,17 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         debugMessage( "Added ", scrObjects.back().name );
     }
     else if( keyVal[0] == UTL::PV_ROOT )
-        scrObjects.back().pvRoot = keyVal[ 1 ];
+    {
+        if( usingVirtualMachine )
+            scrObjects.back().pvRoot = UTL::VM_PREFIX +  keyVal[ 1 ];
+        else
+            scrObjects.back().pvRoot =  keyVal[ 1 ];
+    }
+    else if( keyVal[0] == UTL::SCREEN_TYPE )
+        scrObjects.back().screenType = getScreenType( keyVal[ 1 ] );
     // the mover knows all the positions of screens, slits etc, plus current position
+    else if( keyVal[0] == UTL::H_MIRROR_POS )
+        scrObjects.back().mover.H_MIRROR_POS = getNumD(keyVal[ 1 ]);
     else if( keyVal[0] == UTL::H_MIRROR_POS )
         scrObjects.back().mover.H_MIRROR_POS = getNumD(keyVal[ 1 ]);
     else if( keyVal[0] == UTL::H_50U_SLIT_POS )
@@ -197,38 +230,48 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         scrObjects.back().mover.V_OUT_POS = getNumD(keyVal[ 1 ]);
 }
 //______________________________________________________________________________________________________
-void screenConfigReader::addToPVStruct( std::vector<screenStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal )
+screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string & val )
 {
-
-    //if a command is used on more than one type of scren it will probably have to get a double entry (... ?)
-
-    if( stringIsSubString( keyVal[0], "SUFFIX" ) )
-    {
-        pvStruct_v.push_back( screenStructs::pvStruct() );    /// Any way to avoid the ladders?
-        pvStruct_v.back().pvSuffix = keyVal[1];
-
-        if( keyVal[0] == UTL::PV_SUFFIX_STA  )
-            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::Sta;
-
-        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
-
-        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
-
-        else if( keyVal[0] == UTL::PV_SUFFIX_RI  )
-            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::H_MABS;
-
-        else if( keyVal[0] == UTL::PV_SUFFIX_SI  )
-            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::V_MABS;
-
-        debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
-    }
-    else
-        addCOUNT_MASK_OR_CHTYPE( pvStruct_v, keyVal );
+    screenStructs::SCREEN_TYPE ret = screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE;
+    if( val == UTL::VELA_HV_MOVER_SCREEN )
+        ret = screenStructs::SCREEN_TYPE::VELA_HV_MOVER;
+    else if( val == UTL::VELA_PNEUMATIC_SCREEN )
+        ret = screenStructs::SCREEN_TYPE::VELA_PNEUMATIC;
+    return ret;
 }
 //______________________________________________________________________________________________________
-bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3)
+//void screenConfigReader::addToPVStruct( std::vector<screenStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal )
+//{
+//
+//    //if a command is used on more than one type of scren it will probably have to get a double entry (... ?)
+//
+//    if( stringIsSubString( keyVal[0], "SUFFIX" ) )
+//    {
+//        pvStruct_v.push_back( screenStructs::pvStruct() );    /// Any way to avoid the ladders?
+//        pvStruct_v.back().pvSuffix = keyVal[1];
+//
+//        if( keyVal[0] == UTL::PV_SUFFIX_STA  )
+//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::Sta;
+//
+//        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
+//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
+//
+//        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
+//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
+//
+//        else if( keyVal[0] == UTL::PV_SUFFIX_RI  )
+//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::H_MABS;
+//
+//        else if( keyVal[0] == UTL::PV_SUFFIX_SI  )
+//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::V_MABS;
+//
+//        debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
+//    }
+//    else
+//        addCOUNT_MASK_OR_CHTYPE( pvStruct_v, keyVal );
+//}
+//______________________________________________________________________________________________________
+bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2)
 {
     debugMessage( "\n", "**** Attempting to Read ", fn, " ****" );
     if( usingVirtualMachine )
@@ -292,7 +335,7 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
 
 
                                     else if( readingMonitorPVs )
-                                        CALL_MEMBER_FN(obj, f3)( keyVal );
+                                        CALL_MEMBER_FN(obj, f2)( keyVal );
                                 }
                                 break;
                             default:
@@ -329,13 +372,12 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
                 }
             }
         }
-
         inputFile.close( );
         debugMessage( "File Closed" );
         if( numObjs == scrObjects.size() )
         {
             success = true;
-            debugMessage( "Config file returning true" );
+            debugMessage( "Number of objects created, ",scrObjects.size()," == ",numObjs,", objects delared in Config" );
         }
     }
 
@@ -343,19 +385,6 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
     return success;
 
 }
-//______________________________________________________________________________
-void screenConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< screenStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal  )
-{
-    if( keyVal[0] == UTL::PV_COUNT )
-        pvStruct_v.back().COUNT = getCOUNT( keyVal[ 1 ] );
-    else if( keyVal[0] == UTL::PV_MASK )
-        pvStruct_v.back().MASK = getMASK( keyVal[ 1 ] );
-    else if( keyVal[0] == UTL::PV_CHTYPE )
-        pvStruct_v.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
-}
-
-
-
 //__________________________________________________________________________________________
 bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs::screenObjectDEV > & mapToFill )
 {
@@ -367,11 +396,24 @@ bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs:
     {
         // add in magnetObj
         mapToFill[ it.name ] = it;
-        // setMon and Com pvStructs
-        for( auto && it2 : pvScrMonStructs )
-            mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
-        for( auto && it2 : pvScrComStructs )
-            mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
+        switch( it.screenType )
+        {
+
+            case screenStructs::SCREEN_TYPE::VELA_PNEUMATIC:
+                message( it.name, " is a VELA_PNEUMATIC screen");
+                for( auto && it2 : pvScrMonStructs_VELA_PNEUMATIC )
+                    mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
+                for( auto && it2 : pvScrComStructs_VELA_PNEUMATIC)
+                    mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
+                break;
+            case screenStructs::SCREEN_TYPE::VELA_HV_MOVER:
+                message( it.name, " is a VELA_HV_MOVER screen");
+                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER )
+                    mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
+                for( auto && it2 : pvScrComStructs_VELA_HV_MOVER )
+                    mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
+                break;
+        }
         nCount+=1;
     }
     if ( nCount == scrObjects.size() )
