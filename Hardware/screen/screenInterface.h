@@ -118,8 +118,25 @@ class screenInterface: public interface
 
         void checkScreenCHIDStates();
 
-
         std::map< std::string, screenStructs::screenObjectDEV > allScreentData;
+
+
+        void updateSta( screenStructs::monitorStructDEV * ms, const void * argsdbr );
+        //void update_HV_STA( screenStructs::monitorStructDEV * ms, const void * argsdbr );
+        //void update_STA_Bit_map(  std::vector< std::string > & STA_Bit_order,  std::map< std::string, bool > & STA_Bit_map, bool & isMoving, const void * argsdbr );
+        void update_STA_Bit_map(  screenStructs::monitorStructDEV * ms, const void * argsdbr );
+
+        // update the ismoving falg on the mover objects
+        void updateIsMoving( screenStructs::screenObjectDEV & obj );
+        void updateMotorDisabled( screenStructs::screenObjectDEV & obj );
+
+        bool isHorizontal( screenStructs::DRIVER_DIRECTION dir );
+        bool isVertical  ( screenStructs::DRIVER_DIRECTION dir );
+
+
+
+
+
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the shutter is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
@@ -139,6 +156,7 @@ class screenInterface: public interface
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
         std::vector< screenStructs::monitorStruct * > continuousMonitorStructs;
+        std::vector< screenStructs::monitorStructDEV * > continuousMonitorStructsDEV;
 
 
         screenStructs::screenObject ScreenObject;

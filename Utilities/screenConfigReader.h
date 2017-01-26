@@ -50,6 +50,11 @@ private:
 //    void setLasttoVELA_HV_MOVER();
 //    void setLasttoVELA_PNEUMATIC();
 
+
+    void setH(std::vector< screenStructs::pvStruct > & pvs );
+    void setV(std::vector< screenStructs::pvStruct > & pvs );
+
+
     const bool usingVirtualMachine;
     // yay function pointers
     typedef void( screenConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );

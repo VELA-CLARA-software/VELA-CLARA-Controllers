@@ -18,9 +18,17 @@
 #include <sstream>
 //interface::interface():EPICS_ACTIVATE (1), EPICS_SEND(0), EPICS_RESET( 1 ),DBL_ERR_NUM( -9999.9999){}
 
-interface::interface( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
-: thisCaContext( nullptr  ), configFileRead( false ), CA_PEND_IO_TIMEOUT( 5.0 ), baseObject( show_messages_ptr, show_debug_messages_ptr ),
-EPICS_ACTIVATE (1), EPICS_SEND(0), EPICS_RESET( 1 ), DBL_ERR_NUM( -9999.9999), allChidsInitialised( false ), allMonitorsStarted ( false )
+interface::interface( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr ):
+thisCaContext( nullptr  ),
+configFileRead( false ),
+CA_PEND_IO_TIMEOUT( 5.0 ),  //MAGIC_NUMBER
+baseObject( show_messages_ptr, show_debug_messages_ptr ),
+EPICS_ACTIVATE (1),         //MAGIC_NUMBER
+EPICS_SEND(0),              //MAGIC_NUMBER
+EPICS_RESET( 1 ),           //MAGIC_NUMBER
+DBL_ERR_NUM( -9999.9999),   //MAGIC_NUMBER
+allChidsInitialised( false ),
+allMonitorsStarted ( false )
 {
     /// This 'enables' callbacks, monitoring, etc
     ca_context_create( ca_enable_preemptive_callback );
@@ -69,11 +77,11 @@ void interface::printStatusResult( const int status, const char * success, const
         switch (status)
         {
             case ECA_NORMAL:
-                if( strlen( success ) != 0 )
+                if( strlen( success ) != 0 )//MAGIC_NUMBER
                     printMessage( success );
                 break;
             case ECA_TIMEOUT:
-                if( strlen( timeout ) != 0 )
+                if( strlen( timeout ) != 0 )//MAGIC_NUMBER
                     printMessage( timeout );
                 break;
             default:
@@ -84,56 +92,56 @@ void interface::printStatusResult( const int status, const char * success, const
 //______________________________________________________________________________
 void interface::addILockChannels( const int numIlocks, const std::string & pvRoot,const std::string & objName, std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > & iLockPVStructs )
 {
-  for( int  i = 1; i < numIlocks + 1 ; ++i )
+  for( int  i = 1; i < numIlocks + 1 ; ++i )//MAGIC_NUMBER
     {
         switch( i )
         {
-            case 1:
+            case 1://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_1 ].pv = pvRoot + "Ilk1";
                 break;
-            case 2:
+            case 2://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_2 ].pv = pvRoot + "Ilk2";
                 break;
-            case 3:
+            case 3://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_3 ].pv = pvRoot + "Ilk3";
                 break;
-            case 4:
+            case 4://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_4 ].pv = pvRoot + "Ilk4";
                 break;
-            case 5:
+            case 5://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_5 ].pv = pvRoot + "Ilk5";
                 break;
-            case 6:
+            case 6://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_6 ].pv = pvRoot + "Ilk6";
                 break;
-            case 7:
+            case 7://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_7 ].pv = pvRoot + "Ilk7";
                 break;
-            case 8:
+            case 8://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_8 ].pv = pvRoot + "Ilk8";
                 break;
-            case 9:
+            case 9://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_9 ].pv = pvRoot + "Ilk9";
                 break;
-            case 10:
+            case 10://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_10 ].pv = pvRoot + "Ilk10";
                 break;
-            case 11:
+            case 11://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_11 ].pv = pvRoot + "Ilk11";
                 break;
-            case 12:
+            case 12://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_12 ].pv = pvRoot + "Ilk12";
                 break;
-            case 13:
+            case 13://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_13 ].pv = pvRoot + "Ilk13";
                 break;
-            case 14:
+            case 14://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_14 ].pv = pvRoot + "Ilk14";
                 break;
-            case 15:
+            case 15://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_15 ].pv = pvRoot + "Ilk15";
                 break;
-            case 16:
+            case 16://MAGIC_NUMBER
                 iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_16 ].pv = pvRoot + "Ilk16";
                 break;
         }
@@ -190,10 +198,10 @@ void interface::staticEntryILockMonitor( event_handler_args args )
 
     switch( *(unsigned short*)args.dbr )
     {
-        case 0:
+        case 0://MAGIC_NUMBER
             *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_BAD;
             break;
-        case 1:
+        case 1://MAGIC_NUMBER
             *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_GOOD;
             break;
         default:
@@ -293,10 +301,10 @@ void interface::updateTime( const epicsTimeStamp & stamp, double & val, std::str
 //    const dbr_time_char * pTD = ( const struct dbr_time_char * ) args.dbr;
 //    epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
 //    epicsUInt32 nsec = pTD ->stamp.nsec;
-    char timeString[36];
+    char timeString[36];//MAGIC_NUMBER
     epicsTimeToStrftime ( timeString, sizeof ( timeString ), "%a %b %d %Y %H:%M:%S.%f", &stamp );
 //    const dbr_char_t * pValue = &pTD -> value;
-    val =  ( (double)stamp.nsec * 0.000000001 ) + (double)stamp.secPastEpoch;
+    val =  ( (double)stamp.nsec * 0.000000001 ) + (double)stamp.secPastEpoch;//MAGIC_NUMBER
     // prove it works
     //std::cout << std::setprecision(15) << std::showpoint<<   val << std::endl;
     str = timeString;

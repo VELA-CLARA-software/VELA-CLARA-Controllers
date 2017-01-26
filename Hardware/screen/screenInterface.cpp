@@ -73,8 +73,8 @@ void screenInterface::initialise()
                 ///subscribe to the channel ids
                 initScreenChids();
                 ///start the monitors: set up the callback functions
-                if( allChidsInitialised )
-                    monitorScreens();
+                //if( allChidsInitialised )
+                monitorScreens();
                 ///The pause allows EPICS to catch up.
                 std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
             }
@@ -100,375 +100,491 @@ void screenInterface::initScreenChids()
     for(auto && scr_IT : allScreentData )
     {
 
-        addILockChannels( scr_IT.second.numIlocks, scr_IT.second.pvRoot, scr_IT.first, scr_IT.second.iLockPVStructs );
+        addILockChannels(scr_IT.second.numIlocks, scr_IT.second.pvRoot,
+                         scr_IT.first, scr_IT.second.iLockPVStructs   );
         for( auto && it2 : scr_IT.second.pvComStructs )
-        {
             addChannel( scr_IT.second.pvRoot, it2.second );
-        }
         for( auto && it2 : scr_IT.second.pvMonStructs  )
-        {
             addChannel( scr_IT.second.pvRoot, it2.second );
-        }
     }
 
     ///SENDING TO EPICS
     int status = sendToEpics( "ca_create_channel", "Found Screen Chids.", "!!!TIMEOUT!!! Not All Screen Chids Found." );
 
-
-//    ///COMPLEX SCREENS
-//    for(auto && it1 : ScreenObject.complexObjects )
-//    {
-//    ///Add the ILock Channels
-//
-//        addILockChannels( it1.second.numIlocks, it1.second.pvRoot, it1.second.name, it1.second.iLockPVStructs );
-//
-//    ///Creating Monitor Channels
-//        for( auto && it2 : it1.second.pvMonStructs )
-//            addChannel( it1.second.pvRoot, it2.second );
-//
-//    ///Creating Command Channels
-//        for( auto && it2 : it1.second.pvComStructs )
-//            addChannel( it1.second.pvRoot, it2.second );
-//    }
-//    ///SIMPLE SCREENS
-//    for( auto && it1 : ScreenObject.simpleObjects )
-//    {
-//    ///Add ILock Channels
-//        addILockChannels( it1.second.numIlocks, it1.second.pvRoot, it1.second.name, it1.second.iLockPVStructs );
-//    ///Creating Monitor Channels
-//        for( auto && it2 : it1.second.pvMonStructs )
-//            addChannel( it1.second.pvRoot, it2.second );
-//
-//    ///Creating Command Channels
-//        for( auto && it2 : it1.second.pvComStructs )
-//            addChannel( it1.second.pvRoot, it2.second );
-//    }
-//    ///SENDING TO EPICS
-//    int status = sendToEpics( "ca_create_channel", "Found Screen Chids.", "!!!TIMEOUT!!! Not All Screen Chids Found." );
     if( status == ECA_TIMEOUT )
-    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
-//        ///COMPLEX OBJECTS
-//        for( auto && it1 : ScreenObject.complexObjects )
-//        {
-//        ///Checking ILock Channels
-//        for( auto & it2 : it1.second.iLockPVStructs )
-//            checkCHIDState(it2.second.CHID, it2.second.pv );
-//
-//        ///Checking Monitor Channels
-//            for( auto && it2 : it1.second.pvMonStructs )
-//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-//
-//        ///Checking Command Channels
-//            for( auto && it2 : it1.second.pvComStructs )
-//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-//        }
-//        ///SIMPLE OBJECTS
-//        for( auto && it1 : ScreenObject.simpleObjects )
-//        {
-//        ///Checking ILock Channels
-//        for( auto & it2 : it1.second.iLockPVStructs )
-//            checkCHIDState(it2.second.CHID, it2.second.pv );
-//
-//        ///Checking Monitor Channels
-//            for( auto && it2 : it1.second.pvMonStructs )
-//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-//
-//        ///Checking Command Channels
-//            for( auto && it2 : it1.second.pvComStructs )
-//                checkCHIDState( it2.second.CHID, it2.second.pvSuffix );
-//        }
         message("ERROR ECA_TIMEOUT");
-    }
     else if( status == ECA_NORMAL )
-        message("ERROR ECA_NORMAL");
-//        allChidsInitialised = true; /// interface base class member
+    {
+        allChidsInitialised = true; /// interface base class member  not actually used but good to know
+    }
 }
 //________________________________________________________________________________________________________________
 void screenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
-    ca_create_channel( s1.c_str(),0,0,0, &pv.CHID );
+    ca_create_channel( s1.c_str(),0,0,0, &pv.CHID );//MAGIC_NUMBER see epics CA manual, we're a 'casual user'
     debugMessage( "Create channel to ", s1 );
 }
 //__________________________________________________________________________________________________________________
 void screenInterface::monitorScreens()
 {
-    continuousMonitorStructs.clear();
-    continuousILockMonitorStructs.clear();
+    continuousMonitorStructsDEV.clear();
+    continuousMonitorStructsDEV.clear();
 
-    for( auto && it1 : ScreenObject.complexObjects )
+
+    for( auto && it1 : allScreentData )
     {
         monitorIlocks( it1.second.iLockPVStructs, it1.second.iLockStates );
         for( auto && it2 : it1.second.pvMonStructs )
-            addToComplexMonitorStructs( continuousMonitorStructs, it2.second, &it1.second );
-    }
+        {
+            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first) << std::endl;
 
-    for( auto && it1 : ScreenObject.simpleObjects )
-    {
-        monitorIlocks( it1.second.iLockPVStructs, it1.second.iLockStates );
-        for( auto && it2 : it1.second.pvMonStructs )
-            addToSimpleMonitorStructs( continuousMonitorStructs, it2.second, &it1.second );
-    }
+            // depending on the PV we pass back the entire screenObj, the driver or the cassette
+//            switch( it2.second.pvType )
+//            {
+//
+//
+//
+//
+//            }
 
+
+            continuousMonitorStructsDEV.push_back( new screenStructs::monitorStructDEV() );
+            continuousMonitorStructsDEV.back() -> interface = this;
+            continuousMonitorStructsDEV.back() -> monType   = it2.second.pvType;
+            continuousMonitorStructsDEV.back() -> CHTYPE    = it2.second.CHTYPE;
+            continuousMonitorStructsDEV.back() -> obj       = &it1.second;
+            ca_create_subscription(it2.second.CHTYPE,
+                                   it2.second.COUNT,
+                                   it2.second.CHID,
+                                   it2.second.MASK,
+                                   screenInterface::staticEntryScreenMonitor,
+                                   (void*)continuousMonitorStructsDEV.back(),
+                                   &continuousMonitorStructsDEV.back()->EVID );
+        }
+    }
     int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Screen Monitors", "!!TIMEOUT!! Subscription to Screen monitors failed" );
     if ( status == ECA_NORMAL )
-        allMonitorsStarted = true; /// interface base class member
-
-
+        allMonitorsStarted = true; /// interface base class member, not actually used but good to know
 }
-//___________________________________________________________________________________________________________________
-void screenInterface::addToComplexMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  )
+//_______________________________________________________________________________________________________________
+bool screenInterface::isHorizontal( screenStructs::DRIVER_DIRECTION dir )
 {
-    cms.push_back( new screenStructs::monitorStruct() );
-    cms.back() -> compObj =  COMPLEX_YAG;
-    cms.back() -> interface = this;
-    cms.back() -> monType = pv.pvType;
-    cms.back() -> CHTYPE = pv.CHTYPE;
-
-    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
+    return dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL;
 }
-//____________________________________________________________________________________________________________________
-void screenInterface::addToSimpleMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  )
+//_______________________________________________________________________________________________________________
+bool screenInterface::isVertical(  screenStructs::DRIVER_DIRECTION dir )
 {
-    cms.push_back( new screenStructs::monitorStruct() );
-    cms.back() -> simpObj   = SIMPLE_YAG;
-    cms.back() -> interface = this;
-    cms.back() -> monType   = pv.pvType;
-    cms.back() -> CHTYPE    = pv.CHTYPE;
-
-    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
+    return dir == screenStructs::DRIVER_DIRECTION::VERTICAL;
 }
 //_______________________________________________________________________________________________________________
 void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
 {
-    screenStructs::monitorStruct * ms = reinterpret_cast< screenStructs::monitorStruct*>( args.usr );
-
-    switch ( ms -> CHTYPE )
+    screenStructs::monitorStructDEV * ms = reinterpret_cast< screenStructs::monitorStructDEV*>( args.usr );
+    //std::cout << "staticEntryScreenMonitor " <<  ENUM_TO_STRING( ms -> monType)  << std::endl;
+    //std::cout << "staticEntryScreenMonitor " << std::endl;
+    switch ( ms -> monType )// based on which monitor we call a differnwet update function
     {
-    case DBR_DOUBLE:
-        UpdateDouble( ms, args.dbr);
+        case  screenStructs::SCREEN_PV_TYPE::Sta:
+            ms->interface->updateSta( ms, args.dbr);
+            break;
+        case  screenStructs::SCREEN_PV_TYPE::STA:
+            if( isHorizontal( ms->dir ) )
+                update_STA_Bit_map( ms->obj->hDriverSTA ,  args.dbr  )
+            else if( isHorizontal( ms->dir ) )
+                update_STA_Bit_map( ms->obj->hDriverSTA ,  args.dbr  )
 
-    case DBR_ENUM:
-        UpdateEnum( ms, args.dbr );
+            //std::cout << "screenStructs::SCREEN_PV_TYPE::H_STA " << std::endl;
+            //ms->interface->update_STA_Bit_map( (ms->obj->mover.H_STA_bit_label), (ms->obj->mover.H_STA_bit_map), args.dbr);
+            ms->interface->update_STA_Bit_map( ms, args.dbr);
+            break;
+////        case  screenStructs::SCREEN_PV_TYPE::V_STA:
+////            //std::cout << "screenStructs::SCREEN_PV_TYPE::V_STA " << std::endl;
+////            //ms->interface->update_STA_Bit_map( (ms->obj->mover.V_STA_bit_label), (ms->obj->mover.V_STA_bit_map),  args.dbr);
+////            ms->interface->update_STA_Bit_map( ms, args.dbr);
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::RPOS:
+//            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::H_RPOS " << *(double*) args.dbr << std::endl;
+//            ms->obj->hDriver.position = *(double*) args.dbr;
+//            break;
+////        case  screenStructs::SCREEN_PV_TYPE::V_RPOS:
+////            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::V_RPOS " << *(double*) args.dbr << std::endl;
+////            ms->obj->vDriver.position = *(double*) args.dbr;
+////            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT01:
+//            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::H_PROT01 " << *(double*) args.dbr << std::endl;
+//            ms->obj->mover.H_PROT01 = *(double*) args.dbr;
+//            break;
+////        case  screenStructs::SCREEN_PV_TYPE::V_PROT01:
+////            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::V_PROT01 " << *(double*) args.dbr << std::endl;
+////            ms->obj->mover.PROT01 = *(double*) args.dbr;
+////            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT03:
+//            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::H_PROT01 " << *(double*) args.dbr << std::endl;
+//            ms->obj->mover.H_PROT03 = *(double*) args.dbr;
+//            break;
+////        case  screenStructs::SCREEN_PV_TYPE::V_PROT03:
+////            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::V_PROT01 " << *(double*) args.dbr << std::endl;
+////            ms->obj->mover.V_PROT03 = *(double*) args.dbr;
+////            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT05:
+//            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::H_PROT01 " << *(double*) args.dbr << std::endl;
+//            ms->obj->mover.H_PROT05 = *(double*) args.dbr;
+//            break;
+////        case  screenStructs::SCREEN_PV_TYPE::V_PROT05:
+////            //std::cout <<  ms -> obj -> name <<  "  screenStructs::SCREEN_PV_TYPE::V_PROT01 " << *(double*) args.dbr << std::endl;
+////            ms->obj->mover.V_PROT05 = *(double*) args.dbr;
+////            break;
     }
+}
+//_________________________________________________________________________________________________________________
+void screenInterface::updateMotorDisabled( screenStructs::screenObjectDEV & obj )
+{
+//    if(obj.mover.H_PROT01 == 0 )//MAGIC_NUMBER
+//    {
+//        obj.over.horizontal_disabled = false;
+//        message( ms -> obj -> name, " Horizontal Disabled = FALSE" );
+//    }
+//    else if( ms->obj->mover.H_PROT01  == 1 ))//MAGIC_NUMBER
+//    {
+//       obj.mover.horizontal_disabled = true;
+//       message( obj.name, " Horizontal Disabled = TRUE" );
+//    }
+//    if(obj.mover.V_PROT01 == 0 )//MAGIC_NUMBER
+//    {
+//        obj.mover.vertical_disabled = false;
+//        message( obj.name, " Vertical Disabled = FALSE" );
+//    }
+//    else if( obj->mover.V_PROT01  == 1 ))//MAGIC_NUMBER
+//    {
+//       obj.mover.vertical_disabled = true;
+//       message( obj.name, " Vertical Disabled = TRUE" );
+//    }
+}
+//_________________________________________________________________________________________________________________
+void screenInterface::updateSta( screenStructs::monitorStructDEV * ms, const void * argsdbr )
+{
+    message( "updateSta called " );
+    switch( *(unsigned short*)argsdbr )
+    {
+        case 0:
+            ms -> obj -> screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
+            break;
+        case 1:
+            ms -> obj -> screenState = screenStructs::SCREEN_STATE::SCREEN_IN;
+            break;
+        case 2:
+            ms -> obj -> screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
+            break;
+        default:
+            ms -> obj -> screenState = screenStructs::SCREEN_STATE::SCREEN_ERROR;
+    }
+    ms -> interface -> message(ms -> obj -> name ," new sta = ", ENUM_TO_STRING(ms -> obj -> screenState) );
+}
+//_________________________________________________________________________________________________________________
+void screenInterface::update_STA_Bit_map( screenStructs::monitorStructDEV * ms, const void * argsdbr  )
+{
+    if( isHorizontal( ms->dir ) )
+        update_STA_Bit_map( ms->obj->hDriverSTA ,  args.dbr  );
+    else if( isHorizontal( ms->dir ) )
+        update_STA_Bit_map( ms->obj->vDriverSTA ,  args.dbr  );
+}
+//_________________________________________________________________________________________________________________
+//void screenInterface::update_STA_Bit_map(  std::vector< std::string > & STA_Bit_order,  std::map< std::string, bool > & STA_Bit_map, bool & isMoving, const void * argsdbr )
+void screenInterface::update_STA_Bit_map( screenStructs::screenDriverStatus & sta, const void * argsdbr  )
+{
+//std::vector< std::string > & STA_Bit_order,  std::map< std::string, bool > & STA_Bit_map, bool & isMoving, const void * argsdbr )
+//{
+    // we're going to assume that each bit in the numebr is where the status is on / off
+    // the first bit is "Trajectory in Porgress"
+    // for other bits assume as in /home/controls/edl/EBT-YAG.edl
+    //  "Trajectory in Progress"     //  "Historical Pos HW Limit"    //  "Historical Neg HW Limit"    //  "Index Report Avalable"
+    //  "Wraparound Occurred"        //  "Excessive Position Error"   //  "Temperature Fault"          //  "Motor is Off"
+    //  "Index Input"                //  "Pos HW Limit Asserted"      //  "Neg HW Limit Asserted"      //  "Maths Overflow"
+    //  "Index Error"                //  "Syntax Error"               //  "Over Current"               //  "Programme Checksum Error"
+    bool value = false;
+    size_t k =0;
+//    switch( ms -> monType )
+//    {
+//        case screenStructs::SCREEN_PV_TYPE::H_STA:
+//
+//            ms->obj->mover.h_STA = *(int*)argsdbr;
+
+//            message( ms->obj->name, " h_STA = ",  ms->obj->mover.h_STA);
+            for( auto && it : sta.STA_bit_label )// STA_Bit_order must contain the same entreis as STA_Bit_map
+            {
+                value = ( sta.STA   &(1<<k) ) >> k;
+                std::cout << value << " ";
+                sta.STA_bit_map[ it ] = value;
+                ++k;
+            }
+            std::cout << std::endl;
+        sta.isMoving = sta.STA_bit_map[ UTL::TRAJECTORY_IN_PROGRESS ];
+
+        // Print debug message
+        std::stringstream ss;
+        ss << sta.parentScreen;
+        if( )
+            message( obj.name, " Horizontal Movement in Progress");
+        else
+            message( obj.name, " Horizontal Stationary");
+
+//        case screenStructs::SCREEN_PV_TYPE::V_STA:
+//            ms->obj->mover.v_STA = *(int*)argsdbr;
+//            message( ms->obj->name, " v_STA = ",  ms->obj->mover.v_STA);
+//
+//            for( auto && it : ms->obj->mover.V_STA_bit_label )// STA_Bit_order must contain the same entreis as STA_Bit_map
+//            {
+//                value = ( ms->obj->mover.v_STA   &(1<<k) ) >> k;
+//                ms->obj->mover.V_STA_bit_map[ it ] = value;
+//
+//                std::cout << value << " ";
+//
+//                message( ms->obj->name, " V ", it ," = ",  ms->obj->mover.V_STA_bit_map[ it ] );
+//
+//                ++k;
+//            }
+//            std::cout << std::endl;
+//            break;
+//    }
+//    updateIsMoving( *(ms->obj) );
+}
+//_________________________________________________________________________________________________________________
+void screenInterface::updateIsMoving( screenStructs::screenObjectDEV & obj )
+{
+//    if( entryExists( obj.mover.H_STA_bit_map, UTL::TRAJECTORY_IN_PROGRESS) )
+//    {
+//        obj.mover.H_isMoving = obj.mover.H_STA_bit_map[UTL::TRAJECTORY_IN_PROGRESS];
+//        if( obj.mover.H_isMoving )
+//            message( obj.name, " Horizontal Movement in Progress");
+//        else
+//            message( obj.name, " Horizontal Stationary");
+//    }
+//    if( entryExists( obj.mover.V_STA_bit_map, UTL::TRAJECTORY_IN_PROGRESS) )
+//    {
+//        obj.mover.V_isMoving = obj.mover.V_STA_bit_map[UTL::TRAJECTORY_IN_PROGRESS];
+//        if( obj.mover.V_isMoving )
+//            message( obj.name, " Vertical Movement in Progress");
+//        else
+//            message( obj.name, " Vertical Stationary");
+//    }
 }
 //_________________________________________________________________________________________________________________
 void screenInterface::UpdateDouble( screenStructs::monitorStruct * ms, const void * argsdbr )
 {
-    double val = *(double*)argsdbr;
-
-    switch( ms -> monType )
-    {
-    case screenStructs::SCREEN_PV_TYPE::H_RPOS:
-
-        ms -> compObj -> h_position_value = val;
-        ms -> interface -> message( ms -> compObj -> name, " Horizontal Position = ", ms -> compObj -> h_position_value );
-
-        if( ms -> compObj -> h_position_value == ms -> compObj -> H_OUT )
-            {
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-            }
-
-
-        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_MIRROR )
-            {
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_MIRROR;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-            }
-
-        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_50U_SLIT )
-            {
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_50U_SLIT;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-            }
-
-        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_25U_SLIT )
-            {
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_25U_SLIT;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-            }
-
-        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_63MM_HOLE )
-            {
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_63MM_HOLE;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-            }
-
-        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_10MM_HOLE )
-            {
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_10MM_HOLE;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-            }
-
-        else
-           {
-            ms -> interface -> message("");
-            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-           }
-
-        break;
-
-
-    case screenStructs::SCREEN_PV_TYPE::V_RPOS:
-
-        ms -> compObj -> v_position_value = val;
-        ms -> interface -> message( ms -> compObj -> name, " Vertical Position = ", ms -> compObj -> v_position_value );
-
-        if( ms -> compObj -> v_position_value == ms -> compObj -> V_OUT )
-            {
-            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
-            }
-
-        else if( ms -> compObj -> v_position_value == ms -> compObj -> V_YAG )
-            {
-            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_V_YAG;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
-            }
-
-        else if( ms -> compObj -> v_position_value == ms -> compObj -> V_SLIT )
-            {
-            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_V_SLIT;
-            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
-            }
-
-        else
-            {
-                ms -> interface -> message("");
-            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-            }
-
-
-        break;
-    }
+//    double val = *(double*)argsdbr;
+//
+//    switch( ms -> monType )
+//    {
+//    case screenStructs::SCREEN_PV_TYPE::H_RPOS:
+//
+//        ms -> compObj -> h_position_value = val;
+//        ms -> interface -> message( ms -> compObj -> name, " Horizontal Position = ", ms -> compObj -> h_position_value );
+//
+//        if( ms -> compObj -> h_position_value == ms -> compObj -> H_OUT )
+//            {
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
+//            }
+//
+//
+//        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_MIRROR )
+//            {
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_MIRROR;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
+//            }
+//
+//        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_50U_SLIT )
+//            {
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_50U_SLIT;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
+//            }
+//
+//        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_25U_SLIT )
+//            {
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_25U_SLIT;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
+//            }
+//
+//        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_63MM_HOLE )
+//            {
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::H_6_POINT_3MM_HOLE_POS;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
+//            }
+//
+//        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_10MM_HOLE )
+//            {
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_10MM_HOLE;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
+//            }
+//
+//        else
+//           {
+//            ms -> interface -> message("");
+//            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
+//           }
+//
+//        break;
+//
+//
+//    case screenStructs::SCREEN_PV_TYPE::V_RPOS:
+//
+//        ms -> compObj -> v_position_value = val;
+//        ms -> interface -> message( ms -> compObj -> name, " Vertical Position = ", ms -> compObj -> v_position_value );
+//
+//        if( ms -> compObj -> v_position_value == ms -> compObj -> V_OUT )
+//            {
+//            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
+//            }
+//
+//        else if( ms -> compObj -> v_position_value == ms -> compObj -> V_YAG )
+//            {
+//            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_V_YAG;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
+//            }
+//
+//        else if( ms -> compObj -> v_position_value == ms -> compObj -> V_SLIT )
+//            {
+//            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_V_SLIT;
+//            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
+//            }
+//
+//        else
+//            {
+//                ms -> interface -> message("");
+//            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
+//            }
+//
+//
+//        break;
+//    }
 
 }
 //_________________________________________________________________________________________________________________
 void screenInterface::UpdateEnum( screenStructs::monitorStruct * ms, const void * argsdbr )
 {
-    unsigned short val = *(unsigned short*)argsdbr;
-
-     switch ( ms -> monType )
-    {
-       case screenStructs::SCREEN_PV_TYPE::Sta:
-
-        ms -> simpObj -> position_value = val;
-
-        if( ms -> simpObj -> position_value == ms -> simpObj -> OUT )
-        {
-            ms -> simpObj -> screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-            ms -> interface -> message( ms -> simpObj -> name, " = ",ENUM_TO_STRING(ms -> simpObj -> screenState)  );
-
-        }
-        else if ( ms -> simpObj -> position_value == ms -> simpObj -> IN )
-        {
-            ms -> simpObj -> screenState = screenStructs::SCREEN_STATE::SCREEN_IN;
-            ms -> interface -> message( ms -> simpObj -> name, " = ",ENUM_TO_STRING(ms -> simpObj -> screenState) );
-
-        }
-        else
-        {
-            ms -> simpObj  -> screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-            ms -> interface -> message( ms -> simpObj -> name," = ",ENUM_TO_STRING(ms -> simpObj -> screenState) );
-        }
-        break;
-
-        case screenStructs::SCREEN_PV_TYPE::H_PROT01:
-
-        if( val == 0 )
-        {
-            ms -> compObj -> horizontal_disabled = false;
-            ms -> interface -> message( ms -> compObj -> name, " Horizontal Disabled = FALSE" );
-        }
-
-        else if( val == 1 )
-        {
-            ms -> compObj -> horizontal_disabled = true;
-            ms -> interface -> message( ms -> compObj -> name, " Horizontal Disabled = TRUE" );
-        }
-
-        break;
-
-    case screenStructs::SCREEN_PV_TYPE::V_PROT01:
-
-        if( val == 0 )
-        {
-            ms -> compObj -> vertical_disabled = false;
-            ms -> interface -> message( ms -> compObj -> name, " Vertical Disabled = FALSE" );
-
-        }
-
-        else if( val == 1 )
-        {
-            ms -> compObj -> vertical_disabled = true;
-            ms -> interface -> message( ms -> compObj -> name, " Vertical Disabled = TRUE" );
-        }
-
-        break;
-
-    case screenStructs::SCREEN_PV_TYPE::PROT03:
-
-        if( val == 0 )
-        {
-            ms -> compObj -> position_error = false;
-            ms -> interface -> message( ms -> compObj -> name, " Position Error = FALSE" );
-        }
-
-        else if( val == 1 )
-        {
-            ms -> compObj -> position_error = true;
-            ms -> interface -> message( ms -> compObj -> name, " Position Error = TRUE" );
-        }
-
-        break;
-
-    case screenStructs::SCREEN_PV_TYPE::PROT05:
-
-         if( val == 0 )
-         {
-            ms -> compObj -> home_error = false;
-            ms -> interface -> message( ms -> compObj -> name, " Home Error = FALSE" );
-        }
-
-        else if( val == 1 )
-        {
-            ms -> compObj -> home_error = true;
-            ms -> interface -> message( ms -> compObj -> name, " Home Error = TRUE" );
+//    unsigned short val = *(unsigned short*)argsdbr;
+//
+//     switch ( ms -> monType )
+//    {
+//       case screenStructs::SCREEN_PV_TYPE::Sta:
+//
+//        ms -> simpObj -> position_value = val;
+//
+//        if( ms -> simpObj -> position_value == ms -> simpObj -> OUT )
+//        {
+//            ms -> simpObj -> screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
+//            ms -> interface -> message( ms -> simpObj -> name, " = ",ENUM_TO_STRING(ms -> simpObj -> screenState)  );
+//
 //        }
-
-    case screenStructs::SCREEN_PV_TYPE::H_RPWRLOSS:
-
-        ms -> compObj -> H_RPWRLOSS = val;
-
-        if( val == 0 )
-            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Power Lost Home");
-
-        else if( val == 1 )
-            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Homeing");
-
-        else if( val == 2 )
-            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Homed");
-
-        break;
-
-    case screenStructs::SCREEN_PV_TYPE::V_RPWRLOSS:
-
-        ms -> compObj -> V_RPWRLOSS = val;
-
-        if( val == 0 )
-            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Power Lost Home");
-
-        else if( val == 1 )
-            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Homeing");
-
-        else if( val == 2 )
-            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Homed");
-
-        break;
-    }
-    }
+//        else if ( ms -> simpObj -> position_value == ms -> simpObj -> IN )
+//        {
+//            ms -> simpObj -> screenState = screenStructs::SCREEN_STATE::SCREEN_IN;
+//            ms -> interface -> message( ms -> simpObj -> name, " = ",ENUM_TO_STRING(ms -> simpObj -> screenState) );
+//
+//        }
+//        else
+//        {
+//            ms -> simpObj  -> screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
+//            ms -> interface -> message( ms -> simpObj -> name," = ",ENUM_TO_STRING(ms -> simpObj -> screenState) );
+//        }
+//        break;
+//
+//        case screenStructs::SCREEN_PV_TYPE::H_PROT01:
+//
+//        if( val == 0 )
+//        {
+//            ms -> compObj -> horizontal_disabled = false;
+//            ms -> interface -> message( ms -> compObj -> name, " Horizontal Disabled = FALSE" );
+//        }
+//
+//        else if( val == 1 )
+//        {
+//            ms -> compObj -> horizontal_disabled = true;
+//            ms -> interface -> message( ms -> compObj -> name, " Horizontal Disabled = TRUE" );
+//        }
+//
+//        break;
+//
+//    case screenStructs::SCREEN_PV_TYPE::V_PROT01:
+//
+//        if( val == 0 )
+//        {
+//            ms -> compObj -> vertical_disabled = false;
+//            ms -> interface -> message( ms -> compObj -> name, " Vertical Disabled = FALSE" );
+//
+//        }
+//
+//        else if( val == 1 )
+//        {
+//            ms -> compObj -> vertical_disabled = true;
+//            ms -> interface -> message( ms -> compObj -> name, " Vertical Disabled = TRUE" );
+//        }
+//
+//        break;
+//
+//    case screenStructs::SCREEN_PV_TYPE::PROT03:
+//
+//        if( val == 0 )
+//        {
+//            ms -> compObj -> position_error = false;
+//            ms -> interface -> message( ms -> compObj -> name, " Position Error = FALSE" );
+//        }
+//
+//        else if( val == 1 )
+//        {
+//            ms -> compObj -> position_error = true;
+//            ms -> interface -> message( ms -> compObj -> name, " Position Error = TRUE" );
+//        }
+//
+//        break;
+//
+//    case screenStructs::SCREEN_PV_TYPE::PROT05:
+//
+//         if( val == 0 )
+//         {
+//            ms -> compObj -> home_error = false;
+//            ms -> interface -> message( ms -> compObj -> name, " Home Error = FALSE" );
+//        }
+//
+//        else if( val == 1 )
+//        {
+//            ms -> compObj -> home_error = true;
+//            ms -> interface -> message( ms -> compObj -> name, " Home Error = TRUE" );
+////        }
+//
+//    case screenStructs::SCREEN_PV_TYPE::H_RPWRLOSS:
+//
+//        ms -> compObj -> H_RPWRLOSS = val;
+//
+//        if( val == 0 )
+//            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Power Lost Home");
+//
+//        else if( val == 1 )
+//            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Homeing");
+//
+//        else if( val == 2 )
+//            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Homed");
+//
+//        break;
+//
+//    case screenStructs::SCREEN_PV_TYPE::V_RPWRLOSS:
+//
+//        ms -> compObj -> V_RPWRLOSS = val;
+//
+//        if( val == 0 )
+//            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Power Lost Home");
+//
+//        else if( val == 1 )
+//            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Homeing");
+//
+//        else if( val == 2 )
+//            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Homed");
+//
+//        break;
+//    }
+//    }
 }
 //__________________________________________________________________________________________________________
 void screenInterface::Screen_Out( const std::string & name )
@@ -816,212 +932,212 @@ void screenInterface::Stop( const std::string & name )
 //__________________________________________________________________________________________________________________
 void screenInterface::move_to( const std::string & name, const std::string & V_H, const double & position )
 {
-    if( screenExists( name ) )
-    {
-        if( V_H == "VERTICAL" )
-        {
-            if( !vertical_disabled_check( name ) )
-            {
-                    if(position_value_check ( position ) )
-                    {
-                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-                        position,"","!!!TIMEOUT FAILED TO MOVE SCREEN!!!" );
-                    }
-
-                    else
-                        debugMessage("Cannot move screen to that position, only move to less than 155 " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-
-        if( V_H == "HORIZONTAL" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                    if(position_value_check ( position ) )
-                    {
-                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                        position,"","!!!TIMEOUT FAILED TO MOVE SCREEN!!!" );
-                    }
-
-                    else
-                        debugMessage("Cannot move screen to ",position," , can only move to less than 155 " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-  }
+//    if( screenExists( name ) )
+//    {
+//        if( V_H == "VERTICAL" )
+//        {
+//            if( !vertical_disabled_check( name ) )
+//            {
+//                    if(position_value_check ( position ) )
+//                    {
+//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
+//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
+//                        position,"","!!!TIMEOUT FAILED TO MOVE SCREEN!!!" );
+//                    }
+//
+//                    else
+//                        debugMessage("Cannot move screen to that position, only move to less than 155 " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//
+//        if( V_H == "HORIZONTAL" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                    if(position_value_check ( position ) )
+//                    {
+//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                        position,"","!!!TIMEOUT FAILED TO MOVE SCREEN!!!" );
+//                    }
+//
+//                    else
+//                        debugMessage("Cannot move screen to ",position," , can only move to less than 155 " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//  }
 }
 //__________________________________________________________________________________________________________________
 void screenInterface::move_to_position( const std::string & name, const std::string & position )
 {
-    if( screenExists( name ) )
-    {
-
-        if( position == "V_OUT" )
-        {
-            if( !vertical_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].V_OUT ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].V_OUT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].V_OUT, " is this error value 9999 or greater than 155? " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "V_YAG" )
-        {
-                if( !vertical_disabled_check( name ) )
-                {
-                    if( position_value_check( ScreenObject.complexObjects[ name ].V_YAG ) )
-                    {
-                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-                        ScreenObject.complexObjects[ name ].V_YAG,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                    }
-                    else
-                        debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].V_YAG, " is this error value 9999 or greater than 155? " );
-                }
-                else
-                    debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "V_SLIT" )
-        {
-            if( !vertical_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].V_SLIT ) )
-                {
-                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-                        ScreenObject.complexObjects[ name ].V_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ", ScreenObject.complexObjects[ name ].V_SLIT, " is this error value 9999 or greater than 155? " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-       }
-       if( position == "H_OUT" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_OUT ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_OUT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_OUT, " is this error value 9999 or greater than 155? " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "H_MIRROR" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_MIRROR ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_MIRROR,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_MIRROR, " is this error value 9999 or greater than 155? " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "H_50U_SLIT" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_50U_SLIT ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_50U_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_50U_SLIT, " is this error value 9999 or greater than 155? " );
-             }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "H_25U_SLIT" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_25U_SLIT ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_25U_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_25U_SLIT, " is this error value 9999 or greater than 155? " );
-             }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "H_63MM_HOLE" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_63MM_HOLE ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_63MM_HOLE,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_63MM_HOLE, " is this error value 9999 or greater than 155? " );
-            }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "H_10MM_HOLE" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_10MM_HOLE ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_10MM_HOLE,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_10MM_HOLE, " is this error value 9999 or greater than 155? " );
-             }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-        if( position == "H_SLIT" )
-        {
-            if( !horizontal_disabled_check( name ) )
-            {
-                if( position_value_check( ScreenObject.complexObjects[ name ].H_SLIT ) )
-                {
-                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-                    ScreenObject.complexObjects[ name ].H_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-                }
-                else
-                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_SLIT, " is this error value 9999 or greater than 155? " );
-             }
-            else
-                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-        }
-  }
+//    if( screenExists( name ) )
+//    {
+//
+//        if( position == "V_OUT" )
+//        {
+//            if( !vertical_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].V_OUT ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].V_OUT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].V_OUT, " is this error value 9999 or greater than 155? " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "V_YAG" )
+//        {
+//                if( !vertical_disabled_check( name ) )
+//                {
+//                    if( position_value_check( ScreenObject.complexObjects[ name ].V_YAG ) )
+//                    {
+//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
+//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
+//                        ScreenObject.complexObjects[ name ].V_YAG,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                    }
+//                    else
+//                        debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].V_YAG, " is this error value 9999 or greater than 155? " );
+//                }
+//                else
+//                    debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "V_SLIT" )
+//        {
+//            if( !vertical_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].V_SLIT ) )
+//                {
+//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
+//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
+//                        ScreenObject.complexObjects[ name ].V_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ", ScreenObject.complexObjects[ name ].V_SLIT, " is this error value 9999 or greater than 155? " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//       }
+//       if( position == "H_OUT" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_OUT ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_OUT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_OUT, " is this error value 9999 or greater than 155? " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "H_MIRROR" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_MIRROR ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_MIRROR,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_MIRROR, " is this error value 9999 or greater than 155? " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "H_50U_SLIT" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_50U_SLIT ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_50U_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_50U_SLIT, " is this error value 9999 or greater than 155? " );
+//             }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "H_25U_SLIT" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_25U_SLIT ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_25U_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_25U_SLIT, " is this error value 9999 or greater than 155? " );
+//             }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "H_63MM_HOLE" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_63MM_HOLE ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_63MM_HOLE,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_63MM_HOLE, " is this error value 9999 or greater than 155? " );
+//            }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "H_10MM_HOLE" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_10MM_HOLE ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_10MM_HOLE,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_10MM_HOLE, " is this error value 9999 or greater than 155? " );
+//             }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//        if( position == "H_SLIT" )
+//        {
+//            if( !horizontal_disabled_check( name ) )
+//            {
+//                if( position_value_check( ScreenObject.complexObjects[ name ].H_SLIT ) )
+//                {
+//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
+//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
+//                    ScreenObject.complexObjects[ name ].H_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
+//                }
+//                else
+//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_SLIT, " is this error value 9999 or greater than 155? " );
+//             }
+//            else
+//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
+//        }
+//  }
 }
 //__________________________________________________________________________________________________________________
 bool screenInterface::screenExists( const std::string & name )
@@ -1430,3 +1546,42 @@ void screenInterface::get_config_values( const std::string & name )
         debugMessage(name, " does not exist");
 }
 //__________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+//___________________________________________________________________________________________________________________
+void screenInterface::addToComplexMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  )
+{
+    cms.push_back( new screenStructs::monitorStruct() );
+    cms.back() -> compObj =  COMPLEX_YAG;
+    cms.back() -> interface = this;
+    cms.back() -> monType = pv.pvType;
+    cms.back() -> CHTYPE = pv.CHTYPE;
+
+    //ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
+}
+//____________________________________________________________________________________________________________________
+void screenInterface::addToSimpleMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  )
+{
+    cms.push_back( new screenStructs::monitorStruct() );
+    cms.back() -> simpObj   = SIMPLE_YAG;
+    cms.back() -> interface = this;
+    cms.back() -> monType   = pv.pvType;
+    cms.back() -> CHTYPE    = pv.CHTYPE;
+
+    //ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
+}
+
+
+
+
+
+
+
+

@@ -33,6 +33,17 @@ class baseObject
         /// these functions allow you to pass up to 7 arguments for a message,
         /// if you would want more just extend etc.
 
+        void debugMessage(const std::stringstream p1)
+        {
+            if( *SHOW_DEBUG_MESSAGES_PTR )
+                printMessage( p1.str() );
+        }
+        void message(const std::stringstream p1)
+        {
+            if( *SHOW_MESSAGES_PTR )
+                printMessage( p1.str() );
+        }
+
         template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string  , typename Z = std::string, typename A = std::string   >
         void debugMessage(const T p1, const U p2 = "" , const V p3 = "",const W p4 = "", const X p5 = "",const  Y p6 = "", const Z p7 = "", const A p8 = "" )
         {

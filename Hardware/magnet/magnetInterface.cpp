@@ -262,7 +262,7 @@ void magnetInterface::staticEntryMagnetMonitor( const event_handler_args args)
             ms->interface->updateSI( *(double*)args.dbr, ms->objName );
             break;
         case magnetStructs::MAG_PV_TYPE::Sta:
-            ms->interface->updatePSUSta( *(unsigned short*)args.dbr, ms->objName, ms->psuType );
+            ms->interface->updatePSUSta( *(unsigned short*)args.dbr, ms->objName, ms->psuType );// see manual DBR_ENUM	dbr_enum_t	16 bit unsigned integer
             break;
         default:
             ms->interface->debugMessage( "!!! ERROR !!! Unknown Monitor Type passed to magnetInterface::staticEntryMagnetMonitor" );

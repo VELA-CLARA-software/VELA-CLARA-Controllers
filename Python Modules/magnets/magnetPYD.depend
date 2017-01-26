@@ -55,7 +55,7 @@
 	"controller.h"
 	<boost/python.hpp>
 
-1484839605 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
+1484924390 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
 	"interface.h"
 	"magnetStructs.h"
 	"structs.h"
@@ -89,10 +89,10 @@
 	<vector>
 	<cadef.h>
 
-1484834419 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1485170885 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 
-1484821187 source:d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.cpp
+1484925615 source:d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.cpp
 	"magnetInterface.h"
 	"dburt.h"
 	"configDefinitions.h"
@@ -118,7 +118,7 @@
 	"baseObject.h"
 	<time.h>
 
-1483630296 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+1484843658 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<sstream>
@@ -141,7 +141,7 @@
 	<algorithm>
 	<ctype.h>
 
-1483964661 source:d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.cpp
+1484933072 source:d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.cpp
 	"magnetConfigReader.h"
 	"configDefinitions.h"
 	"RFGunStructs.h"
@@ -180,11 +180,11 @@
 1483526953 d:\vela\git projects\vela-clara-controllers\python modules\magnets\main.h
 	<windows.h>
 
-1484735914 source:d:\vela\git projects\vela-clara-controllers\python modules\magnets\src\vcmagnets.cpp
+1484829942 source:d:\vela\git projects\vela-clara-controllers\python modules\magnets\src\vcmagnets.cpp
 	"VCmagnets.h"
 	<iostream>
 
-1484741792 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
+1484825490 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
 	<string>
 	"magnetController.h"
 	<boost/python/detail/wrap_python.hpp>

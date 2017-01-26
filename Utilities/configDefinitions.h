@@ -6,6 +6,7 @@
 namespace UTL
 {
     const double DUMMY_DOUBLE = -999.999;
+    const double DUMMY_INT = -999999;
     const double ZERO_DOUBLE = 0.0;
     const int    ZERO_INT = 0;
     const size_t ZERO_SIZET = 0;
@@ -357,21 +358,61 @@ namespace UTL
 
     const std::string PV_SUFFIX_H_RPOS      = "PV_SUFFIX_H_RPOS";
     const std::string PV_SUFFIX_V_RPOS      = "PV_SUFFIX_V_RPOS";
+    const std::string PV_SUFFIX_H_STA      = "PV_SUFFIX_H_STA";
+    const std::string PV_SUFFIX_V_STA      = "PV_SUFFIX_V_STA";
 
-    /// SCREEN YAG 1/2/3 POSITIONS
+    /// SCREEN YAG 1/2/3 POSITIONS, we have copies of H and V, so we can H and V cassette objects, see screenStructs
 
     const std::string H_MIRROR_POS      = "H_MIRROR_POS";
-    const std::string H_50U_SLIT_POS    = "H_50U_SLIT_POS";
-    const std::string H_25U_SLIT_POS    = "H_25U_SLIT_POS";
-    const std::string H_63MM_HOLE_POS    = "H_63MM_HOLE_POS";
-    const std::string H_10MM_HOLE_POS   = "H_10MM_HOLE_POS";
+    const std::string V_MIRROR_POS      = "V_MIRROR_POS";
+
+    const std::string V_SLIT_50_UM_POS    = "V_SLIT_50_UM_POS";
+    const std::string H_SLIT_50_UM_POS    = "H_SLIT_50_UM_POS";
+
+    const std::string H_SLIT_25_UM_POS    = "H_SLIT_25_UM_POS";
+    const std::string V_SLIT_25_UM_POS    = "V_SLIT_25_UM_POS";
+
+    const std::string H_HOLE_6p3_MM_POS    = "H_HOLE_6p3_MM_POS";
+    const std::string V_HOLE_6p3_MM_POS    = "V_HOLE_6p3_MM_POS";
+
+    const std::string H_HOLE_10_MM_POS   = "H_HOLE_10_MM_POS";
+    const std::string V_HOLE_10_MM_POS   = "V_HOLE_10_MM_POS";
+
+    const std::string H_YAG_POS         = "H_YAG_POS";
     const std::string V_YAG_POS         = "V_YAG_POS";
+
+    const std::string H_RF_POS         = "H_RF_POS";
+    const std::string V_RF_POS         = "V_RF_POS";
+
     const std::string V_SLIT_POS        = "V_SLIT_POS";
     const std::string H_SLIT_POS        = "H_SLIT_POS";
+
     const std::string H_OUT_POS         = "H_OUT_POS";
     const std::string V_OUT_POS         = "V_OUT_POS";
+
     const std::string OUT           = "OUT";
     const std::string IN            = "IN";
+
+
+
+    const std::string NUM_STA_BITS              = "NUM_STA_BITS";
+    const std::string STA_BIT                   = "STA_BIT";
+    const std::string TRAJECTORY_IN_PROGRESS    = "TRAJECTORY_IN_PROGRESS";
+    const std::string HISTORICAL_POS_HW_LIMIT   = "HISTORICAL_POS_HW_LIMIT";
+    const std::string HISTORICAL_NEG_HW_LIMIT   = "HISTORICAL_NEG_HW_LIMIT";
+    const std::string INDEX_REPORT_AVALABLE     = "INDEX_REPORT_AVALABLE";
+    const std::string WRAPAROUND_OCCURRED       = "WRAPAROUND_OCCURRED";
+    const std::string EXCESSIVE_POSITION_ERROR  = "EXCESSIVE_POSITION_ERROR";
+    const std::string TEMPERATURE_FAULT         = "TEMPERATURE_FAULT";
+    const std::string MOTOR_IS_OFF              = "MOTOR_IS_OFF";
+    const std::string INDEX_INPUT               = "INDEX_INPUT";
+    const std::string POS_HW_LIMIT_ASSERTED     = "POS_HW_LIMIT_ASSERTED";
+    const std::string NEG_HW_LIMIT_ASSERTED     = "NEG_HW_LIMIT_ASSERTED";
+    const std::string MATHS_OVERFLOW            = "MATHS_OVERFLOW";
+    const std::string INDEX_ERROR               = "INDEX_ERROR";
+    const std::string SYNTAX_ERROR              = "SYNTAX_ERROR";
+    const std::string OVER_CURRENT              = "OVER_CURRENT";
+    const std::string PROGRAMME_CHECKSUM_ERROR  = "PROGRAMME_CHECKSUM_ERROR";
 
 
 }
