@@ -18,7 +18,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1483526955 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1485429777 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -31,7 +31,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1483526951 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1485170461 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
@@ -50,21 +50,21 @@
 	<string>
 	<vector>
 
-1484927578 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
+1485533674 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
 	<map>
 	<cadef.h>
 
-1484846374 d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.h
+1485532874 d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.h
 	"interface.h"
 	"screenStructs.h"
 	"screenConfigReader.h"
 	<vector>
 	<string>
 
-1484932654 d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.h
+1485434272 d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -78,10 +78,11 @@
 	<vector>
 	<cadef.h>
 
-1484929302 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1485534039 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
+	<vector>
 
-1484906835 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp
+1485533545 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp
 	"screenInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -103,7 +104,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1484906369 source:d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.cpp
+1485532970 source:d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.cpp
 	"screenConfigReader.h"
 	"screenStructs.h"
 	<iostream>

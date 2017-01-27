@@ -14,7 +14,7 @@
 #endif // __CINT__
 
 
-                                                                        \
+
 
 class screenInterface;
 
@@ -31,55 +31,75 @@ namespace screenStructs
     struct COMPLEX_YAG_Object;
     struct SIMPLE_YAG_Object;
 
-
     ///Use this MACRO to define enums. COnsider putting ENUMS that are more 'global' in structs.h
-
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_STATE, (SCREEN_IN) (SCREEN_OUT) (SCREEN_ERROR)
-                                                       (SCREEN_UNKNOWN) (SCREEN_H_MIRROR)
-                                                       (SCREEN_H_50U_SLIT)(SCREEN_H_25U_SLIT)
-                                                       (H_6_POINT_3MM_HOLE_POS) (SCREEN_H_10MM_HOLE)
-                                                       (SCREEN_H_YAG)(SCREEN_V_YAG) (SCREEN_V_SLIT)
-                                                       (SCREEN_MOVING) (SCREEN_STATIONARY))
-
-
+    // screen types
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_TYPE, (VELA_PNEUMATIC) (VELA_HV_MOVER) (UNKNOWN_SCREEN_TYPE))
+    // screen states, (and cassette elements) Although not all are needed, we keep H and V version of each element
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_STATE,  (SCREEN_IN) (SCREEN_OUT) (SCREEN_MOVING) (SCREEN_ERROR)  (SCREEN_UNKNOWN) // these handle the simple screens
+                                                        (H_MIRROR_IN )  (V_MIRROR_IN)
+                                                        (H_50U_SLIT_IN) (V_50U_SLIT_IN)
+                                                        (H_25U_SLIT_IN) (V_25U_SLIT_IN)
+                                                        (H_6p3MM_HOLE_IN) (V_6p3MM_HOLE_IN)
+                                                        (H_10MM_HOLE_IN)  (V_10MM_HOLE_IN)
+                                                        (H_YAG_IN) (V_YAG_IN)
+                                                        (H_SLIT_IN) (V_SLIT_IN)
+                                                        (H_RF_IN) (V_RF_IN)
+                                                        (H_OUT) (V_OUT) )
+    // screen PV types
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_PV_TYPE, (Sta) (On) (Off) (MABS) (RPOS) (STOP) (PROT01) (PROT03) (PROT05)
                                                          (RPWRLOSS) (UNKNOWN_SCREEN_PV_TYPE)
                                                          (STA) )
+    // the screen driver status, moving, disabled etc...
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DRIVER_STATE, (DRIVER_MOVING) (DRIVER_STATIONARY)  (DRIVER_DISABLED) (DRIVER_ENABLED) (DRIVER_ERROR) )
 
-
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_TYPE, (VELA_PNEUMATIC) (VELA_HV_MOVER) (UNKNOWN_SCREEN_TYPE))
-
+    // screen drivers come in two types
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( DRIVER_DIRECTION, (HORIZONTAL) (VERTICAL) (NONE) )
 
-
+    // turns out this is really useful, but itlooks like cancer
+    const std::map<std::string,SCREEN_STATE>hCassetteElementMap={{UTL::MIRROR_POS     ,H_MIRROR_IN},
+                                                                {UTL::SLIT_50_UM_POS  ,H_50U_SLIT_IN},
+                                                                {UTL::SLIT_25_UM_POS  ,H_25U_SLIT_IN},
+                                                                {UTL::HOLE_6p3_MM_POS ,H_6p3MM_HOLE_IN},
+                                                                {UTL::HOLE_10_MM_POS  ,H_10MM_HOLE_IN},
+                                                                {UTL::YAG_POS         ,H_YAG_IN},
+                                                                {UTL::RF_POS          ,H_RF_IN},
+                                                                {UTL::SLIT_POS        ,H_SLIT_IN},
+                                                                {UTL::OUT_POS         ,H_OUT}};
+    const std::map<std::string,SCREEN_STATE>vCassetteElementMap={{UTL::MIRROR_POS     ,V_MIRROR_IN},
+                                                                {UTL::SLIT_50_UM_POS  ,V_50U_SLIT_IN},
+                                                                {UTL::SLIT_25_UM_POS  ,V_25U_SLIT_IN},
+                                                                {UTL::HOLE_6p3_MM_POS ,V_6p3MM_HOLE_IN},
+                                                                {UTL::HOLE_10_MM_POS  ,V_10MM_HOLE_IN},
+                                                                {UTL::YAG_POS         ,V_YAG_IN},
+                                                                {UTL::RF_POS          ,V_RF_IN},
+                                                                {UTL::SLIT_POS        ,V_SLIT_IN},
+                                                                {UTL::OUT_POS         ,V_OUT}};
     ///The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
     ///The rest are parameters passed to EPICS, ca_create_channel, ca_create_subscription etc...
 
     struct pvStruct
     {
-        pvStruct():pvSuffix( "UNKNOWN_PV_SUFFIX" ), objName( UTL::UNKNOWN_NAME ),
+        pvStruct():pvSuffix( "UNKNOWN_PV_SUFFIX" ),
+                   //objName( UTL::UNKNOWN_NAME ),
                    COUNT( UTL::ZERO_INT ), MASK(UTL::ZERO_INT), pvType(UNKNOWN_SCREEN_PV_TYPE), dir(NONE){}
         SCREEN_PV_TYPE pvType;
         chid           CHID;
-        std::string    pvSuffix, objName;
+//        std::string    objName;
+        std::string    pvSuffix;
         unsigned long  COUNT, MASK;
         chtype         CHTYPE;
         unsigned long  value;
         DRIVER_DIRECTION dir;
     };
-
-
-
     // these are the parameters for the status of a  VELA_HV_MOVER_SCREEN YAG-01,02,03
     struct screenDriverStatus
     {
-        screenDriverStatus():position(UTL::DUMMY_DOUBLE),
-                             driverDisabled(false), positionErrord(false), homeErrord(false), isMovingd(false),
-                             STA(UTL::DUMMY_INT),numSTABits(UTL::DUMMY_INT),parentScreen("UNKNOWN_PARENT"),
+        screenDriverStatus():position(UTL::DUMMY_DOUBLE),state(DRIVER_ERROR),
+                             trajectory(DRIVER_ERROR),STA(UTL::DUMMY_INT),
+                             numSTABits(UTL::DUMMY_INT),parentScreen("UNKNOWN_PARENT"),
                              dir(NONE){}
         std::string parentScreen;
         double position;
-        bool driverDisabled, positionError, homeError, isMoving;
         // the bits in these numbers are the alarams/locks for the driver,
         // the bits map to the following (not 100% sure of order, but I expect this is correct)
         int STA, numSTABits;
@@ -87,20 +107,78 @@ namespace screenStructs
         std::vector< std::string > STA_bit_label;
         std::map< std::string, bool > STA_bit_map;
         DRIVER_DIRECTION dir;
+        DRIVER_STATE     trajectory;
+        DRIVER_STATE     state;
+        std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs,pvComStructs;
     };
     // a screen cassette holds the positions (all known offline) of elements on a screen mover
     struct screenCassette
     {
         screenCassette():
-            MIRROR_POS(UTL::DUMMY_DOUBLE),      SLIT_50_UM_POS(UTL::DUMMY_DOUBLE),
-            SLIT_25_UM_POS(UTL::DUMMY_DOUBLE),  HOLE_6p3_MM_POS(UTL::DUMMY_DOUBLE),
-            HOLE_10_MM_POS(UTL::DUMMY_DOUBLE),  YAG_POS(UTL::DUMMY_DOUBLE),
-            SLIT_POS(UTL::DUMMY_DOUBLE),        RF_POS(UTL::DUMMY_DOUBLE),
-            OUT_POS(UTL::DUMMY_DOUBLE){}
-            double MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,HOLE_6p3_MM_POS,
-                   HOLE_10_MM_POS, YAG_POS, SLIT_POS, RF_POS, OUT_POS;
+            posTolerance(UTL::DUMMY_DOUBLE),dir(NONE),screenState(SCREEN_UNKNOWN),parentScreen("UNKNOWN_PARENT")
+            {}
+            std::string      parentScreen;
+            DRIVER_DIRECTION dir;
+            SCREEN_STATE     screenState;                          // updated with which element is in the beam
+            double           posTolerance;
+            std::map<std::string,bool>   cassetteElements;         // holds if an element exists on this cassette(from config)
+            std::map<std::string,double> cassetteElementsPosition; // position element on cassette (from config)
+    };
+    // a screenDriver has an H and V status and an H and V cassette
+    struct screenDriver
+    {   screenDriver(): positionError(false), homeError(false),parentScreen("UNKNOWN_PARENT")
+        {};
+        bool positionError, homeError;
+        std::string        parentScreen;
+        screenDriverStatus hDriverSTA,vDriverSTA;
+        screenCassette     hCassette,vCassette;
+        std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs,pvComStructs;
+    };
+    /// The main hardware object holds
+    struct screenObjectDEV
+    {
+        screenObjectDEV():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE){}
+        std::string name, pvRoot;
+        SCREEN_TYPE       screenType;
+        screenDriver      driver;
+        SCREEN_STATE      screenState;
+        int numIlocks;
+        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+    #ifndef __CINT__
+        std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs,pvComStructs;
+        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+    #endif
+    };
+    /// monType could be used to switch in the statisCallbackFunction
+    struct monitorStructDEV
+    {
+        monitorStructDEV(): monType(UNKNOWN_SCREEN_PV_TYPE),interface(nullptr),EVID(nullptr),
+                            obj(nullptr),dir(NONE){}
+        SCREEN_PV_TYPE      monType;
+        void*               obj;
+        screenInterface*    interface;
+        chtype              CHTYPE;
+        evid                EVID;
+        DRIVER_DIRECTION    dir;
     };
 
+
+    /// below is going to go
+
+    /// monType could be used to switch in the statisCallbackFunction
+    struct monitorStruct
+    {
+        SCREEN_PV_TYPE monType;
+        COMPLEX_YAG_Object * compObj;
+        SIMPLE_YAG_Object * simpObj;
+        chtype      CHTYPE;
+        screenInterface * interface;
+
+#ifndef __CINT__
+ //       evid EventID;
+     #endif // __CINT__
+
+    };
 
 
 
@@ -146,59 +224,6 @@ namespace screenStructs
 ////             Pos_HW_Limit_Asserted, Neg_HW_Limit_Asserted, Maths_Overflow, Index_Error, Syntax_Error,
 ////             Over_Current, Programme_Checksum_Error,
 //    };
-
-
-
-
-
-    /// The main hardware object holds
-    struct screenObjectDEV
-    {
-        screenObjectDEV():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE){}
-        std::string name, pvRoot;
-        SCREEN_TYPE        screenType;
-        screenDriverStatus hDriverSTA,vDriverSTA;
-        screenCassette     hCassette,vCassette;
-        SCREEN_STATE       screenState;
-        int numIlocks;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
-    #ifndef __CINT__
-        std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< SCREEN_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
-    #endif
-    };
-    /// monType could be used to switch in the statisCallbackFunction
-    struct monitorStructDEV
-    {
-        monitorStructDEV(): monType(UNKNOWN_SCREEN_PV_TYPE),interface(nullptr),EVID(nullptr),
-                            obj(nullptr),dir(NONE){}
-        SCREEN_PV_TYPE      monType;
-        screenObjectDEV*    obj;
-        screenInterface*    interface;
-        chtype              CHTYPE;
-        evid                EVID;
-        DRIVER_DIRECTION    dir;
-    };
-
-
-    /// below is going to go
-
-    /// monType could be used to switch in the statisCallbackFunction
-    struct monitorStruct
-    {
-        SCREEN_PV_TYPE monType;
-        COMPLEX_YAG_Object * compObj;
-        SIMPLE_YAG_Object * simpObj;
-        chtype      CHTYPE;
-        screenInterface * interface;
-
-#ifndef __CINT__
- //       evid EventID;
-     #endif // __CINT__
-
-    };
-
 
 
 

@@ -2,6 +2,7 @@
 #define CONFIG_DEFINITIONS_H
 
 #include <string>
+#include <vector>
 
 namespace UTL
 {
@@ -365,36 +366,46 @@ namespace UTL
 
     const std::string H_MIRROR_POS      = "H_MIRROR_POS";
     const std::string V_MIRROR_POS      = "V_MIRROR_POS";
+    const std::string MIRROR_POS      = "MIRROR_POS";
 
     const std::string V_SLIT_50_UM_POS    = "V_SLIT_50_UM_POS";
     const std::string H_SLIT_50_UM_POS    = "H_SLIT_50_UM_POS";
+    const std::string SLIT_50_UM_POS    = "SLIT_50_UM_POS";
 
     const std::string H_SLIT_25_UM_POS    = "H_SLIT_25_UM_POS";
     const std::string V_SLIT_25_UM_POS    = "V_SLIT_25_UM_POS";
+    const std::string SLIT_25_UM_POS    = "SLIT_25_UM_POS";
 
     const std::string H_HOLE_6p3_MM_POS    = "H_HOLE_6p3_MM_POS";
     const std::string V_HOLE_6p3_MM_POS    = "V_HOLE_6p3_MM_POS";
+    const std::string HOLE_6p3_MM_POS    = "HOLE_6p3_MM_POS";
 
     const std::string H_HOLE_10_MM_POS   = "H_HOLE_10_MM_POS";
     const std::string V_HOLE_10_MM_POS   = "V_HOLE_10_MM_POS";
+    const std::string HOLE_10_MM_POS   = "HOLE_10_MM_POS";
 
     const std::string H_YAG_POS         = "H_YAG_POS";
     const std::string V_YAG_POS         = "V_YAG_POS";
+    const std::string YAG_POS         = "YAG_POS";
 
     const std::string H_RF_POS         = "H_RF_POS";
     const std::string V_RF_POS         = "V_RF_POS";
+    const std::string RF_POS         = "RF_POS";
 
     const std::string V_SLIT_POS        = "V_SLIT_POS";
     const std::string H_SLIT_POS        = "H_SLIT_POS";
+    const std::string SLIT_POS        = "SLIT_POS";
 
     const std::string H_OUT_POS         = "H_OUT_POS";
     const std::string V_OUT_POS         = "V_OUT_POS";
+    const std::string OUT_POS         = "OUT_POS";
 
     const std::string OUT           = "OUT";
     const std::string IN            = "IN";
 
 
 
+    const std::string SCREEN_DRIVER_POS_TOLERANCE = "SCREEN_DRIVER_POS_TOLERANCE";
     const std::string NUM_STA_BITS              = "NUM_STA_BITS";
     const std::string STA_BIT                   = "STA_BIT";
     const std::string TRAJECTORY_IN_PROGRESS    = "TRAJECTORY_IN_PROGRESS";
@@ -414,6 +425,9 @@ namespace UTL
     const std::string OVER_CURRENT              = "OVER_CURRENT";
     const std::string PROGRAMME_CHECKSUM_ERROR  = "PROGRAMME_CHECKSUM_ERROR";
 
+    const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
+                                                                   HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
+                                                                   SLIT_POS, OUT_POS };
 
 }
 #endif //CONFIG_DEFINITIONS_H

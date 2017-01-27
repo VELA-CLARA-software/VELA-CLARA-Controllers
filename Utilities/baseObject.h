@@ -33,12 +33,12 @@ class baseObject
         /// these functions allow you to pass up to 7 arguments for a message,
         /// if you would want more just extend etc.
 
-        void debugMessage(const std::stringstream p1)
+        void debugMessage(const std::stringstream &  p1)
         {
             if( *SHOW_DEBUG_MESSAGES_PTR )
                 printMessage( p1.str() );
         }
-        void message(const std::stringstream p1)
+        void message(const std::stringstream &  p1)
         {
             if( *SHOW_MESSAGES_PTR )
                 printMessage( p1.str() );

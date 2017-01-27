@@ -93,7 +93,6 @@ class screenInterface: public interface
             void get_info( const std::string & name );
             void get_config_values( const std::string & name );
 
-            void monitorScreens();
 
             bool Is_complex( const std::string & name );
             bool Is_simple( const std::string & name );
@@ -113,27 +112,37 @@ class screenInterface: public interface
 
         void addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv );//if this doesn't work then try commented out function in shutter program
 
-        void addToComplexMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  );
-        void addToSimpleMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  );
+
+        void monitorScreens();// calls the below functions to add to continuousMonitorStructsDEV
+        void addScreenObjectDEVMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObjectDEV & obj  );
+        void addScreenDriverMonitors(  screenStructs::pvStruct & pvs, screenStructs::screenDriver & obj  );// see screenstructs for a screenDriverStatus
+        void addScreenDriverStatusMonitors(  screenStructs::pvStruct & pvs,screenStructs::screenDriverStatus & obj );// see screenstructs for a screenDriver
 
         void checkScreenCHIDStates();
 
         std::map< std::string, screenStructs::screenObjectDEV > allScreentData;
 
+        void updateSta( screenStructs::monitorStructDEV * ms, const  unsigned short args );
 
-        void updateSta( screenStructs::monitorStructDEV * ms, const void * argsdbr );
-        //void update_HV_STA( screenStructs::monitorStructDEV * ms, const void * argsdbr );
-        //void update_STA_Bit_map(  std::vector< std::string > & STA_Bit_order,  std::map< std::string, bool > & STA_Bit_map, bool & isMoving, const void * argsdbr );
-        void update_STA_Bit_map(  screenStructs::monitorStructDEV * ms, const void * argsdbr );
+        //void update_STA_Bit_map( screenStructs::monitorStructDEV   * ms , const int argsdbr );
+        void update_STA_Bit_map( screenStructs::monitorStructDEV * ms, const int argsdbr );
 
-        // update the ismoving falg on the mover objects
-        void updateIsMoving( screenStructs::screenObjectDEV & obj );
-        void updateMotorDisabled( screenStructs::screenObjectDEV & obj );
 
+        void updateRPOS  ( screenStructs::monitorStructDEV * ms, const double args);
+        // update RPOS updates the screen state, if there is a match
+        void updateCassettePosition( screenStructs::screenCassette  & cas, const double pos  );
+
+        void updatePROT01( screenStructs::monitorStructDEV * ms, const double args);
+        void updatePROT03( screenStructs::monitorStructDEV * ms, const double args );
+        void updatePROT05( screenStructs::monitorStructDEV * ms, const double args );
+        //void updateMABS( screenStructs::monitorStructDEV * ms, const double args );
+
+
+        // 'existential quantification' - ahem
         bool isHorizontal( screenStructs::DRIVER_DIRECTION dir );
         bool isVertical  ( screenStructs::DRIVER_DIRECTION dir );
-
-
+        bool isMoving( const std::string & name );
+        bool isDriverEnabled( const std::string & name, screenStructs::DRIVER_DIRECTION reqDir );
 
 
 
@@ -149,14 +158,20 @@ class screenInterface: public interface
         ///static function that can be called back from epics to update values
 
         static void staticEntryScreenMonitor( const event_handler_args args );
-        static void UpdateDouble( screenStructs::monitorStruct * ms, const void * argsdbr );
-        static void UpdateEnum( screenStructs::monitorStruct * ms, const void * argsdbr );
+
+//        static void UpdateDouble( screenStructs::monitorStruct * ms, const void * argsdbr );
+//        static void UpdateEnum( screenStructs::monitorStruct * ms, const void * argsdbr );
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
         std::vector< screenStructs::monitorStruct * > continuousMonitorStructs;
         std::vector< screenStructs::monitorStructDEV * > continuousMonitorStructsDEV;
+
+
+        void addToComplexMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  );
+        void addToSimpleMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  );
+
 
 
         screenStructs::screenObject ScreenObject;

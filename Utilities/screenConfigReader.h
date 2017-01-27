@@ -35,21 +35,28 @@ private:
     // the screens come in differen flavours, with different parameters to monitor
     // this may have to be  extended if CLARA screens are different
     std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_PNEUMATIC;
-    std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_HV_MOVER;
     std::vector< screenStructs::pvStruct > pvScrMonStructs_VELA_PNEUMATIC;
+
+    /// all the objects have their own command and monitor structs, as defined in teh config file
+    std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_HV_MOVER_H;
+    std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_HV_MOVER_V;
+    std::vector< screenStructs::pvStruct > pvScrMonStructs_VELA_HV_MOVER_H;
+    std::vector< screenStructs::pvStruct > pvScrMonStructs_VELA_HV_MOVER_V;
     std::vector< screenStructs::pvStruct > pvScrMonStructs_VELA_HV_MOVER;
+    std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_HV_MOVER;
+
     // we keep a record of the last pcstruct type added, so we know where to put PV_CHTYPE etc.
     std::vector< screenStructs::pvStruct > * lastPVStruct;
     void addToPVStructMain( const std::vector<std::string> &keyVal );
-    void addToPVStruct(std::vector< screenStructs::pvStruct > & pvs,
-                                       const screenStructs::SCREEN_PV_TYPE pvtype,
-                                       screenStructs::SCREEN_TYPE scrType, const std::string& pvSuffix);
+    void addToPVStruct( std::vector< screenStructs::pvStruct > & pvs, const screenStructs::SCREEN_PV_TYPE pvtype,
+                        const std::string& pvSuffix);
 
     void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyVal );
     screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string & val );
 //    void setLasttoVELA_HV_MOVER();
 //    void setLasttoVELA_PNEUMATIC();
 
+    void setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element );
 
     void setH(std::vector< screenStructs::pvStruct > & pvs );
     void setV(std::vector< screenStructs::pvStruct > & pvs );

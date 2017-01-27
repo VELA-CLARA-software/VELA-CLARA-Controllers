@@ -36,9 +36,11 @@ bool screenConfigReader::readConfig()
 {
     // clear local copies of structs
     scrObjects.clear();
-    pvScrComStructs_VELA_HV_MOVER.clear();
+    pvScrComStructs_VELA_HV_MOVER_H.clear();
+    pvScrComStructs_VELA_HV_MOVER_V.clear();
     pvScrComStructs_VELA_PNEUMATIC.clear();
-    pvScrMonStructs_VELA_HV_MOVER.clear();
+    pvScrMonStructs_VELA_HV_MOVER_H.clear();
+    pvScrMonStructs_VELA_HV_MOVER_V.clear();
     pvScrMonStructs_VELA_PNEUMATIC.clear();
     // call the main read config funciton, pass in function pointers to the funcs
     // that know how to read a object, command or monitor
@@ -50,118 +52,98 @@ void screenConfigReader::addToPVStructMain( const std::vector<std::string> &keyV
 {
     if( stringIsSubString( keyVal[0], "SUFFIX" ) )
     {
-//        pvStruct_v.push_back( screenStructs::pvStruct() );    /// Any way to avoid the ladders?
-//        pvStruct_v.back().pvSuffix = keyVal[1];
-
         // there are different types of screen, here we are hardcoding in how to interpret the config file and where to put
         // each type of monitor.
 
         if( keyVal[0] == UTL::PV_SUFFIX_STA  )
-            addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Sta,
-                screenStructs::SCREEN_TYPE::VELA_PNEUMATIC, keyVal[1] );
+        {
+            addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Sta,keyVal[1] );
+        }
         else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
         {
-            addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::On,
-                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC, keyVal[1] );
+            addToPVStruct(pvScrComStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::On,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_OFF )
         {
-            addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Off,
-                          screenStructs::SCREEN_TYPE::VELA_PNEUMATIC, keyVal[1] );
+            addToPVStruct(pvScrComStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Off,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_PROT01 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT01,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::PROT01,keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER );
+            setH( pvScrMonStructs_VELA_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_PROT01 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT01,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::PROT01,keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER );
+            setV( pvScrMonStructs_VELA_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_RPWRLOSS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,
-              screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER );
+            setH( pvScrMonStructs_VELA_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_RPWRLOSS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER );
+            setV( pvScrMonStructs_VELA_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_RPOS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::RPOS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::RPOS,keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER );
+            setV( pvScrMonStructs_VELA_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_RPOS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::RPOS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::RPOS,keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER );
+            setH( pvScrMonStructs_VELA_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_PROT05 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT05,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1]);
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT05,keyVal[1]);
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_PROT03 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT03,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT03,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_STA )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STA,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::STA, keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER );
+            setH( pvScrMonStructs_VELA_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_STA )
         {
-            std::cout << " does this look right>>> " <<  keyVal[1] << std::endl;
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STA,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::STA, keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER );
+            setV( pvScrMonStructs_VELA_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_MABS )
         {
-            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::MABS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrComStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::MABS, keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrComStructs_VELA_HV_MOVER );
-
+            setH( pvScrComStructs_VELA_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_MABS )
         {
-            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::MABS,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrComStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::MABS, keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER );
+            setV( pvScrComStructs_VELA_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_STOP )
         {
-            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STOP,
-                          screenStructs::SCREEN_TYPE::VELA_HV_MOVER, keyVal[1] );
+            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STOP, keyVal[1] );
         }
     }
     else // must be a mask, chtype config entry, if the config file follows the rules
     {
         addCOUNT_MASK_OR_CHTYPE( keyVal );
     }
-
 }
 //______________________________________________________________________________
 void screenConfigReader::setH(std::vector< screenStructs::pvStruct > & pvs )
@@ -174,9 +156,8 @@ void screenConfigReader::setV(std::vector< screenStructs::pvStruct > & pvs )
     pvs.back().dir = screenStructs::DRIVER_DIRECTION::VERTICAL;
 }
 //______________________________________________________________________________
-void screenConfigReader::addToPVStruct(std::vector< screenStructs::pvStruct > & pvs,
-                                       const screenStructs::SCREEN_PV_TYPE pvtype,
-                                       screenStructs::SCREEN_TYPE scrType, const std::string& pvSuffix)
+void screenConfigReader::addToPVStruct(std::vector< screenStructs::pvStruct > & pvs, const screenStructs::SCREEN_PV_TYPE pvtype,
+                                       const std::string& pvSuffix)
 {
     pvs.push_back( screenStructs::pvStruct() );
     pvs.back().pvType      = pvtype;
@@ -196,55 +177,6 @@ void screenConfigReader::addCOUNT_MASK_OR_CHTYPE(  const std::vector<std::string
     else if( keyVal[0] == UTL::PV_CHTYPE )
         (*lastPVStruct).back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
 }
-
-//______________________________________________________________________________
-//void screenConfigReader::setLasttoVELA_HV_MOVER()
-//{
-//    lastPVStructScreenType = screenStructs::SCREEN_TYPE::VELA_HV_MOVER;
-//}
-////______________________________________________________________________________
-//void screenConfigReader::setLasttoVELA_PNEUMATIC()
-//{
-//    lastPVStructScreenType = screenStructs::SCREEN_TYPE::VELA_PNEUMATIC;
-//}
-//______________________________________________________________________________
-//void screenConfigReader::addToScComStructsV1( const std::vector<std::string> &keyVal )
-//{
-//    PV_SUFFIX_H_MABS
-//    PV_SUFFIX_V_MABS
-//    PV_SUFFIX_H_RPOS
-//    PV_SUFFIX_V_RPOS
-//    PV_SUFFIX_STOP
-//
-//        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-//        {
-//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
-//            setLasttoVELA_PNEUMATIC();
-//        }
-//        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-//        {
-//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
-//            setLasttoVELA_PNEUMATIC();
-//        }
-//        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-//        {
-//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
-//            setLasttoVELA_PNEUMATIC();
-//        }
-//        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-//        {
-//            pvScrComStructs_VELA_PNEUMATIC.push_back( screenStructs::pvStruct() );
-//            pvScrComStructs_VELA_PNEUMATIC.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
-//            setLasttoVELA_PNEUMATIC();
-//        }
-//
-//
-//
-//    addToPVStruct( pvScrComStructs, keyVal);
-//}
 //______________________________________________________________________________
 void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyVal )
 {
@@ -253,11 +185,26 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         screenStructs::screenObjectDEV scr = screenStructs::screenObjectDEV();
         scr.name = keyVal [ 1 ];
         scr.numIlocks = (size_t)numIlocks;
-        scr.hDriverSTA.parentScreen = scr.name;
-        scr.vDriverSTA.parentScreen = scr.name;
+        // each screen gets a driver and an H and V driver status
+        scr.driver.parentScreen            = scr.name;
+        scr.driver.hDriverSTA.parentScreen = scr.name;
+        scr.driver.vDriverSTA.parentScreen = scr.name;
+        scr.driver.hDriverSTA.dir = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
+        scr.driver.vDriverSTA.dir = screenStructs::DRIVER_DIRECTION::VERTICAL;
+
+        // each screen gets an H and V cassette elements
+        scr.driver.hCassette.parentScreen  = scr.name;
+        scr.driver.vCassette.parentScreen  = scr.name;
+        scr.driver.hCassette.dir  = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
+        scr.driver.vCassette.dir  = screenStructs::DRIVER_DIRECTION::VERTICAL;
+        // set all elements in the cassette object's existanece map to false
+        for( auto && it : UTL::allScreenCassetteElements  )// allScreenCassetteElements is a list of all possible elements
+        {
+             scr.driver.hCassette.cassetteElements[ it ] = false;
+             scr.driver.vCassette.cassetteElements[ it ] = false;
+        }
         scrObjects.push_back( scr );
         debugMessage( "Added ", scrObjects.back().name );
-
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
@@ -266,91 +213,122 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         else
             scrObjects.back().pvRoot =  keyVal[ 1 ];
     }
+    else if( keyVal[0] == UTL::SCREEN_DRIVER_POS_TOLERANCE )
+    {
+        //message( "set ", scrObjects.back().name, " pos tolerance to ", getNumD(keyVal[1]));
+        scrObjects.back().driver.hCassette.posTolerance = getNumD(keyVal[1]);
+        scrObjects.back().driver.vCassette.posTolerance = getNumD(keyVal[1]);
+    }
     else if( keyVal[0] == UTL::SCREEN_TYPE )
         scrObjects.back().screenType = getScreenType( keyVal[ 1 ] );
-    // the mover knows all the positions of screens, slits etc, plus current position
+    // the cassette  knows all the positions of screens, slits etc, plus current position
+    // if a cassette element exists we update the cassetteElements  map to refelct this (init to false above)
     else if( keyVal[0] == UTL::H_MIRROR_POS )
-        scrObjects.back().hCassette.MIRROR_POS = getNumD(keyVal[ 1 ]);
-
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[1]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::MIRROR_POS );
+    }
     else if( keyVal[0] == UTL::V_MIRROR_POS )
-        scrObjects.back().vCassette.MIRROR_POS = getNumD(keyVal[ 1 ]);
-
-    else if( keyVal[0] == UTL::V_SLIT_50_UM_POS )
-        scrObjects.back().vCassette.SLIT_50_UM_POS = getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::MIRROR_POS );
+    }
     else if( keyVal[0] == UTL::H_SLIT_50_UM_POS )
-        scrObjects.back().hCassette.SLIT_50_UM_POS = getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_50_UM_POS );
+    }
+    else if( keyVal[0] == UTL::V_SLIT_50_UM_POS )
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_50_UM_POS );
+    }
 
     else if( keyVal[0] == UTL::H_SLIT_25_UM_POS )
-        scrObjects.back().hCassette.SLIT_25_UM_POS = getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_25_UM_POS );
+
+    }
     else if( keyVal[0] == UTL::V_SLIT_25_UM_POS )
-        scrObjects.back().vCassette.SLIT_25_UM_POS= getNumD(keyVal[ 1 ]);
-
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_25_UM_POS);
+    }
     else if( keyVal[0] == UTL::H_HOLE_6p3_MM_POS )
-        scrObjects.back().hCassette.HOLE_6p3_MM_POS = getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_6p3_MM_POS);
+    }
     else if( keyVal[0] == UTL::V_HOLE_6p3_MM_POS )
-        scrObjects.back().vCassette.HOLE_6p3_MM_POS= getNumD(keyVal[ 1 ]);
-
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_6p3_MM_POS);
+    }
     else if( keyVal[0] == UTL::H_HOLE_10_MM_POS )
-        scrObjects.back().hCassette.HOLE_10_MM_POS = getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_10_MM_POS);
+    }
     else if( keyVal[0] == UTL::V_HOLE_10_MM_POS )
-        scrObjects.back().vCassette.HOLE_10_MM_POS= getNumD(keyVal[ 1 ]);
-
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_10_MM_POS);
+    }
     else if( keyVal[0] == UTL::H_YAG_POS )
-        scrObjects.back().hCassette.YAG_POS = getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::YAG_POS);
+    }
     else if( keyVal[0] == UTL::V_YAG_POS )
-        scrObjects.back().vCassette.YAG_POS= getNumD(keyVal[ 1 ]);
-
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::YAG_POS);
+    }
     else if( keyVal[0] == UTL::H_OUT_POS )
-        scrObjects.back().hCassette.OUT_POS= getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::OUT_POS);
+    }
     else if( keyVal[0] == UTL::V_OUT_POS )
-        scrObjects.back().vCassette.OUT_POS= getNumD(keyVal[ 1 ]);
-
-    else if( keyVal[0] == UTL::H_YAG_POS )
-        scrObjects.back().hCassette.YAG_POS= getNumD(keyVal[ 1 ]);
-    else if( keyVal[0] == UTL::V_YAG_POS )
-        scrObjects.back().vCassette.YAG_POS= getNumD(keyVal[ 1 ]);
-
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::OUT_POS);
+    }
     else if( keyVal[0] == UTL::H_RF_POS)
-        scrObjects.back().hCassette.RF_POS= getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::RF_POS);
+    }
     else if( keyVal[0] == UTL::V_RF_POS )
-        scrObjects.back().vCassette.RF_POS= getNumD(keyVal[ 1 ]);
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
+        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::RF_POS);
+    }
     // at the moment the H and V driver status are identical, so they are not distinguished in the config
     else if( keyVal[0] == UTL::NUM_STA_BITS )
     {
-        scrObjects.back().hDriverSTA.numSTABits = getNum(keyVal[ 1 ]);
-        scrObjects.back().vDriverSTA.numSTABits = getNum(keyVal[ 1 ]);
+        scrObjects.back().driver.hDriverSTA.numSTABits = getNum(keyVal[ 1 ]);
+        scrObjects.back().driver.vDriverSTA.numSTABits = getNum(keyVal[ 1 ]);
     }
     else if( keyVal[0] == UTL::STA_BIT )
     {
         /// ad this bit to the map and lable for H and V
-        scrObjects.back().hDriverSTA.STA_bit_label.push_back( keyVal[1] );
-        scrObjects.back().hDriverSTA.STA_bit_label.push_back( keyVal[1] );
-        scrObjects.back().hDriverSTA.STA_bit_map[ keyVal[1] ] = false;
-        scrObjects.back().hDriverSTA.STA_bit_map[ keyVal[1] ] = false;
+        scrObjects.back().driver.hDriverSTA.STA_bit_label.push_back( keyVal[1] );
+        //scrObjects.back().driver.hDriverSTA.STA_bit_label.push_back( keyVal[1] );
+        scrObjects.back().driver.hDriverSTA.STA_bit_map[ keyVal[1] ] = false;
+        //scrObjects.back().driver.hDriverSTA.STA_bit_map[ keyVal[1] ] = false;
 
-        scrObjects.back().vDriverSTA.STA_bit_label.push_back( keyVal[1] );
-        scrObjects.back().vDriverSTA.STA_bit_label.push_back( keyVal[1] );
-        scrObjects.back().vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
-        scrObjects.back().vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
+        //scrObjects.back().driver.vDriverSTA.STA_bit_label.push_back( keyVal[1] );
+        scrObjects.back().driver.vDriverSTA.STA_bit_label.push_back( keyVal[1] );
+        //scrObjects.back().driver.vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
+        scrObjects.back().driver.vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
     }
-//
-//          const std::string STA_BIT
-//          const std::string TRAJECTORY_IN_PROGRESS
-//          const std::string HISTORICAL_POS HW_LIMIT
-//          const std::string HISTORICAL_NEG HW_LIMIT
-//          const std::string INDEX REPORT_AVALABLE
-//          const std::string WRAPAROUND_OCCURRED
-//          const std::string EXCESSIVE_POSITION_ERROR
-//          const std::string TEMPERATURE_FAULT
-//          const std::string MOTOR_IS_OFF
-//          const std::string INDEX_INPUT
-//          const std::string POS_HW_LIMIT_ASSERTED
-//          const std::string NEG_HW_LIMIT_ASSERTED
-//          const std::string MATHS_OVERFLOW
-//          const std::string INDEX_ERROR
-//          const std::string SYNTAX_ERROR
-//          const std::string OVER_CURRENT
-//          const std::string PROGRAMME_CHECKSUM_ERROR
+}
+//______________________________________________________________________________________________________
+void screenConfigReader::setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element )
+{
+    cas.cassetteElements[ element ] = true;
 }
 //______________________________________________________________________________________________________
 screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string & val )
@@ -362,37 +340,6 @@ screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string 
         ret = screenStructs::SCREEN_TYPE::VELA_PNEUMATIC;
     return ret;
 }
-//______________________________________________________________________________________________________
-//void screenConfigReader::addToPVStruct( std::vector<screenStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal )
-//{
-//
-//    //if a command is used on more than one type of scren it will probably have to get a double entry (... ?)
-//
-//    if( stringIsSubString( keyVal[0], "SUFFIX" ) )
-//    {
-//        pvStruct_v.push_back( screenStructs::pvStruct() );    /// Any way to avoid the ladders?
-//        pvStruct_v.back().pvSuffix = keyVal[1];
-//
-//        if( keyVal[0] == UTL::PV_SUFFIX_STA  )
-//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::Sta;
-//
-//        else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::On;
-//
-//        else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::Off;
-//
-//        else if( keyVal[0] == UTL::PV_SUFFIX_RI  )
-//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::H_MABS;
-//
-//        else if( keyVal[0] == UTL::PV_SUFFIX_SI  )
-//            pvStruct_v.back().pvType = screenStructs::SCREEN_PV_TYPE::V_MABS;
-//
-//        debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
-//    }
-//    else
-//        addCOUNT_MASK_OR_CHTYPE( pvStruct_v, keyVal );
-//}
 //______________________________________________________________________________________________________
 bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2)
 {
@@ -529,12 +476,34 @@ bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs:
                 for( auto && it2 : pvScrComStructs_VELA_PNEUMATIC)
                     mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
                 break;
+
             case screenStructs::SCREEN_TYPE::VELA_HV_MOVER:
                 message( it.name, " is a VELA_HV_MOVER screen");
-                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER )
-                    mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
                 for( auto && it2 : pvScrComStructs_VELA_HV_MOVER )
-                    mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
+                {
+                    mapToFill[ it.name ].driver.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER )
+                {
+                    mapToFill[ it.name ].driver.pvMonStructs[ it2.pvType ] = it2;
+                }
+
+                for( auto && it2 : pvScrComStructs_VELA_HV_MOVER_H )
+                {
+                    mapToFill[ it.name ].driver.hDriverSTA.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrComStructs_VELA_HV_MOVER_V )
+                {
+                    mapToFill[ it.name ].driver.vDriverSTA.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER_H )
+                {
+                    mapToFill[ it.name ].driver.hDriverSTA.pvMonStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER_V )
+                {
+                    mapToFill[ it.name ].driver.vDriverSTA.pvMonStructs[ it2.pvType ] = it2;
+                }
                 break;
         }
         nCount+=1;

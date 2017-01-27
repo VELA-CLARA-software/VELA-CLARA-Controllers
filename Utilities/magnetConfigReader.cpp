@@ -120,7 +120,12 @@ bool magnetConfigReader::readConfig()
     bool psuSuccess = readConfig(*this, NRConf, &magnetConfigReader::addToMagPSUObjectsV1, &magnetConfigReader::addToMagPSUComStructsV1,&magnetConfigReader::addToMagPSUMonStructsV1 );
 
     if( !psuSuccess )
+    {
         success = false;
+        debugMessage( "Error reading magnet psu config file, returning FALSE" );
+    }
+    else
+        debugMessage( "Success reading magnet psu config file, returning TRUE" );
 
     if( magPSUObjects_N.size() != magPSUObjects_R.size() )
     {
@@ -141,7 +146,14 @@ bool magnetConfigReader::readConfig()
 
     bool magSuccess = readConfig( *this, magConf, &magnetConfigReader::addToMagObjectsV1,&magnetConfigReader::addToMagComStructsV1, &magnetConfigReader::addToMagMonStructsV1 );
     if( !magSuccess )
+    {
         success = false;
+        debugMessage( "Error reading magnet config file. returning False" );
+
+    }
+    else
+        debugMessage( "Success reading magnet config file, returning TRUE" );
+
     if( numObjs == magObjects.size() )
         debugMessage( "*** Created ", numObjs, " Magnet Objects, As Expected ***" );
     else
@@ -179,6 +191,10 @@ bool magnetConfigReader::readConfig()
 //    if( degStepsErrors == 0 )
 //        debugMessage( "*** Set ", degstruct.numDegaussSteps, " degauss steps as expected ***" );
 
+    if(success)
+        debugMessage("magnetConfigReader readconfig is returning TRUE");
+    else
+        debugMessage("magnetConfigReader readconfig is returning FALSE");
 
     return success;
 }
@@ -517,14 +533,25 @@ bool magnetConfigReader::readConfig( magnetConfigReader & obj, const std::string
             }
         }
         inputFile.close( );
-        debugMessage( "File Closed" );
+        debugMessage( "config File Closed" );
 
-        if( numObjs == magObjects.size() ) // MAY HVE BROKE THINGS HERE!
+//        if( numObjs == magObjects.size() ) // MAY HVE BROKE THINGS HERE!
+//        {
             success = true;
+//            message( "config file reader returning true");
+//        }
+//        else
+//             message( "config file reader returning false");
     }
     else{
-        message( "!!!! Error Can't Open Mag Config File after searching for:  ", fn, " !!!!"  );
+        message( "!!!! Error Can't Open Config File after searching for:  ", fn, " !!!!"  );
     }
+    if(success)
+        debugMessage("magnetConfigReader readconfig is returning TRUE");
+    else
+        debugMessage("magnetConfigReader readconfig is returning FALSE");
+
+
     return success;
 }
 //______________________________________________________________________________

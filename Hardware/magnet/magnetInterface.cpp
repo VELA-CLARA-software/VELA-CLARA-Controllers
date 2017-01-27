@@ -76,12 +76,15 @@ void magnetInterface::initialise()
     std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
     if( configFileRead )
     {
+        message("The magnetInterface has read the config file, acquiring objects");
         /// initialise the objects based on what is read from the config file
         bool getDataSuccess = initObjects();
         if( getDataSuccess )
         {
+
             if( shouldStartEPICs )
             {
+                message("The magnetInterface has acquired objects, connecting to EPICS");
                 //std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
                 initChids();
@@ -91,7 +94,7 @@ void magnetInterface::initialise()
                 std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
             }
             else
-                message("The magnetInterface Read Config files, Not Starting EPICS Monitors" );
+             message("The magnetInterface has acquired objects, NOT connecting to EPICS");
         }
         else
             message( "!!!The magnetInterface received an Error while getting magnet data!!!" );
