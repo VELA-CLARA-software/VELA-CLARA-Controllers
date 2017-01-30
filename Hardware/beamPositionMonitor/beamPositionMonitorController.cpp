@@ -179,7 +179,17 @@ void beamPositionMonitorController::setSD2( const std::string & bpmName, long sd
 {
     localInterface.setSD2( bpmName, sd2 );
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
+void beamPositionMonitorController::setX( const std::string & bpmName, double val )
+{
+    localInterface.setX( bpmName, val );
+}
+//______________________________________________________________________________
+void beamPositionMonitorController::setY( const std::string & bpmName, double val )
+{
+    localInterface.setY( bpmName, val );
+}
+//______________________________________________________________________________
 std::vector< std::string > beamPositionMonitorController::getBPMNames()
 {
     return localInterface.getBPMNames();

@@ -61,6 +61,8 @@ class beamPositionMonitorController : public controller
         void setSA2( const std::string & bpmName, long sa2 );
         void setSD1( const std::string & bpmName, long sd1 );
         void setSD2( const std::string & bpmName, long sd2 );
+        void setX( const std::string & bpmName, double val );
+        void setY( const std::string & bpmName, double val );
         void reCalAttenuation( const std::string & bpmName, double qScope );
         void monitorDataForNShots( size_t N, const std::string & name );
         void monitorMultipleDataForNShots( size_t N, std::vector< std::string > names );

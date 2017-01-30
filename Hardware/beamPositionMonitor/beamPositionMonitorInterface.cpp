@@ -717,6 +717,20 @@ void beamPositionMonitorInterface::setSD2( const std::string & bpmName, long val
            val, "" , "!!beamPositionMonitorInterface TIMEOUT!! In setSD2() ");
 }
 //______________________________________________________________________________
+void beamPositionMonitorInterface::setX( const std::string & bpmName, double val )
+{
+    caput( bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::X ).CHTYPE,
+           bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::X ).CHID,
+           val, "" , "!!beamPositionMonitorInterface TIMEOUT!! In setX() ");
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::setY( const std::string & bpmName, double val )
+{
+    caput( bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::Y ).CHTYPE,
+           bpmObj.dataObjects.at( bpmName ).pvComStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::Y ).CHID,
+           val, "" , "!!beamPositionMonitorInterface TIMEOUT!! In setX() ");
+}
+//______________________________________________________________________________
 std::vector< std::vector< double > > beamPositionMonitorInterface::getBPMRawData( const std::string & bpmName )
 {
     std::vector< std::vector< double > > r;

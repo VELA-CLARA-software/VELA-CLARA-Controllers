@@ -15,16 +15,19 @@ import epics
 s=vbpmc.init()
 p=s.virtual_VELA_INJ_BPM_Controller()
 numShots = 1
+p.setX("BPM01",1.0)
+tr=p.getX("BPM01")
+print tr
 #pv1 = 'VM-EBT-INJ-DIA-BPMC-02:DATA:B2V.VALA'
 #srPV.setPV(pv1,1,10,10,1, "array")
-p.monitorDataForNShots(numShots,'BPM01')
-while p.isMonitoringBPMData('BPM01'):
-	time.sleep(0.01)
-q = p.getAllBPMData('BPM01')
-print 'BPM 01 Data'
-print 'name = ', q.name
-for i in range(0,numShots):
-	print 'x = ', q.x[i]
-	print 'y   = ', q.y[i]
-	print 'q   = ', q.q[i]
-	print 'pu1   = ', q.pu1[i]
+#p.monitorDataForNShots(numShots,'BPM01')
+#while p.isMonitoringBPMData('BPM01'):
+#	time.sleep(0.01)
+#q = p.getAllBPMData('BPM01')
+#print 'BPM 01 Data'
+#print 'name = ', q.name
+#for i in range(0,numShots):
+#	print 'x = ', q.x[i]
+#	print 'y   = ', q.y[i]
+#	print 'q   = ', q.q[i]
+#	print 'pu1   = ', q.pu1[i]
