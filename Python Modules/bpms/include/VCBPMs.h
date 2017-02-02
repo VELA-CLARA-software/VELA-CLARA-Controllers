@@ -7,13 +7,15 @@
 #include <string>
 #include <vector>
 //boost
-#ifdef BUILD_DLL
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
 #include <boost/python.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/object/function.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#endif
+#include <boost/python/docstring_options.hpp>
 
 class VCBPMs// : public beamPositionMonitorController
 {
@@ -113,16 +115,22 @@ class getVecString
 /// and / or debug messages when instantiating. See here
 /// http://www.boost.org/doc/libs/1_59_0/libs/python/doc/tutorial/doc/html/python/exposing.html
 /// and beware of: http://stackoverflow.com/questions/8140155/boost-python-confused-about-similar-constructor
+void(beamPositionMonitorController::*monitorMultipleDataForNShots)(size_t, const std::vector< std::string > &) = &beamPositionMonitorController::monitorDataForNShots;
+void(beamPositionMonitorController::*monitorDataForNShots)(size_t, const std::string &) = &beamPositionMonitorController::monitorDataForNShots;
+
+
+//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
+//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorMultipleDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
 
 
 using namespace boost::python;
-
 
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
 
 BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
+    //docstring_options local_docstring_options(true, true, false);
     /// Include ALL the enums you want to expose to Python
 
     class_< std::vector< std::string > >("std_vector_string")
@@ -207,9 +215,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("rawBPMData",     &beamPositionMonitorStructs::rawDataStruct::rawBPMData   )
         ;
 
-
+    char const* getXDocString = "This function will return (as a float) the EPICS PV of X for str(bpmName) - these are defined in the config file";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
-            ("beamPositionMonitorController","beamPositionMonitor Doc String",boost::python::no_init)
+            ("beamPositionMonitorController","beamPositionMonitorControllerDocstring",boost::python::no_init)
 //            .def(boost::python::init<const std::string, optional<const bool, const bool > >())
 //            .def(boost::python::init< optional<const bool, const bool, const bool >>())
             .def("getAllBPMData",                   &beamPositionMonitorController::getAllBPMData, return_value_policy<reference_existing_object>())
@@ -224,7 +232,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 //            .def("hasTrig",                         &velaINJBeamPositionMonitorController::hasTrig_Py, boost::python::args("name")   )
             .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData         )
             .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData      )
-            .def("getX",                            &beamPositionMonitorController::getX                        )
+            .def("getX",                            &beamPositionMonitorController::getX, getXDocString         )
             .def("getY",                            &beamPositionMonitorController::getY                        )
             .def("getQ",                            &beamPositionMonitorController::getQ                        )
             .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation            )
@@ -247,8 +255,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setSD2",                          &beamPositionMonitorController::setSD2                      )
             .def("setX",                            &beamPositionMonitorController::setX                        )
             .def("setY",                            &beamPositionMonitorController::setY                        )
-            .def("monitorDataForNShots",            &beamPositionMonitorController::monitorDataForNShots        )
-            .def("monitorMultipleDataForNShots",    &beamPositionMonitorController::monitorMultipleDataForNShots)
+            .def("monitorDataForNShots",            monitorMultipleDataForNShots                                )
+            .def("monitorDataForNShots",            monitorDataForNShots                                        )
+            //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::vector< std::string >&)>
+            //    (&beamPositionMonitorController::monitorDataForNShots), monitorMultipleDataForNShots()          )
+            //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::string&)>
+            //    (&beamPositionMonitorController::monitorDataForNShots), monitorDataForNShots()                  )
             .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames                 )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )
@@ -257,6 +269,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("messagesOn",                      &beamPositionMonitorController::messagesOn                  )
             .def("silence",                         &beamPositionMonitorController::silence                     )
             .def("verbose",                         &beamPositionMonitorController::verbose                     )
+            .def("isSilent",                        &beamPositionMonitorController::isSilent                    )
+            .def("isVerbose",                       &beamPositionMonitorController::isVerbose                   )
+            .def("isMessageOn",                     &beamPositionMonitorController::isMessageOn                 )
+            .def("isDebugMessageOn",                &beamPositionMonitorController::isDebugMessageOn            )
 		;
 
     boost::python::class_<VCBPMs,boost::noncopyable> ("init")
@@ -277,6 +293,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def("physical_CLARA_2_VELA_BPM_Controller", &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("getBPMController", &VCBPMs::getBPMController, return_value_policy<reference_existing_object>())
         ;
+
 };
 
 #endif // BUILD_DLL

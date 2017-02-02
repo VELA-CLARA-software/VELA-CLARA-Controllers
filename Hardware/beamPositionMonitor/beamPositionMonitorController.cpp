@@ -100,9 +100,9 @@ void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::s
     localInterface.monitorDataForNShots( N, name );
 }
 //______________________________________________________________________________
-void beamPositionMonitorController::monitorMultipleDataForNShots( size_t N, std::vector< std::string > names )
+void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::vector< std::string > & names )
 {
-    localInterface.monitorMultipleDataForNShots( N, names );
+    localInterface.monitorDataForNShots( N, names );
 }
 //______________________________________________________________________________
 void beamPositionMonitorController::reCalAttenuation( const std::string & name, double qScope )

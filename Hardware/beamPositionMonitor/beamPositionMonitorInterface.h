@@ -69,7 +69,7 @@ class beamPositionMonitorInterface : public interface
         void reCalAttenuation( const std::string & bpmName, double qScope );
         void addToMonitorStructs( std::vector< beamPositionMonitorStructs::monitorStruct * > & msv, beamPositionMonitorStructs::pvStruct & pv,
                                   beamPositionMonitorStructs::bpmDataObject * bpmObj );
-        void monitorMultipleDataForNShots( size_t N, std::vector< std::string > bpmNames );
+        void monitorDataForNShots( size_t N, const std::vector< std::string > & bpmNames );
         void monitorDataForNShots( size_t N, const std::string & name );
 
         std::vector< std::string > getBPMNames();

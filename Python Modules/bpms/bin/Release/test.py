@@ -15,8 +15,8 @@ import epics
 s=vbpmc.init()
 p=s.virtual_VELA_INJ_BPM_Controller()
 numShots = 1
-p.setX("BPM01",1.0)
-tr=p.getX("BPM01")
+p.setY('BPM01',1)
+tr=p.getYFromPV('BPM01')
 print tr
 #pv1 = 'VM-EBT-INJ-DIA-BPMC-02:DATA:B2V.VALA'
 #srPV.setPV(pv1,1,10,10,1, "array")

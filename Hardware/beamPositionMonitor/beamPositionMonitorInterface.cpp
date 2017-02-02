@@ -452,7 +452,7 @@ void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::st
 
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::monitorMultipleDataForNShots( size_t N, std::vector< std::string > names )
+void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::vector< std::string > & names )
 {
     resetDataVectors( N );
     for( auto it : names )
