@@ -43,6 +43,11 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController & physical_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & getBPMController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
+        void setQuiet();
+        void setVerbose();
+        void setMessage();
+        void setDebugMessage();
+
 #ifdef BUILD_DLL
 
 #endif // BUILD_DLL
@@ -55,9 +60,7 @@ class VCBPMs// : public beamPositionMonitorController
         bool withVM;
         bool withoutVM;
         bool showDebugMessages;
-        bool dontShowMessages;
         bool showMessages;
-        bool dontShowDebugMessages;
         VELA_ENUM::MACHINE_AREA VELA_INJ;
         VELA_ENUM::MACHINE_AREA VELA_BA1;
         VELA_ENUM::MACHINE_AREA VELA_BA2;
@@ -119,7 +122,7 @@ void(beamPositionMonitorController::*monitorMultipleDataForNShots)(size_t, const
 void(beamPositionMonitorController::*monitorDataForNShots)(size_t, const std::string &) = &beamPositionMonitorController::monitorDataForNShots;
 
 
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
+//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorDataForNShots, beamPositionMonitorController::monitorDataForNShots, 2, 2)
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorMultipleDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
 
 
@@ -154,16 +157,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 //        .def("setVecString",    &getVecString::setVecString)
 //        ;
 
-//    enum_<VELA_ENUM::TRIG_STATE>("TRIG_STATE")
-//            .value("NOTRIG",      VELA_ENUM::TRIG_STATE::NOTRIG )
-//            .value("TRIG",        VELA_ENUM::TRIG_STATE::TRIG   )
-//            .value("TRIG_ERROR",  VELA_ENUM::TRIG_STATE::TRIG_ERROR  )
-//            ;
-//    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-//            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-//            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-//            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-//            ;
+    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+        ;
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
+        ;
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
@@ -179,7 +185,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>
-        ("bpmDataObject", boost::python::no_init)
+        ("bpmDataObject", "This object contains all of the EPICS PVs for a given bpmName",boost::python::no_init)
         .def_readonly("pvRoot",         &beamPositionMonitorStructs::bpmDataObject::pvRoot       )
         .def_readonly("appendingData",  &beamPositionMonitorStructs::bpmDataObject::appendingData)
         .def_readonly("xPV",            &beamPositionMonitorStructs::bpmDataObject::xPV          )
@@ -196,7 +202,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>
-        ("rawDataStruct", boost::python::no_init)
+        ("rawDataStruct", "This struct contains all the 'raw' data from the BPMs, including raw voltages and timestamps", boost::python::no_init)
         .def_readonly("name",           &beamPositionMonitorStructs::rawDataStruct::name         )
         .def_readonly("appendingData",  &beamPositionMonitorStructs::rawDataStruct::appendingData)
         .def_readonly("p1",             &beamPositionMonitorStructs::rawDataStruct::p1           )
@@ -215,53 +221,99 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("rawBPMData",     &beamPositionMonitorStructs::rawDataStruct::rawBPMData   )
         ;
 
-    char const* getXDocString = "This function will return (as a float) the EPICS PV of X for str(bpmName) - these are defined in the config file";
+    char const* getXDocString = "Returns (as a float) the current calculated PV of X for str(bpmName) - these are defined in the config file.\n"
+                                "In theory this is more accurate than the EPICS PV.";
+    char const* getYDocString = "Returns (as a float) the current calculated PV of Y for str(bpmName) - these are defined in the config file.\n"
+                                "In theory this is more accurate than the EPICS PV.";
+    char const* getQDocString = "Returns (as a float) the current calculated PV of Q for str(bpmName) - these are defined in the config file.\n";
+    char const* getBPMRawDataDocString = "Returns (as a vector of vectors) the raw voltages for str(bpmName) - these are defined in the config file.\n"
+                                         "To be used in conjunction with function monitorDataForNShots.";
+    char const* getXPVDocString = "Returns (as a float) the current EPICS PV of X for str(bpmName) - these are defined in the config file.";
+    char const* getYPVDocString = "Returns (as a float) the current EPICS PV of Y for str(bpmName) - these are defined in the config file.";
+    char const* getRA1DocString = "Returns the current EPICS PV of RA1 for str(bpmName) - these are defined in the config file.";
+    char const* getRA2DocString = "Returns the current EPICS PV of RA2 for str(bpmName) - these are defined in the config file.";
+    char const* getRD1DocString = "Returns the current EPICS PV of RD1 for str(bpmName) - these are defined in the config file.";
+    char const* getRD2DocString = "Returns the current EPICS PV of RD2 for str(bpmName) - these are defined in the config file.";
+    char const* setSA1DocString = "Allows the user to set EPICS PV of SA1 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
+    char const* setSA2DocString = "Allows the user to set EPICS PV of SA2 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
+    char const* setSD1DocString = "Allows the user to set EPICS PV of SD1 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
+    char const* setSD2DocString = "Allows the user to set EPICS PV of SD2 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
+    char const* setXDocString = "Allows the user to set EPICS PV of X for str(bpmName) - these are defined in the config file. ONLY FOR THE VIRTUAL MACHINE!!!";
+    char const* setYDocString = "Allows the user to set EPICS PV of Y for str(bpmName) - these are defined in the config file. ONLY FOR THE VIRTUAL MACHINE!!!";
+    char const* monitorSglDocString = "Monitors raw voltages for str(bpmName) - these are defined in the config file. This will fill up a vector of vectors with shot-to-shot raw voltages.\n"
+                                      "Data can be accessed using getBPMRawData, getBPMXVec, getBPMYVec, getBPMQVec.\n"
+                                      "arg1 is an int, arg2 is a string";
+    char const* monitorMulDocString = "Monitors raw voltages for std_vector_string(str(bpmName)) - these are defined in the config file. This will fill up a vector of vectors with shot-to-shot raw voltages.\n"
+                                      "Data can be accessed using getBPMRawData, getBPMXVec, getBPMYVec, getBPMQVec.\n"
+                                      "arg1 is an int, arg2 is a std_vector_string (in python use VELA_CLARA_BPM_Control.std_vector_string().";
+    char const* isMonitoringDocString = "Returns true if str(bpmName) is being monitored - these are defined in the config file.";
+    char const* isNotMonitoringDocString = "Returns true if str(bpmName) is not being monitored - these are defined in the config file.";
+    char const* getXVecDocString = "Returns a vector containing the X values for str(bpmName) - these are defined in the config file.\n"
+                                   "To be used in conjunction with function monitorDataForNShots.";
+    char const* getYVecDocString = "Returns a vector containing the Y values for str(bpmName) - these are defined in the config file.\n"
+                                   "To be used in conjunction with function monitorDataForNShots.";
+    char const* getQVecDocString = "Returns a vector containing the Q values for str(bpmName) - these are defined in the config file.\n"
+                                   "To be used in conjunction with function monitorDataForNShots.";
+    char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(bpmName) - these are defined in the config file.\n"
+                                         "To be used in conjunction with function monitorDataForNShots.";
+    char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(bpmName) - these are defined in the config file.\n"
+                                         "To be used in conjunction with function monitorDataForNShots.";
+    char const* getResDocString = "Returns the resolution (in mm) for str(bpmName) - these are defined in the config file.\n"
+                                  "To be used in conjunction with function monitorDataForNShots.";
+    char const* reCalAttDocString = "Re-calibrates the attenuation for str(bpmName) - these are defined in the config file - based on a charge reading (arg2).\n"
+                                   "The charge reading could be accessed using the scopeController module.";
+    char const* getAllBPMDataDocString = "Returns the raw data struct for str(bpmName) - these are defined in the config file.\n"
+                                         "To be used in conjunction with function monitorDataForNShots. Type help(VELA_CLARA_BPM_Control.rawDataStruct) to see what this contains.";
+    char const* getBPMDataObjectDocString = "Returns the bpm data object for str(bpmName) - these are defined in the config file.\n"
+                                            "To be used in conjunction with function monitorDataForNShots. Type help(VELA_CLARA_BPM_Control.bpmDataObject) to see what this contains.";
+    char const* getBPMNamesDocString = "Returns all of the BPM names defined in the config file.";
+    char const* getILocksDocString = "Why are you here? BPMs don't have interlocks. At least as far as I'm aware. I'm not sure why they would.";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
-            ("beamPositionMonitorController","beamPositionMonitorControllerDocstring",boost::python::no_init)
+            ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
 //            .def(boost::python::init<const std::string, optional<const bool, const bool > >())
 //            .def(boost::python::init< optional<const bool, const bool, const bool >>())
-            .def("getAllBPMData",                   &beamPositionMonitorController::getAllBPMData, return_value_policy<reference_existing_object>())
-            .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, return_value_policy<reference_existing_object>()            )
+            .def("getAllBPMData",                   &beamPositionMonitorController::getAllBPMData, getAllBPMDataDocString, return_value_policy<reference_existing_object>())
+            .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, getBPMDataObjectDocString, return_value_policy<reference_existing_object>()            )
 //            .def("getBPMStateDefinition",           &beamPositionMonitorController::getBPMStateDefinition                     )
             .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition    )
             .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT      )
             .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT      )
 //            .def("getBPMState",                     &velaINJBeamPositionMonitorController::getBPMState_Py                            )
-            .def("getILockStates",                  &beamPositionMonitorController::getILockStates              )
+            .def("getILockStates",                  &beamPositionMonitorController::getILockStates, getILocksDocString              )
 //            .def("hasNoTrig",                       &velaINJBeamPositionMonitorController::hasNoTrig_Py, boost::python::args("name") )
 //            .def("hasTrig",                         &velaINJBeamPositionMonitorController::hasTrig_Py, boost::python::args("name")   )
-            .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData         )
-            .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData      )
+            .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData, isMonitoringDocString         )
+            .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData, isNotMonitoringDocString      )
             .def("getX",                            &beamPositionMonitorController::getX, getXDocString         )
-            .def("getY",                            &beamPositionMonitorController::getY                        )
-            .def("getQ",                            &beamPositionMonitorController::getQ                        )
-            .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation            )
-            .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV                  )
-            .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV                  )
-            .def("getBPMResolution",                &beamPositionMonitorController::getBPMResolution            )
-            .def("getBPMXVec",                      &beamPositionMonitorController::getBPMXVec                  )
-            .def("getBPMYVec",                      &beamPositionMonitorController::getBPMYVec                  )
-            .def("getBPMQVec",                      &beamPositionMonitorController::getBPMQVec                  )
-            .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps               )
-            .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps            )
-            .def("getBPMRawData",                   &beamPositionMonitorController::getBPMRawData               )
-            .def("getRA1",                          &beamPositionMonitorController::getRA1                      )
-            .def("getRA2",                          &beamPositionMonitorController::getRA2                      )
-            .def("getRD1",                          &beamPositionMonitorController::getRD1                      )
-            .def("getRD2",                          &beamPositionMonitorController::getRD2                      )
-            .def("setSA1",                          &beamPositionMonitorController::setSA1                      )
-            .def("setSA2",                          &beamPositionMonitorController::setSA2                      )
-            .def("setSD1",                          &beamPositionMonitorController::setSD1                      )
-            .def("setSD2",                          &beamPositionMonitorController::setSD2                      )
-            .def("setX",                            &beamPositionMonitorController::setX                        )
-            .def("setY",                            &beamPositionMonitorController::setY                        )
-            .def("monitorDataForNShots",            monitorMultipleDataForNShots                                )
-            .def("monitorDataForNShots",            monitorDataForNShots                                        )
+            .def("getY",                            &beamPositionMonitorController::getY, getQDocString                        )
+            .def("getQ",                            &beamPositionMonitorController::getQ, getQDocString                        )
+            .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation, reCalAttDocString            )
+            .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV, getXPVDocString                  )
+            .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV, getYPVDocString                  )
+            .def("getBPMResolution",                &beamPositionMonitorController::getBPMResolution, getResDocString            )
+            .def("getBPMXVec",                      &beamPositionMonitorController::getBPMXVec, getXVecDocString                  )
+            .def("getBPMYVec",                      &beamPositionMonitorController::getBPMYVec, getYVecDocString                  )
+            .def("getBPMQVec",                      &beamPositionMonitorController::getBPMQVec, getQVecDocString                  )
+            .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps, getTimeStampsDocString               )
+            .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps, getStrTimeStampsDocString            )
+            .def("getBPMRawData",                   &beamPositionMonitorController::getBPMRawData, getBPMRawDataDocString               )
+            .def("getRA1",                          &beamPositionMonitorController::getRA1, getRA1DocString                      )
+            .def("getRA2",                          &beamPositionMonitorController::getRA2, getRA2DocString                      )
+            .def("getRD1",                          &beamPositionMonitorController::getRD1, getRD1DocString                      )
+            .def("getRD2",                          &beamPositionMonitorController::getRD2, getRD2DocString                      )
+            .def("setSA1",                          &beamPositionMonitorController::setSA1, setSA2DocString                      )
+            .def("setSA2",                          &beamPositionMonitorController::setSA2, setSA2DocString                      )
+            .def("setSD1",                          &beamPositionMonitorController::setSD1, setSD1DocString                      )
+            .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                      )
+            .def("setX",                            &beamPositionMonitorController::setX, setXDocString                        )
+            .def("setY",                            &beamPositionMonitorController::setY, setYDocString                        )
+            .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                )
+            .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                        )
             //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::vector< std::string >&)>
             //    (&beamPositionMonitorController::monitorDataForNShots), monitorMultipleDataForNShots()          )
             //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::string&)>
             //    (&beamPositionMonitorController::monitorDataForNShots), monitorDataForNShots()                  )
-            .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames                 )
+            .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames, getBPMNamesDocString                 )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )
             .def("debugMessagesOn",                 &beamPositionMonitorController::debugMessagesOn             )
@@ -275,6 +327,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("isDebugMessageOn",                &beamPositionMonitorController::isDebugMessageOn            )
 		;
 
+    char const* getControllerDocString = "This will instantiate a controller based on beamline and controller type. This requires enums as arguments.\n"
+                                         "arg1 - machine mode - can be used as follows: mode=VELA_CLARA_BPM_Control.MACHINE_MODE.VIRTUAL/PHYSICAL/OFFLINE.\n"
+                                         "arg2 - machine area - can be used as follows: mode=VELA_CLARA_BPM_Control.MACHINE_AREA.VELA_INJ/VELA_BA1/VELA_BA2/CLARA_INJ/CLARA_2_VELA.";
     boost::python::class_<VCBPMs,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_BPM_Controller",  &VCBPMs::virtual_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_BPM_Controller",  &VCBPMs::offline_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
@@ -291,7 +346,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def("virtual_CLARA_2_VELA_BPM_Controller",  &VCBPMs::virtual_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_2_VELA_BPM_Controller",  &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_2_VELA_BPM_Controller", &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("getBPMController", &VCBPMs::getBPMController, return_value_policy<reference_existing_object>())
+        .def("getBPMController", &VCBPMs::getBPMController, getControllerDocString, return_value_policy<reference_existing_object>())
+        .def("setQuiet",         &VCBPMs::setQuiet )
+        .def("setVerbose",       &VCBPMs::setVerbose )
+        .def("setMessage",       &VCBPMs::setMessage )
+        .def("setDebugMessage",  &VCBPMs::setDebugMessage )
         ;
 
 };

@@ -23,10 +23,8 @@ withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
 withVM(true),
-showMessages(true),
-dontShowMessages(false),
 showDebugMessages(false),
-dontShowDebugMessages(false),
+showMessages(true),
 VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
 VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
 VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
@@ -115,6 +113,34 @@ VCBPMs::~VCBPMs()
                physical_CLARA_2_VELA_BPM_Controller_Obj = nullptr;
     }
 }    //dtor
+//______________________________________________________________________________
+void VCBPMs::setQuiet()
+{
+    std::cout << "VCBPMs Quiet Mode Set." << std::endl;
+    showDebugMessages = false;
+    showMessages = false;
+}
+//______________________________________________________________________________
+void VCBPMs::setVerbose()
+{
+    std::cout << "VCBPMs Verbose Mode Set." << std::endl;
+    showDebugMessages = true;
+    showMessages = true;
+}
+//______________________________________________________________________________
+void VCBPMs::setMessage()
+{
+    std::cout << "VCBPMs Message Mode Set." << std::endl;
+    showDebugMessages = false;
+    showMessages = true;
+}
+//______________________________________________________________________________
+void VCBPMs::setDebugMessage()
+{
+    std::cout << "VCBPMs DebugMessage Mode Set." << std::endl;
+    showDebugMessages = true;
+    showMessages = false;
+}
 //______________________________________________________________________________
 beamPositionMonitorController & VCBPMs::virtual_VELA_INJ_BPM_Controller()
 {
