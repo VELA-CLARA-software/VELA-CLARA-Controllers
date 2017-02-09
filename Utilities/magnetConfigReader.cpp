@@ -117,27 +117,32 @@ bool magnetConfigReader::readConfig()
     magPSUObjects_R.clear();
     pvPSUMonStructs.clear();
     pvPSUComStructs.clear();
-    bool psuSuccess = readConfig(*this, NRConf, &magnetConfigReader::addToMagPSUObjectsV1, &magnetConfigReader::addToMagPSUComStructsV1,&magnetConfigReader::addToMagPSUMonStructsV1 );
 
-    if( !psuSuccess )
+    if( isnotNO_CONFIG_FILE(NRConf) ) // CLARA magnets won't have a NRCONF file
     {
-        success = false;
-        debugMessage( "Error reading magnet psu config file, returning FALSE" );
-    }
-    else
-        debugMessage( "Success reading magnet psu config file, returning TRUE" );
 
-    if( magPSUObjects_N.size() != magPSUObjects_R.size() )
-    {
-        debugMessage( "*** Number of N-PSU Objects does not equal number of R-PSU objects ERROR ***" );
-        success = false;
-    }
-    else if( numObjs == magPSUObjects_N.size() && numObjs == magPSUObjects_R.size() )
-        debugMessage( "*** Created ", numObjs, " NR-PSU Objects, As Expected ***", "\n" );
-    else
-    {
-        debugMessage( "*** Created ", magPSUObjects_N.size() ," MAG PSU Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
-        success = false;
+        bool psuSuccess = readConfig(*this, NRConf, &magnetConfigReader::addToMagPSUObjectsV1, &magnetConfigReader::addToMagPSUComStructsV1,&magnetConfigReader::addToMagPSUMonStructsV1 );
+
+        if( !psuSuccess )
+        {
+            success = false;
+            debugMessage( "Error reading magnet psu config file, returning FALSE" );
+        }
+        else
+            debugMessage( "Success reading magnet psu config file, returning TRUE" );
+
+        if( magPSUObjects_N.size() != magPSUObjects_R.size() )
+        {
+            debugMessage( "*** Number of N-PSU Objects does not equal number of R-PSU objects ERROR ***" );
+            success = false;
+        }
+        else if( numObjs == magPSUObjects_N.size() && numObjs == magPSUObjects_R.size() )
+            debugMessage( "*** Created ", numObjs, " NR-PSU Objects, As Expected ***", "\n" );
+        else
+        {
+            debugMessage( "*** Created ", magPSUObjects_N.size() ," MAG PSU Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
+            success = false;
+        }
     }
     //Magnets
     magObjects.clear();
@@ -161,36 +166,6 @@ bool magnetConfigReader::readConfig()
         debugMessage( "*** Created ", magObjects.size() ," Magnet Objects, Expected ", numObjs,  " ERROR ***"  ); /// MAGIC_NUMBER
         success = false;
     }
-
-
-///DO NOT READ DEGUASS FILE ANYMORE
-   // bool degSuccess = readConfig( *this, configFile3, &magnetConfigReader::addToDegaussObj, nullptr, nullptr );
-    //if( !degSuccess )
-     //   success = false;
-
-    // sanity check number of elements to degauss
-
-//    if( degstruct.numDegaussElements == degstruct.degValues.size() )
-//        debugMessage( "*** Found ", degstruct.numDegaussElements, " elements that can be degaussed as expected ***" );
-//    else
-//    {
-//        debugMessage( "*** Found ", degstruct.degValues.size(), " degauss steps, expected ", degstruct.numDegaussElements, " ***ERROR***" );
-//        success = false;
-//    }
-
-    // sanity check number of elements to degauss
-//
-//    size_t degStepsErrors = 0;
-//    for( auto && it : degstruct.degValues )
-//        if( it.second.size() != degstruct.numDegaussSteps  )
-//        {
-//            debugMessage("Error ", it.first, " has incorrect number of degauss steps.");
-//            success = false;
-//            ++degStepsErrors;
-//        }
-//    if( degStepsErrors == 0 )
-//        debugMessage( "*** Set ", degstruct.numDegaussSteps, " degauss steps as expected ***" );
-
     if(success)
         debugMessage("magnetConfigReader readconfig is returning TRUE");
     else
@@ -399,6 +374,7 @@ void magnetConfigReader::addRevType( const std::vector<std::string> &keyVal )
 //______________________________________________________________________________
 void magnetConfigReader::addToPVStruct( std::vector< magnetStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal )
 {
+    // so we can pick out the pv_suffix from the PV_CHTYPE, PV_COUNT, PV_MASK
     if( stringIsSubString( keyVal[0], "SUFFIX" ) )
     {
         pvStruct_v.push_back( magnetStructs::pvStruct() );    /// Any way to avoid the ladders?
@@ -410,6 +386,14 @@ void magnetConfigReader::addToPVStruct( std::vector< magnetStructs::pvStruct >  
         else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::On;
 
+        else if( keyVal[0] == UTL::PV_SUFFIX_SETPOWER  )
+        {
+            message("oh yeah we got one ");
+            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::On;
+
+        }
+
+
         else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::Off;
 
@@ -418,6 +402,12 @@ void magnetConfigReader::addToPVStruct( std::vector< magnetStructs::pvStruct >  
 
         else if( keyVal[0] == UTL::PV_SUFFIX_SI  )
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SI;
+        // clara phase 1 pvs, that will hopefully change.
+        else if( keyVal[0] == UTL::PV_SUFFIX_SETIOUT  )
+            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SI;
+
+        else if( keyVal[0] == UTL::PV_SUFFIX_I  )
+            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RI;
 
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }

@@ -69,6 +69,39 @@ class VCscreens
 
         const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_AREA;
 };
+/// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
+/// Create a load of different function pointers and use them in the bindings
+/// !!! OR !!! You may be able to use this macro, BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS
+/// http://www.boost.org/doc/libs/1_59_0/libs/python/doc/tutorial/doc/html/python/functions.html
+/// I'm going to do it the function pointer way here...
+/// The other alternative is to create lots of different function names in the c++ class
+/// just to make the function pointer overloading neater, let's make some typedefs, generally i don't like doing this
+typedef double doub;
+typedef const double cdou;
+typedef std::vector<double> vecd;
+typedef std::vector<std::vector<double>> vvcd;
+typedef const std::vector<double> cved;
+
+typedef const size_t csiz;
+typedef size_t size;
+typedef std::vector<size_t> vsiz;
+
+typedef std::string stri;
+typedef const std::string cstr;
+typedef std::vector<std::string> vecs;
+typedef const std::vector<std::string> cves;
+
+typedef std::vector<bool> vecb;
+///
+bool(screenController::*screenIN_1)(cstr&  ) = &screenController::screenIN;
+bool(screenController::*screenIN_2)(cves&  ) = &screenController::screenIN;
+bool(screenController::*screenOUT_1)(cstr& ) = &screenController::screenOUT;
+bool(screenController::*screenOUT_2)(cves& ) = &screenController::screenOUT;
+bool(screenController::*isScreenIN_1)(cstr& )= &screenController::isScreenIN;
+vecb(screenController::*isScreenIN_2)(cves& )= &screenController::isScreenIN;
+
+
+
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
 {
@@ -98,6 +131,101 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
         .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
         ;
+    // screen structs
+    enum_<screenStructs::SCREEN_STATE>("SCREEN_STATE")
+        .value("SCREEN_IN",     screenStructs::SCREEN_STATE::SCREEN_IN )
+        .value("SCREEN_OUT",     screenStructs::SCREEN_STATE::SCREEN_OUT )
+        .value("SCREEN_MOVING",     screenStructs::SCREEN_STATE::SCREEN_MOVING )
+        .value("SCREEN_ERROR",    screenStructs::SCREEN_STATE::SCREEN_ERROR )
+        .value("SCREEN_UNKNOWN", screenStructs::SCREEN_STATE::SCREEN_UNKNOWN )
+        .value("H_MIRROR", screenStructs::SCREEN_STATE::H_MIRROR )
+        .value("V_MIRROR", screenStructs::SCREEN_STATE::V_MIRROR )
+        .value("H_50U_SLIT", screenStructs::SCREEN_STATE::H_50U_SLIT )
+        .value("V_50U_SLIT", screenStructs::SCREEN_STATE::V_50U_SLIT )
+        .value("H_25U_SLIT", screenStructs::SCREEN_STATE::H_25U_SLIT )
+        .value("V_25U_SLIT", screenStructs::SCREEN_STATE::V_25U_SLIT )
+        .value("H_6p3MM_HOLE", screenStructs::SCREEN_STATE::H_6p3MM_HOLE )
+        .value("V_6p3MM_HOLE", screenStructs::SCREEN_STATE::V_6p3MM_HOLE )
+        .value("H_10MM_HOLE", screenStructs::SCREEN_STATE::H_10MM_HOLE )
+        .value("V_10MM_HOLE", screenStructs::SCREEN_STATE::V_10MM_HOLE )
+        .value("H_YAG", screenStructs::SCREEN_STATE::H_YAG )
+        .value("V_YAG", screenStructs::SCREEN_STATE::V_YAG )
+        .value("H_SLIT", screenStructs::SCREEN_STATE::H_SLIT )
+        .value("V_SLIT", screenStructs::SCREEN_STATE::V_SLIT )
+        .value("H_RF", screenStructs::SCREEN_STATE::H_RF )
+        .value("V_RF", screenStructs::SCREEN_STATE::V_RF )
+        .value("V_OUT", screenStructs::SCREEN_STATE::V_OUT )
+        .value("H_OUT", screenStructs::SCREEN_STATE::H_OUT )
+        .value("UNKNOWN_POSITION", screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
+        ;
+    enum_<screenStructs::SCREEN_TYPE>("SCREEN_TYPE")
+        .value("UNKNOWN_SCREEN_TYPE", screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE )
+        .value("VELA_HV_MOVER",       screenStructs::SCREEN_TYPE::VELA_HV_MOVER )
+        .value("VELA_PNEUMATIC",      screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
+        ;
+    enum_<screenStructs::DRIVER_STATE>("DRIVER_STATE")
+        .value("DRIVER_MOVING", screenStructs::DRIVER_STATE::DRIVER_MOVING )
+        .value("DRIVER_STATIONARY",       screenStructs::DRIVER_STATE::DRIVER_STATIONARY )
+        .value("DRIVER_DISABLED",      screenStructs::DRIVER_STATE::DRIVER_DISABLED )
+        .value("DRIVER_ENABLED",      screenStructs::DRIVER_STATE::DRIVER_ENABLED )
+        .value("DRIVER_ERROR",      screenStructs::DRIVER_STATE::DRIVER_ERROR )
+        ;
+    enum_<screenStructs::DRIVER_DIRECTION>("DRIVER_DIRECTION")
+        .value("HORIZONTAL",  screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+        .value("VERTICAL",    screenStructs::DRIVER_DIRECTION::VERTICAL )
+        .value("NONE",        screenStructs::DRIVER_DIRECTION::NONE )
+        ;
+    // maps foudn in objects
+
+    class_<std::map<screenStructs::SCREEN_STATE,bool>>("std_map_SCREEN_STATE_bool")
+        .def(map_indexing_suite<  std::map<screenStructs::SCREEN_STATE,bool> >())
+        ;
+    class_<std::map<screenStructs::SCREEN_STATE,double>>("std_map_SCREEN_STATE_double")
+        .def(map_indexing_suite<  std::map<screenStructs::SCREEN_STATE,double> >())
+        ;
+    class_<std::map<std::string,bool>>("std_map_SCREEN_STATE_bool")
+        .def(map_indexing_suite< std::map<std::string, bool> >())
+        ;
+
+    boost::python::class_<screenStructs::screenDriverStatus,boost::noncopyable>
+        ("screenDriverStatus", boost::python::no_init)
+        .def_readonly("parentScreen",   &screenStructs::screenDriverStatus::parentScreen)
+        .def_readonly("position",       &screenStructs::screenDriverStatus::position)
+        .def_readonly("STA",            &screenStructs::screenDriverStatus::STA)
+        .def_readonly("STA_bit_label",  &screenStructs::screenDriverStatus::STA_bit_label)
+        .def_readonly("STA_bit_map",    &screenStructs::screenDriverStatus::STA_bit_map)
+        .def_readonly("dir",            &screenStructs::screenDriverStatus::dir)
+        .def_readonly("state",          &screenStructs::screenDriverStatus::state)
+        ;
+    boost::python::class_<screenStructs::screenCassette,boost::noncopyable>
+        ("screenCassette", boost::python::no_init)
+        .def_readonly("parentScreen",               &screenStructs::screenCassette::parentScreen)
+        .def_readonly("screenState",                &screenStructs::screenCassette::screenState)
+        .def_readonly("posTolerance",               &screenStructs::screenCassette::posTolerance)
+        .def_readonly("cassetteElements",           &screenStructs::screenCassette::cassetteElements)
+        .def_readonly("cassetteElementsPosition",   &screenStructs::screenCassette::cassetteElementsPosition)
+        .def_readonly("dir",                        &screenStructs::screenCassette::dir)
+        ;
+    boost::python::class_<screenStructs::screenDriver,boost::noncopyable>
+        ("screenDriver", boost::python::no_init)
+        .def_readonly("positionError",  &screenStructs::screenDriver::positionError)
+        .def_readonly("homeError",      &screenStructs::screenDriver::homeError)
+        .def_readonly("parentScreen",   &screenStructs::screenDriver::parentScreen)
+        .def_readonly("hDriverSTA",     &screenStructs::screenDriver::hDriverSTA)
+        .def_readonly("vDriverSTA",     &screenStructs::screenDriver::vDriverSTA)
+        .def_readonly("hCassette",      &screenStructs::screenDriver::hCassette)
+        .def_readonly("vCassette",      &screenStructs::screenDriver::vCassette)
+        ;
+
+    boost::python::class_<screenStructs::screenObject,boost::noncopyable>
+        ("screenObject", boost::python::no_init)
+        .def_readonly("screenType",  &screenStructs::screenObject::screenType)
+        .def_readonly("driver",      &screenStructs::screenObject::driver)
+        .def_readonly("screenState", &screenStructs::screenObject::screenState)
+        .def_readonly("numIlocks",   &screenStructs::screenObject::numIlocks)
+        ;
+
+
     /// Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
@@ -109,12 +237,20 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
         ;
+
     boost::python::class_<screenController, boost::python::bases<controller>, boost::noncopyable>
         ("screenController","screenController Doc String",boost::python::no_init)
         .def("getILockStates",           &screenController::getILockStates        )
-        .def("getILockStatesDefinition", &screenController::getILockStatesDefinition )
+//        .def("getMagPSUStateDefinition", &magnetController::getMagPSUStateDefinition )
+//        .def("getILockStatesDefinition", &magnetController::getILockStatesDefinition )
         .def("get_CA_PEND_IO_TIMEOUT",   &screenController::get_CA_PEND_IO_TIMEOUT   )
         .def("set_CA_PEND_IO_TIMEOUT",   &screenController::set_CA_PEND_IO_TIMEOUT   )
+        .def("isScreenIN",  isScreenIN_1  )
+        .def("isScreenIN",  isScreenIN_2  )
+        .def("screenIN",  screenIN_1  )
+        .def("screenIN",  screenIN_2  )
+        .def("screenOUT", screenOUT_1 )
+        .def("screenOUT", screenOUT_2 )
         ;
 
     /// The main class that creates all the controller obejcts

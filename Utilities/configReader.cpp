@@ -275,4 +275,31 @@ chtype configReader::getCHTYPE( const  std::string & val )
     return r;
 }
 //______________________________________________________________________________
+bool configReader::isNO_CONFIG_FILE( const  std::string & str )
+{
+    return str == UTL::NO_CONFIG_FILE;
+}
+//______________________________________________________________________________
+bool configReader::isnotNO_CONFIG_FILE( const   std::string & str )
+{
+    return !isNO_CONFIG_FILE(str);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -25,13 +25,13 @@ public:
     ~screenConfigReader();
 
     bool readConfig();
-    bool getScreenObjects( std::map< std::string, screenStructs::screenObjectDEV > & mapToFill );
+    bool getScreenObjects( std::map< std::string, screenStructs::screenObject > & mapToFill );
 
 
 private:
 
     // Screen  Objects
-    std::vector< screenStructs::screenObjectDEV > scrObjects;
+    std::vector< screenStructs::screenObject > scrObjects;
     // the screens come in differen flavours, with different parameters to monitor
     // this may have to be  extended if CLARA screens are different
     std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_PNEUMATIC;
@@ -56,7 +56,7 @@ private:
 //    void setLasttoVELA_HV_MOVER();
 //    void setLasttoVELA_PNEUMATIC();
 
-    void setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element );
+//    void setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element );
 
     void setH(std::vector< screenStructs::pvStruct > & pvs );
     void setV(std::vector< screenStructs::pvStruct > & pvs );

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 namespace UTL
 {
@@ -30,6 +31,7 @@ namespace UTL
     //const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
     const std::string VM_PREFIX   = "VM-";
 
+    const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
     const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
     const std::string VELA_VALVE_CONFIG                = "velaVacuumValve.config";
@@ -50,13 +52,17 @@ namespace UTL
     const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
     const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
     const std::string VELA_BA2_MAG_NR_PSU_CONFIG       = "velaBA2MagnetsNRpsu.config";
-    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnetsNRpsu.config";
+    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnetsNRpsu.config";// not going to use
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
     const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
     const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
-    const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";
+    const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";// not going to use
+    const std::string CLARA_PH1_MAG_CONFIG             = "claraPH1Magnets.config";
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
+
+
+
 
 // the below has to go
     const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
@@ -166,16 +172,22 @@ namespace UTL
     const std::string PV_SUFFIX_WARMUPT   = "PV_SUFFIX_WARMUPT";
 
     // NR-PSU
-    const std::string PARENT_MAGNET = "PARENT_MAGNET";
+    const std::string PARENT_MAGNET   = "PARENT_MAGNET";
     const std::string MAG_GANG_MEMBER = "MAG_GANG_MEMBER";
-    const std::string PV_ROOT_N   = "PV_ROOT_N";
-    const std::string PV_ROOT_R   = "PV_ROOT_R";
+    const std::string PV_ROOT_N       = "PV_ROOT_N";
+    const std::string PV_ROOT_R       = "PV_ROOT_R";
     // Magnet
 
     const std::string UNKNOWN_MAGNET_STRING = "UNKNOWN_MAGNET";
     const std::string PV_SUFFIX_RI = "PV_SUFFIX_RI";
     const std::string PV_SUFFIX_SI = "PV_SUFFIX_SI";
     const std::string PV_PSU_ROOT  = "PV_PSU_ROOT";
+    const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change >>??
+    // clara mistake - hopefully will change...
+    const std::string PV_SUFFIX_SETIOUT  = "PV_SUFFIX_SETIOUT";
+    const std::string PV_SUFFIX_I  = "PV_SUFFIX_I";
+
+
 
     const std::string MAG_TYPE  = "MAG_TYPE";
     const std::string SOL   = "SOL";
@@ -425,9 +437,14 @@ namespace UTL
     const std::string OVER_CURRENT              = "OVER_CURRENT";
     const std::string PROGRAMME_CHECKSUM_ERROR  = "PROGRAMME_CHECKSUM_ERROR";
 
-    const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
+
+    // master list of everything that can go on a screen driver cassette
+    // probably should try nad get rid of this
+    const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
                                                                    HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
                                                                    SLIT_POS, OUT_POS };
+
+
 
 }
 #endif //CONFIG_DEFINITIONS_H

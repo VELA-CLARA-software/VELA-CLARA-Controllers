@@ -24,6 +24,15 @@
 // boost.python
 #ifdef BUILD_DLL
 #include <boost/python.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#include <boost/python.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/args.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/return_value_policy.hpp>
+#include <boost/python/overloads.hpp>
 #endif
 
 class magnetController : public controller
@@ -146,21 +155,21 @@ class magnetController : public controller
         VELA_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
         std::vector<  VELA_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
       ///
-        size_t                getNumDegSteps( const std::string & magName );
-        std::vector< size_t > getNumDegSteps( const std::vector< std::string > & magNames );
+        size_t              getNumDegSteps(const std::string & magName );
+        std::vector<size_t> getNumDegSteps(const std::vector<std::string> & magNames);
       ///
-        std::vector< double >                getDegValues( const std::string & magName );
-        std::vector< std::vector< double > > getDegValues( const std::vector< std::string > & magName );
+        std::vector<double>              getDegValues(const std::string & magName);
+        std::vector<std::vector<double>> getDegValues(const std::vector< std::string > & magName );
       ///
       /// BJAS additions
-        std::vector< double >              getFieldIntegralCoefficients( const std::string & magName );
-        std::vector<std::vector< double >> getFieldIntegralCoefficients( const std::vector< std::string > & magNames );
+        std::vector<double>                getFieldIntegralCoefficients( const std::string & magName );
+        std::vector<std::vector<double>> getFieldIntegralCoefficients( const std::vector< std::string > & magNames );
       ///
         double                getPosition( const std::string & magName );
-        std::vector< double > getPosition( const std::vector< std::string > & magNames );
+        std::vector<double> getPosition( const std::vector< std::string > & magNames );
       ///
         double                getMagneticLength( const std::string & magName );
-        std::vector< double > getMagneticLength( const std::vector< std::string > & magNames );
+        std::vector<double> getMagneticLength( const std::vector< std::string > & magNames );
       ///
         std::string              getManufacturer( const std::string & magName );
         std::vector<std::string> getManufacturer( const std::vector< std::string > & magNames );
@@ -183,6 +192,17 @@ class magnetController : public controller
         boost::python::dict getILockStates_Py( std::string magName );
         boost::python::dict getILockStatesStr_Py( std::string magName );
         boost::python::dict getMagPSUStateDefinition();
+
+//        typedef const std::string cstr;
+//        typedef const std::vector<std::string> cves;
+//
+//        size_t degauss_1(cstr& name , bool resettozero = false ){ return degauss(name,resettozero); }
+//        BOOST_PYTHON_MEMEBR_FUNCTION_OVERLOADS(degauss_1_overloads, magnetController::degauss_1, 1, 2)
+
+//        BOOST_PYTHON_MEMEBR_FUNCTION_OVERLOADS(degauss_1_overloads, magnetController::degauss_1, 1, 2)//degauss_1_overloads(
+
+
+
 #endif // BUILD_DLL
 
         /// YOU CANNOT SET THE CONTROLLER TYPE, NO-WAY JOSE

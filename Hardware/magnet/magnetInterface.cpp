@@ -21,6 +21,7 @@
 #include <sstream>
 #include <chrono>
 #include <algorithm>
+#include <thread>
 //  __  ___  __   __    /  __  ___  __   __
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
@@ -106,6 +107,9 @@ bool magnetInterface::initObjects()
     bool magDatSuccess = configReader.getMagData( allMagnetData );
     degStruct = configReader.getDeguassStruct();
     addDummyElementToAllMAgnetData();
+    // set the machine area on each magent, this allows for flavour switching functions, such as switchON etc..
+    for( auto && it : allMagnetData )
+        it.second.machineArea = myMachineArea;
     return magDatSuccess;
 }
 //______________________________________________________________________________
@@ -265,6 +269,7 @@ void magnetInterface::staticEntryMagnetMonitor( const event_handler_args args)
             ms->interface->updateSI( *(double*)args.dbr, ms->objName );
             break;
         case magnetStructs::MAG_PV_TYPE::Sta:
+            ms->interface->message(ms->objName, " Sta changed = ", *(unsigned short*)args.dbr);
             ms->interface->updatePSUSta( *(unsigned short*)args.dbr, ms->objName, ms->psuType );// see manual DBR_ENUM	dbr_enum_t	16 bit unsigned integer
             break;
         default:
@@ -335,20 +340,20 @@ void magnetInterface::updatePSUSta( const unsigned short value, const std::strin
         {
             case magnetStructs::MAG_PSU_TYPE::PSU:
                 allMagnetData[ magName ].psuState  = newstate;
-                //debugMessage( magName, " New PSU State = ", ENUM_TO_STRING( allMagnetData[ magName ].psuState ) );
+                debugMessage( magName, " New PSU State = ", ENUM_TO_STRING( allMagnetData[ magName ].psuState ) );
                 /// If the polarity has changed we need to change SI & RI
                 updateSI_WithPol( magName );
                 updateRI_WithPol( magName );
                 break;
             case magnetStructs::MAG_PSU_TYPE::PSU_R:
                 allMagnetData[ magName ].rPSU.psuState  = newstate;
-                //debugMessage( magName, " New PSU_R State = ", ENUM_TO_STRING( allMagnetData[ magName ].rPSU.psuState ) );
+                debugMessage( magName, " New PSU_R State = ", ENUM_TO_STRING( allMagnetData[ magName ].rPSU.psuState ) );
                 updateSI_WithPol( magName );
                 updateRI_WithPol( magName );
                 break;
             case magnetStructs::MAG_PSU_TYPE::PSU_N:
                 allMagnetData[ magName ].nPSU.psuState  = newstate;
-                //debugMessage( magName, " New PSU_N State = ", ENUM_TO_STRING( allMagnetData[ magName ].nPSU.psuState ) );
+                debugMessage( magName, " New PSU_N State = ", ENUM_TO_STRING( allMagnetData[ magName ].nPSU.psuState ) );
                 break;
             default:
                 ;
@@ -734,6 +739,7 @@ bool magnetInterface::switchONpsu_R( const vec_s & magNames )
 //______________________________________________________________________________
 bool magnetInterface::togglePSU( const vec_s & magNames, magnetStructs::MAG_PV_TYPE pvtype, magnetStructs::MAG_PSU_TYPE psutype)
 {
+    debugMessage("togglePSU called");
     bool success = false;
     std::vector< chid* > CHIDS;
     std::vector< chtype* > CHTYPE;
@@ -745,13 +751,16 @@ bool magnetInterface::togglePSU( const vec_s & magNames, magnetStructs::MAG_PV_T
                 case magnetStructs::MAG_PSU_TYPE::PSU:
                     if( iLocksAreGood( allMagnetData[ it ].iLockStates ) )
                     {
+
                         if( pvtype == magnetStructs::MAG_PV_TYPE::On )
                         {
+                            message("adding on chids");
                             CHTYPE.push_back( &allMagnetData[ it ].pvComStructs[ magnetStructs::MAG_PV_TYPE::On ].CHTYPE );
                             CHIDS.push_back ( &allMagnetData[ it ].pvComStructs[ magnetStructs::MAG_PV_TYPE::On ].CHID   );
                         }
                         else if( pvtype == magnetStructs::MAG_PV_TYPE::Off )
                         {
+                            message("adding off chids");
                             CHTYPE.push_back( &allMagnetData[ it ].pvComStructs[ magnetStructs::MAG_PV_TYPE::Off ].CHTYPE );
                             CHIDS.push_back ( &allMagnetData[ it ].pvComStructs[ magnetStructs::MAG_PV_TYPE::Off ].CHID   );
                         }
@@ -781,11 +790,49 @@ bool magnetInterface::togglePSU( const vec_s & magNames, magnetStructs::MAG_PV_T
 //        }
     if( CHTYPE.size() > 0 )// MAGIC_NUMBER
     {
-        std::string m1 = "Timeout sending EPICS_ACTIVATE to inj Mag PSU";
-        std::string m2 = "Timeout sending EPICS_SEND to inj Mag PSU";
-        success = sendCommand( CHTYPE,  CHIDS,  m1, m2  );
+        // yeah - now clara has come online we're hacking into what worked before
+        // this is propbably not too much of a hack, but lets see where we get to aald 31/01/17 DJS
+        std::string m1,m2;
+        switch( myMachineArea ) // the big magnet machine area switch...
+        {
+            case VELA_ENUM::MACHINE_AREA::CLARA_PH1:
+                message("toggle clara mag attempt");
+                m1 = "Timeout sending psu Toggle Command to CLARA Phase 1 Mag PSU";
+                success = sendCommandCLARA( CHTYPE,  CHIDS, pvtype,  m1 );
+                break;
+            default:
+                m1 = "Timeout sending EPICS_ACTIVATE to Magnet PSU";
+                m2 = "Timeout sending EPICS_SEND to Magnet PSU";
+                success = sendCommand( CHTYPE,  CHIDS,  m1, m2  );
+        }
     }
     return success;
+}
+//______________________________________________________________________________
+bool magnetInterface::sendCommandCLARA(const std::vector<chtype*> &CHTYPE,const std::vector<chid*>&CHID,magnetStructs::MAG_PV_TYPE pvtype,const std::string & m1)
+{
+    bool ret = false;
+    unsigned short com;
+    if( pvtype == magnetStructs::MAG_PV_TYPE::On )
+    {
+        com = EPICS_ACTIVATE;
+        message("sendCommandCLARA on ", com);
+    }
+    else if( pvtype == magnetStructs::MAG_PV_TYPE::Off )
+    {
+        com = EPICS_SEND;
+        message("sendCommandCLARA off ", com);
+    }
+    for( size_t i = 0; i < CHTYPE.size(); ++i )
+        ca_put( *CHTYPE[i], *CHID[i], &com );
+    int status = sendToEpics( "ca_put", "", m1.c_str() );
+    if ( status == ECA_NORMAL )
+    {
+        ret = true;
+    }
+    else
+        message( "sendCommand did not return ECA_NORMAL" );
+    return ret;
 }
 //______________________________________________________________________________
 bool magnetInterface::sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  )
@@ -793,7 +840,7 @@ bool magnetInterface::sendCommand( const std::vector< chtype* > & CHTYPE, const 
     bool ret = false;
     for( size_t i = 0; i < CHTYPE.size(); ++i )
         ca_put( *CHTYPE[i], *CHID[i], &EPICS_ACTIVATE );
-
+    message( "activate" );
     int status = sendToEpics( "ca_put", "", m1.c_str() );
     if ( status == ECA_NORMAL )
     {
@@ -804,7 +851,11 @@ bool magnetInterface::sendCommand( const std::vector< chtype* > & CHTYPE, const 
         if ( status == ECA_NORMAL )
             ret = true;
             //std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); // MAGIC_NUMBER
+        else
+            message( " status == ECA_NORMAL" );
     }
+    else
+        message( "EPICS_ACTIVATE did not return ECA_NORMAL" );
     return ret;
 }
 //______________________________________________________________________________
@@ -895,7 +946,7 @@ void magnetInterface::killFinishedDegaussThreads()
 {
     /// http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
 
-    for (auto it = degaussStructsMap.cbegin(); it != degaussStructsMap.cend() /* not hoisted */; /* no increment */)
+    for (auto && it = degaussStructsMap.cbegin(); it != degaussStructsMap.cend() /* not hoisted */; /* no increment */)
     {
         bool shouldKill = true;
 
@@ -1064,7 +1115,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
         ds.interface->isDegaussingMap[it] = false;
 
 
-    time_t timeFinish = time( 0 ); /// start clock//MAGIC_NUMBER
+    time_t timeFinish = time(0); /// start clock//MAGIC_NUMBER
 
     ds.interface->message( "Degaussing took ", timeFinish- timeStart, " seconds." );
 

@@ -88,6 +88,7 @@ namespace magnetStructs
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_REV_TYPE  magRevType;   /// reverse type, NR, bipolar etc.
         VELA_ENUM::MAG_PSU_STATE psuState;
+        VELA_ENUM::MACHINE_AREA  machineArea;
         size_t numIlocks,numDegaussSteps, maxWaitTime, numDegaussElements;
         nrPSUObject nPSU, rPSU;
         bool isGanged, canNRFlip, samePSURoot;

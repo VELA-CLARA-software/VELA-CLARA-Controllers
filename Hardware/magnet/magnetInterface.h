@@ -248,7 +248,8 @@ class magnetInterface : public interface
         std::vector< chid >   getCHIDs( const vec_s & magNames  );
         std::vector< chtype > getCHTYPSES( const vec_s & magNames  );
 
-        bool sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  );
+        bool sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1="", const std::string & m2="");
+        bool sendCommandCLARA(const std::vector<chtype*> & CHTYPE, const std::vector< chid* > & CHID, magnetStructs::MAG_PV_TYPE pvtype,const std::string & m1="" );
         bool togglePSU( const vec_s & magNames, magnetStructs::MAG_PV_TYPE pvtype, magnetStructs::MAG_PSU_TYPE psutype);
 
         /// DEGAUSS STUFF
@@ -261,10 +262,10 @@ class magnetInterface : public interface
 
         void killFinishedDegaussThreads();
 
-        void printDegaussResults( const vec_s & magToDegSuccess, const vec_s & magToDegOriginal );
-        void getDegaussValues( vec_s & magToDeg, vec_d & values, vec_d & tolerances, size_t step);
+        void printDegaussResults(const vec_s & magToDegSuccess, const vec_s & magToDegOriginal );
+        void getDegaussValues(vec_s & magToDeg, vec_d & values, vec_d & tolerances, size_t step);
 
-        void checkGangedMagnets( vec_s & magToDeg,  vec_s & gangedMagToZero, vec_d & gangedMagToZeroSIValues );
+        void checkGangedMagnets(vec_s & magToDeg,  vec_s & gangedMagToZero, vec_d & gangedMagToZeroSIValues );
         void printDegauss();
         void printFinish();
         void printVec( const std::string & p1, const vec_s & v, size_t numPerLine );

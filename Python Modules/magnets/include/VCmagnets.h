@@ -7,9 +7,14 @@
 
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/args.hpp>
+#include <boost/python/class.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
+#include <boost/python/overloads.hpp>
 
 class VCmagnets
 {
@@ -31,9 +36,9 @@ class VCmagnets
         magnetController& offline_VELA_BA2_Magnet_Controller();
         magnetController& physical_VELA_BA2_Magnet_Controller();
 
-        magnetController& virtual_CLARA_INJ_Magnet_Controller();
-        magnetController& offline_CLARA_INJ_Magnet_Controller();
-        magnetController& physical_CLARA_INJ_Magnet_Controller();
+        magnetController& virtual_CLARA_PH1_Magnet_Controller();
+        magnetController& offline_CLARA_PH1_Magnet_Controller();
+        magnetController& physical_CLARA_PH1_Magnet_Controller();
 
         void setQuiet();
         void setVerbose();
@@ -59,16 +64,14 @@ class VCmagnets
         magnetController * offline_VELA_BA2_Magnet_Controller_Obj;
         magnetController * physical_VELA_BA2_Magnet_Controller_Obj;
 
-        magnetController * virtual_CLARA_INJ_Magnet_Controller_Obj;
-        magnetController * offline_CLARA_INJ_Magnet_Controller_Obj;
-        magnetController * physical_CLARA_INJ_Magnet_Controller_Obj;
+        magnetController * virtual_CLARA_PH1_Magnet_Controller_Obj;
+        magnetController * offline_CLARA_PH1_Magnet_Controller_Obj;
+        magnetController * physical_CLARA_PH1_Magnet_Controller_Obj;
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
 
-        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_AREA;
-
-
+        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
 };
 
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
@@ -77,7 +80,7 @@ class VCmagnets
 /// http://www.boost.org/doc/libs/1_59_0/libs/python/doc/tutorial/doc/html/python/functions.html
 /// I'm going to do it the function pointer way here...
 /// The other alternative is to create lots of different function names in the c++ class
-/// just to make the function pointer overloading neater, lets make some typedefs, generally i don't like doing this
+/// just to make the function pointer overloading neater, let's make some typedefs, generally i don't like doing this
 typedef double doub;
 typedef const double cdou;
 typedef std::vector<double> vecd;
@@ -104,15 +107,12 @@ typedef std::vector<VELA_ENUM::MAG_PSU_STATE>  vpsu;
 ///
 doub(magnetController::*getRI_1)(cstr&) = &magnetController::getRI;
 vecd(magnetController::*getRI_2)(cves&) = &magnetController::getRI;
-
 ///
 doub(magnetController::*getRITolerance_1)(cstr&) = &magnetController::getRITolerance;
 vecd(magnetController::*getRITolerance_2)(cves&) = &magnetController::getRITolerance;
-
 ///
 void(magnetController::*setRITolerance_1)(cstr&, doub) = &magnetController::setRITolerance;
 void(magnetController::*setRITolerance_2)(cves&, cved&) = &magnetController::setRITolerance;
-
 ///
 vecd(magnetController::*getSI_2)(cves&) = &magnetController::getSI;
 doub(magnetController::*getSI_1)(cstr&) = &magnetController::getSI;
@@ -129,6 +129,11 @@ bool(magnetController::*switchOFFpsu_2)(cves&) = &magnetController::switchOFFpsu
 ///
 size_t(magnetController::*degauss_1)(cstr&, bool ) = &magnetController::degauss;
 size_t(magnetController::*degauss_2)(cves&, bool ) = &magnetController::degauss;
+
+// DOES WORK
+BOOST_PYTHON_FUNCTION_OVERLOADS(degauss_1_overloads, degauss_1, 1, 2)//degauss_1_overloads( (python::arg("magName"),python::arg("degaussToZero")=True)
+
+
 ///
 bool(magnetController::*writeDBURT_1)( const msst&, cstr&, cstr&, cstr&) = &magnetController::writeDBURT;
 bool(magnetController::*writeDBURT_2)(              cstr&, cstr&, cstr&) = &magnetController::writeDBURT;
@@ -185,6 +190,8 @@ bool  (magnetController::*setSIZero_1)( cstr & ) = &magnetController::setSIZero;
 bool  (magnetController::*setSIZero_2)( cves & ) = &magnetController::setSIZero;
 
 using namespace boost::python;
+
+
 
 BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
 {
@@ -321,9 +328,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def_readonly("magnetBranch",  &magnetStructs::magnetObject::magnetBranch)
         ;
 
+
+
     /// and the class member functions to expose to python,
     /// remmeber to include enum definitions as boost::python::dict <int, string>
     /// as well as boost::python::dict <int, int>
+
+
     boost::python::class_<magnetController, boost::python::bases<controller>, boost::noncopyable>
         ("magnetController","magnetController Doc String",boost::python::no_init)
         .def("getILockStates",           &magnetController::getILockStates        )
@@ -344,11 +355,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
         .def("switchONpsu", switchONpsu_1)
         .def("switchONpsu", switchONpsu_2)
         .def("switchOFFpsu",switchOFFpsu_1)
-        .def("switchOFFpsu",switchOFFpsu_2)
-        .def("degauss",   degauss_1)
-        .def("degauss",   degauss_2)
-        .def("writeDBURT",     writeDBURT_1)
-        .def("writeDBURT",     writeDBURT_2)
+        .def("switchOFFpsu",             switchOFFpsu_2)
+        .def("degauss", degauss_1
+                        ,(boost::python::arg("magName"),boost::python::arg("degaussToZero")=false),"returnsame's docstring"
+                        )
+        .def("degauss",                  degauss_2)
+        .def("writeDBURT",               writeDBURT_1)
+        .def("writeDBURT",               writeDBURT_2)
         .def("getCurrentMagnetState",    getCurrentMagnetState_1)
         .def("getCurrentMagnetState",    getCurrentMagnetState_2)
         .def("getMagObjConstRef",        &magnetController::getMagObjConstRef,return_value_policy<reference_existing_object>())
@@ -449,11 +462,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_MagnetControl )
              return_value_policy<reference_existing_object>())
         .def("physical_VELA_BA2_Magnet_Controller",  &VCmagnets::physical_VELA_BA2_Magnet_Controller,
              return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_INJ_Magnet_Controller",  &VCmagnets::virtual_CLARA_INJ_Magnet_Controller,
+        .def("virtual_CLARA_PH1_Magnet_Controller",  &VCmagnets::virtual_CLARA_PH1_Magnet_Controller,
              return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_INJ_Magnet_Controller",  &VCmagnets::offline_CLARA_INJ_Magnet_Controller,
+        .def("offline_CLARA_PH1_Magnet_Controller",  &VCmagnets::offline_CLARA_PH1_Magnet_Controller,
              return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_INJ_Magnet_Controller",  &VCmagnets::physical_CLARA_INJ_Magnet_Controller,
+        .def("physical_CLARA_PH1_Magnet_Controller",  &VCmagnets::physical_CLARA_PH1_Magnet_Controller,
              return_value_policy<reference_existing_object>())
         .def("getMagnetController",  &VCmagnets::getMagnetController,
              return_value_policy<reference_existing_object>())

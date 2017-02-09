@@ -151,7 +151,7 @@ void interface::addILockChannels( const int numIlocks, const std::string & pvRoo
     for( auto && it : iLockPVStructs )
     {
         it.second.objName = objName;
-        ca_create_channel( it.second.pv.c_str(), 0, 0, 0, &it.second.CHID );
+        ca_create_channel( it.second.pv.c_str(), 0, 0, 0, &it.second.CHID );//MAGIC_NUMBER
         debugMessage( "Create channel to ", it.second.pv );
     }
 }

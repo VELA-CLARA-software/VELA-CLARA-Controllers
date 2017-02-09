@@ -5,15 +5,15 @@ VCmagnets::VCmagnets():
 virtual_VELA_INJ_Magnet_Controller_Obj(nullptr),
 virtual_VELA_BA1_Magnet_Controller_Obj(nullptr),
 virtual_VELA_BA2_Magnet_Controller_Obj(nullptr),
-virtual_CLARA_INJ_Magnet_Controller_Obj(nullptr),
+virtual_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 physical_VELA_INJ_Magnet_Controller_Obj(nullptr),
 physical_VELA_BA1_Magnet_Controller_Obj(nullptr),
 physical_VELA_BA2_Magnet_Controller_Obj(nullptr),
-physical_CLARA_INJ_Magnet_Controller_Obj(nullptr),
+physical_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 offline_VELA_INJ_Magnet_Controller_Obj(nullptr),
 offline_VELA_BA1_Magnet_Controller_Obj(nullptr),
 offline_VELA_BA2_Magnet_Controller_Obj(nullptr),
-offline_CLARA_INJ_Magnet_Controller_Obj(nullptr),
+offline_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
@@ -21,7 +21,7 @@ withVM(true),
 VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
 VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
 VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_INJ( VELA_ENUM::MACHINE_AREA::CLARA_INJ),
+CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
 UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
 shouldShowDebugMessage(false),//default is quiet mode
 shouldShowMessage(false)//default is quiet mode
@@ -66,20 +66,20 @@ VCmagnets::~VCmagnets()
                physical_VELA_BA2_Magnet_Controller_Obj = nullptr;
     }
 
-    if(virtual_CLARA_INJ_Magnet_Controller_Obj)
+    if(virtual_CLARA_PH1_Magnet_Controller_Obj)
     {
-        delete virtual_CLARA_INJ_Magnet_Controller_Obj;
-               virtual_CLARA_INJ_Magnet_Controller_Obj = nullptr;
+        delete virtual_CLARA_PH1_Magnet_Controller_Obj;
+               virtual_CLARA_PH1_Magnet_Controller_Obj = nullptr;
     }
-    if(offline_CLARA_INJ_Magnet_Controller_Obj)
+    if(offline_CLARA_PH1_Magnet_Controller_Obj)
     {
-        delete offline_CLARA_INJ_Magnet_Controller_Obj;
-               offline_CLARA_INJ_Magnet_Controller_Obj = nullptr;
+        delete offline_CLARA_PH1_Magnet_Controller_Obj;
+               offline_CLARA_PH1_Magnet_Controller_Obj = nullptr;
     }
-    if(physical_CLARA_INJ_Magnet_Controller_Obj)
+    if(physical_CLARA_PH1_Magnet_Controller_Obj)
     {
-        delete physical_CLARA_INJ_Magnet_Controller_Obj;
-               physical_CLARA_INJ_Magnet_Controller_Obj = nullptr;
+        delete physical_CLARA_PH1_Magnet_Controller_Obj;
+               physical_CLARA_PH1_Magnet_Controller_Obj = nullptr;
     }
 
         if(virtual_VELA_INJ_Magnet_Controller_Obj)
@@ -279,55 +279,55 @@ magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
     return *physical_VELA_BA1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
-magnetController& VCmagnets::virtual_CLARA_INJ_Magnet_Controller()
+magnetController& VCmagnets::virtual_CLARA_PH1_Magnet_Controller()
 {
 
-    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
+    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
+//    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_NR_PSU_CONFIG;
 
-    if( virtual_CLARA_INJ_Magnet_Controller_Obj )
+    if( virtual_CLARA_PH1_Magnet_Controller_Obj )
     {
-        std::cout << "virtual_CLARA_INJ_Magnet_Controller object already exists," << std::endl;
+        std::cout << "virtual_CLARA_PH1_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        std::cout << "Creating virtual_CLARA_INJ_Magnet_Controller object" << std::endl;
-        virtual_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withVM, withEPICS,CLARA_INJ );
+        std::cout << "Creating virtual_CLARA_PH1_Magnet_Controller object" << std::endl;
+        virtual_CLARA_PH1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf,  UTL::NO_CONFIG_FILE, withVM, withEPICS,CLARA_PH1 );
     }
-    return *virtual_CLARA_INJ_Magnet_Controller_Obj;
+    return *virtual_CLARA_PH1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
-magnetController& VCmagnets::offline_CLARA_INJ_Magnet_Controller()
+magnetController& VCmagnets::offline_CLARA_PH1_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
-    if( offline_CLARA_INJ_Magnet_Controller_Obj )
+    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
+    //std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_NR_PSU_CONFIG;
+    if( offline_CLARA_PH1_Magnet_Controller_Obj )
     {
-        std::cout << "offline_CLARA_INJ_Magnet_Controller object already exists," << std::endl;
+        std::cout << "offline_CLARA_PH1_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        std::cout << "Creating offline_CLARA_INJ_Magnet_Controller object" << std::endl;
-        offline_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withoutEPICS,CLARA_INJ );
+        std::cout << "Creating offline_CLARA_PH1_Magnet_Controller object" << std::endl;
+        offline_CLARA_PH1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf,  UTL::NO_CONFIG_FILE, withoutVM, withoutEPICS,CLARA_PH1 );
     }
-    return *offline_CLARA_INJ_Magnet_Controller_Obj;
+    return *offline_CLARA_PH1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
-magnetController& VCmagnets::physical_CLARA_INJ_Magnet_Controller()
+magnetController& VCmagnets::physical_CLARA_PH1_Magnet_Controller()
 {
 
-    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_CONFIG;
-    std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_INJ_MAG_NR_PSU_CONFIG;
-    if( physical_CLARA_INJ_Magnet_Controller_Obj )
+    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
+    //std::string nconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_NR_PSU_CONFIG;
+    if( physical_CLARA_PH1_Magnet_Controller_Obj )
     {
-        std::cout << "physical_CLARA_INJ_Magnet_Controller object already exists," << std::endl;
+        std::cout << "physical_CLARA_PH1_Magnet_Controller object already exists," << std::endl;
     }
     else
     {
-        std::cout << "creating physical_CLARA_INJ_Magnet_Controller object" << std::endl;
-        physical_CLARA_INJ_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf, nconf, withoutVM, withEPICS,CLARA_INJ );
+        std::cout << "creating physical_CLARA_PH1_Magnet_Controller object" << std::endl;
+        physical_CLARA_PH1_Magnet_Controller_Obj = new magnetController( shouldShowMessage, shouldShowDebugMessage, mconf,  UTL::NO_CONFIG_FILE, withoutVM, withEPICS,CLARA_PH1 );
     }
-    return *physical_CLARA_INJ_Magnet_Controller_Obj;
+    return *physical_CLARA_PH1_Magnet_Controller_Obj;
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )

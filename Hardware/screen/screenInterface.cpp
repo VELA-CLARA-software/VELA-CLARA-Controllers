@@ -41,14 +41,23 @@ screenInterface::screenInterface( const std::string & conf1,
 configReader( conf1, conf2, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface( show_messages_ptr, show_debug_messages_ptr ),
 shouldStartEPICs( shouldStartEPICs ),
-myMachineArea(myMachineArea)
+myMachineArea(myMachineArea),
+dualMoveNum(0)
 {
     initialise();
 }
 //__________________________________________________________________________________
 screenInterface::~screenInterface()///This is the destructor for the class
 {
-    for( auto && it : continuousMonitorStructs )
+    //    debugMessage( "magnetInterface DESTRUCTOR CALLED");
+    for (auto && it : screenDualMoveStructsMap )
+    {
+        debugMessage("in screenInterface: delete screenDualMove thread ", it.first );
+        it.second.thread->join();
+        delete it.second.thread;
+    }
+    killILockMonitors();
+    for( auto && it : continuousMonitorStructsDEV )
     {
         debugMessage("delete screenInterface continuousMonitorStructs entry." );
         delete it;
@@ -86,6 +95,16 @@ void screenInterface::initialise()
     }
     else
         message("Failed to read Screen Config file" );
+    initIsLockedMap();
+}
+//_______________________________________________________________________________________
+void screenInterface::initIsLockedMap()
+{// this map is used to define if a screen has been locked by this app.
+    for( auto && it: allScreentData)
+    {
+        isLockedMap[it.first] = false;
+        debugMessage("Added ", it.first, " to locked map ");
+    }
 }
 //_______________________________________________________________________________________
 bool screenInterface::initScreenObjects()
@@ -167,12 +186,12 @@ void screenInterface::monitorScreens()
     for( auto && it1 : allScreentData )
     {
         monitorIlocks( it1.second.iLockPVStructs, it1.second.iLockStates );
-        // iterate over the screenObjectDEV PvMon
+        // iterate over the screenObject PvMon
         for( auto && it2 : it1.second.pvMonStructs )
         {
             std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first) << std::endl;
 
-            addScreenObjectDEVMonitors( it2.second,  it1.second  );
+            addscreenObjectMonitors( it2.second,  it1.second  );
 
             ca_create_subscription(it2.second.CHTYPE, it2.second.COUNT, it2.second.CHID,
                                    it2.second.MASK, screenInterface::staticEntryScreenMonitor,
@@ -217,7 +236,7 @@ void screenInterface::monitorScreens()
         allMonitorsStarted = true; /// interface base class member, not actually used but good to know
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::addScreenObjectDEVMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObjectDEV & obj  )
+void screenInterface::addscreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObject & obj  )
 {
     continuousMonitorStructsDEV.push_back( new screenStructs::monitorStructDEV() );
     continuousMonitorStructsDEV.back() -> interface = this;
@@ -331,11 +350,12 @@ void screenInterface::updateRPOS( screenStructs::monitorStructDEV * ms,  const d
     screenStructs::screenDriverStatus * obj = reinterpret_cast<screenStructs::screenDriverStatus *> (ms->obj);
     obj->position = args;
 
+// while the screen is moving ther eis no point updating the casseete position
 //    screenStructs::SCREEN_STATE newscreenstate;
-    if( isHorizontal( obj->dir)  )
-        updateCassettePosition( allScreentData[obj->parentScreen].driver.hCassette,  obj->position );
-    else if( isVertical(obj->dir) )
-        updateCassettePosition( allScreentData[obj->parentScreen].driver.vCassette,  obj->position );
+//    if( isHorizontal( obj->dir)  )
+//        updateCassettePosition( allScreentData[obj->parentScreen].driver.hCassette,  obj->position );
+//    else if( isVertical(obj->dir) )
+//        updateCassettePosition( allScreentData[obj->parentScreen].driver.vCassette,  obj->position );
 
     std::stringstream ss;
     ss << obj->parentScreen;
@@ -350,28 +370,32 @@ void screenInterface::updateRPOS( screenStructs::monitorStructDEV * ms,  const d
 }
 //_________________________________________________________________________________________________________________
 void screenInterface::updateCassettePosition( screenStructs::screenCassette  & cas, const double pos  )
-{//currentl ythis only gets called from updateRPOS, so we KNOW the objetc exists!!
-    //if(entryExists( name ) )
+{//currently this only gets called from updateRPOS, so we KNOW the object exists!!
+    //debugMessage("called updateCassettePosition");
     screenStructs::SCREEN_STATE st = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-    std::string posmatch;
+    bool matchedpos = false; //have we found a position that matches the position of a cassette element
     for( auto && it : cas.cassetteElements )
+    {
         if( it.second )
         {
-
-            message("checking ", pos, " with ", it.first, " = ", cas.cassetteElementsPosition.at( it.first ), " tolerance  = ",  cas.posTolerance  );
-
-            if( areSame( pos, cas.cassetteElementsPosition.at( it.first ), cas.posTolerance )  )
+            //debugMessage("checking ", pos, " with ", it.first, " = ", cas.cassetteElementsPosition.at( it.first ), " tolerance  = ",  cas.posTolerance  );
+            if( areSame(pos, cas.cassetteElementsPosition.at(it.first), cas.posTolerance) )
             {
-                posmatch = it.first;
-                message( "posmatch = ", posmatch);
+                //debugMessage("posmatch = ", ENUM_TO_STRING(it.first) );
+                cas.screenState = it.first;
+                matchedpos = true;
+                break;
             }
-
         }
+    }
+    if(!matchedpos)
+        cas.screenState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
 
-//    if( isHorizontal(cas.dir) )
-//        cas.screenState = screenStructs::hCassetteElementMap.at(posmatch);
-//    else if ( isVertical(cas.dir)  )
-//        cas.screenState  = screenStructs::vCassetteElementMap.at(posmatch);
+    debugMessage( cas.parentScreen, " hcas state ", ENUM_TO_STRING( allScreentData.at(cas.parentScreen).driver.hCassette.screenState ) );
+    debugMessage( cas.parentScreen, " vcas state ", ENUM_TO_STRING( allScreentData.at(cas.parentScreen).driver.vCassette.screenState ) );
+    // update the "highest level" screenState
+    updateScreenState(allScreentData.at(cas.parentScreen));
+    debugMessage(cas.parentScreen, " screen state is now ", ENUM_TO_STRING( getScreenState( cas.parentScreen ) ) );
 }
 //_________________________________________________________________________________________________________________
 void screenInterface::updatePROT01( screenStructs::monitorStructDEV * ms, const double args )
@@ -400,9 +424,9 @@ void screenInterface::updatePROT01( screenStructs::monitorStructDEV * ms, const 
 }
 //_________________________________________________________________________________________________________________
 void screenInterface::updateSta( screenStructs::monitorStructDEV * ms,  const unsigned short args )
-{
+{   // Sta is for the VELA_PNEUMATIC screens ONLY, VELA_HV_MOVER are updated by updateScreenState()
     // probably evil
-    screenStructs::screenObjectDEV * obj = reinterpret_cast<screenStructs::screenObjectDEV*> (ms->obj);
+    screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject*> (ms->obj);
     switch( args )
     {
         case 0:
@@ -420,92 +444,805 @@ void screenInterface::updateSta( screenStructs::monitorStructDEV * ms,  const un
     ms->interface->debugMessage( obj->name ," screenState = ", ENUM_TO_STRING(obj->screenState) );
 }
 ////_________________________________________________________________________________________________________________
-//void screenInterface::update_STA_Bit_map( screenStructs::monitorStructDEV * ms, const int  argsdbr  )
-//{
-//    // probably more evil
-//    screenStructs::screenDriverStatus * obj = reinterpret_cast<screenStructs::screenDriverStatus *> (ms->obj);
-//    if( isHorizontal( ms->dir ) )
-//        update_STA_Bit_map( *obj ,  argsdbr  );
-//    else if( isHorizontal( ms->dir) )
-//        update_STA_Bit_map( *obj ,  argsdbr  );
-//}
+void screenInterface::updateScreenState( screenStructs::screenObject & scr  )
+{// this function is for the VELA_HV_MOVER screens
+//    screenStructs::SCREEN_STATE hpos = scr.driver.hCassette;
+//    screenStructs::SCREEN_STATE vpos = scr.driver.vCassette;
+    if( is_HandV_CassetteOUT( scr) )
+        scr.screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
+    else if( isHCassetteOUT(scr) )
+        scr.screenState = scr.driver.vCassette.screenState;
+    else if( isVCassetteOUT(scr) )
+        scr.screenState = scr.driver.hCassette.screenState;
+}
 //_________________________________________________________________________________________________________________
-//void screenInterface::update_STA_Bit_map(  std::vector< std::string > & STA_Bit_order,  std::map< std::string, bool > & STA_Bit_map, bool & isMoving, const void * argsdbr )
+bool screenInterface::is_HandV_CassetteOUT(screenStructs::screenObject & scr)
+{
+    return isHCassetteOUT(scr) && isVCassetteOUT(scr);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isHCassetteOUT(screenStructs::screenObject & scr)
+{
+    return scr.driver.hCassette.screenState == screenStructs::SCREEN_STATE::H_OUT;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isVCassetteOUT(screenStructs::screenObject & scr)
+{
+    return scr.driver.vCassette.screenState == screenStructs::SCREEN_STATE::V_OUT;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExists )
+{// This version of the function is so we don't have to check the entry exists in the map each time
+     if(weKnowEntryExists)
+        return weKnowEntryExists;
+    else
+        return entryExists(allScreentData,name);
+}
+//___________________________________________________________________________________________________________
+std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & name)
+{
+    std::vector<bool> r;
+    for( auto && it : name )
+        r.push_back(isScreenIN(it,false));
+    return r;
+}
+//___________________________________________________________________________________________________________
+std::vector<bool> screenInterface::isScreenOUT( const std::vector<std::string> & name )
+{
+    std::vector<bool> r;
+    for( auto && it : name )
+        r.push_back(isScreenOUT(it,false));
+    return r;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::isScreenIN(const std::string & name, bool weKnowEntryExists)
+{
+    if( entryExists2( name,weKnowEntryExists ) )
+    {
+        if( allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_IN )
+            return true;
+        if( allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::H_YAG )
+            return true;
+        if( allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::V_YAG )
+            return true;
+    }
+    return false;
+}
+//___________________________________________________________________________________________________________
+screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::string & name, const bool weKnowEntryExists)
+{
+    if( weKnowEntryExists )
+        return allScreentData.at(name).screenState;
+    else if( entryExists( allScreentData, name ) )
+        return allScreentData.at(name).screenState;
+    else
+        return screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
+{
+    bool r = false;
+    if( entryExists( allScreentData, name ) )
+        r = allScreentData.at(name).screenState == sta;
+    return r;
+}
+//___________________________________________________________________________________________________________
 
 
 /// COMMMANDS
 
+
 //___________________________________________________________________________________________________________
-//void screenInterface::screenIN( const std::string & name )
-//{
-//    if( entryExists( allScreentData, name ) )
-//    {
-//
-//        test if screen is IN here, then we
-//
-//        switch( allScreentData[name].screenType )
-//        {
-//            case screenStructs::SCREEN_TYPE::VELA_PNEUMATIC:
-//                screenIN_VELA_PNEUMATIC( name );
-//                break;
-//            case screenStructs::SCREEN_TYPE::VELA_HV_MOVER:
-//
-//                break;
-//        }
-//    }
-//}
-////___________________________________________________________________________________________________________
-//void screenInterface::screenIN_VELA_PNEUMATIC( const std::string & name )
-//{// We have checked the screen exists!
-//
-//    if( screenState screenState )
-//
-//
-//
-//}
-//
-////___________________________________________________________________________________________________________
-//bool getScreenState( const std::string & name  )
-//{
-//    bool r =false;
-//    if( entryExists( allScreentData, name ) )
-//        if( allScreentData[name].screenState == screenStructs::SCREEN_STATE::SCREEN_IN  )
-//            r = true;
-//    return r;
-//}
-////___________________________________________________________________________________________________________
-//bool isScreenIN_State( const std::string & name  )
-//{
-//    bool r =false;
-//    if( entryExists( allScreentData, name ) )
-//        if( allScreentData[name].screenState == screenStructs::SCREEN_STATE::SCREEN_IN  )
-//            r = true;
-//    return r;
-//}
-////___________________________________________________________________________________________________________
-//bool isScreenOut( const std::string & name  )
-//{
-//    bool r =false;
-//    if( entryExists( allScreentData, name ) )
-//        if( allScreentData[name].screenState == screenStructs::SCREEN_STATE::SCREEN_IN  )
-//            r = true;
-//    return r;
-//}
-//
-
-
-
-
-
-
-
-
-
-void screenInterface::update_STA_Bit_map( screenStructs::monitorStructDEV * ms, const int argsdbr  )
+bool screenInterface::screenIN( const std::string & name  )
+{   message("screenInterface::screenIN(const std::string & name ) called");
+    const  std::vector< std::string > names = { name };
+    return screenIN( names );
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::screenOUT( const std::string & name  )
+{   message("screenInterface::screenOUT(const std::string & name ) called");
+    const  std::vector< std::string > names = { name };
+    return screenOUT( names );
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::screenIN( const std::vector< std::string > & names  )
 {
-//std::vector< std::string > & STA_Bit_order,  std::map< std::string, bool > & STA_Bit_map, bool & isMoving, const void * argsdbr )
-//{
-    // we're going to assume that each bit in the numebr is where the status is on / off
+    std::vector< screenStructs::SCREEN_STATE > v( names.size(), screenStructs::SCREEN_STATE::SCREEN_IN );
+    return screenMoveTo( names, v);
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::screenOUT( const std::vector< std::string > & names  )
+{
+    std::vector< screenStructs::SCREEN_STATE > v( names.size(), screenStructs::SCREEN_STATE::SCREEN_OUT );
+    bool r = screenMoveTo( names, v);
+    return r;
+}
+//___________________________________________________________________________________________________________
+//___________________________________________________________________________________________________________
+//   CREATE ONE HIGH LEVEL SCREEN MOVER FUNCTION THAT IS CALLED BY ALL THE HIGHER LEVEL VERSIONS OF screenIN,
+//   screenOUT AND MOVE TO CASSETTE ELEMENT POSITION
+//___________________________________________________________________________________________________________
+bool screenInterface::screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states)
+{
+    std::vector< screenStructs::SCREEN_STATE > v( 1, screenStructs::SCREEN_STATE::SCREEN_OUT );
+    std::vector< std::string> n( 1, name );
+    return  screenMoveTo( n, v);
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states  )
+{   debugMessage("screenInterface::screenMoveTo called with ", names[0], " and  ",ENUM_TO_STRING(states[0]) );
+    // all the (above?) client screen moving functions should funnel to here
+    // this is where we actually start moving screens.
+    // **** if the CLARA screens are significantly different this function will need to be edited ****
+    // we need vectors divided up by screen type
+    // it would be nice if c++ had a zip function
+
+    killFinishedMoveThreads();
+
+    // first cut out any screens that are "moving"
+
+    if( names.size() != states.size() )
+    {
+
+        ("ERROR, trying to set  ", names.size(), " screens with ", states.size(), " states. Aborting screen movement");
+    }
+    else
+    {
+        std::vector<std::string> nonMovingScr;
+        std::vector<screenStructs::SCREEN_STATE> nonMovingSta;
+        // get the screens that are not locked and are moving
+        debugMessage("Getting not locked and not moving screens");
+        bool carry_on =  get_NOT_Locked_and_NOT_MovingScreens(names, nonMovingScr, states, nonMovingSta);
+
+        if( nonMovingScr.size() > 0 &&  nonMovingScr.size() == nonMovingSta.size()  )
+        {
+            // vectors to fill
+            std::vector<screenStructs::SCREEN_STATE> VELA_PNEUMATIC_Sta,VELA_HV_MOVER__Sta;
+            std::vector<std::string>                 VELA_PNEUMATIC_Scr,VELA_HV_MOVER__Scr;
+            // sort the screens by type
+            debugMessage("Sorting Pnuematic and mover screens types");
+
+            bool carryon = sortPnuematicMoverScreen(nonMovingScr,VELA_PNEUMATIC_Scr,VELA_HV_MOVER__Scr,
+                                                    nonMovingSta,VELA_PNEUMATIC_Sta,VELA_HV_MOVER__Sta);
+            bool VELA_PNEUMATIC_Screens_suc = false;
+            bool VELA_HV_MOVER_Screens__suc = false;
+            if( carryon )
+            {
+                if(VELA_PNEUMATIC_Scr.size()>0)//MAGIC_NUMBER
+                {
+                    debugMessage("moving in VELA_PNEUMATIC_Scr ");
+                    VELA_PNEUMATIC_Screens_suc = move_VELA_PNEUMATIC_Screens( VELA_PNEUMATIC_Scr, VELA_PNEUMATIC_Sta );
+                }
+                if(VELA_HV_MOVER__Scr.size() > 0  )//MAGIC_NUMBER
+                {
+                    debugMessage("moving in VELA_HV_MOVER__Scr ");
+                    VELA_HV_MOVER_Screens__suc = move_VELA_HV_MOVER_Screens( VELA_HV_MOVER__Scr, VELA_HV_MOVER__Sta );
+                }
+            }
+            if( VELA_HV_MOVER_Screens__suc && VELA_PNEUMATIC_Screens_suc )
+                return true;
+            else
+                return false;
+        }// if( nonMovingScr.size() > 0 )
+        else
+            message("Requested screens are currenlty moving or are locked");
+    }// if( names.size() != states.size() )
+
+    return false;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::get_NOT_Locked_and_NOT_MovingScreens(const std::vector<std::string>& scrIN, std::vector<std::string>& scrOUT,
+                                                      const std::vector<screenStructs::SCREEN_STATE>& staIN,
+                                                      std::vector<screenStructs::SCREEN_STATE>& staOUT  )
+{
+    bool r = true;
+    std::vector<bool> tests;
+    auto itNam = scrIN.begin();
+    auto itSta = staIN.begin();
+    while(itNam != scrIN.end() || itSta != staIN.end())
+    {
+        tests.clear();
+        tests = exists_and_isNotLocked( *itNam );
+
+        if( tests[0] && tests[1] )
+        {
+            if( isMoving( *itNam ) )
+                message( *itNam, " is still moving from previous move request. Please wait for that to finish.");
+            else
+            {
+                scrOUT.push_back(*itNam);
+                staOUT.push_back(*itSta);
+                debugMessage("get_NOT_Locked_and_NOT_MovingScreens added ", *itNam, ", state, ", ENUM_TO_STRING(*itSta) ) ;
+            }
+        }
+        if( !tests[1] )
+            message( *itNam, " is locked from previous move request. Please wait for that to finish.");
+//        if( entryExists( isLockedMap, *itNam) )
+//        {
+//            if( isLockedMap[*itNam] )
+//                message( *itNam, " is locked from previous move request. Please wait for that to finish.");
+//            else if( isMoving( *itNam ) )
+//                message( *itNam, " is still moving from previous move request. Please wait for that to finish.");
+//            else
+//            {
+//                scrOUT.push_back(*itNam);
+//                staOUT.push_back(*itSta);
+//            }
+//        }
+        if(itNam != scrIN.end())
+            ++itNam;
+        if(itSta != staIN.end())
+            ++itSta;
+    }
+    if( scrOUT.size() != staOUT.size() )
+    {
+        message("ABORT! Major Error! in screenInterface::get_NOT_Locked_and_NOT_MovingScreens scrOUT.size() != staOUT.size() ",
+                scrOUT.size()," != ",staOUT.size() );
+        r = false;
+    }
+    return r;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::sortPnuematicMoverScreen(const std::vector<std::string>& scrIN, std::vector<std::string>& VELA_PNEUMATIC_Scr,
+                                               std::vector<std::string>& VELA_HV_MOVER__Scr,const std::vector<screenStructs::SCREEN_STATE>& staIN,
+                                               std::vector<screenStructs::SCREEN_STATE>& VELA_PNEUMATIC_Sta,
+                                               std::vector<screenStructs::SCREEN_STATE>& VELA_HV_MOVER__Sta  )
+{
+    bool carryon = true;
+    auto itNam = scrIN.begin();
+    auto itSta = staIN.begin();
+    // vectors to fill
+    while(itNam != scrIN.end() || itSta != staIN.end() )
+    {
+        debugMessage("Checking ", *itNam," with request state: ", *itSta);
+
+        // this loop goes through every screen and checks why type it is
+        // it also decideds if it needs moving, and where it should be moved to
+        if( is_VELA_PNEUMATIC(*itNam))
+        {
+            // these can only be moved to IN or OUT, so check that is what has been asked for
+            if( screen_is_out_AND_sta_is_in(*itNam,*itSta) || screen_is_in_AND_sta_is_out(*itNam,*itSta) )
+            {
+                VELA_PNEUMATIC_Sta.push_back(*itSta);
+                VELA_PNEUMATIC_Scr.push_back(*itNam);
+                debugMessage("Added ",*itNam," with state = ", ENUM_TO_STRING(*itSta)," to VELA_pnuematic ");
+            }
+            else
+                message("ERROR ",*itNam, " can't be moved to state ", ENUM_TO_STRING(*itSta), ", current state is "
+                        ,ENUM_TO_STRING(getScreenState(*itNam)) );
+        }
+        else if( is_VELA_HV_MOVER(*itNam)  )
+        {
+//            if( isNotLockedAndExists(*itNam) )
+//            {
+//                if( isNotMoving(*itNam,true) )
+//                {
+                    if( !isScreenInState(*itNam, *itSta ) ) // check is the screen is already in the state requested, is not carry on
+                    {
+                        VELA_HV_MOVER__Scr.push_back(*itNam);
+                        // if the status is SCREEN_IN assume screens are always V_YAG
+                        // clients will still be able to exactly specifiy elements with the geenral function
+                        if( *itSta == screenStructs::SCREEN_STATE::SCREEN_IN )
+                            VELA_HV_MOVER__Sta.push_back( screenStructs::SCREEN_STATE::V_YAG ); // MAGIC_NUMBER
+                        else if( *itSta == screenStructs::SCREEN_STATE::SCREEN_OUT )
+                        {
+                            if(  isScreenOUT(*itNam)  ) // asked for out and it is out
+                            {
+                            }
+                            else
+                            {
+                                //screenStructs::SCREEN_STATE currentSta = getScreenState(*itNam);
+                                if( isHCassetteOUT( allScreentData.at(*itNam) ) )
+                                    VELA_HV_MOVER__Sta.push_back(screenStructs::SCREEN_STATE::V_OUT); // MAGIC_NUMBER enum
+                                if( isVCassetteOUT( allScreentData.at(*itNam) ) )
+                                    VELA_HV_MOVER__Sta.push_back(screenStructs::SCREEN_STATE::H_OUT); // MAGIC_NUMBER
+                            }
+                        }
+                        else // its not IN or OUT so just add what has been requested
+                           VELA_HV_MOVER__Sta.push_back(*itSta);
+
+                        debugMessage("Added ",*itNam," with state = ", ENUM_TO_STRING(*itSta)," to VELA_HV_MOVER__Sta");
+
+                    }
+                    else
+                        message(*itNam," is already in state ", ENUM_TO_STRING(*itSta) );
+
+//                }
+//                else
+//                 message( "Can't move ", *itNam, " it is already moving ");
+//            }
+//            else
+//                message( "Can't move ", *itNam, " it is locked");
+        }
+        if(itNam != scrIN.end())
+            ++itNam;
+        if(itSta != staIN.end())
+            ++itSta;
+        // sanity check
+        if(VELA_HV_MOVER__Sta.size() != VELA_HV_MOVER__Scr.size())
+        {
+            message("ABORT! Major Error! in screenInterface::screenMoveTo VELA_HV_MOVER__Sta.size() != VELA_HV_MOVER__Scr.size() ",
+                    VELA_HV_MOVER__Sta.size()," != ", VELA_HV_MOVER__Scr.size() );
+            carryon = false;
+        }
+    }
+    return carryon;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::move_VELA_PNEUMATIC_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  )
+{// follwoing how thigns are done in the magnetInterface, we set up a vector of pointers to chids and chtypes, then call the generic sendCommand
+    bool success = false;
+    std::vector< chid* > CHIDS;
+    std::vector< chtype* > CHTYPE;
+    // it would be nice if c++ had a zip function
+    auto itNam = names.begin();
+    auto itSta = states.begin();
+
+    while(itNam != names.end() || itSta != states.end())
+    {
+        // we have checked if the screen exists in screenMoveTo.. is_VELA_PNEUMATIC(..)
+        if(  *itSta == screenStructs::SCREEN_STATE::SCREEN_IN  )
+        {
+            message("adding on chids");
+            CHTYPE.push_back( &allScreentData.at(*itNam).pvComStructs[ screenStructs::SCREEN_PV_TYPE::On ].CHTYPE );
+            CHIDS.push_back ( &allScreentData.at(*itNam).pvComStructs[ screenStructs::SCREEN_PV_TYPE::On ].CHID   );
+        }
+        else if(  *itSta == screenStructs::SCREEN_STATE::SCREEN_OUT  )
+        {
+            message("adding on chids");
+            CHTYPE.push_back( &allScreentData.at(*itNam).pvComStructs[ screenStructs::SCREEN_PV_TYPE::Off ].CHTYPE );
+            CHIDS.push_back ( &allScreentData.at(*itNam).pvComStructs[ screenStructs::SCREEN_PV_TYPE::Off ].CHID   );
+        }
+        if(itNam != names.end())
+            ++itNam;
+        if(itSta != states.end())
+            ++itSta;
+    }
+    if(CHTYPE.size()>0)// MAGIC_NUMBER
+    {
+        std::string m1,m2;
+        m1 = "Timeout sending EPICS_ACTIVATE to move_OUT_VELA_PNEUMATIC_Screens";
+        m2 = "Timeout sending EPICS_SEND to move_OUT_VELA_PNEUMATIC_Screens";
+        success = send_VELA_PNEUMATIC_Command(CHTYPE, CHIDS, m1, m2);
+    }
+    return success;
+}
+//______________________________________________________________________________
+bool screenInterface::send_VELA_PNEUMATIC_Command( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  )
+{
+    bool ret = false;
+    for( auto i = 0; i < CHTYPE.size(); ++i )//MAGIC_NUMBERS and evilness
+        ca_put( *CHTYPE[i], *CHID[i], &EPICS_ACTIVATE );
+    message( "activate" );
+    int status = sendToEpics( "ca_put", "", m1.c_str() );
+    if ( status == ECA_NORMAL )
+    {
+        for( auto i = 0; i < CHTYPE.size(); ++i )//MAGIC_NUMBERS and evilness
+            ca_put( *CHTYPE[i], *CHID[i], &EPICS_SEND );
+        int status = sendToEpics( "ca_put", "", m2.c_str());
+        if ( status == ECA_NORMAL )
+            ret = true;
+            //std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); // MAGIC_NUMBER
+        else
+            message( " status == ECA_NORMAL" );
+    }
+    else
+        message( "EPICS_ACTIVATE did not return ECA_NORMAL" );
+    return ret;
+}
+//______________________________________________________________________________
+bool screenInterface::move_VELA_HV_MOVER_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  )
+{   // to move in the screen we must first check if the screen is in
+    // then  where the screen is, is it on H or V
+    // there are screens which require complex movement on multiple notors
+    // and screens that just require one movement on 1 motor, so split accordingly
+    std::vector<std::string> twoMotorMoves_Scr;
+    std::vector<screenStructs::SCREEN_STATE> twoMotorMoves_Sta;
+    //i need to sort out the logic for the scren_out and screen_in states,
+    //probably will be a switch or some nested ifs to handle the cases.
+
+    auto itNam = names.begin();
+    auto itSta = states.begin();
+    while(itNam != names.end() || itSta != states.end())
+    {
+        // we have checked if the screen exists, and is not in the requested state  in screenMoveTo.. is_VELA_HV_MOVER(..)
+        // now we need to check is the H/V driver is enabled and if the state is an H or V state
+        if( is_H_element_AND_HDriveEnabled(*itSta, allScreentData.at(*itNam).driver) ) // h element and H enabled send it out
+        {
+            set_VELA_HV_MOVER_Position( *itNam, screenStructs::DRIVER_DIRECTION::HORIZONTAL,*itSta);
+        }
+        else if( is_V_element_AND_VDriveEnabled(*itSta, allScreentData.at(*itNam).driver) ) // v element and VH enabled send it out
+        {
+            set_VELA_HV_MOVER_Position(*itNam, screenStructs::DRIVER_DIRECTION::VERTICAL,*itSta);
+        }
+        else
+        {
+            //we can move out the enabled motor here
+            if( isHDriveEnabled(allScreentData.at(*itNam).driver) )
+            {
+                debugMessage("set_VELA_HV_MOVER_Position to H_OUT");
+                set_VELA_HV_MOVER_Position(*itNam,screenStructs::DRIVER_DIRECTION::HORIZONTAL,screenStructs::SCREEN_STATE::H_OUT);
+
+            }
+            //we can move out the enabled motor here
+            if( isVDriveEnabled(allScreentData.at(*itNam).driver) )
+            {
+                debugMessage("set_VELA_HV_MOVER_Position to H_OUT");
+                set_VELA_HV_MOVER_Position(*itNam,screenStructs::DRIVER_DIRECTION::VERTICAL,screenStructs::SCREEN_STATE::V_OUT);
+            }
+            twoMotorMoves_Scr.push_back(*itNam);
+            twoMotorMoves_Sta.push_back(*itSta);
+        }
+        if(itNam != names.end())
+            ++itNam;
+        if(itSta != states.end())
+            ++itSta;
+    }
+    if(twoMotorMoves_Scr.size() >0 )
+    {// enter a new thread and set the LOCK on the screen
+        screenDualMoveStructsMap[ dualMoveNum ].interface   = this;
+        screenDualMoveStructsMap[ dualMoveNum ].key   = dualMoveNum;
+        screenDualMoveStructsMap[ dualMoveNum ].dualMotorMoves_Scr   = twoMotorMoves_Scr;
+        screenDualMoveStructsMap[ dualMoveNum ].dualMotorMoves_Sta   = twoMotorMoves_Sta;
+        screenDualMoveStructsMap[ dualMoveNum ].thread     = new std::thread( staticEntryDualMove, std::ref(screenDualMoveStructsMap[ dualMoveNum ] ) );
+        screenDualMoveStructsMap[ dualMoveNum ].isComplete = false;
+        ++dualMoveNum;
+    }
+    return false;
+}
+//______________________________________________________________________________
+void screenInterface::staticEntryDualMove(screenStructs::HV_dualMoveStruct & ms )
+{
+    ms.interface -> debugMessage("staticEntryDualMove called ! ");
+    time_t timeStart = time( 0 ); /// start clock  //MAGIC_NUMBER
+    time_t TIMEOUT = 100; //MAGIC_NUMBER
+    ms.interface -> attachTo_thisCAContext(); /// base member function
+
+    std::map< std::string, bool  > startedSecondMovement;
+    for( auto && it : ms.dualMotorMoves_Scr )
+        startedSecondMovement[ it ] = false;
+
+    bool success = false;
+    bool timeOut = false;
+
+    auto itNam = ms.dualMotorMoves_Scr.begin();
+    auto itSta = ms.dualMotorMoves_Sta.begin();
+
+    // wait for element to get to a position
+    while(true)
+    {
+        // each loop set iterators back to begin
+        itNam = ms.dualMotorMoves_Scr.begin();
+        itSta = ms.dualMotorMoves_Sta.begin();
+
+        while(itNam != ms.dualMotorMoves_Scr.end() || itSta != ms.dualMotorMoves_Sta.end())
+        {   // check if started second movement
+            if( !startedSecondMovement.at(*itNam) )
+            {    // check if drives are out
+                ms.interface->debugMessage(*itNam, " not started second movement ");
+                if(ms.interface->isScreenOUT(*itNam,true) )
+                {
+                    // there is a slight delay while the driver enabled flag is set, so we'll pause
+                    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+                    // move to new position
+                    ms.interface->debugMessage(*itNam," SCREEN_OUT, start second momement ");
+                    ms.interface->set_VELA_HV_MOVER_Position(*itNam,*itSta );
+                    // set started second movement to true
+                    startedSecondMovement.at(*itNam) = true;
+                    // i can release the lock, you can't move it until it has stopped "Trajectory in Progress"
+                    //ms.interface->allScreentData.at(*itNam).isLocked = false;
+                }
+            }
+            // check each started Second Movement to see if the yare all true
+            success = true;
+            for(auto it:startedSecondMovement)
+            {
+                if(!it.second)
+                    success = false;
+            }
+            if(success)
+                break;
+            else
+                ms.interface->debugMessage(" NOT ALL SCREENS STARTED SECOND MOVEMENT, TRY AGAIN");
+
+            if(time(0) - timeStart > TIMEOUT) // MAGIC_NUMBER
+            {
+                timeOut = true;
+                break;
+            }
+            // increment iterators
+            if(itNam != ms.dualMotorMoves_Scr.end() )
+                ++itNam;
+            if(itSta != ms.dualMotorMoves_Sta.end() )
+                ++itSta;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000) ); // MAGIC_NUMBER
+        }
+    }
+    // we can release all locks now, success or failure
+    for(auto && it : ms.dualMotorMoves_Scr)
+        ms.interface->isLockedMap.at(it) = false;
+
+    if(timeOut)
+        ms.interface -> message("ERROR TIMEOUT WHILE WAITING FOR SCREENS TO MOVE");
+    ms.isComplete = true;
+}
+//______________________________________________________________________________
+void screenInterface::killFinishedMoveThreads()
+{
+    //  do the loop this way because:
+    // http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
+    for (auto && it = screenDualMoveStructsMap.cbegin(); it != screenDualMoveStructsMap.cend() /* not hoisted */; /* no increment */)
+    {
+        if( it->second.isComplete  )
+        {
+            //message("killFinishedMoveThreads got here");
+            it->second.thread->join();
+            delete it -> second.thread;
+            screenDualMoveStructsMap.erase( it++ );
+        }
+        else
+        {
+            ++it;
+            //message("killFinishedMoveThreads actually got here");
+        }
+    }
+    message("FIN killFinishedMoveThreads");
+}
+//______________________________________________________________________________
+bool screenInterface::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
+{
+    bool r = false;
+    if( entryExists(allScreentData,name))
+    {
+        if( dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL && isHDriveEnabled( allScreentData.at(name).driver ) )
+            r = set_VELA_HV_MOVER_Position(allScreentData.at(name).driver.hDriverSTA, value);
+        else if( dir == screenStructs::DRIVER_DIRECTION::VERTICAL && isVDriveEnabled( allScreentData.at(name).driver ) )
+            r = set_VELA_HV_MOVER_Position(allScreentData.at(name).driver.vDriverSTA, value);
+    }
+    return r;
+}
+//______________________________________________________________________________
+bool screenInterface::set_VELA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta )
+{
+    if( is_H_Element( sta) )
+    {
+        debugMessage("Moving H to ", ENUM_TO_STRING(sta) );
+        return set_VELA_HV_MOVER_Position(name,screenStructs::DRIVER_DIRECTION::HORIZONTAL,sta);
+    }
+    else if( is_V_Element(sta) )
+    {
+        debugMessage("Moving V to ", ENUM_TO_STRING(sta) );
+        return set_VELA_HV_MOVER_Position(name,screenStructs::DRIVER_DIRECTION::VERTICAL,  sta);
+    }
+
+}
+//______________________________________________________________________________
+bool screenInterface::set_VELA_HV_MOVER_Position(const std::string& name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta )
+{
+    bool r = false;
+    double p;
+    if( dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL)
+    {
+        p = getElementPosition(allScreentData.at(name).driver.hCassette, sta );
+        debugMessage("Moving H to ", p );
+        return set_VELA_HV_MOVER_Position(allScreentData.at(name).driver.hDriverSTA, p );
+    }
+    else if( dir == screenStructs::DRIVER_DIRECTION::VERTICAL  )
+    {
+        p = getElementPosition(allScreentData.at(name).driver.vCassette, sta );
+        debugMessage("Moving V to ", p );
+        return set_VELA_HV_MOVER_Position(allScreentData.at(name).driver.vDriverSTA, p );
+    }
+}
+//______________________________________________________________________________
+bool screenInterface::set_VELA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driver, const double value)
+{
+    ca_put(driver.pvComStructs.at(screenStructs::SCREEN_PV_TYPE::MABS).CHTYPE,
+           driver.pvComStructs.at(screenStructs::SCREEN_PV_TYPE::MABS).CHID, &value );
+    std::string m1;
+    m1 = "Timeout sending position in set_VELA_HV_MOVER_Position";
+    int status = sendToEpics("ca_put", "", m1.c_str() );
+    bool ret = false;
+    if (status == ECA_NORMAL)
+    {
+        ret = true;
+    }
+    else
+        message("set_VELA_HV_MOVER_Position recieved an unexpected error status from EPICS");
+    return ret;
+}
+//______________________________________________________________________________
+double screenInterface::getElementPosition(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e )
+{
+    return scrcas.cassetteElementsPosition.at(e);
+}
+//______________________________________________________________________________
+
+// Quantifiers
+
+//___________________________________________________________________________________________________________
+//___________________________________________________________________________________________________________
+bool screenInterface::is_VELA_PNEUMATIC( const std::string & name )
+{
+    bool r = false;
+    if( entryExists(allScreentData, name ) )
+        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
+            r = true;
+    return r;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::is_VELA_HV_MOVER ( const std::string & name )
+{
+    bool r = false;
+    if( entryExists(allScreentData, name ) )
+        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::VELA_HV_MOVER )
+            r = true;
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::get_VELA_PNEUMATIC_Screens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( is_VELA_PNEUMATIC( it ) )
+            r.push_back( it );
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::get_VELA_HV_MOVER_Screens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( is_VELA_HV_MOVER( it ) )
+            r.push_back( it );
+    return r;
+}
+//______________________________________________________________________________
+bool screenInterface::yagOnV( const screenStructs::screenDriver & scrdr )
+{
+    return scrdr.vCassette.cassetteElements.at(screenStructs::SCREEN_STATE::V_YAG) == true;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isVDriveEnabled(const screenStructs::screenDriver & scrdr )
+{
+    return !isVDriveDisabled(scrdr);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isVDriveDisabled(const screenStructs::screenDriver & scrdr )
+{
+    return scrdr.vDriverSTA.state == screenStructs::DRIVER_STATE::DRIVER_DISABLED;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isHDriveEnabled(const screenStructs::screenDriver & scrdr )
+{
+    return !isHDriveDisabled(scrdr);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isHDriveDisabled(const screenStructs::screenDriver & scrdr )
+{
+    return scrdr.hDriverSTA.state == screenStructs::DRIVER_STATE::DRIVER_DISABLED;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::is_H_Element(const screenStructs::SCREEN_STATE e )
+{   // When moving a cassette element we need to know if it is an H or V element
+    for( auto && it :screenStructs::hCassetteElementMap )
+        if( e == it.second )
+            return true;
+    return false;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::is_V_Element(const  screenStructs::SCREEN_STATE e )
+{   // When moving a cassette element we need to know if it is an H or V element
+    for( auto && it :screenStructs::vCassetteElementMap )
+        if( e == it.second )
+            return true;
+    return false;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::is_OUT_AND_VDriveEnabled(const std::string & name)
+{
+    return allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_OUT
+           &&
+           isVDriveEnabled(allScreentData.at(name).driver);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::is_H_element_AND_HDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
+{
+    return is_H_Element(e) && isHDriveEnabled(scrdr);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::is_V_element_AND_VDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
+{
+    return is_V_Element(e) && isVDriveEnabled(scrdr);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::is_IN_OR_OUT(const screenStructs::SCREEN_STATE sta )
+{
+    return sta == screenStructs::SCREEN_STATE::SCREEN_OUT || sta == screenStructs::SCREEN_STATE::SCREEN_IN;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isScreenOUT(const std::string & name, const bool weKnowEntryExists)
+{
+    if( entryExists2(name,weKnowEntryExists) )
+        return allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_OUT;
+    else
+        return false;//do we need a TRUE FALSE or UNKNOWN ??
+}
+//_________________________________________________________________________________________________________________
+std::vector<bool> screenInterface::exists_and_isLocked(const std::string& name)
+{
+    std::vector<bool> r;
+    if( entryExists(allScreentData, name ))
+    {
+        r.push_back(true);
+        r.push_back( isLockedMap.at(name) );
+    }
+    else
+    {
+        r.push_back(false);
+        r.push_back(false);
+    }
+    debugMessage("exists_and_isLocked return ", r[0], "  ", r[1]);
+    return r;
+}
+//_________________________________________________________________________________________________________________
+std::vector<bool> screenInterface::exists_and_isNotLocked(const std::string& name)
+{
+    std::vector<bool> r;
+    if( entryExists(allScreentData,name) )
+    {
+        r.push_back(true);
+        r.push_back( !isLockedMap.at(name) );
+    }
+    else
+    {
+        r.push_back(false);
+        r.push_back(false);
+    }
+    debugMessage("exists_and_isNotLocked return ", r[0], "  ", r[1]);
+    return r;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::screen_is_out_AND_sta_is_in(const std::string & name, const screenStructs::SCREEN_STATE sta )
+{
+    return sta == screenStructs::SCREEN_STATE::SCREEN_IN && isScreenOUT(name);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::screen_is_in_AND_sta_is_out(const std::string & name, const screenStructs::SCREEN_STATE sta )
+{
+    return sta == screenStructs::SCREEN_STATE::SCREEN_OUT && isScreenIN(name);
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::elementIN( const std::string & name, screenStructs::SCREEN_STATE element  )
+{
+    bool r = false;
+    if( entryExists( allScreentData, name ) )
+    {
+
+
+
+
+    }
+    else
+        message( " screenIN failed", name, " is an unknown screen " );
+
+    return r;
+
+//
+//    (H_MIRROR )  (V_MIRROR)
+//                                                        (H_50U_SLIT) (V_50U_SLIT)
+//                                                        (H_25U_SLIT) (V_25U_SLIT)
+//                                                        (H_6p3MM_HOLE) (V_6p3MM_HOLE)
+//                                                        (H_10MM_HOLE)  (V_10MM_HOLE_IN)
+//                                                        (H_YAG) (V_YAG)
+//                                                        (H_SLIT) (V_SLIT)
+//                                                        (H_RF) (V_RF_IN)
+//                                                        (H_OUT) (V_OUT)
+
+
+}
+void screenInterface::update_STA_Bit_map( screenStructs::monitorStructDEV * ms, const int argsdbr  )
+{   // we're going to assume that each bit in the numebr is where the status is on / off
     // the first bit is "Trajectory in Porgress"
     // for other bits assume as in /home/controls/edl/EBT-YAG.edl
     //  "Trajectory in Progress"     //  "Historical Pos HW Limit"    //  "Historical Neg HW Limit"    //  "Index Report Avalable"
@@ -526,1295 +1263,117 @@ void screenInterface::update_STA_Bit_map( screenStructs::monitorStructDEV * ms, 
     }
     //std::cout << std::endl;
     // update trajectory
-    switch( obj->STA_bit_map[ UTL::TRAJECTORY_IN_PROGRESS ]  )
+    switch( obj->STA_bit_map.at( UTL::TRAJECTORY_IN_PROGRESS )  )
     {
         case 0:
             obj->trajectory = screenStructs::DRIVER_STATE::DRIVER_STATIONARY;
+            // while the screen is moving there is no point updating the cassette position
+            // screenStructs::SCREEN_STATE newscreenstate;
+            if( isHorizontal( obj->dir )  )
+                updateCassettePosition( allScreentData.at(obj->parentScreen).driver.hCassette,  obj->position );
+            else if( isVertical(obj->dir) )
+                updateCassettePosition( allScreentData.at(obj->parentScreen).driver.vCassette,  obj->position );
             break;
         case 1:
             obj->trajectory = screenStructs::DRIVER_STATE::DRIVER_MOVING;
+            if( isHorizontal( obj->dir )  )
+                allScreentData.at(obj->parentScreen).driver.hCassette.screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
+            else if( isVertical(obj->dir) )
+                allScreentData.at(obj->parentScreen).driver.vCassette.screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
+            allScreentData.at(obj->parentScreen).screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
             break;
         default:
             obj->trajectory = screenStructs::DRIVER_STATE::DRIVER_ERROR;
     }
-    // Print a debug message
-    std::stringstream ss;
-    ss << obj->parentScreen;
-    if( isHorizontal( obj->dir) )
-    {
-        ss << " Horizontal ";
-        debugMessage( obj->parentScreen, " H:STA ", obj->STA);
-    }
-    else if( isVertical( obj->dir)  )
-    {
-        debugMessage( obj->parentScreen, " V:STA ", obj->STA);
-        ss << " Vertical ";
-    }
-    else
-        ss << " ERROR";
-//    if( isMoving( obj->parentScreen) )
-//        ss << " Movement in Progress";
+    /// Print a debug message
+//    std::stringstream ss;
+//    ss << obj->parentScreen;
+//    if( isHorizontal( obj->dir) )
+//    {
+//        ss << " Horizontal ";
+//        debugMessage( obj->parentScreen, " H:STA ", obj->STA);
+//    }
+//    else if( isVertical( obj->dir)  )
+//    {
+//        debugMessage( obj->parentScreen, " V:STA ", obj->STA);
+//        ss << " Vertical ";
+//    }
 //    else
-        ss << ENUM_TO_STRING( obj->trajectory);
-    debugMessage(ss);
+//        ss << " ERROR";
+//    ss << ENUM_TO_STRING( obj->trajectory);
+//    debugMessage(ss);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isMoving( const std::string & name )
+bool screenInterface::isMoving(const std::string & name, const bool weKnowEntryExists)
 {
     bool r = false;
-    if( entryExists(allScreentData, name ) )
+    if( entryExists2(name,weKnowEntryExists ) )
     {// isMoving refers to the driver that moves the screen in and out, so we switch on the screen(drive) type
         switch( allScreentData[name].screenType )
         {
         case screenStructs::SCREEN_TYPE::VELA_PNEUMATIC:
-            if( allScreentData[name].screenState == screenStructs::SCREEN_STATE::SCREEN_MOVING )
+            if( allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_MOVING )
                 r = true;
             break;
         case screenStructs::SCREEN_TYPE::VELA_HV_MOVER:
-            if( allScreentData[name].driver.hDriverSTA.trajectory  == screenStructs::DRIVER_STATE::DRIVER_MOVING )
+            if( allScreentData.at(name).driver.hDriverSTA.trajectory == screenStructs::DRIVER_STATE::DRIVER_MOVING )
                 r = true;
-            if( allScreentData[name].driver.vDriverSTA.trajectory  == screenStructs::DRIVER_STATE::DRIVER_MOVING )
+            if( allScreentData.at(name).driver.vDriverSTA.trajectory == screenStructs::DRIVER_STATE::DRIVER_MOVING )
                 r = true;
             break;
         }
     }
     return r;
 }
-//_________________________________________________________________________________________________________________
-bool screenInterface::isDriverEnabled( const std::string & name, screenStructs::DRIVER_DIRECTION reqDir )
-{
-    bool r = false;
-//    if( entryExists(allScreentData, name ) )
-//    {
-//        switch( reqDir )
-//        {
-//        case screenStructs::DRIVER_DIRECTION::HORIZONTAL:
-//             if( allScreentData[name].driver.hDriverSTA ==  )
-//            break;
-//        case screenStructs::DRIVER_DIRECTION::VERTICAL:
-//
-//            break
-//        }
-//
-//
-//    }
-    return r;
-}
-//_________________________________________________________________________________________________________________
-
-//
-//void screenInterface::UpdateDouble( screenStructs::monitorStruct * ms, const void * argsdbr )
-//{
-////    double val = *(double*)argsdbr;
-////
-////    switch( ms -> monType )
-////    {
-////    case screenStructs::SCREEN_PV_TYPE::H_RPOS:
-////
-////        ms -> compObj -> h_position_value = val;
-////        ms -> interface -> message( ms -> compObj -> name, " Horizontal Position = ", ms -> compObj -> h_position_value );
-////
-////        if( ms -> compObj -> h_position_value == ms -> compObj -> H_OUT )
-////            {
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-////            }
-////
-////
-////        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_MIRROR )
-////            {
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_MIRROR;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-////            }
-////
-////        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_50U_SLIT )
-////            {
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_50U_SLIT;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-////            }
-////
-////        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_25U_SLIT )
-////            {
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_25U_SLIT;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-////            }
-////
-////        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_63MM_HOLE )
-////            {
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::H_6_POINT_3MM_HOLE_POS;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-////            }
-////
-////        else if( ms -> compObj -> h_position_value == ms -> compObj -> H_10MM_HOLE )
-////            {
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_H_10MM_HOLE;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> h_screenState));
-////            }
-////
-////        else
-////           {
-////            ms -> interface -> message("");
-////            ms -> compObj -> h_screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-////           }
-////
-////        break;
-////
-////
-////    case screenStructs::SCREEN_PV_TYPE::V_RPOS:
-////
-////        ms -> compObj -> v_position_value = val;
-////        ms -> interface -> message( ms -> compObj -> name, " Vertical Position = ", ms -> compObj -> v_position_value );
-////
-////        if( ms -> compObj -> v_position_value == ms -> compObj -> V_OUT )
-////            {
-////            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
-////            }
-////
-////        else if( ms -> compObj -> v_position_value == ms -> compObj -> V_YAG )
-////            {
-////            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_V_YAG;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
-////            }
-////
-////        else if( ms -> compObj -> v_position_value == ms -> compObj -> V_SLIT )
-////            {
-////            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_V_SLIT;
-////            ms -> interface -> message(ENUM_TO_STRING(ms -> compObj -> v_screenState));
-////            }
-////
-////        else
-////            {
-////                ms -> interface -> message("");
-////            ms -> compObj -> v_screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-////            }
-////
-////
-////        break;
-////    }
-//
-//}
-////_________________________________________________________________________________________________________________
-//void screenInterface::UpdateEnum( screenStructs::monitorStruct * ms, const void * argsdbr )
-//{
-////    unsigned short val = *(unsigned short*)argsdbr;
-////
-////     switch ( ms -> monType )
-////    {
-////       case screenStructs::SCREEN_PV_TYPE::Sta:
-////
-////        ms -> simpObj -> position_value = val;
-////
-////        if( ms -> simpObj -> position_value == ms -> simpObj -> OUT )
-////        {
-////            ms -> simpObj -> screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-////            ms -> interface -> message( ms -> simpObj -> name, " = ",ENUM_TO_STRING(ms -> simpObj -> screenState)  );
-////
-////        }
-////        else if ( ms -> simpObj -> position_value == ms -> simpObj -> IN )
-////        {
-////            ms -> simpObj -> screenState = screenStructs::SCREEN_STATE::SCREEN_IN;
-////            ms -> interface -> message( ms -> simpObj -> name, " = ",ENUM_TO_STRING(ms -> simpObj -> screenState) );
-////
-////        }
-////        else
-////        {
-////            ms -> simpObj  -> screenState = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-////            ms -> interface -> message( ms -> simpObj -> name," = ",ENUM_TO_STRING(ms -> simpObj -> screenState) );
-////        }
-////        break;
-////
-////        case screenStructs::SCREEN_PV_TYPE::H_PROT01:
-////
-////        if( val == 0 )
-////        {
-////            ms -> compObj -> horizontal_disabled = false;
-////            ms -> interface -> message( ms -> compObj -> name, " Horizontal Disabled = FALSE" );
-////        }
-////
-////        else if( val == 1 )
-////        {
-////            ms -> compObj -> horizontal_disabled = true;
-////            ms -> interface -> message( ms -> compObj -> name, " Horizontal Disabled = TRUE" );
-////        }
-////
-////        break;
-////
-////    case screenStructs::SCREEN_PV_TYPE::V_PROT01:
-////
-////        if( val == 0 )
-////        {
-////            ms -> compObj -> vertical_disabled = false;
-////            ms -> interface -> message( ms -> compObj -> name, " Vertical Disabled = FALSE" );
-////
-////        }
-////
-////        else if( val == 1 )
-////        {
-////            ms -> compObj -> vertical_disabled = true;
-////            ms -> interface -> message( ms -> compObj -> name, " Vertical Disabled = TRUE" );
-////        }
-////
-////        break;
-////
-////    case screenStructs::SCREEN_PV_TYPE::PROT03:
-////
-////        if( val == 0 )
-////        {
-////            ms -> compObj -> position_error = false;
-////            ms -> interface -> message( ms -> compObj -> name, " Position Error = FALSE" );
-////        }
-////
-////        else if( val == 1 )
-////        {
-////            ms -> compObj -> position_error = true;
-////            ms -> interface -> message( ms -> compObj -> name, " Position Error = TRUE" );
-////        }
-////
-////        break;
-////
-////    case screenStructs::SCREEN_PV_TYPE::PROT05:
-////
-////         if( val == 0 )
-////         {
-////            ms -> compObj -> home_error = false;
-////            ms -> interface -> message( ms -> compObj -> name, " Home Error = FALSE" );
-////        }
-////
-////        else if( val == 1 )
-////        {
-////            ms -> compObj -> home_error = true;
-////            ms -> interface -> message( ms -> compObj -> name, " Home Error = TRUE" );
-//////        }
-////
-////    case screenStructs::SCREEN_PV_TYPE::H_RPWRLOSS:
-////
-////        ms -> compObj -> H_RPWRLOSS = val;
-////
-////        if( val == 0 )
-////            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Power Lost Home");
-////
-////        else if( val == 1 )
-////            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Homeing");
-////
-////        else if( val == 2 )
-////            ms -> interface -> message(ms -> compObj -> name, " H_RPWRLOSS  = Homed");
-////
-////        break;
-////
-////    case screenStructs::SCREEN_PV_TYPE::V_RPWRLOSS:
-////
-////        ms -> compObj -> V_RPWRLOSS = val;
-////
-////        if( val == 0 )
-////            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Power Lost Home");
-////
-////        else if( val == 1 )
-////            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Homeing");
-////
-////        else if( val == 2 )
-////            ms -> interface -> message(ms -> compObj -> name, " V_RPWRLOSS  = Homed");
-////
-////        break;
-////    }
-////    }
-//}
-//__________________________________________________________________________________________________________
-void screenInterface::Screen_Out( const std::string & name )
-{
-    if( screenExists( name ) )
-    {
-        if( Is_complex( name ) )
-        {
-            if( horizontal_disabled_check( name ) )
-            {
-                move_to_position( name, "V_OUT" );
-                time_t start = time(0);
-                int timeout = 100;
-                while( getComplexVerticalScreenState( name ) != screenStructs::SCREEN_STATE::SCREEN_OUT )
-                {
-                    if( difftime( time(0), start ) >= timeout )
-                    {
-                        debugMessage( name, " has timed out");
-                        return;
-                    }
-                    else
-                        debugMessage("Screen Moving");
-                        continue;
-                }
-                debugMessage( name, " = ", ENUM_TO_STRING(getComplexVerticalScreenState( name )) );
-                std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-                debugMessage("Other screens now safe to move");
-            }
-            else if( vertical_disabled_check( name ) )
-            {
-                move_to_position( name, "H_OUT" );
-                time_t start = time(0);
-                int timeout = 100;
-                while( getComplexHorizontalScreenState( name ) != screenStructs::SCREEN_STATE::SCREEN_OUT )
-                {
-                    if( difftime( time(0), start ) >= timeout )
-                    {
-                        debugMessage( name, " has timed out");
-                        return;
-                    }
-                    else
-                        continue;
-                }
-                debugMessage( name, " = ", ENUM_TO_STRING(getComplexHorizontalScreenState( name )) );
-                std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-                debugMessage("Other screens now safe to move");
-            }
-            else
-                debugMessage( "Both horizontal and vertical movement enabled, ", name, " must already be out" );
-        }
-        else if( Is_simple( name ) )
-        {
-            Out( name );
-            time_t start = time(0);
-            int timeout = 100;
-            while( getSimpleScreenState( name ) != screenStructs::SCREEN_STATE::SCREEN_OUT )
-            {
-                if( difftime( time(0), start ) >= timeout )
-                {
-                    debugMessage( name, " has timed out");
-                    return;
-                }
-                else
-                    continue;
-            }
-            debugMessage( name, " = ", ENUM_TO_STRING(getSimpleScreenState( name )) );
-            std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-            debugMessage("Other screens now safe to move");
-        }
-    }
-    else
-        debugMessage( name, " does not exist" );
-}
-
-//___________________________________________________________________________________________________________
-void screenInterface::Screen_In( const std::string & name )
-{
-//    if( screenExists( name ) )
-//    {
-//        if( Is_complex( name ) )
-//        {
-//            if( vertical_disabled_check( name ) )
-//            {
-//                move_to_position( name, "H_OUT" );
-//                time_t start = time(0);
-//                int timeout = 100;
-//                while ( vertical_disabled_check( name ) )
-//                {
-//                    if( difftime( time(0), start ) >= timeout )
-//                    {
-//                        debugMessage( name, " has timed out");
-//                        return;
-//                    }
-//                    else
-//                    continue;
-//                }
-//                move_to_position( name, "V_YAG" );
-//                start = time(0);
-//                timeout = 100;
-//                while( getComplexVerticalScreenState( name ) != screenStructs::SCREEN_STATE::SCREEN_V_YAG )
-//                {
-//                    if( difftime( time(0), start ) >= timeout )
-//                    {
-//                        debugMessage( name, " has timed out");
-//                        return;
-//                    }
-//                    else
-//                    continue;
-//                }
-//                debugMessage( name, " = ", ENUM_TO_STRING(getComplexVerticalScreenState( name )) );
-//                std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                debugMessage("Other screens now safe to move");
-//            }
-//            else
-//                move_to_position( name, "V_YAG" );
-//        }
-//        else if( Is_simple( name ) )
-//        {
-//            In( name );
-//            time_t start = time(0);
-//            int timeout = 100;
-//            while( getSimpleScreenState( name ) != screenStructs::SCREEN_STATE::SCREEN_IN )
-//            {
-//                if( difftime( time(0), start ) >= timeout )
-//                {
-//                    debugMessage( name, " has timed out");
-//                    return;
-//                }
-//                else
-//                continue;
-//            }
-//            debugMessage( name, " = ", ENUM_TO_STRING(getSimpleScreenState( name )) );
-//            std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//            debugMessage("Other screens now safe to move");
-//        }
-//        else
-//            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-//    }
-//    else
-//        debugMessage( name, " does not exist" );
-}
-//__________________________________________________________________________________________________________
-void screenInterface::Screen_Move( const std::string & name, const std::string & position )
-{
-//    if( screenExists( name ) )
-//    {
-//        if( Is_complex( name ) )
-//        {
-//            if( position == "V_SLIT"|| position == "V_YAG"|| position == "V_OUT" )
-//            {
-//                debugMessage(position);
-//                if( vertical_disabled_check( name ) )
-//                {
-//                    move_to_position( name, "H_OUT" );
-//                    time_t start = time(0);
-//                    int timeout = 100;
-//                    while ( ENUM_TO_STRING(ScreenObject.complexObjects[ name ].h_screenState) != "H_OUT" )
-//                    {
-//                        if( difftime( time(0), start ) >= timeout )
-//                        {
-//                            debugMessage( name, " has timed out");
-//                            return;
-//                        }
-//                        else if( !vertical_disabled_check( name ) )
-//                        {
-//                            break;
-//                        }
-//                        else
-//                            continue;
-//                    }
-//                    std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                    debugMessage("Screen now moving to ", position);
-//                    move_to_position( name, position );
-//                    start = time(0);
-//                    timeout = 100;
-//                    while( ENUM_TO_STRING(getComplexVerticalScreenState( name )) != position )
-//                    {
-//                        if( difftime( time(0), start ) >= timeout )
-//                        {
-//                            debugMessage( name, " has timed out");
-//                            return;
-//                        }
-//                        else
-//                            continue;
-//                    }
-//                    debugMessage( name, " = ", ENUM_TO_STRING(getComplexVerticalScreenState( name )));
-//                    std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                    debugMessage("Other screens now safe to move");
-//
-//                }
-//                else
-//                    move_to_position( name, position );
-//                    time_t start = time(0);
-//                    int timeout = 100;
-//                    while( ENUM_TO_STRING(getComplexVerticalScreenState( name )) != position )
-//                    {
-//                        if( difftime( time(0), start ) >= timeout )
-//                        {
-//                            debugMessage( name, " has timed out");
-//                            return;
-//                        }
-//                        else
-//                            continue;
-//                    }
-//                    debugMessage( name, " = ", ENUM_TO_STRING(getComplexVerticalScreenState( name )));
-//                    std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                    debugMessage("Other screens now safe to move");
-//            }
-//            else if( position == "H_SLIT"|| position == "H_MIRROR"|| position == "H_50U_SLIT"|| position == "H_25U_SLIT"|| position == "H_63MM_HOLE"|| position == "H_10MM_HOLE"||position =="H_OUT" )
-//            {
-//              if( horizontal_disabled_check( name ) )
-//                {
-//                    move_to_position( name, "V_OUT" );
-//                    time_t start = time(0);
-//                    int timeout = 100;
-//                    while ( ENUM_TO_STRING(ScreenObject.complexObjects[ name ].h_screenState) != "V_OUT" )
-//                    {
-//                        if( difftime( time(0), start ) >= timeout )
-//                        {
-//                            debugMessage( name, " has timed out");
-//                            return;
-//                        }
-//                        else if( !horizontal_disabled_check( name ) )
-//                        {
-//                            break;
-//                        }
-//                        else
-//                            continue;
-//                    }
-//                    std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                    debugMessage("Screen now moving to ", position);
-//                    move_to_position( name, position );
-//                    start = time(0);
-//                    timeout = 100;
-//                    while( ENUM_TO_STRING(getComplexHorizontalScreenState( name )) != position )
-//                    {
-//                        if( difftime( time(0), start ) >= timeout )
-//                        {
-//                            debugMessage( name, " has timed out");
-//                            return;
-//                        }
-//                        else
-//                            continue;
-//                    }
-//                    debugMessage( name, " = ", ENUM_TO_STRING(getComplexHorizontalScreenState( name )));
-//                    std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                    debugMessage("Other screens now safe to move");
-//
-//                }
-//                else
-//                    move_to_position( name, position );
-//                    time_t start = time(0);
-//                    int timeout = 100;
-//                    while( ENUM_TO_STRING(getComplexHorizontalScreenState( name )) != position )
-//                    {
-//                        if( difftime( time(0), start ) >= timeout )
-//                        {
-//                            debugMessage( name, " has timed out");
-//                            return;
-//                        }
-//                        else
-//                            continue;
-//                    }
-//                    debugMessage( name, " = ", ENUM_TO_STRING(getComplexHorizontalScreenState( name )));
-//                    std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//                    debugMessage("Other screens now safe to move");
-//            }
-//            else
-//                debugMessage(position," is not a valid position to move to" );
-//        }
-//        else if( Is_simple( name ) )
-//            debugMessage( name, " can only be moved in or out, there are no other positions available to move to" );
-//        else
-//            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-//    }
-//    else
-//        debugMessage( name, " does not exist" );
-}
-//___________________________________________________________________________________________________________
-void screenInterface::All_Out()
-{
-//    for( auto && it : ScreenObject.complexObjects )
-//    {
-//        Screen_Out( it.first );
-//        std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//    }
-//    for( auto && it: ScreenObject.simpleObjects )
-//    {
-//        Screen_Out( it.first );
-//        std::this_thread::sleep_for(std::chrono::seconds( 3 ));///MAGIC NUMBER
-//    }
-}
-//____________________________________________________________________________________________________________
-void screenInterface::Out( const std::string & name )
-{
-//    if( screenExists( name ) )
-//        if( IsIn( name ) )
-//            toggleScreen( ScreenObject.simpleObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::Off ].CHTYPE,
-//                         ScreenObject.simpleObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::Off ].CHID,
-//                         "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO SCREEN OUT",
-//                         "!!TIMEOUT!! FAILED TO SEND SCREEN OUT");
-//        else
-//            debugMessage( name, " is already out" );
-//    else
-//        debugMessage( name, " does not exist" );
-}
-//__________________________________________________________________________________________________________________
-void screenInterface::In( const std::string & name )
-{
-//    if( screenExists( name ) )
-//        if( IsOut( name ) )
-//            toggleScreen( ScreenObject.simpleObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::On ].CHTYPE,
-//                         ScreenObject.simpleObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::On ].CHID,
-//                         "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO SCREEN IN",
-//                         "!!TIMEOUT!! FAILED TO SEND SCREEN IN");
-//        else
-//            debugMessage( name, " is aleady in" );
-//    else
-//        debugMessage( name, " does not exist" );
-}
-//__________________________________________________________________________________________________________________
-void screenInterface::toggleScreen( chtype & cht, chid & chi, const char * m1, const char * m2 )
-{
-//    int status = caput( cht, chi, EPICS_ACTIVATE, "", m1 );
-//    if( status == ECA_NORMAL )
-//        caput( cht, chi, EPICS_SEND, "", m2 );
-}
-//__________________________________________________________________________________________________________________
-void screenInterface::Stop( const std::string & name )
-{
-//    if( screenExists( name ) )
-//    {
-//        if( Is_complex( name ) )
-//        {
-//            caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::STOP ].CHTYPE,
-//              ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::STOP ].CHID,
-//              EPICS_SEND,"", "!!!TIMEOUT FAILED TO STOP SCREEN!!!");
-//        }
-//        else
-//            debugMessage( "Cannot stop screen ", name );
-//    }
-//    else
-//        debugMessage( name, " does not exist" );
-}
-//__________________________________________________________________________________________________________________
-void screenInterface::move_to( const std::string & name, const std::string & V_H, const double & position )
-{
-//    if( screenExists( name ) )
-//    {
-//        if( V_H == "VERTICAL" )
-//        {
-//            if( !vertical_disabled_check( name ) )
-//            {
-//                    if(position_value_check ( position ) )
-//                    {
-//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-//                        position,"","!!!TIMEOUT FAILED TO MOVE SCREEN!!!" );
-//                    }
-//
-//                    else
-//                        debugMessage("Cannot move screen to that position, only move to less than 155 " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//
-//        if( V_H == "HORIZONTAL" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                    if(position_value_check ( position ) )
-//                    {
-//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                        position,"","!!!TIMEOUT FAILED TO MOVE SCREEN!!!" );
-//                    }
-//
-//                    else
-//                        debugMessage("Cannot move screen to ",position," , can only move to less than 155 " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//  }
-}
-//__________________________________________________________________________________________________________________
-void screenInterface::move_to_position( const std::string & name, const std::string & position )
-{
-//    if( screenExists( name ) )
-//    {
-//
-//        if( position == "V_OUT" )
-//        {
-//            if( !vertical_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].V_OUT ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].V_OUT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].V_OUT, " is this error value 9999 or greater than 155? " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "V_YAG" )
-//        {
-//                if( !vertical_disabled_check( name ) )
-//                {
-//                    if( position_value_check( ScreenObject.complexObjects[ name ].V_YAG ) )
-//                    {
-//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-//                        ScreenObject.complexObjects[ name ].V_YAG,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                    }
-//                    else
-//                        debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].V_YAG, " is this error value 9999 or greater than 155? " );
-//                }
-//                else
-//                    debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "V_SLIT" )
-//        {
-//            if( !vertical_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].V_SLIT ) )
-//                {
-//                    caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHTYPE,
-//                        ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::V_MABS ].CHID,
-//                        ScreenObject.complexObjects[ name ].V_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ", ScreenObject.complexObjects[ name ].V_SLIT, " is this error value 9999 or greater than 155? " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//       }
-//       if( position == "H_OUT" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_OUT ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_OUT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_OUT, " is this error value 9999 or greater than 155? " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "H_MIRROR" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_MIRROR ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_MIRROR,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_MIRROR, " is this error value 9999 or greater than 155? " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "H_50U_SLIT" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_50U_SLIT ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_50U_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_50U_SLIT, " is this error value 9999 or greater than 155? " );
-//             }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "H_25U_SLIT" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_25U_SLIT ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_25U_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_25U_SLIT, " is this error value 9999 or greater than 155? " );
-//             }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "H_63MM_HOLE" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_63MM_HOLE ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_63MM_HOLE,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_63MM_HOLE, " is this error value 9999 or greater than 155? " );
-//            }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "H_10MM_HOLE" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_10MM_HOLE ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_10MM_HOLE,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_10MM_HOLE, " is this error value 9999 or greater than 155? " );
-//             }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//        if( position == "H_SLIT" )
-//        {
-//            if( !horizontal_disabled_check( name ) )
-//            {
-//                if( position_value_check( ScreenObject.complexObjects[ name ].H_SLIT ) )
-//                {
-//                caput( ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHTYPE,
-//                    ScreenObject.complexObjects[ name ].pvComStructs[ screenStructs::SCREEN_PV_TYPE::H_MABS ].CHID,
-//                    ScreenObject.complexObjects[ name ].H_SLIT,"", "!!!TIMEOUT FAILED TO MOVE SCREEN!!!");
-//                }
-//                else
-//                    debugMessage("Screen position not valid, found ",ScreenObject.complexObjects[ name ].H_SLIT, " is this error value 9999 or greater than 155? " );
-//             }
-//            else
-//                debugMessage(ScreenObject.complexObjects[ name ].name, " cannot move in this direction, movement disabled " );
-//        }
-//  }
-}
-//__________________________________________________________________________________________________________________
-bool screenInterface::screenExists( const std::string & name )
-{
-    bool ret = false;
-
-    auto it = ScreenObject.complexObjects.find( name );
-        if( it!= ScreenObject.complexObjects.end() )
-            ret = true;
-    auto it1 = ScreenObject.simpleObjects.find( name );
-        if( it1!= ScreenObject.simpleObjects.end() )
-            ret = true;
-    return ret;
-}
-//_____________________________________________________________________________________________________________
-bool screenInterface::Is_complex( const std::string & name )
-{
-    bool ret = false;
-    if( screenExists( name ) )
-    {
-        auto it = ScreenObject.complexObjects.find( name );
-            if( it!= ScreenObject.complexObjects.end() )
-                ret = true;
-    }
-    else
-        debugMessage( name, " does not exist" );
-
-    return ret;
-}
-//_____________________________________________________________________________________________________________
-bool screenInterface::Is_simple( const std::string & name )
-{
-    bool ret = false;
-    if( screenExists( name ) )
-    {
-        auto it = ScreenObject.simpleObjects.find( name );
-            if( it != ScreenObject.simpleObjects.end() )
-                ret = true;
-    }
-    else
-        debugMessage( name, " does not exist" );
-
-    return ret;
-}
-//______________________________________________________________________________________________________________
-bool screenInterface::vertical_disabled_check( const std::string & name )
-{
-    bool ret = true;
-    if( screenExists( name ) )
-    {
-        if( ScreenObject.complexObjects[name].vertical_disabled == true )
-        {
-            ret =  true;
-        }
-        else
-        {
-            ret = false;
-        }
-        return ret;
-    }
-    else
-        debugMessage(name, "does not exist" );
-
-
-    return ret;
-
-}
-//______________________________________________________________________________________________________________
-bool screenInterface::horizontal_disabled_check( const std::string & name )
-{
-    bool ret = true;
-    if( screenExists( name ) )
-    {
-        if( ScreenObject.complexObjects[name].horizontal_disabled == true )
-        {
-            ret =  true;
-        }
-        else
-        {
-            ret = false;
-        }
-        return ret;
-    }
-    else
-        debugMessage(name, "does not exist" );
-
-
-    return ret;
-
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::position_value_check( double val )
-{
-    bool ret = false;
-    if( val == 9999.99 )
-    {
-        ret =  false;
-        debugMessage(val, " is not a valid position to move to");
-    }
-    else if( val > 155 )
-    {
-        ret = false;
-        debugMessage(val, " is not a valid position to move to");
-    }
-    else
-        ret = true;
-
-    return ret;
-
-}
-//_______________________________________________________________________________________________________________
-bool screenInterface::IsOut( const std::string & name )
-{
-    bool ret = false;
-    if( screenExists( name ) )
-        if( ScreenObject.simpleObjects[name].screenState == screenStructs::SCREEN_STATE::SCREEN_OUT )
-            ret = true;
-        if( ret )
-            debugMessage( name, " is out");
-        else
-            debugMessage( name, " is NOT out");
-
-    return ret;
-}
 //___________________________________________________________________________________________________________________
-bool screenInterface::IsIn( const std::string & name )
+bool screenInterface::isNotMoving(const std::string & name, const bool weKnowEntryExists)
 {
-    bool ret = false;
-    if( screenExists( name ) )
-        if( ScreenObject.simpleObjects[name].screenState == screenStructs::SCREEN_STATE::SCREEN_IN )
-            ret = true;
-        if( ret )
-            debugMessage( name, " is in");
-        else
-            debugMessage( name, " is NOT in");
-
-    return ret;
-}
-//____________________________________________________________________________________________________________
-void screenInterface::getScreenNames( std::vector< std::string > & screenNames )
-{
-    screenNames.clear();
-    for( auto const & it : ScreenObject.complexObjects )
-        screenNames.push_back( it.first );
-    for( auto const & it2 : ScreenObject.simpleObjects )
-        screenNames.push_back( it2.first );
-}
-//_____________________________________________________________________________________________________
-double screenInterface::getComplexScreenHorizontalPosition( const std::string &name )
-{
-        return ScreenObject.complexObjects[ name ].h_position_value;
-}
-//_____________________________________________________________________________________________________
-double screenInterface::getComplexScreenVerticalPosition( const std::string &name )
-{
-    return ScreenObject.complexObjects[ name ].v_position_value;
-}
-//______________________________________________________________________________________________________
-double screenInterface::getScreenPosition( const std::string &name, const std::string &V_H )
-{
-    double position = 9999.99;
-    if( screenExists( name ) )
-    {
-        if( Is_complex( name ) )
-        {
-            if( V_H == "VERTICAL" )
-            {
-                position = getComplexScreenVerticalPosition( name );
-                debugMessage(position);
-            }
-            else if( V_H == "HORIZONTAL" )
-            {
-                position = getComplexScreenHorizontalPosition( name );
-                debugMessage(position);
-            }
-            else
-                debugMessage( V_H," is not valid. Enter either VERTICAL or HORIZONTAL" );
-        }
-        else if( Is_simple( name ) )
-            debugMessage(name, " does not have a vertical or horizontal position, it is either in or out, use getScreenState to get the state" );
-        else
-            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-    }
-    else
-        debugMessage(name, " does not exist" );
-
-    return position;
-}
-//____________________________________________________________________________________________________________________
-screenStructs::SCREEN_STATE screenInterface::getComplexHorizontalScreenState ( const std::string &name )
-{
-    screenStructs::SCREEN_STATE r = screenStructs::SCREEN_STATE::SCREEN_ERROR;
-    if( screenExists( name ) )
-        r = ScreenObject.complexObjects[ name ].h_screenState;
-    return r;
-}
-//___________________________________________________________________________________________________________________
-screenStructs::SCREEN_STATE screenInterface::getComplexVerticalScreenState( const std::string &name )
-{
-    screenStructs::SCREEN_STATE r = screenStructs::SCREEN_STATE::SCREEN_ERROR;
-    if( screenExists( name ) )
-        r = ScreenObject.complexObjects[ name ].v_screenState;
-    return r;
-}
-//____________________________________________________________________________________________________________________
-screenStructs::SCREEN_STATE screenInterface::getSimpleScreenState ( const std::string &name )
-{
-    screenStructs::SCREEN_STATE r = screenStructs::SCREEN_STATE::SCREEN_ERROR;
-    if( screenExists( name ) )
-        r = ScreenObject.simpleObjects[ name ].screenState;
-    else
-        debugMessage( name, " does not exist" );
-    return r;
-}
-//________________________________________________________________________________________________________________
-screenStructs::SCREEN_STATE screenInterface::getScreenState( const std::string &name, const std::string &V_H )
-{
-    screenStructs::SCREEN_STATE State = screenStructs::SCREEN_STATE::SCREEN_ERROR;
-    if( screenExists( name ) )
-    {
-        if( Is_complex( name ) )
-        {
-            if(V_H == "VERTICAL" )
-            {
-                State = getComplexVerticalScreenState( name );
-                message(name, " Screen State = ",ENUM_TO_STRING(State));
-
-            }
-            else if(V_H == "HORIZONTAL" )
-            {
-                State = getComplexHorizontalScreenState( name );
-                message(name, " Screen State = ",ENUM_TO_STRING(State));
-
-            }
-            else
-                debugMessage( V_H," is not valid. Enter either VERTICAL or HORIZONTAL" );
-        }
-        else if( Is_simple( name ) )
-        {
-            debugMessage(name, " does not have vertical or horizontal components, just enter ",name, " into the fucntion" );
-        }
-        else
-            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-    }
-     else
-        debugMessage( name, " does not exist" );
-
-    return State;
-}
-//__________________________________________________________________________________________________________________
-screenStructs::SCREEN_STATE screenInterface::getScreenState( const std::string &name )
-{
-    screenStructs::SCREEN_STATE State = screenStructs::SCREEN_STATE::SCREEN_ERROR;
-    if( screenExists( name ) )
-    {
-        if( Is_simple( name ) )
-        {
-            State = getSimpleScreenState( name );
-            message(name, " Screen State = ",ENUM_TO_STRING(State));
-        }
-        else if( Is_complex( name ) )
-        {
-            debugMessage( name, " does not have a vertical or horizontal component, just enter ",name );
-        }
-        else
-            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-    }
-    else
-        debugMessage( name, " does not exist" );
-
-    return State;
+    return !isMoving(name);
 }
 //___________________________________________________________________________________________________________________
 std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > screenInterface::getILockStates( const std::string & name )
 {
-    if( entryExists( ScreenObject.simpleObjects, name ) )
-    {   std::cout << "Entry Exists getILockStates" << std::endl;
-        return ScreenObject.simpleObjects[ name ].iLockStates;
-    }
-
-    else if( entryExists( ScreenObject.complexObjects, name ) )
-    {   std::cout << "Entry Exists getILockStates" << std::endl;
-        return ScreenObject.complexObjects[ name ].iLockStates;
-    }
-
-    else
-    {
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r = {{VELA_ENUM::ILOCK_NUMBER::ILOCK_ERR, VELA_ENUM::ILOCK_STATE::ILOCK_ERROR}};
-        return r;
-    }
-
+//    if( entryExists( ScreenObject.simpleObjects, name ) )
+//    {   std::cout << "Entry Exists getILockStates" << std::endl;
+//        return ScreenObject.simpleObjects[ name ].iLockStates;
+//    }
+//
+//    else if( entryExists( ScreenObject.complexObjects, name ) )
+//    {   std::cout << "Entry Exists getILockStates" << std::endl;
+//        return ScreenObject.complexObjects[ name ].iLockStates;
+//    }
+//
+//    else
+//    {
+//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r = {{VELA_ENUM::ILOCK_NUMBER::ILOCK_ERR, VELA_ENUM::ILOCK_STATE::ILOCK_ERROR}};
+//        return r;
+//    }
+    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
+    return r;
 }
 ////__________________________________________________________________________________________________________________
 std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  screenInterface::getILockStatesStr( const std::string & name )
 {
     std::map< VELA_ENUM::ILOCK_NUMBER, std::string  > r;
 
-    if( entryExists( ScreenObject.simpleObjects, name ) )
-    {
-        std::cout << "Entry Exists getILockStatesStr" << std::endl;
-        for( auto it : ScreenObject.simpleObjects[ name ].iLockStates )
-        {
-            message( "hello", it.second  );
-            r[ it.first ] = ENUM_TO_STRING( it.second );
-        }
-    }
-
-    if( entryExists( ScreenObject.complexObjects, name ) )
-    {
-        std::cout << "Entry Exists getILockStatesStr" << std::endl;
-        for( auto it : ScreenObject.complexObjects[ name ].iLockStates )
-            r[ it.first ] = ENUM_TO_STRING( it.second );
-    }
-
-    else
-        r[ VELA_ENUM::ILOCK_NUMBER::ILOCK_ERR ] = ENUM_TO_STRING( VELA_ENUM::ILOCK_STATE::ILOCK_ERROR );
+//    if( entryExists( ScreenObject.simpleObjects, name ) )
+//    {
+//        std::cout << "Entry Exists getILockStatesStr" << std::endl;
+//        for( auto it : ScreenObject.simpleObjects[ name ].iLockStates )
+//        {
+//            message( "hello", it.second  );
+//            r[ it.first ] = ENUM_TO_STRING( it.second );
+//        }
+//    }
+//
+//    if( entryExists( ScreenObject.complexObjects, name ) )
+//    {
+//        std::cout << "Entry Exists getILockStatesStr" << std::endl;
+//        for( auto it : ScreenObject.complexObjects[ name ].iLockStates )
+//            r[ it.first ] = ENUM_TO_STRING( it.second );
+//    }
+//
+//    else
+//        r[ VELA_ENUM::ILOCK_NUMBER::ILOCK_ERR ] = ENUM_TO_STRING( VELA_ENUM::ILOCK_STATE::ILOCK_ERROR );
     return r;
-
 }
-//_________________________________________________________________________________________________________________
-void screenInterface::get_info( const std::string & name )
-{
-    if( screenExists( name ) )
-    {
-        if( Is_complex( name ) )
-        {
-            message( "Name = ", ScreenObject.complexObjects[ name ].name );
-            message( "PV Root = ", ScreenObject.complexObjects[ name ].pvRoot );
-            message( "Horizontal Position = ", ScreenObject.complexObjects[ name ].h_position_value );
-            message( "Horizontal State = ", ENUM_TO_STRING(ScreenObject.complexObjects[ name ].h_screenState) );
-            message( "Vertical Position = ", ScreenObject.complexObjects[ name ].v_position_value );
-            message( "Vertical State = ", ENUM_TO_STRING(ScreenObject.complexObjects[ name ].v_screenState) );
-            if(ScreenObject.complexObjects[ name ].vertical_disabled)
-                message( "Vertical Disabled = TRUE" );
-            else if(!ScreenObject.complexObjects[ name ].vertical_disabled)
-                message( "Vertical Disabled = FALSE" );
-            else
-                debugMessage( "Vertical Disabled = ", ScreenObject.complexObjects[ name ].vertical_disabled );
-            if(ScreenObject.complexObjects[ name ].horizontal_disabled)
-                message( "Horizontal Disabled = TRUE" );
-            else if(!ScreenObject.complexObjects[ name ].horizontal_disabled)
-                message( "Horizontal Disabled = FALSE" );
-            else
-                debugMessage( "Horizontal Disabled = ", ScreenObject.complexObjects[ name ].horizontal_disabled );
-            if(ScreenObject.complexObjects[ name ].position_error)
-                message( "Position Error = TRUE" );
-            else if(!ScreenObject.complexObjects[ name ].position_error)
-                message( "Position Error = FALSE" );
-            else
-                debugMessage( "Position Error = ", ScreenObject.complexObjects[ name ].position_error );
-            if(ScreenObject.complexObjects[ name ].home_error)
-                message( "Home Error = TRUE" );
-            else if(!ScreenObject.complexObjects[ name ].home_error)
-                message( "Home Error = FALSE" );
-            else
-                debugMessage( "Home Error = ", ScreenObject.complexObjects[ name ].home_error );
-            message( "Horizontal Reverse Power Loss = ", ScreenObject.complexObjects[ name ].H_RPWRLOSS );
-            message( "Vertical Reverse Power Loss = ", ScreenObject.complexObjects[ name ].V_RPWRLOSS );
-        }
-        else if( Is_simple( name ) )
-        {
-            message( "Name = ", ScreenObject.simpleObjects[ name ].name );
-            message( "PV Root = ", ScreenObject.simpleObjects[ name ].pvRoot );
-            message( "Screen State = ", ENUM_TO_STRING(ScreenObject.simpleObjects[ name ].screenState) );
-            message( "Position Value = ", ScreenObject.simpleObjects[ name ].position_value );
-        }
-        else
-            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-    }
-    else
-        debugMessage(name, " does not exist");
-}
-//__________________________________________________________________________________________________________________
-void screenInterface::get_config_values( const std::string & name )
-{
-    if(screenExists( name ) )
-    {
-        if( Is_complex( name ) )
-        {
-            message( "Name = ", ScreenObject.complexObjects[ name ].name );
-            message( "PV Root = ", ScreenObject.complexObjects[ name ].pvRoot );
-            message( "H_MIRROR = ", ScreenObject.complexObjects[ name ].H_MIRROR );
-            message( "H_50U_SLIT = ", ScreenObject.complexObjects[ name ].H_50U_SLIT );
-            message( "H_25U_SLIT = ", ScreenObject.complexObjects[ name ].H_25U_SLIT );
-            message( "H_63MM_HOLE = ", ScreenObject.complexObjects[ name ].H_63MM_HOLE );
-            message( "H_10MM_HOLE = ", ScreenObject.complexObjects[ name ].H_10MM_HOLE );
-            message( "H_SLIT = ", ScreenObject.complexObjects[ name ].H_SLIT );
-            message( "V_YAG = ", ScreenObject.complexObjects[ name ].V_YAG );
-            message( "V_SLIT = ", ScreenObject.complexObjects[ name ].V_SLIT );
-            message( "H_OUT = ", ScreenObject.complexObjects[ name ].H_OUT );
-            message( "V_OUT = ", ScreenObject.complexObjects[ name ].V_OUT );
-            message( "numIlocks = ", ScreenObject.complexObjects[ name ].numIlocks );
-        }
-        else if( Is_simple( name ) )
-        {
-            message( "Name = ", ScreenObject.simpleObjects[ name ].name );
-            message( "PV Root = ", ScreenObject.simpleObjects[ name ].pvRoot );
-            message( "IN = ", ScreenObject.simpleObjects[ name ].IN );
-            message( "OUT = ", ScreenObject.simpleObjects[ name ].OUT );
-            message( "numIlocks = ", ScreenObject.simpleObjects[ name ].numIlocks );
-        }
-        else
-            debugMessage("Cannot find ",name," in complex or simple screens lists, but screen exists, there is a problem!" );
-    }
-    else
-        debugMessage(name, " does not exist");
-}
-//__________________________________________________________________________________________________________________
-
-
-
-
-
-
-
-
-
-//___________________________________________________________________________________________________________________
-void screenInterface::addToComplexMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  )
-{
-    cms.push_back( new screenStructs::monitorStruct() );
-    cms.back() -> compObj =  COMPLEX_YAG;
-    cms.back() -> interface = this;
-    cms.back() -> monType = pv.pvType;
-    cms.back() -> CHTYPE = pv.CHTYPE;
-
-    //ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
-}
-//____________________________________________________________________________________________________________________
-void screenInterface::addToSimpleMonitorStructs( std::vector< screenStructs::monitorStruct * > & cms, screenStructs::pvStruct & pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  )
-{
-    cms.push_back( new screenStructs::monitorStruct() );
-    cms.back() -> simpObj   = SIMPLE_YAG;
-    cms.back() -> interface = this;
-    cms.back() -> monType   = pv.pvType;
-    cms.back() -> CHTYPE    = pv.CHTYPE;
-
-    //ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK, screenInterface::staticEntryScreenMonitor, (void*)cms.back(), &pv.EVID );
-}
-
-
-
-
-
-
-
-

@@ -182,7 +182,7 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
 {
     if( keyVal[0] == UTL::NAME )
     {
-        screenStructs::screenObjectDEV scr = screenStructs::screenObjectDEV();
+        screenStructs::screenObject scr = screenStructs::screenObject();
         scr.name = keyVal [ 1 ];
         scr.numIlocks = (size_t)numIlocks;
         // each screen gets a driver and an H and V driver status
@@ -200,8 +200,8 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         // set all elements in the cassette object's existanece map to false
         for( auto && it : UTL::allScreenCassetteElements  )// allScreenCassetteElements is a list of all possible elements
         {
-             scr.driver.hCassette.cassetteElements[ it ] = false;
-             scr.driver.vCassette.cassetteElements[ it ] = false;
+             scr.driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(it) ] = false;
+             scr.driver.vCassette.cassetteElements[ screenStructs::vCassetteElementMap.at(it) ] = false;
         }
         scrObjects.push_back( scr );
         debugMessage( "Added ", scrObjects.back().name );
@@ -225,85 +225,124 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     // if a cassette element exists we update the cassetteElements  map to refelct this (init to false above)
     else if( keyVal[0] == UTL::H_MIRROR_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[1]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::MIRROR_POS );
+        // the cassettes have a map of whether the the element exists, and it's "offline" position, from the config file
+        //scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[1]);
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::MIRROR_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::MIRROR_POS)] = getNumD(keyVal[1]);
+        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::MIRROR_POS );
     }
     else if( keyVal[0] == UTL::V_MIRROR_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::MIRROR_POS );
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::MIRROR_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::MIRROR_POS) ] = getNumD(keyVal[1]);
+//        scrObjects.back().driver.vCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[ 1 ]);
+//        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::MIRROR_POS );
     }
     else if( keyVal[0] == UTL::H_SLIT_50_UM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_50_UM_POS );
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_50_UM_POS );
     }
     else if( keyVal[0] == UTL::V_SLIT_50_UM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_50_UM_POS );
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = getNumD(keyVal[1]);
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_50_UM_POS );
     }
-
     else if( keyVal[0] == UTL::H_SLIT_25_UM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_25_UM_POS );
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM_POS)] = getNumD(keyVal[1]);
 
+        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_25_UM_POS );
     }
     else if( keyVal[0] == UTL::V_SLIT_25_UM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_25_UM_POS);
+        scrObjects.back().driver.vCassette.cassetteElements[        screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_25_UM_POS);
     }
     else if( keyVal[0] == UTL::H_HOLE_6p3_MM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_6p3_MM_POS);
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM_POS)] = getNumD(keyVal[1]);
+        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_6p3_MM_POS);
     }
     else if( keyVal[0] == UTL::V_HOLE_6p3_MM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_6p3_MM_POS);
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_6p3_MM_POS);
     }
     else if( keyVal[0] == UTL::H_HOLE_10_MM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_10_MM_POS);
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM_POS)] = getNumD(keyVal[1]);
+        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_10_MM_POS);
     }
     else if( keyVal[0] == UTL::V_HOLE_10_MM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_10_MM_POS);
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_10_MM_POS);
     }
     else if( keyVal[0] == UTL::H_YAG_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::YAG_POS);
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::YAG_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::YAG_POS)] = getNumD(keyVal[1]);
+        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::YAG_POS);
     }
     else if( keyVal[0] == UTL::V_YAG_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::YAG_POS);
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::YAG_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::YAG_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::YAG_POS);
     }
     else if( keyVal[0] == UTL::H_OUT_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::OUT_POS);
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::OUT_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::OUT_POS)] = getNumD(keyVal[1]);
+//        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
+//        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::OUT_POS);
     }
     else if( keyVal[0] == UTL::V_OUT_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::OUT_POS);
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::OUT_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::OUT_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::OUT_POS);
     }
     else if( keyVal[0] == UTL::H_RF_POS)
     {
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::RF_POS);
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::RF_POS) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::RF_POS)] = getNumD(keyVal[1]);
+//        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
+//        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::RF_POS);
     }
     else if( keyVal[0] == UTL::V_RF_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
-        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::RF_POS);
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::RF_POS) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::RF_POS) ] = getNumD(keyVal[1]);
+
+        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
+        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::RF_POS);
     }
     // at the moment the H and V driver status are identical, so they are not distinguished in the config
     else if( keyVal[0] == UTL::NUM_STA_BITS )
@@ -325,11 +364,11 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         scrObjects.back().driver.vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
     }
 }
-//______________________________________________________________________________________________________
-void screenConfigReader::setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element )
-{
-    cas.cassetteElements[ element ] = true;
-}
+////______________________________________________________________________________________________________
+//void screenConfigReader::setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element )
+//{
+//    cas.cassetteElements[ element ] = true;
+//}
 //______________________________________________________________________________________________________
 screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string & val )
 {
@@ -456,7 +495,7 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
 
 }
 //__________________________________________________________________________________________
-bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs::screenObjectDEV > & mapToFill )
+bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs::screenObject > & mapToFill )
 {
     mapToFill.clear();
 

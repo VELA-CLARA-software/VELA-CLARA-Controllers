@@ -80,6 +80,10 @@ class configReader : public baseObject
 
         bool stringIsSubString( const std::string & stringToCheck, const std::string & stringToLookFor );
 
+        bool isNO_CONFIG_FILE( const  std::string & str );
+        bool isnotNO_CONFIG_FILE( const  std::string & str );
+
+
     private:
 };
 #endif //UTL_FILE_IO_H
