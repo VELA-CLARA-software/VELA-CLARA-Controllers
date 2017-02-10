@@ -66,6 +66,8 @@ class beamPositionMonitorController : public controller
         void reCalAttenuation( const std::string & bpmName, double qScope );
         void monitorDataForNShots( size_t N, const std::string & name );
         void monitorDataForNShots( size_t N, const std::vector< std::string > & names );
+        VELA_ENUM::MACHINE_AREA getMachineArea();
+        VELA_ENUM::MACHINE_MODE getMachineMode();
 
         std::vector< std::string > getBPMNames();
 

@@ -267,6 +267,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* getBPMDataObjectDocString = "Returns the bpm data object for str(bpmName) - these are defined in the config file.\n"
                                             "To be used in conjunction with function monitorDataForNShots. Type help(VELA_CLARA_BPM_Control.bpmDataObject) to see what this contains.";
     char const* getBPMNamesDocString = "Returns all of the BPM names defined in the config file.";
+    char const* getAreaDocString = "Returns, as a VELA_ENUM, the machine area for the controller.";
+    char const* getModeDocString = "Returns, as a VELA_ENUM, the machine mode for the controller (OFFLINE, PHYSICAL, VIRTUAL).";
     char const* getILocksDocString = "Why are you here? BPMs don't have interlocks. At least as far as I'm aware. I'm not sure why they would.";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
             ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
@@ -307,6 +309,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                      )
             .def("setX",                            &beamPositionMonitorController::setX, setXDocString                        )
             .def("setY",                            &beamPositionMonitorController::setY, setYDocString                        )
+            .def("getMachineArea",                  &beamPositionMonitorController::getMachineArea, getAreaDocString                        )
+            .def("getMachineMode",                  &beamPositionMonitorController::getMachineMode, getModeDocString                        )
             .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                )
             .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                        )
             //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::vector< std::string >&)>
