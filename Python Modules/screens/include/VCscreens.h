@@ -90,15 +90,23 @@ typedef std::string stri;
 typedef const std::string cstr;
 typedef std::vector<std::string> vecs;
 typedef const std::vector<std::string> cves;
+typedef const screenStructs::SCREEN_STATE csta;
+typedef const std::vector< screenStructs::SCREEN_STATE > stav;
 
 typedef std::vector<bool> vecb;
 ///
-bool(screenController::*screenIN_1)(cstr&  ) = &screenController::screenIN;
-bool(screenController::*screenIN_2)(cves&  ) = &screenController::screenIN;
-bool(screenController::*screenOUT_1)(cstr& ) = &screenController::screenOUT;
-bool(screenController::*screenOUT_2)(cves& ) = &screenController::screenOUT;
-bool(screenController::*isScreenIN_1)(cstr& )= &screenController::isScreenIN;
-vecb(screenController::*isScreenIN_2)(cves& )= &screenController::isScreenIN;
+bool(screenController::*screenIN_1)  (cstr& ) = &screenController::screenIN;
+bool(screenController::*screenIN_2)  (cves& ) = &screenController::screenIN;
+bool(screenController::*screenOUT_1) (cstr& ) = &screenController::screenOUT;
+bool(screenController::*screenOUT_2) (cves& ) = &screenController::screenOUT;
+
+bool(screenController::*screenMoveTo_1)(cves&, stav& ) = &screenController::screenMoveTo;
+bool(screenController::*screenMoveTo_2)(cstr&, csta& ) = &screenController::screenMoveTo;
+
+bool(screenController::*isScreenIN_1)(cstr& ) = &screenController::isScreenIN;
+vecb(screenController::*isScreenIN_2)(cves& ) = &screenController::isScreenIN;
+bool(screenController::*isScreenOUT_1)(cstr&) = &screenController::isScreenOUT;
+vecb(screenController::*isScreenOUT_2)(cves&) = &screenController::isScreenOUT;
 
 
 
@@ -127,40 +135,40 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
         .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
         .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
         ;
     // screen structs
     enum_<screenStructs::SCREEN_STATE>("SCREEN_STATE")
-        .value("SCREEN_IN",     screenStructs::SCREEN_STATE::SCREEN_IN )
-        .value("SCREEN_OUT",     screenStructs::SCREEN_STATE::SCREEN_OUT )
-        .value("SCREEN_MOVING",     screenStructs::SCREEN_STATE::SCREEN_MOVING )
-        .value("SCREEN_ERROR",    screenStructs::SCREEN_STATE::SCREEN_ERROR )
-        .value("SCREEN_UNKNOWN", screenStructs::SCREEN_STATE::SCREEN_UNKNOWN )
-        .value("H_MIRROR", screenStructs::SCREEN_STATE::H_MIRROR )
-        .value("V_MIRROR", screenStructs::SCREEN_STATE::V_MIRROR )
-        .value("H_50U_SLIT", screenStructs::SCREEN_STATE::H_50U_SLIT )
-        .value("V_50U_SLIT", screenStructs::SCREEN_STATE::V_50U_SLIT )
-        .value("H_25U_SLIT", screenStructs::SCREEN_STATE::H_25U_SLIT )
-        .value("V_25U_SLIT", screenStructs::SCREEN_STATE::V_25U_SLIT )
-        .value("H_6p3MM_HOLE", screenStructs::SCREEN_STATE::H_6p3MM_HOLE )
-        .value("V_6p3MM_HOLE", screenStructs::SCREEN_STATE::V_6p3MM_HOLE )
-        .value("H_10MM_HOLE", screenStructs::SCREEN_STATE::H_10MM_HOLE )
-        .value("V_10MM_HOLE", screenStructs::SCREEN_STATE::V_10MM_HOLE )
-        .value("H_YAG", screenStructs::SCREEN_STATE::H_YAG )
-        .value("V_YAG", screenStructs::SCREEN_STATE::V_YAG )
-        .value("H_SLIT", screenStructs::SCREEN_STATE::H_SLIT )
-        .value("V_SLIT", screenStructs::SCREEN_STATE::V_SLIT )
-        .value("H_RF", screenStructs::SCREEN_STATE::H_RF )
-        .value("V_RF", screenStructs::SCREEN_STATE::V_RF )
-        .value("V_OUT", screenStructs::SCREEN_STATE::V_OUT )
-        .value("H_OUT", screenStructs::SCREEN_STATE::H_OUT )
-        .value("UNKNOWN_POSITION", screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
+        .value("SCREEN_IN",       screenStructs::SCREEN_STATE::SCREEN_IN  )
+        .value("SCREEN_OUT",      screenStructs::SCREEN_STATE::SCREEN_OUT )
+        .value("SCREEN_MOVING",   screenStructs::SCREEN_STATE::SCREEN_MOVING )
+        .value("SCREEN_ERROR",    screenStructs::SCREEN_STATE::SCREEN_ERROR  )
+        .value("SCREEN_UNKNOWN",  screenStructs::SCREEN_STATE::SCREEN_UNKNOWN)
+        .value("H_MIRROR",        screenStructs::SCREEN_STATE::H_MIRROR)
+        .value("V_MIRROR",        screenStructs::SCREEN_STATE::V_MIRROR)
+        .value("H_50U_SLIT",      screenStructs::SCREEN_STATE::H_50U_SLIT)
+        .value("V_50U_SLIT",      screenStructs::SCREEN_STATE::V_50U_SLIT)
+        .value("H_25U_SLIT",      screenStructs::SCREEN_STATE::H_25U_SLIT)
+        .value("V_25U_SLIT",      screenStructs::SCREEN_STATE::V_25U_SLIT)
+        .value("H_6p3MM_HOLE",    screenStructs::SCREEN_STATE::H_6p3MM_HOLE)
+        .value("V_6p3MM_HOLE",    screenStructs::SCREEN_STATE::V_6p3MM_HOLE)
+        .value("H_10MM_HOLE",     screenStructs::SCREEN_STATE::H_10MM_HOLE)
+        .value("V_10MM_HOLE",     screenStructs::SCREEN_STATE::V_10MM_HOLE)
+        .value("H_YAG",           screenStructs::SCREEN_STATE::H_YAG)
+        .value("V_YAG",           screenStructs::SCREEN_STATE::V_YAG)
+        .value("H_SLIT",          screenStructs::SCREEN_STATE::H_SLIT)
+        .value("V_SLIT",          screenStructs::SCREEN_STATE::V_SLIT)
+        .value("H_RF",            screenStructs::SCREEN_STATE::H_RF)
+        .value("V_RF",            screenStructs::SCREEN_STATE::V_RF)
+        .value("V_OUT",           screenStructs::SCREEN_STATE::V_OUT )
+        .value("H_OUT",           screenStructs::SCREEN_STATE::H_OUT )
+        .value("UNKNOWN_POSITION",screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
         ;
     enum_<screenStructs::SCREEN_TYPE>("SCREEN_TYPE")
         .value("UNKNOWN_SCREEN_TYPE", screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE )
-        .value("VELA_HV_MOVER",       screenStructs::SCREEN_TYPE::VELA_HV_MOVER )
+        .value("VELA_HV_MOVER",       screenStructs::SCREEN_TYPE::VELA_HV_MOVER  )
         .value("VELA_PNEUMATIC",      screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
         ;
     enum_<screenStructs::DRIVER_STATE>("DRIVER_STATE")
@@ -243,14 +251,37 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .def("getILockStates",           &screenController::getILockStates        )
 //        .def("getMagPSUStateDefinition", &magnetController::getMagPSUStateDefinition )
 //        .def("getILockStatesDefinition", &magnetController::getILockStatesDefinition )
-        .def("get_CA_PEND_IO_TIMEOUT",   &screenController::get_CA_PEND_IO_TIMEOUT   )
-        .def("set_CA_PEND_IO_TIMEOUT",   &screenController::set_CA_PEND_IO_TIMEOUT   )
-        .def("isScreenIN",  isScreenIN_1  )
-        .def("isScreenIN",  isScreenIN_2  )
-        .def("screenIN",  screenIN_1  )
-        .def("screenIN",  screenIN_2  )
-        .def("screenOUT", screenOUT_1 )
-        .def("screenOUT", screenOUT_2 )
+        .def("get_CA_PEND_IO_TIMEOUT",  &screenController::get_CA_PEND_IO_TIMEOUT   )
+        .def("set_CA_PEND_IO_TIMEOUT",  &screenController::set_CA_PEND_IO_TIMEOUT   )
+        .def("screenIN",                screenIN_1  )
+        .def("screenIN",                screenIN_2  )
+        .def("screenOUT",               screenOUT_1 )
+        .def("screenOUT",               screenOUT_2 )
+        .def("is_VELA_PNEUMATIC",       &screenController::is_VELA_PNEUMATIC )
+        .def("is_VELA_HV_MOVER",        &screenController::is_VELA_HV_MOVER  )
+        .def("get_VELA_PNEUMATIC_Screens", &screenController::get_VELA_PNEUMATIC_Screens )
+        .def("get_VELA_HV_MOVER_Screens",  &screenController::get_VELA_HV_MOVER_Screens )
+        .def("screenMoveTo",               screenMoveTo_1 )
+        .def("screenMoveTo",               screenMoveTo_2 )
+        .def("setPosition",                &screenController::setPosition )
+        .def("isMoving",                   &screenController::isMoving )
+        .def("isNotMoving",                &screenController::isNotMoving )
+        .def("is_VELA_PNEUMATIC",          &screenController::is_VELA_PNEUMATIC )
+        .def("is_VELA_HV_MOVER",           &screenController::is_VELA_HV_MOVER )
+        .def("is_H_Element",               &screenController::is_H_Element )
+        .def("is_V_Element",               &screenController::is_V_Element )
+        .def("isScreenOUT",                isScreenOUT_1 )
+        .def("isScreenOUT",                isScreenOUT_2 )
+        .def("isScreenIN",                 isScreenIN_1  )
+        .def("isScreenIN",                 isScreenIN_2  )
+        .def("exists_and_isLocked",        &screenController::exists_and_isLocked        )
+        .def("exists_and_isNotLocked",     &screenController::exists_and_isNotLocked     )
+        .def("get_VELA_PNEUMATIC_Screens", &screenController::get_VELA_PNEUMATIC_Screens )
+        .def("get_VELA_HV_MOVER_Screens",  &screenController::get_VELA_HV_MOVER_Screens  )
+        .def("getScreenState",             &screenController::getScreenState             )
+        .def("isScreenInState",            &screenController::isScreenInState            )
+        .def("get_SCREEN_STATE_Definition",&screenController::get_SCREEN_STATE_Definition )
+        .def("get_DRIVER_STATE_Definition",&screenController::get_DRIVER_STATE_Definition )
         ;
 
     /// The main class that creates all the controller obejcts
@@ -286,8 +317,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .def("setMessage",       &VCscreens::setMessage )
         .def("setDebugMessage",  &VCscreens::setDebugMessage )
         ;
-
-
 }
 
 #endif // _VCSCREENS_H

@@ -1,5 +1,7 @@
 #include "VCmagnets.h"
+//stl
 #include <iostream>
+#include <string>
 
 VCmagnets::VCmagnets():
 virtual_VELA_INJ_Magnet_Controller_Obj(nullptr),

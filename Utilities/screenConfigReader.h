@@ -62,7 +62,7 @@ private:
     void setV(std::vector< screenStructs::pvStruct > & pvs );
 
 
-    const bool usingVirtualMachine;
+
     // yay function pointers
     typedef void( screenConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );
     bool readConfig( screenConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2);

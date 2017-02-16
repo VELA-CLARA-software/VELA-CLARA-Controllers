@@ -238,7 +238,7 @@ void screenInterface::monitorScreens()
 //_______________________________________________________________________________________________________________
 void screenInterface::addscreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObject & obj  )
 {
-    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStructDEV() );
+    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
     continuousMonitorStructsDEV.back() -> interface = this;
     continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
     continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
@@ -247,7 +247,7 @@ void screenInterface::addscreenObjectMonitors( screenStructs::pvStruct & pvs,  s
 //_______________________________________________________________________________________________________________
 void screenInterface::addScreenDriverMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriver & obj )// see screenstructs for a screenDriverStatus
 {
-    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStructDEV() );
+    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
     continuousMonitorStructsDEV.back() -> interface = this;
     continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
     continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
@@ -256,7 +256,7 @@ void screenInterface::addScreenDriverMonitors( screenStructs::pvStruct & pvs, sc
 //_______________________________________________________________________________________________________________
 void screenInterface::addScreenDriverStatusMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriverStatus & obj )// see screenstructs for a screenDriver
 {
-    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStructDEV() );
+    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
     continuousMonitorStructsDEV.back() -> interface = this;
     continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
     continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
@@ -275,7 +275,7 @@ bool screenInterface::isVertical(  screenStructs::DRIVER_DIRECTION dir )
 //_______________________________________________________________________________________________________________
 void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
 {
-    screenStructs::monitorStructDEV * ms = reinterpret_cast< screenStructs::monitorStructDEV*>(args.usr);
+    screenStructs::monitorStruct * ms = reinterpret_cast< screenStructs::monitorStruct*>(args.usr);
     //std::cout << "staticEntryScreenMonitor " << std::endl;
     switch ( ms -> monType )// based on which monitor we call a differnwet update function
     {
@@ -301,7 +301,7 @@ void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
     }
 }
 ////_________________________________________________________________________________________________________________
-void screenInterface::updatePROT03( screenStructs::monitorStructDEV * ms, const double args )
+void screenInterface::updatePROT03( screenStructs::monitorStruct * ms, const double args )
 {
     screenStructs::screenDriver * obj = reinterpret_cast<screenStructs::screenDriver *> (ms->obj);
     std::stringstream ss;
@@ -322,7 +322,7 @@ void screenInterface::updatePROT03( screenStructs::monitorStructDEV * ms, const 
     message(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updatePROT05( screenStructs::monitorStructDEV * ms, const double args )
+void screenInterface::updatePROT05( screenStructs::monitorStruct * ms, const double args )
 {
     // evil evil evil
     screenStructs::screenDriver * obj = reinterpret_cast<screenStructs::screenDriver *> (ms->obj);
@@ -344,7 +344,7 @@ void screenInterface::updatePROT05( screenStructs::monitorStructDEV * ms, const 
     message(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updateRPOS( screenStructs::monitorStructDEV * ms,  const double args )
+void screenInterface::updateRPOS( screenStructs::monitorStruct * ms,  const double args )
 {
     // evilness (?)
     screenStructs::screenDriverStatus * obj = reinterpret_cast<screenStructs::screenDriverStatus *> (ms->obj);
@@ -398,7 +398,7 @@ void screenInterface::updateCassettePosition( screenStructs::screenCassette  & c
     debugMessage(cas.parentScreen, " screen state is now ", ENUM_TO_STRING( getScreenState( cas.parentScreen ) ) );
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updatePROT01( screenStructs::monitorStructDEV * ms, const double args )
+void screenInterface::updatePROT01( screenStructs::monitorStruct * ms, const double args )
 {
     screenStructs::screenDriverStatus * obj = reinterpret_cast<screenStructs::screenDriverStatus *> (ms->obj);
     std::stringstream ss;
@@ -423,7 +423,7 @@ void screenInterface::updatePROT01( screenStructs::monitorStructDEV * ms, const 
     debugMessage(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updateSta( screenStructs::monitorStructDEV * ms,  const unsigned short args )
+void screenInterface::updateSta( screenStructs::monitorStruct * ms,  const unsigned short args )
 {   // Sta is for the VELA_PNEUMATIC screens ONLY, VELA_HV_MOVER are updated by updateScreenState()
     // probably evil
     screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject*> (ms->obj);
@@ -564,14 +564,14 @@ bool screenInterface::screenOUT( const std::vector< std::string > & names  )
 //___________________________________________________________________________________________________________
 bool screenInterface::screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states)
 {
-    std::vector< screenStructs::SCREEN_STATE > v( 1, screenStructs::SCREEN_STATE::SCREEN_OUT );
+    std::vector< screenStructs::SCREEN_STATE > v( 1, states );
     std::vector< std::string> n( 1, name );
     return  screenMoveTo( n, v);
 }
 //___________________________________________________________________________________________________________
 bool screenInterface::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states  )
-{   debugMessage("screenInterface::screenMoveTo called with ", names[0], " and  ",ENUM_TO_STRING(states[0]) );
-    // all the (above?) client screen moving functions should funnel to here
+{
+    // all the (above?) client-side screen moving functions should funnel to here
     // this is where we actually start moving screens.
     // **** if the CLARA screens are significantly different this function will need to be edited ****
     // we need vectors divided up by screen type
@@ -583,11 +583,16 @@ bool screenInterface::screenMoveTo(const std::vector<std::string>& names,const s
 
     if( names.size() != states.size() )
     {
-
-        ("ERROR, trying to set  ", names.size(), " screens with ", states.size(), " states. Aborting screen movement");
+        debugMessage("ERROR, trying to set  ", names.size(), " screens with ", states.size(), " states. Aborting screen movement");
     }
     else
     {
+        debugMessage("screenInterface::screenMoveTo called with following parameters:");
+        for( auto && i = 0; i < names.size(); ++i )
+        {
+            debugMessage(names[i], " to state ", ENUM_TO_STRING(states[i]) );
+        }
+
         std::vector<std::string> nonMovingScr;
         std::vector<screenStructs::SCREEN_STATE> nonMovingSta;
         // get the screens that are not locked and are moving
@@ -695,7 +700,6 @@ bool screenInterface::sortPnuematicMoverScreen(const std::vector<std::string>& s
     while(itNam != scrIN.end() || itSta != staIN.end() )
     {
         debugMessage("Checking ", *itNam," with request state: ", *itSta);
-
         // this loop goes through every screen and checks why type it is
         // it also decideds if it needs moving, and where it should be moved to
         if( is_VELA_PNEUMATIC(*itNam))
@@ -1213,35 +1217,7 @@ bool screenInterface::screen_is_in_AND_sta_is_out(const std::string & name, cons
     return sta == screenStructs::SCREEN_STATE::SCREEN_OUT && isScreenIN(name);
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::elementIN( const std::string & name, screenStructs::SCREEN_STATE element  )
-{
-    bool r = false;
-    if( entryExists( allScreentData, name ) )
-    {
-
-
-
-
-    }
-    else
-        message( " screenIN failed", name, " is an unknown screen " );
-
-    return r;
-
-//
-//    (H_MIRROR )  (V_MIRROR)
-//                                                        (H_50U_SLIT) (V_50U_SLIT)
-//                                                        (H_25U_SLIT) (V_25U_SLIT)
-//                                                        (H_6p3MM_HOLE) (V_6p3MM_HOLE)
-//                                                        (H_10MM_HOLE)  (V_10MM_HOLE_IN)
-//                                                        (H_YAG) (V_YAG)
-//                                                        (H_SLIT) (V_SLIT)
-//                                                        (H_RF) (V_RF_IN)
-//                                                        (H_OUT) (V_OUT)
-
-
-}
-void screenInterface::update_STA_Bit_map( screenStructs::monitorStructDEV * ms, const int argsdbr  )
+void screenInterface::update_STA_Bit_map( screenStructs::monitorStruct * ms, const int argsdbr  )
 {   // we're going to assume that each bit in the numebr is where the status is on / off
     // the first bit is "Trajectory in Porgress"
     // for other bits assume as in /home/controls/edl/EBT-YAG.edl

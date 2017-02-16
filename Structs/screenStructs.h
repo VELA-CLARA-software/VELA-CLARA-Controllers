@@ -115,16 +115,14 @@ namespace screenStructs
     // a screen cassette holds the positions (all known offline) of elements on a screen mover
     struct screenCassette
     {
-        screenCassette():
-            posTolerance(UTL::DUMMY_DOUBLE),dir(NONE),screenState(UNKNOWN_POSITION),parentScreen("UNKNOWN_PARENT")
-            {}
+        screenCassette():posTolerance(UTL::DUMMY_DOUBLE),dir(NONE),screenState(UNKNOWN_POSITION),
+                         parentScreen("UNKNOWN_PARENT"){}
             std::string      parentScreen;
             DRIVER_DIRECTION dir;
             SCREEN_STATE     screenState;                          // updated with which element is in the beam
             double           posTolerance;
             std::map<SCREEN_STATE,bool>   cassetteElements;         // holds if an element exists on this cassette(from config)
             std::map<SCREEN_STATE,double> cassetteElementsPosition; // position element on cassette (from config)
-//            std::map<std::string,double> cassetteElementsPosition; // position element on cassette (from config)
     };
     // a screenDriver has an H and V status and an H and V cassette
     struct screenDriver
@@ -152,10 +150,10 @@ namespace screenStructs
     #endif
     };
     /// monType could be used to switch in the statisCallbackFunction
-    struct monitorStructDEV
+    struct monitorStruct
     {
-        monitorStructDEV(): monType(UNKNOWN_SCREEN_PV_TYPE),interface(nullptr),EVID(nullptr),
-                            obj(nullptr),dir(NONE){}
+        monitorStruct():monType(UNKNOWN_SCREEN_PV_TYPE),interface(nullptr),EVID(nullptr),
+                        obj(nullptr),dir(NONE){}
         SCREEN_PV_TYPE      monType;
         void*               obj;
         screenInterface*    interface;
@@ -173,8 +171,6 @@ namespace screenStructs
         std::vector<std::string>                 dualMotorMoves_Scr;
         std::vector<screenStructs::SCREEN_STATE> dualMotorMoves_Sta;
     };
-
-
 }
 #endif // VELA_SCREEN_STRUCTS_H_
 

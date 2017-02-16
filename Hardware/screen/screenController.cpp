@@ -53,7 +53,7 @@ void screenController::initialise()
 }
 //________________________________________________________________________________
 bool screenController::screenIN (const std::string& name )
-{   message("screenController::screenIN");
+{
     return localInterface.screenIN( name );
 }
 //________________________________________________________________________________
@@ -72,176 +72,155 @@ bool screenController::screenOUT(const std::vector<std::string> & name )
     return localInterface.screenOUT( name );
 }
 //________________________________________________________________________________
-bool screenController::elementIN(const std::string & name, screenStructs::SCREEN_STATE element )
+bool screenController::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE element )
 {
-    return localInterface.elementIN( name, element );
+    return localInterface.isScreenInState( name, element );
 }
 //________________________________________________________________________________
-bool screenController::is_VELA_PNEUMATIC( const std::string & name )
-{
-    return localInterface.is_VELA_PNEUMATIC( name );
-}
-//________________________________________________________________________________
-bool screenController::is_VELA_HV_MOVER ( const std::string & name )
-{
-    return localInterface.is_VELA_HV_MOVER( name );
-}
-//________________________________________________________________________________
-const std::vector<std::string> screenController::get_VELA_PNEUMATIC_Screens(  const std::vector< std::string > & names )
+const std::vector<std::string> screenController::get_VELA_PNEUMATIC_Screens(const std::vector<std::string>& names)
 {
     return localInterface.get_VELA_PNEUMATIC_Screens(names);
 }
 //________________________________________________________________________________
-const std::vector<std::string> screenController::get_VELA_HV_MOVER_Screens(  const std::vector< std::string > & names )
+const std::vector<std::string> screenController::get_VELA_HV_MOVER_Screens(const std::vector<std::string>& names)
 {
     return localInterface.get_VELA_HV_MOVER_Screens(names);
 }
 //________________________________________________________________________________
-bool screenController::isScreenIN (const std::string& name )
+bool screenController::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states)
+{
+    return localInterface.screenMoveTo(names,states);
+}
+//________________________________________________________________________________
+bool screenController::screenMoveTo(const std::string & name, const screenStructs::SCREEN_STATE & states)
+{
+    return localInterface.screenMoveTo(name,states);
+}
+//________________________________________________________________________________
+bool screenController::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
+{
+    return localInterface.setPosition(name, dir, value);
+}
+//________________________________________________________________________________
+bool screenController::isMoving(const std::string& name)
+{
+    return localInterface.isMoving(name,false);
+}
+//________________________________________________________________________________
+bool screenController::isNotMoving(const std::string& name)
+{
+    return localInterface.isMoving(name,false);
+}
+//________________________________________________________________________________
+bool screenController::is_VELA_PNEUMATIC(const std::string & name)
+{
+    return localInterface.is_VELA_PNEUMATIC(name);
+}
+//________________________________________________________________________________
+bool screenController::is_VELA_HV_MOVER(const std::string & name)
+{
+    return localInterface.is_VELA_HV_MOVER(name);
+}
+//________________________________________________________________________________
+bool screenController::is_H_Element(screenStructs::SCREEN_STATE e)
+{
+    return localInterface.is_H_Element(e);
+}
+//________________________________________________________________________________
+bool screenController::is_V_Element(screenStructs::SCREEN_STATE e)
+{
+    return localInterface.is_V_Element(e);
+}
+//________________________________________________________________________________
+bool screenController::isScreenOUT(const std::string & name )
+{
+    return localInterface.isScreenOUT(name, false);
+}
+//________________________________________________________________________________
+bool screenController::isScreenIN(const std::string & name)
+{
+    return localInterface.isScreenIN(name, false);
+}
+//________________________________________________________________________________
+std::vector<bool> screenController::isScreenIN( const std::vector<std::string> & name )
 {
     return localInterface.isScreenIN(name);
 }
 //________________________________________________________________________________
-std::vector<bool> screenController::isScreenIN (const std::vector<std::string> & names)
+std::vector<bool> screenController::isScreenOUT( const std::vector<std::string> & name )
 {
-    return localInterface.isScreenIN(names);
+    return localInterface.isScreenOUT(name);
 }
 //________________________________________________________________________________
-//void screenController::Screen_Out( const std::string & name )
-//{
-//    localInterface.Screen_Out( name );
-//}
-////_________________________________________________________________________________
-//void screenController::Screen_In( const std::string & name )
-//{
-//    localInterface.Screen_In( name );
-//}
-////__________________________________________________________________________________
-//void screenController::Screen_Move( const std::string & name, const std::string & position )
-//{
-//    localInterface.Screen_Move( name,position );
-//}
-////_________________________________________________________________________________
-//void screenController::Screen_Stop( const std::string & name )
-//{
-//    localInterface.Stop( name );
-//}
-////__________________________________________________________________________________
-//void screenController::All_Out()
-//{
-//    localInterface.All_Out();
-//}
-////__________________________________________________________________________________
-//void screenController::controller_move_to_position( const std::string & name, const std::string & position )
-//{
-//    localInterface.move_to_position( name, position );
-//}
-////___________________________________________________________________________________
-//void screenController::controller_move_to( const std::string & name, const std::string & V_H, const double & position )
-//{
-//    localInterface.move_to( name, V_H, position );
-//}
-////___________________________________________________________________________________
-//bool screenController::IsOut( const std::string & name )
-//{
-//    return localInterface.IsOut( name );
-//}
-////_______________________________________________________________________________________
-//bool screenController::IsIn( const std::string & name )
-//{
-//    return localInterface.IsIn( name );
-//}
-////__________________________________________________________________________________________
-//bool screenController::horizontal_disabled_check( const std::string & name )
-//{
-//    return localInterface.horizontal_disabled_check( name );
-//}
-////__________________________________________________________________________________________
-//bool screenController::vertical_disabled_check( const std::string &  name )
-//{
-//    return localInterface.vertical_disabled_check( name );
-//}
-//screenStructs::SCREEN_STATE screenController::getComplexHorizontalScreenState( const std::string & name )
-//{
-//    return localInterface.getComplexHorizontalScreenState( name );
-//}
-////________________________________________________________________________________________________________________
-//screenStructs::SCREEN_STATE screenController::getComplexVerticalScreenState( const std::string & name )
-//{
-//    return localInterface.getComplexVerticalScreenState( name );
-//}
-////______________________________________________________________________________________________________________
-//screenStructs::SCREEN_STATE screenController::getSimpleScreenState( const std::string & name )
-//{
-//    return localInterface.getSimpleScreenState( name );
-//}
-////__________________________________________________________________________________________________
-//screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name )
-//{
-//    return localInterface.getScreenState( name );
-//}
-////_________________________________________________________________________________________________
-//screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name, const std::string & V_H )
-//{
-//    return localInterface.getScreenState( name, V_H );
-//}
-////___________________________________________________________________________________________________
-//double screenController::getComplexScreenHorizontalPosition( const std::string & name )
-//{
-//    return localInterface.getComplexScreenHorizontalPosition( name );
-//}
-////____________________________________________________________________________________________________
-//double screenController::getComplexScreenVerticalPosition( const std::string & name )
-//{
-//    return localInterface.getComplexScreenVerticalPosition( name );
-//}
-////____________________________________________________________________________________________________
-//double screenController::getScreenPosition( const std::string & name, const std::string & V_H )
-//{
-//    return localInterface.getScreenPosition(name, V_H );
-//}
-////________________________________________________________________________________________________________________
-//std::string screenController::getComplexHorizontalScreenStateStr( const std::string & name )
-//{
-//    return ENUM_TO_STRING(localInterface.getComplexHorizontalScreenState( name ));
-//}
-////________________________________________________________________________________________________________________
-//std::string screenController::getComplexVerticalScreenStateStr( const std::string & name )
-//{
-//    return ENUM_TO_STRING(localInterface.getComplexVerticalScreenState( name ));
-//}
-////_______________________________________________________________________________________________________________
-//std::string screenController::getSimpleScreenStateStr( const std::string & name )
-//{
-//    return ENUM_TO_STRING(localInterface.getSimpleScreenState( name ));
-//}
-////___________________________________________________________________________________________________________
-//std::string screenController::getScreenStateStr( const std::string & name )
-//{
-//    return ENUM_TO_STRING(localInterface.getScreenState( name ));
-//}
-////_________________________________________________________________________________________________________
-//std::string screenController::getScreenStateStr( const std::string & name, const std::string & V_H )
-//{
-//    return ENUM_TO_STRING(localInterface.getScreenState( name, V_H ));
-//}
-//void screenController::get_info( const std::string & name )
-//{
-//    return localInterface.get_info( name );
-//}
-////__________________________________________________________________________________________________________
-//void screenController::get_config_values( const std::string & name )
-//{
-//    return localInterface.get_config_values( name );
-//}
-////_________________________________________________________________________________________________________________
-//std::vector< std::string > screenController::getScreenNames()
-//{
-//    return ScreenNames;
-//}
-
-
-
+std::vector<bool> screenController::exists_and_isLocked(const std::string& name)
+{
+    return localInterface.exists_and_isLocked(name);
+}
+//________________________________________________________________________________
+std::vector<bool> screenController::exists_and_isNotLocked(const std::string& name)
+{
+    return localInterface.exists_and_isNotLocked(name);
+}
+//________________________________________________________________________________nt
+screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name )
+{
+    return localInterface.getScreenState(name);
+}
+//________________________________________________________________________________
+#ifdef BUILD_DLL
+//______________________________________________________________________________
+boost::python::dict screenController::getILockStatesStr_Py( std::string& name )
+{
+    return enumStringMapToPythonDict( getILockStatesStr( name ) );
+}
+//______________________________________________________________________________
+boost::python::dict screenController::getILockStates_Py( std::string& name )
+{
+    return enumMapToPythonDict(getILockStates(name) );
+}
+//______________________________________________________________________________
+boost::python::dict screenController::get_SCREEN_STATE_Definition()
+{
+    std::map< screenStructs::SCREEN_STATE,  std::string  > m;
+    m[screenStructs::SCREEN_STATE::SCREEN_IN       ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_IN       );
+    m[screenStructs::SCREEN_STATE::SCREEN_OUT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_OUT      );
+    m[screenStructs::SCREEN_STATE::SCREEN_MOVING   ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_MOVING   );
+    m[screenStructs::SCREEN_STATE::SCREEN_ERROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_ERROR    );
+    m[screenStructs::SCREEN_STATE::SCREEN_UNKNOWN  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_UNKNOWN  );
+    m[screenStructs::SCREEN_STATE::H_MIRROR        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_MIRROR        );
+    m[screenStructs::SCREEN_STATE::V_MIRROR        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_MIRROR        );
+    m[screenStructs::SCREEN_STATE::H_50U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_50U_SLIT      );
+    m[screenStructs::SCREEN_STATE::V_50U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_50U_SLIT      );
+    m[screenStructs::SCREEN_STATE::H_25U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_25U_SLIT      );
+    m[screenStructs::SCREEN_STATE::V_25U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_25U_SLIT      );
+    m[screenStructs::SCREEN_STATE::H_6p3MM_HOLE    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_6p3MM_HOLE    );
+    m[screenStructs::SCREEN_STATE::V_6p3MM_HOLE    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_6p3MM_HOLE    );
+    m[screenStructs::SCREEN_STATE::H_10MM_HOLE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_10MM_HOLE     );
+    m[screenStructs::SCREEN_STATE::V_10MM_HOLE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_10MM_HOLE     );
+    m[screenStructs::SCREEN_STATE::H_YAG           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_YAG           );
+    m[screenStructs::SCREEN_STATE::V_YAG           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_YAG           );
+    m[screenStructs::SCREEN_STATE::H_SLIT          ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT          );
+    m[screenStructs::SCREEN_STATE::V_SLIT          ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_SLIT          );
+    m[screenStructs::SCREEN_STATE::H_RF            ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_RF            );
+    m[screenStructs::SCREEN_STATE::V_RF            ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_RF            );
+    m[screenStructs::SCREEN_STATE::H_OUT           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_OUT           );
+    m[screenStructs::SCREEN_STATE::V_OUT           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_OUT           );
+    m[screenStructs::SCREEN_STATE::UNKNOWN_POSITION] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::UNKNOWN_POSITION);
+    return enumStringMapToPythonDict( m );
+}
+//______________________________________________________________________________
+boost::python::dict screenController::get_DRIVER_STATE_Definition()
+{
+    std::map< screenStructs::DRIVER_STATE,  std::string  > m;
+    m[screenStructs::DRIVER_STATE::DRIVER_MOVING    ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_MOVING    );
+    m[screenStructs::DRIVER_STATE::DRIVER_STATIONARY] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_STATIONARY);
+    m[screenStructs::DRIVER_STATE::DRIVER_DISABLED  ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_DISABLED  );
+    m[screenStructs::DRIVER_STATE::DRIVER_ENABLED   ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_ENABLED   );
+    m[screenStructs::DRIVER_STATE::DRIVER_ERROR     ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_ERROR     );
+    return enumStringMapToPythonDict( m );
+}
+//______________________________________________________________________________
+#endif // BUILD_DLL
 //____________________________________________________________________________________________
 double screenController::get_CA_PEND_IO_TIMEOUT()
 {

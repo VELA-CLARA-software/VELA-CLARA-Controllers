@@ -192,17 +192,6 @@ class magnetController : public controller
         boost::python::dict getILockStates_Py( std::string magName );
         boost::python::dict getILockStatesStr_Py( std::string magName );
         boost::python::dict getMagPSUStateDefinition();
-
-//        typedef const std::string cstr;
-//        typedef const std::vector<std::string> cves;
-//
-//        size_t degauss_1(cstr& name , bool resettozero = false ){ return degauss(name,resettozero); }
-//        BOOST_PYTHON_MEMEBR_FUNCTION_OVERLOADS(degauss_1_overloads, magnetController::degauss_1, 1, 2)
-
-//        BOOST_PYTHON_MEMEBR_FUNCTION_OVERLOADS(degauss_1_overloads, magnetController::degauss_1, 1, 2)//degauss_1_overloads(
-
-
-
 #endif // BUILD_DLL
 
         /// YOU CANNOT SET THE CONTROLLER TYPE, NO-WAY JOSE

@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1487171441 source:d:\vela\git projects\vela-clara-controllers\demo\boost_python_docstring\boost_py_doc_demo\main.cpp
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/docstring_options.hpp>
+
+1487172557 source:d:\vela\git projects\vela-clara-controllers\demo\boost_python_docstring\boost_py_doc_demo\src\dummy.cpp
+	"dummy.h"
+
+1487172587 d:\vela\git projects\vela-clara-controllers\demo\boost_python_docstring\boost_py_doc_demo\include\dummy.h
+

@@ -60,19 +60,20 @@ namespace UTL
     const std::string CLARA_PH1_MAG_CONFIG             = "claraPH1Magnets.config";
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
-
+/// Laser
+    const std::string LASER_CONFIG = "velacalraLaser.config";
 
 
 
 // the below has to go
-    const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
-    const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";
-    const std::string VELA_BA2_COMPLEX_SCREENS_CONFIG  = "velaBA2ComplexScreens.config";
-    const std::string VELA_BA2_SIMPLE_SCREENS_CONFIG   = "velaBA2SimpleScreens.config";
-    const std::string VELA_BA1_COMPLEX_SCREENS_CONFIG  = "velaBA1ComplexScreens.config";
-    const std::string VELA_BA1_SIMPLE_SCREENS_CONFIG   = "velaBA1SimpleScreens.config";
-    const std::string CLARA_INJ_SIMPLE_SCREENS_CONFIG  = "claraINJSimpleScreens.config";
-    const std::string CLARA_INJ_COMPLEX_SCREENS_CONFIG = "claraINJComplexScreens.config";
+    //const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
+//    const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";
+//    const std::string VELA_BA2_COMPLEX_SCREENS_CONFIG  = "velaBA2ComplexScreens.config";
+//    const std::string VELA_BA2_SIMPLE_SCREENS_CONFIG   = "velaBA2SimpleScreens.config";
+//    const std::string VELA_BA1_COMPLEX_SCREENS_CONFIG  = "velaBA1ComplexScreens.config";
+//    const std::string VELA_BA1_SIMPLE_SCREENS_CONFIG   = "velaBA1SimpleScreens.config";
+//    const std::string CLARA_INJ_SIMPLE_SCREENS_CONFIG  = "claraINJSimpleScreens.config";
+//    const std::string CLARA_INJ_COMPLEX_SCREENS_CONFIG = "claraINJComplexScreens.config";
 
 /// Cameras
     const std::string VELA_CAMERA_CONFIG               = "velaCamera.config";
@@ -443,6 +444,7 @@ namespace UTL
     const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
                                                                    HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
                                                                    SLIT_POS, OUT_POS };
+
 
 
 
