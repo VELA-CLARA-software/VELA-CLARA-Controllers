@@ -35,6 +35,7 @@ beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & 
 configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
 interface( show_messages_ptr, show_debug_messages_ptr ),
 shouldStartEPICS( shouldStartEPICS ),
+startVM( startVirtualMachine ),
 machineArea( myMachineArea )
 {
     initialise();
@@ -922,6 +923,21 @@ void beamPositionMonitorInterface::reCalAttenuation( const std::string & bpmName
         message( "Old SA2 for ", bpmName, " = ", beamPositionMonitorInterface::getRA2( bpmName ) );
     }
 
+}
+//______________________________________________________________________________
+VELA_ENUM::MACHINE_AREA beamPositionMonitorInterface::getMachineArea()
+{
+    return machineArea;
+}
+//______________________________________________________________________________
+VELA_ENUM::MACHINE_MODE beamPositionMonitorInterface::getMachineMode()
+{
+    if ((startVM) && (shouldStartEPICS))
+        return VELA_ENUM::MACHINE_MODE::VIRTUAL;
+    else if ((startVM) && (!shouldStartEPICS))
+        return VELA_ENUM::MACHINE_MODE::OFFLINE;
+    else if (!startVM)
+        return VELA_ENUM::MACHINE_MODE::PHYSICAL;
 }
 ////______________________________________________________________________________
 //bool beamPositionMonitorInterface::hasTrig( const std::string & bpm )

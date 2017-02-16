@@ -225,6 +225,16 @@ std::map< VELA_ENUM::ILOCK_NUMBER, std::string > beamPositionMonitorController::
     return localInterface.getILockStatesStr( objName );
 }
 //______________________________________________________________________________
+VELA_ENUM::MACHINE_AREA beamPositionMonitorController::getMachineArea()
+{
+    return localInterface.getMachineArea();
+}
+//______________________________________________________________________________
+VELA_ENUM::MACHINE_MODE beamPositionMonitorController::getMachineMode()
+{
+    return localInterface.getMachineMode();
+}
+//______________________________________________________________________________
 double beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT()
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );

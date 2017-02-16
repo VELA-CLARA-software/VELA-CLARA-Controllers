@@ -71,6 +71,8 @@ class beamPositionMonitorInterface : public interface
                                   beamPositionMonitorStructs::bpmDataObject * bpmObj );
         void monitorDataForNShots( size_t N, const std::vector< std::string > & bpmNames );
         void monitorDataForNShots( size_t N, const std::string & name );
+        VELA_ENUM::MACHINE_AREA getMachineArea();
+        VELA_ENUM::MACHINE_MODE getMachineMode();
 
         std::vector< std::string > getBPMNames();
 
@@ -99,6 +101,7 @@ class beamPositionMonitorInterface : public interface
 
         void initialise();
         const bool shouldStartEPICS;
+        const bool startVM;
         const VELA_ENUM::MACHINE_AREA machineArea;
 
         beamPositionMonitorConfigReader configReader;
