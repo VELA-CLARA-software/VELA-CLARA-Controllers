@@ -12,11 +12,10 @@
 #include <ctype.h>
 //____________________________________________________________________________________________________
 screenConfigReader::screenConfigReader( const std::string & configFileLocation1,
-                                        const std::string & configFileLocation2,
                                         const bool startVirtualMachine,
                                         const bool* show_messages_ptr,
                                         const bool* show_debug_messages_ptr ):
-configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr ),
+configReader( configFileLocation1,  show_messages_ptr, show_debug_messages_ptr ),
 usingVirtualMachine(startVirtualMachine),
 lastPVStruct(nullptr)
 {

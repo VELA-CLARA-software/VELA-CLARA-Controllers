@@ -77,6 +77,8 @@
 		<Unit filename="../../Hardware/laser/laserController.h" />
 		<Unit filename="../../Hardware/laser/laserInterface.cpp" />
 		<Unit filename="../../Hardware/laser/laserInterface.h" />
+		<Unit filename="../../Structs/laserStructs.h" />
+		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
@@ -84,8 +86,10 @@
 		<Unit filename="../../Utilities/configReader.h" />
 		<Unit filename="../../Utilities/laserConfigReader.cpp" />
 		<Unit filename="../../Utilities/laserConfigReader.h" />
+		<Unit filename="include/VClaser.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
+		<Unit filename="src/VClaser.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

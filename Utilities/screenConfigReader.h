@@ -18,7 +18,6 @@ class screenConfigReader : public configReader
 {
 public:
     screenConfigReader( const std::string & configFileLocation1,
-                        const std::string & configFileLocation2,
                         const bool startVirtualMachine,
                         const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
 
@@ -62,6 +61,7 @@ private:
     void setV(std::vector< screenStructs::pvStruct > & pvs );
 
 
+    const bool usingVirtualMachine;
 
     // yay function pointers
     typedef void( screenConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );

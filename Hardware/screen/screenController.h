@@ -29,11 +29,12 @@ class screenController : public controller
 {
     public:
         screenController();
-        screenController( const bool show_messages,       const bool show_debug_messages,
-                          const std::string & conf1,     const std::string & conf2,
-                          const bool startVirtualMachine,
-                          const bool shouldStartEPICs,
-                          const VELA_ENUM::MACHINE_AREA );
+        screenController(const bool show_messages,
+                         const bool show_debug_messages,
+                         const std::string & conf1,
+                         const bool startVirtualMachine,
+                         const bool shouldStartEPICs,
+                         const VELA_ENUM::MACHINE_AREA);
         ~screenController();
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...

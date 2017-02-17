@@ -32,13 +32,12 @@
 //
 
 screenInterface::screenInterface( const std::string & conf1,
-                                  const std::string & conf2,
                                   const bool startVirtualMachine,
                                   const bool* show_messages_ptr,
                                   const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
                                   const VELA_ENUM::MACHINE_AREA myMachineArea ):
-configReader( conf1, conf2, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
+configReader( conf1, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface( show_messages_ptr, show_debug_messages_ptr ),
 shouldStartEPICs( shouldStartEPICs ),
 myMachineArea(myMachineArea),

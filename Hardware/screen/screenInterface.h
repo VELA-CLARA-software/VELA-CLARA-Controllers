@@ -34,7 +34,6 @@ class screenInterface: public interface
 
 
         screenInterface(const std::string & conf1,
-                        const std::string & conf2,
                         const bool startVirtualMachine,
                         const bool* show_messages_ptr,
                         const bool* show_debug_messages_ptr,

@@ -349,76 +349,57 @@ namespace UTL
     const std::string X_PIX_2_MM    =  "X_PIX_2_MM";
     const std::string Y_PIX_2_MM    =  "Y_PIX_2_MM";
 
-    /// SCREEN
-
-    const std::string SCREEN_TYPE            =  "SCREEN_TYPE";
-    const std::string VELA_HV_MOVER_SCREEN   =  "VELA_HV_MOVER_SCREEN";
-    const std::string VELA_PNEUMATIC_SCREEN  =  "VELA_PNEUMATIC_SCREEN";
-
-    /// SCREEN YAG 1/2/3 COMMAND PVs
-
-    const std::string PV_SUFFIX_H_MABS      = "PV_SUFFIX_H_MABS";
-    const std::string PV_SUFFIX_V_MABS      = "PV_SUFFIX_V_MABS";
-    const std::string PV_SUFFIX_STOP        = "PV_SUFFIX_STOP";
-
-    ///SCREEN YAG 1/2/3 MONITOR PVs
-
-    const std::string PV_SUFFIX_H_PROT01    = "PV_SUFFIX_H_PROT01";
-    const std::string PV_SUFFIX_V_PROT01    = "PV_SUFFIX_V_PROT01";
-    const std::string PV_SUFFIX_PROT03      = "PV_SUFFIX_PROT03";
-    const std::string PV_SUFFIX_PROT05      = "PV_SUFFIX_PROT05";
-    const std::string PV_SUFFIX_H_RPWRLOSS  = "PV_SUFFIX_H_RPWRLOSS";
-    const std::string PV_SUFFIX_V_RPWRLOSS  = "PV_SUFFIX_V_RPWRLOSS";
-
-    const std::string PV_SUFFIX_H_RPOS      = "PV_SUFFIX_H_RPOS";
-    const std::string PV_SUFFIX_V_RPOS      = "PV_SUFFIX_V_RPOS";
+    // SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
+    const std::string VELA_PNEUMATIC_SCREEN =  "VELA_PNEUMATIC_SCREEN";
+    const std::string VELA_HV_MOVER_SCREEN  =  "VELA_HV_MOVER_SCREEN";
+    const std::string SCREEN_TYPE           =  "SCREEN_TYPE";
+    // SCREEN YAG 1/2/3 COMMAND PVs
+    const std::string PV_SUFFIX_H_MABS = "PV_SUFFIX_H_MABS";
+    const std::string PV_SUFFIX_V_MABS = "PV_SUFFIX_V_MABS";
+    const std::string PV_SUFFIX_STOP   = "PV_SUFFIX_STOP";
+    //SCREEN YAG 1/2/3 MONITOR PVs
+    const std::string PV_SUFFIX_H_RPWRLOSS = "PV_SUFFIX_H_RPWRLOSS";
+    const std::string PV_SUFFIX_V_RPWRLOSS = "PV_SUFFIX_V_RPWRLOSS";
+    const std::string PV_SUFFIX_H_PROT01   = "PV_SUFFIX_H_PROT01";
+    const std::string PV_SUFFIX_V_PROT01   = "PV_SUFFIX_V_PROT01";
+    const std::string PV_SUFFIX_PROT03     = "PV_SUFFIX_PROT03";
+    const std::string PV_SUFFIX_PROT05     = "PV_SUFFIX_PROT05";
+    const std::string PV_SUFFIX_H_RPOS     = "PV_SUFFIX_H_RPOS";
+    const std::string PV_SUFFIX_V_RPOS     = "PV_SUFFIX_V_RPOS";
     const std::string PV_SUFFIX_H_STA      = "PV_SUFFIX_H_STA";
     const std::string PV_SUFFIX_V_STA      = "PV_SUFFIX_V_STA";
-
-    /// SCREEN YAG 1/2/3 POSITIONS, we have copies of H and V, so we can H and V cassette objects, see screenStructs
-
-    const std::string H_MIRROR_POS      = "H_MIRROR_POS";
-    const std::string V_MIRROR_POS      = "V_MIRROR_POS";
-    const std::string MIRROR_POS      = "MIRROR_POS";
-
-    const std::string V_SLIT_50_UM_POS    = "V_SLIT_50_UM_POS";
-    const std::string H_SLIT_50_UM_POS    = "H_SLIT_50_UM_POS";
-    const std::string SLIT_50_UM_POS    = "SLIT_50_UM_POS";
-
-    const std::string H_SLIT_25_UM_POS    = "H_SLIT_25_UM_POS";
-    const std::string V_SLIT_25_UM_POS    = "V_SLIT_25_UM_POS";
-    const std::string SLIT_25_UM_POS    = "SLIT_25_UM_POS";
-
-    const std::string H_HOLE_6p3_MM_POS    = "H_HOLE_6p3_MM_POS";
-    const std::string V_HOLE_6p3_MM_POS    = "V_HOLE_6p3_MM_POS";
-    const std::string HOLE_6p3_MM_POS    = "HOLE_6p3_MM_POS";
-
-    const std::string H_HOLE_10_MM_POS   = "H_HOLE_10_MM_POS";
-    const std::string V_HOLE_10_MM_POS   = "V_HOLE_10_MM_POS";
+    // SCREEN YAG 1/2/3 elements, ++ there are H and V versions, so we can H and V cassette objects, see screenStructs
+    // and the screenConfigReader
+    const std::string H_HOLE_6p3_MM_POS = "H_HOLE_6p3_MM_POS";
+    const std::string V_HOLE_6p3_MM_POS = "V_HOLE_6p3_MM_POS";
+    const std::string HOLE_6p3_MM_POS   = "HOLE_6p3_MM_POS";
+    const std::string V_SLIT_50_UM_POS = "V_SLIT_50_UM_POS";
+    const std::string H_SLIT_50_UM_POS = "H_SLIT_50_UM_POS";
+    const std::string SLIT_50_UM_POS   = "SLIT_50_UM_POS";
+    const std::string H_SLIT_25_UM_POS = "H_SLIT_25_UM_POS";
+    const std::string V_SLIT_25_UM_POS = "V_SLIT_25_UM_POS";
+    const std::string SLIT_25_UM_POS   = "SLIT_25_UM_POS";
+    const std::string H_HOLE_10_MM_POS = "H_HOLE_10_MM_POS";
+    const std::string V_HOLE_10_MM_POS = "V_HOLE_10_MM_POS";
     const std::string HOLE_10_MM_POS   = "HOLE_10_MM_POS";
-
-    const std::string H_YAG_POS         = "H_YAG_POS";
-    const std::string V_YAG_POS         = "V_YAG_POS";
-    const std::string YAG_POS         = "YAG_POS";
-
-    const std::string H_RF_POS         = "H_RF_POS";
-    const std::string V_RF_POS         = "V_RF_POS";
-    const std::string RF_POS         = "RF_POS";
-
-    const std::string V_SLIT_POS        = "V_SLIT_POS";
-    const std::string H_SLIT_POS        = "H_SLIT_POS";
-    const std::string SLIT_POS        = "SLIT_POS";
-
-    const std::string H_OUT_POS         = "H_OUT_POS";
-    const std::string V_OUT_POS         = "V_OUT_POS";
-    const std::string OUT_POS         = "OUT_POS";
-
-    const std::string OUT           = "OUT";
-    const std::string IN            = "IN";
-
-
-
+    const std::string H_MIRROR_POS = "H_MIRROR_POS";
+    const std::string V_MIRROR_POS = "V_MIRROR_POS";
+    const std::string MIRROR_POS   = "MIRROR_POS";
+    const std::string V_SLIT_POS = "V_SLIT_POS";
+    const std::string H_SLIT_POS = "H_SLIT_POS";
+    const std::string SLIT_POS   = "SLIT_POS";
+    const std::string H_YAG_POS = "H_YAG_POS";
+    const std::string V_YAG_POS = "V_YAG_POS";
+    const std::string YAG_POS   = "YAG_POS";
+    const std::string H_OUT_POS = "H_OUT_POS";
+    const std::string V_OUT_POS = "V_OUT_POS";
+    const std::string OUT_POS   = "OUT_POS";
+    const std::string H_RF_POS  = "H_RF_POS";
+    const std::string V_RF_POS  = "V_RF_POS";
+    const std::string RF_POS    = "RF_POS";
+    // other screen config file parameters
     const std::string SCREEN_DRIVER_POS_TOLERANCE = "SCREEN_DRIVER_POS_TOLERANCE";
+    // defintiions of each bit for the STA int
     const std::string NUM_STA_BITS              = "NUM_STA_BITS";
     const std::string STA_BIT                   = "STA_BIT";
     const std::string TRAJECTORY_IN_PROGRESS    = "TRAJECTORY_IN_PROGRESS";
@@ -437,16 +418,11 @@ namespace UTL
     const std::string SYNTAX_ERROR              = "SYNTAX_ERROR";
     const std::string OVER_CURRENT              = "OVER_CURRENT";
     const std::string PROGRAMME_CHECKSUM_ERROR  = "PROGRAMME_CHECKSUM_ERROR";
-
-
     // master list of everything that can go on a screen driver cassette
-    // probably should try nad get rid of this
+    // probably should try and  get rid of this
     const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
                                                                    HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
                                                                    SLIT_POS, OUT_POS };
-
-
-
 
 }
 #endif //CONFIG_DEFINITIONS_H

@@ -1,3 +1,0 @@
-import velaPhotoInjectorLaserShutterControl as VPILSC
-
-p=VPILSC.velaPhotoInjectorLaserShutterController()

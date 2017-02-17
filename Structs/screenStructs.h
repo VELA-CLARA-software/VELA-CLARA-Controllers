@@ -31,28 +31,31 @@ namespace screenStructs
 
     //Use this MACRO to define enums. oOnsider putting ENUMS that are more 'global' in structs.h
     // screen types
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_TYPE, (VELA_PNEUMATIC) (VELA_HV_MOVER) (UNKNOWN_SCREEN_TYPE))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_TYPE,(VELA_PNEUMATIC)(VELA_HV_MOVER)(UNKNOWN_SCREEN_TYPE))
     // screen states, (and cassette elements) Although not all are needed, we keep H and V version of each element
     // ***** ADD TO THIS IF CLARA HAS MORE ELEMENTS *****
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_STATE,  (SCREEN_IN) (SCREEN_OUT) (SCREEN_MOVING) (SCREEN_ERROR)  (SCREEN_UNKNOWN) // these handle the simple screens
-                                                        (H_MIRROR )  (V_MIRROR)
-                                                        (H_50U_SLIT) (V_50U_SLIT)
-                                                        (H_25U_SLIT) (V_25U_SLIT)
-                                                        (H_6p3MM_HOLE) (V_6p3MM_HOLE)
-                                                        (H_10MM_HOLE)  (V_10MM_HOLE)
-                                                        (H_YAG) (V_YAG)
-                                                        (H_SLIT) (V_SLIT)
-                                                        (H_RF) (V_RF)
-                                                        (H_OUT) (V_OUT)
-                                                        (UNKNOWN_POSITION) ) // if the mover is not in a predifend position
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_STATE,
+                                        // states for the simple VELA_PNEUMATIC screens
+                                        (SCREEN_IN)(SCREEN_OUT)(SCREEN_MOVING)(SCREEN_ERROR)(SCREEN_UNKNOWN)
+                                        // states for the VELA_HV_MOVER screens
+                                        (H_MIRROR )    (V_MIRROR)
+                                        (H_50U_SLIT)   (V_50U_SLIT)
+                                        (H_25U_SLIT)   (V_25U_SLIT)
+                                        (H_6p3MM_HOLE) (V_6p3MM_HOLE)
+                                        (H_10MM_HOLE)  (V_10MM_HOLE)
+                                        (H_YAG)        (V_YAG)
+                                        (H_SLIT)       (V_SLIT)
+                                        (H_RF)         (V_RF)
+                                        (H_OUT)        (V_OUT)
+                                        (UNKNOWN_POSITION) ) // if the mover is not in a predifend position
     // screen PV types
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCREEN_PV_TYPE, (Sta)(On)(Off)(MABS)(RPOS)(STOP)(PROT01)(PROT03)(PROT05)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_PV_TYPE, (Sta)(On)(Off)(MABS)(RPOS)(STOP)(PROT01)(PROT03)(PROT05)
                                                          (RPWRLOSS)(UNKNOWN_SCREEN_PV_TYPE)(STA) )
     // the screen driver status, moving, disabled etc...
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DRIVER_STATE, (DRIVER_MOVING)(DRIVER_STATIONARY)(DRIVER_DISABLED)(DRIVER_ENABLED)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_STATE, (DRIVER_MOVING)(DRIVER_STATIONARY)(DRIVER_DISABLED)(DRIVER_ENABLED)
                                                        (DRIVER_ERROR) )
     // screen drivers come in two types
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DRIVER_DIRECTION, (HORIZONTAL)(VERTICAL)(NONE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_DIRECTION, (HORIZONTAL)(VERTICAL)(NONE) )
     // turns out this is really useful, but itlooks like cancer
     // it is used by the conifg reader and the interface, so although not a struct it's going to live here
     // ***** ADD TO THIS IF CLARA HAS MORE ELEMENTS *****
@@ -80,11 +83,9 @@ namespace screenStructs
     struct pvStruct
     {
         pvStruct():pvSuffix( "UNKNOWN_PV_SUFFIX" ),
-                   //objName( UTL::UNKNOWN_NAME ),
                    COUNT( UTL::ZERO_INT ), MASK(UTL::ZERO_INT), pvType(UNKNOWN_SCREEN_PV_TYPE), dir(NONE){}
         SCREEN_PV_TYPE pvType;
         chid           CHID;
-//        std::string    objName;
         std::string    pvSuffix;
         unsigned long  COUNT, MASK;
         chtype         CHTYPE;
