@@ -50,7 +50,7 @@
 	<string>
 	<vector>
 
-1486729109 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
+1487264082 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -80,12 +80,12 @@
 	<vector>
 	<cadef.h>
 
-1487248074 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1487350036 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
 
-1486982618 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp
+1487255975 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp
 	"screenInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -107,7 +107,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1486661318 source:d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.cpp
+1487255994 source:d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.cpp
 	"screenConfigReader.h"
 	"screenStructs.h"
 	<iostream>
@@ -121,7 +121,7 @@
 
 1483526953 source:d:\vela\git projects\vela-clara-controllers\python modules\screens\main.cpp
 
-1484841243 source:d:\vela\git projects\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
+1487255897 source:d:\vela\git projects\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
 	"VCscreens.h"
 	<iostream>
 

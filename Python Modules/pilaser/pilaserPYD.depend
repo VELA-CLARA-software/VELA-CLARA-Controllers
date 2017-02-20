@@ -1,0 +1,191 @@
+# depslib dependency file v1.0
+1483526951 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1484820945 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1483526951 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1485429777 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1486661318 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1486661318 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1483526955 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1486661318 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1487247863 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1487350036 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+
+1487604882 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
+	"pilaserController.h"
+	<fstream>
+	<iostream>
+
+1487605335 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
+	<string>
+	<vector>
+	<map>
+	"pilaserInterface.h"
+	"controller.h"
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+
+1487603683 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
+	"interface.h"
+	"pilaserStructs.h"
+	"structs.h"
+	"pilaserConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1487601990 d:\vela\git projects\vela-clara-controllers\structs\pilaserstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1487600872 d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"pilaserStructs.h"
+
+1487605090 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
+	"pilaserInterface.h"
+	"dburt.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<algorithm>
+	<thread>
+
+1484821121 d:\vela\git projects\vela-clara-controllers\utilities\dburt.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"dburtDefinitions.h"
+	"magnetStructs.h"
+	"magnetInterface.h"
+
+1484751237 d:\vela\git projects\vela-clara-controllers\utilities\dburtdefinitions.h
+	<string>
+
+1486661318 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<vector>
+	<string>
+	<map>
+	<thread>
+	<cadef.h>
+
+1487172057 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
+	"interface.h"
+	"magnetStructs.h"
+	"structs.h"
+	"magnetConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1484839727 d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"magnetStructs.h"
+
+1487601022 source:d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.cpp
+	"pilaserConfigReader.h"
+	"pilaserStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1446667744 source:d:\vela\git projects\vela-clara-controllers\python modules\pilaser\main.cpp
+	"main.h"
+
+1446667744 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\main.h
+	<windows.h>
+
+1487592943 source:d:\vela\git projects\vela-clara-controllers\python modules\pilaser\src\vcpilaser.cpp
+	"VCpilaser.h"
+	<iostream>
+
+1487605532 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
+	<string>
+	"pilaserController.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+

@@ -427,8 +427,7 @@ bool magnetInterface::setSI( const std::string & magName, const double value, co
 
 //_____________________________________________________________
 void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
-{ /// THIS IS THE MAIN SET SI FUNCTION
-
+{ // THIS IS THE MAIN SET SI FUNCTION
     if( !shouldStartEPICs )
     {
         for( auto i = 0; i < magNames.size(); ++i )
@@ -437,76 +436,77 @@ void magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
                 allMagnetData[ magNames[i] ].siWithPol = values[i];
         }
     }
-    else
+    else// we have EPICS
     {
-
         if( magNames.size() == values.size() )
         {
-            /// The magnets can be divided into two types
-            /// Those that can be set straight away and those that need N-R flipping
+            // The magnets can be divided into two types
+            // Those that can be set straight away and those that need N-R flipping
             vec_s magnetsToSet;
             vec_s magnetsToFlipThenSet;
-
             vec_d magnetsToSetValues;
             vec_d magnetsToFlipThenSetValues;
-            /// yeah - feck - it's 3 types... April 2015
+            // yeah - feck - it's 3 types... April 2015
             vec_s presentGangMembers;
             vec_d presentGangMembersValues;
-
-            /// Iterate over each magnet to decide if it is a set, or a flip-then-set, OR in a gang
+            // Iterate over magnets, decide if it is: setSI, flip-then-setSI, OR in a gang
             size_t val_pos = 0;
             for( auto & magNameIt : magNames )
-            {
-                switch( allMagnetData[ magNameIt ].magRevType )           /// First get the magnet reverse type,
-                {
+            {   // First get the magnet reverse type,
+                switch( allMagnetData[ magNameIt ].magRevType )
+                {   // magnets with coupled polarities (!!!)
                     case magnetStructs::MAG_REV_TYPE::NR_GANGED:
                         presentGangMembers.push_back( magNameIt );
                         presentGangMembersValues.push_back( values[ val_pos ] );
                         break;
-
-                    case magnetStructs::MAG_REV_TYPE::NR:/// Magnet PSU is of  N-R type
+                    // Magnet PSU is of  N-R type
+                    case magnetStructs::MAG_REV_TYPE::NR:
                         setNRSIVectors( magNameIt, values[ val_pos ], magnetsToSet,
-                                        magnetsToFlipThenSet,magnetsToSetValues, magnetsToFlipThenSetValues );
+                                        magnetsToFlipThenSet,magnetsToSetValues,
+                                        magnetsToFlipThenSetValues );
                         break;
-
-                    case magnetStructs::MAG_REV_TYPE::BIPOLAR:  /// Magnet PSU can be set to negative values
+                    // Magnet PSU can be set to negative values
+                    case magnetStructs::MAG_REV_TYPE::BIPOLAR:
                         magnetsToSet.push_back( magNameIt);
                         magnetsToSetValues.push_back( values[ val_pos ]  );
                         break;
-
-                    case magnetStructs::MAG_REV_TYPE::POS:      /// Magnet PSU can only be positive
+                    // Magnet PSU can only be positive
+                    case magnetStructs::MAG_REV_TYPE::POS:
                         debugMessage(magNameIt, "  REALLY??? A POSITIVE ONLY MAGNET??? ");
                         break;
                 }
                 ++val_pos;
             }
-
-            /// we need to do further checks on the N-R ganged members
-            if( presentGangMembers.size() > 0 )//MAGIC_NUMBER
-                setNRGangedSIVectors( presentGangMembers, presentGangMembersValues, magnetsToSet, magnetsToFlipThenSet,magnetsToSetValues,magnetsToFlipThenSetValues );
-
-            /// Now we can send out some values.
-            /// First, zero the magnets that require NR flipping
-
-            if( magnetsToFlipThenSet.size() > 0 )// MAGIC_NUMBER
-            {   //std::cout<<"HI"<<std::endl;
-    //            debugMessage(" ZERO FLIPPING MAGNETS " );
+            // we need to do further checks on the N-R ganged members, this is done in
+            // another function, that combines the presentGangMembers vectors
+            // with the  magnetsToSet etc. vectors
+            if( presentGangMembers.size() >  UTL::ZERO_SIZET )
+            {
+                setNRGangedSIVectors(presentGangMembers,presentGangMembersValues,magnetsToSet,
+                                     magnetsToFlipThenSet,magnetsToSetValues,
+                                     magnetsToFlipThenSetValues );
+            }
+            // Now we can send out some values.
+            // First, zero the magnets that require NR flipping
+            if( magnetsToFlipThenSet.size() > UTL::ZERO_SIZET)
+            {
+                //debugMessage(" ZERO FLIPPING MAGNETS " );
                 const vec_d zeros( magnetsToFlipThenSet.size(), 0.0 );// MAGIC_NUMBER;
                 setSINoFlip( magnetsToFlipThenSet, zeros);
                 //waitForMagnetsToSettle( magnetsToFlipThenSet, zeros, tol, 45 );
             }
-
-            /// Second, send out values to magnets that DO NOT require flipping
-
-            if( magnetsToSet.size() > 0 )// MAGIC_NUMBER
+            // Second, send out values to magnets that DO NOT require flipping
+            if( magnetsToSet.size() >  UTL::ZERO_SIZET )
+            {
                 setSINoFlip( magnetsToSet, magnetsToSetValues );
-
-            /// Finally, flip magnets and
-
-            if( magnetsToFlipThenSet.size() > 0 )// MAGIC_NUMBER
+            }
+            // Finally, flip magnets and set SI
+            if( magnetsToFlipThenSet.size() >  UTL::ZERO_SIZET )
+            {
                 setSIWithFlip( magnetsToFlipThenSet, magnetsToFlipThenSetValues );
-        }
-    }
+            }
+        }//if( magNames.size() == values.size() )
+    }//else// we have EPICS
 }
 //______________________________________________________________________________
 void magnetInterface::setNRSIVectors( const std::string & magName, const double val, vec_s & magnetsToSet, vec_s & magnetsToFlipThenSet,
@@ -535,11 +535,11 @@ bool magnetInterface::nrGanged_SI_Vals_AreSensible( const vec_s & magNames, cons
     /// I guess to change this we need to have vectors for each gang.
 
     // we have already checked if the entryExists and has ganged members
-    vec_s gangMembers = allMagnetData[ magNames[0] ].nPSU.gangMembers;
-    gangMembers.push_back( magNames[0] );
+    vec_s gangMembers = allMagnetData[ magNames[  UTL::ZERO_SIZET ] ].nPSU.gangMembers;
+    gangMembers.push_back( magNames[  UTL::ZERO_SIZET ] );
     vec_d finalSIValues;
 
-    size_t count = 0;// MAGIC_NUMBER
+    size_t count =  UTL::ZERO_SIZET;
     for( size_t i = 0; i < gangMembers.size(); ++i  )// MAGIC_NUMBER
     {
         if ( std::find( magNames.begin(), magNames.end(), gangMembers[i] ) != magNames.end())
@@ -561,7 +561,7 @@ void magnetInterface::setNRGangedSIVectors( const vec_s & magNames, const vec_d 
     if( nrGanged_SI_Vals_AreSensible( magNames, values ) )
     {
         //message( "Ganged polarities DO match " );
-        if( shouldPolarityFlip( magNames[0], values[0] ) )
+        if( shouldPolarityFlip( magNames[UTL::ZERO_SIZET], values[UTL::ZERO_SIZET] ) )
         {
             //message("shouldPolarityFlip = true");
             magnetsToFlipThenSet.insert(magnetsToFlipThenSet.end(), magNames.begin(), magNames.end());
@@ -587,7 +587,8 @@ bool magnetInterface::setSINoFlip( const vec_s & magNames, const vec_d & values)
     bool ret = false;
     if( magNames.size() == values.size() )
     {
-        for( size_t i = 0; i < magNames.size(); ++i)// MAGIC_NUMBER
+        // this breaks the monitor / command paradigm, if i was to re-do this entire project i would probably change this... ?
+        for( size_t i =  UTL::ZERO_SIZET; i < magNames.size(); ++i)// MAGIC_NUMBER
             if( entryExists( allMagnetData, magNames[i] ) )
                 ca_put( allMagnetData[ magNames[i] ].pvMonStructs[ magnetStructs::MAG_PV_TYPE::SI ].CHTYPE,
                         allMagnetData[ magNames[i] ].pvMonStructs[ magnetStructs::MAG_PV_TYPE::SI ].CHID,
@@ -604,7 +605,7 @@ magnetInterface::vec_b magnetInterface::setSIWithFlip( const vec_s & magNames, c
     const vec_b ans = flipNR( magNames );
     vec_s flippedMagnets;
     vec_d flippedMagnetsVals ;
-    for( size_t i = 0; i < ans.size(); ++i )// MAGIC_NUMBER
+    for( size_t i =  UTL::ZERO_SIZET; i < ans.size(); ++i )// MAGIC_NUMBER
     {
         if( ans[ i ] )
         {
@@ -639,8 +640,8 @@ const magnetInterface::vec_b  magnetInterface::flipNR( const vec_s & magNames )
 
     vec_s N_ToSwitchON;
     vec_s R_ToSwitchON;
-
-    while( true ) /// Here we just keep looping until time-out, or the magnets get flipped...
+    // keep looping until time-out, or the magnets get flipped
+    while( true ).
     {
         N_ToSwitchON.clear();
         R_ToSwitchON.clear();
@@ -657,28 +658,26 @@ const magnetInterface::vec_b  magnetInterface::flipNR( const vec_s & magNames )
         switchONpsu_N( N_ToSwitchON );
         // all while loops should have a pause
         std::this_thread::sleep_for(std::chrono::milliseconds( 200 )); // MAGIC_NUMBER
-
-        for( size_t i = 0; i < magNames.size(); ++i ) /// loop through each magnet, to check if it has flipped
-        {
-            if( initial_is_PSUN_ON[ i ] && isON_psuR( magNames[i] ) ) /// Init N = true, and R = true
+        // loop through each magnet, to check if it has flipped
+        for( size_t i =  UTL::ZERO_SIZET; i < magNames.size(); ++i )
+        {   // Init N = true, and R = true
+            if( initial_is_PSUN_ON[ i ] && isON_psuR( magNames[i] ) )
             {   //debugMessage( magNames[i], " init N = true, N = false, FLIPPED! ");
                 hasFlipped[i] = true;
             }
-            if( !initial_is_PSUN_ON[ i ] && isON_psuN( magNames[i] ) )/// Init N = false, and N = true
+            // Init N = false, and N = true
+            if( !initial_is_PSUN_ON[ i ] && isON_psuN( magNames[i] ) )
             {   //debugMessage( magNames[i], " init N = false, N = true, FLIPPED! ");
                 hasFlipped[i] = true;
             }
-        }// For loop
-        /// Now decide whether we should break out the main WHILE through successful flipping ....
+        }// Now decide whether we should break out the main WHILE through successful flipping ....
         shouldbreak = true;
         for( auto && it : hasFlipped )
             if( !it )
                 shouldbreak = false;
-
-        /// ... or update currentTime time and loop again
+        // ... or update currentTime time and loop again
         if( time(0) > startTime + waitTime )
             shouldbreak = true;
-
         if( shouldbreak )
             break;
 

@@ -32,7 +32,7 @@ namespace UTL
     const std::string VM_PREFIX   = "VM-";
 
     const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";
-    const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorLaserShutter.config";
+    const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorpilaserShutter.config";
     const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
     const std::string VELA_VALVE_CONFIG                = "velaVacuumValve.config";
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
@@ -60,20 +60,11 @@ namespace UTL
     const std::string CLARA_PH1_MAG_CONFIG             = "claraPH1Magnets.config";
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
-/// Laser
-    const std::string LASER_CONFIG = "velacalraLaser.config";
-
-
-
-// the below has to go
-    //const std::string VELA_INJ_COMPLEX_SCREENS_CONFIG  = "velaINJComplexScreens.config";
-//    const std::string VELA_INJ_SIMPLE_SCREENS_CONFIG   = "velaINJSimpleScreens.config";
-//    const std::string VELA_BA2_COMPLEX_SCREENS_CONFIG  = "velaBA2ComplexScreens.config";
-//    const std::string VELA_BA2_SIMPLE_SCREENS_CONFIG   = "velaBA2SimpleScreens.config";
-//    const std::string VELA_BA1_COMPLEX_SCREENS_CONFIG  = "velaBA1ComplexScreens.config";
-//    const std::string VELA_BA1_SIMPLE_SCREENS_CONFIG   = "velaBA1SimpleScreens.config";
-//    const std::string CLARA_INJ_SIMPLE_SCREENS_CONFIG  = "claraINJSimpleScreens.config";
-//    const std::string CLARA_INJ_COMPLEX_SCREENS_CONFIG = "claraINJComplexScreens.config";
+/// pilaser (DJS faked 17-02-2017)
+    const std::string PILASER_CONFIG = "velaclaraPILaser.config";
+    const std::string PV_SUFFIX_LASER_H_POS = "PV_SUFFIX_LASER_H_POS";
+    const std::string PV_SUFFIX_LASER_V_POS = "PV_SUFFIX_LASER_V_POS";
+    const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
 
 /// Cameras
     const std::string VELA_CAMERA_CONFIG               = "velaCamera.config";

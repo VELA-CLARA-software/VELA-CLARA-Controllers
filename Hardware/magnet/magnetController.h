@@ -80,7 +80,7 @@ class magnetController : public controller
         std::vector< std::string > getSolNames();
 
       /// Get Magnet Data
-      /// For c++ we allow access to the raw data objects,
+      /// For c++ we allow access to the raw data objects, Python read-only acces
         const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
         const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
       /// you can also get copies of the data - these can be exposed with Python bindings
