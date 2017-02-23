@@ -21,9 +21,10 @@ llrfController::llrfController(
     const bool show_debug_messages,
     const std::string & laserConf,
     const bool startVirtualMachine,
-    const bool shouldStartEPICs):
+    const bool shouldStartEPICs,
+    const llrfStructs::LLRF_TYPE type):
 controller(show_messages,show_debug_messages),
-localInterface(laserConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs),
+localInterface(laserConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs,type),
 shouldStartEPICs(shouldStartEPICs)
 {
 //    if( shouldStartEPICs )
@@ -39,6 +40,76 @@ void llrfController::initialise()
 {
     if( localInterface.interfaceInitReport(shouldStartEPICs) )
         message("llrfController instantiation success.");
+}
+//______________________________________________________________________________
+llrfStructs::LLRF_TYPE llrfController::getType()
+{
+    return localInterface.getType();
+}
+//______________________________________________________________________________
+long llrfController::getAmpRead()
+{
+    return localInterface.getAmpRead();
+}
+//______________________________________________________________________________
+long llrfController::getAmpWrite()
+{
+    return localInterface.getAmpWrite();
+}
+//______________________________________________________________________________
+long llrfController::getPhiLLRF()// in llrf units
+{
+    return localInterface.getPhiLLRF();
+}
+//______________________________________________________________________________
+bool   llrfController::setPhiLLRF(long value)
+{
+    return localInterface.setPhiLLRF(value);
+}
+//______________________________________________________________________________
+bool   llrfController::setAmpLLLRF(long value)
+{
+    return localInterface.setAmpLLLRF(value);
+}
+//______________________________________________________________________________
+bool   llrfController::setPhi(double value)// in degrees relative to crest, define +ve and -ve sense
+{
+    return localInterface.setPhi(value);
+}
+//______________________________________________________________________________
+bool   llrfController::setAmp(double value)
+{
+    return localInterface.setAmp(value);
+}
+//______________________________________________________________________________
+double llrfController::getPhi()// in degrees relative to crest, define +ve and -ve sense
+{
+    return localInterface.getPhi();
+}
+//______________________________________________________________________________
+double llrfController::getAmp()
+{
+    return localInterface.getAmp();
+}
+//______________________________________________________________________________
+const llrfStructs::llrfObject& llrfController::getLLRFObjConstRef()
+{
+    return localInterface.getLLRFObjConstRef();
+}
+//______________________________________________________________________________
+double llrfController::getPhiCalibration()
+{
+    return localInterface.getPhiCalibration();
+}
+//______________________________________________________________________________
+double llrfController::getAmpCalibration()
+{
+    return localInterface.getAmpCalibration();
+}
+//______________________________________________________________________________
+double llrfController::getCrestPhiLLRF() // in LLRF units
+{
+    return localInterface.getCrestPhiLLRF();
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
@@ -63,6 +134,7 @@ std::map< VELA_ENUM::ILOCK_NUMBER, std::string > llrfController::getILockStatesS
 {
     return localInterface.getILockStatesStr( name );
 }
+//______________________________________________________________________________
 //______________________________________________________________________________
 //boost::python::dict llrfController::getILockStatesStr_Py( std::string magName )
 //{

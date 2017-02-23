@@ -61,7 +61,7 @@ namespace UTL
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
 /// pilaser (DJS faked 17-02-2017)
-    const std::string PILASER_CONFIG = "velaclaraPILaser.config";
+    const std::string PILASER_CONFIG        = "velaclaraPILaser.config";
     const std::string PV_SUFFIX_LASER_H_POS = "PV_SUFFIX_LASER_H_POS";
     const std::string PV_SUFFIX_LASER_V_POS = "PV_SUFFIX_LASER_V_POS";
     const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
@@ -129,7 +129,6 @@ namespace UTL
     const std::string ICT2            = "ICT2";
     const std::string FCUP            = "FCUP";
     const std::string ED_FCUP         = "ED_FCUP";
-
     // BPM
     const std::string PV_SUFFIX_BPM_SA1     = "PV_SUFFIX_BPM_SA1";
     const std::string PV_SUFFIX_BPM_SA2     = "PV_SUFFIX_BPM_SA2";
@@ -151,25 +150,18 @@ namespace UTL
     const std::string XN                    = "XN";
     const std::string YN                    = "YN";
 
-    // LLRF
-    const std::string PV_SUFFIX_AMPR = "PV_SUFFIX_AMPR";
-    const std::string PV_SUFFIX_PHI  = "PV_SUFFIX_PHI";
-    const std::string PV_SUFFIX_AMPW = "PV_SUFFIX_AMPW";
-
     // Modulator
     const std::string PV_SUFFIX_RESET     = "PV_SUFFIX_RESET";
     const std::string PV_SUFFIX_STATESET  = "PV_SUFFIX_STATESET";
     const std::string PV_SUFFIX_STATEREAD = "PV_SUFFIX_STATEREAD";
     const std::string PV_SUFFIX_EXILOCK1  = "PV_SUFFIX_EXILOCK1";
     const std::string PV_SUFFIX_WARMUPT   = "PV_SUFFIX_WARMUPT";
-
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";
     const std::string MAG_GANG_MEMBER = "MAG_GANG_MEMBER";
     const std::string PV_ROOT_N       = "PV_ROOT_N";
     const std::string PV_ROOT_R       = "PV_ROOT_R";
     // Magnet
-
     const std::string UNKNOWN_MAGNET_STRING = "UNKNOWN_MAGNET";
     const std::string PV_SUFFIX_RI = "PV_SUFFIX_RI";
     const std::string PV_SUFFIX_SI = "PV_SUFFIX_SI";
@@ -179,6 +171,21 @@ namespace UTL
     const std::string PV_SUFFIX_SETIOUT  = "PV_SUFFIX_SETIOUT";
     const std::string PV_SUFFIX_I  = "PV_SUFFIX_I";
 
+    // LLRF (DJS faked 21-02-2017)
+    const std::string CLARA_LRRG_LLRF_GUN_CONFIG = "claraLRRGunLLRF.config";
+    const std::string CLARA_HRRG_LLRF_GUN_CONFIG = "claraHRRGunLLRF.config";
+    const std::string VELA_LRRG_LLRF_GUN_CONFIG  = "velaLRRGunLLRF.config";
+    const std::string VELA_HRRG_LLRF_GUN_CONFIG  = "velaHRRGunLLRF.config";
+    const std::string CLARA_L01_LLRF_CONFIG = "claraLinac01LLRF.config";
+    const std::string PV_SUFFIX_AMPR = "PV_SUFFIX_AMPR";
+    const std::string PV_SUFFIX_PHI  = "PV_SUFFIX_PHI";
+    const std::string PV_SUFFIX_AMPW = "PV_SUFFIX_AMPW";
+    const std::string PV_SUFFIX_AMP_MVM = "PV_SUFFIX_AMP_MVM";
+    const std::string PV_SUFFIX_PHI_DEG = "PV_SUFFIX_PHI_DEG";
+    const std::string LLRF_MAX_AMPLITUDE = "LLRF_MAX_AMPLITUDE";
+    const std::string LLRF_AMP_CALIBRATION = "LLRF_AMP_CALIBRATION";
+    const std::string LLRF_PHI_CALIBRATION = "LLRF_PHI_CALIBRATION";
+    const std::string LLRF_CREST_PHI = "LLRF_CREST_PHI";
 
 
     const std::string MAG_TYPE  = "MAG_TYPE";

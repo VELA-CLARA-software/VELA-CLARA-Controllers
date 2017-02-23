@@ -40,20 +40,40 @@ class llrfController : public controller
     public:
         /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         llrfController();
-        llrfController( const bool show_messages,    const bool show_debug_messagese,
-                          const std::string & laserConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs );
-
+        llrfController(const bool show_messages,const bool show_debug_messagese,
+                       const std::string & laserConf,const bool startVirtualMachine,
+                       const bool shouldStartEPICs,const llrfStructs::LLRF_TYPE type);
         ~llrfController( );
 
+        llrfStructs::LLRF_TYPE getType();
+        //in LLRF units
+        long     getAmpRead();
+        long     getAmpWrite();
+        long     getPhiLLRF();
 
-      /// These are pure virtual methods, so need to have some implmentation in derived classes
+        double   getPhi();
+        double   getAmp();
+
+        bool     setPhiLLRF(long value);
+        bool     setAmpLLLRF(long value);
+
+        bool     setPhi(double value);// degrees relative to crest
+        bool     setAmp(double value);// MV / m ampliutude
+        // obj ref.
+        const llrfStructs::llrfObject& getLLRFObjConstRef();
+
+        double getPhiCalibration();
+        double getAmpCalibration();
+        double getCrestPhiLLRF(); // in LLRF units
+
+
+      // These are pure virtual methods, so need to have some implmentation in derived classes
         virtual double get_CA_PEND_IO_TIMEOUT();
         virtual void   set_CA_PEND_IO_TIMEOUT( double val );
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
         std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
-      /// any functions that return a map need a wrapper to convert to a python dictionary
-      /// (we need the functions that return std::map types when building c++ applications)
+      // any functions that return a map need a wrapper to convert to a python dictionary
+      // (we need the functions that return std::map types when building c++ applications)
 #ifdef BUILD_DLL
 //        boost::python::dict getILockStates_Py( std::string magName );
 //        boost::python::dict getILockStatesStr_Py( std::string magName );

@@ -2,10 +2,13 @@
 #include <iostream>
 
 VCllrf::VCllrf():
-virtual_Laser_Controller_Obj(nullptr),
-offline_Laser_Controller_Obj(nullptr),
-physical_Laser_Controller_Obj(nullptr),
-laserConf(UTL::CONFIG_PATH + UTL::LASER_CONFIG),
+GUN_LLRF_Controller_Obj(nullptr),
+L01_LLRF_Controller_Obj(nullptr),
+CLARA_LRRG_LLRF_GUN_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_LRRG_LLRF_GUN_CONFIG),
+CLARA_HRRG_LLRF_GUN_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_HRRG_LLRF_GUN_CONFIG),
+VELA_LRRG_LLRF_GUN_CONFIG (UTL::CONFIG_PATH + UTL::VELA_LRRG_LLRF_GUN_CONFIG),
+VELA_HRRG_LLRF_GUN_CONFIG (UTL::CONFIG_PATH + UTL::VELA_HRRG_LLRF_GUN_CONFIG),
+CLARA_L01_LLRF_CONFIG     (UTL::CONFIG_PATH + UTL::CLARA_L01_LLRF_CONFIG),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
@@ -46,87 +49,168 @@ void VCllrf::setDebugMessage()
 }
 //______________________________________________________________________________
 VCllrf::~VCllrf()
-{
-    //dtor
-    if(virtual_Laser_Controller_Obj)
+{    //dtor
+    killGun();
+    if(L01_LLRF_Controller_Obj)
     {
-        delete virtual_Laser_Controller_Obj;
-               virtual_Laser_Controller_Obj = nullptr;
-    }
-    if(offline_Laser_Controller_Obj)
-    {
-        delete offline_Laser_Controller_Obj;
-               offline_Laser_Controller_Obj = nullptr;
-    }
-    if(physical_Laser_Controller_Obj)
-    {
-        delete physical_Laser_Controller_Obj;
-               physical_Laser_Controller_Obj = nullptr;
+        delete L01_LLRF_Controller_Obj;
+               L01_LLRF_Controller_Obj = nullptr;
     }
 }
 //______________________________________________________________________________
-llrfController& VCllrf::virtual_Laser_Controller()
+void VCllrf::killGun()
 {
-    if( virtual_Laser_Controller_Obj )
+    if( GUN_LLRF_Controller_Obj)
     {
-        std::cout << "virtual_Laser_Controller object already exists," << std::endl;
+        delete GUN_LLRF_Controller_Obj;
+               GUN_LLRF_Controller_Obj = nullptr;
     }
-    else
-    {
-        std::cout << "Creating virtual_Laser_Controller object" << std::endl;
-        virtual_Laser_Controller_Obj =
-            new llrfController(shouldShowMessage,shouldShowDebugMessage,laserConf, withVM,withEPICS);
-    }
-    return *virtual_Laser_Controller_Obj;
 }
 //______________________________________________________________________________
-llrfController& VCllrf::offline_Laser_Controller()
+llrfController& VCllrf::virtual_CLARA_LRRG_LLRF_Controller()
 {
-    if( offline_Laser_Controller_Obj )
-    {
-        std::cout << "offline_Laser_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_Laser_Controller object" << std::endl;
-        offline_Laser_Controller_Obj =
-            new llrfController(shouldShowMessage,shouldShowDebugMessage,laserConf,withoutVM,withoutEPICS);
-    }
-    return *offline_Laser_Controller_Obj;
+    std::cout << "Creating virtual_CLARA_LRRG_LLRF_Controller object" << std::endl;
+    return getController(withVM,withEPICS,llrfStructs::CLARA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::physical_Laser_Controller()
+llrfController& VCllrf::offline_CLARA_LRRG_LLRF_Controller()
 {
-    if( physical_Laser_Controller_Obj )
-    {
-        std::cout << "physical_Laser_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_Laser_Controller object" << std::endl;
-        physical_Laser_Controller_Obj =
-            new llrfController(shouldShowMessage,shouldShowDebugMessage,laserConf,withoutVM,withEPICS);
-    }
-    return *physical_Laser_Controller_Obj;
+    std::cout << "Creating offline_CLARA_LRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withoutEPICS,llrfStructs::CLARA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::getllrfController( VELA_ENUM::MACHINE_MODE mode )
+llrfController& VCllrf::physical_CLARA_LRRG_LLRF_Controller()
 {
-    switch( mode )
+    std::cout << "Creating physical_CLARA_LRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withEPICS,llrfStructs::CLARA_LRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::virtual_CLARA_HRRG_LLRF_Controller()
+{
+    std::cout << "Creating virtual_CLARA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withVM,withEPICS,llrfStructs::CLARA_HRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::offline_CLARA_HRRG_LLRF_Controller()
+{
+    std::cout << "Creating offline_CLARA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withoutEPICS,llrfStructs::CLARA_HRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::physical_CLARA_HRRG_LLRF_Controller()
+{
+    std::cout << "Creating physical_CLARA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withEPICS,llrfStructs::CLARA_HRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::virtual_VELA_LRRG_LLRF_Controller()
+{
+    std::cout << "Creating virtual_VELA_LRRG_LLRF_Controller object" << std::endl;
+    return getController(withVM,withEPICS,llrfStructs::VELA_LRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::offline_VELA_LRRG_LLRF_Controller()
+{
+    std::cout << "Creating offline_VELA_LRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withoutEPICS,llrfStructs::VELA_LRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::physical_VELA_LRRG_LLRF_Controller()
+{
+    std::cout << "Creating physical_VELA_LRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withEPICS,llrfStructs::VELA_LRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::virtual_VELA_HRRG_LLRF_Controller()
+{
+    std::cout << "Creating virtual_VELA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withVM,withEPICS,llrfStructs::VELA_HRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::offline_VELA_HRRG_LLRF_Controller()
+{
+    std::cout << "Creating offline_VELA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withoutEPICS,llrfStructs::VELA_HRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::physical_VELA_HRRG_LLRF_Controller()
+{
+    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withEPICS,llrfStructs::VELA_HRRG);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::virtual_L01_LLRF_Controller()
+{
+    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withVM,withEPICS,llrfStructs::L01);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::physical_L01_LLRF_Controller()
+{
+    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withEPICS,llrfStructs::L01);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::offline_L01_LLRF_Controller()
+{
+    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    return getController(withoutVM,withoutEPICS,llrfStructs::L01);
+}
+//______________________________________________________________________________
+llrfController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrfStructs::LLRF_TYPE llrfType)
+{
+    bool createobject = true;
+    if( isaGUN(llrfType)&&GUN_LLRF_Controller_Obj )
     {
-        case VELA_ENUM::OFFLINE:
-            return virtual_Laser_Controller();
+        std::cout << "A Gun object already exists. Please use killGun() to delete current Gun first." << std::endl;
+        createobject = false;
+    }
+    if( createobject )
+    {
+        switch(llrfType)
+        {
+            case llrfStructs::CLARA_HRRG:
+                GUN_LLRF_Controller_Obj =
+                    new llrfController(shouldShowMessage,shouldShowDebugMessage,CLARA_HRRG_LLRF_GUN_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                break;
+            case llrfStructs::CLARA_LRRG:
+                GUN_LLRF_Controller_Obj =
+                    new llrfController(shouldShowMessage,shouldShowDebugMessage,CLARA_LRRG_LLRF_GUN_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                break;
+            case llrfStructs::VELA_HRRG:
+                GUN_LLRF_Controller_Obj =
+                    new llrfController(shouldShowMessage,shouldShowDebugMessage,VELA_HRRG_LLRF_GUN_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                break;
+            case llrfStructs::VELA_LRRG:
+                GUN_LLRF_Controller_Obj =
+                    new llrfController(shouldShowMessage,shouldShowDebugMessage,VELA_LRRG_LLRF_GUN_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                break;
+            case llrfStructs::L01:
+                L01_LLRF_Controller_Obj =
+                    new llrfController(shouldShowMessage,shouldShowDebugMessage,CLARA_L01_LLRF_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                return *L01_LLRF_Controller_Obj;
+                break;
+        }
+    }
+    return *GUN_LLRF_Controller_Obj;
+}
+//______________________________________________________________________________
+bool VCllrf::isaGUN(llrfStructs::LLRF_TYPE llrfType)
+{
+    bool r = true;
+    switch(llrfType)
+    {
+        case llrfStructs::L01:
+            r = false;
             break;
-        case VELA_ENUM::PHYSICAL:
-            return physical_Laser_Controller();
-            break;
-        case VELA_ENUM::VIRTUAL:
-            return virtual_Laser_Controller();
-            break;
     }
+    return r;
 }
-
-
 
 
 

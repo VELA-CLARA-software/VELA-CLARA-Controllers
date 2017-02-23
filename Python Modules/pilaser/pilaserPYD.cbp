@@ -7,7 +7,7 @@
 		<Option compiler="ms_visual_c_2012" />
 		<Build>
 			<Target title="Debug">
-				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VELA_CLARA_PYDs\bin\Debug\VELA_CLARA_LaserControl" prefix_auto="1" extension_auto="1" />
+				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VELA_CLARA_PYDs\bin\Debug\VELA_CLARA_PILaserControl" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -31,7 +31,7 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
-				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VELA_CLARA_PYDs\bin\stage\VELA_CLARA_LaserControl" prefix_auto="1" extension_auto="1" />
+				<Option output="\\fed.cclrc.ac.uk\org\NLab\ASTeC\Projects\VELA\Software\VELA_CLARA_PYDs\bin\stage\VELA_CLARA_PILaserControl" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -77,11 +77,17 @@
 		<Unit filename="../../Hardware/pilaser/pilaserController.h" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.cpp" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.h" />
-		<Unit filename="../../Structs/pilaserStructs.h" />
-		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Structs/pilaserStructs.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="../../Structs/structs.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
-		<Unit filename="../../Utilities/configDefinitions.h" />
+		<Unit filename="../../Utilities/configDefinitions.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
 		<Unit filename="../../Utilities/pilaserConfigReader.cpp" />

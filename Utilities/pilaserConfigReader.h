@@ -31,7 +31,7 @@ class pilaserConfigReader:public configReader
         std::vector<pilaserStructs::pvStruct> pvComStructs;
 
         // hand pointer so we cna keep track of the last PV struct we were adding data to
-        std::vector< pilaserStructs::pvStruct > * lastPVStruct;
+        //std::vector< pilaserStructs::pvStruct > * lastPVStruct;
 
         void addToPVStruct(std::vector< pilaserStructs::pvStruct > & pvs, const pilaserStructs::PILASER_PV_TYPE pvtype, const std::string& pvSuffix);
 

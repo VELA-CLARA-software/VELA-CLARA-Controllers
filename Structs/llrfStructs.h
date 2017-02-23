@@ -2,73 +2,63 @@
 #define _VELA_PIL_SHUTTER_STRUCTS_H_
 //
 #include "structs.h"
+#include "configDefinitions.h"
 //stl
 #include <string>
 #include <map>
 //epics
-#ifndef __CINT__
 #include <cadef.h>
-#endif
 
 class llrfInterface;
 
 namespace llrfStructs
 {
-    /// Forward declare structs, gcc seems to like this...
-
+    // Forward declare structs, gcc seems to like this...
     struct monitorStuct;
-    struct laserObject;
+    struct llrfObject;
     struct pvStruct;
-
-    /// Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( LASER_PV_TYPE, (sta)(X_POS) (Y_POS) (INTENSITY) (UNKNOWN) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( LASER_STATUS, (ON)(OFF) (ERROR) )
-
-    /// monType could be used to switch in the staticCallbackFunction
-    /// For the shutter this is basically redundant, there is only one monitor: "Sta"
-    /// (apart from interlocks, these are handled in the base class)
-    /// monType could be used to switch in the statisCallbackFunction
+    // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_PV_TYPE,(AMP_R)(AMP_W)(PHI)(AMP_MVM)(PHI_DEG)(UNKNOWN))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)(CLARA_LRRG)(VELA_HRRG)(VELA_LRRG)
+                                                  (L01)(UNKNOWN_TYPE))
+    // monType is to switch in the staticCallbackFunction
     struct monitorStruct
     {
         monitorStruct():monType(UNKNOWN),interface(nullptr),EVID(nullptr),
-                        obj(nullptr),laserObj(nullptr){}
-        LASER_PV_TYPE   monType;
-        void*           obj;
+                        llrfObj(nullptr){}
+        LLRF_PV_TYPE    monType;
         llrfInterface*  interface;
         chtype          CHTYPE;
         evid            EVID;
-        laserObject*    laserObj;
+        llrfObject*     llrfObj;
     };
-
-    /// The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
-    /// The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
-
+    // The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
+    // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
     struct pvStruct
     {
-        LASER_PV_TYPE pvType;
+        LLRF_PV_TYPE  pvType;
         chid          CHID;
         std::string   pvSuffix;
         unsigned long COUNT, MASK;
         chtype        CHTYPE;
         evid          EVID;
     };
-
-    /// The main hardware object holds
-
-    struct laserObject
+    // The main hardware object
+    struct llrfObject
     {
+        llrfObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),type(UNKNOWN_TYPE),
+                       ampR(UTL::DUMMY_LONG),ampW(0),phiLLRF(UTL::DUMMY_LONG),
+                       maxAmp(UTL::DUMMY_LONG),crestPhi(UTL::DUMMY_LONG),numIlocks(UTL::DUMMY_INT),
+                       phiCalibration(UTL::DUMMY_DOUBLE),ampCalibration(UTL::DUMMY_DOUBLE),
+                       phi_DEG(UTL::DUMMY_DOUBLE),amp_MVM(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
-        VELA_ENUM::SHUTTER_STATE shutterState;
+        double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
+        long ampR,phiLLRF,ampW,crestPhi,maxAmp;
         int numIlocks;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
-#ifndef __CINT__
-        /// keep data seperate from epics stuff
-        std::map< LASER_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< LASER_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
-#endif
+        LLRF_TYPE type;
+        std::map<LLRF_PV_TYPE,pvStruct> pvMonStructs;
+        std::map<LLRF_PV_TYPE,pvStruct> pvComStructs;
+        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::iLockPVStruct> iLockPVStructs;
     };
-
-
 }
 #endif

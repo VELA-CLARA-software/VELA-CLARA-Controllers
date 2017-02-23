@@ -92,7 +92,9 @@ class interface : public baseObject
 
         void checkCHIDState( const chid & CHID, const std::string & name );
         int sendToEpics( const char * ca, const char * mess1, const char * mess2 );
+        int sendToEpics2( const char * ca, const char * mess1, const char * mess2 );
         int sendToEpics( std::string & ca, std::string & mess1, std::string & mess2 );
+        int sendToEpics2( std::string & ca, std::string & mess1, std::string & mess2 );
 #endif
 
         bool iLocksAreGood( std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > & iLockStates );

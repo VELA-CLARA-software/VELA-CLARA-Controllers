@@ -22,17 +22,22 @@
 #include <chrono>
 #include <algorithm>
 #include <thread>
+#include <math.h>
 //  __  ___  __   __    /  __  ___  __   __
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-llrfInterface::llrfInterface( const std::string &laserConf,
-                                const bool startVirtualMachine,
-                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs ):
-configReader(laserConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
+llrfInterface::llrfInterface( const std::string &llrfConf,
+                              const bool startVirtualMachine,
+                              const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
+                              const bool shouldStartEPICs ,
+                              const llrfStructs::LLRF_TYPE type
+                              ):
+configReader(llrfConf,startVirtualMachine,show_messages_ptr,show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr),
-shouldStartEPICs( shouldStartEPICs )
+shouldStartEPICs(shouldStartEPICs),
+usingVirtualMachine(startVirtualMachine),
+myLLRFType(type)
 {
 //    if( shouldStartEPICs )
 //    message("magnet llrfInterface shouldStartEPICs is true");
@@ -78,173 +83,309 @@ void llrfInterface::initialise()
             {
                 message("The llrfInterface has acquired objects, connecting to EPICS");
                 //std::cout << "WE ARE HERE" << std::endl;
-                /// subscribe to the channel ids
+                // subscribe to the channel ids
                 initChids();
-                /// start the monitors: set up the callback functions
+                // start the monitors: set up the callback functions
+                debugMessage("Startign Monitors");
                 startMonitors();
-                /// The pause allows EPICS to catch up.
+                // The pause allows EPICS to catch up.
                 std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
             }
             else
              message("The llrfInterface has acquired objects, NOT connecting to EPICS");
         }
         else
-            message( "!!!The llrfInterface received an Error while getting magnet data!!!" );
+            message( "!!!The llrfInterface received an Error while getting llrf data!!!" );
     }
 }
 //______________________________________________________________________________
 bool llrfInterface::initObjects()
 {
-//    bool magDatSuccess = configReader.getMagData( allMagnetData );
-//    degStruct = configReader.getDeguassStruct();
-//    addDummyElementToAllMAgnetData();
-//    // set the machine area on each magent, this allows for flavour switching functions, such as switchON etc..
-//    for( auto && it : allMagnetData )
-//        it.second.machineArea = myMachineArea;
-    return false;
+    bool success = configReader.getllrfObject(llrf);
+    llrf.type = myLLRFType;
+    return success;
 }
 //______________________________________________________________________________
 void llrfInterface::initChids()
 {
-//    message( "\n", "Searching for Magnet chids...");
-//    for( auto && magObjIt : allMagnetData )
-//    {   // The correctors and BSOL PSU are all EBT-INJ-MAG-HVCOR-01, they have the psuRoot field non-empty
-//        // to make this more clever we should just have one value they all point to... ?
-//        if( isACor( magObjIt.first ) || isABSol( magObjIt.first ) )
-//        {
-//            addILockChannels( magObjIt.second.numIlocks, magObjIt.second.psuRoot, magObjIt.first, magObjIt.second.iLockPVStructs );
-//            for( auto && it2 : magObjIt.second.pvComStructs )
-//            {
-//                addChannel( magObjIt.second.psuRoot, it2.second );
-//            }
-//            for( auto && it2 : magObjIt.second.pvMonStructs  )
-//            {// yeah - the Sta is for the psuRoot, not the pvRoot... :-(
-//                if( it2.first == magnetStructs::MAG_PV_TYPE::Sta )
-//                    addChannel( magObjIt.second.psuRoot, it2.second );
-//                else
-//                    addChannel( magObjIt.second.pvRoot, it2.second );
-//            }
-//        }
-//        else
-//        {
-//            addILockChannels( magObjIt.second.numIlocks, magObjIt.second.pvRoot, magObjIt.first, magObjIt.second.iLockPVStructs );
-//            for( auto && it2 : magObjIt.second.pvComStructs )
-//                addChannel( magObjIt.second.pvRoot, it2.second );
-//            for( auto && it2 : magObjIt.second.pvMonStructs  )
-//                addChannel( magObjIt.second.pvRoot, it2.second );
-//        }// add in the NR-Type psu chids
-//        if( isNRorNRGanged( magObjIt.first ) )
-//        {
-//            addILockChannels( magObjIt.second.nPSU.numIlocks, magObjIt.second.nPSU.pvRoot, magObjIt.second.nPSU.parentMagnet+" N-PSU", magObjIt.second.nPSU.iLockPVStructs );
-//            addILockChannels( magObjIt.second.rPSU.numIlocks, magObjIt.second.rPSU.pvRoot, magObjIt.second.rPSU.parentMagnet+" R-PSU", magObjIt.second.rPSU.iLockPVStructs );
-//            for( auto && it2 : magObjIt.second.nPSU.pvComStructs )
-//                addChannel( magObjIt.second.nPSU.pvRoot, it2.second );
-//            for( auto && it2 : magObjIt.second.nPSU.pvMonStructs )
-//                addChannel( magObjIt.second.nPSU.pvRoot, it2.second );
-//            for( auto && it2 : magObjIt.second.rPSU.pvComStructs )
-//                addChannel( magObjIt.second.rPSU.pvRoot, it2.second );
-//            for( auto && it2 : magObjIt.second.rPSU.pvMonStructs )
-//                addChannel( magObjIt.second.rPSU.pvRoot, it2.second );
-//        }
-//    }
-//    int status = sendToEpics( "ca_create_channel", "Found Magnet ChIds.", "!!TIMEOUT!! Not all Magnet ChIds found." );
-//    if( status == ECA_TIMEOUT )
-//    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));//MAGIC_NUMBER
-//        for( const auto & magObjIt : allMagnetData )
-//        {
-//            message("\n", "Checking Chids for ", magObjIt.first );
-//            for( auto & it2 : magObjIt.second.pvMonStructs )
-//                checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//            for( auto & it2 : magObjIt.second.pvComStructs )
-//                checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//            for( auto & it2 : magObjIt.second.iLockPVStructs )
-//                checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//
-//            if( isNRorNRGanged( magObjIt.first ) )
-//            {
-//                message("\n", "Checking Chids for ", magObjIt.first + " N-PSU" );
-//                for( auto && it2 : magObjIt.second.nPSU.pvComStructs )
-//                    checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//                for( auto && it2 : magObjIt.second.nPSU.pvMonStructs )
-//                    checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//
-//                message("\n", "Checking Chids for ", magObjIt.first + " R-PSU" );
-//                for( auto && it2 : magObjIt.second.rPSU.pvComStructs )
-//                    checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//                for( auto && it2 : magObjIt.second.rPSU.pvMonStructs )
-//                    checkCHIDState( it2.second.CHID, ENUM_TO_STRING( it2.first ) );
-//            }
-//        }
-//        message("");
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 5000 )); // MAGIC_NUMBER
-//    }
-//    else if ( status == ECA_NORMAL )
-//        allChidsInitialised = true;  /// interface base class member
+    message( "\n", "Searching for LLRF chids...");
+    for( auto && it : llrf.pvMonStructs )
+    {
+        addChannel( llrf.pvRoot, it.second );
+    }
+    // command only PVs for the LLRF to set "high level" phase and amplitide
+    for( auto && it : llrf.pvComStructs )
+    {
+        addChannel( llrf.pvRoot, it.second );
+    }
+    addILockChannels( llrf.numIlocks, llrf.pvRoot, llrf.name, llrf.iLockPVStructs );
+    int status=sendToEpics("ca_create_channel","Found LLRF ChIds.",
+                           "!!TIMEOUT!! Not all LLRF ChIds found." );
+    if(status==ECA_TIMEOUT)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));//MAGIC_NUMBER
+        message("\n","Checking LLRF ChIds ");
+        for( auto && it : llrf.pvMonStructs )
+        {
+            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first ) );
+        }
+        for( auto && it : llrf.pvComStructs)
+        {
+            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first ) );
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000)); // MAGIC_NUMBER
+    }
+    else if ( status == ECA_NORMAL )
+        allChidsInitialised = true;  // interface base class member
 }
 //______________________________________________________________________________
 void llrfInterface::addChannel( const std::string & pvRoot, llrfStructs::pvStruct & pv )
 {
-//    std::string s1 = pvRoot + pv.pvSuffix;
-//    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
-//    debugMessage( "Create channel to ", s1 );
+    std::string s1;
+    // TEMPORARY HACK FOR HIGH LEVEL llrf PARAMATERS
+    if( pv.pvType == llrfStructs::LLRF_PV_TYPE::AMP_MVM)
+    {
+        s1 =  UTL::VM_PREFIX + pv.pvSuffix;
+    }
+    else if(  pv.pvType == llrfStructs::LLRF_PV_TYPE::PHI_DEG )
+    {
+        s1 =  UTL::VM_PREFIX + pv.pvSuffix;
+    }
+    else
+    {
+        s1 = pvRoot + pv.pvSuffix;
+    }
+    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
+    debugMessage( "Create channel to ", s1 );
 }
 //______________________________________________________________________________
 void llrfInterface::startMonitors()
 {
-//    continuousMonitorStructs.clear();
-//    continuousILockMonitorStructs.clear();
-//    for( auto && it : allMagnetData )
-//    {
-//        /// Base class function for ilocks
-//        monitorIlocks( it.second.iLockPVStructs, it.second.iLockStates );
-//        if( isNRorNRGanged( it.first ) )
-//        {   // add NR-PSU ilocks
-//            monitorIlocks( it.second.nPSU.iLockPVStructs, it.second.nPSU.iLockStates );
-//            monitorIlocks( it.second.rPSU.iLockPVStructs, it.second.rPSU.iLockStates );
-//            // add NR-PSU pvMon Structs
-//            for( auto && it2 : it.second.nPSU.pvMonStructs  )
-//            {
-//                continuousMonitorStructs.push_back( new magnetStructs::monitorStruct() );
-//                continuousMonitorStructs.back() -> monType   = it2.first;
-//                continuousMonitorStructs.back() -> objName   = it.second.nPSU.parentMagnet;
-//                continuousMonitorStructs.back() -> psuType   = magnetStructs::MAG_PSU_TYPE::PSU_N;
-//                continuousMonitorStructs.back() -> interface = this;
-//                ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID,
-//                                        it2.second.MASK, llrfInterface::staticEntryMagnetMonitor,
-//                                        (void*)continuousMonitorStructs.back(), &continuousMonitorStructs.back() -> EVID );
-//            }
-//            for( auto && it2 : it.second.rPSU.pvMonStructs )
-//            {
-//                continuousMonitorStructs.push_back( new magnetStructs::monitorStruct() );
-//                continuousMonitorStructs.back() -> monType   = it2.first;
-//                continuousMonitorStructs.back() -> objName   = it.second.rPSU.parentMagnet;
-//                continuousMonitorStructs.back() -> psuType   = magnetStructs::MAG_PSU_TYPE::PSU_R;
-//                continuousMonitorStructs.back() -> interface = this;
-//                ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID,
-//                                        it2.second.MASK, llrfInterface::staticEntryMagnetMonitor,
-//                                        (void*)continuousMonitorStructs.back(), &continuousMonitorStructs.back() -> EVID );
-//            }
-//        }// Then add main monitors...
-//        for( auto && it2 : it.second.pvMonStructs )
+    continuousMonitorStructs.clear();
+    continuousILockMonitorStructs.clear();
+
+    for( auto && it : llrf.pvMonStructs )
+    {   // if using the VM we don't monito AMP Read
+//        if( usingVirtualMachine && it.first == llrfStructs::LLRF_PV_TYPE::AMP_R )
 //        {
-//            continuousMonitorStructs.push_back( new magnetStructs::monitorStruct() );
-//            continuousMonitorStructs.back() -> monType   = it2.first;
-//            continuousMonitorStructs.back() -> objName = it.second.name;
-//            continuousMonitorStructs.back() -> psuType = magnetStructs::MAG_PSU_TYPE::PSU;
-//            continuousMonitorStructs.back() -> interface = this;
-//            ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID,
-//                                    it2.second.MASK, llrfInterface::staticEntryMagnetMonitor,
-//                                    (void*)continuousMonitorStructs.back(), &continuousMonitorStructs.back()->EVID );
-//            /// If you pass DBF_STRING and recast as a char * in the callback you can get the state as GOOD, BAD, OPEN, CLOSED etc,
-//            /// This is useful for debugging, but in general i'm just going to subscribe to the DBR_ENUM
-//            /// ca_create_subscription accepts a void * user argument, we pass a pointer to the monitor struct,
-//            /// in the callback function this is cast back and the data can then be updated
-//            /// void * usrArg = reinterpret_cast< void *>( continuousMonitorStructs.back() );
+//            message("For VM AMP_R is not monitored");
 //        }
-//    }
-//    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Magnet Monitors", "!!TIMEOUT!! Subscription to Magnet monitors failed" );
-//    if ( status == ECA_NORMAL )
-//        allMonitorsStarted = true; /// interface base class member
+//        else
+//        {
+            debugMessage("ca_create_subscription to ", ENUM_TO_STRING(it.first));
+            continuousMonitorStructs.push_back( new llrfStructs::monitorStruct() );
+            continuousMonitorStructs.back() -> monType    = it.first;
+            continuousMonitorStructs.back() -> llrfObj = &llrf;
+            continuousMonitorStructs.back() -> interface  = this;
+            ca_create_subscription(it.second.CHTYPE, it.second.COUNT,  it.second.CHID,
+                                   it.second.MASK, llrfInterface::staticEntryLLRFMonitor,
+                                   (void*)continuousMonitorStructs.back(),
+                                   &continuousMonitorStructs.back() -> EVID);
+//        }
+    }
+    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to LLRF Monitors", "!!TIMEOUT!! Subscription to LLRF monitors failed" );
+    if ( status == ECA_NORMAL )
+        allMonitorsStarted = true; /// interface base class member
 }
+//____________________________________________________________________________________________
+void llrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
+{
+    llrfStructs::monitorStruct*ms = static_cast<  llrfStructs::monitorStruct *>(args.usr);
+    switch(ms -> monType)
+    {
+        case llrfStructs::LLRF_PV_TYPE::AMP_R:
+            ms->interface->debugMessage("staticEntryLLRFMonitor LLRF AMP_R = ",*(long*)args.dbr);
+            ms->llrfObj->ampR =  *(long*)args.dbr;
+            ms->interface->setAMPMVM();
+            break;
+        case llrfStructs::LLRF_PV_TYPE::AMP_W:
+            ms->interface->debugMessage("staticEntryLLRFMonitor LLRF AMP_W = ",*(long*)args.dbr);
+            ms->llrfObj->ampW =  *(long*)args.dbr;
+            // the VM doesn't update the AMP read, 23-02-2017
+            if( ms->interface->usingVirtualMachine)
+            {
+               ms->interface->debugMessage("Using Virtual Machine, so setting AMP_R");
+               ms->interface->setAmpRead();
+            }
+            break;
+        case llrfStructs::LLRF_PV_TYPE::PHI:
+            ms->interface->debugMessage("staticEntryLLRFMonitor LLRF PHI = ",*(long*)args.dbr);
+            ms->llrfObj->phiLLRF =  *(long*)args.dbr;
+            ms->interface->setPHIDEG();
+            break;
+        case llrfStructs::LLRF_PV_TYPE::PHI_DEG:
+            ms->interface->debugMessage("staticEntryLLRFMonitor LLRF PHI_DEG = ",*(double*)args.dbr);
+            ms->llrfObj->phi_DEG = *(double*)args.dbr;
+            break;
+        case llrfStructs::LLRF_PV_TYPE::AMP_MVM:
+            ms->interface->debugMessage("staticEntryLLRFMonitor LLRF AMP_MVM = ",*(double*)args.dbr);
+            ms->llrfObj->amp_MVM = *(double*)args.dbr;
+            break;
+        default:
+            ;
+            // ERROR
+    }
+}
+//____________________________________________________________________________________________
+double llrfInterface::getPhiCalibration()
+{
+    return llrf.phiCalibration;
+}
+//____________________________________________________________________________________________
+double llrfInterface::getAmpCalibration()
+{
+    return llrf.ampCalibration;
+}
+//____________________________________________________________________________________________
+double llrfInterface::getCrestPhiLLRF()// in LLRF units
+{
+    return llrf.crestPhi;
+}
+//____________________________________________________________________________________________
+long llrfInterface::getAmpWrite()
+{
+    return llrf.ampW;
+}
+//____________________________________________________________________________________________
+long llrfInterface::getAmpRead()
+{
+    return llrf.ampR;
+}
+//____________________________________________________________________________________________
+double llrfInterface::getAmp()// physics units
+{
+    return llrf.amp_MVM;
+}
+//____________________________________________________________________________________________
+long llrfInterface::getPhiLLRF()
+{
+    return llrf.phiLLRF;
+}
+//____________________________________________________________________________________________
+double llrfInterface::getPhi()// physics units
+{
+    return llrf.phi_DEG;
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setPhiLLRF(long value)
+{
+    return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::PHI),value);
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setAmpLLLRF(long value)
+{
+    return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::AMP_W),value);
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setAmp(double value)// MV / m amplitude
+{
+    bool r = false;
+    if(value<UTL::ZERO_DOUBLE)
+    {
+        message("Error!! you must set a positive amplitude for LLRF, not ", value);
+    }
+    else
+    {
+        long val = (long)std::round(value/llrf.ampCalibration);
+
+        if( val > llrf.maxAmp )
+        {
+            message("Error!! Requested amplitude, ",val,"  too high");
+        }
+        else
+        {
+            debugMessage("Requested amplitude, ", value," MV / m = ", val," in LLRF units ");
+
+            r = setAmpLLLRF(val);
+        }
+    }
+    return r;
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setPhi(double value)// degrees relative to crest
+{
+    bool r = false;
+    if(value<-180.0||value>180.0)//MAGIC_NUMBER
+    {
+        message("Error!! you must set phase between -180.0 and +180.0, not ", value);
+    }
+    else
+    {
+        long val = llrf.crestPhi + (long)std::round(value/llrf.phiCalibration);
+
+        debugMessage("Requested PHI, ", value," degrees  = ", val," in LLRF units ");
+        r = setPhiLLRF(val);
+    }
+    return r;
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setPHIDEG()
+{// ONLY ever called from staticEntryLLRFMonitor
+    double val = ( (double)llrf.phiLLRF) * (llrf.phiCalibration);
+    debugMessage("setPHIDEG PHI_DEG to, ",val, ", calibration = ", llrf.phiCalibration);
+    return setValue2(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::PHI_DEG),val);
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setAMPMVM()
+{// ONLY ever called from staticEntryLLRFMonitor
+    double val = ((double)llrf.ampR) * (llrf.ampCalibration);
+    debugMessage("setAMPMVM AMP_MVM to, ",val, ", calibration = ", llrf.ampCalibration);
+    return setValue2(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::AMP_MVM),val);
+}
+//____________________________________________________________________________________________
+bool llrfInterface::setAmpRead()
+{// ONLY ever called from staticEntryLLRFMonitor
+    debugMessage("setAmpRead AMP_R to, ",llrf.ampW);
+    return setValue2(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::AMP_R),llrf.ampW);
+}
+//____________________________________________________________________________________________
+const llrfStructs::llrfObject& llrfInterface::getLLRFObjConstRef()
+{
+    return llrf;
+}
+//____________________________________________________________________________________________
+template<typename T>
+bool llrfInterface::setValue( llrfStructs::pvStruct& pvs, T value)
+{
+    bool ret = false;
+    ca_put(pvs.CHTYPE,pvs.CHID,&value);
+    std::stringstream ss;
+    ss << "setValue setting " << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
+    message(ss);
+    ss.str("");
+    ss << "Timeout setting llrf, " << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
+    int status = sendToEpics("ca_put","",ss.str().c_str());
+    if(status==ECA_NORMAL)
+        ret=true;
+    return ret;
+}
+//____________________________________________________________________________________________
+template<typename T>
+bool llrfInterface::setValue2( llrfStructs::pvStruct& pvs, T value)
+{
+    bool ret = false;
+    ca_put(pvs.CHTYPE,pvs.CHID,&value);
+    std::stringstream ss;
+    ss << "setValue2 setting " << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
+    message(ss);
+    ss.str("");
+    ss << "Timeout setting llrf, " << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
+    int status = sendToEpics2("ca_put","",ss.str().c_str());
+    if(status==ECA_NORMAL)
+        ret=true;
+    return ret;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

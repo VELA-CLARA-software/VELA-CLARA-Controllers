@@ -85,6 +85,11 @@ double configReader::getNumD( const  std::string & str )
     return atof( str.c_str() );
 }
 //______________________________________________________________________________
+long configReader::getNumL( const  std::string & str )
+{
+    return (long)atof( str.c_str() );
+}
+//______________________________________________________________________________
 std::string configReader::trimToDelimiter( std::string const & str, const std::string & STOPDELIMITER )
 {
     size_t last = str.find_first_of( STOPDELIMITER );

@@ -36,14 +36,39 @@ class llrfInterface : public interface
         typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         llrfInterface::llrfInterface();
-        llrfInterface(const std::string &laserConf,
+        llrfInterface(const std::string &llrfConf,
                       const bool  startVirtualMachine,
                       const bool* show_messages_ptr,
                       const bool* show_debug_messages_ptr,
-                      const bool  shouldStartEPICs);
+                      const bool  shouldStartEPICs,
+                      const llrfStructs::LLRF_TYPE type);
 
         ~llrfInterface();
-      //  llrfInterface(const llrfInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
+
+        llrfStructs::LLRF_TYPE getType(){return myLLRFType;}
+
+
+
+        long     getAmpRead();
+        long     getAmpWrite();
+        long     getPhiLLRF();
+
+        double   getPhi();
+        double   getAmp();
+
+        bool     setPhiLLRF(long value);
+        bool     setAmpLLLRF(long value);
+
+        bool     setPhi(double value);// degrees relative to crest
+        bool     setAmp(double value);// MV / m ampliutude
+
+        double getPhiCalibration();
+        double getAmpCalibration();
+        double getCrestPhiLLRF(); // in LLRF units
+
+
+
+        const llrfStructs::llrfObject& getLLRFObjConstRef();
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
         // ********this will need updating*******
@@ -53,9 +78,20 @@ class llrfInterface : public interface
 
     private:
         // MOVE TO BASE CLASS
-        const bool shouldStartEPICs;
+        const bool shouldStartEPICs,usingVirtualMachine;
 
         void killMonitor( llrfStructs::monitorStruct * ms );
+
+        template<typename T>
+        bool setValue( llrfStructs::pvStruct& pvs, T value);
+        template<typename T>
+        bool setValue2( llrfStructs::pvStruct& pvs, T value);
+
+        static void staticEntryLLRFMonitor(const event_handler_args args);
+
+        bool setAMPMVM();
+        bool setPHIDEG();
+        bool setAmpRead();
 
         void initialise();
         bool initObjects();
@@ -65,7 +101,8 @@ class llrfInterface : public interface
 
         //std::map< std::string, magnetStructs::magnetObject > allMagnetData;
 
-        llrfStructs::laserObject laser;
+        llrfStructs::llrfObject llrf;
+        llrfStructs::LLRF_TYPE myLLRFType;
 
         std::vector< llrfStructs::monitorStruct * > continuousMonitorStructs;
 

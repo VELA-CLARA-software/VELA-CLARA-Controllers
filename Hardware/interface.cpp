@@ -227,6 +227,22 @@ int interface::sendToEpics( std::string & ca, std::string & mess1, std::string &
     return status;
 }
 //______________________________________________________________________________
+int interface::sendToEpics2( const char * ca, const char * mess1, const char * mess2 )
+{
+    int status = ca_flush_io( );
+    SEVCHK(status, ca );
+    printStatusResult( status, mess1, mess2 );
+    return status;
+}
+//______________________________________________________________________________
+int interface::sendToEpics2( std::string & ca, std::string & mess1, std::string & mess2 )
+{
+    int status = ca_flush_io();
+    SEVCHK(status, ca.c_str() );
+    printStatusResult( status, mess1.c_str(), mess2.c_str() );
+    return status;
+}
+//______________________________________________________________________________
 void interface::checkCHIDState( const chid & CHID, const std::string & name )
 {
     channel_state chidState  = ca_state( CHID);
