@@ -29,8 +29,9 @@ class scopeController : public controller
         /// we have overloaded constructors to specify config-file location
 
         scopeController();// const bool show_messages = true, const bool show_debug_messages = true );
-        scopeController( const std::string configFileLocation1, const std::string configFileLocation2,
-                         const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS );
+        scopeController( const std::string &configFileLocation1, const std::string &configFileLocation2,
+                         const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS,
+                         const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~scopeController();
 //
 //        bool hasTrig( const std::string & scopeName );
@@ -95,6 +96,7 @@ class scopeController : public controller
         std::vector< std::string > scopeNames;
 
         const bool shouldStartEPICS;
+        const VELA_ENUM::MACHINE_AREA machineArea;
 };
 
 

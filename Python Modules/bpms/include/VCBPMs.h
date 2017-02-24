@@ -9,13 +9,16 @@
 //boost
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+#define BOOST_LIB_DIAGNOSTIC
+#include <boost/config.hpp>
 #include <boost/python.hpp>
+#include <boost/python/class.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
 #include <boost/python/object/function.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/docstring_options.hpp>
+//#include <boost/python/docstring_options.hpp>
 
 class VCBPMs// : public beamPositionMonitorController
 {
@@ -25,7 +28,6 @@ class VCBPMs// : public beamPositionMonitorController
 //        velaINJBeamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true, const std::string configFileLocation );
         VCBPMs();
         ~VCBPMs();
-
         beamPositionMonitorController & virtual_VELA_INJ_BPM_Controller();
         beamPositionMonitorController & offline_VELA_INJ_BPM_Controller();
         beamPositionMonitorController & physical_VELA_INJ_BPM_Controller();
@@ -108,7 +110,7 @@ class getVecString
 /// http://www.codeproject.com/Articles/11597/Building-Boost-libraries-for-Visual-Studio
 /// or do it yourself!
 
-#define BOOST_LIB_DIAGNOSTIC
+
 
 /// FUNCTION OVERLOADING, if you have overloaded functions:
 /// Create a load of different function pointers and use them in the bindings
@@ -125,7 +127,6 @@ void(beamPositionMonitorController::*monitorDataForNShots)(size_t, const std::st
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorDataForNShots, beamPositionMonitorController::monitorDataForNShots, 2, 2)
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorMultipleDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
 
-
 using namespace boost::python;
 
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
@@ -133,7 +134,8 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
-    //docstring_options local_docstring_options(true, true, false);
+
+    //docstring_options local_docstring_options(true);
     /// Include ALL the enums you want to expose to Python
 
     class_< std::vector< std::string > >("std_vector_string")

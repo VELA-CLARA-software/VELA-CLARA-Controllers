@@ -34,11 +34,29 @@ class VCscopes// : public beamPositionMonitorController
         scopeController & physical_CLARA_INJ_Scope_Controller();
         scopeController & getScopeController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
+        void setQuiet();
+        void setVerbose();
+        void setMessage();
+        void setDebugMessage();
+
 #ifdef BUILD_DLL
 #endif // BUILD_DLL
 
     protected:
     private:
+
+        bool withEPICS;
+        bool withoutEPICS;
+        bool withVM;
+        bool withoutVM;
+        bool showDebugMessages;
+        bool showMessages;
+        VELA_ENUM::MACHINE_AREA VELA_INJ;
+        VELA_ENUM::MACHINE_AREA VELA_BA1;
+        VELA_ENUM::MACHINE_AREA VELA_BA2;
+        VELA_ENUM::MACHINE_AREA CLARA_INJ;
+        VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
+        VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
         scopeController * virtual_VELA_INJ_Scope_Controller_Obj;
         scopeController * offline_VELA_INJ_Scope_Controller_Obj;
@@ -99,7 +117,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
             .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
             .value("CLARA_INJ", VELA_ENUM::MACHINE_AREA::CLARA_INJ )
-            .value("C2V",       VELA_ENUM::MACHINE_AREA::C2V       )
+            .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
             ;
 
     enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")

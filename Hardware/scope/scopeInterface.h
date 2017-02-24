@@ -30,7 +30,8 @@ class scopeInterface : public interface
 
         scopeInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
         scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
-                        const bool* show_messages_ptr, const  bool * show_debug_messages_ptr, const bool shouldStartEPICS  );
+                        const bool* show_messages_ptr, const bool * show_debug_messages_ptr, const bool shouldStartEPICS,
+                        const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
 
         bool monitoringTraces = false;
         bool monitoringNums = false;
@@ -97,8 +98,11 @@ class scopeInterface : public interface
 
         /// called from constructor to set-up chids, montiros, etc.
 
-        void initialise( const bool shouldStartEPICS );
+        void initialise();
 
+        const bool shouldStartEPICS;
+        const bool startVM;
+        const VELA_ENUM::MACHINE_AREA machineArea;
         scopeConfigReader configReader;
 
         bool initScopeObjects();

@@ -28,11 +28,17 @@
 #include <stdlib.h>
 #include <epicsTime.h>
 
-scopeInterface::scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
-                                const bool* show_messages_ptr, const  bool * show_debug_messages_ptr, const bool shouldStartEPICS )
-: configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
+//______________________________________________________________________________
+scopeInterface::scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2, const bool* show_messages_ptr,
+                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
+                                                            const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
+interface( show_messages_ptr, show_debug_messages_ptr ),
+shouldStartEPICS( shouldStartEPICS ),
+startVM( startVirtualMachine ),
+machineArea( myMachineArea )
 {
-    initialise( shouldStartEPICS );
+    initialise();
 }
 //______________________________________________________________________________
 scopeInterface::~scopeInterface()
@@ -44,7 +50,7 @@ scopeInterface::~scopeInterface()
 //    }
 }
 //______________________________________________________________________________
-void scopeInterface::initialise( const bool shouldStartEPICS )
+void scopeInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfigFiles();
