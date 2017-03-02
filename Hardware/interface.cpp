@@ -235,7 +235,7 @@ int interface::sendToEpics2( const char * ca, const char * mess1, const char * m
     return status;
 }
 //______________________________________________________________________________
-int interface::sendToEpics2( std::string & ca, std::string & mess1, std::string & mess2 )
+int interface::sendToEpics2(const  std::string & ca,const  std::string & mess1,const  std::string & mess2 )
 {
     int status = ca_flush_io();
     SEVCHK(status, ca.c_str() );
