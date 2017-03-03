@@ -168,15 +168,15 @@ void interface::monitorIlocks( std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLo
         continuousILockMonitorStructs.back() -> iLockNumber  = it.first;
         continuousILockMonitorStructs.back() -> objName      = it.second.objName ;
 
-        /// ca_create_subscription accepts a void * user argument, we pass a poiniter to the monitor struct,
-        /// in the callback function this is cast back and the data can then be updated
+        // ca_create_subscription accepts a void * user argument, we pass a poiniter to the monitor struct,
+        // in the callback function this is cast back and the data can then be updated
 
-        /// If you pass DBF_STRING and recast as a char * in the callback you can get the state as GOOD, BAD, OPEN, CLOSED etc,
-        /// This is useful for debugging, but in general i'm just going to subscribe to the DBR_ENUM
+        // If you pass DBF_STRING and recast as a char * in the callback you can get the state as GOOD, BAD, OPEN, CLOSED etc,
+        // This is useful for debugging, but in general i'm just going to subscribe to the DBR_ENUM
 
         ca_create_subscription( it.second.CHTYPE, it.second.COUNT, it.second.CHID, it.second.MASK, interface::staticEntryILockMonitor,
                                (void*)continuousILockMonitorStructs.back(), &continuousILockMonitorStructs.back() ->EVID );
-       /// sending to epics should happen in the derived class
+       // sending to epics should happen in the derived class
     }
 }
 //______________________________________________________________________________

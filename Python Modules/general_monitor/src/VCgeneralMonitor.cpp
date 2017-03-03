@@ -222,6 +222,10 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
         message("connectPV FAILED");
         disconnectPV(pvs->id);
     }
+    else
+    {
+        ++pvMonitorMapCount;
+    }
     return r;
 }
 //______________________________________________________________________________
