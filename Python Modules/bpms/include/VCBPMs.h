@@ -18,7 +18,7 @@
 #include <boost/python/object/function.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-//#include <boost/python/docstring_options.hpp>
+#include <boost/python/docstring_options.hpp>
 
 class VCBPMs// : public beamPositionMonitorController
 {
@@ -135,7 +135,8 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
 
-    //docstring_options local_docstring_options(true);
+    docstring_options local_docstring_options(true, true, false);
+    local_docstring_options.disable_cpp_signatures();
     /// Include ALL the enums you want to expose to Python
 
     class_< std::vector< std::string > >("std_vector_string")
