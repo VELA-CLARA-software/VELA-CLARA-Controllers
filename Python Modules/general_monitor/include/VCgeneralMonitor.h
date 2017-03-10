@@ -105,7 +105,7 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         static void staticEntryMonitor(const event_handler_args args);
 
         //std::map<std::string,gmStructs::monitorStruct> continuousMonitorStructs;
-        std::vector<gmStructs::monitorStruct> continuousMonitorStructs;
+        std::vector<gmStructs::monitorStruct* > continuousMonitorStructs;
 
 
         template< class T >

@@ -130,7 +130,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
         ;
 
     boost::python::class_<pilaserController, boost::python::bases<controller>, boost::noncopyable>
-        ("pilaserController","pilaserController Doc String",boost::python::no_init)
+        ("pilaserController",
+
+         "pilaserController Documentation
+         "This module can create a Photo-Injector Laser Object (PI)"
+         ""
+
+         , boost::python::no_init)
         .def("getILockStates",    &pilaserController::getILockStates,
                                   "Return the state of interlocks as an integer. There Currently NO epics ilocks for the PI laser.")
         .def("getILockStatesStr", &pilaserController::getILockStatesStr,

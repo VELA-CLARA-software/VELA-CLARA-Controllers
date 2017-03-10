@@ -196,7 +196,7 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id )
 //______________________________________________________________________________
 std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std::string & pvType )
 {
-    std::string r = returnFail;
+    std::string returnvalue = returnFail;
     //chtype tempchtype;
     //std::string id;
     debugMessage("Getting pvType for ", pvType);
@@ -213,11 +213,11 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
             shouldCarryOn = setupMonitor(*pvs);
             if( shouldCarryOn )
             {
-                r = pvs->id;
+                returnvalue = pvs->id;
             }
         }
     }
-    if(r == returnFail)
+    if(returnvalue == returnFail)
     {
         message("connectPV FAILED");
         disconnectPV(pvs->id);
@@ -226,12 +226,13 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
     {
         ++pvMonitorMapCount;
     }
-    return r;
+    return returnvalue;
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::staticEntryMonitor(const event_handler_args args)
 {
     gmStructs::monitorStruct* ms = static_cast<gmStructs::monitorStruct *>(args.usr);
+    //std::cout<<"updateValue called " << std::endl;
     ms->gm->updateValue( ms->id, args );
 }
 //______________________________________________________________________________
@@ -459,13 +460,15 @@ bool VCgeneralMonitor::setUpChannel(gmStructs::pvStruct& pvs)
 //______________________________________________________________________________
 bool VCgeneralMonitor::setupMonitor(gmStructs::pvStruct& pvs )
 {
-    continuousMonitorStructs.push_back( gmStructs::monitorStruct() );
-    continuousMonitorStructs.back().gm   = this;
-    continuousMonitorStructs.back().id = pvs.id;
+    continuousMonitorStructs.push_back( new gmStructs::monitorStruct() );
+    continuousMonitorStructs.back() -> gm   = this;
+
+    message("setupMonitor is Setting up Monitor with id = ", pvs.id );
+    continuousMonitorStructs.back() ->id = pvs.id;
 
     ca_create_subscription(pvs.CHTYPE, pvs.COUNT,pvs.CHID, pvs.MASK,
                            VCgeneralMonitor::staticEntryMonitor,
-                           (void*)&continuousMonitorStructs.back(),
+                           (void*)continuousMonitorStructs.back(),
                            &pvs.EVID);
 
     int status = sendToEpics(ca_create_subscription_str,ca_subs_successmess,ca_subs_failuremess);
@@ -476,7 +479,7 @@ bool VCgeneralMonitor::setupMonitor(gmStructs::pvStruct& pvs )
     else if( status == ECA_NORMAL )
     {
         pvs.MonitorConnected = true;
-        debugMessage(pvs.id, " subscription successfull.");
+        debugMessage( continuousMonitorStructs.back()->id , " subscription successfull.");
 
     }
     return pvs.MonitorConnected;
@@ -890,10 +893,10 @@ gmStructs::pvStruct* VCgeneralMonitor::addToDoublePVMap()
     std::string id = doublePrefix;
     id += std::to_string(pvMonitorMapCount);
     doublePVMap[id].id = id;
-    doublePVMap[id].pvs.CHTYPE = DBR_DOUBLE;
-    doublePVMap[id].pvs.id = id;
-    debugMessage("connectPV Passed a DBR_DOUBLE. Entry with id =  ",id, " created");
-    return &doublePVMap[id].pvs;
+    doublePVMap.at(id).pvs.CHTYPE = DBR_DOUBLE;
+    doublePVMap.at(id).pvs.id = id;
+    debugMessage("connectPV Passed a DBR_DOUBLE. Entry with id =  ",id, " created, doublemapo.size = ", doublePVMap.size() );
+    return &doublePVMap.at(id).pvs;
 }
 //______________________________________________________________________________
 gmStructs::pvStruct* VCgeneralMonitor::addToCharPVMap()
