@@ -10,7 +10,13 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
-
+#include <boost/python/docstring_options.hpp>
+#include <boost/python/operators.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/scope.hpp>
+#include <boost/python/manage_new_object.hpp>
 
 class VCpilaser
 {
@@ -37,9 +43,9 @@ class VCpilaser
     private:
 
      /// we just need to decide good names for these things...
-        pilaserController * virtual_pilaser_Controller_Obj ;
-        pilaserController * physical_pilaser_Controller_Obj;
-        pilaserController * offline_pilaser_Controller_Obj ;
+        pilaserController* virtual_pilaser_Controller_Obj ;
+        pilaserController* physical_pilaser_Controller_Obj;
+        pilaserController* offline_pilaser_Controller_Obj ;
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
@@ -79,6 +85,10 @@ bool(pilaserController::*setIntensity_2)(int) = &pilaserController::setIntensity
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
 {
+    //using namespace boost::python;
+    docstring_options doc_options(true, false, false);
+    doc_options.disable_cpp_signatures();
+
     /// Things that you want to use in python muct be exposed:
     /// containers
     class_<std::vector< std::string > >("std_vector_string")
@@ -92,7 +102,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
         .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
         .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
         ;
-    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE: a named integer giving the")
         .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
         .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
         .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
@@ -121,13 +131,21 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
 
     boost::python::class_<pilaserController, boost::python::bases<controller>, boost::noncopyable>
         ("pilaserController","pilaserController Doc String",boost::python::no_init)
-        .def("getILockStates",          &pilaserController::getILockStates        )
-        .def("get_CA_PEND_IO_TIMEOUT",  &pilaserController::get_CA_PEND_IO_TIMEOUT   )
-        .def("set_CA_PEND_IO_TIMEOUT",  &pilaserController::set_CA_PEND_IO_TIMEOUT   )
-        .def("getHpos",  &pilaserController::getHpos   )
-        .def("getVpos",  &pilaserController::getVpos   )
-        .def("getIntensity",  &pilaserController::getIntensity   )
-        .def("getIntensity",  &pilaserController::getIntensity   )
+        .def("getILockStates",    &pilaserController::getILockStates,
+                                  "Return the state of interlocks as an integer. There Currently NO epics ilocks for the PI laser.")
+        .def("getILockStatesStr", &pilaserController::getILockStatesStr,
+                                  "Return state of interlocks as a stringr. There Currently NO epics ilocks for the PI laser.")
+        .def("get_CA_PEND_IO_TIMEOUT",  &pilaserController::get_CA_PEND_IO_TIMEOUT,
+                                        "Return the current waiting time [seconds] when sending commands to EPICS.")
+        .def("set_CA_PEND_IO_TIMEOUT",  &pilaserController::set_CA_PEND_IO_TIMEOUT,
+                                        (boost::python::arg("time"),
+                                        "Set a new waiting time [seconds] when sending commands to EPICS"))
+        .def("getHpos", &pilaserController::getHpos,
+                        "returns the horizontal position of the laser on the cathode [units etc?]." )
+        .def("getVpos", &pilaserController::getVpos,
+                        "returns the vertical position of the laser on the cathode [units etc?]."   )
+        .def("getIntensity", &pilaserController::getIntensity,
+                             "returns the intensity the laser [units etc?]."                   )
         .def("getPILObjConstRef",  &pilaserController::getPILObjConstRef,
                                    return_value_policy<reference_existing_object>())
         .def("setHpos",  setHpos_1 )

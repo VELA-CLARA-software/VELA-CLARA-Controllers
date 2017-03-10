@@ -166,7 +166,7 @@ void pilaserConfigReader::addToPVStruct(std::vector< pilaserStructs::pvStruct > 
     pvs.back().pvSuffix    = pvSuffix;
     // we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
     // so store a ref to which vector to update with that info. (this does make sense)
-    lastPVStruct = &pvs;
+    //lastPVStruct = &pvs;
     debugMessage("Added ", pvs.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvs.back().pvType) );
 }
 //______________________________________________________________________________

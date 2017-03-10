@@ -4,14 +4,14 @@
 	<iostream>
 	<sstream>
 
-1484820945 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1489142105 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"interface.h"
 	"baseObject.h"
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1483526951 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1488470777 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -31,7 +31,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1486661318 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1489058621 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
@@ -40,7 +40,7 @@
 	"baseObject.h"
 	<time.h>
 
-1486661318 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+1487872406 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<sstream>
@@ -50,14 +50,14 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1487247863 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+1487872406 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
 	<vector>
 	<cadef.h>
 
-1487350036 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1487872406 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -101,7 +101,7 @@
 	<map>
 	<cadef.h>
 
-1487600872 d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.h
+1487872406 d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -158,7 +158,7 @@
 	"configReader.h"
 	"magnetStructs.h"
 
-1487601022 source:d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.cpp
+1489058655 source:d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.cpp
 	"pilaserConfigReader.h"
 	"pilaserStructs.h"
 	<iostream>
@@ -180,7 +180,7 @@
 	"VCpilaser.h"
 	<iostream>
 
-1487605532 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
+1489142169 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
 	<string>
 	"pilaserController.h"
 	<boost/python/detail/wrap_python.hpp>
@@ -188,4 +188,11 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
 

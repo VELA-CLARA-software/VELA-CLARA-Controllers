@@ -21,21 +21,21 @@
 
 
 #ifdef BUILD_DLL
-#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+//#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 /// ermmm... https://wiki.python.org/moin/boost.python/HowTo#Multithreading_Support_for_my_function
 /// never got this to work
-class ScopedGILRelease
-{
-// C & D -------------------------------------------------------------------------------------------
-public:
-    inline ScopedGILRelease() { m_thread_state = PyEval_SaveThread(); }
-    inline ~ScopedGILRelease() { PyEval_RestoreThread(m_thread_state);m_thread_state = NULL;}
-private:
-    PyThreadState * m_thread_state;
-};
+//class ScopedGILRelease
+//{
+//// C & D -------------------------------------------------------------------------------------------
+//public:
+//    inline ScopedGILRelease() { m_thread_state = PyEval_SaveThread(); }
+//    inline ~ScopedGILRelease() { PyEval_RestoreThread(m_thread_state);m_thread_state = NULL;}
+//private:
+//    PyThreadState * m_thread_state;
+//};
 #endif
 
 class controller : public baseObject

@@ -44,19 +44,19 @@ void magnetController::initialise()
         message("magnetController instantiation success.");
 }
 //______________________________________________________________________________
-bool magnetController::setSI( const std::vector< std::string > & magNames, const std::vector< double > & values)
+bool magnetController::setSI(const std::vector< std::string > & magNames, const std::vector< double > & values)
 {
     return localInterface.setSI( magNames, values );
 }
 //______________________________________________________________________________
-bool magnetController::setSI( const std::string & magNames, const double values)
+bool magnetController::setSI(const std::string & magNames, const double values)
 {
     return localInterface.setSI( magNames, values );
 }
 //______________________________________________________________________________
-bool magnetController::setSI( const std::string & magName, const double value, const double tolerance, const size_t timeOUT )
+bool magnetController::setSI(const std::string & magName, const double value, const double tolerance, const size_t timeOUT )
 {
-    return localInterface.setSI( magName, value, tolerance, timeOUT );
+    return localInterface.setSI(magName, value, tolerance, timeOUT );
 }
 //______________________________________________________________________________
 std::vector< std::string >  magnetController::setSI( const std::vector< std::string > & magNames, const std::vector< double > & values, const std::vector< double > & tolerances, const size_t timeOUT )

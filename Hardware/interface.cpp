@@ -219,7 +219,7 @@ int interface::sendToEpics( const char * ca, const char * mess1, const char * me
     return status;
 }
 //______________________________________________________________________________
-int interface::sendToEpics( std::string & ca, std::string & mess1, std::string & mess2 )
+int interface::sendToEpics(const  std::string & ca,const  std::string & mess1,const  std::string & mess2 )
 {
     int status = ca_pend_io( CA_PEND_IO_TIMEOUT );
     SEVCHK(status, ca.c_str() );
