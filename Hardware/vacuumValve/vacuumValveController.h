@@ -32,7 +32,9 @@ class vacuumValveController : public controller
         /// we have overloaded constructors to specify config-file location
 
         vacuumValveController();// const bool show_messages = true, const bool show_debug_messages = true );
-        vacuumValveController( const std::string configFileLocation, const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS );
+        vacuumValveController( const std::string & configFileLocation, const bool show_messages,
+                                       const bool show_debug_messages, const bool shouldStartEPICS,
+                                       const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~vacuumValveController();
 
         void openVacValve( const std::string & vacValveName );
@@ -97,6 +99,7 @@ class vacuumValveController : public controller
         vacuumValveInterface localInterface;
 
         bool shouldStartEPICS;
+        const VELA_ENUM::MACHINE_AREA machineArea;
 
         std::vector< std::string > vacValveNames;
 };

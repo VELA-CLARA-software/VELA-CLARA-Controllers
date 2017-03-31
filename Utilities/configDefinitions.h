@@ -33,8 +33,6 @@ namespace UTL
 
     const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorpilaserShutter.config";
-    const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
-    const std::string VELA_VALVE_CONFIG                = "velaVacuumValve.config";
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
     const std::string VELA_INJ_BPM_CONFIG              = "velaINJBeamPositionMonitors.config";
     const std::string VELA_BA1_BPM_CONFIG              = "velaBA1BeamPositionMonitors.config";
@@ -44,6 +42,8 @@ namespace UTL
 /// Qscope
     const std::string VELA_SCOPE_CONFIG                = "velaQScope.config";
     const std::string VELA_SCOPE_TRACE_CONFIG          = "velaQScopeTrace.config";
+    const std::string CLARA_SCOPE_CONFIG               = "claraQScope.config";
+    const std::string CLARA_SCOPE_TRACE_CONFIG         = "claraQScopeTrace.config";
 /// VELA Gun
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
     const std::string VELA_RF_GUN_MOD_CONFIG           = "velaRFGunModulator.config";
@@ -69,6 +69,15 @@ namespace UTL
 /// Cameras
     const std::string VELA_CAMERA_CONFIG               = "velaCamera.config";
     const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
+/// Vacuum
+    const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
+    const std::string VELA_INJ_VALVE_CONFIG            = "velaINJVacuumValve.config";
+    const std::string VELA_BA1_VALVE_CONFIG            = "velaBA1VacuumValve.config";
+    const std::string VELA_BA2_VALVE_CONFIG            = "velaBA2VacuumValve.config";
+    const std::string CLARA_INJ_VALVE_CONFIG           = "claraINJVacuumValve.config";
+    const std::string CLARA_2_VELA_VALVE_CONFIG        = "clara2VELAVacuumValve.config";
+    const std::string CLARA_S01_VALVE_CONFIG           = "claraS01VacuumValve.config";
+    const std::string CLARA_S02_VALVE_CONFIG           = "claraS02VacuumValve.config";
     /// These are the keywords used in hardware config files
 
     /// General Keywords

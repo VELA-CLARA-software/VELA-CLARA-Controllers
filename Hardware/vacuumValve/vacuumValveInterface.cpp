@@ -22,10 +22,15 @@
 #include <thread>
 
 vacuumValveInterface::vacuumValveInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
-                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS ):
-    configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
+                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
+                                                            const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
+interface( show_messages_ptr, show_debug_messages_ptr ),
+shouldStartEPICS( shouldStartEPICS ),
+startVM( startVirtualMachine ),
+machineArea( myMachineArea )
 {
-    initialise( shouldStartEPICS );
+    initialise();
 }
 ////______________________________________________________________________________
 //vacuumValveInterface::vacuumValveInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
@@ -36,14 +41,10 @@ vacuumValveInterface::vacuumValveInterface( const std::string & configFileLocati
 //______________________________________________________________________________
 vacuumValveInterface::~vacuumValveInterface()
 {
-    for( auto it : continuousMonitorStructs )
-    {
         debugMessage("delete vacuumValveInterface continuousMonitorStructs entry.");
-        delete it;
-    }
 }
 //______________________________________________________________________________
-void vacuumValveInterface::initialise( const bool shouldStartEPICS )
+void vacuumValveInterface::initialise( )
 {
     /// The config file reader
 
@@ -91,7 +92,9 @@ bool vacuumValveInterface::initVacValveObjects()
 {
     const std::vector< vacuumValveStructs::vacValveObject > vacValveObjs = configReader.getVacValveObjects();
     for( auto const & it : vacValveObjs )
+    {
         allVacValveData[ it.name ] = it;
+    }
     return true;
 }
 //______________________________________________________________________________
@@ -124,6 +127,8 @@ void vacuumValveInterface::initVacValveChids()
         }
         message("");
     }
+    else if ( status == ECA_NORMAL )
+        allChidsInitialised = true;
 }
 //______________________________________________________________________________
 void vacuumValveInterface::addChannel( const std::string & pvRoot, vacuumValveStructs::pvStruct & pv )
@@ -147,9 +152,8 @@ void vacuumValveInterface::monitorVacValves()
             /// http://stackoverflow.com/questions/5914422/proper-way-to-initialize-c-structs
             /// init structs 'correctly'
 
-            continuousMonitorStructs.push_back( new vacuumValveStructs::monitorStruct() );
-            continuousMonitorStructs.back() -> vacValveObj   = &( it.second );
-            continuousMonitorStructs.back() -> interface = this;
+            addValveObjectMonitors( it2.second, it.second );
+            std::cout<<it.second.name<<std::endl;
 
             /// For the vacValve there is only 1 monitor type
             /// maybe it.second.pvMonStructs does not need to be a map???, pvComStructs probably does though...
@@ -162,47 +166,106 @@ void vacuumValveInterface::monitorVacValves()
             /// in the callback function this is cast back and the data can then be updated
             /// void * usrArg = reinterpret_cast< void *>( continuousMonitorStructs.back() );
 
-            ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID, it2.second.MASK,  vacuumValveInterface::staticEntryVacValveMonitor, (void*)continuousMonitorStructs.back(), 0); // &continuousMonitorStructs.back().EventID );
+            ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID, it2.second.MASK,
+                                    vacuumValveInterface::staticEntryrMonitor, (void*)continuousMonitorStructs.back(), 0 );//&it2.second.EVID ); // &continuousMonitorStructs.back().EventID );
         }
     }
-    sendToEpics( "ca_create_subscription", "Subscribed to VacValve Monitors", "!!TIMEOUT!! Subscription to VacValve monitors failed" );
+    int status = sendToEpics( "ca_create_subscription", "Subscribed to VacValve Monitors", "!!TIMEOUT!! Subscription to VacValve monitors failed" );
+    if ( status == ECA_NORMAL )
+        allMonitorsStarted = true;
 }
 //______________________________________________________________________________
-void vacuumValveInterface::staticEntryVacValveMonitor( const event_handler_args args )
+void vacuumValveInterface::addValveObjectMonitors( vacuumValveStructs::pvStruct & pvs,  vacuumValveStructs::vacValveObject & obj )
 {
-    /// recast args.usr ( a void * ) to a monitor struct pointer, then dereference
-
-    vacuumValveStructs::monitorStruct ms = * reinterpret_cast<vacuumValveStructs::monitorStruct*>(args.usr);
-
-    /// Not sure how to decode these apart from trial and error
-    /// you can test with DBF_STRING as the callback type
-
-    if( *(unsigned short*)args.dbr == 0 )
-        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_CLOSED;
-    else if( *(unsigned short*)args.dbr == 1 )
-        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_OPEN;
-    else
-        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
-
-    /// make debug messages easier to understand by using ENUM_TO_STRING
-    ms.interface -> debugMessage( ms.vacValveObj -> name,  " new state = ", ENUM_TO_STRING(ms.vacValveObj -> vacValveState ));
-    /// If subscribed to DBF_STRING use this to get the message
-    //char * val = (char *)args.dbr;
-    /// now we can switch based on the monitor type and then update the correct part of the vacValve object data using val
-    /// For the vacValve this is basically redundant, there is only one monitor the "Sta"
-    /// (apart from interlocks, these are handled in the bas class)
-//    switch( lms.monType )
-//    {
-//        case vacuumValveStructs::Sta:
-//                ....
-//        case SomeOtherPVType:
-//                ....
-//    }
+    continuousMonitorStructs.push_back( new vacuumValveStructs::monitorStruct() );
+    continuousMonitorStructs.back() -> interface = this;
+    continuousMonitorStructs.back() -> monType   = pvs.pvType;
+    continuousMonitorStructs.back() -> CHTYPE    = pvs.CHTYPE;
+    continuousMonitorStructs.back() -> obj       = (void*)&obj;
 }
+//______________________________________________________________________________
+void vacuumValveInterface::staticEntryrMonitor( const event_handler_args args )
+{
+    vacuumValveStructs::monitorStruct * ms = static_cast< vacuumValveStructs::monitorStruct *> ( args.usr );
+    switch( ms -> monType )
+    {
+        case vacuumValveStructs::VAC_VALVE_PV_TYPE::Sta:
+            {
+                ms->interface->getValveState( ms, *(unsigned short*)args.dbr );
+                break;
+            }
+        default:
+            {
+                break;
+            }
+    }
+}
+//______________________________________________________________________________
+void vacuumValveInterface::getValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args )
+{
+    vacuumValveStructs::vacValveObject* obj = reinterpret_cast< vacuumValveStructs::vacValveObject* > (ms->obj);
+    switch( args )
+    {
+        case 0:
+            {
+                obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_CLOSED;
+                break;
+            }
+        case 1:
+            {
+                obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_OPEN;
+                break;
+            }
+        default:
+            {
+                obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+            }
+    }
+    ms->interface->debugMessage( obj->name ," vacValveState = ", ENUM_TO_STRING(obj->vacValveState) );
+}
+////______________________________________________________________________________
+//void vacuumValveInterface::staticEntryVacValveMonitor( const event_handler_args args )
+//{
+//    /// recast args.usr ( a void * ) to a monitor struct pointer, then dereference
+//
+//    vacuumValveStructs::monitorStruct ms = * reinterpret_cast<vacuumValveStructs::monitorStruct*>(args.usr);
+//
+//    /// Not sure how to decode these apart from trial and error
+//    /// you can test with DBF_STRING as the callback type
+//
+//    if( *(unsigned short*)args.dbr == 0 )
+//    {
+//        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_CLOSED;
+//    }
+//    else if( *(unsigned short*)args.dbr == 1 )
+//    {
+//        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_OPEN;
+//    }
+//    else
+//    {
+//        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+//    }
+//
+//    /// make debug messages easier to understand by using ENUM_TO_STRING
+//    ms.interface -> debugMessage( ms.vacValveObj -> name,  " new state = ", ENUM_TO_STRING(ms.vacValveObj -> vacValveState ));
+//    /// If subscribed to DBF_STRING use this to get the message
+//    //char * val = (char *)args.dbr;
+//    /// now we can switch based on the monitor type and then update the correct part of the vacValve object data using val
+//    /// For the vacValve this is basically redundant, there is only one monitor the "Sta"
+//    /// (apart from interlocks, these are handled in the bas class)
+////    switch( lms.monType )
+////    {
+////        case vacuumValveStructs::Sta:
+////                ....
+////        case SomeOtherPVType:
+////                ....
+////    }
+//}
 //______________________________________________________________________________
 void vacuumValveInterface::openVacValve( const std::string & vacValve )
 {
-    if( allVacValveData.count( vacValve ) )
+//    if( allVacValveData.count( vacValve ) )
+//    {
         if( isClosed( vacValve ) )
         {
             chtype & cht = allVacValveData[ vacValve ].pvComStructs[ vacuumValveStructs::VAC_VALVE_PV_TYPE::On ].CHTYPE;
@@ -211,11 +274,13 @@ void vacuumValveInterface::openVacValve( const std::string & vacValve )
             if( status == ECA_NORMAL )
                 int status2 = caput(cht, chi, EPICS_SEND, "", "!!TIMEOUT!! FAILED TO SEND VAC VALVE OPEN" );
         }
+//    }
 }
 //______________________________________________________________________________
 void vacuumValveInterface::closeVacValve( const std::string & vacValve )
 {
-    if( allVacValveData.count( vacValve ) )
+//    if( allVacValveData.count( vacValve ) )
+//    {
         if( isOpen( vacValve ) )
         {
             chtype & cht = allVacValveData[ vacValve ].pvComStructs[ vacuumValveStructs::VAC_VALVE_PV_TYPE::Off ].CHTYPE;
@@ -224,14 +289,29 @@ void vacuumValveInterface::closeVacValve( const std::string & vacValve )
             if( status == ECA_NORMAL )
                 int status2 = caput( cht, chi, EPICS_SEND, "", "!!TIMEOUT!! FAILED TO EPICS_SEND VAC VALVE CLOSE" );
         }
+//    }
 }
 //______________________________________________________________________________
 bool vacuumValveInterface::isOpen( const std::string & vacValve )
 {
     bool ret = false;
-    if( allVacValveData.count( vacValve ) )
+//    if( allVacValveData.count( vacValve ) )
+//    {
         if( allVacValveData[ vacValve ].vacValveState == VELA_ENUM::VALVE_STATE::VALVE_OPEN )
+        {
             ret = true;
+            message("Valve is open");
+        }
+        else
+        {
+            message("Valve is closed");
+        }
+//    }
+//
+//    else
+//    {
+//        message("Shit off");
+//    }
 
     if( ret )
         debugMessage( vacValve, " is open");
@@ -244,9 +324,23 @@ bool vacuumValveInterface::isOpen( const std::string & vacValve )
 bool vacuumValveInterface::isClosed( const std::string & vacValve )
 {
     bool ret = false;
-    if( allVacValveData.count( vacValve ) )
+//    if( allVacValveData.count( vacValve ) )
+//    {
         if( allVacValveData[ vacValve ].vacValveState == VELA_ENUM::VALVE_STATE::VALVE_CLOSED )
+        {
             ret = true;
+            message("Valve is closed");
+        }
+        else
+        {
+            message("Valve is open");
+        }
+//    }
+//
+//    else
+//    {
+//        message("Shit off");
+//    }
 
     if( ret )
         debugMessage( vacValve, " is closed");

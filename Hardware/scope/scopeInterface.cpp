@@ -32,7 +32,7 @@
 scopeInterface::scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2, const bool* show_messages_ptr,
                                                             const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
                                                             const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
-configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
+configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine),
 interface( show_messages_ptr, show_debug_messages_ptr ),
 shouldStartEPICS( shouldStartEPICS ),
 startVM( startVirtualMachine ),
@@ -837,6 +837,51 @@ std::vector< double > scopeInterface::getAvgNoise( const std::string & name, sco
     }
 //    std::cout << noiseTotal << std::endl;
     return noiseTotal;
+}
+//______________________________________________________________________________
+std::vector< std::vector< double > > scopeInterface::getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
+{
+    /// Here we take the mean of a part of the scope trace which has no beam on it
+    /// for noise subtraction - this is potentially stupid as the region of interest
+    /// may change with time. If this function isn't behaving sensibly then it is
+    /// possible that the scope hasn't been set up properly for taking this measurement
+
+    std::vector< std::vector< double > > vecPart( scopeObj.traceObjects.at( name ).numShots );
+
+    int i = 0;
+    for( auto && it : scopeObj.traceObjects.at( name ).traceData.at( pvType ) )
+    {
+        std::vector< double >::const_iterator vec1 = it.begin() + part1;
+        std::vector< double >::const_iterator vec2 = it.begin() + part2;
+        std::vector< double > newVec( vec1, vec2 );
+        vecPart.at( i ).insert( vecPart.at( i ).begin(), newVec.begin(), newVec.end() );
+        i++;
+    }
+
+    return vecPart;
+}
+//______________________________________________________________________________
+std::vector< double > scopeInterface::getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
+{
+    double sum_of_elems;
+    std::vector< double > areaElements;
+    std::vector< std::vector< double > > vecPart = getPartOfTrace( name, pvType, part1, part2 );
+
+    for( auto && it : vecPart )
+    {
+        double sum_of_elems = 0.0;
+        std::vector< double > curveAreas;
+        for( auto && it2 : it )
+        {
+//            std::cout << it2 << std::endl;
+            double curveElement = ( it2 * scopeObj.traceObjects.at( name ).timebase ) / ( part2 - part1 );
+            curveAreas.push_back( curveElement );
+        }
+        sum_of_elems = std::accumulate( curveAreas.begin(), curveAreas.end(), 0.0 );
+        areaElements.push_back( sum_of_elems );
+    }
+
+    return areaElements;
 }
 //______________________________________________________________________________
 double scopeInterface::getWCMQ()

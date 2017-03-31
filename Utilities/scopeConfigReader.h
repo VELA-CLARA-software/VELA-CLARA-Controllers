@@ -21,7 +21,8 @@ class scopeConfigReader : public configReader
     public:
         scopeConfigReader();// const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
         scopeConfigReader( const std::string & scopeConf1, const std::string & scopeConf2,
-                           const bool * showMessages,    const bool * showDebugMessages );
+                           const bool * showMessages,    const bool * showDebugMessages,
+                           const bool startVirtualMachine );
         ~scopeConfigReader();
 
         bool readConfigFiles( );
@@ -40,6 +41,7 @@ class scopeConfigReader : public configReader
 
         const std::string & scopeConf1;
         const std::string & scopeConf2;
+        const bool usingVirtualMachine;
 
         /// These are read into vectors as you can use the .back() member function, which i find handy.
         /// once all the data is read in we can construct the final map of objects

@@ -66,6 +66,9 @@ class scopeController : public controller
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< std::string > getStrTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< std::vector< double > > getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+
         void monitorTracesForNShots( size_t N );
         void monitorNumsForNShots( size_t N );
         std::vector< std::string > getScopeNames();

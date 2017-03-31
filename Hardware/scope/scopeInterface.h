@@ -62,6 +62,8 @@ class scopeInterface : public interface
         std::vector< double > getMaxOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< std::vector< double > > getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
+        std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< std::string > getStrTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         void updateTrace( scopeStructs::monitorStruct * ms, const event_handler_args args );
         void updateValue( scopeStructs::monitorStruct * ms, const event_handler_args args );

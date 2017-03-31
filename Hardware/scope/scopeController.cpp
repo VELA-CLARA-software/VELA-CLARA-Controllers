@@ -93,6 +93,16 @@ std::vector< double > scopeController::getScopeNums( const std::string & name, s
     return localInterface.getScopeNums( name, pvType );
 }
 //______________________________________________________________________________
+std::vector< std::vector< double > > scopeController::getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+{
+    return localInterface.getPartOfTrace( name, pvType, part1, part2 );
+}
+//______________________________________________________________________________
+std::vector< double > scopeController::getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+{
+    return localInterface.getAreaUnderPartOfTrace( name, pvType, part1, part2 );
+}
+//______________________________________________________________________________
 std::vector< double > scopeController::getScopeP1Vec( const std::string & name )
 {
     return localInterface.getScopeP1Vec( name );

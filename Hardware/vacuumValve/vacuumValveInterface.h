@@ -29,8 +29,9 @@ class vacuumValveInterface : public interface
         /// Not a singleton, two construction methods....
 
         vacuumValveInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        vacuumValveInterface( const std::string & configFile_Location, const bool * show_messages_ptr,
-                              const bool * show_debug_messages_ptr,    const bool shouldStartEPICS );
+        vacuumValveInterface( const std::string & configFileLocation, const bool * show_messages_ptr,
+                                      const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
+                                      const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
 
         ~vacuumValveInterface();
 
@@ -45,6 +46,7 @@ class vacuumValveInterface : public interface
         bool closeAndWait( const std::string & name, const time_t waitTime );
         bool openAndWait( const std::string & name, const time_t waitTime );
 
+        void getValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args );
 
         vacuumValveStructs::vacValveObject getVacValveObject( const std::string & vacValveName );
 
@@ -62,7 +64,10 @@ class vacuumValveInterface : public interface
 
         /// called from constructor to set-up chids, montiros, etc.
 
-        void initialise( const bool shouldStartEPICS );
+        void initialise();
+        const bool shouldStartEPICS;
+        const bool startVM;
+        const VELA_ENUM::MACHINE_AREA machineArea;
 
         vacuumValveConfigReader configReader;
 
@@ -70,6 +75,7 @@ class vacuumValveInterface : public interface
         void initVacValveChids();
         //void addChannel( std::map< std::string, vacuumValveStructs::vacValveObject >::iterator & it1, std::map< vacuumValveStructs::VAC_VALVE_PV_TYPE, std::string >::const_iterator & it2 );
         void addChannel( const std::string & pvRoot, vacuumValveStructs::pvStruct & pv );
+        void addValveObjectMonitors( vacuumValveStructs::pvStruct & pvs,  vacuumValveStructs::vacValveObject & obj );
 
         void monitorVacValves();
 
@@ -82,7 +88,7 @@ class vacuumValveInterface : public interface
 
         /// static function that can be called back from epics to update values
 
-        static void staticEntryVacValveMonitor( const event_handler_args args );
+        static void staticEntryrMonitor( const event_handler_args args );
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern

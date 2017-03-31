@@ -28,12 +28,13 @@ namespace vacuumValveStructs
 
     struct monitorStruct
     {
-//        PIL_SHUTTER_PV_TYPE monType;
-        vacValveObject * vacValveObj;
-        vacuumValveInterface * interface;
-#ifndef __CINT__
-        evid EventID;
-#endif
+        VAC_VALVE_PV_TYPE     monType;
+        vacValveObject*       vacValveObj;
+        vacuumValveInterface* interface;
+        std::string           objName;
+        chtype                CHTYPE;
+        void*                 obj;
+        evid*                 EVID;
     };
 
     struct pvStruct

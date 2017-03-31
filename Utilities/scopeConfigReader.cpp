@@ -12,9 +12,12 @@
 #include <algorithm>
 #include <ctype.h>
 
-scopeConfigReader::scopeConfigReader( const std::string & scopeConf1, const std::string & scopeConf2, const bool *show_messages_ptr, const bool *show_debug_messages_ptr ):
+scopeConfigReader::scopeConfigReader( const std::string & scopeConf1, const std::string & scopeConf2,
+                                      const bool *show_messages_ptr, const bool *show_debug_messages_ptr,
+                                      const bool startVirtualMachine ):
 scopeConf1(scopeConf1), scopeConf2(scopeConf2),
-configReader( show_messages_ptr, show_debug_messages_ptr )
+configReader( show_messages_ptr, show_debug_messages_ptr ),
+usingVirtualMachine(startVirtualMachine)
 {
 
 }
@@ -134,7 +137,10 @@ void scopeConfigReader::addToScopeNumObjectsV1( const std::vector<std::string> &
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
-        scopeNumObjects.back().pvRoot = keyVal[ 1 ];
+        if( usingVirtualMachine )
+            scopeNumObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
+        else
+            scopeNumObjects.back().pvRoot = keyVal[ 1 ];
     }
 
 //    else if( keyVal[0] == UTL::TIMEBASE )
@@ -159,7 +165,10 @@ void scopeConfigReader::addToScopeTraceDataObjectsV1( const std::vector<std::str
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
-        scopeTraceDataObjects.back().pvRoot = keyVal[ 1 ];
+        if( usingVirtualMachine )
+            scopeTraceDataObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
+        else
+            scopeTraceDataObjects.back().pvRoot = keyVal[ 1 ];
     }
 
     else if( keyVal[0] == UTL::TIMEBASE )

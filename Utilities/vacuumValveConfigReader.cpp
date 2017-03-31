@@ -11,9 +11,11 @@
 #include <algorithm>
 #include <ctype.h>
 //______________________________________________________________________________
-vacuumValveConfigReader::vacuumValveConfigReader( const std::string & vacValveConf, const bool*show_messages_ptr, const bool*show_debug_messages_ptr ):
+vacuumValveConfigReader::vacuumValveConfigReader( const std::string & vacValveConf, const bool*show_messages_ptr,
+                                                                  const bool*show_debug_messages_ptr, const bool startVirtualMachine ):
 vacValveConf( vacValveConf ),
-configReader( show_messages_ptr, show_debug_messages_ptr )
+configReader( show_messages_ptr, show_debug_messages_ptr ),
+usingVirtualMachine(startVirtualMachine)
 {
 
 }
