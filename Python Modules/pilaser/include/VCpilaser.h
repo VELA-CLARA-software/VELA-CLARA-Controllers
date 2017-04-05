@@ -110,12 +110,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
     // pilaser object struct to be exposed, used when returning a pilaser reference
     boost::python::class_<pilaserStructs::pilaserObject,boost::noncopyable>
         ("pilaserObject","pilaserObject Doc String", boost::python::no_init)
-        .def_readonly("name",      &pilaserStructs::pilaserObject::name)
-        .def_readonly("pvRoot",    &pilaserStructs::pilaserObject::pvRoot)
-        .def_readonly("hPos",      &pilaserStructs::pilaserObject::hPos)
-        .def_readonly("vPos",      &pilaserStructs::pilaserObject::vPos)
-        .def_readonly("intensity", &pilaserStructs::pilaserObject::intensity)
-        .def_readonly("numIlocks", &pilaserStructs::pilaserObject::numIlocks)
+        .def_readonly("name",      &pilaserStructs::pilaserObject::name,
+                      "The name of the PI laser object")
+        .def_readonly("pvRoot",    &pilaserStructs::pilaserObject::pvRoot,
+                      "The PV root name, prefixed to all PVs")
+        .def_readonly("hPos",      &pilaserStructs::pilaserObject::hPos,
+                      "The horizontal position of the laser on the cathode [mm hopefully]")
+        .def_readonly("vPos",      &pilaserStructs::pilaserObject::vPos,
+                      "The vertical position of the laser on the cathode [mm hopefully]
+                      )
+        .def_readonly("intensity", &pilaserStructs::pilaserObject::intensity,
+                      "The intensity of the laser on the cathode [mJ ??]")
+//        .def_readonly("numIlocks", &pilaserStructs::pilaserObject::numIlocks,
+//                      "The number of standard interlocks on the laser system")
         ;
     // Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
@@ -132,9 +139,31 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
     boost::python::class_<pilaserController, boost::python::bases<controller>, boost::noncopyable>
         ("pilaserController",
 
-         "pilaserController Documentation
-         "This module can create a Photo-Injector Laser Object (PI)"
-         ""
+ "<=================================================>\n"
+ " _____ _____   _                                   \n"
+ "|  __ \\_   _| | |                                 \n"
+ "| |__) || |   | |     __ _ ___  ___ _ __           \n"
+ "|  ___/ | |   | |    / _` / __|/ _ \\ '__|         \n"
+ "| |    _| |_  | |___| (_| \\__ \\  __/ |           \n"
+ "_|___|_____| |______\\__,_|___/\\___|_|            \n"
+ " / ____|          | |           | | |              \n"
+ "| |     ___  _ __ | |_ _ __ ___ | | | ___ _ __     \n"
+ "| |    / _ \\| '_ \\| __| '__/ _ \\| | |/ _ \\ '__|\n"
+ "| |___| (_) | | | | |_| | | (_) | | |  __/ |       \n"
+ " \\_____\\___/|_| |_|\\__|_|  \\___/|_|_|\\___|_|  \n"
+ "| |  | |    | |                                    \n"
+ "| |__| | ___| |_ __        DOCUMENTATION           \n"
+ "|  __  |/ _ \\ | '_ \\           &                 \n"
+ "| |  | |  __/ | |_) |          HINTS               \n"
+ "|_|  |_|\\___|_| .__/                              \n"
+ "              | |      Duncan Scott March 2017     \n"
+ "              |_|                                  \n"
+ "\n"
+ "=> The object to control the PhotoInjector Laser   \n"
+ "\n"
+ "=> Use the set and get methods for values and getPILObjConstRef to return a reference to the PILaser data Object"
+ "\n"
+ "<=================================================>\n"
 
          , boost::python::no_init)
         .def("getILockStates",    &pilaserController::getILockStates,
@@ -147,33 +176,42 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
                                         (boost::python::arg("time"),
                                         "Set a new waiting time [seconds] when sending commands to EPICS"))
         .def("getHpos", &pilaserController::getHpos,
-                        "returns the horizontal position of the laser on the cathode [units etc?]." )
+                            "returns the horizontal position of the laser on the cathode [units etc?]." )
         .def("getVpos", &pilaserController::getVpos,
-                        "returns the vertical position of the laser on the cathode [units etc?]."   )
+                            "returns the vertical position of the laser on the cathode [units etc?]."   )
         .def("getIntensity", &pilaserController::getIntensity,
-                             "returns the intensity the laser [units etc?]."                   )
+                            "returns the intensity the laser [units etc?]."                   )
         .def("getPILObjConstRef",  &pilaserController::getPILObjConstRef,
-                                   return_value_policy<reference_existing_object>())
-        .def("setHpos",  setHpos_1 )
-        .def("setHpos",  setHpos_2 )
-        .def("setVpos",  setVpos_1 )
-        .def("setVpos",  setVpos_2 )
-        .def("setIntensity",  setIntensity_1 )
-        .def("setIntensity",  setIntensity_2 )
+                                   return_value_policy<reference_existing_object>(),
+                            "returns a reference to a PI laser object, (identified by its name)."      )
+        .def("setHpos",  setHpos_1,
+                            "set the horizontal position of the laser beam on the cathode."  )
+        .def("setHpos",  setHpos_2,
+             "set the horizontal position of the laser beam on the cathode."  )
+        .def("setVpos",  setVpos_1,"set the vertical position of the laser beam on the cathode." )
+        .def("setVpos",  setVpos_2,"set the vertical position of the laser beam on the cathode."  )
+        .def("setIntensity",  setIntensity_1,"set the intensity of the laser beam on the cathode.")
+        .def("setIntensity",  setIntensity_2,"set the intensity of the laser beam on the cathode.")
         ;
-
     /// The main class that creates all the controller obejcts
         boost::python::class_<VCpilaser,boost::noncopyable> ("init")
         .def("virtual_PILaser_Controller",  &VCpilaser::virtual_PILaser_Controller,
-             return_value_policy<reference_existing_object>())
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the virtual PI laser object.")
         .def("physical_PILaser_Controller",  &VCpilaser::physical_PILaser_Controller,
-             return_value_policy<reference_existing_object>())
+             return_value_policy<reference_existing_object>(),
+            "returns a reference to the physical PI laser object.")
         .def("offline_PILaser_Controller",  &VCpilaser::offline_PILaser_Controller,
-             return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCpilaser::setQuiet )
-        .def("setVerbose",       &VCpilaser::setVerbose )
-        .def("setMessage",       &VCpilaser::setMessage )
-        .def("setDebugMessage",  &VCpilaser::setDebugMessage )
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the offline PI laser object.")
+        .def("setQuiet",         &VCpilaser::setQuiet,
+             "set Quiet Mode (no messages, no debug messages) for all PI laser objects." )
+        .def("setVerbose",       &VCpilaser::setVerbose,
+             "set Verbose Mode (all messages, all debug messages) for all PI laser objects.")
+        .def("setMessage",       &VCpilaser::setMessage,
+             "set Message Mode (all  messages, no debug messages) for all PI laser objects.")
+        .def("setDebugMessage",  &VCpilaser::setDebugMessage,
+             "set Debug Mode (no messages, all debug messages) for all PI laser objects." )
         ;
 }
 

@@ -16,6 +16,8 @@ enumPrefix("e"),
 charPrefix("c"),
 longPrefix("l"),
 doublePrefix("d"),
+vecdoublePrefix("D"),
+vecintPrefix("I"),
 ca_chid_successmess("Successfully found ChId."),
 ca_chid_failuremess("!!TIMEOUT!! ChIds NOT found."),
 ca_subs_successmess("Succesfully subscribed, now monitoring."),
@@ -69,11 +71,15 @@ void VCgeneralMonitor::setDebugMessage()
 //______________________________________________________________________________
 VCgeneralMonitor::~VCgeneralMonitor()
 {
-
+    for( auto && it : continuousMonitorStructs )
+    {
+        delete it;
+    }
 }
 //______________________________________________________________________________
 //template<typename T>
-boost::python::object VCgeneralMonitor::getValue(const std::string & id )
+//boost::python::object VCgeneralMonitor::getValue(const std::string & id, const int position )
+boost::python::object VCgeneralMonitor::getValue(const std::string & id, const  int start_position, const  int end_position )
 {
     gmStructs::pvStruct* pvs = nullptr;
 //    success = false;
@@ -127,8 +133,110 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id )
             return object(doublePVMap[id].data[0]->v);
         }
     }
+    else if(isArrayDoublePV(id) )
+    {
+        if(entryExists(vec_doublePVMap, id) )
+        {
+            if( start_position == -1 )
+            {
+                return object(vec_doublePVMap[id].data[0]->v );
+            }
+            else if( start_position >= 0 && start_position < vec_doublePVMap[id].data[0]->v.size()  )
+            {
+                do some tests for start_position and  end_position  to give a proper range
+
+
+
+                double r = vec_doublePVMap[id].data[0]->v[start_position];
+                return   object( r );
+            }
+        }
+    }
+    else if(isArrayIntPV(id) )
+    {
+        if( entryExists(vec_intPVMap,id) )
+        {
+            if( start_position == -1 )
+            {
+                return object( vec_intPVMap[id].data[0]->v );
+            }
+            else if( start_position >= 0 && start_position < vec_intPVMap[id].data[0]->v.size() )
+            {
+                int r = vec_intPVMap[id].data[0]->v[start_position];
+                return   object( r );
+            }
+        }
+    }
     return object();
 }
+size_t VCgeneralMonitor::getPVCount(const std::string & id  )
+{
+if(isIntPV(id) )
+    {
+        if(entryExists(intPVMap, id) )
+        {
+            //message("getPVStruct ",  id, " isIntPV");
+             return intPVMap[id].pvs.COUNT;
+            //message("getPVStruct found ",  id, " in intPVMap");
+//            success = true;
+        }
+    }
+    else if(isFloatPV(id) )
+    {
+        if(entryExists(floatPVMap, id) )
+        {
+            //message("getPVStruct ",  id, " isFloatPV");
+            return floatPVMap[id].pvs.COUNT;
+        }
+    }
+    else if(isEnumPV(id) )
+    {
+        if(entryExists(enumPVMap, id) )
+        {
+            //message("getPVStruct ",  id, " isEnumPV");
+            return enumPVMap[id].pvs.COUNT;
+        }
+    }
+    else if(isCharPV(id) )
+    {
+        if( entryExists(charPVMap, id) )
+        {
+            //message("getPVStruct ",  id, " isCharPV");
+            return charPVMap[id].pvs.COUNT;
+        }
+    }
+    else if(isLongPV(id) )
+    {
+        if(entryExists(longPVMap, id) )
+        {
+            return longPVMap[id].pvs.COUNT;
+        }
+    }
+    else if(isDoublePV(id) )
+    {
+        if(entryExists(doublePVMap, id) )
+        {
+            return doublePVMap[id].pvs.COUNT;
+        }
+    }
+    else if(isArrayDoublePV(id) )
+    {
+        if(entryExists(vec_doublePVMap, id) )
+        {
+            return vec_doublePVMap[id].pvs.COUNT;
+        }
+    }
+    else if(isArrayIntPV(id) )
+    {
+        if( entryExists(vec_intPVMap,id) )
+        {
+            return vec_intPVMap[id].pvs.COUNT;
+        }
+    }
+    return 0; //MAGIC_NUMBER
+}
+
+
 //______________________________________________________________________________
 //template<typename T>
 //T VCgeneralMonitor::getValue(const std::string & id )
@@ -210,10 +318,17 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
         bool shouldCarryOn = setUpChannel(*pvs);
         if(shouldCarryOn)
         {
-            shouldCarryOn = setupMonitor(*pvs);
-            if( shouldCarryOn )
+            if(pvs->isArrayPV )
             {
-                returnvalue = pvs->id;
+                shouldCarryOn = getandSetArraySize(*pvs);
+            }
+            if(shouldCarryOn)
+            {
+                shouldCarryOn = setupMonitor(*pvs);
+                if(shouldCarryOn)
+                {
+                    returnvalue = pvs->id;
+                }
             }
         }
     }
@@ -236,6 +351,38 @@ void VCgeneralMonitor::staticEntryMonitor(const event_handler_args args)
     ms->gm->updateValue( ms->id, args );
 }
 //______________________________________________________________________________
+void VCgeneralMonitor::addSingleDouble(const std::string & id,const event_handler_args& args)
+{   message("addSingleDouble called");
+    if( doublePVMap[id].data.size() == 0 )
+    {
+        doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>() );
+    }
+    doublePVMap[id].data[0]->v = *(double*)args.dbr;// MAGIC_NUMBER
+}
+//______________________________________________________________________________
+void VCgeneralMonitor::addArrayDouble(const std::string & id,const event_handler_args& args)
+{   //message(vec_doublePVMap[id].data.size());
+    if( vec_doublePVMap[id].data.size() == 0 )
+    {
+        vec_doublePVMap[id].data.push_back(new gmStructs::dataEntry<std::vector<double>>() );
+        //message(vec_doublePVMap[id].data.size());
+        //message("resize to output array to  ", vec_doublePVMap[id].pvs.COUNT );
+        vec_doublePVMap[id].data[0]->v.resize(vec_doublePVMap[id].pvs.COUNT);
+    }
+    size_t counter = 0;
+    for( auto && it : vec_doublePVMap[id].data[0]->v )
+    {
+        it = * (double*) args.dbr + counter;
+        //std::cout << counter << " value = " << it  << std::endl;
+//        if( counter % 100 == 0)
+//        {
+//            std::cout << counter << " value = " << it  << std::endl;
+//        }
+        ++counter;
+    }
+    //std::cout << "Acquired " << counter << " values " << std::endl;
+}
+//______________________________________________________________________________
 void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_args& args)
 {
     if(args.status != ECA_NORMAL)
@@ -245,12 +392,23 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
     switch( args.type)
     {
         case  DBR_DOUBLE:
-            if( doublePVMap[id].data.size() == 0 )
+            //message("updateValue DBR_DOUBLE");
+            if( args.count == 1)
             {
-                doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>() );
+                addSingleDouble(id,args);
             }
-            doublePVMap[id].data[0]->v = *(double*)args.dbr;// MAGIC_NUMBER
-            //doublePVMap[id].data[0]->t = p->stamp;// MAGIC_NUMBER
+            else if( args.count > 0 )
+            {
+                addArrayDouble(id,args);
+            }
+//
+//
+//            if( doublePVMap[id].data.size() == 0 )
+//            {
+//                doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>() );
+//            }
+//            doublePVMap[id].data[0]->v = *(double*)args.dbr;// MAGIC_NUMBER
+//            //doublePVMap[id].data[0]->t = p->stamp;// MAGIC_NUMBER
             break;
         case  DBR_INT:
             if( intPVMap[id].data.size() == 0 )
@@ -259,6 +417,9 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
             }
             intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
             break;
+        default:
+            message("VCgeneralMonitor::updateValue() default switch");
+
     }
 
 //        if(isStringPV(id))
@@ -357,7 +518,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
     {
         // see db_access.h
         const dbr_time_short * p = (const struct dbr_time_short*)dbr;
-        if( intPVMap.at(id).data.size() == 0 )
+        if( intPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
         {
             intPVMap.at(id).data.push_back(new gmStructs::dataEntry<int>() );
         }
@@ -369,7 +530,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
     {
         // see db_access.h
         const dbr_time_float * p = (const struct dbr_time_float*)dbr;
-        if( floatPVMap.at(id).data.size() == 0 )
+        if( floatPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
         {
             floatPVMap.at(id).data.push_back( new gmStructs::dataEntry<float>() );
         }
@@ -380,7 +541,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
     {
         // see db_access.h
         const dbr_time_enum * p = (const struct dbr_time_enum*)dbr;
-        if( enumPVMap.at(id).data.size() == 0 )
+        if( enumPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
         {
             enumPVMap.at(id).data.push_back( new gmStructs::dataEntry<unsigned short>() );
         }
@@ -391,7 +552,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
     {
         // see db_access.h
         const dbr_time_char * p = (const struct dbr_time_char*)dbr;
-        if( charPVMap.at(id).data.size() == 0 )
+        if( charPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
         {
             charPVMap.at(id).data.push_back( new gmStructs::dataEntry<char>() );
         }
@@ -402,7 +563,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
     {
         // see db_access.h
         const dbr_time_long * p = (const struct dbr_time_long*)dbr;
-        if( longPVMap.at(id).data.size() == 0 )
+        if( longPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
         {
             longPVMap.at(id).data.push_back( new gmStructs::dataEntry<long>() );
         }
@@ -413,7 +574,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
     {
         // see db_access.h
         const dbr_time_double* p = (const struct dbr_time_double*)dbr;
-        if( longPVMap.at(id).data.size() == 0 )
+        if( longPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
         {
             doublePVMap.at(id).data.push_back( new gmStructs::dataEntry<double>() );
         }
@@ -461,10 +622,10 @@ bool VCgeneralMonitor::setUpChannel(gmStructs::pvStruct& pvs)
 bool VCgeneralMonitor::setupMonitor(gmStructs::pvStruct& pvs )
 {
     continuousMonitorStructs.push_back( new gmStructs::monitorStruct() );
-    continuousMonitorStructs.back() -> gm   = this;
+    continuousMonitorStructs.back()->gm = this;
 
     message("setupMonitor is Setting up Monitor with id = ", pvs.id );
-    continuousMonitorStructs.back() ->id = pvs.id;
+    continuousMonitorStructs.back()->id = pvs.id;
 
     ca_create_subscription(pvs.CHTYPE, pvs.COUNT,pvs.CHID, pvs.MASK,
                            VCgeneralMonitor::staticEntryMonitor,
@@ -483,6 +644,13 @@ bool VCgeneralMonitor::setupMonitor(gmStructs::pvStruct& pvs )
 
     }
     return pvs.MonitorConnected;
+}
+//______________________________________________________________________________
+bool VCgeneralMonitor::getandSetArraySize(gmStructs::pvStruct& pvs)
+{
+    pvs.COUNT = ca_element_count(pvs.CHID);
+    std::cout << "pvs.COUNT =  " << pvs.COUNT << std::endl;
+    return true;
 }
 //______________________________________________________________________________
 int VCgeneralMonitor::sendToEpics(const std::string& ca,const std::string& mess1,const std::string& mess2)
@@ -548,6 +716,10 @@ gmStructs::pvStruct* VCgeneralMonitor::getCHTYPEandPrefix(const std::string & pv
     else if(pvType == UTL::DBR_DOUBLE_STR)
     {
         r = addToDoublePVMap();
+    }
+    else if(pvType == UTL::DBR_ARRAY_DOUBLE_STR)
+    {
+        r  = addToVecDoublePVMap();
     }
     // the rest should probably not be used...
 //    else if(pvType == UTL::DBR_TIME_STRING_STR)
@@ -615,73 +787,71 @@ bool VCgeneralMonitor::disconnectPV(const std::string & id )
 gmStructs::pvStruct* VCgeneralMonitor::getPVStruct_Ptr(const std::string& id )
 {
     gmStructs::pvStruct* pvs = nullptr;
-//    success = false;
     if(isIntPV(id) )
-    {
-        //message("getPVStruct ",  id, " isIntPV");
+    {   //message("getPVStruct ",  id, " isIntPV");
         if( entryExists(intPVMap, id) )
         {
             pvs = &intPVMap[id].pvs;
             //message("getPVStruct found ",  id, " in intPVMap");
-//            success = true;
         }
     }
     else if(isFloatPV(id) )
-    {
-        //message("getPVStruct ",  id, " isFloatPV");
-
+    {   //message("getPVStruct ",  id, " isFloatPV");
         if( entryExists(floatPVMap, id) )
         {
             pvs = &floatPVMap[id].pvs;
             //message("getPVStruct found ",  id, " in floatPVMap");
-//            success = true;
         }
     }
     else if(isEnumPV(id) )
-    {
-        //message("getPVStruct ",  id, " isEnumPV");
-
+    {   //message("getPVStruct ",  id, " isEnumPV");
         if( entryExists(enumPVMap, id) )
         {
             pvs = &enumPVMap[id].pvs;
             //message("getPVStruct found ",  id, " in enumPVMap");
-//            success = true;
         }
     }
     else if(isCharPV(id) )
-    {
-        //message("getPVStruct ",  id, " isCharPV");
-
+    {//message("getPVStruct ",  id, " isCharPV");
         if( entryExists(charPVMap, id) )
         {
             pvs = &charPVMap[id].pvs;
             //message("getPVStruct found ",  id, " in charPVMap");
-//            success = true;
         }
     }
     else if(isLongPV(id) )
-    {
-        //message("getPVStruct ",  id, " isLongPV");
-
+    {//message("getPVStruct ",  id, " isLongPV");
         if( entryExists(longPVMap, id) )
         {
             pvs = &longPVMap[id].pvs;
 //            message("getPVStruct found ",  id, " in longPVMap");
-//            success = true;
         }
     }
     else if(isDoublePV(id) )
-    {
-        //message("getPVStruct ",  id, " isDoublePV");
-
+    {//message("getPVStruct ",  id, " isDoublePV");
         if( entryExists(doublePVMap, id) )
         {
             pvs = &doublePVMap[id].pvs;
 //            message("getPVStruct found ",  id, " in doublePVMap");
-//            success = true;
         }
     }
-    if( pvs )
+    else if(isArrayDoublePV(id) )
+    {//message("getPVStruct ",  id, " isDoublePV");
+        if( entryExists(doublePVMap, id) )
+        {
+            pvs = &vec_doublePVMap[id].pvs;
+//            message("getPVStruct found ",  id, " in doublePVMap");
+        }
+    }
+    else if(isArrayDoublePV(id) )
+    {//message("getPVStruct ",  id, " isDoublePV");
+        if( entryExists(doublePVMap, id) )
+        {
+            pvs = &vec_doublePVMap[id].pvs;
+//            message("getPVStruct found ",  id, " in doublePVMap");
+        }
+    }
+    if(pvs)
     {
         debugMessage("getPVStruct found ", id);
     }
@@ -787,7 +957,7 @@ bool VCgeneralMonitor::deleteID(const std::string& id )
     return r;
 }
 //______________________________________________________________________________
-void VCgeneralMonitor::updateTime( const epicsTimeStamp & stamp, double & val, std::string & str )
+void VCgeneralMonitor::updateTime(const epicsTimeStamp& stamp, double& val, std::string& str)
 {// look in epicsTime.h
 //    const dbr_time_char * pTD = ( const struct dbr_time_char * ) args.dbr;
 //    epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
@@ -834,6 +1004,16 @@ bool VCgeneralMonitor::isLongPV(const std::string& id)
 bool VCgeneralMonitor::isDoublePV(const std::string& id)
 {
     return id.substr(0,1) == doublePrefix  ? true : false;
+}
+//______________________________________________________________________________
+bool VCgeneralMonitor::isArrayDoublePV(const std::string & id)
+{
+    return id.substr(0,1) == vecdoublePrefix  ? true : false;
+}
+//______________________________________________________________________________
+bool VCgeneralMonitor::isArrayIntPV(const std::string & id)
+{
+    return id.substr(0,1) == vecintPrefix  ? true : false;
 }
 //______________________________________________________________________________
 bool VCgeneralMonitor::isConnected(const std::string & id)
@@ -907,7 +1087,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToCharPVMap()
     charPVMap.at(id).pvs.CHTYPE = DBR_TIME_CHAR;
     charPVMap.at(id).pvs.id = id;
     debugMessage("connectPV Passed a DBR_CHAR. Entry with id =  ",id, " created");
-    return &charPVMap[id].pvs;
+    return &charPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
 gmStructs::pvStruct* VCgeneralMonitor::addToLongPVMap()
@@ -918,7 +1098,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToLongPVMap()
     longPVMap.at(id).pvs.CHTYPE = DBR_TIME_LONG;
     longPVMap.at(id).pvs.id = id;
     debugMessage("connectPV Passed a DBR_LONG. Entry with id =  ",id, " created");
-    return &longPVMap[id].pvs;
+    return &longPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
 gmStructs::pvStruct* VCgeneralMonitor::addToEnumPVMap()
@@ -929,7 +1109,31 @@ gmStructs::pvStruct* VCgeneralMonitor::addToEnumPVMap()
     enumPVMap.at(id).pvs.CHTYPE = DBR_TIME_ENUM;
     enumPVMap.at(id).pvs.id = id;
     debugMessage("connectPV Passed a DBR_ENUM. Entry with id =  ",id, " created");
-    return &enumPVMap[id].pvs;
+    return &enumPVMap.at(id).pvs;
+}
+//______________________________________________________________________________
+gmStructs::pvStruct* VCgeneralMonitor::addToVecDoublePVMap()
+{
+    std::string id = vecdoublePrefix;
+    id += std::to_string(pvMonitorMapCount);
+    vec_doublePVMap[id].id = id;
+    vec_doublePVMap.at(id).pvs.CHTYPE = DBR_DOUBLE;
+    vec_doublePVMap.at(id).pvs.id = id;
+    vec_doublePVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
+    debugMessage("connectPV Passed a DBR_ARRAY_DOUBLE. Entry with id =  ",id, " created");
+    return &vec_doublePVMap.at(id).pvs;
+}
+//______________________________________________________________________________
+gmStructs::pvStruct* VCgeneralMonitor::addToVecIntPVMap()
+{
+    std::string id = vecintPrefix;
+    id += std::to_string(pvMonitorMapCount);
+    vec_intPVMap[id].id = id;
+    vec_intPVMap.at(id).pvs.CHTYPE = DBR_INT;
+    vec_intPVMap.at(id).pvs.id = id;
+    vec_intPVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
+    debugMessage("connectPV Passed a DBR_ARRAY_INT. Entry with id =  ",id, " created");
+    return &vec_intPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
 /// base class memebr functions

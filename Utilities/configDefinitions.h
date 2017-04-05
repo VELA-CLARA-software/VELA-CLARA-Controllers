@@ -240,14 +240,17 @@ namespace UTL
      const std::string DBR_CHAR_STR	  = "DBR_CHAR"  ;
      const std::string DBR_LONG_STR	  = "DBR_LONG"  ;
      const std::string DBR_DOUBLE_STR = "DBR_DOUBLE";
-     const std::string DBR_TIME_STRING_STR ="DBR_TIME_STRING";
-     const std::string DBR_TIME_INT_STR	   ="DBR_TIME_INT";
-     const std::string DBR_TIME_SHORT_STR  ="DBR_TIME_SHORT";
-     const std::string DBR_TIME_FLOAT_STR  ="DBR_TIME_FLOAT";
-     const std::string DBR_TIME_ENUM_STR   ="DBR_TIME_ENUM";
-     const std::string DBR_TIME_CHAR_STR	  ="DBR_TIME_CHAR"  ;
-     const std::string DBR_TIME_LONG_STR	  ="DBR_TIME_LONG"  ;
-     const std::string DBR_TIME_DOUBLE_STR ="DBR_TIME_DOUBLE";
+
+     const std::string DBR_ARRAY_DOUBLE_STR = "DBR_ARRAY_DOUBLE";
+     const std::string DBR_ARRY_INT_STR     = "DBR_ARRAY_INT";
+     const std::string DBR_TIME_STRING_STR  = "DBR_TIME_STRING";
+     const std::string DBR_TIME_INT_STR	    = "DBR_TIME_INT";
+     const std::string DBR_TIME_SHORT_STR   = "DBR_TIME_SHORT";
+     const std::string DBR_TIME_FLOAT_STR   = "DBR_TIME_FLOAT";
+     const std::string DBR_TIME_ENUM_STR    = "DBR_TIME_ENUM";
+     const std::string DBR_TIME_CHAR_STR    = "DBR_TIME_CHAR"  ;
+     const std::string DBR_TIME_LONG_STR    = "DBR_TIME_LONG"  ;
+     const std::string DBR_TIME_DOUBLE_STR  = "DBR_TIME_DOUBLE";
 
      /// there are many others... e.g.
 //    DBR_STS_ENUM	10	DBR_TIME_DOUBLE	20	DBR_CTRL_INT

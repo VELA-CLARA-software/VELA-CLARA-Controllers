@@ -76,6 +76,7 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
+		<Unit filename="../../Structs/RFGunStructs.h" />
 		<Unit filename="../../Structs/screenStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/RFGunConfigReader.cpp" />

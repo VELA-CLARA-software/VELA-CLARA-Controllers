@@ -24,13 +24,13 @@ namespace gmStructs
     struct pvStruct
     {
         pvStruct():pvFullName("UNKNOWN"),id("UNKNOWN"),COUNT(1),
-                   MASK(DBE_VALUE),CHIDConnected(false),MonitorConnected(false){}//MAGIC_NUMBER
+                   MASK(DBE_VALUE),CHIDConnected(false),MonitorConnected(false),isArrayPV(false){}//MAGIC_NUMBER
         chid          CHID;
         std::string   pvFullName,id;
         unsigned long COUNT, MASK;
         chtype        CHTYPE;
         evid          EVID;
-        bool          CHIDConnected,MonitorConnected;
+        bool          CHIDConnected,MonitorConnected,isArrayPV;
     };
     template <typename T>
     struct dataEntry
@@ -50,6 +50,7 @@ namespace gmStructs
         std::vector<dataEntry<T>*> data;
         std::string                id;
         bool                       fully_connected;
+
     };
     // this gets sent t to the callback functionk, adn from the ID and interfcace everything can be
     // updated

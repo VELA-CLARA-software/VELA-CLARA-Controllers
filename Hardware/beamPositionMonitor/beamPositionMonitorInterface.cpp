@@ -327,7 +327,6 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             it1.second.shotCount = 0;
         }
     }
-
     const dbr_double_t * value = &(p  -> value);
     size_t i = 0;
     updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ], bpmdo->strTimeStamps[ bpmdo->shotCount ]  );

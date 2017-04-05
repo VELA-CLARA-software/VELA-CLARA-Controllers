@@ -641,7 +641,7 @@ const magnetInterface::vec_b  magnetInterface::flipNR( const vec_s & magNames )
     vec_s N_ToSwitchON;
     vec_s R_ToSwitchON;
     // keep looping until time-out, or the magnets get flipped
-    while( true ).
+    while( true )
     {
         N_ToSwitchON.clear();
         R_ToSwitchON.clear();
