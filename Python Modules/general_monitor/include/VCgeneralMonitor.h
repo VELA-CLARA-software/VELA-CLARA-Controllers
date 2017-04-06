@@ -28,8 +28,13 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
 
         std::string connectPV(const std::string & PVName,const std::string & PYType );
         bool disconnectPV(const std::string & id );
-        //boost::python::object getValue(const std::string & id );
-        boost::python::object getValue(const std::string & id, const  int start_position = -1 , const  int end_position = -1  );
+        //boost::python::object getValue(const std::string & id);
+        //boost::python::object getValue(const std::string & id, const  int position );
+        //boost::python::object getValue(const std::string & id, const  int start_position, const  int end_position);
+
+        boost::python::object getValue(const std::string & id );
+        boost::python::object getValue(const std::string & id, const  int position );
+        boost::python::list getValue(const std::string & id, const  int start_position, const  int end_position);
 
         size_t getPVCount(const std::string & id  );
 
@@ -70,6 +75,10 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool setUpChannel(gmStructs::pvStruct& pvs);
         bool setupMonitor(gmStructs::pvStruct& pvs);
         bool getandSetArraySize(gmStructs::pvStruct& pvs);
+
+
+        std::vector< size_t > getArrayRegionOfInterest(const int start_position,const int end_position,const size_t vec_size );
+         size_t getArrayIndex(const int index,const size_t vec_size );
 
         int sendToEpics(const std::string& ca,const std::string& mess1,const std::string& mess2 );
 
@@ -113,7 +122,6 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         const std::string stringPrefix,intPrefix,shortPrefix,floatPrefix,enumPrefix,
                           charPrefix,longPrefix,doublePrefix,vecdoublePrefix,vecintPrefix;
 
-
         void addSingleDouble(const std::string & id,const event_handler_args& args);
         void addArrayDouble(const std::string & id,const event_handler_args& args);
 
@@ -127,7 +135,14 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         gmStructs::pvStruct* addToEnumPVMap();
         gmStructs::pvStruct* addToVecDoublePVMap();
         gmStructs::pvStruct* addToVecIntPVMap();
-};
+
+        template<typename T, size_t size>
+        size_t GetArrLength(T(&)[size]){ return size; }
+};//VCgeneralMonitor
+
+boost::python::object(VCgeneralMonitor::*getValue_1)(const std::string&) = &VCgeneralMonitor::getValue;
+boost::python::object(VCgeneralMonitor::*getValue_2)(const std::string&,const int) = &VCgeneralMonitor::getValue;
+boost::python::list(VCgeneralMonitor::*getValue_3)(const std::string&,const int,const int) = &VCgeneralMonitor::getValue;
 
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
@@ -156,7 +171,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
         .def("setDebugMessage", &VCgeneralMonitor::setDebugMessage )
         .def("connectPV",       &VCgeneralMonitor::connectPV )
         .def("getPVCount",       &VCgeneralMonitor::getPVCount )
-        .def("getValue", &VCgeneralMonitor::getValue,(boost::python::arg("id"),boost::python::arg("array start position")=-1,boost::python::arg("array end position")=-1),"get value from PV with id=id, if it is an arry PV then giving a value in the correct range for \"array position\" will return just that value.")
+        .def("getValue", getValue_1,(boost::python::arg("id"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
+        .def("getValue", getValue_2,(boost::python::arg("id"),boost::python::arg("index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
+        .def("getValue", getValue_3,(boost::python::arg("id"),boost::python::arg("start_index"),boost::python::arg("end_index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return the fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
         .def("isStringPV",   &VCgeneralMonitor::isStringPV )
         .def("isIntPV",      &VCgeneralMonitor::isIntPV )
         .def("isFloatPV",    &VCgeneralMonitor::isFloatPV )

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <epicsTime.h>
+#include <sstream>
 
 VCgeneralMonitor::VCgeneralMonitor(const bool shouldShowMessage,const bool  shouldShowDebugMessage ):
 controller( shouldShowMessage, shouldShowDebugMessage ),
@@ -79,57 +80,49 @@ VCgeneralMonitor::~VCgeneralMonitor()
 //______________________________________________________________________________
 //template<typename T>
 //boost::python::object VCgeneralMonitor::getValue(const std::string & id, const int position )
-boost::python::object VCgeneralMonitor::getValue(const std::string & id, const  int start_position, const  int end_position )
+boost::python::object VCgeneralMonitor::getValue(const std::string & id )
 {
     gmStructs::pvStruct* pvs = nullptr;
 //    success = false;
     if(isIntPV(id) )
     {
         if(entryExists(intPVMap, id) )
-        {
-            //message("getPVStruct ",  id, " isIntPV");
+        {    //message("getPVStruct ",  id, " isIntPV");
              return object(intPVMap[id].data[0]->v);
-            //message("getPVStruct found ",  id, " in intPVMap");
-//            success = true;
         }
     }
     else if(isFloatPV(id) )
     {
         if(entryExists(floatPVMap, id) )
-        {
-            //message("getPVStruct ",  id, " isFloatPV");
+        {//message("getPVStruct ",  id, " isFloatPV");
             return object(floatPVMap[id].data[0]->v);
         }
     }
     else if(isEnumPV(id) )
     {
         if(entryExists(enumPVMap, id) )
-        {
-            //message("getPVStruct ",  id, " isEnumPV");
+        {//message("getPVStruct ",  id, " isEnumPV");
             return object(enumPVMap[id].data[0]->v);
         }
     }
     else if(isCharPV(id) )
     {
         if( entryExists(charPVMap, id) )
-        {
-            //message("getPVStruct ",  id, " isCharPV");
+        {//message("getPVStruct ",  id, " isCharPV");
             return object(charPVMap[id].data[0]->v);
         }
     }
     else if(isLongPV(id) )
     {
         if(entryExists(longPVMap, id) )
-        {
-            //message("getPVStruct ",  id, " isLongPV");
+        {//message("getPVStruct ",  id, " isLongPV");
             return object(longPVMap[id].data[0]->v);
         }
     }
     else if(isDoublePV(id) )
     {
         if(entryExists(doublePVMap, id) )
-        {
-            //message("getPVStruct ",  id, " isDoublePV");
+        {//message("getPVStruct ",  id, " isDoublePV");
             return object(doublePVMap[id].data[0]->v);
         }
     }
@@ -137,38 +130,150 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id, const  
     {
         if(entryExists(vec_doublePVMap, id) )
         {
-            if( start_position == -1 )
-            {
-                return object(vec_doublePVMap[id].data[0]->v );
-            }
-            else if( start_position >= 0 && start_position < vec_doublePVMap[id].data[0]->v.size()  )
-            {
-                do some tests for start_position and  end_position  to give a proper range
-
-
-
-                double r = vec_doublePVMap[id].data[0]->v[start_position];
-                return   object( r );
-            }
+            return object(vec_doublePVMap[id].data[0]->v);
         }
     }
     else if(isArrayIntPV(id) )
     {
         if( entryExists(vec_intPVMap,id) )
         {
-            if( start_position == -1 )
-            {
-                return object( vec_intPVMap[id].data[0]->v );
-            }
-            else if( start_position >= 0 && start_position < vec_intPVMap[id].data[0]->v.size() )
-            {
-                int r = vec_intPVMap[id].data[0]->v[start_position];
-                return   object( r );
-            }
+            return object( vec_intPVMap[id].data[0]->v );
         }
     }
     return object();
 }
+//______________________________________________________________________________
+//______________________________________________________________________________
+boost::python::object VCgeneralMonitor::getValue(const std::string & id,const int index)
+{
+    //gmStructs::pvStruct* pvs = nullptr;
+    size_t index_positive;
+    if(isArrayDoublePV(id) )
+    {
+        if(entryExists(vec_doublePVMap, id) ) // OMFG o.O
+        {
+            index_positive = getArrayIndex(index, vec_doublePVMap[id].data[0]->v.size());
+            return object( vec_doublePVMap[id].data[0]->v[index_positive] );
+        }
+    }
+    else if(isArrayIntPV(id) )
+    {
+        if(entryExists(vec_intPVMap, id) )
+        {//            size_t index_positive = getArrayIndex(index, vec_intPVMap[id].data[0]->v.size() );
+            index_positive = getArrayIndex(index, vec_intPVMap[id].data[0]->v.size());
+            return object(  vec_intPVMap[id].data[0]->v[index_positive] );
+        }
+    }
+    return object();
+}
+//______________________________________________________________________________
+size_t VCgeneralMonitor::getArrayIndex(const int index, const size_t vec_size )
+{
+    // first test to see if entries are oob
+    size_t r = vec_size + 1; // init -to unacceptable value
+    if( index > -1 && index + 1 >= vec_size  )//MAGIC_NUMBER
+    {
+        r = 0;//MAGIC_NUMBER
+    }
+    else if( index < 0 && vec_size + index < 0  )
+    {
+        r = 0;//MAGIC_NUMBER
+    }
+    else if( index < 0 )//MAGIC_NUMBER
+    {
+        r = vec_size + index;
+    }
+    else if( index > -1  )
+    {
+        r = index;
+    }
+    message("Array Size = ", vec_size, ", requested index = ", index, ", returning ", r);
+    return r;
+}
+//______________________________________________________________________________
+boost::python::list VCgeneralMonitor::getValue(const std::string & id,const int start_pos,const int end_pos)
+{
+    boost::python::list output;
+    if(isArrayDoublePV(id) )
+    {
+        if(entryExists(vec_doublePVMap, id) ) // OMFG o.O
+        {
+            std::vector< size_t > pos = getArrayRegionOfInterest(start_pos, end_pos, vec_doublePVMap[id].data[0]->v.size());
+            auto first = vec_doublePVMap[id].data[0]->v.begin() + pos[0];
+            auto last  = vec_doublePVMap[id].data[0]->v.begin() + pos[1];
+            std::vector< double > r(first, last);
+            output = toPythonList( r );
+        }
+    }
+    else if(isArrayIntPV(id) )
+    {
+        if(entryExists( vec_intPVMap, id) )
+        {
+            std::vector< size_t > pos = getArrayRegionOfInterest(start_pos, end_pos, vec_intPVMap[id].data[0]->v.size());
+            auto first = vec_intPVMap[id].data[0]->v.begin() + pos[0];
+            auto last  = vec_intPVMap[id].data[0]->v.begin() + pos[1];
+            std::vector< int > r(first, last);
+            output = toPythonList( r );
+        }
+    }
+    return output;
+}
+//______________________________________________________________________________
+std::vector< size_t > VCgeneralMonitor::getArrayRegionOfInterest(const int start_position,const int end_position,const size_t vec_size )
+{
+    // first tesst to see if entries are oob
+    std::vector< size_t > r;
+    if( start_position > -1 && start_position + 1 > vec_size  )//MAGIC_NUMBER
+    {
+        r.push_back(0);//MAGIC_NUMBER
+        r.push_back(vec_size);
+    }
+    else if( start_position < 0 && vec_size + start_position < 0  )
+    {
+        r.push_back(0);//MAGIC_NUMBER
+        r.push_back(vec_size);
+    }
+    else if( end_position > -1 && end_position + 1 > vec_size  )//MAGIC_NUMBER
+    {
+        r.push_back(0);//MAGIC_NUMBER
+        r.push_back(vec_size);
+    }
+    else if( end_position < 0 && vec_size + end_position < 0  )
+    {
+        r.push_back(0);//MAGIC_NUMBER
+        r.push_back(vec_size);
+    }
+    else if( start_position < 0 && end_position < 0 && end_position >= start_position  )
+    {
+        r.push_back(vec_size + start_position);//MAGIC_NUMBER
+        r.push_back(vec_size + end_position);
+    }
+    else if( start_position > 0  && end_position > 0 && start_position <= end_position  )
+    {
+        r.push_back(start_position);//MAGIC_NUMBER
+        r.push_back(end_position);
+    }
+    else
+    {
+        message("getArrayRegionOfInterest reached deafult option");
+        r.push_back(0);//MAGIC_NUMBER
+        r.push_back(vec_size-1);
+    }
+    std::stringstream ss;
+    ss<< "Array Size = ";
+    ss<< start_position;
+    ss<< ", requested indeices = ";
+    ss<< start_position;
+    ss<< ", ";
+    ss<< end_position;
+    ss<< ", returning ";
+    ss<< r[0];
+    ss<< ", ";
+    ss<< r[1];
+    message(ss);
+    return r;
+}
+//______________________________________________________________________________
 size_t VCgeneralMonitor::getPVCount(const std::string & id  )
 {
 if(isIntPV(id) )
