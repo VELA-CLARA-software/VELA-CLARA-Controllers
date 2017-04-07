@@ -205,6 +205,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def_readonly("tr3TimeStamps",   &scopeStructs::scopeTraceData::tr3TimeStamps  )
         .def_readonly("tr4TimeStamps",   &scopeStructs::scopeTraceData::tr4TimeStamps  )
         .def_readonly("shotCounts",      &scopeStructs::scopeTraceData::shotCounts     )
+        .def_readonly("timebase",        &scopeStructs::scopeTraceData::timebase       )
+        .def_readonly("timeStamps",      &scopeStructs::scopeTraceData::timeStamps     )
         ;
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
@@ -247,9 +249,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
                           "This should work regardless of whether traces or P values are being submitted to EPICS.";
     char const* getScopeTracesDocString = "Returns a vector of vectors of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), after using monitorTracesForNShots.";
     char const* getPartOfTraceDocString = "Returns a vector of vectors of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), of a user-specified portion of the trace (between part1 and part2), after using monitorTracesForNShots.";
-    char const* getAreaUnderTracesDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), containing the area under each trace\n"
+    char const* getAreaUnderTracesDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), containing the area under each trace.\n"
                                               "This function should only be used after using monitorTracesForNShots.";
     char const* getAreaUnderPartOfTraceDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), containing the area under a user-specified portion of the trace (between part1 and part2).\n"
+                                              "The user should specify part1 and part2 to be regions of the trace where there is no signal (it may be good to check the array size first).";
+                                              "This function should only be used after using monitorTracesForNShots.";
+    char const* getAvgNoiseDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), containing the average noise in a user-specified portion of the trace (between part1 and part2).\n"
                                               "This function should only be used after using monitorTracesForNShots.";
     char const* getMaxOfTracesDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), containing the maximum value of each trace\n"
                                               "This function should only be used after using monitorTracesForNShots.";
@@ -262,6 +267,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     char const* monitorNumsDocString = "Monitors P values (see scope) for str(scopeName) - these should be defined in the config file. This will fill four vectors of doubles with scope data.\n"
                                       "Data can be accessed using getScopeNums, or getScopeP(1/2/3/4)Vec.\n";
     char const* monitorTracesDocString = "Monitors traces (see scope) for str(scopeName) - these should be defined in the config file. This will fill four vectors of vectors of doubles with scope trace data.\n"
+                                      "Data can be accessed using getScopeTraces - see documentation.\n";
+    char const* monitorATraceDocString = "Monitors a specific trace (see scope) for channel (pvType) of str(scopeName) - these should be defined in the config file. This will fill four vectors of vectors of doubles with scope trace data.\n"
                                       "Data can be accessed using getScopeTraces - see documentation.\n";
 
 	boost::python::class_<scopeController, boost::python::bases<controller>, boost::noncopyable>
@@ -278,35 +285,37 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
 //            .def("hasTrig",                         &velaChargeScopeController::hasTrig_Py, boost::python::args("name")   )
             .def("getScopeTraceDataStruct",         &scopeController::getScopeTraceDataStruct, getScopeTraceDataStructString, return_value_policy<reference_existing_object>())
             .def("getScopeNumDataStruct",           &scopeController::getScopeNumDataStruct, getScopeNumDataStructString, return_value_policy<reference_existing_object>()  )
-            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString                 )
-            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum, isMonitoringNumDocString                   )
-            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace, isNotMonitoringNumDocString              )
-            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum, isNotMonitoringNumDocString                )
-            .def("getScopeNums",                    &scopeController::getScopeNums, getScopeNumsDocString                           )
-            .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec, getScopeP1VecDocString                          )
-            .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec, getScopeP2VecDocString                          )
-            .def("getScopeP3Vec",                   &scopeController::getScopeP3Vec, getScopeP3VecDocString                          )
-            .def("getScopeP4Vec",                   &scopeController::getScopeP4Vec, getScopeP4VecDocString                          )
-            .def("getScopeP1",                      &scopeController::getScopeP1, getScopeP1DocString                             )
-            .def("getScopeP2",                      &scopeController::getScopeP2, getScopeP2DocString                             )
-            .def("getScopeP3",                      &scopeController::getScopeP3, getScopeP3DocString                             )
-            .def("getScopeP4",                      &scopeController::getScopeP4, getScopeP4DocString                             )
-            .def("getWCMQ",                         &scopeController::getWCMQ, getWCMQDocString                                )
+            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString        )
+            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum, isMonitoringNumDocString            )
+            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace, isNotMonitoringNumDocString    )
+            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum, isNotMonitoringNumDocString      )
+            .def("getScopeNums",                    &scopeController::getScopeNums, getScopeNumsDocString                       )
+            .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec, getScopeP1VecDocString                     )
+            .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec, getScopeP2VecDocString                     )
+            .def("getScopeP3Vec",                   &scopeController::getScopeP3Vec, getScopeP3VecDocString                     )
+            .def("getScopeP4Vec",                   &scopeController::getScopeP4Vec, getScopeP4VecDocString                     )
+            .def("getScopeP1",                      &scopeController::getScopeP1, getScopeP1DocString                           )
+            .def("getScopeP2",                      &scopeController::getScopeP2, getScopeP2DocString                           )
+            .def("getScopeP3",                      &scopeController::getScopeP3, getScopeP3DocString                           )
+            .def("getScopeP4",                      &scopeController::getScopeP4, getScopeP4DocString                           )
+            .def("getWCMQ",                         &scopeController::getWCMQ, getWCMQDocString                                 )
             .def("getICT1Q",                        &scopeController::getICT1Q, getICT1QDocString                               )
             .def("getICT2Q",                        &scopeController::getICT2Q, getICT2QDocString                               )
             .def("getFCUPQ",                        &scopeController::getFCUPQ, getFCUPQDocString                               )
-            .def("getEDFCUPQ",                      &scopeController::getEDFCUPQ, getEDFCUPQDocString                             )
-            .def("getScopeTraces",                  &scopeController::getScopeTraces, getScopeTracesDocString                         )
-            .def("getMinOfTraces",                  &scopeController::getMinOfTraces, getMinOfTracesDocString                         )
-            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces, getMaxOfTracesDocString                         )
-            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces, getAreaUnderTracesDocString                     )
-            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace, getAreaUnderPartOfTraceDocString                     )
-            .def("getPartOfTrace",                  &scopeController::getPartOfTrace, getPartOfTraceDocString                     )
-            .def("getTimeStamps",                   &scopeController::getTimeStamps, getTimeStampsDocString                          )
-            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps, getStrTimeStampsDocString                       )
-            .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                   )
-            .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString                 )
-            .def("getScopeNames",                   &scopeController::getScopeNames                          )
+            .def("getEDFCUPQ",                      &scopeController::getEDFCUPQ, getEDFCUPQDocString                           )
+            .def("getScopeTraces",                  &scopeController::getScopeTraces, getScopeTracesDocString                   )
+            .def("getMinOfTraces",                  &scopeController::getMinOfTraces, getMinOfTracesDocString                   )
+            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces, getMaxOfTracesDocString                   )
+            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces, getAreaUnderTracesDocString           )
+            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace, getAreaUnderPartOfTraceDocString )
+            .def("getAvgNoise",                     &scopeController::getAvgNoise, getAvgNoiseDocString                         )
+            .def("getPartOfTrace",                  &scopeController::getPartOfTrace, getPartOfTraceDocString                   )
+            .def("getTimeStamps",                   &scopeController::getTimeStamps, getTimeStampsDocString                     )
+            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps, getStrTimeStampsDocString               )
+            .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                )
+            .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString            )
+            .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots, monitorATraceDocString            )
+            .def("getScopeNames",                   &scopeController::getScopeNames                             )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &scopeController::debugMessagesOff                       )
             .def("debugMessagesOn",                 &scopeController::debugMessagesOn                        )

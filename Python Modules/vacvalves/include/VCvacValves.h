@@ -31,21 +31,27 @@ class VCvacValves// : public vacuumValveController
         VCvacValves();
         ~VCvacValves();
 
+        ///VELA_INJ
         vacuumValveController & virtual_VELA_INJ_Vac_Valve_Controller();
         vacuumValveController & offline_VELA_INJ_Vac_Valve_Controller();
         vacuumValveController & physical_VELA_INJ_Vac_Valve_Controller();
+        ///VELA_BA1
         vacuumValveController & virtual_VELA_BA1_Vac_Valve_Controller();
         vacuumValveController & offline_VELA_BA1_Vac_Valve_Controller();
         vacuumValveController & physical_VELA_BA1_Vac_Valve_Controller();
+        ///VELA_BA2
         vacuumValveController & virtual_VELA_BA2_Vac_Valve_Controller();
         vacuumValveController & offline_VELA_BA2_Vac_Valve_Controller();
         vacuumValveController & physical_VELA_BA2_Vac_Valve_Controller();
+        ///CLARA_S01
         vacuumValveController & virtual_CLARA_S01_Vac_Valve_Controller();
         vacuumValveController & offline_CLARA_S01_Vac_Valve_Controller();
         vacuumValveController & physical_CLARA_S01_Vac_Valve_Controller();
+        ///CLARA_S02
         vacuumValveController & virtual_CLARA_S02_Vac_Valve_Controller();
         vacuumValveController & offline_CLARA_S02_Vac_Valve_Controller();
         vacuumValveController & physical_CLARA_S02_Vac_Valve_Controller();
+        ///C2V
         vacuumValveController & virtual_C2V_Vac_Valve_Controller();
         vacuumValveController & offline_C2V_Vac_Valve_Controller();
         vacuumValveController & physical_C2V_Vac_Valve_Controller();
@@ -55,9 +61,6 @@ class VCvacValves// : public vacuumValveController
         void setVerbose();
         void setMessage();
         void setDebugMessage();
-
-#ifdef BUILD_DLL
-#endif // BUILD_DLL
 
     protected:
     private:
@@ -77,28 +80,33 @@ class VCvacValves// : public vacuumValveController
         const VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
         const VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
+        ///VELA_INJ
         vacuumValveController * virtual_VELA_INJ_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_VELA_INJ_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_VELA_INJ_Vac_Valve_Controller_Obj;
+        ///VELA_BA1
         vacuumValveController * virtual_VELA_BA1_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_VELA_BA1_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_VELA_BA1_Vac_Valve_Controller_Obj;
+        ///VELA_BA2
         vacuumValveController * virtual_VELA_BA2_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_VELA_BA2_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_VELA_BA2_Vac_Valve_Controller_Obj;
+        ///CLARA_S01
         vacuumValveController * virtual_CLARA_S01_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_CLARA_S01_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_CLARA_S01_Vac_Valve_Controller_Obj;
+        ///CLARA_S02
         vacuumValveController * virtual_CLARA_S02_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_CLARA_S02_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_CLARA_S02_Vac_Valve_Controller_Obj;
+        ///C2V
         vacuumValveController * virtual_C2V_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_C2V_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_C2V_Vac_Valve_Controller_Obj;
-
 };
 
-#ifdef BUILD_DLL
+//#ifdef BUILD_DLL
 
 /// Boost has incorporated an "autolink" feature.
 /// http://www.codeproject.com/Articles/11597/Building-Boost-libraries-for-Visual-Studio
@@ -264,7 +272,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         ;
 };
 
-#endif // BUILD_DLL
+//#endif // BUILD_DLL
 
 #endif // velaChrageScopeController_H
 

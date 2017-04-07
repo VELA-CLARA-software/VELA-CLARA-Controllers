@@ -48,8 +48,8 @@ class scopeInterface : public interface
         double getScopeP3( const std::string & scope );
         double getScopeP4( const std::string & scope );
         double getWCMQ()   ;
-        double getICT1Q()  ;
-        double getICT2Q()  ;
+        double getICT1Q( const int part1, const int part2 )  ;
+        double getICT2Q( const int part1, const int part2 )  ;
         double getFCUPQ()  ;
         double getEDFCUPQ();
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
@@ -68,9 +68,10 @@ class scopeInterface : public interface
         void updateTrace( scopeStructs::monitorStruct * ms, const event_handler_args args );
         void updateValue( scopeStructs::monitorStruct * ms, const event_handler_args args );
         void monitorTracesForNShots( size_t N );
+        void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void monitorNumsForNShots( size_t N );
         void cancelDataMonitors();
-        std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType );
+        std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< std::string > getScopeNames();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
@@ -129,6 +130,7 @@ class scopeInterface : public interface
         bool isATracePV( scopeStructs::SCOPE_PV_TYPE pv );
         bool isANumPV( scopeStructs::SCOPE_PV_TYPE pv );
         void resetTraceVectors( size_t N );
+        void resetATraceVector( const std::string scopeName, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void resetNumVectors( size_t N );
 
         scopeStructs::scopeObject scopeObj;

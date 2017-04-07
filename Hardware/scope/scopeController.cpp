@@ -48,6 +48,11 @@ void scopeController::monitorTracesForNShots( size_t N )
     localInterface.monitorTracesForNShots( N );
 }
 //______________________________________________________________________________
+void scopeController::monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N )
+{
+    localInterface.monitorATraceForNShots( trace, channel, N );
+}
+//______________________________________________________________________________
 void scopeController::monitorNumsForNShots( size_t N )
 {
     localInterface.monitorNumsForNShots( N );
@@ -148,6 +153,11 @@ std::vector< std::string > scopeController::getStrTimeStamps( const std::string 
     return localInterface.getStrTimeStamps( name, pvType );
 }
 //______________________________________________________________________________
+std::vector< double > scopeController::getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
+{
+    return localInterface.getAvgNoise( name, pvType, part1, part2 );
+}
+//______________________________________________________________________________
 double scopeController::getScopeP1( const std::string & name )
 {
     return localInterface.getScopeP1( name );
@@ -173,14 +183,14 @@ double scopeController::getWCMQ()
     return localInterface.getWCMQ();
 }
 //______________________________________________________________________________
-double scopeController::getICT1Q()
+double scopeController::getICT1Q( const int part1, const int part2 )
 {
-    return localInterface.getICT1Q();
+    return localInterface.getICT1Q( part1, part2 );
 }
 //______________________________________________________________________________
-double scopeController::getICT2Q()
+double scopeController::getICT2Q( const int part1, const int part2 )
 {
-    return localInterface.getICT2Q();
+    return localInterface.getICT2Q( part1, part2 );
 }
 //______________________________________________________________________________
 double scopeController::getFCUPQ()

@@ -50,7 +50,6 @@ namespace vacuumValveStructs
 
     struct vacValveObject
     {
-
         std::string name, pvRoot;
         VELA_ENUM::VALVE_STATE vacValveState;
         int numIlocks;

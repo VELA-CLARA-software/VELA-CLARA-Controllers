@@ -49,8 +49,8 @@ class scopeController : public controller
         double getScopeP3( const std::string & scopeName );
         double getScopeP4( const std::string & scopeName );
         double getWCMQ()   ;
-        double getICT1Q()  ;
-        double getICT2Q()  ;
+        double getICT1Q( const int part1, const int part2 )  ;
+        double getICT2Q( const int part1, const int part2 )  ;
         double getFCUPQ()  ;
         double getEDFCUPQ();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
@@ -68,8 +68,10 @@ class scopeController : public controller
         std::vector< std::string > getStrTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< std::vector< double > > getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
         std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
 
         void monitorTracesForNShots( size_t N );
+        void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void monitorNumsForNShots( size_t N );
         std::vector< std::string > getScopeNames();
         /// write a method that returns string version of enums using ENUM_TO_STRING

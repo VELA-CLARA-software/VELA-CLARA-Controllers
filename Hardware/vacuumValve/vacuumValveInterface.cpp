@@ -41,7 +41,11 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 vacuumValveInterface::~vacuumValveInterface()
 {
-        debugMessage("delete vacuumValveInterface continuousMonitorStructs entry.");
+//    for (auto && it : allVacValveData )
+//    {
+//        debugMessage("in vacuumValveInterface: delete allVacValveData ", it.first );
+//    }
+//        debugMessage("delete vacuumValveInterface continuousMonitorStructs entry.");
 }
 //______________________________________________________________________________
 void vacuumValveInterface::initialise( )
@@ -79,6 +83,7 @@ void vacuumValveInterface::initialise( )
 
         std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); /// MAGIC NUMBER
     }
+    message(allVacValveData.size());
 }
 //______________________________________________________________________________
 void vacuumValveInterface::findVacValveNames( std::vector< std::string >  & vacValveNames )
@@ -153,7 +158,6 @@ void vacuumValveInterface::monitorVacValves()
             /// init structs 'correctly'
 
             addValveObjectMonitors( it2.second, it.second );
-            std::cout<<it.second.name<<std::endl;
 
             /// For the vacValve there is only 1 monitor type
             /// maybe it.second.pvMonStructs does not need to be a map???, pvComStructs probably does though...
@@ -191,7 +195,7 @@ void vacuumValveInterface::staticEntryrMonitor( const event_handler_args args )
     {
         case vacuumValveStructs::VAC_VALVE_PV_TYPE::Sta:
             {
-                ms->interface->getValveState( ms, *(unsigned short*)args.dbr );
+                ms->interface->updateValveState( ms, *(unsigned short*)args.dbr );
                 break;
             }
         default:
@@ -201,7 +205,7 @@ void vacuumValveInterface::staticEntryrMonitor( const event_handler_args args )
     }
 }
 //______________________________________________________________________________
-void vacuumValveInterface::getValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args )
+void vacuumValveInterface::updateValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args )
 {
     vacuumValveStructs::vacValveObject* obj = reinterpret_cast< vacuumValveStructs::vacValveObject* > (ms->obj);
     switch( args )
@@ -261,11 +265,19 @@ void vacuumValveInterface::getValveState( vacuumValveStructs::monitorStruct * ms
 ////                ....
 ////    }
 //}
+//_________________________________________________________________________________________________________________
+bool vacuumValveInterface::entryExists2(const std::string & name, bool weKnowEntryExists )
+{// This version of the function is so we don't have to check the entry exists in the map each time
+     if( weKnowEntryExists )
+        return weKnowEntryExists;
+    else
+        return entryExists( allVacValveData, name );
+}
 //______________________________________________________________________________
 void vacuumValveInterface::openVacValve( const std::string & vacValve )
 {
-//    if( allVacValveData.count( vacValve ) )
-//    {
+    if( entryExists2( vacValve, true ) )
+    {
         if( isClosed( vacValve ) )
         {
             chtype & cht = allVacValveData[ vacValve ].pvComStructs[ vacuumValveStructs::VAC_VALVE_PV_TYPE::On ].CHTYPE;
@@ -274,13 +286,21 @@ void vacuumValveInterface::openVacValve( const std::string & vacValve )
             if( status == ECA_NORMAL )
                 int status2 = caput(cht, chi, EPICS_SEND, "", "!!TIMEOUT!! FAILED TO SEND VAC VALVE OPEN" );
         }
-//    }
+        else
+        {
+            message("Valve ", vacValve, " is already open.");
+        }
+    }
+    else
+    {
+        message("Valve ", vacValve, " does not exist - is it defined in the config file?");
+    }
 }
 //______________________________________________________________________________
 void vacuumValveInterface::closeVacValve( const std::string & vacValve )
 {
-//    if( allVacValveData.count( vacValve ) )
-//    {
+    if( entryExists2( vacValve, true ) )
+    {
         if( isOpen( vacValve ) )
         {
             chtype & cht = allVacValveData[ vacValve ].pvComStructs[ vacuumValveStructs::VAC_VALVE_PV_TYPE::Off ].CHTYPE;
@@ -289,14 +309,24 @@ void vacuumValveInterface::closeVacValve( const std::string & vacValve )
             if( status == ECA_NORMAL )
                 int status2 = caput( cht, chi, EPICS_SEND, "", "!!TIMEOUT!! FAILED TO EPICS_SEND VAC VALVE CLOSE" );
         }
-//    }
+        else
+        {
+            message("Valve ", vacValve, " is already closed.");
+        }
+    }
+    else
+    {
+        message("Valve ", vacValve, " does not exist - is it defined in the config file?");
+    }
 }
 //______________________________________________________________________________
 bool vacuumValveInterface::isOpen( const std::string & vacValve )
 {
+    message(allVacValveData.size());
     bool ret = false;
-//    if( allVacValveData.count( vacValve ) )
-//    {
+    if( entryExists2( vacValve, true ) )
+    {
+        message(ENUM_TO_STRING(allVacValveData[ vacValve ].vacValveState));
         if( allVacValveData[ vacValve ].vacValveState == VELA_ENUM::VALVE_STATE::VALVE_OPEN )
         {
             ret = true;
@@ -306,12 +336,7 @@ bool vacuumValveInterface::isOpen( const std::string & vacValve )
         {
             message("Valve is closed");
         }
-//    }
-//
-//    else
-//    {
-//        message("Shit off");
-//    }
+    }
 
     if( ret )
         debugMessage( vacValve, " is open");
@@ -324,8 +349,9 @@ bool vacuumValveInterface::isOpen( const std::string & vacValve )
 bool vacuumValveInterface::isClosed( const std::string & vacValve )
 {
     bool ret = false;
-//    if( allVacValveData.count( vacValve ) )
-//    {
+    if( entryExists2( vacValve, true ) )
+    {
+        message(ENUM_TO_STRING(allVacValveData[ vacValve ].vacValveState));
         if( allVacValveData[ vacValve ].vacValveState == VELA_ENUM::VALVE_STATE::VALVE_CLOSED )
         {
             ret = true;
@@ -335,12 +361,7 @@ bool vacuumValveInterface::isClosed( const std::string & vacValve )
         {
             message("Valve is open");
         }
-//    }
-//
-//    else
-//    {
-//        message("Shit off");
-//    }
+    }
 
     if( ret )
         debugMessage( vacValve, " is closed");

@@ -46,9 +46,10 @@ class vacuumValveInterface : public interface
         bool closeAndWait( const std::string & name, const time_t waitTime );
         bool openAndWait( const std::string & name, const time_t waitTime );
 
-        void getValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args );
+        void updateValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args );
 
         vacuumValveStructs::vacValveObject getVacValveObject( const std::string & vacValveName );
+        bool entryExists2(const std::string & name, bool weKnowEntryExists );
 
         VELA_ENUM::VALVE_STATE getVacValveState( const std::string & vacValveName );
 
@@ -56,9 +57,10 @@ class vacuumValveInterface : public interface
 
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & vacValveName );
         std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >        getILockStatesStr( const std::string & vacValveName );
+
+        std::map< std::string, vacuumValveStructs::vacValveObject > allVacValveData; /// All the vacValve data is stored in this map, keyed by the vacValve name
+
 //
-
-
     protected:
     private:
 
@@ -96,6 +98,5 @@ class vacuumValveInterface : public interface
 
         std::vector< vacuumValveStructs::monitorStruct * > continuousMonitorStructs;
 
-        std::map< std::string, vacuumValveStructs::vacValveObject > allVacValveData; /// All the vacValve data is stored in this map, keyed by the vacValve name
 };
 #endif // VELA_PyIL_SHUTTER_INTERFACE_H
