@@ -153,7 +153,7 @@ std::vector< std::string > scopeController::getStrTimeStamps( const std::string 
     return localInterface.getStrTimeStamps( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< double > scopeController::getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
+std::vector< double > scopeController::getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
 {
     return localInterface.getAvgNoise( name, pvType, part1, part2 );
 }

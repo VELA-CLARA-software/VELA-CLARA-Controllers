@@ -22,7 +22,7 @@ namespace scopeStructs
     struct scopeTraceData;
     struct pvStruct;
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_PV_TYPE, (P1) (P2) (P3) (P4) (TR1) (TR2) (TR3) (TR4) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_PV_TYPE, (P1) (P2) (P3) (P4) (TR1) (TR2) (TR3) (TR4) (UNKNOWN) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_TYPE, (NUM) (ARRAY) )
 
     /// monType could be used to switch in the staticCallbackFunction
@@ -38,7 +38,6 @@ namespace scopeStructs
         std::string               pvSuffix, objName;
         unsigned long             COUNT, MASK;
         chtype                    CHTYPE;
-        evid                      EVID;
     };
 
     struct scopeNumObject
@@ -83,7 +82,6 @@ namespace scopeStructs
         std::map< SCOPE_PV_TYPE, std::vector< std::string  > >          strTimeStamps;
         std::map< SCOPE_PV_TYPE, int >                                  shotCounts;
         std::map< SCOPE_PV_TYPE, bool >                                 isMonitoringMap;
-
         std::map< SCOPE_PV_TYPE, pvStruct > pvMonStructs;
     #endif
     };
@@ -108,7 +106,7 @@ namespace scopeStructs
         chtype             CHTYPE;
         void *             val;
         scopeInterface *interface;
-        evid               *EVID;
+        evid               EVID;
     };
 }
 #endif

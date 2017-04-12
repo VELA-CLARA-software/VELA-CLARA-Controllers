@@ -131,12 +131,13 @@ void scopeInterface::monitorScopes()
         {
 //            if( !isADataPV( it2.second.pvType ) )
 //            {   //NOT SURE ABOUT THIS "IF" -----> I WANT TO SET THIS BOOL TO TRUE EVEN IF IT IS A DATA PV
-                it1.second.isAContinuousMonitorStruct = true;
-                if( it1.second.isAContinuousMonitorStruct )
-                {
-                    resetTraceVectors( 1 );
-                    addToTraceMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
-                }
+                it1.second.isAContinuousMonitorStruct = false;
+                it1.second.isATemporaryMonitorStruct = false;
+//                if( it1.second.isAContinuousMonitorStruct )
+//                {
+//                    resetTraceVectors( 1 );
+//                    addToTraceMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
+//                }
 //            }
         }
     }
@@ -149,11 +150,12 @@ void scopeInterface::monitorScopes()
 //            if( !isADataPV( it2.second.pvType ) )
 //            {   //NOT SURE ABOUT THIS "IF" -----> I WANT TO SET THIS BOOL TO TRUE EVEN IF IT IS A DATA PV
                 it1.second.isAContinuousMonitorStruct = true;
-                if( it1.second.isAContinuousMonitorStruct )
-                {
-                    resetNumVectors( 1 );
-                    addToNumMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
-                }
+                it1.second.isATemporaryMonitorStruct = false;
+//                if( it1.second.isAContinuousMonitorStruct )
+//                {
+//                    resetNumVectors( 1 );
+//                    addToNumMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
+//                }
 //            }
         }
     }
@@ -170,7 +172,7 @@ void scopeInterface::addToTraceMonitorStructs( std::vector< scopeStructs::monito
     msv.back() -> scopeObject  = &scopeObj;
     msv.back() -> interface    = this;
     msv.back() -> CHTYPE       = pv.CHTYPE;
-    msv.back() -> EVID         = &pv.EVID;
+//    msv.back() -> EVID         = &pv.EVID;
 
     switch( pv.pvType )
     {
@@ -201,7 +203,7 @@ void scopeInterface::addToTraceMonitorStructs( std::vector< scopeStructs::monito
         default:
             message("addToMonitorStructs ERROR PV_Type unknown");
     }
-    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  scopeInterface::staticEntryrMonitor, (void*)msv.back(), &pv.EVID); // &continuousMonitorStructs.back().EventID );
+    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  scopeInterface::staticEntryrMonitor, (void*)msv.back(), &msv.back() -> EVID); // &continuousMonitorStructs.back().EventID );
 }
 //______________________________________________________________________________
 void scopeInterface::addToNumMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeNumObject * numObj   )
@@ -211,7 +213,7 @@ void scopeInterface::addToNumMonitorStructs( std::vector< scopeStructs::monitorS
     msv.back() -> scopeObject  = &scopeObj;
     msv.back() -> interface    = this;
     msv.back() -> CHTYPE       = pv.CHTYPE;
-    msv.back() -> EVID         = &pv.EVID;
+//    msv.back() -> EVID         = &pv.EVID;
 
     switch( pv.pvType )
     {
@@ -242,12 +244,13 @@ void scopeInterface::addToNumMonitorStructs( std::vector< scopeStructs::monitorS
         default:
             message("addToMonitorStructs ERROR PV_Type unknown");
     }
-    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  scopeInterface::staticEntryrMonitor, (void*)msv.back(), &pv.EVID); // &continuousMonitorStructs.back().EventID );
+    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  scopeInterface::staticEntryrMonitor, (void*)msv.back(), &msv.back() -> EVID); // &continuousMonitorStructs.back().EventID );
 }
 //______________________________________________________________________________
 void scopeInterface::staticEntryrMonitor( const event_handler_args args )
 {
     scopeStructs::monitorStruct * ms = static_cast< scopeStructs::monitorStruct *> ( args.usr );
+    std::cout<<ENUM_TO_STRING(ms->monType)<<std::endl;
     switch( ms -> monType )
     {
         case scopeStructs::SCOPE_PV_TYPE::TR1:
@@ -282,18 +285,17 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
     /// this could be better, with the type passed from the config
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
     scopeStructs::scopeTraceData * td = reinterpret_cast< scopeStructs::scopeTraceData *> (ms -> val);
-
     td->isMonitoringMap.at( ms -> monType ) = true;
-
     if( td->isAContinuousMonitorStruct)
     {
         for( auto && it1 : scopeObj.traceObjects )
         {
             it1.second.numShots = 1;
-            for( auto && it2 : it1.second.shotCounts )
-            {
-                it2.second = 0;
-            }
+//            for( auto && it2 : it1.second.shotCounts )
+//            {
+//                it2.second = 0;
+//            }
+            it1.second.shotCounts.at( ms -> monType ) = 0;
         }
     }
     const dbr_double_t * value = &(p  -> value);
@@ -312,6 +314,7 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
         it = *( &p->value + i );
         ++i;
     }
+    message(td->shotCounts.at( ms -> monType ), td->numShots);
 
     if( td -> isATemporaryMonitorStruct )
     {
@@ -321,8 +324,9 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
         }
         if( td->shotCounts.at( ms -> monType ) == td->numShots )
         {
-            message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ms->monType );
-            ms->interface->killTraceCallBack( ms, td );
+            message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+            td->isMonitoringMap.at( ms->monType ) = false;
+            killTraceCallBack( ms );
         }
     }
 }
@@ -361,8 +365,9 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
         }
         if( scno->shotCounts.at( ms -> monType ) == scno->numShots )
         {
-            message( "Collected ", scno->shotCounts.at( ms -> monType ), " shots for ", scno -> pvRoot, ":", ms->monType );
-            ms->interface->killNumCallBack( ms, scno );
+            message( "Collected ", scno->shotCounts.at( ms -> monType ), " shots for ", scno -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+            scno->isMonitoringMap.at( ms->monType ) = false;
+            ms->interface->killNumCallBack( ms );
         }
     }
 }
@@ -395,10 +400,10 @@ void scopeInterface::monitorTracesForNShots( size_t N )
             }
         }
         int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
-        if ( status == ECA_NORMAL )
-            for( auto && it : scopeObj.traceObjects )
-                for( auto && it1: it.second.isMonitoringMap )
-                    it1.second = true;
+//        if ( status == ECA_NORMAL )
+//            for( auto && it : scopeObj.traceObjects )
+//                for( auto && it1: it.second.isMonitoringMap )
+//                    it1.second = true;
 //            monitoringTraces = true; /// interface base class member
     }
     else
@@ -409,24 +414,21 @@ void scopeInterface::monitorTracesForNShots( size_t N )
 //______________________________________________________________________________
 void scopeInterface::monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N )
 {
-    if( isNotMonitoringScopeTrace( trace, channel) )
+    if( !isMonitoringScopeTrace( trace, channel ) )
     {
         traceMonitorStructs.clear();
-        debugMessage( "Starting scope Traces Monitor " );
-        resetATraceVector( trace, channel, N );
-        debugMessage( "Vectors Reset" );
-        scopeStructs::scopeTraceData trObject = scopeObj.traceObjects.at( trace );
-        trObject.numShots = N;
-        trObject.isAContinuousMonitorStruct=false;
-        trObject.isATemporaryMonitorStruct=true;
-        trObject.pvMonStructs.at( channel );
-//        if( isATracePV( channel ) )
-//            {
-                trObject.isMonitoringMap.at( channel ) = true;
-                message(traceMonitorStructs.size());
-                addToTraceMonitorStructs( traceMonitorStructs, trObject.pvMonStructs.at( channel ), &trObject );
-//            }
-        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
+        debugMessage( "Starting scope Traces Monitor for ", channel );
+//        resetATraceVector( trace, channel, N );
+        resetTraceVectors( N );
+        debugMessage( "Vector ", channel, " Reset" );
+        scopeObj.traceObjects.at( trace );
+        scopeObj.traceObjects.at( trace ).numShots = N;
+        scopeObj.traceObjects.at( trace ).isAContinuousMonitorStruct=false;
+        scopeObj.traceObjects.at( trace ).isATemporaryMonitorStruct=true;
+        scopeObj.traceObjects.at( trace ).isMonitoringMap.at( channel ) = true;
+
+        addToTraceMonitorStructs( traceMonitorStructs, scopeObj.traceObjects.at( trace ).pvMonStructs.at( channel ), &scopeObj.traceObjects.at( trace ) );
+        int status = sendToEpics( "ca_create_subscription", "subscribed", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
     }
     else
     {
@@ -662,7 +664,7 @@ std::vector< double > scopeInterface::getAreaUnderTraces( const std::string & na
         for( auto && it2 : it )
         {
 //            std::cout << it2 << std::endl;
-            double curveElement = ( it2 * scopeObj.traceObjects.at( name ).timebase ) / it.size();
+            double curveElement = ( it2 * scopeObj.traceObjects.at( name ).timebase );// / it.size();
             curveAreas.push_back( curveElement );
         }
         sum_of_elems = std::accumulate( curveAreas.begin(), curveAreas.end(), 0.0 );
@@ -722,13 +724,13 @@ std::vector< double > scopeInterface::getScopeP4Vec( const std::string & name )
     return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P4 );
 }
 //______________________________________________________________________________
-void scopeInterface::killTraceCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeTraceData * td )
+void scopeInterface::killTraceCallBack( scopeStructs::monitorStruct * ms )
 {
-    int status = ca_clear_subscription( *ms -> EVID );
+    int status = ca_clear_subscription( ms -> EVID );
     if( status == ECA_NORMAL)
     {
-        td->isMonitoringMap.at( ms -> monType ) = false;
         delete ms;
+        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
     }
     else
     {
@@ -736,13 +738,13 @@ void scopeInterface::killTraceCallBack( scopeStructs::monitorStruct * ms, scopeS
     }
 }
 //______________________________________________________________________________
-void scopeInterface::killNumCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeNumObject * scno )
+void scopeInterface::killNumCallBack( scopeStructs::monitorStruct * ms )
 {
-    int status = ca_clear_subscription( *ms -> EVID );
+    int status = ca_clear_subscription( ms -> EVID );
     if( status == ECA_NORMAL)
     {
-        scno->isMonitoringMap.at( ms -> monType ) = false;
         delete ms;
+        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
     }
     else
     {
@@ -797,8 +799,8 @@ std::vector< double > scopeInterface::getAvgNoise( const std::string & name, sco
     for( auto && it : scopeObj.traceObjects.at( name ).traceData.at( pvType ) )
     {
         double sum = std::accumulate( it.begin()+part1, it.begin()+part2, 0.0 );
-        noise.push_back( sum / (part2 - part1 ) );
-        noiseTotal.push_back( noise.back() * scopeObj.traceObjects.at( name ).timebase );
+        noise.push_back( sum / ( part2 - part1 ) );
+        noiseTotal.push_back( noise.back());// * scopeObj.traceObjects.at( name ).timebase );
     }
 //    std::cout << noiseTotal << std::endl;
     return noiseTotal;
@@ -837,7 +839,7 @@ std::vector< double > scopeInterface::getAreaUnderPartOfTrace( const std::string
         std::vector< double > curveAreas;
         for( auto && it2 : it )
         {
-            double curveElement = ( it2 * scopeObj.traceObjects.at( name ).timebase ) / it.size();
+            double curveElement = ( it2 * scopeObj.traceObjects.at( name ).timebase );// / it.size();
             curveAreas.push_back( curveElement );
         }
         sum_of_elems = std::accumulate( curveAreas.begin(), curveAreas.end(), 0.0 );
@@ -998,7 +1000,6 @@ double scopeInterface::getEDFCUPQ()
 std::vector< std::string > scopeInterface::getScopeNames()
 {
     std::vector< std::string > scopeNames;
-    scopeNames.push_back( scopeObj.name );
     for( auto && iter : scopeObj.traceObjects )
     {
         message( "Scope Name ", iter.first );

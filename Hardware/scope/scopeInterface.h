@@ -87,8 +87,8 @@ class scopeInterface : public interface
         VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
         scopeStructs::scopeObject scopeObject;
 
-        void killTraceCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeTraceData * td );
-        void killNumCallBack( scopeStructs::monitorStruct * ms, scopeStructs::scopeNumObject * scno );
+        void killTraceCallBack( scopeStructs::monitorStruct * ms );
+        void killNumCallBack( scopeStructs::monitorStruct * ms );
         bool killTraceMonitors();
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
