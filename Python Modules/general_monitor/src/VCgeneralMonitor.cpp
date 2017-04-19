@@ -83,6 +83,39 @@ VCgeneralMonitor::~VCgeneralMonitor()
     }
 }
 //______________________________________________________________________________
+boost::python::dict VCgeneralMonitor::getValue(const std::vector<std::string>& ids )
+{
+    std::vector<std::string> valid_ids;
+    for(auto && it : ids )
+    {
+        if( isValidID(it) )
+            valid_ids.push_back(it);
+    }
+    boost::python::dict r;
+
+    for(auto && it : valid_ids )
+    {
+        r[it] = getValue(it);
+    }
+    return r;
+}
+//______________________________________________________________________________
+boost::python::dict VCgeneralMonitor::getCounterAndValue(const std::vector<std::string>& ids)
+{
+    std::vector<std::string> valid_ids;
+    for(auto && it : ids )
+    {
+        if( isValidID(it) )
+            valid_ids.push_back(it);
+    }
+    boost::python::dict r;
+    for(auto && it : valid_ids )
+    {
+        r[it] = getCounterAndValue(it);
+    }
+    return r;
+}
+//______________________________________________________________________________
 boost::python::object VCgeneralMonitor::getValue(const std::string & id )
 {
     if(isIntPV(id) )
@@ -522,72 +555,27 @@ if(isIntPV(id) )
     }
     return 0; //MAGIC_NUMBER
 }
-
-
 //______________________________________________________________________________
-//template<typename T>
-//T VCgeneralMonitor::getValue(const std::string & id )
-//{
-//    gmStructs::pvStruct* pvs = nullptr;
-////    success = false;
-//    T r;
-//    if(isIntPV(id) )
-//    {
-//        message("getPVStruct ",  id, " isIntPV");
-//        if( entryExists(intPVMap, id) )
-//        {
-//             r = intPVMap[id].data[0]->v;
-//            //message("getPVStruct found ",  id, " in intPVMap");
-////            success = true;
-//        }
-//    }
-//    else if(isFloatPV(id) )
-//    {
-//        message("getPVStruct ",  id, " isFloatPV");
-//
-//        if( entryExists(floatPVMap, id) )
-//        {
-//            r = floatPVMap[id].data[0]->v;
-//        }
-//    }
-//    else if(isEnumPV(id) )
-//    {
-//        message("getPVStruct ",  id, " isEnumPV");
-//
-//        if( entryExists(enumPVMap, id) )
-//        {
-//            r = enumPVMap[id].data[0]->v;
-//        }
-//    }
-//    else if(isCharPV(id) )
-//    {
-//        message("getPVStruct ",  id, " isCharPV");
-//
-//        if( entryExists(charPVMap, id) )
-//        {
-//            r = charPVMap[id].data[0]->v;
-//        }
-//    }
-//    else if(isLongPV(id) )
-//    {
-//        message("getPVStruct ",  id, " isLongPV");
-//
-//        if( entryExists(longPVMap, id) )
-//        {
-//            r = longPVMap[id].data[0]->v;
-//        }
-//    }
-//    else if(isDoublePV(id) )
-//    {
-//        message("getPVStruct ",  id, " isDoublePV");
-//
-//        if( entryExists(doublePVMap, id) )
-//        {
-//            r = doublePVMap[id].data[0]->v;
-//        }
-//    }
-//    return r;
-//}
+bool VCgeneralMonitor::isValidID(const std::string& id)
+{
+    if(entryExists(intPVMap, id) )
+        return true;
+    else if(entryExists(floatPVMap, id) )
+        return true;
+    else if(entryExists(enumPVMap, id) )
+        return true;
+    else if(entryExists(charPVMap, id) )
+        return true;
+    else if(entryExists(longPVMap, id) )
+        return true;
+    else if(entryExists(doublePVMap, id) )
+        return true;
+    else if(entryExists(vec_doublePVMap, id) )
+        return true;
+    else if(entryExists(vec_intPVMap, id) )
+        return true;
+    return false;
+}
 //______________________________________________________________________________
 std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std::string & pvType )
 {

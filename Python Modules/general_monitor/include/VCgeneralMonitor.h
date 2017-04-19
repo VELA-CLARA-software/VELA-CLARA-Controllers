@@ -30,11 +30,15 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool disconnectPV(const std::string & id );
 
         boost::python::object getValue(const std::string& id );
+        boost::python::dict getValue(const std::vector<std::string>& ids);
+
         boost::python::object getTotalValue(const std::string& id );
         size_t getCounter(const std::string& id );
 
 
         boost::python::dict getCounterAndValue(const std::string& id);
+        boost::python::dict getCounterAndValue(const std::vector<std::string>& ids);
+
         boost::python::dict getCounterAndTotalValue(const std::string& id);
 
         boost::python::object getValue(const std::string& id, const  int position);
@@ -57,6 +61,7 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
 
         bool isArrayPV(const std::string& id);
 
+        bool isValidID(const std::string& id);
 
       /// These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();
@@ -116,12 +121,12 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
 
         void printTimeStamp(const epicsTimeStamp & stamp);
 
-        std::map<std::string,gmStructs::pvData<int>>            intPVMap;
-        std::map<std::string,gmStructs::pvData<float>>          floatPVMap;
-        std::map<std::string,gmStructs::pvData<unsigned short>> enumPVMap;//DBR_ENUM
-        std::map<std::string,gmStructs::pvData<char>>           charPVMap;
-        std::map<std::string,gmStructs::pvData<long>>           longPVMap;
-        std::map<std::string,gmStructs::pvData<double>>         doublePVMap;
+        std::map<std::string,gmStructs::pvData<int>>                  intPVMap;
+        std::map<std::string,gmStructs::pvData<float>>                floatPVMap;
+        std::map<std::string,gmStructs::pvData<unsigned short>>       enumPVMap;//DBR_ENUM
+        std::map<std::string,gmStructs::pvData<char>>                 charPVMap;
+        std::map<std::string,gmStructs::pvData<long>>                 longPVMap;
+        std::map<std::string,gmStructs::pvData<double>>               doublePVMap;
         std::map<std::string,gmStructs::pvData<std::vector<double>> > vec_doublePVMap;
         std::map<std::string,gmStructs::pvData<std::vector<int>>>     vec_intPVMap;
 
@@ -145,11 +150,13 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         template<typename T, size_t size>
         size_t GetArrLength(T(&)[size]){ return size; }
 };//VCgeneralMonitor
-
+// function pointers for overloads
 boost::python::object(VCgeneralMonitor::*getValue_1)(const std::string&) = &VCgeneralMonitor::getValue;
 boost::python::object(VCgeneralMonitor::*getValue_2)(const std::string&,const int) = &VCgeneralMonitor::getValue;
 boost::python::list(VCgeneralMonitor::*getValue_3)(const std::string&,const int,const int) = &VCgeneralMonitor::getValue;
-
+boost::python::dict(VCgeneralMonitor::*getValue_4)(const std::vector<std::string>&) = &VCgeneralMonitor::getValue;
+boost::python::dict(VCgeneralMonitor::*getCounterAndValue_1)(const std::string&) = &VCgeneralMonitor::getCounterAndValue;
+boost::python::dict(VCgeneralMonitor::*getCounterAndValue_2)(const std::vector<std::string>&) = &VCgeneralMonitor::getCounterAndValue;
 
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
@@ -181,10 +188,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
         .def("getValue", getValue_1,(boost::python::arg("id"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
         .def("getValue", getValue_2,(boost::python::arg("id"),boost::python::arg("index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
         .def("getValue", getValue_3,(boost::python::arg("id"),boost::python::arg("start_index"),boost::python::arg("end_index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return the fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer that region (negtive indices counting from the end of the array should work."))
-
+        .def("getValue", getValue_4,(boost::python::arg("ids"),"get values from multiple ids."))
         .def("getTotalValue", &VCgeneralMonitor::getTotalValue,(boost::python::arg("id"),"get accumulated value of an array PV."))
-        .def("getCounter", &VCgeneralMonitor::getCounter,(boost::python::arg("id"),"get current counter adn value."))
-        .def("getCounterAndValue", &VCgeneralMonitor::getCounterAndValue,(boost::python::arg("id"),"get current counter adn value."))
+        .def("getCounter", &VCgeneralMonitor::getCounter,(boost::python::arg("id"),"get current counter and value."))
+        .def("getCounterAndValue", getCounterAndValue_1,(boost::python::arg("id"),"get current counter and value."))
+        .def("getCounterAndValue", getCounterAndValue_2,(boost::python::arg("ids"),"get current counter and value for multiple ids."))
         .def("getCounterAndTotalValue", &VCgeneralMonitor::getCounterAndTotalValue,(boost::python::arg("id"),"get current accumulated value and counter."))
         .def("isStringPV",   &VCgeneralMonitor::isStringPV,(boost::python::arg("id"),"return true if PV type is a string."))
         .def("isIntPV",      &VCgeneralMonitor::isIntPV,(boost::python::arg("id"),"return true if PV type is an int."))
