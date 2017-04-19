@@ -1,8 +1,13 @@
-#include "VCgeneralMonitor.h"
+// stl
 #include <iostream>
 #include <iomanip>
-#include <epicsTime.h>
+#include <numeric>
 #include <sstream>
+// epics
+#include <epicsTime.h>
+// VC-HWC
+#include "VCgeneralMonitor.h"
+
 
 VCgeneralMonitor::VCgeneralMonitor(const bool shouldShowMessage,const bool  shouldShowDebugMessage ):
 controller( shouldShowMessage, shouldShowDebugMessage ),
@@ -78,12 +83,8 @@ VCgeneralMonitor::~VCgeneralMonitor()
     }
 }
 //______________________________________________________________________________
-//template<typename T>
-//boost::python::object VCgeneralMonitor::getValue(const std::string & id, const int position )
 boost::python::object VCgeneralMonitor::getValue(const std::string & id )
 {
-    gmStructs::pvStruct* pvs = nullptr;
-//    success = false;
     if(isIntPV(id) )
     {
         if(entryExists(intPVMap, id) )
@@ -143,6 +144,187 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id )
     return object();
 }
 //______________________________________________________________________________
+size_t VCgeneralMonitor::getCounter(const std::string & id )
+{
+    size_t r = 0;
+    if(isIntPV(id) )
+    {
+        if(entryExists(intPVMap, id) )
+        {    //message("getPVStruct ",  id, " isIntPV");
+             r = intPVMap[id].data[0]->c;
+        }
+    }
+    else if(isFloatPV(id) )
+    {
+        if(entryExists(floatPVMap, id) )
+        {//message("getPVStruct ",  id, " isFloatPV");
+            r = floatPVMap[id].data[0]->c;
+        }
+    }
+    else if(isEnumPV(id) )
+    {
+        if(entryExists(enumPVMap, id) )
+        {//message("getPVStruct ",  id, " isEnumPV");
+            r = enumPVMap[id].data[0]->c;
+        }
+    }
+    else if(isCharPV(id) )
+    {
+        if( entryExists(charPVMap, id) )
+        {//message("getPVStruct ",  id, " isCharPV");
+            r = charPVMap[id].data[0]->c;
+        }
+    }
+    else if(isLongPV(id) )
+    {
+        if(entryExists(longPVMap, id) )
+        {//message("getPVStruct ",  id, " isLongPV");
+            r = longPVMap[id].data[0]->c;
+        }
+    }
+    else if(isDoublePV(id) )
+    {
+        if(entryExists(doublePVMap, id) )
+        {//message("getPVStruct ",  id, " isDoublePV");
+            r = doublePVMap[id].data[0]->c;
+        }
+    }
+    else if(isArrayDoublePV(id) )
+    {
+        if(entryExists(vec_doublePVMap, id) )
+        {
+            r = vec_doublePVMap[id].data[0]->c;
+        }
+    }
+    else if(isArrayIntPV(id) )
+    {
+        if( entryExists(vec_intPVMap,id) )
+        {
+            r = vec_intPVMap[id].data[0]->c;
+        }
+    }
+    return r;
+}
+//______________________________________________________________________________
+boost::python::dict VCgeneralMonitor::getCounterAndValue(const std::string& id)
+{
+    boost::python::dict r;
+    if(isIntPV(id) )
+    {
+        if(entryExists(intPVMap, id) )
+        {    //message("getPVStruct ",  id, " isIntPV");
+            r[intPVMap[id].data[0]->c] = intPVMap[id].data[0]->v;
+        }
+    }
+    else if(isFloatPV(id) )
+    {
+        if(entryExists(floatPVMap, id) )
+        {//message("getPVStruct ",  id, " isFloatPV");
+            r[floatPVMap[id].data[0]->c] = floatPVMap[id].data[0]->v;
+        }
+    }
+    else if(isEnumPV(id) )
+    {
+        if(entryExists(enumPVMap, id) )
+        {//message("getPVStruct ",  id, " isEnumPV");
+            r[enumPVMap[id].data[0]->c] = enumPVMap[id].data[0]->v;
+        }
+    }
+    else if(isCharPV(id) )
+    {
+        if( entryExists(charPVMap, id) )
+        {//message("getPVStruct ",  id, " isCharPV");
+            r[charPVMap[id].data[0]->c] = charPVMap[id].data[0]->v;
+        }
+    }
+    else if(isLongPV(id) )
+    {
+        if(entryExists(longPVMap, id) )
+        {//message("getPVStruct ",  id, " isLongPV");
+            r[longPVMap[id].data[0]->c] = longPVMap[id].data[0]->v;
+        }
+    }
+    else if(isDoublePV(id) )
+    {
+        if(entryExists(doublePVMap, id) )
+        {//message("getPVStruct ",  id, " isDoublePV");
+            r[doublePVMap[id].data[0]->c] = doublePVMap[id].data[0]->v;
+        }
+    }
+    else if(isArrayDoublePV(id) )
+    {
+        if(entryExists(vec_doublePVMap, id) )
+        {
+            r[vec_doublePVMap[id].data[0]->c] = vec_doublePVMap[id].data[0]->v;
+        }
+    }
+    else if(isArrayIntPV(id) )
+    {
+        if( entryExists(vec_intPVMap,id) )
+        {
+            r[vec_intPVMap[id].data[0]->c] = vec_intPVMap[id].data[0]->v;
+        }
+    }
+    return r;
+}
+//______________________________________________________________________________
+boost::python::dict VCgeneralMonitor::getCounterAndTotalValue(const std::string& id)
+{
+    if( isArrayPV(id) )
+    {
+        if(isArrayDoublePV(id) )
+        {
+            if(entryExists(vec_doublePVMap, id) )
+            {
+                boost::python::dict r;
+                r[vec_doublePVMap[id].data[0]->c] = std::accumulate(vec_doublePVMap[id].data[0]->v.begin(), vec_doublePVMap[id].data[0]->v.end(), 0);
+                return r;
+            }
+        }
+        else if(isArrayIntPV(id) )
+        {
+            if( entryExists(vec_intPVMap,id) )
+            {
+                boost::python::dict r;
+                r[vec_intPVMap[id].data[0]->c] = std::accumulate(vec_intPVMap[id].data[0]->v.begin(), vec_intPVMap[id].data[0]->v.end(), 0);
+                return r;
+            }
+        }
+    }
+    else
+    {
+        return getCounterAndValue(id);
+    }
+}
+//______________________________________________________________________________
+boost::python::object VCgeneralMonitor::getTotalValue(const std::string& id)
+{
+    if( isArrayPV(id) )
+    {
+        if(isArrayDoublePV(id) )
+        {
+            if(entryExists(vec_doublePVMap, id) )
+            {
+                double total = std::accumulate(vec_doublePVMap[id].data[0]->v.begin(), vec_doublePVMap[id].data[0]->v.end(), 0);
+                message("total = ", total);
+                return object(total);
+            }
+        }
+        else if(isArrayIntPV(id) )
+        {
+            if( entryExists(vec_intPVMap,id) )
+            {
+                int total = std::accumulate(vec_intPVMap[id].data[0]->v.begin(), vec_intPVMap[id].data[0]->v.end(), 0);
+                message("total = ", total);
+                return object(total);
+            }
+        }
+    }
+    else
+    {
+        return getValue(id);
+    }
+}
 //______________________________________________________________________________
 boost::python::object VCgeneralMonitor::getValue(const std::string & id,const int index)
 {
@@ -463,6 +645,7 @@ void VCgeneralMonitor::addSingleDouble(const std::string & id,const event_handle
         doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>() );
     }
     doublePVMap[id].data[0]->v = *(double*)args.dbr;// MAGIC_NUMBER
+    doublePVMap[id].data[0]->c += 1;// MAGIC_NUMBER
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::addArrayDouble(const std::string & id,const event_handler_args& args)
@@ -486,6 +669,7 @@ void VCgeneralMonitor::addArrayDouble(const std::string & id,const event_handler
         ++counter;
     }
     //std::cout << "Acquired " << counter << " values " << std::endl;
+    vec_doublePVMap[id].data[0]->c += 1;// MAGIC_NUMBER
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_args& args)
@@ -506,14 +690,6 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
             {
                 addArrayDouble(id,args);
             }
-//
-//
-//            if( doublePVMap[id].data.size() == 0 )
-//            {
-//                doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>() );
-//            }
-//            doublePVMap[id].data[0]->v = *(double*)args.dbr;// MAGIC_NUMBER
-//            //doublePVMap[id].data[0]->t = p->stamp;// MAGIC_NUMBER
             break;
         case  DBR_INT:
             if( intPVMap[id].data.size() == 0 )
@@ -521,6 +697,7 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                 intPVMap[id].data.push_back(new gmStructs::dataEntry<int>() );
             }
             intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
+            intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
             break;
         default:
             message("VCgeneralMonitor::updateValue() default switch");
@@ -629,6 +806,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         }
         intPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         intPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        intPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
 
     }
     else if(isFloatPV(id))
@@ -641,6 +819,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         }
         floatPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         floatPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        floatPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
     }
     else if(isEnumPV(id))
     {
@@ -652,6 +831,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         }
         enumPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         enumPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        enumPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
     }
     else if(isCharPV(id))
     {
@@ -663,6 +843,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         }
         charPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         charPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        charPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
     }
     else if(isLongPV(id))
     {
@@ -674,6 +855,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         }
         longPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         longPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        longPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
     }
     else if(isDoublePV(id))
     {
@@ -685,6 +867,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         }
         doublePVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         doublePVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        doublePVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
 
         debugMessage("updated, value = ", doublePVMap.at(id).data[0]->v);// MAGIC_NUMBER
         printTimeStamp( doublePVMap.at(id).data[0]->t );
@@ -1119,6 +1302,20 @@ bool VCgeneralMonitor::isArrayDoublePV(const std::string & id)
 bool VCgeneralMonitor::isArrayIntPV(const std::string & id)
 {
     return id.substr(0,1) == vecintPrefix  ? true : false;
+}
+//______________________________________________________________________________
+bool VCgeneralMonitor::isArrayPV(const std::string& id)
+{
+    bool r = false;
+    if(isArrayDoublePV(id))
+    {
+        r = true;
+    }
+    else if(isArrayIntPV(id))
+    {
+        r = true;
+    }
+    return r;
 }
 //______________________________________________________________________________
 bool VCgeneralMonitor::isConnected(const std::string & id)

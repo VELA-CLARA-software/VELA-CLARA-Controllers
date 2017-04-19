@@ -28,13 +28,17 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
 
         std::string connectPV(const std::string & PVName,const std::string & PYType );
         bool disconnectPV(const std::string & id );
-        //boost::python::object getValue(const std::string & id);
-        //boost::python::object getValue(const std::string & id, const  int position );
-        //boost::python::object getValue(const std::string & id, const  int start_position, const  int end_position);
 
-        boost::python::object getValue(const std::string & id );
-        boost::python::object getValue(const std::string & id, const  int position );
-        boost::python::list getValue(const std::string & id, const  int start_position, const  int end_position);
+        boost::python::object getValue(const std::string& id );
+        boost::python::object getTotalValue(const std::string& id );
+        size_t getCounter(const std::string& id );
+
+
+        boost::python::dict getCounterAndValue(const std::string& id);
+        boost::python::dict getCounterAndTotalValue(const std::string& id);
+
+        boost::python::object getValue(const std::string& id, const  int position);
+        boost::python::list getValue(const std::string& id, const  int start_position, const  int end_position);
 
         size_t getPVCount(const std::string & id  );
 
@@ -48,8 +52,10 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool isConnected(const std::string & id);
         bool isMonitoring(const std::string & id);
 
-        bool isArrayDoublePV(const std::string & id);
-        bool isArrayIntPV(const std::string & id);
+        bool isArrayDoublePV(const std::string& id);
+        bool isArrayIntPV(const std::string& id);
+
+        bool isArrayPV(const std::string& id);
 
 
       /// These are pure virtual methods, so need to have some implmentation in derived classes
@@ -144,6 +150,7 @@ boost::python::object(VCgeneralMonitor::*getValue_1)(const std::string&) = &VCge
 boost::python::object(VCgeneralMonitor::*getValue_2)(const std::string&,const int) = &VCgeneralMonitor::getValue;
 boost::python::list(VCgeneralMonitor::*getValue_3)(const std::string&,const int,const int) = &VCgeneralMonitor::getValue;
 
+
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
 {    // Things that you want to use in python must be exposed:
@@ -173,17 +180,23 @@ BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
         .def("getPVCount",       &VCgeneralMonitor::getPVCount )
         .def("getValue", getValue_1,(boost::python::arg("id"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
         .def("getValue", getValue_2,(boost::python::arg("id"),boost::python::arg("index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
-        .def("getValue", getValue_3,(boost::python::arg("id"),boost::python::arg("start_index"),boost::python::arg("end_index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return the fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
-        .def("isStringPV",   &VCgeneralMonitor::isStringPV )
-        .def("isIntPV",      &VCgeneralMonitor::isIntPV )
-        .def("isFloatPV",    &VCgeneralMonitor::isFloatPV )
-        .def("isEnumPV",     &VCgeneralMonitor::isEnumPV )
-        .def("isCharPV",     &VCgeneralMonitor::isCharPV )
-        .def("isLongPV",     &VCgeneralMonitor::isLongPV )
-        .def("isDoublePV",   &VCgeneralMonitor::isDoublePV )
-        .def("isConnected",  &VCgeneralMonitor::isConnected )
-        .def("isMonitoring", &VCgeneralMonitor::isMonitoring )
-        .def("disconnectPV", &VCgeneralMonitor::disconnectPV )
+        .def("getValue", getValue_3,(boost::python::arg("id"),boost::python::arg("start_index"),boost::python::arg("end_index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return the fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer that region (negtive indices counting from the end of the array should work."))
+
+        .def("getTotalValue", &VCgeneralMonitor::getTotalValue,(boost::python::arg("id"),"get accumulated value of an array PV."))
+        .def("getCounter", &VCgeneralMonitor::getCounter,(boost::python::arg("id"),"get current counter adn value."))
+        .def("getCounterAndValue", &VCgeneralMonitor::getCounterAndValue,(boost::python::arg("id"),"get current counter adn value."))
+        .def("getCounterAndTotalValue", &VCgeneralMonitor::getCounterAndTotalValue,(boost::python::arg("id"),"get current accumulated value and counter."))
+        .def("isStringPV",   &VCgeneralMonitor::isStringPV,(boost::python::arg("id"),"return true if PV type is a string."))
+        .def("isIntPV",      &VCgeneralMonitor::isIntPV,(boost::python::arg("id"),"return true if PV type is an int."))
+        .def("isFloatPV",    &VCgeneralMonitor::isFloatPV,(boost::python::arg("id"),"return true if PV type is a float."))
+        .def("isEnumPV",     &VCgeneralMonitor::isEnumPV,(boost::python::arg("id"),"return true if PV type is an enum."))
+        .def("isCharPV",     &VCgeneralMonitor::isCharPV,(boost::python::arg("id"),"return true if PV type is a char."))
+        .def("isLongPV",     &VCgeneralMonitor::isLongPV,(boost::python::arg("id"),"return true if PV type is a long."))
+        .def("isDoublePV",   &VCgeneralMonitor::isDoublePV,(boost::python::arg("id"),"return true if PV type is a double."))
+        .def("isArrayPV",   &VCgeneralMonitor::isArrayPV,(boost::python::arg("id"),"return true if PV type is an array."))
+        .def("isConnected",  &VCgeneralMonitor::isConnected,(boost::python::arg("id"),"return true if id is connected."))
+        .def("isMonitoring", &VCgeneralMonitor::isMonitoring,(boost::python::arg("id"),"return true if id is monitoring."))
+        .def("disconnectPV", &VCgeneralMonitor::disconnectPV,(boost::python::arg("id"),"disconnect ID and cancel all EPICS subscriptions."))
         .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
         .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
         ;

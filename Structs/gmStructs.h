@@ -34,9 +34,10 @@ namespace gmStructs
     };
     template <typename T>
     struct dataEntry
-    {   //dataEntry()//defaults ?
-        epicsTimeStamp t;
-        T  v;
+    {   dataEntry():c(0){}
+        epicsTimeStamp t; // epics timestamp for value
+        size_t         c; // count, ho mnay times has epics updated this value
+        T              v; // the actual value EPICS is to update
     };
     // monType could be used to switch in the staticCallbackFunction
     // For the shutter this is basically redundant, there is only one monitor: "Sta"
