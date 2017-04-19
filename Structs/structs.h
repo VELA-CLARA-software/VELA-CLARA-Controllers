@@ -15,16 +15,16 @@
 //
 #include <boost/preprocessor.hpp>
 #define X_DEFINE_ENUM_WITH_STRING_CONVERSIONS_TOSTRING_CASE(r, data, elem)    \
-    case elem : return BOOST_PP_STRINGIZE( elem );
-#define DEFINE_ENUM_WITH_STRING_CONVERSIONS( name, enumerators )              \
+    case elem : return BOOST_PP_STRINGIZE(elem );
+#define DEFINE_ENUM_WITH_STRING_CONVERSIONS(name, enumerators )              \
     enum name {                                                               \
-        BOOST_PP_SEQ_ENUM( enumerators )                                      \
+        BOOST_PP_SEQ_ENUM(enumerators )                                      \
     };                                                                        \
-    inline  std::string ENUM_TO_STRING( name v )                              \
+    inline  std::string ENUM_TO_STRING(name v )                              \
     {                                                                         \
-        switch( v )                                                           \
+        switch(v )                                                           \
         {                                                                     \
-            BOOST_PP_SEQ_FOR_EACH(                                            \
+            BOOST_PP_SEQ_FOR_EACH(                                           \
                 X_DEFINE_ENUM_WITH_STRING_CONVERSIONS_TOSTRING_CASE,          \
                 name,                                                         \
                 enumerators                                                   \
@@ -45,30 +45,30 @@ namespace VELA_ENUM/// this seems like a really out of date name now...
    /// >>>> ???
    /// SHould these go here? should the names be rationalised?
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SHUTTER_STATE, (SHUTTER_CLOSED) (SHUTTER_OPEN) (SHUTTER_TIMING) (SHUTTER_ERROR) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SHUTTER_STATE, (SHUTTER_CLOSED) (SHUTTER_OPEN) (SHUTTER_TIMING) (SHUTTER_ERROR) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_MODE, (OFFLINE ) (VIRTUAL ) (PHYSICAL) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MACHINE_AREA, (VELA_INJ) (VELA_BA1) (VELA_BA2) (CLARA_PH1)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MACHINE_MODE, (OFFLINE ) (VIRTUAL ) (PHYSICAL) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MACHINE_AREA, (VELA_INJ) (VELA_BA1) (VELA_BA2) (CLARA_PH1)
                                                        (CLARA_INJ) (CLARA_2_VELA) (CLARA_S01) (CLARA_S02) (UNKNOWN_AREA) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MAG_PSU_STATE, (MAG_PSU_OFF) (MAG_PSU_ON) (MAG_PSU_TIMING) (MAG_PSU_ERROR) (MAG_PSU_NONE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE, (MAG_PSU_OFF) (MAG_PSU_ON) (MAG_PSU_TIMING) (MAG_PSU_ERROR) (MAG_PSU_NONE) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DIAG_TYPE, (WCM) (ICT1) (ED_FCUP) (ICT2) (FCUP) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DIAG_TYPE, (WCM) (ICT1) (ED_FCUP) (ICT2) (FCUP) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( QBOX_STATE, (QBOX_STOP) (QBOX_RUN) (QBOX_TIMING) (QBOX_ERROR) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(QBOX_STATE, (QBOX_STOP) (QBOX_RUN) (QBOX_TIMING) (QBOX_ERROR) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( TRIG_STATE, (TRIG) (NOTRIG) (TRIG_ERROR) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(TRIG_STATE, (TRIG) (NOTRIG) (TRIG_ERROR) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( VALVE_STATE, (VALVE_CLOSED) (VALVE_OPEN) (VALVE_TIMING) (VALVE_ERROR) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(VALVE_STATE, (VALVE_CLOSED) (VALVE_OPEN) (VALVE_TIMING) (VALVE_ERROR) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( IMG_STATE, (IMG_BAD) (IMG_GOOD) (IMG_ERROR) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(IMG_STATE, (IMG_BAD) (IMG_GOOD) (IMG_ERROR) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( ILOCK_NUMBER, (ILOCK_1 ) (ILOCK_2 ) (ILOCK_3 ) (ILOCK_4 ) (ILOCK_5 ) (ILOCK_6 ) (ILOCK_7 )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(ILOCK_NUMBER, (ILOCK_1 ) (ILOCK_2 ) (ILOCK_3 ) (ILOCK_4 ) (ILOCK_5 ) (ILOCK_6 ) (ILOCK_7 )
                                                        (ILOCK_8 ) (ILOCK_9 ) (ILOCK_10) (ILOCK_11) (ILOCK_12) (ILOCK_13) (ILOCK_14)
                                                        (ILOCK_15) (ILOCK_16) (ILOCK_17) (ILOCK_18) (ILOCK_19) (ILOCK_20) (ILOCK_21)
                                                        (ILOCK_22) (ILOCK_23) (ILOCK_24) (ILOCK_ERR) )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( ILOCK_STATE, (ILOCK_BAD) (ILOCK_GOOD) (ILOCK_ERROR) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(ILOCK_STATE, (ILOCK_BAD) (ILOCK_GOOD) (ILOCK_ERROR) )
 
 
 
@@ -83,7 +83,7 @@ namespace VELA_ENUM/// this seems like a really out of date name now...
 
     struct iLockPVStruct
     {
-        iLockPVStruct() : COUNT(1), CHTYPE( DBR_ENUM ), MASK( DBE_VALUE ) {} // proviude a default constructor
+        iLockPVStruct() : COUNT(1), CHTYPE(DBR_ENUM ), MASK(DBE_VALUE ) {} // proviude a default constructor
         chid                CHID;
         std::string         pv, objName;
         const unsigned long COUNT, MASK;
@@ -94,7 +94,7 @@ namespace VELA_ENUM/// this seems like a really out of date name now...
 
     struct iLockMonitorStruct
     {
-        iLockMonitorStruct() : objName("UNKNOWN"), iLockState(nullptr), interface(nullptr), iLockNumber( ILOCK_ERR ) {} // proviude a default constructor
+        iLockMonitorStruct() : objName("UNKNOWN"), iLockState(nullptr), interface(nullptr), iLockNumber(ILOCK_ERR ) {} // proviude a default constructor
         std::string objName;
         VELA_ENUM::ILOCK_NUMBER iLockNumber;  /// Used in debugMessage;
         VELA_ENUM::ILOCK_STATE  * iLockState; /// this value comes from the map in the derived hardware class

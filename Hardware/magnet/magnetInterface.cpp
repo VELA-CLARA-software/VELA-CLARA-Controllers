@@ -1509,7 +1509,7 @@ bool magnetInterface::isON(const std::string & magName )
     return ans;
 }
 //______________________________________________________________________________
-bool magnetInterface::isOFF_psuN( const std::string & magName )
+bool magnetInterface::isOFF_psuN( const std::string & magName ) !! this may not be correct, as it could be timing, or ERROR!
 {
     return !isON_psuN(magName);
 }

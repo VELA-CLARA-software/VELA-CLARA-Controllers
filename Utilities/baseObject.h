@@ -29,50 +29,50 @@ class baseObject
 
         const bool * SHOW_DEBUG_MESSAGES_PTR, * SHOW_MESSAGES_PTR;
 
-        /// using default template types makes this easy, ( c++11 feature !? )
+        /// using default template types makes this easy, (c++11 feature !? )
         /// these functions allow you to pass up to 7 arguments for a message,
         /// if you would want more just extend etc.
 
         void debugMessage(const std::stringstream &  p1)
         {
-            if( *SHOW_DEBUG_MESSAGES_PTR )
-                printMessage( p1.str() );
+            if(*SHOW_DEBUG_MESSAGES_PTR )
+                printMessage(p1.str() );
         }
         void message(const std::stringstream &  p1)
         {
-            if( *SHOW_MESSAGES_PTR )
-                printMessage( p1.str() );
+            if(*SHOW_MESSAGES_PTR )
+                printMessage(p1.str() );
         }
 
         template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string  , typename Z = std::string, typename A = std::string   >
         void debugMessage(const T p1, const U p2 = "" , const V p3 = "",const W p4 = "", const X p5 = "",const  Y p6 = "", const Z p7 = "", const A p8 = "" )
         {
-            if( *SHOW_DEBUG_MESSAGES_PTR )
-                printMessage( p1, p2, p3, p4, p5, p6, p7, p8);
+            if(*SHOW_DEBUG_MESSAGES_PTR )
+                printMessage(p1, p2, p3, p4, p5, p6, p7, p8);
         }
 
         template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string  , typename Z = std::string, typename A = std::string   >
         void message(const T p1,const  U p2 = "" ,const  V p3 = "",const  W p4 = "",const  X p5 = "",const  Y p6 = "", const Z p7 = "",  const A p8 = "" )
         {
-            if( *SHOW_MESSAGES_PTR )
-                printMessage( p1, p2, p3, p4, p5, p6, p7, p8);
+            if(*SHOW_MESSAGES_PTR )
+                printMessage(p1, p2, p3, p4, p5, p6, p7, p8);
         }
 
         template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string, typename Z = std::string, typename A = std::string  >
-        void printMessage( const T p1,const  U p2 = "" , const V p3 = "",const  W p4 = "", const X p5 = "", const Y p6 = "",const Z p7 = "",  const A p8 = "" )
+        void printMessage(const T p1,const  U p2 = "" , const V p3 = "",const  W p4 = "", const X p5 = "", const Y p6 = "",const Z p7 = "",  const A p8 = "" )
         {
             std::stringstream ss;
             ss << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8 <<"\n";
-            printf( ss.str().c_str() );
+            printf(ss.str().c_str() );
         }
 
         template<typename T = int >
-        bool areSame( const T a, const T b, const T epsilon = 0)
+        bool areSame(const T a, const T b, const T epsilon = 0)
         {
-            if( a == b )
+            if(a == b )
                 return true;
             else
-                return std::abs( a - b ) < epsilon;
+                return std::abs(a - b ) < epsilon;
         }
 
         template<typename T = int >
@@ -81,61 +81,61 @@ class baseObject
             return !areSame(a, b, epsilon);
         }
 
-        bool polaritiesMatch( const std::vector< double > & vals );
+        bool polaritiesMatch(const std::vector< double > & vals );
 
         template<typename T = double >
-        double roundToN( const T a, const size_t n )
+        double roundToN(const T a, const size_t n )
         {
             double p = pow (10, n);  /// MAGIC_NUMBER
             return std::round(a * p) / p;
         }
 
         template<typename T = std::string >
-        void getSetDifference( const std::vector< T > & a, const std::vector< T > & b, std::vector< T > & c  )
+        void getSetDifference(const std::vector< T > & a, const std::vector< T > & b, std::vector< T > & c  )
         {
             c.clear();
             std::vector< T > aCopy = a;
             std::vector< T > bCopy = b;
 
-            std::sort( aCopy.begin(), aCopy.end() );
-            std::sort( bCopy.begin(), bCopy.end() );
+            std::sort(aCopy.begin(), aCopy.end() );
+            std::sort(bCopy.begin(), bCopy.end() );
 
 
-            if( aCopy.size() > bCopy.size()  )
-                c.resize( aCopy.size() );
+            if(aCopy.size() > bCopy.size()  )
+                c.resize(aCopy.size() );
             else
-                c.resize( bCopy.size() );
-            auto it = std::set_difference( aCopy.begin(), aCopy.end(), bCopy.begin(), bCopy.end(), c.begin());
-            c.resize( it - c.begin());
+                c.resize(bCopy.size() );
+            auto it = std::set_difference(aCopy.begin(), aCopy.end(), bCopy.begin(), bCopy.end(), c.begin());
+            c.resize(it - c.begin());
         }
 
         std::string currentDateTime();
 
 //        template<typename T >
-//        bool waitFor( ABoolMemFn f1, RFGunInterface & obj, std::string & m,  time_t waitTime)
+//        bool waitFor(ABoolMemFn f1, RFGunInterface & obj, std::string & m,  time_t waitTime)
 //        {
-//            return waitFor( f1, obj, m.c_str(), waitTime);
+//            return waitFor(f1, obj, m.c_str(), waitTime);
 //        }
 //
-//        bool RFGunInterface::waitFor( ABoolMemFn f1, RFGunInterface & obj, const char * m,  time_t waitTime)
+//        bool RFGunInterface::waitFor(ABoolMemFn f1, RFGunInterface & obj, const char * m,  time_t waitTime)
 //        {
-//            time_t startTime = time( 0 );
+//            time_t startTime = time(0 );
 //
 //            bool timedOut    = false;
 //
 //            bool state = false;
 //
-//            while( true )
+//            while(true )
 //            {
-//                if( CALL_MEMBER_FN(obj, f1)() )
+//                if(CALL_MEMBER_FN(obj, f1)() )
 //                    break;
 //
-//                else if( time(0) > startTime + waitTime )
+//                else if(time(0) > startTime + waitTime )
 //                    timedOut = true;
 //
-//                if( timedOut )
+//                if(timedOut )
 //                {
-//                    message( m );
+//                    message(m );
 //                    break;
 //                }
 //            }

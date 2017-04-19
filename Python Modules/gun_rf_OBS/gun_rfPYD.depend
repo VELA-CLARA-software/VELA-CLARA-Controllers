@@ -1,0 +1,169 @@
+# depslib dependency file v1.0
+1483526951 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1489142105 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1488470777 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1485429777 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1486661318 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1489058621 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1483526955 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1487872406 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1487872406 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1490177939 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+
+1483526951 source:d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguncontroller.cpp
+	"RFGunController.h"
+
+1483526951 d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguncontroller.h
+	<string>
+	<vector>
+	<map>
+	"RFGunInterface.h"
+	"controller.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1483526951 d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguninterface.h
+	"interface.h"
+	"RFGunStructs.h"
+	"RFGunConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
+1483526955 d:\vela\git projects\vela-clara-controllers\structs\rfgunstructs.h
+	"structs.h"
+	<vector>
+	<string>
+	<map>
+	<cadef.h>
+
+1483526955 d:\vela\git projects\vela-clara-controllers\utilities\rfgunconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"RFGunStructs.h"
+
+1483526951 source:d:\vela\git projects\vela-clara-controllers\hardware\rfgun\rfguninterface.cpp
+	"RFGunInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<thread>
+	<time.h>
+
+1483526955 source:d:\vela\git projects\vela-clara-controllers\utilities\rfgunconfigreader.cpp
+	"RFGunConfigReader.h"
+	"configDefinitions.h"
+	"RFGunStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1483526952 source:d:\vela\git projects\vela-clara-controllers\python modules\gun_rf\main.cpp
+
+1483526953 source:d:\vela\git projects\vela-clara-controllers\python modules\gun_rf\src\vcgun_rf.cpp
+	"VCgun_RF.h"
+	<iostream>
+
+1483526952 d:\vela\git projects\vela-clara-controllers\python modules\gun_rf\include\vcgun_rf.h
+	<string>
+	"screenController.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+
+1487255929 d:\vela\git projects\vela-clara-controllers\hardware\screen\screencontroller.h
+	"screenStructs.h"
+	"screenInterface.h"
+	"controller.h"
+	"structs.h"
+	<string>
+	<vector>
+
+1487264082 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<string>
+	<map>
+	<thread>
+	<cadef.h>
+
+1487255966 d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.h
+	"interface.h"
+	"screenStructs.h"
+	"screenConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+
+1487255985 d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"screenStructs.h"
+

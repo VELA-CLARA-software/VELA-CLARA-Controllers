@@ -178,11 +178,11 @@ class magnetInterface : public interface
         std::string              getManufacturer( const std::string & magName );
         std::vector<std::string> getManufacturer( const std::vector< std::string > & magNames );
       ///
-        std::string               getSerialNumber( const std::string & magName );
-        std::vector<std::string>  getSerialNumber( const std::vector< std::string > & magName );
+        std::string               getSerialNumber(const std::string & magName );
+        std::vector<std::string>  getSerialNumber(const std::vector< std::string > & magName );
       ///
-        std::string               getMagnetBranch( const std::string & magName );
-        std::vector<std::string>  getMagnetBranch( const std::vector< std::string > & magName );
+        std::string               getMagnetBranch(const std::string & magName );
+        std::vector<std::string>  getMagnetBranch(const std::vector< std::string > & magName );
       ///
         std::string               getMeasurementDataLocation( const std::string & magName );
         std::vector<std::string>  getMeasurementDataLocation( const std::vector< std::string > & magName );
@@ -197,23 +197,23 @@ class magnetInterface : public interface
         /// AllmagnetData gets a dummy magnet to return
         std::string dummyName;
 
-        void killMonitor( magnetStructs::monitorStruct * ms );
+        void killMonitor(magnetStructs::monitorStruct* ms);
 
         void initialise();
         bool initObjects();
         void addDummyElementToAllMAgnetData();
         void initChids();
-        void addChannel( const std::string & pvRoot, magnetStructs::pvStruct & pv );
+        void addChannel(const std::string& pvRoot, magnetStructs::pvStruct & pv);
         void startMonitors();
 
-        std::map< std::string, magnetStructs::magnetObject > allMagnetData;
+        std::map<std::string, magnetStructs::magnetObject> allMagnetData;
         magnetStructs::degaussValues degStruct;
-        std::vector<  magnetStructs::monitorStruct* > continuousMonitorStructs; /// vector of monitors to pass along with callback function
+        std::vector<magnetStructs::monitorStruct*> continuousMonitorStructs; /// vector of monitors to pass along with callback function
 
-        static void staticEntryMagnetMonitor( const event_handler_args args);
+        static void staticEntryMagnetMonitor(const event_handler_args args);
 
-        void updateRI( const double value, const std::string & magName );
-        void updateSI( const double value, const std::string & magName );
+        void updateRI(const double value, const std::string& magName);
+        void updateSI(const double value, const std::string& magName);
 
         void updateRI_WithPol( const std::string & magName );
         void updateSI_WithPol( const std::string & magName );
@@ -240,17 +240,17 @@ class magnetInterface : public interface
 
         bool shouldPolarityFlip( const std::string & magName, const double val );
         bool canNRFlip(const std::string & magName );
-        const vec_b flipNR( const vec_s & magNames );
+        const vec_b flipNR(const vec_s & magNames );
 
-        bool switchONpsu_N( const vec_s & magNames );
-        bool switchONpsu_R( const vec_s & magNames );
+        bool switchONpsu_N(const vec_s & magNames );
+        bool switchONpsu_R(const vec_s & magNames );
 
-        std::vector< chid >   getCHIDs( const vec_s & magNames  );
-        std::vector< chtype > getCHTYPSES( const vec_s & magNames  );
+        std::vector<chid>   getCHIDs(const vec_s & magNames  );
+        std::vector<chtype> getCHTYPSES(const vec_s & magNames  );
 
-        bool sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1="", const std::string & m2="");
+        bool sendCommand(const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1="", const std::string & m2="");
         bool sendCommandCLARA(const std::vector<chtype*> & CHTYPE, const std::vector< chid* > & CHID, magnetStructs::MAG_PV_TYPE pvtype,const std::string & m1="" );
-        bool togglePSU( const vec_s & magNames, magnetStructs::MAG_PV_TYPE pvtype, magnetStructs::MAG_PSU_TYPE psutype);
+        bool togglePSU(const vec_s & magNames, magnetStructs::MAG_PV_TYPE pvtype, magnetStructs::MAG_PSU_TYPE psutype);
 
         /// DEGAUSS STUFF
         static void staticEntryDeGauss(const magnetStructs::degaussStruct & ds );

@@ -68,8 +68,8 @@ class llrfController : public controller
 
 
       // These are pure virtual methods, so need to have some implmentation in derived classes
-        virtual double get_CA_PEND_IO_TIMEOUT();
-        virtual void   set_CA_PEND_IO_TIMEOUT( double val );
+        double get_CA_PEND_IO_TIMEOUT();
+        void   set_CA_PEND_IO_TIMEOUT( double val );
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
         std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
       // any functions that return a map need a wrapper to convert to a python dictionary

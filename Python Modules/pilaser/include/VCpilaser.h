@@ -117,8 +117,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
         .def_readonly("hPos",      &pilaserStructs::pilaserObject::hPos,
                       "The horizontal position of the laser on the cathode [mm hopefully]")
         .def_readonly("vPos",      &pilaserStructs::pilaserObject::vPos,
-                      "The vertical position of the laser on the cathode [mm hopefully]
-                      )
+                      "The vertical position of the laser on the cathode [mm hopefully]" )
         .def_readonly("intensity", &pilaserStructs::pilaserObject::intensity,
                       "The intensity of the laser on the cathode [mJ ??]")
 //        .def_readonly("numIlocks", &pilaserStructs::pilaserObject::numIlocks,

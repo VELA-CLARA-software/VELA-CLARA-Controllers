@@ -44,10 +44,11 @@ namespace UTL
     const std::string VELA_SCOPE_TRACE_CONFIG          = "velaQScopeTrace.config";
     const std::string CLARA_SCOPE_CONFIG               = "claraQScope.config";
     const std::string CLARA_SCOPE_TRACE_CONFIG         = "claraQScopeTrace.config";
-/// VELA Gun
+/// Gun
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
-    const std::string VELA_RF_GUN_MOD_CONFIG           = "velaRFGunModulator.config";
+    const std::string RF_GUN_MOD_CONFIG                = "RFallGunProtsulator.config";
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
+    const std::string RF_GUN_PROTECTION_CONFIG          = "RFGunProtection.config";
 /// Magnets
     const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
     const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
@@ -98,6 +99,7 @@ namespace UTL
     const std::string PV_SUFFIX_ON          = "PV_SUFFIX_ON";
     const std::string PV_SUFFIX_OFF         = "PV_SUFFIX_OFF";
     const std::string PV_SUFFIX_STA         = "PV_SUFFIX_STA";
+    const std::string PV_SUFFIX_RST         = "PV_SUFFIX_RST";
     const std::string NUMBER_OF_INTERLOCKS  = "NUMBER_OF_INTERLOCKS";
 
     const std::string PV_COUNT  = "PV_COUNT" ;
@@ -158,13 +160,13 @@ namespace UTL
     const std::string MN                    = "MN";
     const std::string XN                    = "XN";
     const std::string YN                    = "YN";
-
     // Modulator
-    const std::string PV_SUFFIX_RESET     = "PV_SUFFIX_RESET";
-    const std::string PV_SUFFIX_STATESET  = "PV_SUFFIX_STATESET";
-    const std::string PV_SUFFIX_STATEREAD = "PV_SUFFIX_STATEREAD";
-    const std::string PV_SUFFIX_EXILOCK1  = "PV_SUFFIX_EXILOCK1";
-    const std::string PV_SUFFIX_WARMUPT   = "PV_SUFFIX_WARMUPT";
+    const std::string PV_SUFFIX_GUN_MOD_RESET     = "PV_SUFFIX_GUN_MOD_RESET";
+    const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
+    const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
+    const std::string PV_SUFFIX_GUN_MOD_EXILOCK1  = "PV_SUFFIX_GUN_MOD_EXILOCK1";
+    const std::string PV_SUFFIX_GUN_MOD_EXILOCK2  = "PV_SUFFIX_GUN_MOD_EXILOCK2";
+    const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";
     const std::string MAG_GANG_MEMBER = "MAG_GANG_MEMBER";
