@@ -75,7 +75,6 @@ class gunProtInterface : public interface
         void addChannel(const std::string & pvRoot, rfProtStructs::pvStruct & pv );
         void startMonitors();
 
-
         bool sendCommand(const std::vector<chtype*>& CHTYPE,const std::vector<chid*>& CHID, const std::string& m1, const std::string& m2);
         bool sendCommand(const chtype& CHTYPE, const chid& CHID, const std::string& m1, const std::string& m2);
 
@@ -83,9 +82,10 @@ class gunProtInterface : public interface
 
         std::vector<rfProtStructs::monitorStruct*> continuousMonitorStructs;
         // all EPICS callbacks route here
-        static void staticEntryallGunProtsMonitor(const event_handler_args args);
+        static void staticEntryMonitor(const event_handler_args args);
 
         void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const unsigned short value);
+        void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const event_handler_args args);
 
         gunProtConfigReader configReader; /// class member so we can pass in file path in ctor
 };

@@ -17,29 +17,53 @@
 #include <iostream>
 #include <sstream>
 
-//controller::controller() : SHOW_DEBUG_MESSAGES(true ) , SHOW_MESSAGES(true ), baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES ){}
-controller::controller(bool show_messages, bool show_debug_messages):SHOW_DEBUG_MESSAGES(show_debug_messages),
-SHOW_MESSAGES(show_messages), baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES ){}
+controller::controller(bool show_messages, bool show_debug_messages):
+SHOW_DEBUG_MESSAGES(show_debug_messages),
+SHOW_MESSAGES(show_messages),
+baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES)
+{
+    if(show_messages)
+    {
+        messagesOn();
+    }
+    else
+    {
+        messagesOff();
+    }
+    if(show_debug_messages)
+    {
+        debugMessagesOn();
+    }
+    else
+    {
+        debugMessagesOff();
+    }
+
+}
 //______________________________________________________________________________
 controller::~controller(){}
 //______________________________________________________________________________
 void controller::debugMessagesOn()
 {
+    std::cout << "debugMessages On" << std::endl;
     SHOW_DEBUG_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::debugMessagesOff()
 {
+    std::cout << "debugMessages Off" << std::endl;
     SHOW_DEBUG_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::messagesOn()
 {
+    std::cout << "messages On" << std::endl;
     SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::messagesOff()
 {
+    std::cout << "messages Off" << std::endl;
     SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
