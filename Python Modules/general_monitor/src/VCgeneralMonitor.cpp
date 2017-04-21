@@ -627,7 +627,7 @@ void VCgeneralMonitor::staticEntryMonitor(const event_handler_args args)
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::addSingleDouble(const std::string & id,const event_handler_args& args)
-{   message("addSingleDouble called");
+{   //message("addSingleDouble called");
     if( doublePVMap[id].data.size() == 0 )
     {
         doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>() );
@@ -666,6 +666,41 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
     {
         std::cout<<"please god, no, never show this... "<<std::endl;
     }
+//    switch( args.type)
+//    {
+//        case  DBR_CHAR:
+//            message("!!!! ",id," args.type is DBR_CHAR val = ", *(char*)args.dbr);
+//            break;
+//        case  DBR_SHORT:
+//            message("!!!! ",id," args.type is DBR_SHORT val = ", *(short*)args.dbr);
+//            break;
+//        case  DBR_ENUM:
+//            message("!!!! ",id," args.type is DBR_ENUM val = ", *(unsigned *)args.dbr);
+//            break;
+//        case  DBR_LONG:
+//            message("!!!! ",id," args.type is DBR_LONG val = ", *(long*)args.dbr);
+//            break;
+//        case  DBR_FLOAT:
+//            message("!!!! ",id," args.type is DBR_FLOAT val = ", *(float*)args.dbr);
+//            break;
+//        case  DBR_DOUBLE:
+//            message("!!!! ",id," args.type is DBR_DOUBLE val = ", *(double*)args.dbr);
+//            break;
+//        case  DBR_STRING:
+//            message("!!!! ",id," args.type is DBR_STRING val = ", *(char*)args.dbr);
+//            break;
+//        case  DBR_TIME_LONG:
+//            message("!!!! ",id," args.type is DBR_TIME_LONG val = ", *(char*)args.dbr);
+//            break;
+////        case  DBR_INT:
+////            message("args.type is DBR_INT");
+////            break;
+//        default:
+//            message("args.type is default = ", args.type);
+//            message( "size = ", dbr_size_n(args.type,1) );
+//            break;
+//    }
+////
     switch( args.type)
     {
         case  DBR_DOUBLE:
@@ -687,9 +722,54 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
             intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
             intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
             break;
+        case DBR_ENUM:
+            //message("VCgeneralMonitor::updateValue() DBR_ENUM");
+            if( enumPVMap[id].data.size() == 0 )
+            {
+                enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
+            }
+            enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
+            enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+            break;
+        case DBR_TIME_ENUM:  // Yeah i haxxored all this on shift to make it work...
+
+            {
+                const dbr_time_enum * pTD = ( const struct dbr_time_enum * ) args.dbr;
+                //message("VCgeneralMonitor::updateValue() DBR_TIME_ENUM");
+                if( enumPVMap[id].data.size() == 0 )
+                {
+                    enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
+                }
+                enumPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+            }
+            break;
+        case DBR_LONG:
+            //message("VCgeneralMonitor::updateValue() DBR_LONG");
+            if( longPVMap[id].data.size() == 0 )
+            {
+                longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
+            }
+            longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
+            longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+            break;
+        case DBR_TIME_LONG:  // Yeah i haxxored all this on shift to make it work...
+            //message("VCgeneralMonitor::updateValue() DBR_TIME_LONG");
+            {
+                const dbr_time_long * pTD = ( const struct dbr_time_long * ) args.dbr;
+    //            epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
+    //            epicsUInt32 nsec = pTD ->stamp.nsec;
+                if( longPVMap[id].data.size() == 0 )
+                {
+                    longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
+                }
+                //longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
+                longPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+            }
+            break;
         default:
             message("VCgeneralMonitor::updateValue() default switch");
-
     }
 
 //        if(isStringPV(id))
