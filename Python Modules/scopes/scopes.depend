@@ -178,18 +178,18 @@
 	<iostream>
 	<sstream>
 
-1491559318 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.cpp
+1492695792 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.cpp
 	"scopeController.h"
 	<iostream>
 	"scopeInterface.h"
 
-1491559400 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.h
+1492695798 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.h
 	"scopeInterface.h"
 	"controller.h"
 	<string>
 	<vector>
 
-1492001164 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.h
+1492695774 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.h
 	"interface.h"
 	"scopeStructs.h"
 	"scopeConfigReader.h"
@@ -222,7 +222,7 @@
 	<vector>
 	<map>
 
-1492001468 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
+1492002406 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
 	"scopeInterface.h"
 	<iostream>
 	<sstream>
@@ -270,11 +270,11 @@
 1485782658 d:\vela-clara_software\vela-clara-controllers\python modules\scopes\main.h
 	<windows.h>
 
-1491996711 source:d:\vela-clara_software\vela-clara-controllers\python modules\scopes\src\vcscopes.cpp
+1492008424 source:d:\vela-clara_software\vela-clara-controllers\python modules\scopes\src\vcscopes.cpp
 	"VCscopes.h"
 	<iostream>
 
-1491832365 d:\vela-clara_software\vela-clara-controllers\python modules\scopes\include\vcscopes.h
+1492695819 d:\vela-clara_software\vela-clara-controllers\python modules\scopes\include\vcscopes.h
 	"scopeController.h"
 	<string>
 	<vector>

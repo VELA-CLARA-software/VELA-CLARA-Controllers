@@ -314,7 +314,6 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
         it = *( &p->value + i );
         ++i;
     }
-    message(td->shotCounts.at( ms -> monType ), td->numShots);
 
     if( td -> isATemporaryMonitorStruct )
     {
@@ -428,7 +427,7 @@ void scopeInterface::monitorATraceForNShots( const std::string trace, scopeStruc
         scopeObj.traceObjects.at( trace ).isMonitoringMap.at( channel ) = true;
 
         addToTraceMonitorStructs( traceMonitorStructs, scopeObj.traceObjects.at( trace ).pvMonStructs.at( channel ), &scopeObj.traceObjects.at( trace ) );
-        int status = sendToEpics( "ca_create_subscription", "subscribed", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
+        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
     }
     else
     {
@@ -1004,6 +1003,72 @@ std::vector< std::string > scopeInterface::getScopeNames()
     {
         message( "Scope Name ", iter.first );
         scopeNames.push_back( iter.first );
+    }
+    for( auto && iter : scopeObj.numObjects )
+    {
+        message( "Scope Name ", iter.first );
+        scopeNames.push_back( iter.first );
+    }
+
+    return scopeNames;
+}
+//______________________________________________________________________________
+std::vector< std::string > scopeInterface::getScopePVs()
+{
+    std::vector< std::string > scopeNames;
+    for( auto && iter : scopeObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            std::stringstream s;
+            message( "Scope PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+            scopeNames.push_back( s.str() );
+        }
+    }
+    for( auto && iter : scopeObj.numObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            std::stringstream s;
+            message( "Scope PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+            scopeNames.push_back( s.str() );
+        }
+    }
+
+    return scopeNames;
+}
+//______________________________________________________________________________
+std::vector< std::string > scopeInterface::getScopeTracePVs()
+{
+    std::vector< std::string > scopeNames;
+    for( auto && iter : scopeObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            std::stringstream s;
+            message( "Scope PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+            scopeNames.push_back( s.str() );
+        }
+    }
+
+    return scopeNames;
+}
+//______________________________________________________________________________
+std::vector< std::string > scopeInterface::getScopeNumPVs()
+{
+    std::vector< std::string > scopeNames;
+    for( auto && iter : scopeObj.numObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            std::stringstream s;
+            message( "Scope PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+            scopeNames.push_back( s.str() );
+        }
     }
 
     return scopeNames;

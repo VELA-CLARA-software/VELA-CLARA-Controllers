@@ -208,6 +208,21 @@ std::vector< std::string > scopeController::getScopeNames()
     return localInterface.getScopeNames();
 }
 //______________________________________________________________________________
+std::vector< std::string > scopeController::getScopePVs()
+{
+    return localInterface.getScopePVs();
+}
+//______________________________________________________________________________
+std::vector< std::string > scopeController::getScopeTracePVs()
+{
+    return localInterface.getScopeTracePVs();
+}
+//______________________________________________________________________________
+std::vector< std::string > scopeController::getScopeNumPVs()
+{
+    return localInterface.getScopeNumPVs();
+}
+//______________________________________________________________________________
 //bool scopeController::hasTrig( const std::string & name )
 //{
 //    return localInterface.hasTrig( name );
