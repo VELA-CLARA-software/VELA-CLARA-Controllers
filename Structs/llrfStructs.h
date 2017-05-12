@@ -47,10 +47,10 @@ namespace llrfStructs
     struct llrfObject
     {
         llrfObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),type(UNKNOWN_TYPE),
-                       ampR(UTL::DUMMY_LONG),ampW(0),phiLLRF(UTL::DUMMY_LONG),
-                       maxAmp(UTL::DUMMY_LONG),crestPhi(UTL::DUMMY_LONG),numIlocks(UTL::DUMMY_INT),
-                       phiCalibration(UTL::DUMMY_DOUBLE),ampCalibration(UTL::DUMMY_DOUBLE),
-                       phi_DEG(UTL::DUMMY_DOUBLE),amp_MVM(UTL::DUMMY_DOUBLE){}
+                     ampR(UTL::DUMMY_LONG),ampW(0),phiLLRF(UTL::DUMMY_LONG),
+                     maxAmp(UTL::DUMMY_LONG),crestPhi(UTL::DUMMY_LONG),numIlocks(UTL::DUMMY_INT),
+                     phiCalibration(UTL::DUMMY_DOUBLE),ampCalibration(UTL::DUMMY_DOUBLE),
+                     phi_DEG(UTL::DUMMY_DOUBLE),amp_MVM(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
         double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
         long ampR,phiLLRF,ampW,crestPhi,maxAmp;

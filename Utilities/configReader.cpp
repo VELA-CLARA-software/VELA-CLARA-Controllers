@@ -289,8 +289,33 @@ bool configReader::isnotNO_CONFIG_FILE(const   std::string & str )
 {
     return !isNO_CONFIG_FILE(str);
 }
+//______________________________________________________________________________
+std::vector<int> configReader::getIntVector(const std::string & str )
+{
+    std::vector< int > ret;
+    std::stringstream ss(str );
+    std::string s;
+    std::stringstream os;
+    int temp;
 
-
+    while(ss)
+    {
+        if(!getline(ss, s, ',' ) )
+            break;
+        else
+        {
+            //ret.push_back(atof(s.c_str() ) );
+            // this way allows you to write numbers in scientific E notation, i.e. 6.3E+3 etc.
+            os << s;
+            os >> temp;
+            ret.push_back(temp );
+            os.clear();
+           //std::cout << ret.back() << " ";
+        }
+    }
+//    std::cout << std::endl;
+    return ret;
+}
 
 
 

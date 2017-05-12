@@ -81,9 +81,24 @@ bool gunProtController::reset(const std::string& name)
     return localInterface.reset(name);
 }
 //____________________________________________________________________________________________
+bool gunProtController::reset(const std::vector<std::string>& names)
+{
+    return localInterface.reset(names);
+}
+//____________________________________________________________________________________________
 bool gunProtController::enable(const std::string& name)
 {
     return localInterface.enable(name);
+}
+//____________________________________________________________________________________________
+bool gunProtController::enable(const std::vector<std::string>& names)
+{
+    return localInterface.enable(names);
+}
+//____________________________________________________________________________________________
+bool gunProtController::enable()
+{
+    return localInterface.enable();
 }
 //____________________________________________________________________________________________
 bool gunProtController::disable(const std::string& name)
@@ -91,29 +106,24 @@ bool gunProtController::disable(const std::string& name)
     return localInterface.disable(name);
 }
 //____________________________________________________________________________________________
-////boost::python::dict gunProtController::getILockStatesStr_Py(std::string magName )
-////{
-////    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
-////}
-//////______________________________________________________________________________
-////boost::python::dict gunProtController::getILockStates_Py(std::string magName )
-////{
-////    return enumMapToPythonDict(getILockStates(magName ) );
-////}
-//////______________________________________________________________________________
-////boost::python::dict gunProtController::getMagPSUStateDefinition()
-////{
-////    std::map< VELA_ENUM::MAG_PSU_STATE,  std::string  > m;
-////
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
-////
-////    return enumStringMapToPythonDict(m );
-////}
-////______________________________________________________________________________
-//#endif // BUILD_DLL
-
+bool gunProtController::disable(const std::vector<std::string>& names)
+{
+    return localInterface.disable(names);
+}
+//____________________________________________________________________________________________
+std::string gunProtController::getGeneralProtName()
+{
+     return localInterface.getGeneralProtName();
+}
+//____________________________________________________________________________________________
+std::string gunProtController::getEnableProtName()
+{
+    return localInterface.getEnableProtName();
+}
+//____________________________________________________________________________________________
+std::string gunProtController::getCurrentModeProtName()
+{
+    return localInterface.getCurrentModeProtName();
+}
+//____________________________________________________________________________________________
 

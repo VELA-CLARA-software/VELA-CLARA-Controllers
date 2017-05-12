@@ -91,7 +91,6 @@
 		<Unit filename="../../Utilities/gunProtConfigReader.cpp" />
 		<Unit filename="../../Utilities/gunProtConfigReader.h" />
 		<Unit filename="include/VCrfprot.h" />
-		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
 		<Unit filename="src/VCrfprot.cpp" />
 		<Extensions>

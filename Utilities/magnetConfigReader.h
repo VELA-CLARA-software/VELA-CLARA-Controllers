@@ -21,9 +21,11 @@ class magnetConfigReader : public configReader
     public:
 
         magnetConfigReader();
-        magnetConfigReader::magnetConfigReader( const std::string&magConf,const std::string&NRConf,
+
+        magnetConfigReader::magnetConfigReader( const std::string&magConf,
                                                 const bool startVirtualMachine,
-                                                const bool*show_messages_ptr,const bool*show_debug_messages_ptr );
+                                                const bool*show_messages_ptr,
+                                                const bool*show_debug_messages_ptr );
 
         ~magnetConfigReader();
 
@@ -51,15 +53,8 @@ class magnetConfigReader : public configReader
         /// once all the data is read in we can construct the final map of objects to return to the epicsInterface
 
         // NR-PSU objects
-        std::vector< magnetStructs::nrPSUObject > magPSUObjects_N;
-        std::vector< magnetStructs::nrPSUObject > magPSUObjects_R;
         std::vector< magnetStructs::pvStruct > pvPSUMonStructs;
         std::vector< magnetStructs::pvStruct > pvPSUComStructs;
-
-        void addToMagPSUObjectsV1( const std::vector<std::string> &keyVal );
-        void addToMagPSUMonStructsV1( const std::vector<std::string> &keyVal );
-        void addToMagPSUComStructsV1( const std::vector<std::string> &keyVal );
-        void addToMagPSUObj_v( std::vector< magnetStructs::nrPSUObject > & vec, const std::string & parentMagnet );
 
         // Magnet Objects
         std::vector< magnetStructs::magnetObject > magObjects;
@@ -71,39 +66,13 @@ class magnetConfigReader : public configReader
         void addToMagComStructsV1( const std::vector<std::string> &keyVal );
 
         void addMagType( const std::vector<std::string> &keyVal );
-        void addRevType( const std::vector<std::string> &keyVal );
 
-        const std::string magConf,NRConf;
+        const std::string magConf;
 
         const bool usingVirtualMachine;
 
-
-//        void addMagType( std::string & str );
-//        void addMagType( std::string & str );
-
-//        // LLRF objects
-//        std::vector< velaRFStructs::pvStruct > pvLLRFMonStructs;
-//        velaRFStructs::rfLLRFObject RFLLRFObject;
-//        void addToLLRFObjectsV1( const std::vector<std::string> &keyVal );
-//        void addToLLRFPVMonStructsV1( const std::vector<std::string> &keyVal );
-//        // Modulator Objects
-//        std::vector< velaRFStructs::pvStruct > pvModMonStructs;
-//        std::vector< velaRFStructs::pvStruct > pvModComStructs;
-//        velaRFStructs::rfModObject RFModObject;
-//        void addToModObjectsV1( const std::vector<std::string> &keyVal );
-//        void addToModPVMonStructsV1( const std::vector<std::string> &keyVal );
-//        void addToModPVComStructsV1( const std::vector<std::string> &keyVal );
-//
-//
-//
-        void addToPVStruct( std::vector< magnetStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
+       void addToPVStruct( std::vector< magnetStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
         void addCOUNT_MASK_OR_CHTYPE(  std::vector< magnetStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
-
-
-//        void addToObjectsV1( std::vector<std::string> &keyVal );
-//        void addPVCommandMapV1  ( std::vector<std::string> &keyVal );
-//        void addPVMonitorMapV1  ( std::vector<std::string> &keyVal );
-
 
 };
 #endif //magnetConfigReader_H_

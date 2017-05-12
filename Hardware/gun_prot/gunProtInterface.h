@@ -48,32 +48,55 @@ class gunProtInterface : public interface
         bool isNotGood(const std::string& name);
         bool isBad(const std::string& name);
 
+        bool isGeneralProt(const std::string& name);
+        bool isNotGeneralProt(const std::string& name);
+        bool isEnableProt(const std::string& name);
+        bool isNotEnableProt(const std::string& name);
+        //bool isEnableProt(const std::string& name);
+
+        bool isProtOfType(const std::string& name, const rfProtStructs::RF_GUN_PROT_TYPE type );
+
+
+
         bool reset();
         bool reset(const std::vector<std::string>& names);
         bool reset(const std::string& name);
 
         bool enable(const std::string& name);
         bool enable(const std::vector<std::string>& names);
+        bool enable();
 
         bool disable(const std::string& name);
         bool disable(const std::vector<std::string>& names);
+
+        std::string gunProtInterface::getGeneralProtName();
+        std::string gunProtInterface::getEnableProtName();
+        std::string gunProtInterface::getCurrentModeProtName();
+
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
         IlockMap1 getILockStates(const std::string& name   );
         IlockMap2 getILockStatesStr(const std::string& name);
 
+        bool allkeybitsaregood(const std::string& name);
 
     private:
         // MOVE TO BASE CLASS
         const bool shouldStartEPICs;
 
-        void killMonitor(rfProtStructs::monitorStruct * ms );
+        void killMonitor(rfProtStructs::monitorStruct* ms);
 
         void initialise();
 //        bool initObjects();
         void initChids();
-        void addChannel(const std::string & pvRoot, rfProtStructs::pvStruct & pv );
+        void addChannel(const std::string& pvRoot, rfProtStructs::pvStruct& pv);
         void startMonitors();
+
+
+        rfProtStructs::RF_GUN_PROT_TYPE currentMode;
+
+
+        bool allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj);
 
         bool sendCommand(const std::vector<chtype*>& CHTYPE,const std::vector<chid*>& CHID, const std::string& m1, const std::string& m2);
         bool sendCommand(const chtype& CHTYPE, const chid& CHID, const std::string& m1, const std::string& m2);
@@ -86,6 +109,8 @@ class gunProtInterface : public interface
 
         void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const unsigned short value);
         void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const event_handler_args args);
+
+        void updateCMIBits(rfProtStructs::rfGunProtObject& obj);
 
         gunProtConfigReader configReader; /// class member so we can pass in file path in ctor
 };

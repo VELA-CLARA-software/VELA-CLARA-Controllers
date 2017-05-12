@@ -6,6 +6,20 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+//
+#ifdef BUILD_DLL
+#include <boost/python.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#include <boost/python.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/args.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/return_value_policy.hpp>
+#include <boost/python/overloads.hpp>
+#include <boost/python/stl_iterator.hpp>
+#endif
 
 
 class baseObject
@@ -110,6 +124,17 @@ class baseObject
         }
 
         std::string currentDateTime();
+
+
+
+#ifdef BUILD_DLL
+    template<typename T>
+    std::vector<T> to_std_vector(const boost::python::object & iterable)
+    {
+        return std::vector<T>( boost::python::stl_input_iterator<T>( iterable ),
+                               boost::python::stl_input_iterator<T>( ) );
+    }
+#endif
 
 //        template<typename T >
 //        bool waitFor(ABoolMemFn f1, RFGunInterface & obj, std::string & m,  time_t waitTime)

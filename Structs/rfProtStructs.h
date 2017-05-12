@@ -24,7 +24,11 @@ namespace rfProtStructs
 //    struct rfObject;
 
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_PV_TYPE, (RESET)(STATUS)(ON)(OFF))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_PV_TYPE, (RESET)(STATUS)(ON)(OFF)(CMI))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_TYPE, (CLARA_HRRG)(VELA_LRRG)(VELA_HRRG)(CLARA_LRRG)(TEST)(NOT_KNOWN)(GENERAL)(ENABLE)(NO_MODE))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)(BAD)(ERROR)(UNKNOWN))
 
     /// These can't go in VELA_ENUM as they need a pvType.
     struct pvStruct
@@ -37,34 +41,21 @@ namespace rfProtStructs
         chtype          CHTYPE;
     };
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)(BAD)(ERROR)(UNKNOWN))
-
     struct rfGunProtObject
     {
-        rfGunProtObject() : status(UNKNOWN),name("unknown"){}
+        rfGunProtObject() : status(UNKNOWN),protType(NOT_KNOWN),name("unknown"),numIlocks(0){}
         std::string         name,pvRoot;
         RF_GUN_PROT_STATUS  status;
+        unsigned long       cmi;
+        std::vector<int>    gunProtKeyBits;// the bit position of the key bits in the prot cmi
+        std::vector<bool>   gunProtKeyBitValues;// calues of the key bits
         size_t              numIlocks;
+        RF_GUN_PROT_TYPE        protType;
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
         std::map< RF_GUN_PROT_PV_TYPE, pvStruct > pvMonStructs;
         std::map< RF_GUN_PROT_PV_TYPE, pvStruct > pvComStructs;
         std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
     };
-
-//    struct rfGunProtObject
-//    {
-//        rfGunProtObject() : state(GUN_MOD_STATE::ERROR1 ),
-//        safelyWarmedUP(false ) {}
-//        std::string name, pvRoot;
-//        GUN_MOD_STATE    state;
-//        long         warmuptime;
-//        //MOD_EXILOCK1 ilck, ilckstr;
-//        bool safelyWarmedUP;
-//        std::vector< std::string > goodModErrorReadStr, badModErrorReadStr;
-//    #ifndef __CINT__
-//        std::map< GUN_MOD_PV_TYPE, pvStruct > pvMonStructs, pvComStructs;
-//    #endif
-//    };
 
     struct monitorStruct
     {
@@ -76,52 +67,5 @@ namespace rfProtStructs
         gunProtInterface *interface;
         evid              EVID;
     };
-
-
-
-//    struct rfLLRFObject
-//    {
-//        rfLLRFObject() : name("UNKNOWN" ), pvRoot("UNKNOWN"),ampR(0.0),ampW(0), phi(0.0){}
-//        std::string name, pvRoot;
-//        double ampR, phi, crestPhi;
-//        long ampW;
-//    #ifndef __CINT__
-//        std::map< RF_PV_TYPE, pvStruct > pvMonStructs;
-//    #endif
-//    };
-
-
-//    struct rfTraceData
-//    {
-//        rfTraceData() : shotCount(-2 ), numShots(-2 ) {}
-//        int shotCount, numShots; /// we allow -1 values here so NOT a size_t
-//        std::vector< double > timeStamps;
-//        std::vector< std::string > strTimeStamps;
-//        std::vector< std::vector< double > > traceData;
-//    };
-//
-//
-//    struct rfPowerObject
-//    {
-//        rfPowerObject() : name("UNKNOWN"),pvRoot("UNKNOWN"),fwd(0.0 ), rev(0.0 ), fwdM(0.0 ), revM(0.0) {}
-//        std::string name, pvRoot;
-//        double fwd, rev, fwdM, revM, ratio;
-//        rfTraceData revT, fwdT;
-//    #ifndef __CINT__
-//        std::map< RF_PV_TYPE, pvStruct > pvMonStructs;
-//    #endif
-//    };
-//
-//    struct rfObject
-//    {
-//        rfObject() : name("UNKNOWN" ), klyFWDLimit(0.0) {}
-//        std::string name;
-//        rfModObject mod;
-//        rfLLRFObject llrf;
-//        double klyFWDLimit;
-//        std::map< std::string, rfPowerObject > powerObjects; /// For gun (and TDC>) have two of these, the cavity and the klystron
-//    };
-//
-
 }
 #endif//_RF_MOD_STRUCTS_H_

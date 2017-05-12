@@ -20,12 +20,11 @@ magnetController::magnetController(
     const bool show_messages,
     const bool show_debug_messages,
     const std::string & magConf,
-    const std::string & NRConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
     const VELA_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages ),
-localInterface( magConf, NRConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
+localInterface(magConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {
@@ -33,10 +32,30 @@ myMachineArea(myMachineArea)
 //    message("magnet controller shouldStartEPICs is true");
 //    else
 //    message("magnet controller shouldStartEPICs is false");
-    initialise();
+//    initialise();
 }
 //______________________________________________________________________________
 magnetController::~magnetController(){}    //dtor
+//______________________________________________________________________________
+std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> magnetController::getILockStates(const std::string & name)
+{
+    return localInterface.getILockStates( name );
+}
+//______________________________________________________________________________
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > magnetController::getILockStatesStr( const std::string & name )
+{
+    return localInterface.getILockStatesStr( name );
+}
+//______________________________________________________________________________
+double magnetController::get_CA_PEND_IO_TIMEOUT()
+{
+    return localInterface.get_CA_PEND_IO_TIMEOUT( );
+}
+//______________________________________________________________________________
+void   magnetController::set_CA_PEND_IO_TIMEOUT( double val )
+{
+    localInterface.set_CA_PEND_IO_TIMEOUT( val );
+}
 //______________________________________________________________________________
 void magnetController::initialise()
 {
@@ -155,50 +174,50 @@ bool magnetController::isACor ( const std::string & magName )
     return localInterface.isACor( magName );
 }
 //______________________________________________________________________________
-bool magnetController::isNR( const std::string & magName )
-{
-    return localInterface.isNR( magName );
-}
-//______________________________________________________________________________
-bool magnetController::isBipolar( const std::string & magName )
-{
-    return localInterface.isBipolar( magName );
-}
-//______________________________________________________________________________
-bool magnetController::isNRGanged( const std::string & magName )
-{
-    return localInterface.isNRGanged( magName );
-}
-//______________________________________________________________________________
-bool magnetController::isNRorNRGanged( const std::string & magName )
-{
-    return localInterface.isNRorNRGanged( magName );
-}
-//______________________________________________________________________________
-bool magnetController::isON_psuN( const std::string & magName )
-{
-    return localInterface.isON_psuN( magName );
-}
-//______________________________________________________________________________
-bool magnetController::isON_psuR( const std::string & magName )
-{
-    return localInterface.isON_psuR( magName );
-}
+//bool magnetController::isNR( const std::string & magName )
+//{
+//    return localInterface.isNR( magName );
+//}
+////______________________________________________________________________________
+//bool magnetController::isBipolar( const std::string & magName )
+//{
+//    return localInterface.isBipolar( magName );
+//}
+////______________________________________________________________________________
+//bool magnetController::isNRGanged( const std::string & magName )
+//{
+//    return localInterface.isNRGanged( magName );
+//}
+////______________________________________________________________________________
+//bool magnetController::isNRorNRGanged( const std::string & magName )
+//{
+//    return localInterface.isNRorNRGanged( magName );
+//}
+////______________________________________________________________________________
+//bool magnetController::isON_psuN( const std::string & magName )
+//{
+//    return localInterface.isON_psuN( magName );
+//}
+////______________________________________________________________________________
+//bool magnetController::isON_psuR( const std::string & magName )
+//{
+//    return localInterface.isON_psuR( magName );
+//}
 //______________________________________________________________________________
 bool magnetController::isON ( const std::string & magName )
 {
     return localInterface.isON( magName );
 }
 //______________________________________________________________________________
-bool magnetController::isOFF_psuN( const std::string & magName )
-{
-    return localInterface.isOFF_psuN( magName );
-}
-//______________________________________________________________________________
-bool magnetController::isOFF_psuR( const std::string & magName )
-{
-    return localInterface.isOFF_psuR( magName );
-}
+//bool magnetController::isOFF_psuN( const std::string & magName )
+//{
+//    return localInterface.isOFF_psuN( magName );
+//}
+////______________________________________________________________________________
+//bool magnetController::isOFF_psuR( const std::string & magName )
+//{
+//    return localInterface.isOFF_psuR( magName );
+//}
 //______________________________________________________________________________
 bool magnetController::isOFF ( const std::string & magName )
 {
@@ -216,10 +235,10 @@ bool magnetController::isNotDegaussing( const std::string & magName )
 }
 
 //______________________________________________________________________________
-void magnetController::showMagRevType()
-{
-    localInterface.showMagRevType();
-}
+//void magnetController::showMagRevType()
+//{
+//    localInterface.showMagRevType();
+//}
 //______________________________________________________________________________
 double magnetController::getRI( const std::string & magName )
 {
@@ -321,26 +340,6 @@ const magnetStructs::magnetObject* magnetController::getMagObjConstPtr( const st
     return localInterface.getMagObjConstPtr( magName );
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  magnetController::getILockStates( const std::string & name )
-{
-    return localInterface.getILockStates( name );
-}
-//______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > magnetController::getILockStatesStr( const std::string & name )
-{
-    return localInterface.getILockStatesStr( name );
-}
-//______________________________________________________________________________
-double magnetController::get_CA_PEND_IO_TIMEOUT()
-{
-    return localInterface.get_CA_PEND_IO_TIMEOUT( );
-}
-//______________________________________________________________________________
-void   magnetController::set_CA_PEND_IO_TIMEOUT( double val )
-{
-    localInterface.set_CA_PEND_IO_TIMEOUT( val );
-}
-//______________________________________________________________________________
  std::vector< std::string > magnetController::getMagnetNames()
 {
     return localInterface.getMagnetNames( );
@@ -376,15 +375,15 @@ std::vector< std::string > magnetController::getSolNames()
 //______________________________________________________________________________
 
 
-magnetStructs::MAG_REV_TYPE magnetController::getMagRevType( const std::string & magName )
-{
-    return localInterface.getMagRevType( magName );
-}
-//______________________________________________________________________________
-std::vector<  magnetStructs::MAG_REV_TYPE >  magnetController::getMagRevType( const std::vector< std::string > & magNames )
-{
-    return localInterface.getMagRevType( magNames );
-}
+//magnetStructs::MAG_REV_TYPE magnetController::getMagRevType( const std::string & magName )
+//{
+//    return localInterface.getMagRevType( magName );
+//}
+////______________________________________________________________________________
+//std::vector<  magnetStructs::MAG_REV_TYPE >  magnetController::getMagRevType( const std::vector< std::string > & magNames )
+//{
+//    return localInterface.getMagRevType( magNames );
+//}
 //______________________________________________________________________________
 magnetStructs::MAG_TYPE magnetController::getMagType( const std::string & magName )
 {
@@ -396,12 +395,12 @@ std::vector<  magnetStructs::MAG_TYPE >  magnetController::getMagType( const std
     return localInterface.getMagType( magNames );
 }
 //______________________________________________________________________________
-VELA_ENUM::MAG_PSU_STATE magnetController::getMagPSUState( const std::string & magName )
+magnetStructs::MAG_PSU_STATE magnetController::getMagPSUState( const std::string & magName )
 {
     return localInterface.getMagPSUState( magName );
 }
 //______________________________________________________________________________
-std::vector<  VELA_ENUM::MAG_PSU_STATE > magnetController::getMagPSUState( const std::vector< std::string > & magNames )
+std::vector<  magnetStructs::MAG_PSU_STATE > magnetController::getMagPSUState( const std::vector< std::string > & magNames )
 {
     return localInterface.getMagPSUState( magNames );
 }
@@ -522,6 +521,19 @@ boost::python::dict magnetController::getMagPSUStateDefinition()
     m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
 
     return enumStringMapToPythonDict( m );
+}
+//______________________________________________________________________________
+bool magnetController::setSI(const boost::python::list & magNames, const boost::python::list & values)
+{
+    std::vector<std::string> names = to_std_vector<std::string>(magNames);
+    std::vector<double>      vals  = to_std_vector<double>(values);
+    return setSI(names, vals);
+}
+//______________________________________________________________________________
+size_t magnetController::degauss( const boost::python::list & mag, bool resetToZero )
+{
+    std::vector<std::string> names = to_std_vector<std::string>(mag);
+    return degauss(names, resetToZero);
 }
 //______________________________________________________________________________
 #endif // BUILD_DLL

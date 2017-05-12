@@ -38,13 +38,20 @@
 class magnetController : public controller
 {
     public:
-        /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         magnetController();
+        /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         magnetController( const bool show_messages,    const bool show_debug_messagese,
-                          const std::string & magConf, const std::string & NRConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea  );
+                          const std::string &magConf, const bool startVirtualMachine,
+                          const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea);
 
         ~magnetController( );
+
+        // These are pure virtual methods, so need to have some implmentation in derived classes
+        double get_CA_PEND_IO_TIMEOUT();
+        void   set_CA_PEND_IO_TIMEOUT(double val );
+        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
+        std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
+
 
       /// Magnet Type tests
         bool isAQuad( const std::string & magName );
@@ -54,11 +61,6 @@ class magnetController : public controller
         bool isADip ( const std::string & magName );
         bool isASol ( const std::string & magName );
         bool isACor ( const std::string & magName );
-      /// Magnet reverse Type tests
-        bool isNRorNRGanged( const std::string & magName );
-        bool isNRGanged    ( const std::string & magName );
-        bool isBipolar     ( const std::string & magName );
-        bool isNR          ( const std::string & magName );
       /// PSU State tests
         bool isOFF_psuN( const std::string & magName );
         bool isOFF_psuR( const std::string & magName );
@@ -93,7 +95,13 @@ class magnetController : public controller
 
       /// Set SI, 4 versions of this
         bool setSI( const std::string & magName, const double value);
-        bool setSI( const std::vector< std::string > & magNames, const std::vector< double >& values);
+        bool setSI( const std::vector<std::string> &magName, const std::vector<double>& value);
+
+#ifdef BUILD_DLL
+        bool setSI(const boost::python::list & magNames, const boost::python::list & values);
+        size_t degauss( const boost::python::list & mag, bool resetToZero = true );
+#endif
+
         bool setSI( const std::string & magNames, const double values, const double tolerances, const size_t timeOUT );
         std::vector< std::string >  setSI( const std::vector< std::string > & magNames, const std::vector< double > & values, const std::vector< double > & tolerances, const size_t timeOUT );
         bool setSIZero( const std::string & magName);
@@ -123,13 +131,6 @@ class magnetController : public controller
         void applyDBURTCorOnly( const std::string & fileName );
         void applyDBURTQuadOnly( const std::string & fileName );
 
-      /// This is an old function from setting up the project
-        void showMagRevType();
-
-      /// how long to wait when sending commands to EPICS
-        double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT( double val );
-
       /// get objectdata
 
       /// Get RI and SI
@@ -144,16 +145,11 @@ class magnetController : public controller
         double getRITolerance( const std::string & magName );
         std::vector< double >  getRITolerance( const std::vector< std::string > & magNames );
 
-      /// Reverse types
-        magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
-        std::vector<  magnetStructs::MAG_REV_TYPE >  getMagRevType( const std::vector< std::string > & magNames );
-      ///
-
         magnetStructs::MAG_TYPE                  getMagType( const std::string & magName );
         std::vector<  magnetStructs::MAG_TYPE >  getMagType( const std::vector< std::string > & magNames );
       ///
-        VELA_ENUM::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
-        std::vector<  VELA_ENUM::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
+        magnetStructs::MAG_PSU_STATE                 getMagPSUState( const std::string & magName );
+        std::vector<  magnetStructs::MAG_PSU_STATE > getMagPSUState( const std::vector< std::string > & magNames );
       ///
         size_t              getNumDegSteps(const std::string & magName );
         std::vector<size_t> getNumDegSteps(const std::vector<std::string> & magNames);
@@ -162,13 +158,13 @@ class magnetController : public controller
         std::vector<std::vector<double>> getDegValues(const std::vector< std::string > & magName );
       ///
       /// BJAS additions
-        std::vector<double>                getFieldIntegralCoefficients( const std::string & magName );
+        std::vector<double>              getFieldIntegralCoefficients( const std::string & magName );
         std::vector<std::vector<double>> getFieldIntegralCoefficients( const std::vector< std::string > & magNames );
       ///
-        double                getPosition( const std::string & magName );
+        double              getPosition( const std::string & magName );
         std::vector<double> getPosition( const std::vector< std::string > & magNames );
       ///
-        double                getMagneticLength( const std::string & magName );
+        double              getMagneticLength( const std::string & magName );
         std::vector<double> getMagneticLength( const std::vector< std::string > & magNames );
       ///
         std::string              getManufacturer( const std::string & magName );
@@ -183,9 +179,6 @@ class magnetController : public controller
         std::string               getMeasurementDataLocation( const std::string & magName );
         std::vector<std::string>  getMeasurementDataLocation( const std::vector< std::string > & magName );
 
-      /// These are pure virtual methods, so need to have some implmentation in derived classes
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
       /// any functions that return a map need a wrapper to convert to a python dictionary
       /// (we need the functions that return std::map types when building c++ applications)
 #ifdef BUILD_DLL
@@ -204,10 +197,9 @@ class magnetController : public controller
         void initialise();
 
         const bool shouldStartEPICs;
-
-        /// what flavour of controller am i ?
+//
+//        /// what flavour of controller am i ?
         const VELA_ENUM::MACHINE_AREA myMachineArea;
-
         magnetInterface localInterface;
 };
 

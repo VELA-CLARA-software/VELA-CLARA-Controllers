@@ -183,6 +183,36 @@ void gunProtConfigReader::addToProtObjectsV1(const std::vector<std::string> &key
     }
     else if(keyVal[0] == UTL::PV_ROOT)
         gunProtObjects.back().pvRoot = keyVal[1];
+    else if(keyVal[0] == UTL::GUN_PROT_KEY_BITS)
+    {
+        gunProtObjects.back().gunProtKeyBits = getIntVector( keyVal[1] );
+
+        for(auto && it : gunProtObjects.back().gunProtKeyBits )
+        {
+            gunProtObjects.back().gunProtKeyBitValues.push_back(false);
+        }
+    }
+    else if(keyVal[0] == UTL::RF_GUN_PROT_TYPE)
+    {
+        if( keyVal[1] == UTL::ENABLE)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::ENABLE;
+        else if( keyVal[1] == UTL::GENERAL)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::GENERAL;
+        else if( keyVal[1] == UTL::CLARA_HRRG)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::CLARA_HRRG;
+        else if( keyVal[1] == UTL::VELA_LRRG)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::VELA_LRRG;
+        else if( keyVal[1] == UTL::CLARA_LRRG)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::CLARA_LRRG;
+        else if( keyVal[1] == UTL::VELA_HRRG)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::VELA_HRRG;
+        else if( keyVal[1] == UTL::TEST)
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::TEST;
+        else
+            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::NOT_KNOWN;
+
+        message(gunProtObjects.back().name," gunProtObjects.back().protType = ", ENUM_TO_STRING(gunProtObjects.back().protType));
+    }
 }
 //______________________________________________________________________________
 void gunProtConfigReader::addToPVStruct(std::vector< rfProtStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal )
@@ -200,6 +230,9 @@ void gunProtConfigReader::addToPVStruct(std::vector< rfProtStructs::pvStruct >  
 
         else if(keyVal[0] == UTL::PV_SUFFIX_STA  )
             pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::STATUS;
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_CMI  )
+            pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::CMI;
 
         else if(keyVal[0] == UTL::PV_SUFFIX_RST  )
             pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET;
