@@ -2,6 +2,7 @@
 #define _RF_MOD_STRUCTS_H_
 //
 #include "structs.h"
+#include "configDefinitions.h"
 //stl
 #include <vector>
 #include <string>
@@ -23,8 +24,11 @@ namespace rfModStructs
 //    struct rfModObject;
 //    struct rfObject;
 //
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_PV_TYPE, (MOD_STATE_SET) (MOD_STATE_READ) (MOD_ERROR_READ) (MOD_ERROR_READ_STR)
-                                                     (MOD_WARMUP_TIME) (MOD_RESET) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_PV_TYPE, (STATE_SET) (STATE_READ) (ERROR_READ) (ERROR_READ_STR)(WARMUP_TIME)
+                                                          (RESET)(MAGPS1_CURR_READ)(MAGPS2_CURR_READ)(MAGPS3_CURR_READ)(MAGPS4_CURR_READ)
+                                                          (MAGPS1_VOLT_READ)(MAGPS2_VOLT_READ)(MAGPS3_VOLT_READ)(MAGPS4_VOLT_READ)(CT_READ)
+                                                          (CVD_READ)(PULSE_WIDTH_READ)(PULSE_WIDTH_FWHM_READ)(IONP_PRESSURE_READ))
+
 //
 //    /// For the ilocks, it's either ok or bad...
 //    DEFINE_ENUM_WITH_STRING_CONVERSIONS( MOD_EXILOCK1,  ( BAD ) ( GOOD ) ( ERROR ) ( UNKNOWN ) );
@@ -35,9 +39,9 @@ namespace rfModStructs
 //    /// These come from CS3A_scandinova.db /home/controls/ioc/ebtf/CS3A/db
 //    /// We keep the same numbers as the control system, therefore UNKNOWN1                             //    (ERROR1)          = 0,
 //                                                                                                       //    (UNKNOWN1          = 1 /// This is one i made up
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_STATE, (ERROR1) (UNKNOWN1) (OFF) (off_Request)            //    (OFF)             = 2,
-                                        (HV_Intrlock) (Standby_Request) (Standby) (HV_Off_Requ)        //    (off_Request)     = 3,
-                                        (Trigger_Interl) (HV_Request) (HV_On) (Trig_Off_Req)           //    (HV_Intrlock)     = 4,
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_STATE, (ERROR1)(UNKNOWN1)(OFF)(off_Request)            //    (OFF)             = 2,
+                                        (HV_Intrlock)(Standby_Request)(Standby)(HV_Off_Requ)        //    (off_Request)     = 3,
+                                        (Trigger_Interl)(HV_Request)(HV_On)(Trig_Off_Req)           //    (HV_Intrlock)     = 4,
                                         (Trig_Request) (Trig)  );                                       //    (Standby_Request) = 5,
                                                                                                        //    (Standby)         = 6,
                                                                                                        //    (HV_Off_Requ)     = 7,
@@ -58,12 +62,24 @@ namespace rfModStructs
     {
         gunModObject() : state( GUN_MOD_STATE::ERROR1 ),
         //ilck(UNKNOWN),
-        safelyWarmedUP( false ) {}
+        safelyWarmedUP(false),
+        MagPs1CurrRead(UTL::DUMMY_DOUBLE),MagPs2CurrRead(UTL::DUMMY_DOUBLE),MagPs3CurrRead(UTL::DUMMY_DOUBLE),MagPs4CurrRead(UTL::DUMMY_DOUBLE),
+        MagPs1VoltRead(UTL::DUMMY_DOUBLE),MagPs2VoltRead(UTL::DUMMY_DOUBLE),MagPs3VoltRead(UTL::DUMMY_DOUBLE),MagPs4VoltRead(UTL::DUMMY_DOUBLE),
+        PrfSet(UTL::DUMMY_DOUBLE),PrfRead(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
-        GUN_MOD_STATE    state;
-        long         warmuptime;
+        GUN_MOD_STATE state;
+        long          warmuptime;
         //MOD_EXILOCK1 ilck, ilckstr;
         bool safelyWarmedUP;
+        double MagPs1CurrRead,MagPs2CurrRead,MagPs3CurrRead,MagPs4CurrRead;
+        double MagPs1VoltRead,MagPs2VoltRead,MagPs3VoltRead,MagPs4VoltRead;
+        double HvPs1CurrRead,HvPs2CurrRead,HvPs3CurrRead,HvPs4CurrRead;
+        double HvPs1VoltRead,HvPs2VoltRead,HvPs3VoltRead,HvPs4VoltRead;
+        double PrfSet, PrfRead;
+        double CtRead, CvdRead;
+        double PlswthSet,PlswthRead,PlswthFwhmRead;
+        double ionp;
+
         std::vector< std::string > goodModErrorReadStr, badModErrorReadStr;
     #ifndef __CINT__
         std::map< GUN_MOD_PV_TYPE, pvStruct > pvMonStructs, pvComStructs;

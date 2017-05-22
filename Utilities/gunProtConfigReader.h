@@ -24,7 +24,7 @@ class gunProtConfigReader : public configReader
         ~gunProtConfigReader();
 
         bool readConfig();
-        bool getrfGunProtObjects(std::map<std::string, rfProtStructs::rfGunProtObject>  mapToFill );
+        bool getrfGunProtObjects(std::map<std::string, rfProtStructs::rfGunProtObject>& mapToFill);
 //
     private:
 
@@ -32,7 +32,7 @@ class gunProtConfigReader : public configReader
         std::vector< rfProtStructs::pvStruct > pvMonStructs;
         std::vector< rfProtStructs::pvStruct > pvComStructs;
         rfProtStructs::rfGunProtObject localrfGunProtObject;
-        void addToModObjectsV1(const std::vector<std::string> &keyVal );
+        void addToProtObjectsV1(const std::vector<std::string> &keyVal );
         void addToPVMonitorMapV1(const std::vector<std::string> &keyVal );
         void addToPVCommandMapV1(const std::vector<std::string> &keyVal );
 

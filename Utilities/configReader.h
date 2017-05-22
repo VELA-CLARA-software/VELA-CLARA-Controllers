@@ -59,7 +59,8 @@ class configReader : public baseObject
         size_t getSize(const std::string & str);
         long   getNumL(const std::string & str);
 
-        std::vector< double >  getDoubleVector(const std::string & str );
+        std::vector<double> getDoubleVector(const std::string & str );
+        std::vector<int>    getIntVector(const std::string & str );
 
         std::vector<std::string> getKeyVal(const std::string & trimmedLine, const char delim = UTL::EQUALS_SIGN_C );
         std::string & trimAllWhiteSpace(std::string & source );

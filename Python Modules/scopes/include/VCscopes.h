@@ -34,9 +34,15 @@ class VCscopes// : public beamPositionMonitorController
         scopeController & virtual_VELA_INJ_Scope_Controller();
         scopeController & offline_VELA_INJ_Scope_Controller();
         scopeController & physical_VELA_INJ_Scope_Controller();
-        scopeController & virtual_CLARA_INJ_Scope_Controller();
-        scopeController & offline_CLARA_INJ_Scope_Controller();
-        scopeController & physical_CLARA_INJ_Scope_Controller();
+        scopeController & virtual_VELA_BA1_Scope_Controller();
+        scopeController & offline_VELA_BA1_Scope_Controller();
+        scopeController & physical_VELA_BA1_Scope_Controller();
+        scopeController & virtual_VELA_BA2_Scope_Controller();
+        scopeController & offline_VELA_BA2_Scope_Controller();
+        scopeController & physical_VELA_BA2_Scope_Controller();
+        scopeController & virtual_CLARA_S01_Scope_Controller();
+        scopeController & offline_CLARA_S01_Scope_Controller();
+        scopeController & physical_CLARA_S01_Scope_Controller();
         scopeController & getScopeController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
         void setQuiet();
@@ -59,16 +65,22 @@ class VCscopes// : public beamPositionMonitorController
         VELA_ENUM::MACHINE_AREA VELA_INJ;
         VELA_ENUM::MACHINE_AREA VELA_BA1;
         VELA_ENUM::MACHINE_AREA VELA_BA2;
-        VELA_ENUM::MACHINE_AREA CLARA_INJ;
+        VELA_ENUM::MACHINE_AREA CLARA_S01;
         VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
         VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
         scopeController * virtual_VELA_INJ_Scope_Controller_Obj;
         scopeController * offline_VELA_INJ_Scope_Controller_Obj;
         scopeController * physical_VELA_INJ_Scope_Controller_Obj;
-        scopeController * virtual_CLARA_INJ_Scope_Controller_Obj;
-        scopeController * offline_CLARA_INJ_Scope_Controller_Obj;
-        scopeController * physical_CLARA_INJ_Scope_Controller_Obj;
+        scopeController * virtual_VELA_BA1_Scope_Controller_Obj;
+        scopeController * offline_VELA_BA1_Scope_Controller_Obj;
+        scopeController * physical_VELA_BA1_Scope_Controller_Obj;
+        scopeController * virtual_VELA_BA2_Scope_Controller_Obj;
+        scopeController * offline_VELA_BA2_Scope_Controller_Obj;
+        scopeController * physical_VELA_BA2_Scope_Controller_Obj;
+        scopeController * virtual_CLARA_S01_Scope_Controller_Obj;
+        scopeController * offline_CLARA_S01_Scope_Controller_Obj;
+        scopeController * physical_CLARA_S01_Scope_Controller_Obj;
 
 };
 
@@ -130,7 +142,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .value("VELA_INJ",  VELA_ENUM::MACHINE_AREA::VELA_INJ  )
             .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
             .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
-            .value("CLARA_INJ", VELA_ENUM::MACHINE_AREA::CLARA_INJ )
+            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
+            .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
             .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
             ;
 
@@ -317,7 +330,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                )
             .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString            )
             .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots, monitorATraceDocString            )
-            .def("getScopeNames",                   &scopeController::getScopeNames                             )
+            .def("getScopeNames",                   &scopeController::getScopeNames                                             )
+            .def("getScopePVs",                     &scopeController::getScopePVs                                               )
+            .def("getScopeTracePVs",                &scopeController::getScopeTracePVs                                          )
+            .def("getScopeNumPVs",                  &scopeController::getScopeNumPVs                                            )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &scopeController::debugMessagesOff                       )
             .def("debugMessagesOn",                 &scopeController::debugMessagesOn                        )
@@ -331,9 +347,15 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def("virtual_VELA_INJ_Scope_Controller",   &VCscopes::virtual_VELA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_Scope_Controller",   &VCscopes::offline_VELA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_VELA_INJ_Scope_Controller",  &VCscopes::physical_VELA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_INJ_Scope_Controller",  &VCscopes::virtual_CLARA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_INJ_Scope_Controller",  &VCscopes::offline_CLARA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_INJ_Scope_Controller", &VCscopes::physical_CLARA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA1_Scope_Controller",   &VCscopes::virtual_VELA_BA1_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA1_Scope_Controller",   &VCscopes::offline_VELA_BA1_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA1_Scope_Controller",  &VCscopes::physical_VELA_BA1_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA2_Scope_Controller",   &VCscopes::virtual_VELA_BA2_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA2_Scope_Controller",   &VCscopes::offline_VELA_BA2_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA2_Scope_Controller",  &VCscopes::physical_VELA_BA2_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_S01_Scope_Controller",  &VCscopes::virtual_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_S01_Scope_Controller",  &VCscopes::offline_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_S01_Scope_Controller", &VCscopes::physical_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("getScopeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
         ;
 

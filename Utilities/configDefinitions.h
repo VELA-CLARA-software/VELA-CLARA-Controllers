@@ -46,7 +46,7 @@ namespace UTL
     const std::string CLARA_SCOPE_TRACE_CONFIG         = "claraQScopeTrace.config";
 /// Gun
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
-    const std::string RF_GUN_MOD_CONFIG                = "RFallGunProtsulator.config";
+    const std::string RF_GUN_MOD_CONFIG                = "RFGunModulator.config";
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
     const std::string RF_GUN_PROTECTION_CONFIG          = "RFGunProtection.config";
 /// Magnets
@@ -100,6 +100,7 @@ namespace UTL
     const std::string PV_SUFFIX_OFF         = "PV_SUFFIX_OFF";
     const std::string PV_SUFFIX_STA         = "PV_SUFFIX_STA";
     const std::string PV_SUFFIX_RST         = "PV_SUFFIX_RST";
+    const std::string PV_SUFFIX_CMI         = "PV_SUFFIX_CMI";
     const std::string NUMBER_OF_INTERLOCKS  = "NUMBER_OF_INTERLOCKS";
 
     const std::string PV_COUNT  = "PV_COUNT" ;
@@ -114,6 +115,17 @@ namespace UTL
     const std::string PV_SUFFIX_REVTM = "PV_SUFFIX_REVTM";
     const std::string PV_SUFFIX_FWDTM = "PV_SUFFIX_FWDTM";
     const std::string PV_SUFFIX_RATIO = "PV_SUFFIX_RATIO";
+
+    // RF Protection
+    const std::string GUN_PROT_KEY_BITS = "GUN_PROT_KEY_BITS";
+    const std::string RF_GUN_PROT_TYPE = "RF_GUN_PROT_TYPE";
+    const std::string ENABLE     = "ENABLE";
+    const std::string TEST       = "TEST";
+    const std::string CLARA_LRRG = "CLARA_LRRG";
+    const std::string CLARA_HRRG = "CLARA_HRRG";
+    const std::string VELA_LRRG  = "VELA_LRRG";
+    const std::string VELA_HRRG  = "VELA_HRRG";
+    const std::string GENERAL    = "GENERAL";
 
     // QBOX
     const std::string PV_QBOX_STATE    = "PV_QBOX_STATE";
@@ -161,12 +173,26 @@ namespace UTL
     const std::string XN                    = "XN";
     const std::string YN                    = "YN";
     // Modulator
-    const std::string PV_SUFFIX_GUN_MOD_RESET     = "PV_SUFFIX_GUN_MOD_RESET";
+    const std::string PV_SUFFIX_GUN_RESET     = "PV_SUFFIX_GUN_RESET";
     const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
     const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
     const std::string PV_SUFFIX_GUN_MOD_EXILOCK1  = "PV_SUFFIX_GUN_MOD_EXILOCK1";
     const std::string PV_SUFFIX_GUN_MOD_EXILOCK2  = "PV_SUFFIX_GUN_MOD_EXILOCK2";
     const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_CT_READ          = "PV_SUFFIX_GUN_MOD_CT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_CVD_READ             = "PV_SUFFIX_GUN_MOD_CVD_READ";
+    const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
+    const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ";
+    const std::string PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ    = "PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ";
+
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";
     const std::string MAG_GANG_MEMBER = "MAG_GANG_MEMBER";
@@ -178,9 +204,17 @@ namespace UTL
     const std::string PV_SUFFIX_SI = "PV_SUFFIX_SI";
     const std::string PV_PSU_ROOT  = "PV_PSU_ROOT";
     const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change >>??
-    // clara mistake - hopefully will change...
-    const std::string PV_SUFFIX_SETIOUT  = "PV_SUFFIX_SETIOUT";
-    const std::string PV_SUFFIX_I  = "PV_SUFFIX_I";
+    // clara ... Expect VELA to TAKE on these names ALD
+    const std::string PV_SUFFIX_SPOWER = "PV_SUFFIX_SPOWER";
+    const std::string PV_SUFFIX_RPOWER = "PV_SUFFIX_RPOWER";
+    const std::string PV_SUFFIX_READI  = "PV_SUFFIX_READI";
+    const std::string PV_SUFFIX_SETI   = "PV_SUFFIX_SETI";
+    const std::string PV_SUFFIX_RILK   = "PV_SUFFIX_RILK";
+
+
+
+
+
 
     // LLRF (DJS faked 21-02-2017)
     const std::string CLARA_LRRG_LLRF_GUN_CONFIG = "claraLRRGunLLRF.config";
@@ -197,7 +231,6 @@ namespace UTL
     const std::string LLRF_AMP_CALIBRATION = "LLRF_AMP_CALIBRATION";
     const std::string LLRF_PHI_CALIBRATION = "LLRF_PHI_CALIBRATION";
     const std::string LLRF_CREST_PHI = "LLRF_CREST_PHI";
-
 
     const std::string MAG_TYPE  = "MAG_TYPE";
     const std::string SOL   = "SOL";
@@ -296,7 +329,7 @@ namespace UTL
 //    const std::string PV_RF_GUN_MOD_STATEREAD = "PV_RF_GUN_MOD_STATEREAD";
 //    const std::string PV_RF_GUN_MOD_EXILOCK1  = "PV_RF_GUN_MOD_EXILOCK1";
 //    const std::string PV_RF_GUN_MOD_WARMUPT   = "PV_RF_GUN_MOD_WARMUPT";
-//    const std::string PV_RF_GUN_MOD_RESET     = "PV_RF_GUN_MOD_RESET";
+//    const std::string PV_RF_GUN_RESET     = "PV_RF_GUN_RESET";
 //
 //    const std::string REV_TRACE_SIZE = "REV_TRACE_SIZE";
 //    const std::string FWD_TRACE_SIZE = "FWD_TRACE_SIZE";

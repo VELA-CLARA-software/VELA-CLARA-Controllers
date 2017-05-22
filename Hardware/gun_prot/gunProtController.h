@@ -41,7 +41,7 @@ class gunProtController : public controller
         // just have 1 constructor, but we have a higher level class that create these objects
         gunProtController();
         gunProtController(const bool show_messages, const bool show_debug_messagese,
-                          const std::string & pilaserConf, const bool startVirtualMachine,
+                          const std::string &allGunProtsConf, const bool startVirtualMachine,
                           const bool shouldStartEPICs );
         ~gunProtController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
@@ -55,9 +55,20 @@ class gunProtController : public controller
         bool isBad(const std::string & name);
 
         bool reset(const std::string& name);
+        bool reset(const std::vector<std::string>& names);
 
         bool enable(const std::string& name);
+        bool enable(const std::vector<std::string>& names);
+        bool enable();
+
         bool disable(const std::string& name);
+        bool disable(const std::vector<std::string>& names);
+
+        std::string getGeneralProtName();
+        std::string getEnableProtName();
+        std::string getCurrentModeProtName();
+
+
     protected:
     private:
         void initialise();

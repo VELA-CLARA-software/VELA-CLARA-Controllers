@@ -73,6 +73,9 @@ class scopeInterface : public interface
         void cancelDataMonitors();
         std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< std::string > getScopeNames();
+        std::vector< std::string > getScopePVs();
+        std::vector< std::string > getScopeTracePVs();
+        std::vector< std::string > getScopeNumPVs();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
 //        char getTimestamp( std::string & scope );

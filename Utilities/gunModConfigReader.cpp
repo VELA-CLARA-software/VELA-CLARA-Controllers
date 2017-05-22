@@ -218,23 +218,51 @@ void gunModConfigReader::addToPVStruct( std::vector< rfModStructs::pvStruct >  &
         pvStruct_v.back().pvSuffix = keyVal[1];
         //GUN  Modulator
 
-        if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_RESET  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MOD_RESET;
+        if( keyVal[0] == UTL::PV_SUFFIX_GUN_RESET  )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::RESET;
 
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_STATESET  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MOD_STATE_SET;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_SET;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_STATEREAD  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MOD_STATE_READ;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_READ;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_EXILOCK1  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MOD_ERROR_READ;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_EXILOCK2 )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MOD_ERROR_READ_STR;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_STR;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_WARMUPT )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MOD_WARMUP_TIME;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME;
+
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_VOLT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_VOLT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_CT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::CT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_CVD_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::CVD_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ;
+
          debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
     else

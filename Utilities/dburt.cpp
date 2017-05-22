@@ -141,11 +141,11 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3( const char* fileName, const
                     magState.magNames.push_back( keyvalval[0] );
 
                     if( keyvalval[1] == UTL::ON )
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON );
+                        magState.psuStates.push_back( magnetStructs::MAG_PSU_STATE::ON );
                     else if( keyvalval[1] == UTL::OFF )
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF );
+                        magState.psuStates.push_back( magnetStructs::MAG_PSU_STATE::OFF );
                     else
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR );
+                        magState.psuStates.push_back( magnetStructs::MAG_PSU_STATE::ERROR );
 
                     magState.siValues.push_back( getNumD( keyvalval[2] ) );
                 }
@@ -310,14 +310,14 @@ magnetStructs::magnetStateStruct dburt::readDBURTv1( const char* fileName, const
                 {
                     magState.magNames.push_back( keyvalval[0] );
 
-                    if( keyvalval[1] == UTL::ON )
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON );
-                    else if( keyvalval[1] == UTL::OFF )
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF );
+                    if(keyvalval[1] == UTL::ON)
+                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
+                    else if( keyvalval[1] == UTL::OFF)
+                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::OFF);
                     else
-                        magState.psuStates.push_back( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR );
+                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
 
-                    magState.siValues.push_back( getNumD( keyvalval[2] ) );
+                    magState.siValues.push_back(getNumD(keyvalval[2]));
                 }
             } // if( readingParameters )_END
 

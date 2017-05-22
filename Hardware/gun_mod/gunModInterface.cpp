@@ -81,7 +81,7 @@ void gunModInterface::initialise()
                 /// subscribe to the channel ids
                 initChids();
                 /// start the monitors: set up the callback functions
-//                startMonitors();
+                startMonitors();
                 /// The pause allows EPICS to catch up.
                 std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
             }
@@ -164,35 +164,81 @@ void gunModInterface::startMonitors()
 ////____________________________________________________________________________________________
 void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
 {
+
     rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
     switch(ms -> monType)
     {
-        case rfModStructs::GUN_MOD_PV_TYPE::MOD_STATE_READ:
-            ms->interface->debugMessage("GUN_MOD_PV_TYPE::MOD_STATE_READ = ", *(double*)args.dbr);
-            ms->rfModStructs->vPos =  *(double*)args.dbr;
+        case rfModStructs::GUN_MOD_PV_TYPE::STATE_READ:
+            ms->interface->debugMessage("GUN_MOD_PV_TYPE::STATE_READ = ", *(double*)args.dbr);
+            //ms->rfModStructs->vPos =  *(double*)args.dbr;
             break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MOD_ERROR_READ:
-            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ = ",*(double*)args.dbr);
             //ms->rfModStructs->intensity =  *(double*)args.dbr;
             break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MOD_ERROR_READ_STR:
-
-
-            i am writing the modualtor update values, but we need modualtor comms to do this :(
-
-
-            ms->rfModObject->warmuptime =  *(long*)args.dbr;
-
+        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_STR:
+            ms->interface->debugMessage("GUN_MOD_PV_TYPE::STATE_READ = ", *(double*)args.dbr);
             break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MOD_WARMUP_TIME:
-
+        case rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",*(long*)args.dbr);
+            ms->interface->gunMod.warmuptime =  *(long*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs1CurrRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_CURR_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_CURR_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs2CurrRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_CURR_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_CURR_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs3CurrRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_CURR_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_CURR_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs4CurrRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_VOLT_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_VOLT_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs1VoltRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_VOLT_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_VOLT_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs2VoltRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs3VoltRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.MagPs4VoltRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::CT_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.CtRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::CVD_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.CvdRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.PlswthRead  =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.PlswthFwhmRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ:
+            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ",*(double*)args.dbr);
+            ms->interface->gunMod.ionp =  *(double*)args.dbr;
             break;
         default:
-            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to gunModInterface::staticEntryPILMonitor");
+            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to gunModInterface::staticEntryGunModMonitor");
             break;
     }
-
-
 }
 ////____________________________________________________________________________________________
 //double gunModInterface::getHpos()

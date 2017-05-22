@@ -74,6 +74,9 @@ class scopeController : public controller
         void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void monitorNumsForNShots( size_t N );
         std::vector< std::string > getScopeNames();
+        std::vector< std::string > getScopePVs();
+        std::vector< std::string > getScopeTracePVs();
+        std::vector< std::string > getScopeNumPVs();
         /// write a method that returns string version of enums using ENUM_TO_STRING
 
 //        VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
