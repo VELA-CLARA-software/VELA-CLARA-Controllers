@@ -1041,7 +1041,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->message("\n", "\tDEGAUSS UPDATE: Vectors Initialised Starting Degaussing","\n" );
 
-    for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[j]].numDegaussSteps; ++j )//MAGIC_NUMBER
+    for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[0]].numDegaussSteps; ++j )//MAGIC_NUMBER
     {
         if( magToDeg.size() == 0 )//MAGIC_NUMBER
         {
