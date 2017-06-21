@@ -205,11 +205,12 @@ namespace UTL
     const std::string PV_PSU_ROOT  = "PV_PSU_ROOT";
     const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change >>??
     // clara ... Expect VELA to TAKE on these names ALD
-    const std::string PV_SUFFIX_SPOWER = "PV_SUFFIX_SPOWER";
-    const std::string PV_SUFFIX_RPOWER = "PV_SUFFIX_RPOWER";
-    const std::string PV_SUFFIX_READI  = "PV_SUFFIX_READI";
-    const std::string PV_SUFFIX_SETI   = "PV_SUFFIX_SETI";
-    const std::string PV_SUFFIX_RILK   = "PV_SUFFIX_RILK";
+    const std::string PV_SUFFIX_SPOWER  = "PV_SUFFIX_SPOWER";
+    const std::string PV_SUFFIX_RPOWER  = "PV_SUFFIX_RPOWER";
+    const std::string PV_SUFFIX_READI   = "PV_SUFFIX_READI";
+    const std::string PV_SUFFIX_SETI    = "PV_SUFFIX_SETI";
+    const std::string PV_SUFFIX_GETSETI = "PV_SUFFIX_GETSETI";
+    const std::string PV_SUFFIX_RILK    = "PV_SUFFIX_RILK";
 
 
 
@@ -217,11 +218,35 @@ namespace UTL
 
 
     // LLRF (DJS faked 21-02-2017)
-    const std::string CLARA_LRRG_LLRF_GUN_CONFIG = "claraLRRGunLLRF.config";
-    const std::string CLARA_HRRG_LLRF_GUN_CONFIG = "claraHRRGunLLRF.config";
-    const std::string VELA_LRRG_LLRF_GUN_CONFIG  = "velaLRRGunLLRF.config";
-    const std::string VELA_HRRG_LLRF_GUN_CONFIG  = "velaHRRGunLLRF.config";
-    const std::string CLARA_L01_LLRF_CONFIG = "claraLinac01LLRF.config";
+    // 24/5/17 UPDATE, the real machine LLRF is now included, and completely different to previous years
+    // I've had to fake the VM versiosn atm until
+    const std::string CLARA_LRRG_LLRF_CONFIG    = "CLARA_LRRG_LLRF.config";
+    const std::string VM_CLARA_LRRG_LLRF_CONFIG = "vmCLARA_LRRG_LLRF.config";
+    // I expect this to look similar to CLARA_LRRG_LLRF
+    const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
+    const std::string VM_CLARA_L01_LLRF_CONFIG = "vmCLARA_L01_LLRF.config";
+    // NOt sure about this yet at all, hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG (its the same physical LLRF equipment)
+    const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
+    const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
+
+    // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
+    // except, probably, the VELA TDC
+    const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
+    const std::string PV_SUFFIX_LIB_AMP_SP      = "PV_SUFFIX_LIB_AMP_SP";
+    const std::string PV_SUFFIX_LIB_PHI_FF      = "PV_SUFFIX_LIB_PHI_FF";
+    const std::string PV_SUFFIX_LIB_PHI_SP      = "PV_SUFFIX_LIB_PHI_SP";
+    const std::string PV_SUFFIX_LIB_CAV_FWD     = "PV_SUFFIX_LIB_CAV_FWD";
+    const std::string PV_SUFFIX_LIB_CAV_REV     = "PV_SUFFIX_LIB_CAV_REV";
+    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
+    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
+    const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
+    const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
+    const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
+    const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
+
+
+
+    // LEGACY LLRF PVS from the Dark Days oF VELA 2015 :(
     const std::string PV_SUFFIX_AMPR = "PV_SUFFIX_AMPR";
     const std::string PV_SUFFIX_PHI  = "PV_SUFFIX_PHI";
     const std::string PV_SUFFIX_AMPW = "PV_SUFFIX_AMPW";

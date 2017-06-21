@@ -4,11 +4,9 @@
 VCllrf::VCllrf():
 GUN_LLRF_Controller_Obj(nullptr),
 L01_LLRF_Controller_Obj(nullptr),
-CLARA_LRRG_LLRF_GUN_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_LRRG_LLRF_GUN_CONFIG),
-CLARA_HRRG_LLRF_GUN_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_HRRG_LLRF_GUN_CONFIG),
-VELA_LRRG_LLRF_GUN_CONFIG (UTL::CONFIG_PATH + UTL::VELA_LRRG_LLRF_GUN_CONFIG),
-VELA_HRRG_LLRF_GUN_CONFIG (UTL::CONFIG_PATH + UTL::VELA_HRRG_LLRF_GUN_CONFIG),
-CLARA_L01_LLRF_CONFIG     (UTL::CONFIG_PATH + UTL::CLARA_L01_LLRF_CONFIG),
+CLARA_LRRG_LLRF_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_LRRG_LLRF_CONFIG),
+CLARA_L01_LLRF_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_L01_LLRF_CONFIG),
+VELA_HRRG_LLRF_CONFIG (UTL::CONFIG_PATH + UTL::VELA_HRRG_LLRF_CONFIG),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
@@ -60,104 +58,104 @@ VCllrf::~VCllrf()
 //______________________________________________________________________________
 void VCllrf::killGun()
 {
-    if( GUN_LLRF_Controller_Obj)
+    if(GUN_LLRF_Controller_Obj)
     {
         delete GUN_LLRF_Controller_Obj;
                GUN_LLRF_Controller_Obj = nullptr;
     }
 }
 //______________________________________________________________________________
-llrfController& VCllrf::virtual_CLARA_LRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::virtual_CLARA_LRRG_LLRF_Controller()
 {
     std::cout << "Creating virtual_CLARA_LRRG_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::CLARA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::offline_CLARA_LRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::offline_CLARA_LRRG_LLRF_Controller()
 {
     std::cout << "Creating offline_CLARA_LRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::CLARA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::physical_CLARA_LRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::physical_CLARA_LRRG_LLRF_Controller()
 {
     std::cout << "Creating physical_CLARA_LRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::CLARA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::virtual_CLARA_HRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::virtual_CLARA_HRRG_LLRF_Controller()
 {
     std::cout << "Creating virtual_CLARA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::CLARA_HRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::offline_CLARA_HRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::offline_CLARA_HRRG_LLRF_Controller()
 {
     std::cout << "Creating offline_CLARA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::CLARA_HRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::physical_CLARA_HRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::physical_CLARA_HRRG_LLRF_Controller()
 {
     std::cout << "Creating physical_CLARA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::CLARA_HRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::virtual_VELA_LRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::virtual_VELA_LRRG_LLRF_Controller()
 {
     std::cout << "Creating virtual_VELA_LRRG_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::VELA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::offline_VELA_LRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::offline_VELA_LRRG_LLRF_Controller()
 {
     std::cout << "Creating offline_VELA_LRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::VELA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::physical_VELA_LRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::physical_VELA_LRRG_LLRF_Controller()
 {
     std::cout << "Creating physical_VELA_LRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::VELA_LRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::virtual_VELA_HRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::virtual_VELA_HRRG_LLRF_Controller()
 {
     std::cout << "Creating virtual_VELA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::VELA_HRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::offline_VELA_HRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::offline_VELA_HRRG_LLRF_Controller()
 {
     std::cout << "Creating offline_VELA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::VELA_HRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::physical_VELA_HRRG_LLRF_Controller()
+liberaLLRFController& VCllrf::physical_VELA_HRRG_LLRF_Controller()
 {
     std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::VELA_HRRG);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::virtual_L01_LLRF_Controller()
+liberaLLRFController& VCllrf::virtual_L01_LLRF_Controller()
 {
     std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::physical_L01_LLRF_Controller()
+liberaLLRFController& VCllrf::physical_L01_LLRF_Controller()
 {
     std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::offline_L01_LLRF_Controller()
+liberaLLRFController& VCllrf::offline_L01_LLRF_Controller()
 {
     std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
-llrfController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrfStructs::LLRF_TYPE llrfType)
+liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrfStructs::LLRF_TYPE llrfType)
 {
     bool createobject = true;
     if( isaGUN(llrfType)&&GUN_LLRF_Controller_Obj )
@@ -169,29 +167,29 @@ llrfController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrfStruct
     {
         switch(llrfType)
         {
-            case llrfStructs::CLARA_HRRG:
-                GUN_LLRF_Controller_Obj =
-                    new llrfController(shouldShowMessage,shouldShowDebugMessage,CLARA_HRRG_LLRF_GUN_CONFIG,
-                               shouldVM,shouldEPICS,llrfType);
-                break;
+//            case llrfStructs::CLARA_HRRG:
+//                GUN_LLRF_Controller_Obj =
+//                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_HRRG_LLRF_CONFIG,
+//                               shouldVM,shouldEPICS,llrfType);
+//                break;
             case llrfStructs::CLARA_LRRG:
                 GUN_LLRF_Controller_Obj =
-                    new llrfController(shouldShowMessage,shouldShowDebugMessage,CLARA_LRRG_LLRF_GUN_CONFIG,
+                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_LRRG_LLRF_CONFIG,
                                shouldVM,shouldEPICS,llrfType);
                 break;
-            case llrfStructs::VELA_HRRG:
-                GUN_LLRF_Controller_Obj =
-                    new llrfController(shouldShowMessage,shouldShowDebugMessage,VELA_HRRG_LLRF_GUN_CONFIG,
-                               shouldVM,shouldEPICS,llrfType);
-                break;
-            case llrfStructs::VELA_LRRG:
-                GUN_LLRF_Controller_Obj =
-                    new llrfController(shouldShowMessage,shouldShowDebugMessage,VELA_LRRG_LLRF_GUN_CONFIG,
-                               shouldVM,shouldEPICS,llrfType);
-                break;
+//            case llrfStructs::VELA_HRRG:
+//                GUN_LLRF_Controller_Obj =
+//                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,VELA_HRRG_LLRF_CONFIG,
+//                               shouldVM,shouldEPICS,llrfType);
+//                break;
+//            case llrfStructs::VELA_LRRG:
+//                GUN_LLRF_Controller_Obj =
+//                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,VELA_LRRG_LLRF_CONFIG,
+//                               shouldVM,shouldEPICS,llrfType);
+//                break;
             case llrfStructs::L01:
                 L01_LLRF_Controller_Obj =
-                    new llrfController(shouldShowMessage,shouldShowDebugMessage,CLARA_L01_LLRF_CONFIG,
+                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_L01_LLRF_CONFIG,
                                shouldVM,shouldEPICS,llrfType);
                 return *L01_LLRF_Controller_Obj;
                 break;

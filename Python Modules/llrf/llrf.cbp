@@ -50,10 +50,10 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
-		<Unit filename="../../Hardware/llrf/llrfController.cpp" />
-		<Unit filename="../../Hardware/llrf/llrfController.h" />
-		<Unit filename="../../Hardware/llrf/llrfInterface.cpp" />
-		<Unit filename="../../Hardware/llrf/llrfInterface.h" />
+		<Unit filename="../../Hardware/llrf/liberallrfController.cpp" />
+		<Unit filename="../../Hardware/llrf/liberallrfController.h" />
+		<Unit filename="../../Hardware/llrf/liberallrfInterface.cpp" />
+		<Unit filename="../../Hardware/llrf/liberallrfInterface.h" />
 		<Unit filename="../../Structs/llrfStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
@@ -61,8 +61,8 @@
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/llrfConfigReader.cpp" />
-		<Unit filename="../../Utilities/llrfConfigReader.h" />
+		<Unit filename="../../Utilities/liberallrfConfigReader.cpp" />
+		<Unit filename="../../Utilities/liberallrfConfigReader.h" />
 		<Unit filename="include/VCllrf.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />

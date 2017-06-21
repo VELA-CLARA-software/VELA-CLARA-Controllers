@@ -191,8 +191,8 @@ void magnetInterface::staticEntryMagnetMonitor( const event_handler_args args)
         case magnetStructs::MAG_PV_TYPE::READI:
             ms->interface->updateRI( *(double*)args.dbr, ms->objName );
             break;
-        case magnetStructs::MAG_PV_TYPE::SETI:
-            ms->interface->updateSI( *(double*)args.dbr, ms->objName );
+        case magnetStructs::MAG_PV_TYPE::GETSETI:
+            ms->interface->updateGetSI( *(double*)args.dbr, ms->objName );
             break;
         case magnetStructs::MAG_PV_TYPE::RPOWER:
             ms->interface->updatePSUSta( *(unsigned short*)args.dbr, ms->objName);// see manual DBR_ENUM	dbr_enum_t	16 bit unsigned integer
@@ -200,6 +200,9 @@ void magnetInterface::staticEntryMagnetMonitor( const event_handler_args args)
         case magnetStructs::MAG_PV_TYPE::RILK:
             ms->interface->updateRILK(*(unsigned short*)args.dbr, ms->objName );
             break;
+//        case magnetStructs::MAG_PV_TYPE::RPOWER:
+//            ms->interface->updateRPower(*(unsigned short*)args.dbr, ms->objName );
+//            break;
         default:
             ms->interface->debugMessage( "!!! ERROR !!! Unknown Monitor Type passed to magnetInterface::staticEntryMagnetMonitor" );
             break;
@@ -218,7 +221,7 @@ void magnetInterface::updateRI(const double value,const std::string& magName)
     }
 }
 //______________________________________________________________________________
-void magnetInterface::updateSI(const double value,const std::string&magName)
+void magnetInterface::updateGetSI(const double value,const std::string&magName)
 {
     if(entryExists(allMagnetData,magName))
     {
@@ -339,15 +342,14 @@ magnetInterface::vec_s magnetInterface::setSI( const vec_s & magNames, const vec
 bool magnetInterface::setSI( const std::string & magName, const double value, const double tolerance, const size_t timeOUT )
 {
     const vec_s mags = { magName };
-    const vec_d   vals = { value   };
-    const vec_d   tols = { tolerance   };
+    const vec_d vals = { value   };
+    const vec_d tols = { tolerance   };
     const vec_s magsRet =  setSI( mags, vals, tols, timeOUT );
     if( magsRet[0] == magName )
         return true;
     else
         return false;
 }
-
 //_____________________________________________________________
 bool magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
 { // THIS IS THE MAIN SET SI FUNCTION all values sent here should have been checked that they exist
@@ -357,21 +359,21 @@ bool magnetInterface::setSI_MAIN( const vec_s &magNames, const  vec_d &values )
     if(shouldStartEPICs)
     { //bool magnetInterface::setSINoFlip( const vec_s & magNames, const vec_d & values)
         {
+            message(" shouldStartEPICs  ");
             if( magNames.size() == values.size() )
             {
+                message(" magNames.size() == values.size() ");
                 // MEH
                 size_t counter = 0;
                 for ( auto && mag_it : magNames)
                 {
-                    ca_put(allMagnetData[mag_it].pvMonStructs[magnetStructs::MAG_PV_TYPE::SETI].CHTYPE,
-                           allMagnetData[mag_it].pvMonStructs[magnetStructs::MAG_PV_TYPE::SETI].CHID,
-                           &values[counter]);
-
                     message("sending ", mag_it, " value ",  values[counter]);
+                    ca_put(allMagnetData[mag_it].pvComStructs[magnetStructs::MAG_PV_TYPE::SETI].CHTYPE,
+                           allMagnetData[mag_it].pvComStructs[magnetStructs::MAG_PV_TYPE::SETI].CHID,
+                           &values[counter]);
                     ++counter;
-
-
                 }
+                message("calling sendToEpics");
                 int status = sendToEpics( "ca_put", "", "Timeout sending SI values");
                 if ( status == ECA_NORMAL )
                     ret = true;
@@ -626,6 +628,9 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
 
     ds.interface->message("\n", "\tDEGAUSS UPDATE: Vectors Initialised Starting Degaussing","\n" );
 
+    ds.interface->message("num degauss steps = ", ds.interface->allMagnetData[magToDeg[0]].numDegaussSteps);
+
+
     //for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[j]].numDegaussSteps; ++j )//MAGIC_NUMBER
     for( size_t j = 0; j < ds.interface->allMagnetData[magToDeg[0]].numDegaussSteps; ++j )//MAGIC_NUMBER
     {
@@ -637,9 +642,17 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
         values.clear();
         tolerances.clear();
 
-        ds.interface->getDegaussValues( magToDeg, values, tolerances, j );
+        //ds.interface->getDegaussValues( magToDeg, values, tolerances, j );
 
         /// Call the main function so we don't check for isDegaussing...
+
+        for( auto && it : magToDeg )
+        {
+            values.push_back(ds.interface->allMagnetData[it].degValues[j]);
+            tolerances.push_back(ds.interface->allMagnetData[it].degTolerance);
+            ds.interface->message(it," ",values[j]," ",tolerances[j]);
+        }
+
 
         ds.interface->message("get vals");
 
@@ -944,7 +957,7 @@ bool magnetInterface::isACor( const std::string & magName )
     else
         return false;
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
 //bool magnetInterface::isBipolar( const std::string & magName )
 //{
 //    if( entryExists( allMagnetData, magName ) )
@@ -1490,13 +1503,22 @@ void magnetInterface::printFinish()
 const magnetStructs::magnetObject & magnetInterface::getMagObjConstRef( const std::string & magName  )
 {
     if( entryExists( allMagnetData, magName ) )
+    {
         return allMagnetData[ magName ];
+    }
     else
-        return allMagnetData[ dummyName ];
+    {
+        for( auto && it : allMagnetData)
+        {
+            if(it.second.pvRoot == magName )
+                return it.second;
+        }
+    }
+    return allMagnetData[ dummyName ];
     /// HAVE A DUMMY MAGNET TO RETURN ON ERROR?
 }
 //______________________________________________________________________________
-const magnetStructs::magnetObject * magnetInterface::getMagObjConstPtr( const std::string & magName  )
+const magnetStructs::magnetObject * magnetInterface::getMagObjConstPtr(const std::string & magName)
 {
     if( entryExists( allMagnetData, magName ) )
         return &allMagnetData[ magName ];
@@ -1506,6 +1528,5 @@ const magnetStructs::magnetObject * magnetInterface::getMagObjConstPtr( const st
 //______________________________________________________________________________
 void magnetInterface::addDummyElementToAllMAgnetData()
 {
-    allMagnetData[ dummyName ].name = dummyName;
     allMagnetData[ dummyName ].name = dummyName;
 }

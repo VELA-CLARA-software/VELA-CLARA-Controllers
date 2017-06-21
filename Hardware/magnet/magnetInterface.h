@@ -132,8 +132,8 @@ class magnetInterface : public interface
         bool writeDBURT(const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = ""  ,const std::string & keywords = "");
         bool writeDBURT(const std::string &fileName = "",const std::string &comments="",const std::string & keywords="");
         /// These versions are for c++ applictions, we allow c++ users to have full read access to the entire magnetObject data
-        const magnetStructs::magnetObject &getMagObjConstRef( const std::string & magName  );
-        const magnetStructs::magnetObject *getMagObjConstPtr( const std::string & magName  );
+        const magnetStructs::magnetObject &getMagObjConstRef(const std::string& magName);
+        const magnetStructs::magnetObject *getMagObjConstPtr(const std::string& magName);
 
 //      /// Reverse types
 //        magnetStructs::MAG_REV_TYPE                  getMagRevType( const std::string & magName );
@@ -204,12 +204,14 @@ class magnetInterface : public interface
         static void staticEntryMagnetMonitor(const event_handler_args args);
 //
         void updateRI(const double value,const std::string&magName);
-        void updateSI(const double value,const std::string&magName);
+        void updateGetSI(const double value,const std::string&magName);
 //
 //        void updateRI_WithPol( const std::string & magName );
 //        void updateSI_WithPol( const std::string & magName );
         void updatePSUSta(const unsigned short value,const std::string&magName);
         void updateRILK(const unsigned short value,const std::string&magName);
+
+        void updateRPower(const unsigned short value,const std::string&magName);
 //
 //
         bool setSI_MAIN(const vec_s & magNames, const vec_d& values );

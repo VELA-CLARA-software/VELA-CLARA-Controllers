@@ -445,7 +445,7 @@ void RFGunInterface::updateTrace( RFGunStructs::monitorStruct * ms, const event_
 //
 //        if( i == 9 )
 //            std::cout << std::endl;
-//        ++i;
+        ++i;
     }
     /// increment shot count
     if( td -> numShots > -1 )

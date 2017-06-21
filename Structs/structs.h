@@ -49,7 +49,7 @@ namespace VELA_ENUM/// this seems like a really out of date name now...
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MACHINE_MODE, (OFFLINE ) (VIRTUAL ) (PHYSICAL) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MACHINE_AREA, (VELA_INJ) (VELA_BA1) (VELA_BA2) (CLARA_PH1)
-                                                       (CLARA_INJ) (CLARA_2_VELA) (CLARA_S01) (CLARA_S02) (UNKNOWN_AREA) )
+                                                       (CLARA_INJ) (CLARA_2_VELA) (CLARA_S01) (CLARA_S02) (UNKNOWN_AREA) (USER) )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE, (MAG_PSU_OFF) (MAG_PSU_ON) (MAG_PSU_TIMING) (MAG_PSU_ERROR) (MAG_PSU_NONE) )
 

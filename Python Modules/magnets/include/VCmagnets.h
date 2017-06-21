@@ -26,9 +26,14 @@ class VCmagnets
         magnetController& offline_CLARA_PH1_Magnet_Controller();
         magnetController& physical_CLARA_PH1_Magnet_Controller();
 
-//        magnetController& virtual_VELA_BA1_Magnet_Controller();
-//        magnetController& offline_VELA_BA1_Magnet_Controller();
-//        magnetController& physical_VELA_BA1_Magnet_Controller();
+        magnetController& virtual_VELA_INJ_Magnet_Controller();
+        magnetController& offline_VELA_INJ_Magnet_Controller();
+        magnetController& physical_VELA_INJ_Magnet_Controller();
+
+        magnetController& virtual_USER_Magnet_Controller(const std::string & config_path);
+        magnetController& offline_USER_Magnet_Controller(const std::string & config_path);
+        magnetController& physical_USER_Magnet_Controller(const std::string & config_path);
+
 //
 //        magnetController& virtual_VELA_BA2_Magnet_Controller();
 //        magnetController& offline_VELA_BA2_Magnet_Controller();
@@ -43,8 +48,6 @@ class VCmagnets
         void setMessage();
         void setDebugMessage();
 
-
-
     protected:
 
     private:
@@ -53,9 +56,17 @@ class VCmagnets
         magnetController * offline_CLARA_PH1_Magnet_Controller_Obj;
         magnetController * physical_CLARA_PH1_Magnet_Controller_Obj;
 
+        magnetController * virtual_VELA_INJ_Magnet_Controller_Obj;
+        magnetController * offline_VELA_INJ_Magnet_Controller_Obj;
+        magnetController * physical_VELA_INJ_Magnet_Controller_Obj;
+
+        magnetController * virtual_USER_Magnet_Controller_Obj;
+        magnetController * offline_USER_Magnet_Controller_Obj;
+        magnetController * physical_USER_Magnet_Controller_Obj;
 
         magnetController& getController(magnetController * cont,const std::string& conf,
-                                       const std::string & name, const bool shouldVM, const bool shouldEPICS,                                       const VELA_ENUM::MACHINE_AREA myMachineArea );
+                                       const std::string & name, const bool shouldVM, const bool shouldEPICS,
+                                       const VELA_ENUM::MACHINE_AREA myMachineArea );
 
 //        magnetController& getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
@@ -74,7 +85,7 @@ class VCmagnets
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
 
-        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
+        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA,USER;
 };
 
 typedef double doub;
@@ -175,7 +186,7 @@ bool  (magnetController::*setSIZero_2)( cves & ) = &magnetController::setSIZero;
 
 
 using namespace boost::python;
-BOOST_PYTHON_MODULE( CLARA_Magnet_Control )
+BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
 {
     docstring_options doc_options(false);
     doc_options.disable_cpp_signatures();
@@ -212,25 +223,25 @@ BOOST_PYTHON_MODULE( CLARA_Magnet_Control )
 //        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
 //        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
 //        ;
-//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-//        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
-//        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
-//        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
-//        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
-//        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-//        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
-//        ;
-//    /// and enums, remember we have a enum to string python dictionary macro too!
-//    enum_<magnetStructs::MAG_TYPE>("MAG_TYPE","MAG_TYPE Doc String")
-//        .value("QUAD", magnetStructs::MAG_TYPE::QUAD )
-//        .value("DIP" , magnetStructs::MAG_TYPE::DIP  )
-//        .value("HCOR", magnetStructs::MAG_TYPE::HCOR )
-//        .value("VCOR", magnetStructs::MAG_TYPE::VCOR )
-//        .value("BSOL", magnetStructs::MAG_TYPE::BSOL )
-//        .value("SOL" , magnetStructs::MAG_TYPE::SOL  )
-//        .value("SEXT", magnetStructs::MAG_TYPE::SEXT )
-//        .value("UNKNOWN_MAGNET_TYPE",  magnetStructs::MAG_TYPE::UNKNOWN_MAGNET_TYPE  )
-//        ;
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
+        ;
+    /// and enums, remember we have a enum to string python dictionary macro too!
+    enum_<magnetStructs::MAG_TYPE>("MAG_TYPE","MAG_TYPE Doc String")
+        .value("QUAD", magnetStructs::MAG_TYPE::QUAD )
+        .value("DIP" , magnetStructs::MAG_TYPE::DIP  )
+        .value("HCOR", magnetStructs::MAG_TYPE::HCOR )
+        .value("VCOR", magnetStructs::MAG_TYPE::VCOR )
+        .value("BSOL", magnetStructs::MAG_TYPE::BSOL )
+        .value("SOL" , magnetStructs::MAG_TYPE::SOL  )
+        .value("SEXT", magnetStructs::MAG_TYPE::SEXT )
+        .value("UNKNOWN_MAGNET_TYPE",  magnetStructs::MAG_TYPE::UNKNOWN_MAGNET_TYPE  )
+        ;
 //    /// and enums, remember we have a enum to string python dictionary macro too!
 //    enum_<magnetStructs::MAG_REV_TYPE>("MAG_REV_TYPE","MAG_REV_TYPE Doc String")
 //        .value("NR"       , magnetStructs::MAG_REV_TYPE::NR )
@@ -395,13 +406,22 @@ BOOST_PYTHON_MODULE( CLARA_Magnet_Control )
              return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Magnet_Controller",  &VCmagnets::physical_CLARA_PH1_Magnet_Controller,
              return_value_policy<reference_existing_object>())
-//        .def("virtual_VELA_BA1_Magnet_Controller",  &VCmagnets::virtual_VELA_BA1_Magnet_Controller,
-//             return_value_policy<reference_existing_object>())
-//        .def("offline_VELA_BA1_Magnet_Controller",  &VCmagnets::offline_VELA_BA1_Magnet_Controller,
-//             return_value_policy<reference_existing_object>())
-//        .def("physical_VELA_BA1_Magnet_Controller",  &VCmagnets::physical_VELA_BA1_Magnet_Controller,
-//             return_value_policy<reference_existing_object>())
-//        .def("virtual_VELA_BA2_Magnet_Controller",  &VCmagnets::virtual_VELA_BA2_Magnet_Controller,
+        .def("virtual_VELA_INJ_Magnet_Controller",  &VCmagnets::virtual_VELA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_VELA_INJ_Magnet_Controller",  &VCmagnets::offline_VELA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_Magnet_Controller",  &VCmagnets::physical_VELA_INJ_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_USER_Magnet_Controller",  &VCmagnets::virtual_USER_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_USER_Magnet_Controller",  &VCmagnets::offline_USER_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_USER_Magnet_Controller",  &VCmagnets::physical_USER_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+
+
+
+//        .def("virtual_VELA_INJ_Magnet_Controller",  &VCmagnets::virtual_VELA_BA2_Magnet_Controller,
 //             return_value_policy<reference_existing_object>())
 //        .def("offline_VELA_BA2_Magnet_Controller",  &VCmagnets::offline_VELA_BA2_Magnet_Controller,
 //             return_value_policy<reference_existing_object>())

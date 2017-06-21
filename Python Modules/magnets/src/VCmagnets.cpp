@@ -13,9 +13,9 @@ VCmagnets::VCmagnets():
 //physical_VELA_BA2_Magnet_Controller_Obj(nullptr),
 //physical_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 //offline_VELA_INJ_Magnet_Controller_Obj(nullptr),
-//offline_VELA_BA1_Magnet_Controller_Obj(nullptr),
-//offline_VELA_BA2_Magnet_Controller_Obj(nullptr),
-//offline_CLARA_PH1_Magnet_Controller_Obj(nullptr),
+virtual_VELA_INJ_Magnet_Controller_Obj(nullptr),
+offline_VELA_INJ_Magnet_Controller_Obj(nullptr),
+physical_VELA_INJ_Magnet_Controller_Obj(nullptr),
 virtual_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 offline_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 physical_CLARA_PH1_Magnet_Controller_Obj(nullptr),
@@ -23,10 +23,11 @@ withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
 withVM(true),
-VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
-VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
-VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
+VELA_INJ (VELA_ENUM::MACHINE_AREA::VELA_INJ),
+VELA_BA1 (VELA_ENUM::MACHINE_AREA::VELA_BA1),
+VELA_BA2 (VELA_ENUM::MACHINE_AREA::VELA_BA2),
+CLARA_PH1(VELA_ENUM::MACHINE_AREA::CLARA_PH1),
+USER(VELA_ENUM::MACHINE_AREA::USER),
 UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
 shouldShowDebugMessage(false),//default is quiet mode
 shouldShowMessage(false)//default is quiet mode
@@ -152,6 +153,45 @@ magnetController& VCmagnets::offline_CLARA_PH1_Magnet_Controller()
     std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
     std::string name  = "offline_CLARA_PH1_Magnet_Controller";
     return getController(offline_CLARA_PH1_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,CLARA_PH1);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string name  = "virtual_VELA_INJ_Magnet_Controller_Obj";
+    return getController(virtual_VELA_INJ_Magnet_Controller_Obj,mconf,name,withVM,withEPICS,VELA_INJ);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string name  = "offline_VELA_INJ_Magnet_Controller_Obj";
+    return getController(offline_VELA_INJ_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,VELA_INJ);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
+    return getController(physical_VELA_INJ_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_INJ);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_USER_Magnet_Controller(const std::string& config_path)
+{
+    std::string name  = "virtual_USER_Magnet_Controller_Obj";
+    return getController(physical_USER_Magnet_Controller_Obj,config_path,name,withVM,withEPICS,USER);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_USER_Magnet_Controller(const std::string& config_path)
+{
+    std::string name  = "offline_USER_Magnet_Controller_Obj";
+    return getController(physical_USER_Magnet_Controller_Obj,config_path,name,withoutVM,withoutEPICS,USER);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_USER_Magnet_Controller(const std::string& config_path)
+{
+    std::string name  = "physical_USER_Magnet_Controller_Obj";
+    return getController(physical_USER_Magnet_Controller_Obj,config_path,name,withoutVM,withEPICS,USER);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::getController(magnetController * cont,const std::string& conf,const std::string & name, const bool shouldVM, const bool shouldEPICS, const VELA_ENUM::MACHINE_AREA myMachineArea )
