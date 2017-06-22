@@ -48,6 +48,14 @@ namespace magnetStructs
         chtype        CHTYPE;
     };
 
+
+    const std::string SAME_AS_PV_ROOT = "SAME_AS_PV_ROOT";
+    const std::string UNKNOWN_MANUFACTURER = "UNKNOWN_MANUFACTURER";
+    const std::string UNKNOWN_SERIAL_NUMBER = "UNKNOWN_SERIAL_NUMBER";
+    const std::string UNKNOWN_MAGNET_BRANCH = "UNKNOWN_MAGNET_BRANCH";
+    const std::string UNKNOWN_MEASUREMENT_DATA_LOCATION = "UNKNOWN_MEASUREMENT_DATA_LOCATION";
+
+
     struct  magnetObject
     {
         magnetObject():magType(MAG_TYPE::UNKNOWN_MAGNET_TYPE),
@@ -58,13 +66,14 @@ namespace magnetStructs
                        numDegaussElements(UTL::ZERO_INT),
                        magneticLength(UTL::ZERO_DOUBLE),
                        position(UTL::ZERO_DOUBLE),
-                       manufacturer("UNKNOWN_MANUFACTURER"),
-                       serialNumber("UNKNOWN_SERIAL_NUMBER"),
-                       magnetBranch("UNKNOWN_MAGNET_BRANCH"),
-                       measurementDataLocation("UNKNOWN_MEASUREMENT_DATA_LOCATION"),
+                       manufacturer(UNKNOWN_MANUFACTURER),
+                       serialNumber(UNKNOWN_SERIAL_NUMBER),
+                       magnetBranch(UNKNOWN_MAGNET_BRANCH),
+                       measurementDataLocation(UNKNOWN_MEASUREMENT_DATA_LOCATION),
                        siWithPol(UTL::DUMMY_DOUBLE),
                        riWithPol(UTL::DUMMY_DOUBLE),
-                       riTolerance(UTL::DUMMY_DOUBLE)
+                       riTolerance(UTL::DUMMY_DOUBLE),
+                       psuRoot(SAME_AS_PV_ROOT)
                        {}
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_PSU_STATE psuState;
@@ -73,7 +82,7 @@ namespace magnetStructs
         double siWithPol,    // this is the GETSI (i.e. read-only) value in controls 2017 scheme that is consistent between VELA / CALRA
                setsiWithPol, // use this value in the controller to actually set the SI  (i.e. write-only)
                riWithPol, riTolerance, position, magneticLength, degTolerance;
-        std::string name, pvRoot, manufacturer, serialNumber, measurementDataLocation,magnetBranch;
+        std::string name, pvRoot, psuRoot, manufacturer, serialNumber, measurementDataLocation,magnetBranch;
         std::vector< double > degValues, fieldIntegralCoefficients;
         size_t numIlocks,numDegaussSteps, maxWaitTime, numDegaussElements;
         MAG_ILOCK_STATE iLock;

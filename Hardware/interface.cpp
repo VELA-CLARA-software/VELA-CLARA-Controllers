@@ -246,7 +246,7 @@ int interface::sendToEpics2(const  std::string & ca,const  std::string & mess1,c
 void interface::checkCHIDState(const chid & CHID, const std::string & name )
 {
     channel_state chidState  = ca_state(CHID);
-    switch(chidState )
+    switch(chidState)
     {
         case cs_never_conn:
             message(name, " valid chid, server not found or unavailable");

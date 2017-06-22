@@ -86,7 +86,6 @@ class liberaLLRFController : public controller
         bool Is_TracePV(llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_TracePV(llrfStructs::LLRF_PV_TYPE pv);
 
-
         bool isMonitoring(llrfStructs::LLRF_PV_TYPE pv);
         bool isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv);
 

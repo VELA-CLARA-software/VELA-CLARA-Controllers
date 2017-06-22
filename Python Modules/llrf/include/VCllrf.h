@@ -48,7 +48,6 @@ class VCllrf
 
         void killGun();
 
-
         //liberaLLRFController& getliberaLLRFController( VELA_ENUM::MACHINE_MODE mode );
 
     protected:

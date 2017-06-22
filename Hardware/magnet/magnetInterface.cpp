@@ -123,15 +123,43 @@ bool magnetInterface::initObjects()
 void magnetInterface::initChids()
 {
     message( "\n", "Searching for Magnet chids...");
-    for( auto && magObjIt : allMagnetData )
+    for(auto && magObjIt:allMagnetData)
     {
-        for(auto && it2 : magObjIt.second.pvComStructs)
+        for(auto && it2:magObjIt.second.pvComStructs)
         {
-            addChannel(magObjIt.second.pvRoot, it2.second);
+            // the VELA correctors and BSOL are all on the same PSU, with the same PV ROOT (!) EBT-INJ-MAG-HVCOR-01:
+            // it would be nice if controls made them look the same as other magnets
+            // i.e. a dummy PV that works the same as a normal magnetPSU for eahc corrector.
+            // Anyway, here we have to test if its a magnet that has a different psuRoot to pvROOT
+            // AND if we're connecting a PSU suffix, which i will have to hardcode in here
+            // the above makes sense
+            // the bleow could be a bit neater, wit less ifs and copy-pasta
+
+            if(Is_PSU_PV(it2.first))
+            {
+                if(Is_psuRoot_SAME_AS_PV_ROOT(magObjIt.second.psuRoot))
+                    addChannel(magObjIt.second.pvRoot, it2.second);
+                else
+                    addChannel(magObjIt.second.psuRoot, it2.second);
+            }
+            else
+            {
+                addChannel(magObjIt.second.pvRoot, it2.second);
+            }
         }
-        for(auto && it2 : magObjIt.second.pvMonStructs)
+        for(auto && it2:magObjIt.second.pvMonStructs)
         {
-            addChannel(magObjIt.second.pvRoot, it2.second);
+            if(Is_PSU_PV(it2.first))
+            {
+                if(Is_psuRoot_SAME_AS_PV_ROOT(magObjIt.second.psuRoot))
+                    addChannel(magObjIt.second.pvRoot, it2.second);
+                else
+                    addChannel(magObjIt.second.psuRoot, it2.second);
+            }
+            else
+            {
+                addChannel(magObjIt.second.pvRoot, it2.second);
+            }
         }
     }
     int status = sendToEpics( "ca_create_channel", "Found Magnet ChIds.", "!!TIMEOUT!! Not all Magnet ChIds found." );
@@ -153,11 +181,55 @@ void magnetInterface::initChids()
         allChidsInitialised = true;  /// interface base class member
 }
 //______________________________________________________________________________
-void magnetInterface::addChannel( const std::string & pvRoot, magnetStructs::pvStruct & pv )
+void magnetInterface::addChannel(const std::string& pvRoot, magnetStructs::pvStruct& pv)
 {
     std::string s1 = pvRoot + pv.pvSuffix;
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
     debugMessage( "Create channel to ", s1 );
+}
+//______________________________________________________________________________
+bool magnetInterface::Is_psuRoot_NOT_SAME_AS_PV_ROOT_AND_Is_PSU_PV(const std::string& root,magnetStructs::MAG_PV_TYPE pv)
+{
+    if(Is_PSU_PV(pv))
+        if(Is_psuRoot_SAME_AS_PV_ROOT(root))
+            return false;
+        else
+            return true;
+    return false;
+}
+//______________________________________________________________________________
+bool magnetInterface::Is_psuRoot_SAME_AS_PV_ROOT(const std::string& root)
+{
+    //message("Is_psuRoot_TheSameAs_pvRoot checking", root, " with ", magnetStructs::SAME_AS_PV_ROOT);
+    bool a = false;
+    if (root == magnetStructs::SAME_AS_PV_ROOT)
+    {
+        a = true;
+        message(root, " IS  ", magnetStructs::SAME_AS_PV_ROOT);
+    }
+    else
+        message(root, " IS  NOT ", magnetStructs::SAME_AS_PV_ROOT);
+    return a;
+}
+//______________________________________________________________________________
+bool magnetInterface::Is_PSU_PV(magnetStructs::MAG_PV_TYPE pv)
+{
+    switch(pv)
+    {
+        case magnetStructs::MAG_PV_TYPE::RPOWER:
+            //message( "RPOWER is a psuPV");
+            return true;
+        case magnetStructs::MAG_PV_TYPE::SPOWER:
+            //message( "RPOWER is a psuPV");
+            return true;
+        case magnetStructs::MAG_PV_TYPE::RILK:
+            //message( "RPOWER is a psuPV");
+            return true;
+        default:
+            //message(ENUM_TO_STRING(pv), " is NOT  a  psuPV");
+            return false;
+    }
+    return false;
 }
 //______________________________________________________________________________
 void magnetInterface::startMonitors()
@@ -257,9 +329,11 @@ void magnetInterface::updatePSUSta(const unsigned short value,const std::string&
         switch(value)
         {
             case 0:
+                message(magName, " updatePSUSta state is 0");
                 allMagnetData[magName].psuState = magnetStructs::MAG_PSU_STATE::OFF;
                 break;
             case 1:
+                message(magName, " updatePSUSta state is 1");
                 allMagnetData[magName].psuState = magnetStructs::MAG_PSU_STATE::ON;
                 break;
             default:
@@ -627,7 +701,7 @@ void magnetInterface::staticEntryDeGauss( const magnetStructs::degaussStruct & d
     }
     ds.interface->message("\n", "\tDEGAUSS UPDATE: Vectors Initialised Starting Degaussing","\n" );
     ds.interface->message("num degauss steps = ", ds.interface->allMagnetData[magToDeg[0]].numDegaussSteps);
-    
+
 
 
 

@@ -152,7 +152,6 @@ class magnetInterface : public interface
         size_t                getNumDegSteps( const std::string & magName );
         std::vector< size_t > getNumDegSteps( const std::vector< std::string > & magNames );
 
-
         /// BJAS ADDITIONS
       ///
         std::vector< double >              getFieldIntegralCoefficients( const std::string & magName );
@@ -195,6 +194,12 @@ class magnetInterface : public interface
         bool initObjects();
         void addDummyElementToAllMAgnetData();
         void initChids();
+
+        bool Is_PSU_PV( magnetStructs::MAG_PV_TYPE pv);
+        bool Is_psuRoot_SAME_AS_PV_ROOT(const std::string& root);
+        bool Is_psuRoot_NOT_SAME_AS_PV_ROOT_AND_Is_PSU_PV(const std::string& rootl,magnetStructs::MAG_PV_TYPE pv);
+
+
         void addChannel(const std::string& pvRoot,magnetStructs::pvStruct &pv);
         void startMonitors();
 //

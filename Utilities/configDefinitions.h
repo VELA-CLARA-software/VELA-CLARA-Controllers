@@ -50,10 +50,10 @@ namespace UTL
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
     const std::string RF_GUN_PROTECTION_CONFIG          = "RFGunProtection.config";
 /// Magnets
-    const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
-    const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
-    const std::string VELA_BA2_MAG_NR_PSU_CONFIG       = "velaBA2MagnetsNRpsu.config";
-    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnetsNRpsu.config";// not going to use
+//    const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
+//    const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
+//    const std::string VELA_BA2_MAG_NR_PSU_CONFIG       = "velaBA2MagnetsNRpsu.config";
+//    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnetsNRpsu.config";// not going to use
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
     const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
     const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";

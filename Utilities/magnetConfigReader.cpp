@@ -193,6 +193,14 @@ void magnetConfigReader::addToMagObjectsV1( const std::vector<std::string> &keyV
         else
             magObjects.back().pvRoot = value;
     }
+    else if( keyVal[0] == UTL::PV_PSU_ROOT )
+    {
+        message("FOUND PV_PSU_ROOT");
+        if( usingVirtualMachine )
+            magObjects.back().psuRoot = UTL::VM_PREFIX + value;
+        else
+            magObjects.back().psuRoot = value;
+    }
     else if( keyVal[0] == UTL::MAG_TYPE )
         addMagType( keyVal );
     else if( keyVal[0] == UTL::RI_TOLERANCE )
@@ -275,6 +283,9 @@ void magnetConfigReader::addToPVStruct(std::vector< magnetStructs::pvStruct >  &
 
         else if(keyVal[0] == UTL::PV_SUFFIX_RILK  )
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RILK;
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_GETSETI  )
+            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::GETSETI;
 
          debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType) ) ;
     }

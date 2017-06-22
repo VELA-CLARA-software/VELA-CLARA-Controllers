@@ -175,6 +175,51 @@ magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
     std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
     return getController(physical_VELA_INJ_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_INJ);
 }
+
+
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string name  = "virtual_VELA_INJ_Magnet_Controller_Obj";
+    return getController(virtual_VELA_BA1_Magnet_Controller_Obj,mconf,name,withVM,withEPICS,VELA_BA1);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_VELA_BA1_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string name  = "offline_VELA_INJ_Magnet_Controller_Obj";
+    return getController(offline_VELA_BA1_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,VELA_BA1);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
+    return getController(physical_VELA_BA1_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_BA1);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string name  = "virtual_VELA_INJ_Magnet_Controller_Obj";
+    return getController(virtual_VELA_BA2_Magnet_Controller_Obj,mconf,name,withVM,withEPICS,VELA_BA2);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_VELA_BA2_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string name  = "offline_VELA_INJ_Magnet_Controller_Obj";
+    return getController(offline_VELA_BA2_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,VELA_BA2);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
+{
+    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
+    return getController(physical_VELA_BA2_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_BA2);
+}
+
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_USER_Magnet_Controller(const std::string& config_path)
 {
@@ -410,28 +455,34 @@ magnetController& VCmagnets::getController(magnetController * cont,const std::st
 //    return *physical_CLARA_PH1_Magnet_Controller_Obj;
 //}
 //______________________________________________________________________________
-//magnetController& VCmagnets::getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
-//{
-////    if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
-////        return offline_VELA_INJ_Magnet_Controller();
-////    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
-////        return virtual_VELA_INJ_Magnet_Controller();
-////    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ )
-////        return physical_VELA_INJ_Magnet_Controller();
-////    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1 )
-////        return offline_VELA_BA1_Magnet_Controller();
-////    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1 )
-////        return virtual_VELA_BA1_Magnet_Controller();
-////    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1 )
-////        return physical_VELA_BA1_Magnet_Controller();
-////    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2 )
-////        return offline_VELA_BA2_Magnet_Controller();
-////    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2 )
-////        return virtual_VELA_BA2_Magnet_Controller();
-////    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2 )
-////        return physical_VELA_BA2_Magnet_Controller();
-//
-//}
+magnetController& VCmagnets::getMagnetController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
+{
+    if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
+        return offline_VELA_INJ_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
+        return virtual_VELA_INJ_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ )
+        return physical_VELA_INJ_Magnet_Controller();
+    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1 )
+        return offline_VELA_BA1_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1 )
+        return virtual_VELA_BA1_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1 )
+        return physical_VELA_BA1_Magnet_Controller();
+    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2 )
+        return offline_VELA_BA2_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2 )
+        return virtual_VELA_BA2_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2 )
+        return physical_VELA_BA2_Magnet_Controller();
+    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_PH1 )
+        return offline_CLARA_PH1_Magnet_Controller();
+    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_PH1 )
+        return virtual_CLARA_PH1_Magnet_Controller();
+    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_PH1 )
+        return physical_CLARA_PH1_Magnet_Controller();
+
+}
 //
 //
 
