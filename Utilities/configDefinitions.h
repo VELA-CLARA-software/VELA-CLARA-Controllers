@@ -27,8 +27,7 @@ namespace UTL
     const char SPACE_C            = ' ';
     const char TAB_C              = '\t';
 
-    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
-    //const std::string CONFIG_PATH_VM = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\VM\\";
+    const std::string CONFIG_PATH = "C:\\Users\\wln24624\\Documents\\SOFTWARE\\VELA-CLARA-Controllers\\Config\\";//"\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
     const std::string VM_PREFIX   = "VM-";
 
     const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";
@@ -68,8 +67,8 @@ namespace UTL
     const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
 
 /// Cameras
-    const std::string VELA_CAMERA_CONFIG               = "velaCamera.config";
-    const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
+    const std::string CAMERA_CONFIG               = "camera.config";
+    //const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
 /// Vacuum
     const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
     const std::string VELA_INJ_VALVE_CONFIG            = "velaINJVacuumValve.config";
@@ -402,22 +401,30 @@ namespace UTL
 //    const std::string SOL_DEGAUSS_TOLERANCE  = "SOL_DEGAUSS_TOLERANCE";
 
     //Cameras
-    const std::string PV_SUFFIX_START     ="PV_SUFFIX_START"    ;
-    const std::string PV_SUFFIX_GAIN      ="PV_SUFFIX_GAIN"     ;
-    const std::string PV_SUFFIX_BLACK     ="PV_SUFFIX_BLACK"    ;
-    const std::string PV_SUFFIX_DATA      ="PV_SUFFIX_DATA"     ;
-    const std::string PV_SUFFIX_GAIN_RBV  ="PV_SUFFIX_GAIN_RBV" ;
-    const std::string PV_SUFFIX_BLACK_RBV ="PV_SUFFIX_BLACK_RBV";
-    const std::string PV_SUFFIX_CAM_COUNT ="PV_SUFFIX_CAM_COUNT";
-    const std::string PV_SUFFIX_CAM_STATE ="PV_SUFFIX_CAM_STATE";
-    const std::string PV_SUFFIX_CAM_LIMIT ="PV_SUFFIX_CAM_LIMIT";
-    const std::string SCREEN        =  "SCREEN";
-    const std::string X0            =  "X0";
-    const std::string Y0            =  "Y0";
-    const std::string XRAD          =  "XRAD";
-    const std::string YRAD          =  "YRAD";
-    const std::string X_PIX_2_MM    =  "X_PIX_2_MM";
-    const std::string Y_PIX_2_MM    =  "Y_PIX_2_MM";
+    const std::string PV_SUFFIX_START           ="PV_SUFFIX_START"      ;
+   // const std::string PV_SUFFIX_STOP            ="PV_SUFFIX_STOP"     ;
+    const std::string PV_SUFFIX_DATA            ="PV_SUFFIX_DATA"       ;
+    const std::string PV_SUFFIX_BKGRND_DATA     ="PV_SUFFIX_BKGRND_DATA";
+    const std::string PV_SUFFIX_FILE_PATH       ="PV_SUFFIX_FILE_PATH"  ;
+    const std::string PV_SUFFIX_FILE_NAME       ="PV_SUFFIX_FILE_NAME"  ;
+    const std::string PV_SUFFIX_FILE_TEMPLATE   ="PV_SUFFIX_FILE_TEMPLATE";
+    const std::string PV_SUFFIX_FILE_WRITE      ="PV_SUFFIX_FILE_WRITE" ;
+    const std::string PV_SUFFIX_X               ="PV_SUFFIX_X"          ;
+    const std::string PV_SUFFIX_Y               ="PV_SUFFIX_Y"          ;
+    const std::string PV_SUFFIX_SX              ="PV_SUFFIX_SX"         ;
+    const std::string PV_SUFFIX_SY              ="PV_SUFFIX_SY"         ;
+    const std::string PV_SUFFIX_SXY             ="PV_SUFFIX_SXY"        ;
+    const std::string PV_SUFFIX_CAM_STATE       ="PV_SUFFIX_CAM_STATE"  ;
+    const std::string SCREEN_PV                 ="SCREEN_PV"            ;
+    const std::string X_CENTER                  ="X_CENTER"             ;
+    const std::string Y_CENTER                  ="Y_CENTER"             ;
+    const std::string X_RAD                     ="X_RAD"                ;
+    const std::string Y_RAD                     ="Y_RAD"                ;
+    const std::string X_PIX_2_MM                ="X_PIX_2_MM"           ;
+    const std::string Y_PIX_2_MM                ="Y_PIX_2_MM"           ;
+    const std::string BIT_DEPTH                 ="BIT_DEPTH"            ;
+    const std::string IMAGE_WIDTH               ="IMAGE_WIDTH"          ;
+    const std::string IMAGE_HEIGHT              ="IMAGE_HEIGHT"         ;
 
     // SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
     const std::string VELA_PNEUMATIC_SCREEN =  "VELA_PNEUMATIC_SCREEN";

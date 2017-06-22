@@ -1,11 +1,11 @@
-///
-/// Duncan Scott October 2014
-///
-/// Holds all the stucts required by different classes
-/// one place to make updates
-///
-#ifndef _VELA_CAM_STRUCTS_H_
-#define _VELA_CAM_STRUCTS_H_
+//
+// Tim Price May 2017
+//
+// Holds all the stucts required by different classes
+// one place to make updates
+//
+#ifndef CAM_STRUCTS_H_
+#define CAM_STRUCTS_H_
 //stl
 #include <vector>
 #include <string>
@@ -22,25 +22,25 @@ class cameraInterface;
 
 namespace cameraStructs
 {
-    /// make this a typedef so ity can easily be changed...
-    /// we could make template classes out of everything to make this truely fleixble... but that's a lot of work..
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DAQ_PV_TYPE, (CAM_START) (CAM_STOP) (CAM_DATA) (CAM_BKGRND_DATA)
+                                                     (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_TEMPLATE) (PV_SUFFIX_FILE_WRITE)
+                                                     (CAM_STATE) (UNKNOWN_CAM_PV_TYPE))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(IA_PV_TYPE,  (CAM_START) (CAM_STOP)
+                                                     (X) (Y) (SIGMA_X) (SIGMA_Y) (COV_XY)
+                                                     (CAM_STATE) (UNKNOWN_CAM_PV_TYPE))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATUS,  (CAM_ACQUIRING) (CAM_NOT ACQUIRING) (CAM_ERROR))
+
     typedef long camDataType;
-
-    struct camObject;
     struct pvStruct;
-    struct camImageStruct;
-    struct camIOCObject;
     struct monitorStruct;
+    struct cameraObject;
+    struct cameraDAQObject;
+    struct cameraIAObject;
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( CAM_PV_TYPE, (CAM_START) (CAM_STOP) (CAM_GAIN) (CAM_GAIN_RBV) (CAM_BLACK) (CAM_BLACK_RBV) (CAM_DATA) (CAM_NUM_ACTIVE)
-                                                      (CAM_STATE) (CAM_LIMIT)  )
-
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( CAM_STATUS, (CAM_ON) (CAM_OFF) (CAM_ERROR)  )
-
-
-    /// These can't go in VELA_ENUM as they need a pvType.
     struct pvStruct
-    { // proviude a default constructor
+    {
         pvStruct() : pvSuffix( "UNKNOWN" ), objName( "UNKNOWN"), COUNT( 0 ), MASK(0){}
         CAM_PV_TYPE pvType;
         chid            CHID;
@@ -49,164 +49,57 @@ namespace cameraStructs
         chtype          CHTYPE;
         evid            EVID;
     };
-    struct camImageStruct
-    { // proviude a default constructor
-        camImageStruct() : x0( 0 ), y0( 0 ), xRad( 0 ), xPix2mm(0.0), yPix2mm(0.0),
-        xstart( 0 ), xstop( 0 ), ystart( 0 ), ystop( 0 ), numPixX( 0 ), numPixY( 0 ), totNumPix( 0 ), numX( 0 ), numY( 0 ) {}
-        size_t x0, y0, xRad, yRad; // these come from the config file
-        double xPix2mm, yPix2mm;   // these come from the config file
-        size_t xstart, xstop, ystart, ystop, numPixX, numPixY, totNumPix, numX, numY;
-
-    };
-
-    /// currently we only have access to one parameter here
-
-    struct camIOCObject
-    { // proviude a default constructor
-        camIOCObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), numActiveCameras(0), numIlocks(0), numCamLimit(0) {}
-        std::string name, pvRoot;
-        size_t numActiveCameras, numIlocks, numCamLimit;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs; // none of these are known about to us
-    };
-
-    struct camDataStruct
+    struct monitorStruct
     {
-        camDataStruct() : shotCount( 0 ), numShots( 0 ){}
-
-        /// i moved this so re-compiling should break this...
-
-        int shotCount, numShots; /// we allow -1 values here so NOT a size_t
-        std::vector< double > timeStamps;
-        std::vector< std::string > strTimeStamps;
-        std::vector< std::vector< camDataType > > cameraData;
+        monitorStruct(): monType( UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"),
+                         interface(nullptr),EVID(nullptr){}
+        CAM_PV_TYPE      monType;
+        std::string      objName;
+        chtype           CHTYPE;
+        cameraInterface *interface;
+        evid             EVID;
     };
-
-
-    struct camObject
-    { // proviude a default constructor
-        camObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screen("NO_SCREEN"), numIlocks(0), state(CAM_ERROR ) {}
-        size_t numIlocks;
-        std::string name, pvRoot, screen;
-        camImageStruct imageStruct;
+    struct cameraIAObject
+    {
+        cameraIAObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
+        std::string name, pvRoot, screenPV;
+        //size_t numIlocks;
         CAM_STATUS state;
-        long gainRBV, blackRBV;
-        camDataStruct rawData;
+        int shotsTaken, numberOfShots;
+        size_t bit_depth, image_height, image_width;
+        double x,y,sigmaX,sigmaY,covXY
+               xPix2mm, yPix2mm;
+        size_t xPix, yPix,xSigmaPix,ySigmaPix,xyCovPix,
+               xCenterPix,yCenterPix,xRad,yRad,
+               bitDepth,imageHeight,imageWidth;
+        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+    };
+    struct cameraDAQStruct
+    {
+        camDataStruct() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
+        std::string name, pvRoot, screenPV;
+        size_t numIlocks;
+        CAM_STATUS state;
+        int shotsTaken, numberOfShots;
+        double frequency,exposureTime;
+        std::vector<camDataType> rawData;
+        std::vector<camDataType> rawBackgroundData;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
 
-    struct monitorStruct
+    struct cameraObject
     { // proviude a default constructor
-        monitorStruct(): objName( "NO_NAME" ), interface(nullptr) {}
-        CAM_PV_TYPE       monType;
-        std::string       objName;
-        chtype            CHTYPE;
-        cameraInterface *interface;
-        evid              EVID;
+        cameraObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
+        //size_t numIlocks;
+        std::string name, pvRoot, screenPV;
+        camImageStruct imageStruct;
+        CAM_STATUS state;
+        camDataStruct rawData;
+        VELA_ENUM::MACHINE_AREA  machineArea;
+        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
-
-
-    struct camDAQStruct
-    { // proviude a default constructor
-        camDAQStruct(): objName( "NO_NAME" ), interface(nullptr), threadID( 0 ), thread(nullptr), shotCount( -999 ), numShots (-999 ), shouldProcess( false ) {}
-        std::string       objName;
-        chtype            CHTYPE;
-        cameraInterface *interface;
-        evid              EVID;
-        std::thread      *thread;
-        size_t            threadID;
-        int               shotCount, numShots; /// we allow -1 values here so NOT a size_t
-        bool              shouldProcess;
-    };
-
-//    enum CAM_SERVER_STATE{ k_OFF, k_ON, k_ERR, k_NONE, k_DUMMY };
-//
-//    enum MON_TYPE{ k_serverStatus, k_data }; /// types of magnet parameters to monitor
-//
-//    enum DATA_TYPE{ k_DATA, k_BACK }; /// For beam ON, or beam OFF data
-//
-//    typedef long camType;
-//
-//    typedef struct camObject
-//    {
-//        CAM_SERVER_STATE camServerState;
-//        camType epicsCamServerState;
-//        bool aquiringData;
-//    std::string name, serverPV, dataPV, serverNum;
-//    #ifndef _OFFLINE_MODE
-//    #ifndef __CINT__ /// Channel IDs for camera server status
-//        chid serv_Start_chid, serv_Stop_chid, serv_Status_chid, data_chid;
-//    #endif
-//    #endif
-//    } camObject;
-//
-//    typedef struct monitorStuct
-//    {
-//        enum MON_TYPE monType;
-//        cameraInterface * interface;
-//        double value;
-//        size_t numShots, shotCount;
-//        camType * vecToFill;
-//        camObject * camObj;
-//    #ifndef _OFFLINE_MODE
-//    #ifndef __CINT__
-//        evid EventID;
-//        struct dbr_time_char * pTD;
-//    #endif
-//    #endif
-//    } monitorStuct;
-//
-//    typedef struct imgCutStruct
-//    {
-//        int x0, y0, xRad, yRad;
-//        size_t xstart, xstop, ystart, ystop, numPixX, numPixY, totNumPix, numX, numY;
-//        double xPix2mm, yPix2mm;
-//    } imgCutStruct;
-//
-//    typedef struct camDataStruct
-//    {
-//        size_t rawDataSize;
-//        std::string camName;
-//        imgCutStruct imgParam;
-//        camType * rawData;
-//    } camDataStruct;
-//
-//    /// imageCutStruct has all data required to cut an image,
-//    /// ! Always use x0 y0 and xRad yRrad to define cuts!
-//
-//    typedef struct imageCutStruct
-//    {
-//        int x0, y0, xRad, yRad;
-//        size_t xstart, xstop, ystart, ystop, numPixX, numPixY, totNumPix, numX, numY;
-//    } imageCutStruct;
-//
-//    /// These are handy little structs to help pass vectors around for cropping
-//    /// numX and numY tell you how to partition the data
-//
-//    typedef struct imgDatC{
-//        std::vector< camType > data;
-//        size_t numX, numY;
-//    } imgDatC;
-//
-//    typedef struct projectedMomentsStruct
-//    {
-//        double meanX, meanY, rmsX, rmsY;
-//    } projectedMomentsStruct;
-//
-//
-//    typedef struct imgDatD{
-//        std::vector< double > data;
-//        size_t numX, numY;
-//    } imgDatD;
-//
-//    typedef struct bvnFit{
-//        int status;
-//        double Bac,Amp,mux,muy,sxx,syy,sxy;
-//        double BacErr,AmpErr,muxErr,muyErr,sxxErr,syyErr,sxyErr;
-//    } bvnFit;
-
-
-
 }
-#endif // _VELA_CAM_STRUCTS_H_
+#endif // CAM_STRUCTS_H_

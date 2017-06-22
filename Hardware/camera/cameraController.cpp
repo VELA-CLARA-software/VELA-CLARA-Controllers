@@ -14,120 +14,118 @@
 
 #include "cameraController.h"
 // stl
-cameraController::cameraController( const std::string configFileLocation, const std::string configIOCFileLocation, const  bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, configIOCFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+cameraController::cameraController(
+    const bool show_messages,
+    const bool show_debug_messages,
+    const std::string & magConf,
+    const bool startVirtualMachine,
+    const bool shouldStartEPICs,
+    const VELA_ENUM::MACHINE_AREA myMachineArea):
+controller( show_messages, show_debug_messages ),
+localInterface(magConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
+shouldStartEPICs(shouldStartEPICs),
+myMachineArea(myMachineArea)
 {
-    initialise();
+//    if( shouldStartEPICs )
+//    message("magnet controller shouldStartEPICs is true");
+//    else
+//    message("magnet controller shouldStartEPICs is false");
+//    initialise();
 }
-//______________________________________________________________________________
-cameraController::cameraController( const  bool show_messages, const bool show_debug_messages  )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-    initialise();
-}
-//______________________________________________________________________________
 cameraController::~cameraController(){}    //dtor
-//______________________________________________________________________________
-void cameraController::initialise()
+std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraController::getILockStates(const std::string & name)
 {
-    if( localInterface.interfaceInitReport() )
-        message("cameraController instantiation success.");
+    return localInterface.getILockStates( name );
 }
-//______________________________________________________________________________
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraController::getILockStatesStr( const std::string & name )
+{
+    return localInterface.getILockStatesStr( name );
+}
+double cameraController::get_CA_PEND_IO_TIMEOUT()
+{
+    return localInterface.get_CA_PEND_IO_TIMEOUT( );
+}
+void   cameraController::set_CA_PEND_IO_TIMEOUT( double val )
+{
+    localInterface.set_CA_PEND_IO_TIMEOUT( val );
+}
 bool cameraController::isON ( const std::string & cam )
 {
     return localInterface.isON( cam );
 }
-//______________________________________________________________________________
 bool cameraController::isOFF( const std::string & cam )
 {
     return localInterface.isOFF( cam );
 }
-//______________________________________________________________________________
-bool cameraController::start(const std::string & cam )
-{
-    return localInterface.start( cam );
-}
-//______________________________________________________________________________
-bool cameraController::start( const std::vector< std::string  > & cam )
-{
-    return localInterface.start( cam );
-}
-//______________________________________________________________________________
-bool cameraController::startAndWait(const std::string & cam, size_t timeout )
-{
-    return localInterface.startAndWait( cam, timeout );
-}
-//______________________________________________________________________________
-std::vector< std::string > cameraController::startAndWait( const std::vector< std::string  > & cam, size_t timeout )
-{
-    return localInterface.startAndWait( cam, timeout );
-}
-//______________________________________________________________________________
-bool cameraController::stop(const std::string & cam )
-{
-    return localInterface.stop( cam );
-}
-//______________________________________________________________________________
-bool cameraController::stop( const std::vector< std::string  >  & cam )
-{
-    return localInterface.stop( cam );
-}
-//______________________________________________________________________________
-bool cameraController::stopAll( )
-{
-    return localInterface.stopAll( );
-}
-//______________________________________________________________________________
-bool cameraController::startCamDataMonitor( const std::string & cam, size_t N )
-{
-//    ScopedGILRelease scoped;
-    return localInterface.startCamDataMonitor( cam, N );
-}
-//______________________________________________________________________________
-std::vector< std::vector< cameraStructs::camDataType >> cameraController::getRawData(const std::string & name  )
-{
-    return localInterface.getRawData( name );
-}
-//______________________________________________________________________________
-std::vector< double > cameraController::getRawDataStamp(const std::string & name  )
-{
-    return localInterface.getRawDataStamp( name );
-}
-//______________________________________________________________________________
-std::vector< std::string > cameraController::getRawDataStampStr( const std::string & name )
-{
-    return localInterface.getRawDataStampStr( name );
-}
-//______________________________________________________________________________
-bool cameraController::isMonitoring( const std::string & cam )
+bool cameraController::isMonitoring ( const std::string & cam )
 {
     return localInterface.isMonitoring( cam );
 }
-//______________________________________________________________________________
-bool cameraController::isNotMonitoring( const std::string & cam )
+bool cameraController::isNotMonitoring ( const std::string & cam )
 {
     return localInterface.isNotMonitoring( cam );
 }
-//______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE  >  cameraController::getILockStates( const std::string & name )
+std::string cameraController::cameraName()
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
-    return r;
+    return localInterface.cameraName();
 }
-//______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  cameraController::getILockStatesStr( const std::string & name )
+bool cameraController::setCamera(const std::string & cam)
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, std::string > r;
-    return r;
+    return localInterface.setCamera(cam);
 }
-//______________________________________________________________________________
-double cameraController::get_CA_PEND_IO_TIMEOUT()
+bool cameraController::calibrate()
 {
-    return localInterface.get_CA_PEND_IO_TIMEOUT();
-};
-//______________________________________________________________________________
-void cameraController::set_CA_PEND_IO_TIMEOUT( double val )
+    return localInterface.calibrate();
+}
+bool cameraController::setXRatio(const double & r)
 {
-    return localInterface.set_CA_PEND_IO_TIMEOUT( val );
+    return localInterface.setXRatio(r);
+}
+bool cameraController::setYRatio(const double & r)
+{
+    return localInterface.setYRatio(r);
+}
+bool cameraController::start()
+{
+    return localInterface.start();
+}
+bool cameraController::stop()
+{
+    return localInterface.stop();
+}
+bool cameraController::collectAndSave(int & numbOfShots, const std::string & directory)
+{
+    return localInterface.collectAndSave(numbOfShots, directory);
+}
+std::vector< cameraStructs::camDataType > cameraController::getRawData()
+{
+    return localInterface.getRawData();
+}
+std::vector< cameraStructs::camDataType > cameraController::getBackgroundRawData()
+{
+    return localInterface.getBackgroundRawData();
+}
+double cameraController::getX()
+{
+    return localInterface.getX();
+}
+double cameraController::getY()
+{
+    return localInterface.getY();
+}
+double cameraController::getSigmaX()
+{
+    return localInterface.getSigmaX();
+}
+double cameraController::getSigmaY()
+{
+    return localInterface.getSigmaY();
+}
+double cameraController::getSigmaXY()
+{
+    return localInterface.getSigmaXY();
+}
+const cameraStructs::cameraObject& cameraController::getCamObjConstRef( const std::string & camName  )
+{
+    return localInterface.getCamObjConstRef( camName );
 }
