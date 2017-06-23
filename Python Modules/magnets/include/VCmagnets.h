@@ -218,30 +218,35 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .def( vector_indexing_suite< std::vector< magnetStructs::MAG_TYPE>>() )
         ;
     /// and enums, remember we have a enum to string python dictionary macro too!
-//    enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE","MAG_PSU_STATE Doc String")
-//        .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
-//        .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
-//        .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
-//        .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
-//        .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
-//        ;
-//
-//    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
-//        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-//        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-//        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-//        ;
-//    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
-//        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
-//        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-//        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
-//        ;
+    enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE","MAG_PSU_STATE Doc String")
+        .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
+        .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
+        .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
+        .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
+        .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
+        ;
+
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
+        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+        ;
+    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+        ;
     enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
         .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
         .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
         .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
         .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
+        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
         .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+        .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
+        .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
+        .value("CLARA_L01", VELA_ENUM::MACHINE_AREA::CLARA_L01 )
+        .value("USER", VELA_ENUM::MACHINE_AREA::USER )
         .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
         ;
     /// and enums, remember we have a enum to string python dictionary macro too!
@@ -255,24 +260,24 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .value("SEXT", magnetStructs::MAG_TYPE::SEXT )
         .value("UNKNOWN_MAGNET_TYPE",  magnetStructs::MAG_TYPE::UNKNOWN_MAGNET_TYPE  )
         ;
-//    /// and enums, remember we have a enum to string python dictionary macro too!
-//    enum_<magnetStructs::MAG_REV_TYPE>("MAG_REV_TYPE","MAG_REV_TYPE Doc String")
-//        .value("NR"       , magnetStructs::MAG_REV_TYPE::NR )
-//        .value("BIPOLAR"  , magnetStructs::MAG_REV_TYPE::BIPOLAR  )
-//        .value("NR_GANGED", magnetStructs::MAG_REV_TYPE::NR_GANGED )/// hopefully never again....
-//        .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
-//        .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
-//        ;
-//    /// structs (this one is a one-stop shop for comomn parameters)
-//    boost::python::class_<magnetStructs::magnetStateStruct>
-//        ("magnetStateStruct","magnetStateStruct Doc String")
-//        .add_property("numMags",        &magnetStructs::magnetStateStruct::numMags)
-//        .add_property("machineArea", &magnetStructs::magnetStateStruct::machineArea)
-//        .add_property("magNames",       &magnetStructs::magnetStateStruct::magNames)
-//        .add_property("psuStates",      &magnetStructs::magnetStateStruct::psuStates)
-//        .add_property("siValues",       &magnetStructs::magnetStateStruct::siValues)
-//        .add_property("riValues",       &magnetStructs::magnetStateStruct::riValues)
-//        ;
+    /// and enums, remember we have a enum to string python dictionary macro too!
+    enum_<magnetStructs::MAG_REV_TYPE>("MAG_REV_TYPE","MAG_REV_TYPE Doc String")
+        .value("NR"       , magnetStructs::MAG_REV_TYPE::NR )
+        .value("BIPOLAR"  , magnetStructs::MAG_REV_TYPE::BIPOLAR  )
+        .value("NR_GANGED", magnetStructs::MAG_REV_TYPE::NR_GANGED )/// hopefully never again....
+        .value("POS"      , magnetStructs::MAG_REV_TYPE::POS )
+        .value("UNKNOWN_MAG_REV_TYPE", magnetStructs::MAG_REV_TYPE::UNKNOWN_MAG_REV_TYPE )
+        ;
+    /// structs (this one is a one-stop shop for comomn parameters)
+    boost::python::class_<magnetStructs::magnetStateStruct>
+        ("magnetStateStruct","magnetStateStruct Doc String")
+        .add_property("numMags",     &magnetStructs::magnetStateStruct::numMags)
+        .add_property("machineArea", &magnetStructs::magnetStateStruct::machineArea)
+        .add_property("magNames",    &magnetStructs::magnetStateStruct::magNames)
+        .add_property("psuStates",   &magnetStructs::magnetStateStruct::psuStates)
+        .add_property("siValues",    &magnetStructs::magnetStateStruct::siValues)
+        .add_property("riValues",    &magnetStructs::magnetStateStruct::riValues)
+        ;
     /// Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
@@ -288,6 +293,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
     boost::python::class_<magnetStructs::magnetObject,boost::noncopyable>
         ("magnetObject","magnetObject Doc String", boost::python::no_init)
         .def_readonly("pvRoot",       &magnetStructs::magnetObject::pvRoot)
+        .def_readonly("psuRoot",      &magnetStructs::magnetObject::psuRoot)
+        .def_readonly("revType",      &magnetStructs::magnetObject::revType)
         .def_readonly("maxWaitTime",  &magnetStructs::magnetObject::maxWaitTime)
         .def_readonly("degTolerance", &magnetStructs::magnetObject::degTolerance)
         .def_readonly("magType",      &magnetStructs::magnetObject::magType)
@@ -305,6 +312,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .def_readonly("measurementDataLocation",  &magnetStructs::magnetObject::measurementDataLocation)
         .def_readonly("magneticLength",  &magnetStructs::magnetObject::magneticLength)
         .def_readonly("magnetBranch",    &magnetStructs::magnetObject::magnetBranch)
+        .def_readonly("SETIequalREADI",    &magnetStructs::magnetObject::SETIequalREADI)
         ;
 
     /// and the class member functions to expose to python,
@@ -374,6 +382,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .def("applyDBURTQuadOnly",       &magnetController::applyDBURTQuadOnly )
         .def("getDBURT",                 &magnetController::getDBURT           )
         .def("isRIequalVal",                 &magnetController::isRIequalVal           )
+        .def("isRIequalSI",                 &magnetController::isRIequalSI           )
         .def("getmyMachineArea",   &magnetController::getmyMachineArea    )
         .def("getMagType",     getMagType_1      )
         .def("getMagType",     getMagType_2      )
@@ -450,8 +459,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .def("setMessage",       &VCmagnets::setMessage )
         .def("setDebugMessage",  &VCmagnets::setDebugMessage )
         ;
-
-
 }
 
 

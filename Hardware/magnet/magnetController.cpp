@@ -275,6 +275,11 @@ bool magnetController::isRIequalVal( const std::string & magName, const  double 
     return localInterface.isRIequalVal( magName, value, tolerance );
 }
 //______________________________________________________________________________
+bool magnetController::isRIequalSI(const std::string & magName)
+{
+    return localInterface.isRIequalSI( magName );
+}
+//______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState( const std::vector< std::string > & s )
 {
     return localInterface.getCurrentMagnetState( s );

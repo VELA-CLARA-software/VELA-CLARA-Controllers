@@ -74,6 +74,7 @@ class magnetInterface : public interface
         bool isOFF(const std::string &magName);
 
         bool isRIequalVal( const std::string & magName, const  double value, const double tolerance );
+        bool isRIequalSI( const std::string & magName);
         /// RI tolerances set how many decimal places on RI values (irl EPICS has 9 and they are continually changing)
         void setRITolerance( const std::string & magName, const double val);
         void setRITolerance(const vec_s & magNames, const vec_d & vals );
@@ -197,8 +198,6 @@ class magnetInterface : public interface
 
         bool Is_PSU_PV( magnetStructs::MAG_PV_TYPE pv);
         bool Is_psuRoot_SAME_AS_PV_ROOT(const std::string& root);
-        bool Is_psuRoot_NOT_SAME_AS_PV_ROOT_AND_Is_PSU_PV(const std::string& rootl,magnetStructs::MAG_PV_TYPE pv);
-
 
         void addChannel(const std::string& pvRoot,magnetStructs::pvStruct &pv);
         void startMonitors();

@@ -73,6 +73,7 @@ class magnetController : public controller
         bool isDegaussing   ( const std::string & magName );
       /// RI test
         bool isRIequalVal( const std::string & magName, const  double value, const double tolerance );
+        bool isRIequalSI( const std::string & magName);
       /// Magnet Name getters
         std::vector< std::string > getMagnetNames();
         std::vector< std::string > getQuadNames();

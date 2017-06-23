@@ -42,7 +42,7 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 
-1498044804 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1498146516 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	<vector>
 	<cadef.h>
@@ -58,7 +58,7 @@
 	<fstream>
 	<iostream>
 
-1494600266 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetcontroller.h
+1498217030 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -75,7 +75,7 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 
-1498126348 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
+1498215958 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
 	"interface.h"
 	"magnetStructs.h"
 	"structs.h"
@@ -85,7 +85,7 @@
 	<atomic>
 	<map>
 
-1498123174 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
+1498216698 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -109,12 +109,12 @@
 	<vector>
 	<cadef.h>
 
-1498125534 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1498216069 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
 
-1498128203 source:d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.cpp
+1498216928 source:d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.cpp
 	"magnetInterface.h"
 	"dburt.h"
 	"configDefinitions.h"
@@ -164,7 +164,7 @@
 	<algorithm>
 	<ctype.h>
 
-1498127083 source:d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.cpp
+1498216966 source:d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.cpp
 	"magnetConfigReader.h"
 	"configDefinitions.h"
 	"RFGunStructs.h"
@@ -207,7 +207,7 @@
 	<iostream>
 	<string>
 
-1498145142 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
+1498216810 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
 	"magnetController.h"
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
