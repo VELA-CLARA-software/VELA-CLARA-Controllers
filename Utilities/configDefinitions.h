@@ -27,7 +27,8 @@ namespace UTL
     const char SPACE_C            = ' ';
     const char TAB_C              = '\t';
 
-    const std::string CONFIG_PATH = "C:\\Users\\wln24624\\Documents\\SOFTWARE\\VELA-CLARA-Controllers\\Config\\";//"\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    const std::string CONFIG_PATH = //"C:\\Users\\wln24624\\Documents\\SOFTWARE\\VELA-CLARA-Controllers\\Config\\";
+    "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
     const std::string VM_PREFIX   = "VM-";
 
     const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";

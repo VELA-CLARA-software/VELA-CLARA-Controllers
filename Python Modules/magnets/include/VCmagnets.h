@@ -313,6 +313,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .def_readonly("magneticLength",  &magnetStructs::magnetObject::magneticLength)
         .def_readonly("magnetBranch",    &magnetStructs::magnetObject::magnetBranch)
         .def_readonly("SETIequalREADI",    &magnetStructs::magnetObject::SETIequalREADI)
+        .def_readonly("maxI",    &magnetStructs::magnetObject::maxI)
+        .def_readonly("minI",    &magnetStructs::magnetObject::minI)
         ;
 
     /// and the class member functions to expose to python,
