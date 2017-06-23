@@ -355,6 +355,7 @@ bool liberallrfInterface::stopKlyRevTraceMonitor()
 //____________________________________________________________________________________________
 void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
 {
+    // Make the below neater at some point!
     llrfStructs::monitorStruct*ms = static_cast<  llrfStructs::monitorStruct *>(args.usr);
     switch(ms -> monType)
     {
@@ -365,6 +366,7 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
         case llrfStructs::LLRF_PV_TYPE::LIB_AMP_FF:
             ms->interface->debugMessage("staticEntryLLRFMonitor LIB_AMP_FF = ",*(double*)args.dbr);
             ms->llrfObj->amp_ff = *(double*)args.dbr;
+            ms->llrfObj->amp_MVM = (ms->llrfObj->amp_ff) * (ms->llrfObj->ampCalibration);
             break;
         case llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP:
             ms->interface->debugMessage("staticEntryLLRFMonitor LIB_AMP_SP = ",*(double*)args.dbr);
@@ -373,6 +375,7 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
         case llrfStructs::LLRF_PV_TYPE::LIB_PHI_FF:
             ms->interface->debugMessage("staticEntryLLRFMonitor LIB_PHI_FF = ",*(double*)args.dbr);
             ms->llrfObj->phi_ff = *(double*)args.dbr;
+            ms->llrfObj->phi_DEG = (ms->llrfObj->phi_ff) * (ms->llrfObj->phiCalibration);
             break;
         case llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP:
             ms->interface->debugMessage("staticEntryLLRFMonitor LIB_PHI_SP = ",*(double*)args.dbr);
