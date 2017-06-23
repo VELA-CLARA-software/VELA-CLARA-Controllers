@@ -12,12 +12,12 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "screenController.h"
+#include "velaINJscreenController.h"
 //stl
 #include <iostream>
 #include <time.h>
 //djs
-#include "screenInterface.h"
+#include "velaINJscreenInterface.h"
 
 ///Initialsing
 ///Moving
@@ -25,7 +25,7 @@
 ///Get Stuff
 
 
-screenController::screenController(
+velaINJscreenController::velaINJscreenController(
     const bool show_messages,
     const bool show_debug_messages,
     const std::string & conf1,
@@ -40,145 +40,145 @@ myMachineArea(myMachineArea)
     initialise();
 }
 //_____________________________________________________________________________
-screenController::~screenController(){}
+velaINJscreenController::~velaINJscreenController(){}
 //dtor
 //_______________________________________________________________________________
-void screenController::initialise()
+void velaINJscreenController::initialise()
 {
 //  localInterface.getScreenNames( ScreenNames );
 
   if( localInterface.interfaceInitReport() )
-        message("screenController instantation success.");
+        message("velaINJscreenController instantation success.");
 }
 //________________________________________________________________________________
-bool screenController::screenIN (const std::string& name )
+bool velaINJscreenController::screenIN (const std::string& name )
 {
     return localInterface.screenIN( name );
 }
 //________________________________________________________________________________
-bool screenController::screenIN (const std::vector< std::string> & name )
+bool velaINJscreenController::screenIN (const std::vector< std::string> & name )
 {
     return localInterface.screenIN( name );
 }
 //________________________________________________________________________________
-bool screenController::screenOUT(const std::string & name )
+bool velaINJscreenController::screenOUT(const std::string & name )
 {
     return localInterface.screenOUT( name );
 }
 //________________________________________________________________________________
-bool screenController::screenOUT(const std::vector<std::string> & name )
+bool velaINJscreenController::screenOUT(const std::vector<std::string> & name )
 {
     return localInterface.screenOUT( name );
 }
 //________________________________________________________________________________
-bool screenController::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE element )
+bool velaINJscreenController::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE element )
 {
     return localInterface.isScreenInState( name, element );
 }
 //________________________________________________________________________________
-const std::vector<std::string> screenController::get_VELA_PNEUMATIC_Screens(const std::vector<std::string>& names)
+const std::vector<std::string> velaINJscreenController::get_VELA_PNEUMATIC_Screens(const std::vector<std::string>& names)
 {
     return localInterface.get_VELA_PNEUMATIC_Screens(names);
 }
 //________________________________________________________________________________
-const std::vector<std::string> screenController::get_VELA_HV_MOVER_Screens(const std::vector<std::string>& names)
+const std::vector<std::string> velaINJscreenController::get_VELA_HV_MOVER_Screens(const std::vector<std::string>& names)
 {
     return localInterface.get_VELA_HV_MOVER_Screens(names);
 }
 //________________________________________________________________________________
-bool screenController::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states)
+bool velaINJscreenController::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states)
 {
     return localInterface.screenMoveTo(names,states);
 }
 //________________________________________________________________________________
-bool screenController::screenMoveTo(const std::string & name, const screenStructs::SCREEN_STATE & states)
+bool velaINJscreenController::screenMoveTo(const std::string & name, const screenStructs::SCREEN_STATE & states)
 {
     return localInterface.screenMoveTo(name,states);
 }
 //________________________________________________________________________________
-bool screenController::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
+bool velaINJscreenController::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
 {
     return localInterface.setPosition(name, dir, value);
 }
 //________________________________________________________________________________
-bool screenController::isMoving(const std::string& name)
+bool velaINJscreenController::isMoving(const std::string& name)
 {
     return localInterface.isMoving(name,false);
 }
 //________________________________________________________________________________
-bool screenController::isNotMoving(const std::string& name)
+bool velaINJscreenController::isNotMoving(const std::string& name)
 {
     return localInterface.isMoving(name,false);
 }
 //________________________________________________________________________________
-bool screenController::is_VELA_PNEUMATIC(const std::string & name)
+bool velaINJscreenController::is_VELA_PNEUMATIC(const std::string & name)
 {
     return localInterface.is_VELA_PNEUMATIC(name);
 }
 //________________________________________________________________________________
-bool screenController::is_VELA_HV_MOVER(const std::string & name)
+bool velaINJscreenController::is_VELA_HV_MOVER(const std::string & name)
 {
     return localInterface.is_VELA_HV_MOVER(name);
 }
 //________________________________________________________________________________
-bool screenController::is_H_Element(screenStructs::SCREEN_STATE e)
+bool velaINJscreenController::is_H_Element(screenStructs::SCREEN_STATE e)
 {
     return localInterface.is_H_Element(e);
 }
 //________________________________________________________________________________
-bool screenController::is_V_Element(screenStructs::SCREEN_STATE e)
+bool velaINJscreenController::is_V_Element(screenStructs::SCREEN_STATE e)
 {
     return localInterface.is_V_Element(e);
 }
 //________________________________________________________________________________
-bool screenController::isScreenOUT(const std::string & name )
+bool velaINJscreenController::isScreenOUT(const std::string & name )
 {
     return localInterface.isScreenOUT(name, false);
 }
 //________________________________________________________________________________
-bool screenController::isScreenIN(const std::string & name)
+bool velaINJscreenController::isScreenIN(const std::string & name)
 {
     return localInterface.isScreenIN(name, false);
 }
 //________________________________________________________________________________
-std::vector<bool> screenController::isScreenIN( const std::vector<std::string> & name )
+std::vector<bool> velaINJscreenController::isScreenIN( const std::vector<std::string> & name )
 {
     return localInterface.isScreenIN(name);
 }
 //________________________________________________________________________________
-std::vector<bool> screenController::isScreenOUT( const std::vector<std::string> & name )
+std::vector<bool> velaINJscreenController::isScreenOUT( const std::vector<std::string> & name )
 {
     return localInterface.isScreenOUT(name);
 }
 //________________________________________________________________________________
-std::vector<bool> screenController::exists_and_isLocked(const std::string& name)
+std::vector<bool> velaINJscreenController::exists_and_isLocked(const std::string& name)
 {
     return localInterface.exists_and_isLocked(name);
 }
 //________________________________________________________________________________
-std::vector<bool> screenController::exists_and_isNotLocked(const std::string& name)
+std::vector<bool> velaINJscreenController::exists_and_isNotLocked(const std::string& name)
 {
     return localInterface.exists_and_isNotLocked(name);
 }
 //________________________________________________________________________________nt
-screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name )
+screenStructs::SCREEN_STATE velaINJscreenController::getScreenState( const std::string & name )
 {
     return localInterface.getScreenState(name);
 }
 //________________________________________________________________________________
 #ifdef BUILD_DLL
 //______________________________________________________________________________
-boost::python::dict screenController::getILockStatesStr_Py( std::string& name )
+boost::python::dict velaINJscreenController::getILockStatesStr_Py( std::string& name )
 {
     return enumStringMapToPythonDict( getILockStatesStr( name ) );
 }
 //______________________________________________________________________________
-boost::python::dict screenController::getILockStates_Py( std::string& name )
+boost::python::dict velaINJscreenController::getILockStates_Py( std::string& name )
 {
     return enumMapToPythonDict(getILockStates(name) );
 }
 //______________________________________________________________________________
-boost::python::dict screenController::get_SCREEN_STATE_Definition()
+boost::python::dict velaINJscreenController::get_SCREEN_STATE_Definition()
 {
     std::map< screenStructs::SCREEN_STATE,  std::string  > m;
     m[screenStructs::SCREEN_STATE::SCREEN_IN       ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_IN       );
@@ -208,7 +208,7 @@ boost::python::dict screenController::get_SCREEN_STATE_Definition()
     return enumStringMapToPythonDict( m );
 }
 //______________________________________________________________________________
-boost::python::dict screenController::get_DRIVER_STATE_Definition()
+boost::python::dict velaINJscreenController::get_DRIVER_STATE_Definition()
 {
     std::map< screenStructs::DRIVER_STATE,  std::string  > m;
     m[screenStructs::DRIVER_STATE::DRIVER_MOVING    ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_MOVING    );
@@ -221,22 +221,22 @@ boost::python::dict screenController::get_DRIVER_STATE_Definition()
 //______________________________________________________________________________
 #endif // BUILD_DLL
 //____________________________________________________________________________________________
-double screenController::get_CA_PEND_IO_TIMEOUT()
+double velaINJscreenController::get_CA_PEND_IO_TIMEOUT()
 {
   return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }
 //_____________________________________________________________________________________________
-void screenController::set_CA_PEND_IO_TIMEOUT( double val )
+void velaINJscreenController::set_CA_PEND_IO_TIMEOUT( double val )
 {
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > screenController::getILockStates( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > velaINJscreenController::getILockStates( const std::string & name )
 {
     return localInterface.getILockStates( name );
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > screenController::getILockStatesStr( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > velaINJscreenController::getILockStatesStr( const std::string & name )
 {
     return localInterface.getILockStatesStr( name );
 }

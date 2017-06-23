@@ -121,7 +121,7 @@ VCscreens::~VCscreens()
     }
 }
 //______________________________________________________________________________
-screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
+velaINJscreenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
 
@@ -133,12 +133,12 @@ screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
     {
         std::cout << "Creating virtual_VELA_INJ_Screen_Controller object" << std::endl;
         virtual_VELA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_INJ);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_INJ);
     }
     return *virtual_VELA_INJ_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
+velaINJscreenController& VCscreens::offline_VELA_INJ_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_VELA_INJ_Screen_Controller_Obj )
@@ -149,12 +149,12 @@ screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
     {
         std::cout << "Creating offline_VELA_INJ_Screen_Controller object" << std::endl;
         offline_VELA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withoutEPICS,VELA_INJ);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withoutEPICS,VELA_INJ);
     }
     return *offline_VELA_INJ_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
+velaINJscreenController& VCscreens::physical_VELA_INJ_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_VELA_INJ_Screen_Controller_Obj )
@@ -165,12 +165,12 @@ screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
     {
         std::cout << "Creating physical_VELA_INJ_Screen_Controller object" << std::endl;
         physical_VELA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_INJ);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_INJ);
     }
     return *physical_VELA_INJ_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
+velaINJscreenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( virtual_VELA_BA1_Screen_Controller_Obj )
@@ -181,12 +181,12 @@ screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
     {
         std::cout << "Creating virtual_VELA_BA1_Screen_Controller object" << std::endl;
         virtual_VELA_BA1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_BA1);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_BA1);
     }
     return *virtual_VELA_BA1_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
+velaINJscreenController& VCscreens::offline_VELA_BA1_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_VELA_BA1_Screen_Controller_Obj )
@@ -197,12 +197,12 @@ screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
     {
         std::cout << "Creating offline_VELA_BA1_Screen_Controller object" << std::endl;
         offline_VELA_BA1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withoutEPICS,VELA_BA1);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withoutEPICS,VELA_BA1);
     }
     return *offline_VELA_BA1_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
+velaINJscreenController& VCscreens::physical_VELA_BA1_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_VELA_BA1_Screen_Controller_Obj )
@@ -213,12 +213,12 @@ screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
     {
         std::cout << "Creating physical_VELA_BA1_Screen_Controlle object" << std::endl;
         physical_VELA_BA1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_BA1);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_BA1);
     }
     return *physical_VELA_BA1_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
+velaINJscreenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( virtual_VELA_BA2_Screen_Controller_Obj )
@@ -229,12 +229,12 @@ screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
     {
         std::cout << "Creating virtual_VELA_BA2_Screen_Controller object" << std::endl;
         virtual_VELA_BA2_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_BA2);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_BA2);
     }
     return *virtual_VELA_BA2_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
+velaINJscreenController& VCscreens::offline_VELA_BA2_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_VELA_BA2_Screen_Controller_Obj )
@@ -245,12 +245,12 @@ screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
     {
         std::cout << "Creating offline_VELA_BA2_Screen_Controller object" << std::endl;
         offline_VELA_BA2_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withoutEPICS,VELA_BA2);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withoutEPICS,VELA_BA2);
     }
     return *offline_VELA_BA2_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
+velaINJscreenController& VCscreens::physical_VELA_BA2_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_VELA_BA2_Screen_Controller_Obj )
@@ -261,12 +261,12 @@ screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
     {
         std::cout << "Creating physical_VELA_BA2_Screen_Controller object" << std::endl;
         physical_VELA_BA2_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_BA2);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_BA2);
     }
     return *physical_VELA_BA2_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::virtual_CLARA_INJ_Screen_Controller()
+velaINJscreenController& VCscreens::virtual_CLARA_INJ_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( virtual_CLARA_INJ_Screen_Controller_Obj )
@@ -277,12 +277,12 @@ screenController& VCscreens::virtual_CLARA_INJ_Screen_Controller()
     {
         std::cout << "Creating virtual_CLARA_INJ_Screen_Controller object" << std::endl;
         virtual_CLARA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,CLARA_INJ);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,CLARA_INJ);
     }
     return *virtual_CLARA_INJ_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::offline_CLARA_INJ_Screen_Controller()
+velaINJscreenController& VCscreens::offline_CLARA_INJ_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_CLARA_INJ_Screen_Controller_Obj )
@@ -294,12 +294,12 @@ screenController& VCscreens::offline_CLARA_INJ_Screen_Controller()
         std::cout << "Creating offline_CLARA_INJ_Screen_Controller object" << std::endl;
         offline_CLARA_INJ_Screen_Controller_Obj =
         virtual_CLARA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withoutEPICS,CLARA_INJ);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withoutEPICS,CLARA_INJ);
     }
     return *offline_CLARA_INJ_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::physical_CLARA_INJ_Screen_Controller()
+velaINJscreenController& VCscreens::physical_CLARA_INJ_Screen_Controller()
 {
     std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_CLARA_INJ_Screen_Controller_Obj )
@@ -310,12 +310,12 @@ screenController& VCscreens::physical_CLARA_INJ_Screen_Controller()
     {
         std::cout << "Creating physical_CLARA_INJ_Screen_Controller object" << std::endl;
         physical_CLARA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,CLARA_INJ);
+            new velaINJscreenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,CLARA_INJ);
     }
     return *physical_CLARA_INJ_Screen_Controller_Obj;
 }
 //______________________________________________________________________________
-screenController& VCscreens::getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
+velaINJscreenController& VCscreens::getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
 {
     if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
         return offline_VELA_INJ_Screen_Controller();

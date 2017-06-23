@@ -181,7 +181,7 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
 {
     if( keyVal[0] == UTL::NAME )
     {
-        screenStructs::screenObject scr = screenStructs::screenObject();
+        screenStructs::velaINJscreenObject scr = screenStructs::velaINJscreenObject();
         scr.name = keyVal [ 1 ];
         scr.numIlocks = (size_t)numIlocks;
         // each screen gets a driver and an H and V driver status
@@ -494,7 +494,7 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
 
 }
 //__________________________________________________________________________________________
-bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs::screenObject > & mapToFill )
+bool screenConfigReader::getvelaINJscreenObjects( std::map< std::string, screenStructs::velaINJscreenObject > & mapToFill )
 {
     mapToFill.clear();
 
@@ -681,7 +681,7 @@ bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs:
 ////    /// There are 2 objects for the screens, a YAG 01 object, a complex YAG object for screens 1/2/3 and
 ////    /// a simple YAG object for the remaining screens.
 ////    /// They are both defined in separate config files
-////    /// They should still all end up in a screenObject
+////    /// They should still all end up in a velaINJscreenObject
 ////
 ////    ///COMPLEX YAGS
 ////

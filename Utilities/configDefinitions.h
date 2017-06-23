@@ -243,8 +243,6 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
     const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
 
-
-
     // LEGACY LLRF PVS from the Dark Days oF VELA 2015 :(
     const std::string PV_SUFFIX_AMPR = "PV_SUFFIX_AMPR";
     const std::string PV_SUFFIX_PHI  = "PV_SUFFIX_PHI";
@@ -288,6 +286,9 @@ namespace UTL
     const std::string SERIAL_NUMBER = "SERIAL_NUMBER";
     const std::string MEASUREMENT_DATA_LOCATION = "MEASUREMENT_DATA_LOCATION";
     const std::string MAGNETIC_LENGTH = "MAGNETIC_LENGTH";
+    const std::string MAG_MAX_I = "MAG_MAX_I";
+    const std::string MAG_MIN_I = "MAG_MIN_I";
+
 
     // chtypes
 

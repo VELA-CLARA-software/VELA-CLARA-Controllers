@@ -24,13 +24,13 @@ public:
     ~screenConfigReader();
 
     bool readConfig();
-    bool getScreenObjects( std::map< std::string, screenStructs::screenObject > & mapToFill );
+    bool getvelaINJscreenObjects( std::map< std::string, screenStructs::velaINJscreenObject > & mapToFill );
 
 
 private:
 
     // Screen  Objects
-    std::vector< screenStructs::screenObject > scrObjects;
+    std::vector< screenStructs::velaINJscreenObject > scrObjects;
     // the screens come in differen flavours, with different parameters to monitor
     // this may have to be  extended if CLARA screens are different
     std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_PNEUMATIC;

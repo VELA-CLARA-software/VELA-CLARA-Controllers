@@ -12,8 +12,8 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#ifndef screenInterface_H
-#define screenInterface_H
+#ifndef claraScreenInterface_H
+#define claraScreenInterface_H
 //djs
 
 #include "interface.h"
@@ -26,20 +26,20 @@
 
 
 
-class screenInterface: public interface
+class claraScreenInterface: public interface
 {
     public:
 
             ///Not a singleton, two construction methods...
 
 
-        screenInterface(const std::string & conf1,
+        claraScreenInterface(const std::string & conf1,
                         const bool startVirtualMachine,
                         const bool* show_messages_ptr,
                         const bool* show_debug_messages_ptr,
                         const bool shouldStartEPICs,
                         const VELA_ENUM::MACHINE_AREA myMachineArea );
-        ~screenInterface();
+        ~claraScreenInterface();
 
         // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
         bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);
@@ -54,9 +54,9 @@ class screenInterface: public interface
         // 'existential quantification' - ahem
         bool isMoving(const std::string& name,const bool weKnowEntryExists = false );
         bool isNotMoving(const std::string& name,const bool weKnowEntryExists = false );
-        bool isHCassetteOUT(screenStructs::screenObject& scr);
-        bool isVCassetteOUT(screenStructs::screenObject& scr);
-        bool is_HandV_CassetteOUT(screenStructs::screenObject& scr);
+        bool isHCassetteOUT(screenStructs::velaINJscreenObject& scr);
+        bool isVCassetteOUT(screenStructs::velaINJscreenObject& scr);
+        bool is_HandV_CassetteOUT(screenStructs::velaINJscreenObject& scr);
         bool is_VELA_PNEUMATIC(const std::string & name);
         bool is_VELA_HV_MOVER (const std::string & name);
         bool is_H_Element(screenStructs::SCREEN_STATE e);
@@ -89,23 +89,23 @@ class screenInterface: public interface
         void initialise();
         screenConfigReader configReader; ///class member so we can pass in file path in ctor
 
-        bool initScreenObjects();
+        bool initvelaINJscreenObjects();
         void initScreenChids();
         void addChannel(const std::string& pvRoot, screenStructs::pvStruct& pv);//if this doesn't work then try commented out function in shutter program
         void initIsLockedMap();
 
         void monitorScreens();// calls the below functions to add to continuousMonitorStructsDEV
-        void addscreenObjectMonitors(screenStructs::pvStruct& pvs, screenStructs::screenObject& obj);
+        void addvelaINJscreenObjectMonitors(screenStructs::pvStruct& pvs, screenStructs::velaINJscreenObject& obj);
         void addScreenDriverMonitors(screenStructs::pvStruct& pvs, screenStructs::screenDriver& obj);// see screenstructs for a screenDriver
         void addScreenDriverStatusMonitors(screenStructs::pvStruct& pvs,screenStructs::screenDriverStatus& obj);// see screenstructs for a screenDriver
 
         // this map conatins all the screen objects, which combine online and offline data
-        std::map<std::string,screenStructs::screenObject>allScreentData;
+        std::map<std::string,screenStructs::velaINJscreenObject>allScreentData;
 
         // updates the VELA_PNEUMATIC screen state
         void updateSta(screenStructs::monitorStruct* ms, const  unsigned short args );
         // updates a VELA_HV_MOVER screenState, called after a driver enters DRIVER_STATIONARY state
-        void updateScreenState(screenStructs::screenObject& scr);
+        void updateScreenState(screenStructs::velaINJscreenObject& scr);
         //void update_STA_Bit_map( screenStructs::monitorStruct   * ms , const int argsdbr );
         void update_STA_Bit_map(screenStructs::monitorStruct* ms, const int argsdbr );
 
@@ -178,14 +178,14 @@ class screenInterface: public interface
 
         //std::map<std::string,  std::atomic< bool > > dualMoveNum; /// std::atomic< bool > are not CopyConstructible, so this is held locally
 
-        //bool waitForElementToMove( const screenStructs::screenObject & scr, screenStructs::SCREEN_STATE e, time_t TIMEOUT);
+        //bool waitForElementToMove( const screenStructs::velaINJscreenObject & scr, screenStructs::SCREEN_STATE e, time_t TIMEOUT);
 
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the shutter is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
 
-        typedef  bool(screenInterface::*isOCMemFn)(const std::string & );
-        typedef  void(screenInterface::*OCMemFn)  (const std::string & );
+        typedef  bool(claraScreenInterface::*isOCMemFn)(const std::string & );
+        typedef  void(claraScreenInterface::*OCMemFn)  (const std::string & );
 
         //void toggleScreen( chtype & cht, chid & chi, const char * m1 = "", const char * m2 = "");
 
@@ -205,7 +205,7 @@ class screenInterface: public interface
         //void addToSimpleMonitorStructs ( std::vector<screenStructs::monitorStruct*>& cms, screenStructs::pvStruct& pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  );
 
 
-        screenStructs::screenObject ScreenObject;
+        screenStructs::velaINJscreenObject velaINJscreenObject;
 
         const VELA_ENUM::MACHINE_AREA myMachineArea;
         // MOVE TO BASE CLASS

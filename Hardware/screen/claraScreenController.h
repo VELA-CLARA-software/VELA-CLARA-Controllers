@@ -12,11 +12,11 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#ifndef velaScreen_CONTROLLER_H
-#define velaScreen_CONTROLLER_H
+#ifndef CLARA_SCREEN_CONTROLLER_H
+#define CLARA_SCREEN_CONTROLLER_H
 //project
 #include "screenStructs.h"
-#include "screenInterface.h"
+#include "claraScreenInterface.h"
 #include "controller.h"
 #include "structs.h"
 //stl
@@ -25,17 +25,17 @@
 
 
 
-class screenController : public controller
+class claraScreenController : public controller
 {
     public:
-        screenController();
-        screenController(const bool show_messages,
+        claraScreenController();
+        claraScreenController(const bool show_messages,
                          const bool show_debug_messages,
                          const std::string & conf1,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
                          const VELA_ENUM::MACHINE_AREA);
-        ~screenController();
+        ~claraScreenController();
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
         /// write a method that returns string version of enums using ENUM_TO_STRING
@@ -104,7 +104,7 @@ class screenController : public controller
     private:
         void initialise();
         ///No singletons, no pointers, let's just have an object
-        screenInterface localInterface;
+        claraScreenInterface localInterface;
         std::vector< std::string > ScreenNames;
         bool shouldStartEPICs, startVirtualMachine;
         const VELA_ENUM::MACHINE_AREA myMachineArea;

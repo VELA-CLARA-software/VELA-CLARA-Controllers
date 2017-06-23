@@ -12,7 +12,7 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //  s
 
-#include "screenInterface.h"
+#include "claraScreenInterface.h"
 //djs
 #include "configDefinitions.h"
 //stl
@@ -31,7 +31,7 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 
-screenInterface::screenInterface( const std::string & conf1,
+claraScreenInterface::claraScreenInterface( const std::string & conf1,
                                   const bool startVirtualMachine,
                                   const bool* show_messages_ptr,
                                   const bool* show_debug_messages_ptr,
@@ -46,24 +46,24 @@ dualMoveNum(0)
     initialise();
 }
 //__________________________________________________________________________________
-screenInterface::~screenInterface()///This is the destructor for the class
+claraScreenInterface::~claraScreenInterface()///This is the destructor for the class
 {
     //    debugMessage( "magnetInterface DESTRUCTOR CALLED");
     for (auto && it : screenDualMoveStructsMap )
     {
-        debugMessage("in screenInterface: delete screenDualMove thread ", it.first );
+        debugMessage("in claraScreenInterface: delete screenDualMove thread ", it.first );
         it.second.thread->join();
         delete it.second.thread;
     }
     killILockMonitors();
     for( auto && it : continuousMonitorStructsDEV )
     {
-        debugMessage("delete screenInterface continuousMonitorStructs entry." );
+        debugMessage("delete claraScreenInterface continuousMonitorStructs entry." );
         delete it;
     }
 }
 //____________________________________________________________________________________
-void screenInterface::initialise()
+void claraScreenInterface::initialise()
 {
     /// The config file reader
     message("Attempting to read Screen Config file." );
@@ -72,9 +72,8 @@ void screenInterface::initialise()
     {
         message("Screen Config file read, getting screens" );
         ///initialise the objects based on what is read from the config file
-        if( initScreenObjects() )
+        if( initvelaINJscreenObjects() )
         {
-
             if( shouldStartEPICs )
             {
                 message("Screen abjects acquired, starting EPICS" );
@@ -97,7 +96,7 @@ void screenInterface::initialise()
     initIsLockedMap();
 }
 //_______________________________________________________________________________________
-void screenInterface::initIsLockedMap()
+void claraScreenInterface::initIsLockedMap()
 {// this map is used to define if a screen has been locked by this app.
     for( auto && it: allScreentData)
     {
@@ -106,12 +105,12 @@ void screenInterface::initIsLockedMap()
     }
 }
 //_______________________________________________________________________________________
-bool screenInterface::initScreenObjects()
+bool claraScreenInterface::initvelaINJscreenObjects()
 {
-    return configReader.getScreenObjects( allScreentData );
+    return configReader.getvelaINJscreenObjects( allScreentData );
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::initScreenChids()
+void claraScreenInterface::initScreenChids()
 {
     message( "\n", "Searching for Screen Chids..." );
 
@@ -170,14 +169,14 @@ void screenInterface::initScreenChids()
     }
 }
 //________________________________________________________________________________________________________________
-void screenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )
+void claraScreenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
     ca_create_channel( s1.c_str(),0,0,0, &pv.CHID );//MAGIC_NUMBER see epics CA manual, we're a 'casual user'
     debugMessage( "Create channel to ", s1 );
 }
 //__________________________________________________________________________________________________________________
-void screenInterface::monitorScreens()
+void claraScreenInterface::monitorScreens()
 {
     continuousMonitorStructsDEV.clear();
     continuousMonitorStructsDEV.clear();
@@ -185,15 +184,15 @@ void screenInterface::monitorScreens()
     for( auto && it1 : allScreentData )
     {
         monitorIlocks( it1.second.iLockPVStructs, it1.second.iLockStates );
-        // iterate over the screenObject PvMon
+        // iterate over the velaINJscreenObject PvMon
         for( auto && it2 : it1.second.pvMonStructs )
         {
             std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first) << std::endl;
 
-            addscreenObjectMonitors( it2.second,  it1.second  );
+            addvelaINJscreenObjectMonitors( it2.second,  it1.second  );
 
             ca_create_subscription(it2.second.CHTYPE, it2.second.COUNT, it2.second.CHID,
-                                   it2.second.MASK, screenInterface::staticEntryScreenMonitor,
+                                   it2.second.MASK, claraScreenInterface::staticEntryScreenMonitor,
                                    (void*)continuousMonitorStructsDEV.back(), &continuousMonitorStructsDEV.back()->EVID );
         }
         // iterate over the acreenDriver PvMon
@@ -204,7 +203,7 @@ void screenInterface::monitorScreens()
             addScreenDriverMonitors( it2.second,  it1.second.driver  );
 
             ca_create_subscription(it2.second.CHTYPE, it2.second.COUNT, it2.second.CHID,
-                                   it2.second.MASK, screenInterface::staticEntryScreenMonitor,
+                                   it2.second.MASK, claraScreenInterface::staticEntryScreenMonitor,
                                    (void*)continuousMonitorStructsDEV.back(), &continuousMonitorStructsDEV.back()->EVID );
         }
         // iterate over the hDriverSTA screenDriverStatus PvMon
@@ -215,7 +214,7 @@ void screenInterface::monitorScreens()
             addScreenDriverStatusMonitors( it2.second,  it1.second.driver.hDriverSTA  );
 
             ca_create_subscription(it2.second.CHTYPE, it2.second.COUNT, it2.second.CHID,
-                                   it2.second.MASK, screenInterface::staticEntryScreenMonitor,
+                                   it2.second.MASK, claraScreenInterface::staticEntryScreenMonitor,
                                    (void*)continuousMonitorStructsDEV.back(), &continuousMonitorStructsDEV.back()->EVID );
         }
         // iterate over the vDriverSTA screenDriverStatus PvMon
@@ -226,7 +225,7 @@ void screenInterface::monitorScreens()
             addScreenDriverStatusMonitors( it2.second,  it1.second.driver.vDriverSTA  );
 
             ca_create_subscription(it2.second.CHTYPE, it2.second.COUNT, it2.second.CHID,
-                                   it2.second.MASK, screenInterface::staticEntryScreenMonitor,
+                                   it2.second.MASK, claraScreenInterface::staticEntryScreenMonitor,
                                    (void*)continuousMonitorStructsDEV.back(), &continuousMonitorStructsDEV.back()->EVID );
         }
     }
@@ -235,72 +234,72 @@ void screenInterface::monitorScreens()
         allMonitorsStarted = true; /// interface base class member, not actually used but good to know
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::addscreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObject & obj  )
+void claraScreenInterface::addvelaINJscreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::velaINJscreenObject & obj  )
 {
-    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
-    continuousMonitorStructsDEV.back() -> interface = this;
-    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
-    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
-    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
+//    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
+//    continuousMonitorStructsDEV.back() -> interface = this;
+//    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
+//    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
+//    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::addScreenDriverMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriver & obj )// see screenstructs for a screenDriverStatus
+void claraScreenInterface::addScreenDriverMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriver & obj )// see screenstructs for a screenDriverStatus
 {
-    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
-    continuousMonitorStructsDEV.back() -> interface = this;
-    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
-    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
-    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
+//    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
+//    continuousMonitorStructsDEV.back() -> interface = this;
+//    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
+//    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
+//    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::addScreenDriverStatusMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriverStatus & obj )// see screenstructs for a screenDriver
+void claraScreenInterface::addScreenDriverStatusMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriverStatus & obj )// see screenstructs for a screenDriver
 {
-    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
-    continuousMonitorStructsDEV.back() -> interface = this;
-    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
-    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
-    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
+//    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
+//    continuousMonitorStructsDEV.back() -> interface = this;
+//    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
+//    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
+//    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
 }
 //_______________________________________________________________________________________________________________
-bool screenInterface::isHorizontal( screenStructs::DRIVER_DIRECTION dir )
+bool claraScreenInterface::isHorizontal( screenStructs::DRIVER_DIRECTION dir )
 {
     return dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL;
 }
 //_______________________________________________________________________________________________________________
-bool screenInterface::isVertical(  screenStructs::DRIVER_DIRECTION dir )
+bool claraScreenInterface::isVertical(  screenStructs::DRIVER_DIRECTION dir )
 {
     return dir == screenStructs::DRIVER_DIRECTION::VERTICAL;
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
+void claraScreenInterface::staticEntryScreenMonitor( const event_handler_args args )
 {
-    screenStructs::monitorStruct * ms = reinterpret_cast< screenStructs::monitorStruct*>(args.usr);
-    //std::cout << "staticEntryScreenMonitor " << std::endl;
-    switch ( ms -> monType )// based on which monitor we call a differnwet update function
-    {
-        case  screenStructs::SCREEN_PV_TYPE::Sta:
-            ms->interface->updateSta( ms, *(unsigned short*)args.dbr);
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::STA:
-            //std::cout << "staticEntryScreenMonitor " <<  ENUM_TO_STRING( ms -> monType)  << std::endl;
-            ms->interface->update_STA_Bit_map( ms, *(int*) args.dbr );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::RPOS:
-             ms->interface->updateRPOS( ms, *(double*)args.dbr   );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::PROT01:
-             ms->interface->updatePROT01( ms, *(double*)args.dbr );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::PROT03:
-             ms->interface->updatePROT03( ms, *(double*)args.dbr );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::PROT05:
-             ms->interface->updatePROT05( ms, *(double*)args.dbr );
-            break;
-    }
+//    screenStructs::monitorStruct * ms = reinterpret_cast< screenStructs::monitorStruct*>(args.usr);
+//    //std::cout << "staticEntryScreenMonitor " << std::endl;
+//    switch ( ms -> monType )// based on which monitor we call a differnwet update function
+//    {
+//        case  screenStructs::SCREEN_PV_TYPE::Sta:
+//            ms->interface->updateSta( ms, *(unsigned short*)args.dbr);
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::STA:
+//            //std::cout << "staticEntryScreenMonitor " <<  ENUM_TO_STRING( ms -> monType)  << std::endl;
+//            ms->interface->update_STA_Bit_map( ms, *(int*) args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::RPOS:
+//             ms->interface->updateRPOS( ms, *(double*)args.dbr   );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT01:
+//             ms->interface->updatePROT01( ms, *(double*)args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT03:
+//             ms->interface->updatePROT03( ms, *(double*)args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT05:
+//             ms->interface->updatePROT05( ms, *(double*)args.dbr );
+//            break;
+//    }
 }
 ////_________________________________________________________________________________________________________________
-void screenInterface::updatePROT03( screenStructs::monitorStruct * ms, const double args )
+void claraScreenInterface::updatePROT03( screenStructs::monitorStruct * ms, const double args )
 {
     screenStructs::screenDriver * obj = reinterpret_cast<screenStructs::screenDriver *> (ms->obj);
     std::stringstream ss;
@@ -321,7 +320,7 @@ void screenInterface::updatePROT03( screenStructs::monitorStruct * ms, const dou
     message(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updatePROT05( screenStructs::monitorStruct * ms, const double args )
+void claraScreenInterface::updatePROT05( screenStructs::monitorStruct * ms, const double args )
 {
     // evil evil evil
     screenStructs::screenDriver * obj = reinterpret_cast<screenStructs::screenDriver *> (ms->obj);
@@ -343,7 +342,7 @@ void screenInterface::updatePROT05( screenStructs::monitorStruct * ms, const dou
     message(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updateRPOS( screenStructs::monitorStruct * ms,  const double args )
+void claraScreenInterface::updateRPOS( screenStructs::monitorStruct * ms,  const double args )
 {
     // evilness (?)
     screenStructs::screenDriverStatus * obj = reinterpret_cast<screenStructs::screenDriverStatus *> (ms->obj);
@@ -368,7 +367,7 @@ void screenInterface::updateRPOS( screenStructs::monitorStruct * ms,  const doub
     message(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updateCassettePosition( screenStructs::screenCassette  & cas, const double pos  )
+void claraScreenInterface::updateCassettePosition( screenStructs::screenCassette  & cas, const double pos  )
 {//currently this only gets called from updateRPOS, so we KNOW the object exists!!
     //debugMessage("called updateCassettePosition");
     screenStructs::SCREEN_STATE st = screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
@@ -397,7 +396,7 @@ void screenInterface::updateCassettePosition( screenStructs::screenCassette  & c
     debugMessage(cas.parentScreen, " screen state is now ", ENUM_TO_STRING( getScreenState( cas.parentScreen ) ) );
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updatePROT01( screenStructs::monitorStruct * ms, const double args )
+void claraScreenInterface::updatePROT01( screenStructs::monitorStruct * ms, const double args )
 {
     screenStructs::screenDriverStatus * obj = reinterpret_cast<screenStructs::screenDriverStatus *> (ms->obj);
     std::stringstream ss;
@@ -422,28 +421,28 @@ void screenInterface::updatePROT01( screenStructs::monitorStruct * ms, const dou
     debugMessage(ss);
 }
 //_________________________________________________________________________________________________________________
-void screenInterface::updateSta( screenStructs::monitorStruct * ms,  const unsigned short args )
+void claraScreenInterface::updateSta( screenStructs::monitorStruct * ms,  const unsigned short args )
 {   // Sta is for the VELA_PNEUMATIC screens ONLY, VELA_HV_MOVER are updated by updateScreenState()
     // probably evil
-    screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject*> (ms->obj);
-    switch( args )
-    {
-        case 0:
-            obj->screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
-            break;
-        case 1:
-            obj ->screenState = screenStructs::SCREEN_STATE::SCREEN_IN;
-            break;
-        case 2:
-            obj->screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
-            break;
-        default:
-            obj->screenState = screenStructs::SCREEN_STATE::SCREEN_ERROR;
-    }
-    ms->interface->debugMessage( obj->name ," screenState = ", ENUM_TO_STRING(obj->screenState) );
+//    screenStructs::velaINJscreenObject * obj = reinterpret_cast<screenStructs::velaINJscreenObject*> (ms->obj);
+//    switch( args )
+//    {
+//        case 0:
+//            obj->screenState = screenStructs::SCREEN_STATE::SCREEN_OUT;
+//            break;
+//        case 1:
+//            obj ->screenState = screenStructs::SCREEN_STATE::SCREEN_IN;
+//            break;
+//        case 2:
+//            obj->screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
+//            break;
+//        default:
+//            obj->screenState = screenStructs::SCREEN_STATE::SCREEN_ERROR;
+//    }
+//    ms->interface->debugMessage( obj->name ," screenState = ", ENUM_TO_STRING(obj->screenState) );
 }
 ////_________________________________________________________________________________________________________________
-void screenInterface::updateScreenState( screenStructs::screenObject & scr  )
+void claraScreenInterface::updateScreenState( screenStructs::velaINJscreenObject & scr  )
 {// this function is for the VELA_HV_MOVER screens
 //    screenStructs::SCREEN_STATE hpos = scr.driver.hCassette;
 //    screenStructs::SCREEN_STATE vpos = scr.driver.vCassette;
@@ -455,22 +454,22 @@ void screenInterface::updateScreenState( screenStructs::screenObject & scr  )
         scr.screenState = scr.driver.hCassette.screenState;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_HandV_CassetteOUT(screenStructs::screenObject & scr)
+bool claraScreenInterface::is_HandV_CassetteOUT(screenStructs::velaINJscreenObject & scr)
 {
     return isHCassetteOUT(scr) && isVCassetteOUT(scr);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isHCassetteOUT(screenStructs::screenObject & scr)
+bool claraScreenInterface::isHCassetteOUT(screenStructs::velaINJscreenObject & scr)
 {
     return scr.driver.hCassette.screenState == screenStructs::SCREEN_STATE::H_OUT;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isVCassetteOUT(screenStructs::screenObject & scr)
+bool claraScreenInterface::isVCassetteOUT(screenStructs::velaINJscreenObject & scr)
 {
     return scr.driver.vCassette.screenState == screenStructs::SCREEN_STATE::V_OUT;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExists )
+bool claraScreenInterface::entryExists2(const std::string & name, bool weKnowEntryExists )
 {// This version of the function is so we don't have to check the entry exists in the map each time
      if(weKnowEntryExists)
         return weKnowEntryExists;
@@ -478,7 +477,7 @@ bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExi
         return entryExists(allScreentData,name);
 }
 //___________________________________________________________________________________________________________
-std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & name)
+std::vector<bool> claraScreenInterface::isScreenIN(const std::vector<std::string> & name)
 {
     std::vector<bool> r;
     for( auto && it : name )
@@ -486,7 +485,7 @@ std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & n
     return r;
 }
 //___________________________________________________________________________________________________________
-std::vector<bool> screenInterface::isScreenOUT( const std::vector<std::string> & name )
+std::vector<bool> claraScreenInterface::isScreenOUT( const std::vector<std::string> & name )
 {
     std::vector<bool> r;
     for( auto && it : name )
@@ -494,7 +493,7 @@ std::vector<bool> screenInterface::isScreenOUT( const std::vector<std::string> &
     return r;
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::isScreenIN(const std::string & name, bool weKnowEntryExists)
+bool claraScreenInterface::isScreenIN(const std::string & name, bool weKnowEntryExists)
 {
     if( entryExists2( name,weKnowEntryExists ) )
     {
@@ -508,7 +507,7 @@ bool screenInterface::isScreenIN(const std::string & name, bool weKnowEntryExist
     return false;
 }
 //___________________________________________________________________________________________________________
-screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::string & name, const bool weKnowEntryExists)
+screenStructs::SCREEN_STATE claraScreenInterface::getScreenState(const std::string & name, const bool weKnowEntryExists)
 {
     if( weKnowEntryExists )
         return allScreentData.at(name).screenState;
@@ -518,7 +517,7 @@ screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::string & 
         return screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
+bool claraScreenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;
     if( entryExists( allScreentData, name ) )
@@ -532,25 +531,25 @@ bool screenInterface::isScreenInState(const std::string & name, screenStructs::S
 
 
 //___________________________________________________________________________________________________________
-bool screenInterface::screenIN( const std::string & name  )
-{   message("screenInterface::screenIN(const std::string & name ) called");
+bool claraScreenInterface::screenIN( const std::string & name  )
+{   message("claraScreenInterface::screenIN(const std::string & name ) called");
     const  std::vector< std::string > names = { name };
     return screenIN( names );
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::screenOUT( const std::string & name  )
-{   message("screenInterface::screenOUT(const std::string & name ) called");
+bool claraScreenInterface::screenOUT( const std::string & name  )
+{   message("claraScreenInterface::screenOUT(const std::string & name ) called");
     const  std::vector< std::string > names = { name };
     return screenOUT( names );
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::screenIN( const std::vector< std::string > & names  )
+bool claraScreenInterface::screenIN( const std::vector< std::string > & names  )
 {
     std::vector< screenStructs::SCREEN_STATE > v( names.size(), screenStructs::SCREEN_STATE::SCREEN_IN );
     return screenMoveTo( names, v);
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::screenOUT( const std::vector< std::string > & names  )
+bool claraScreenInterface::screenOUT( const std::vector< std::string > & names  )
 {
     std::vector< screenStructs::SCREEN_STATE > v( names.size(), screenStructs::SCREEN_STATE::SCREEN_OUT );
     bool r = screenMoveTo( names, v);
@@ -561,14 +560,14 @@ bool screenInterface::screenOUT( const std::vector< std::string > & names  )
 //   CREATE ONE HIGH LEVEL SCREEN MOVER FUNCTION THAT IS CALLED BY ALL THE HIGHER LEVEL VERSIONS OF screenIN,
 //   screenOUT AND MOVE TO CASSETTE ELEMENT POSITION
 //___________________________________________________________________________________________________________
-bool screenInterface::screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states)
+bool claraScreenInterface::screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states)
 {
     std::vector< screenStructs::SCREEN_STATE > v( 1, states );
     std::vector< std::string> n( 1, name );
     return  screenMoveTo( n, v);
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states  )
+bool claraScreenInterface::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states  )
 {
     // all the (above?) client-side screen moving functions should funnel to here
     // this is where we actually start moving screens.
@@ -586,7 +585,7 @@ bool screenInterface::screenMoveTo(const std::vector<std::string>& names,const s
     }
     else
     {
-        debugMessage("screenInterface::screenMoveTo called with following parameters:");
+        debugMessage("claraScreenInterface::screenMoveTo called with following parameters:");
         for( auto && i = 0; i < names.size(); ++i )
         {
             debugMessage(names[i], " to state ", ENUM_TO_STRING(states[i]) );
@@ -635,7 +634,7 @@ bool screenInterface::screenMoveTo(const std::vector<std::string>& names,const s
     return false;
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::get_NOT_Locked_and_NOT_MovingScreens(const std::vector<std::string>& scrIN, std::vector<std::string>& scrOUT,
+bool claraScreenInterface::get_NOT_Locked_and_NOT_MovingScreens(const std::vector<std::string>& scrIN, std::vector<std::string>& scrOUT,
                                                       const std::vector<screenStructs::SCREEN_STATE>& staIN,
                                                       std::vector<screenStructs::SCREEN_STATE>& staOUT  )
 {
@@ -680,14 +679,14 @@ bool screenInterface::get_NOT_Locked_and_NOT_MovingScreens(const std::vector<std
     }
     if( scrOUT.size() != staOUT.size() )
     {
-        message("ABORT! Major Error! in screenInterface::get_NOT_Locked_and_NOT_MovingScreens scrOUT.size() != staOUT.size() ",
+        message("ABORT! Major Error! in claraScreenInterface::get_NOT_Locked_and_NOT_MovingScreens scrOUT.size() != staOUT.size() ",
                 scrOUT.size()," != ",staOUT.size() );
         r = false;
     }
     return r;
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::sortPnuematicMoverScreen(const std::vector<std::string>& scrIN, std::vector<std::string>& VELA_PNEUMATIC_Scr,
+bool claraScreenInterface::sortPnuematicMoverScreen(const std::vector<std::string>& scrIN, std::vector<std::string>& VELA_PNEUMATIC_Scr,
                                                std::vector<std::string>& VELA_HV_MOVER__Scr,const std::vector<screenStructs::SCREEN_STATE>& staIN,
                                                std::vector<screenStructs::SCREEN_STATE>& VELA_PNEUMATIC_Sta,
                                                std::vector<screenStructs::SCREEN_STATE>& VELA_HV_MOVER__Sta  )
@@ -764,7 +763,7 @@ bool screenInterface::sortPnuematicMoverScreen(const std::vector<std::string>& s
         // sanity check
         if(VELA_HV_MOVER__Sta.size() != VELA_HV_MOVER__Scr.size())
         {
-            message("ABORT! Major Error! in screenInterface::screenMoveTo VELA_HV_MOVER__Sta.size() != VELA_HV_MOVER__Scr.size() ",
+            message("ABORT! Major Error! in claraScreenInterface::screenMoveTo VELA_HV_MOVER__Sta.size() != VELA_HV_MOVER__Scr.size() ",
                     VELA_HV_MOVER__Sta.size()," != ", VELA_HV_MOVER__Scr.size() );
             carryon = false;
         }
@@ -772,7 +771,7 @@ bool screenInterface::sortPnuematicMoverScreen(const std::vector<std::string>& s
     return carryon;
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::move_VELA_PNEUMATIC_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  )
+bool claraScreenInterface::move_VELA_PNEUMATIC_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  )
 {// follwoing how thigns are done in the magnetInterface, we set up a vector of pointers to chids and chtypes, then call the generic sendCommand
     bool success = false;
     std::vector< chid* > CHIDS;
@@ -811,7 +810,7 @@ bool screenInterface::move_VELA_PNEUMATIC_Screens(const std::vector<std::string>
     return success;
 }
 //______________________________________________________________________________
-bool screenInterface::send_VELA_PNEUMATIC_Command( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  )
+bool claraScreenInterface::send_VELA_PNEUMATIC_Command( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  )
 {
     bool ret = false;
     for( auto i = 0; i < CHTYPE.size(); ++i )//MAGIC_NUMBERS and evilness
@@ -834,7 +833,7 @@ bool screenInterface::send_VELA_PNEUMATIC_Command( const std::vector< chtype* > 
     return ret;
 }
 //______________________________________________________________________________
-bool screenInterface::move_VELA_HV_MOVER_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  )
+bool claraScreenInterface::move_VELA_HV_MOVER_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  )
 {   // to move in the screen we must first check if the screen is in
     // then  where the screen is, is it on H or V
     // there are screens which require complex movement on multiple notors
@@ -883,94 +882,94 @@ bool screenInterface::move_VELA_HV_MOVER_Screens(const std::vector<std::string> 
     }
     if(twoMotorMoves_Scr.size() >0 )
     {// enter a new thread and set the LOCK on the screen
-        screenDualMoveStructsMap[ dualMoveNum ].interface   = this;
-        screenDualMoveStructsMap[ dualMoveNum ].key   = dualMoveNum;
-        screenDualMoveStructsMap[ dualMoveNum ].dualMotorMoves_Scr   = twoMotorMoves_Scr;
-        screenDualMoveStructsMap[ dualMoveNum ].dualMotorMoves_Sta   = twoMotorMoves_Sta;
-        screenDualMoveStructsMap[ dualMoveNum ].thread     = new std::thread( staticEntryDualMove, std::ref(screenDualMoveStructsMap[ dualMoveNum ] ) );
-        screenDualMoveStructsMap[ dualMoveNum ].isComplete = false;
-        ++dualMoveNum;
+//        screenDualMoveStructsMap[ dualMoveNum ].interface   = this;
+//        screenDualMoveStructsMap[ dualMoveNum ].key   = dualMoveNum;
+//        screenDualMoveStructsMap[ dualMoveNum ].dualMotorMoves_Scr   = twoMotorMoves_Scr;
+//        screenDualMoveStructsMap[ dualMoveNum ].dualMotorMoves_Sta   = twoMotorMoves_Sta;
+//        screenDualMoveStructsMap[ dualMoveNum ].thread     = new std::thread( staticEntryDualMove, std::ref(screenDualMoveStructsMap[ dualMoveNum ] ) );
+//        screenDualMoveStructsMap[ dualMoveNum ].isComplete = false;
+//        ++dualMoveNum;
     }
     return false;
 }
 //______________________________________________________________________________
-void screenInterface::staticEntryDualMove(screenStructs::HV_dualMoveStruct & ms )
+void claraScreenInterface::staticEntryDualMove(screenStructs::HV_dualMoveStruct & ms )
 {
-    ms.interface -> debugMessage("staticEntryDualMove called ! ");
-    time_t timeStart = time( 0 ); /// start clock  //MAGIC_NUMBER
-    time_t TIMEOUT = 100; //MAGIC_NUMBER
-    ms.interface -> attachTo_thisCAContext(); /// base member function
-
-    std::map< std::string, bool  > startedSecondMovement;
-    for( auto && it : ms.dualMotorMoves_Scr )
-        startedSecondMovement[ it ] = false;
-
-    bool success = false;
-    bool timeOut = false;
-
-    auto itNam = ms.dualMotorMoves_Scr.begin();
-    auto itSta = ms.dualMotorMoves_Sta.begin();
-
-    // wait for element to get to a position
-    while(true)
-    {
-        // each loop set iterators back to begin
-        itNam = ms.dualMotorMoves_Scr.begin();
-        itSta = ms.dualMotorMoves_Sta.begin();
-
-        while(itNam != ms.dualMotorMoves_Scr.end() || itSta != ms.dualMotorMoves_Sta.end())
-        {   // check if started second movement
-            if( !startedSecondMovement.at(*itNam) )
-            {    // check if drives are out
-                ms.interface->debugMessage(*itNam, " not started second movement ");
-                if(ms.interface->isScreenOUT(*itNam,true) )
-                {
-                    // there is a slight delay while the driver enabled flag is set, so we'll pause
-                    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
-                    // move to new position
-                    ms.interface->debugMessage(*itNam," SCREEN_OUT, start second momement ");
-                    ms.interface->set_VELA_HV_MOVER_Position(*itNam,*itSta );
-                    // set started second movement to true
-                    startedSecondMovement.at(*itNam) = true;
-                    // i can release the lock, you can't move it until it has stopped "Trajectory in Progress"
-                    //ms.interface->allScreentData.at(*itNam).isLocked = false;
-                }
-            }
-            // check each started Second Movement to see if the yare all true
-            success = true;
-            for(auto it:startedSecondMovement)
-            {
-                if(!it.second)
-                    success = false;
-            }
-            if(success)
-                break;
-            else
-                ms.interface->debugMessage(" NOT ALL SCREENS STARTED SECOND MOVEMENT, TRY AGAIN");
-
-            if(time(0) - timeStart > TIMEOUT) // MAGIC_NUMBER
-            {
-                timeOut = true;
-                break;
-            }
-            // increment iterators
-            if(itNam != ms.dualMotorMoves_Scr.end() )
-                ++itNam;
-            if(itSta != ms.dualMotorMoves_Sta.end() )
-                ++itSta;
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000) ); // MAGIC_NUMBER
-        }
-    }
-    // we can release all locks now, success or failure
-    for(auto && it : ms.dualMotorMoves_Scr)
-        ms.interface->isLockedMap.at(it) = false;
-
-    if(timeOut)
-        ms.interface -> message("ERROR TIMEOUT WHILE WAITING FOR SCREENS TO MOVE");
-    ms.isComplete = true;
+//    ms.interface -> debugMessage("staticEntryDualMove called ! ");
+//    time_t timeStart = time( 0 ); /// start clock  //MAGIC_NUMBER
+//    time_t TIMEOUT = 100; //MAGIC_NUMBER
+//    ms.interface -> attachTo_thisCAContext(); /// base member function
+//
+//    std::map< std::string, bool  > startedSecondMovement;
+//    for( auto && it : ms.dualMotorMoves_Scr )
+//        startedSecondMovement[ it ] = false;
+//
+//    bool success = false;
+//    bool timeOut = false;
+//
+//    auto itNam = ms.dualMotorMoves_Scr.begin();
+//    auto itSta = ms.dualMotorMoves_Sta.begin();
+//
+//    // wait for element to get to a position
+//    while(true)
+//    {
+//        // each loop set iterators back to begin
+//        itNam = ms.dualMotorMoves_Scr.begin();
+//        itSta = ms.dualMotorMoves_Sta.begin();
+//
+//        while(itNam != ms.dualMotorMoves_Scr.end() || itSta != ms.dualMotorMoves_Sta.end())
+//        {   // check if started second movement
+//            if( !startedSecondMovement.at(*itNam) )
+//            {    // check if drives are out
+//                ms.interface->debugMessage(*itNam, " not started second movement ");
+//                if(ms.interface->isScreenOUT(*itNam,true) )
+//                {
+//                    // there is a slight delay while the driver enabled flag is set, so we'll pause
+//                    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+//                    // move to new position
+//                    ms.interface->debugMessage(*itNam," SCREEN_OUT, start second momement ");
+//                    ms.interface->set_VELA_HV_MOVER_Position(*itNam,*itSta );
+//                    // set started second movement to true
+//                    startedSecondMovement.at(*itNam) = true;
+//                    // i can release the lock, you can't move it until it has stopped "Trajectory in Progress"
+//                    //ms.interface->allScreentData.at(*itNam).isLocked = false;
+//                }
+//            }
+//            // check each started Second Movement to see if the yare all true
+//            success = true;
+//            for(auto it:startedSecondMovement)
+//            {
+//                if(!it.second)
+//                    success = false;
+//            }
+//            if(success)
+//                break;
+//            else
+//                ms.interface->debugMessage(" NOT ALL SCREENS STARTED SECOND MOVEMENT, TRY AGAIN");
+//
+//            if(time(0) - timeStart > TIMEOUT) // MAGIC_NUMBER
+//            {
+//                timeOut = true;
+//                break;
+//            }
+//            // increment iterators
+//            if(itNam != ms.dualMotorMoves_Scr.end() )
+//                ++itNam;
+//            if(itSta != ms.dualMotorMoves_Sta.end() )
+//                ++itSta;
+//            std::this_thread::sleep_for(std::chrono::milliseconds(1000) ); // MAGIC_NUMBER
+//        }
+//    }
+//    // we can release all locks now, success or failure
+//    for(auto && it : ms.dualMotorMoves_Scr)
+//        ms.interface->isLockedMap.at(it) = false;
+//
+//    if(timeOut)
+//        ms.interface -> message("ERROR TIMEOUT WHILE WAITING FOR SCREENS TO MOVE");
+//    ms.isComplete = true;
 }
 //______________________________________________________________________________
-void screenInterface::killFinishedMoveThreads()
+void claraScreenInterface::killFinishedMoveThreads()
 {
     //  do the loop this way because:
     // http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
@@ -992,7 +991,7 @@ void screenInterface::killFinishedMoveThreads()
     message("FIN killFinishedMoveThreads");
 }
 //______________________________________________________________________________
-bool screenInterface::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
+bool claraScreenInterface::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
 {
     bool r = false;
     if( entryExists(allScreentData,name))
@@ -1005,7 +1004,7 @@ bool screenInterface::setPosition(const std::string & name, const screenStructs:
     return r;
 }
 //______________________________________________________________________________
-bool screenInterface::set_VELA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta )
+bool claraScreenInterface::set_VELA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta )
 {
     if( is_H_Element( sta) )
     {
@@ -1020,7 +1019,7 @@ bool screenInterface::set_VELA_HV_MOVER_Position(const std::string& name,  const
 
 }
 //______________________________________________________________________________
-bool screenInterface::set_VELA_HV_MOVER_Position(const std::string& name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta )
+bool claraScreenInterface::set_VELA_HV_MOVER_Position(const std::string& name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta )
 {
     bool r = false;
     double p;
@@ -1038,7 +1037,7 @@ bool screenInterface::set_VELA_HV_MOVER_Position(const std::string& name, const 
     }
 }
 //______________________________________________________________________________
-bool screenInterface::set_VELA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driver, const double value)
+bool claraScreenInterface::set_VELA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driver, const double value)
 {
     ca_put(driver.pvComStructs.at(screenStructs::SCREEN_PV_TYPE::MABS).CHTYPE,
            driver.pvComStructs.at(screenStructs::SCREEN_PV_TYPE::MABS).CHID, &value );
@@ -1055,7 +1054,7 @@ bool screenInterface::set_VELA_HV_MOVER_Position(const screenStructs::screenDriv
     return ret;
 }
 //______________________________________________________________________________
-double screenInterface::getElementPosition(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e )
+double claraScreenInterface::getElementPosition(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e )
 {
     return scrcas.cassetteElementsPosition.at(e);
 }
@@ -1065,7 +1064,7 @@ double screenInterface::getElementPosition(const screenStructs::screenCassette &
 
 //___________________________________________________________________________________________________________
 //___________________________________________________________________________________________________________
-bool screenInterface::is_VELA_PNEUMATIC( const std::string & name )
+bool claraScreenInterface::is_VELA_PNEUMATIC( const std::string & name )
 {
     bool r = false;
     if( entryExists(allScreentData, name ) )
@@ -1074,7 +1073,7 @@ bool screenInterface::is_VELA_PNEUMATIC( const std::string & name )
     return r;
 }
 //___________________________________________________________________________________________________________
-bool screenInterface::is_VELA_HV_MOVER ( const std::string & name )
+bool claraScreenInterface::is_VELA_HV_MOVER ( const std::string & name )
 {
     bool r = false;
     if( entryExists(allScreentData, name ) )
@@ -1083,7 +1082,7 @@ bool screenInterface::is_VELA_HV_MOVER ( const std::string & name )
     return r;
 }
 //___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_VELA_PNEUMATIC_Screens(  const std::vector< std::string > & names )
+const std::vector<std::string> claraScreenInterface::get_VELA_PNEUMATIC_Screens(  const std::vector< std::string > & names )
 {
     std::vector<std::string> r;
     for( auto && it : names )
@@ -1092,7 +1091,7 @@ const std::vector<std::string> screenInterface::get_VELA_PNEUMATIC_Screens(  con
     return r;
 }
 //___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_VELA_HV_MOVER_Screens(  const std::vector< std::string > & names )
+const std::vector<std::string> claraScreenInterface::get_VELA_HV_MOVER_Screens(  const std::vector< std::string > & names )
 {
     std::vector<std::string> r;
     for( auto && it : names )
@@ -1101,32 +1100,32 @@ const std::vector<std::string> screenInterface::get_VELA_HV_MOVER_Screens(  cons
     return r;
 }
 //______________________________________________________________________________
-bool screenInterface::yagOnV( const screenStructs::screenDriver & scrdr )
+bool claraScreenInterface::yagOnV( const screenStructs::screenDriver & scrdr )
 {
     return scrdr.vCassette.cassetteElements.at(screenStructs::SCREEN_STATE::V_YAG) == true;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isVDriveEnabled(const screenStructs::screenDriver & scrdr )
+bool claraScreenInterface::isVDriveEnabled(const screenStructs::screenDriver & scrdr )
 {
     return !isVDriveDisabled(scrdr);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isVDriveDisabled(const screenStructs::screenDriver & scrdr )
+bool claraScreenInterface::isVDriveDisabled(const screenStructs::screenDriver & scrdr )
 {
     return scrdr.vDriverSTA.state == screenStructs::DRIVER_STATE::DRIVER_DISABLED;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isHDriveEnabled(const screenStructs::screenDriver & scrdr )
+bool claraScreenInterface::isHDriveEnabled(const screenStructs::screenDriver & scrdr )
 {
     return !isHDriveDisabled(scrdr);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isHDriveDisabled(const screenStructs::screenDriver & scrdr )
+bool claraScreenInterface::isHDriveDisabled(const screenStructs::screenDriver & scrdr )
 {
     return scrdr.hDriverSTA.state == screenStructs::DRIVER_STATE::DRIVER_DISABLED;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_H_Element(const screenStructs::SCREEN_STATE e )
+bool claraScreenInterface::is_H_Element(const screenStructs::SCREEN_STATE e )
 {   // When moving a cassette element we need to know if it is an H or V element
     for( auto && it :screenStructs::hCassetteElementMap )
         if( e == it.second )
@@ -1134,7 +1133,7 @@ bool screenInterface::is_H_Element(const screenStructs::SCREEN_STATE e )
     return false;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_V_Element(const  screenStructs::SCREEN_STATE e )
+bool claraScreenInterface::is_V_Element(const  screenStructs::SCREEN_STATE e )
 {   // When moving a cassette element we need to know if it is an H or V element
     for( auto && it :screenStructs::vCassetteElementMap )
         if( e == it.second )
@@ -1142,29 +1141,29 @@ bool screenInterface::is_V_Element(const  screenStructs::SCREEN_STATE e )
     return false;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_OUT_AND_VDriveEnabled(const std::string & name)
+bool claraScreenInterface::is_OUT_AND_VDriveEnabled(const std::string & name)
 {
     return allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_OUT
            &&
            isVDriveEnabled(allScreentData.at(name).driver);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_H_element_AND_HDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
+bool claraScreenInterface::is_H_element_AND_HDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
 {
     return is_H_Element(e) && isHDriveEnabled(scrdr);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_V_element_AND_VDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
+bool claraScreenInterface::is_V_element_AND_VDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
 {
     return is_V_Element(e) && isVDriveEnabled(scrdr);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_IN_OR_OUT(const screenStructs::SCREEN_STATE sta )
+bool claraScreenInterface::is_IN_OR_OUT(const screenStructs::SCREEN_STATE sta )
 {
     return sta == screenStructs::SCREEN_STATE::SCREEN_OUT || sta == screenStructs::SCREEN_STATE::SCREEN_IN;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isScreenOUT(const std::string & name, const bool weKnowEntryExists)
+bool claraScreenInterface::isScreenOUT(const std::string & name, const bool weKnowEntryExists)
 {
     if( entryExists2(name,weKnowEntryExists) )
         return allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_OUT;
@@ -1172,7 +1171,7 @@ bool screenInterface::isScreenOUT(const std::string & name, const bool weKnowEnt
         return false;//do we need a TRUE FALSE or UNKNOWN ??
 }
 //_________________________________________________________________________________________________________________
-std::vector<bool> screenInterface::exists_and_isLocked(const std::string& name)
+std::vector<bool> claraScreenInterface::exists_and_isLocked(const std::string& name)
 {
     std::vector<bool> r;
     if( entryExists(allScreentData, name ))
@@ -1189,7 +1188,7 @@ std::vector<bool> screenInterface::exists_and_isLocked(const std::string& name)
     return r;
 }
 //_________________________________________________________________________________________________________________
-std::vector<bool> screenInterface::exists_and_isNotLocked(const std::string& name)
+std::vector<bool> claraScreenInterface::exists_and_isNotLocked(const std::string& name)
 {
     std::vector<bool> r;
     if( entryExists(allScreentData,name) )
@@ -1206,17 +1205,17 @@ std::vector<bool> screenInterface::exists_and_isNotLocked(const std::string& nam
     return r;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::screen_is_out_AND_sta_is_in(const std::string & name, const screenStructs::SCREEN_STATE sta )
+bool claraScreenInterface::screen_is_out_AND_sta_is_in(const std::string & name, const screenStructs::SCREEN_STATE sta )
 {
     return sta == screenStructs::SCREEN_STATE::SCREEN_IN && isScreenOUT(name);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::screen_is_in_AND_sta_is_out(const std::string & name, const screenStructs::SCREEN_STATE sta )
+bool claraScreenInterface::screen_is_in_AND_sta_is_out(const std::string & name, const screenStructs::SCREEN_STATE sta )
 {
     return sta == screenStructs::SCREEN_STATE::SCREEN_OUT && isScreenIN(name);
 }
 //___________________________________________________________________________________________________________
-void screenInterface::update_STA_Bit_map( screenStructs::monitorStruct * ms, const int argsdbr  )
+void claraScreenInterface::update_STA_Bit_map( screenStructs::monitorStruct * ms, const int argsdbr  )
 {   // we're going to assume that each bit in the numebr is where the status is on / off
     // the first bit is "Trajectory in Porgress"
     // for other bits assume as in /home/controls/edl/EBT-YAG.edl
@@ -1279,7 +1278,7 @@ void screenInterface::update_STA_Bit_map( screenStructs::monitorStruct * ms, con
 //    debugMessage(ss);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isMoving(const std::string & name, const bool weKnowEntryExists)
+bool claraScreenInterface::isMoving(const std::string & name, const bool weKnowEntryExists)
 {
     bool r = false;
     if( entryExists2(name,weKnowEntryExists ) )
@@ -1301,21 +1300,21 @@ bool screenInterface::isMoving(const std::string & name, const bool weKnowEntryE
     return r;
 }
 //___________________________________________________________________________________________________________________
-bool screenInterface::isNotMoving(const std::string & name, const bool weKnowEntryExists)
+bool claraScreenInterface::isNotMoving(const std::string & name, const bool weKnowEntryExists)
 {
     return !isMoving(name);
 }
 //___________________________________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > screenInterface::getILockStates( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > claraScreenInterface::getILockStates( const std::string & name )
 {
-//    if( entryExists( ScreenObject.simpleObjects, name ) )
+//    if( entryExists( velaINJscreenObject.simpleObjects, name ) )
 //    {   std::cout << "Entry Exists getILockStates" << std::endl;
-//        return ScreenObject.simpleObjects[ name ].iLockStates;
+//        return velaINJscreenObject.simpleObjects[ name ].iLockStates;
 //    }
 //
-//    else if( entryExists( ScreenObject.complexObjects, name ) )
+//    else if( entryExists( velaINJscreenObject.complexObjects, name ) )
 //    {   std::cout << "Entry Exists getILockStates" << std::endl;
-//        return ScreenObject.complexObjects[ name ].iLockStates;
+//        return velaINJscreenObject.complexObjects[ name ].iLockStates;
 //    }
 //
 //    else
@@ -1327,24 +1326,24 @@ std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > screenInterface::get
     return r;
 }
 ////__________________________________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  screenInterface::getILockStatesStr( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  claraScreenInterface::getILockStatesStr( const std::string & name )
 {
     std::map< VELA_ENUM::ILOCK_NUMBER, std::string  > r;
 
-//    if( entryExists( ScreenObject.simpleObjects, name ) )
+//    if( entryExists( velaINJscreenObject.simpleObjects, name ) )
 //    {
 //        std::cout << "Entry Exists getILockStatesStr" << std::endl;
-//        for( auto it : ScreenObject.simpleObjects[ name ].iLockStates )
+//        for( auto it : velaINJscreenObject.simpleObjects[ name ].iLockStates )
 //        {
 //            message( "hello", it.second  );
 //            r[ it.first ] = ENUM_TO_STRING( it.second );
 //        }
 //    }
 //
-//    if( entryExists( ScreenObject.complexObjects, name ) )
+//    if( entryExists( velaINJscreenObject.complexObjects, name ) )
 //    {
 //        std::cout << "Entry Exists getILockStatesStr" << std::endl;
-//        for( auto it : ScreenObject.complexObjects[ name ].iLockStates )
+//        for( auto it : velaINJscreenObject.complexObjects[ name ].iLockStates )
 //            r[ it.first ] = ENUM_TO_STRING( it.second );
 //    }
 //

@@ -17,21 +17,21 @@
 
 
 
-class screenInterface;
+class velaINJscreenInterface;
 
 namespace screenStructs
 {   //Forward declare structs, gcc seems to like this
     struct pvStruct;
-    struct screenObject;
+    struct velaINJscreenObject;
     struct monitorStruct;
-    struct screenObject;
+    struct velaINJscreenObject;
     struct screenDriver;
     struct COMPLEX_YAG_Object;
     struct SIMPLE_YAG_Object;
 
     //Use this MACRO to define enums. oOnsider putting ENUMS that are more 'global' in structs.h
     // screen types
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_TYPE,(VELA_PNEUMATIC)(VELA_HV_MOVER)(UNKNOWN_SCREEN_TYPE))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_TYPE,(VELA_PNEUMATIC)(VELA_HV_MOVER)(CLARA_HV_MOVER)(UNKNOWN_SCREEN_TYPE))
     // screen states, (and cassette elements) Although not all are needed, we keep H and V version of each element
     // ***** ADD TO THIS IF CLARA HAS MORE ELEMENTS *****
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_STATE,
@@ -136,9 +136,9 @@ namespace screenStructs
         std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs,pvComStructs;
     };
     /// The main hardware object holds
-    struct screenObject
+    struct velaINJscreenObject
     {
-        screenObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE){}
+        velaINJscreenObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE){}
         std::string name, pvRoot;
         SCREEN_TYPE       screenType;
         screenDriver      driver;
@@ -157,7 +157,7 @@ namespace screenStructs
                         obj(nullptr),dir(NONE){}
         SCREEN_PV_TYPE      monType;
         void*               obj;
-        screenInterface*    interface;
+        velaINJscreenInterface*    interface;
         chtype              CHTYPE;
         evid                EVID;
         DRIVER_DIRECTION    dir;
@@ -165,7 +165,7 @@ namespace screenStructs
     /// This holds all info for actually moving a screen in a complex fashion
     struct HV_dualMoveStruct
     {   HV_dualMoveStruct():interface(nullptr),thread(nullptr),key(UTL::ZERO_INT),isComplete(false){}
-        screenInterface* interface;
+        velaINJscreenInterface* interface;
         std::thread*     thread;
         size_t           key;
         bool             isComplete;
