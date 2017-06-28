@@ -77,7 +77,8 @@ namespace magnetStructs
                        maxI(UTL::DUMMY_DOUBLE),
                        minI(UTL::DUMMY_DOUBLE),
                        psuRoot(SAME_AS_PV_ROOT),
-                       SETIequalREADI(false)
+                       SETIequalREADI(false),
+                       psuState(ERROR)
                        {}
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_PSU_STATE psuState;

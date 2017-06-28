@@ -213,10 +213,6 @@ namespace UTL
     const std::string PV_SUFFIX_RILK    = "PV_SUFFIX_RILK";
 
 
-
-
-
-
     // LLRF (DJS faked 21-02-2017)
     // 24/5/17 UPDATE, the real machine LLRF is now included, and completely different to previous years
     // I've had to fake the VM versiosn atm until

@@ -206,8 +206,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
 
     //scope().attr("__doc__") = "VELA_CLARA_MagnetControl module's docstring";
 
-    /// Things that you want to use in python muct be exposed:
-    /// containers
+    /// Things that you want to use in python must be exposed:
+    // containers
     class_<std::vector< std::string > >("std_vector_string")
         .def( vector_indexing_suite< std::vector< std::string >>() )
         ;
@@ -218,14 +218,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .def( vector_indexing_suite< std::vector< magnetStructs::MAG_TYPE>>() )
         ;
     /// and enums, remember we have a enum to string python dictionary macro too!
-    enum_<VELA_ENUM::MAG_PSU_STATE>("MAG_PSU_STATE","MAG_PSU_STATE Doc String")
-        .value("MAG_PSU_OFF",   VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF   )
-        .value("MAG_PSU_ON",    VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON    )
-        .value("MAG_PSU_TIMING",VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING)
-        .value("MAG_PSU_ERROR", VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR )
-        .value("MAG_PSU_NONE",  VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE  )
+    enum_<magnetStructs::MAG_PSU_STATE>("MAG_PSU_STATE","MAG_PSU_STATE Doc String")
+        .value("MAG_PSU_OFF",   magnetStructs::MAG_PSU_STATE::ON   )
+        .value("MAG_PSU_ON",    magnetStructs::MAG_PSU_STATE::OFF    )
+        .value("MAG_PSU_ERROR", magnetStructs::MAG_PSU_STATE::ERROR )
+        .value("MAG_PSU_NONE",  magnetStructs::MAG_PSU_STATE::NONE  )
         ;
-
     enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
         .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
         .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
@@ -243,10 +241,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Magnet_Control )
         .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
         .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
         .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-        .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
-        .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
-        .value("CLARA_L01", VELA_ENUM::MACHINE_AREA::CLARA_L01 )
-        .value("USER", VELA_ENUM::MACHINE_AREA::USER )
+        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01 )
+        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02 )
+        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01 )
+        .value("USER",         VELA_ENUM::MACHINE_AREA::USER )
         .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
         ;
     /// and enums, remember we have a enum to string python dictionary macro too!

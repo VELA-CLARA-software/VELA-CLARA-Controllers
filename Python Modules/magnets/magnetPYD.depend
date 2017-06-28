@@ -85,7 +85,7 @@
 	<atomic>
 	<map>
 
-1498217380 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
+1498645816 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -109,7 +109,7 @@
 	<vector>
 	<cadef.h>
 
-1498228442 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1498642810 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -207,7 +207,7 @@
 	<iostream>
 	<string>
 
-1498226900 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
+1498664922 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
 	"magnetController.h"
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
