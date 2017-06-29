@@ -139,9 +139,15 @@ void magnetInterface::initChids()
             if(Is_PSU_PV(it2.first))
             {
                 if(Is_psuRoot_SAME_AS_PV_ROOT(magObjIt.second.psuRoot))
+                {
+                    //debugMessage(magObjIt.first," psuroot = pvroot" );
                     addChannel(magObjIt.second.pvRoot, it2.second);
+                }
                 else
+                {
+                    //debugMessage(magObjIt.first," psuroot != pvroot" );
                     addChannel(magObjIt.second.psuRoot, it2.second);
+                }
             }
             else
             {
@@ -153,9 +159,15 @@ void magnetInterface::initChids()
             if(Is_PSU_PV(it2.first))
             {
                 if(Is_psuRoot_SAME_AS_PV_ROOT(magObjIt.second.psuRoot))
+                {
+                    //debugMessage(magObjIt.first," psuroot = pvroot" );
                     addChannel(magObjIt.second.pvRoot, it2.second);
+                }
                 else
+                {
+                    //debugMessage(magObjIt.first," psuroot != pvroot" );
                     addChannel(magObjIt.second.psuRoot, it2.second);
+                }
             }
             else
             {
@@ -198,7 +210,7 @@ bool magnetInterface::Is_psuRoot_SAME_AS_PV_ROOT(const std::string& root)
         a = true;
         //message(root, " IS  ", magnetStructs::SAME_AS_PV_ROOT);
     }
-    else
+    //else
         //message(root, " IS  NOT ", magnetStructs::SAME_AS_PV_ROOT);
     return a;
 }
@@ -277,8 +289,12 @@ void magnetInterface::updateRI(const double value,const std::string& magName)
 //    {
     allMagnetData[magName].riWithPol = roundToN(value,4); /// MAGIC_NUMBER
     // this is to stop loads of annoying callbacks being printed to screen
-    if(areNotSame(allMagnetData[magName].riWithPol,value,allMagnetData[magName].riTolerance))
+    if(areNotSame(allMagnetData[magName].riWithPol,
+                  value,
+                  allMagnetData[magName].riTolerance))
+    {
         debugMessage(magName," NEW RI = ", allMagnetData[magName].riWithPol);
+    }
     allMagnetData[magName].SETIequalREADI
         = areSame(allMagnetData[magName].riWithPol,
                   allMagnetData[magName].siWithPol,
@@ -302,15 +318,19 @@ void magnetInterface::updateRILK(const unsigned short value,const std::string&ma
         switch(value)
         {
             case 1:
-                allMagnetData[magName].iLock = magnetStructs::MAG_ILOCK_STATE::BAD;
+                allMagnetData[magName].iLock
+                    = magnetStructs::MAG_ILOCK_STATE::BAD;
                 break;
             case 0:
-                allMagnetData[magName].iLock = magnetStructs::MAG_ILOCK_STATE::GOOD;
+                allMagnetData[magName].iLock
+                    = magnetStructs::MAG_ILOCK_STATE::GOOD;
                 break;
             default:
-                allMagnetData[magName].iLock = magnetStructs::MAG_ILOCK_STATE::BAD;
+                allMagnetData[magName].iLock
+                    = magnetStructs::MAG_ILOCK_STATE::BAD;
         }
-        message(magName, " RILK state is ", ENUM_TO_STRING(allMagnetData[magName].iLock));
+        message(magName, " RILK state is ",
+                ENUM_TO_STRING(allMagnetData[magName].iLock));
     }
 }
 //______________________________________________________________________________
@@ -322,16 +342,20 @@ void magnetInterface::updatePSUSta(const unsigned short value,const std::string&
         {
             case 0:
                 message(magName, " updatePSUSta state is 0");
-                allMagnetData[magName].psuState = magnetStructs::MAG_PSU_STATE::OFF;
+                allMagnetData[magName].psuState
+                    = magnetStructs::MAG_PSU_STATE::OFF;
                 break;
             case 1:
                 message(magName, " updatePSUSta state is 1");
-                allMagnetData[magName].psuState = magnetStructs::MAG_PSU_STATE::ON;
+                allMagnetData[magName].psuState
+                    = magnetStructs::MAG_PSU_STATE::ON;
                 break;
             default:
-                allMagnetData[magName].psuState = magnetStructs::MAG_PSU_STATE::ERROR;
+                allMagnetData[magName].psuState
+                    = magnetStructs::MAG_PSU_STATE::ERROR;
         }
-    message(magName, " PSU state is ", ENUM_TO_STRING(allMagnetData[magName].psuState));
+        message(magName, " PSU state is ",
+                ENUM_TO_STRING(allMagnetData[magName].psuState));
     }
 }
 //           ___  ____

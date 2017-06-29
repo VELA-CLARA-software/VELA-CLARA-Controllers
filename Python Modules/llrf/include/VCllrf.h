@@ -161,9 +161,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_LLRFControl )
         .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
         ;
+
+    // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
+    boost::python::class_<llrfStructs::rf_trace_data,boost::noncopyable>
+        ("rf_trace_data","rf_trace_data Doc String", boost::python::no_init)
+        .def_readonly("trace",          &llrfStructs::rf_trace_data::value,"LLRF Trace Values" )
+        .def_readonly("shot",          &llrfStructs::rf_trace_data::count,"LLRF Trace counter (number of traces recieved since monitoring started)" )
+        ;
     // liberallrfObject object struct to be exposed, used when returning a liberallrfObject reference
     boost::python::class_<llrfStructs::liberallrfObject,boost::noncopyable>
-        ("pilaserObject","pilaserObject Doc String", boost::python::no_init)
+        ("liberallrfObject","liberallrfObject Doc String", boost::python::no_init)
         .def_readonly("name",          &llrfStructs::liberallrfObject::name,"LLRF Object Name")
         .def_readonly("pvRoot",        &llrfStructs::liberallrfObject::pvRoot,"PV root")
         .def_readonly("phiCalibration",&llrfStructs::liberallrfObject::phiCalibration,"Linear Phase in LLRF units to degrees")
@@ -179,10 +186,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_LLRFControl )
         .def_readonly("type", &llrfStructs::liberallrfObject::type,"LLRF Controller Type.")
         .def_readonly("islocked", &llrfStructs::liberallrfObject::islocked,"LLRF Amplitude &Phase Lock.")
         .def_readonly("powerTraceLength", &llrfStructs::liberallrfObject::powerTraceLength,"Number of elements in a power trace.")
-        .def_readonly("cav_r_power", &llrfStructs::liberallrfObject::cav_r_power,"Cavity Reverse Power trace.")
-        .def_readonly("cav_f_power", &llrfStructs::liberallrfObject::cav_f_power,"Cavity Forward Power trace.")
-        .def_readonly("kly_f_power", &llrfStructs::liberallrfObject::kly_f_power,"Klystron Forward Power trace.")
-        .def_readonly("kly_r_power", &llrfStructs::liberallrfObject::kly_r_power,"Klystron Reverse Power trace.")
+        .def_readonly("cav_r_power", &llrfStructs::liberallrfObject::cav_r_power,"Cavity Reverse Power race data.")
+        .def_readonly("cav_f_power", &llrfStructs::liberallrfObject::cav_f_power,"Cavity Forward Power trace data.")
+        .def_readonly("kly_f_power", &llrfStructs::liberallrfObject::kly_f_power,"Klystron Forward Power trace data.")
+        .def_readonly("kly_r_power", &llrfStructs::liberallrfObject::kly_r_power,"Klystron Reverse Power trace data.")
         .def_readonly("time_vector", &llrfStructs::liberallrfObject::time_vector,"Power trace time values.")
         ;
 
@@ -223,8 +230,6 @@ boost::python::class_<liberaLLRFController, boost::python::bases<controller>, bo
     .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(boost::python::arg("value")),"Set linear calibration of phase from LLRF units to degrees")
     .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(boost::python::arg("value")),"Set linear calibration of ampliutude from LLRF units to MV/m")
     .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(boost::python::arg("value")),"Set the Crest Phi value in LLRF Units")
-
-
     .def("Is_TracePV",  &liberaLLRFController::Is_TracePV,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
     .def("IsNot_TracePV",  &liberaLLRFController::IsNot_TracePV,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
     .def("isMonitoring",  &liberaLLRFController::isMonitoring,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")

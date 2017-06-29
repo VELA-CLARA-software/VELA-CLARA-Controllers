@@ -207,7 +207,7 @@
 	<iostream>
 	<string>
 
-1498664922 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
+1498725389 d:\vela\git projects\vela-clara-controllers\python modules\magnets\include\vcmagnets.h
 	"magnetController.h"
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
