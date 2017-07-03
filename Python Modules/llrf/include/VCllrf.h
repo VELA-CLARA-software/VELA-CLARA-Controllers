@@ -165,8 +165,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_LLRFControl )
     // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
     boost::python::class_<llrfStructs::rf_trace_data,boost::noncopyable>
         ("rf_trace_data","rf_trace_data Doc String", boost::python::no_init)
-        .def_readonly("trace",          &llrfStructs::rf_trace_data::value,"LLRF Trace Values" )
-        .def_readonly("shot",          &llrfStructs::rf_trace_data::count,"LLRF Trace counter (number of traces recieved since monitoring started)" )
+        .def_readonly("trace",         &llrfStructs::rf_trace_data::value,"LLRF Trace Values" )
+        .def_readonly("timeStr",         &llrfStructs::rf_trace_data::timeStr,"LLRF Trace Epics TimeStamp (string)" )
+        .def_readonly("time",          &llrfStructs::rf_trace_data::time,"LLRF Trace Epics TimeStamp (ns)" )
+        .def_readonly("shot",          &llrfStructs::rf_trace_data::shot,"LLRF Trace counter (number of traces recieved since monitoring started)" )
         ;
     // liberallrfObject object struct to be exposed, used when returning a liberallrfObject reference
     boost::python::class_<llrfStructs::liberallrfObject,boost::noncopyable>

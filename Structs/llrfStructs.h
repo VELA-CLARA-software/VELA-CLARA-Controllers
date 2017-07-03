@@ -64,9 +64,15 @@ namespace llrfStructs
     //a custom struct will always stand up better under maintenance.
     struct rf_trace_data
     {
-        rf_trace_data():count(0){}
-        size_t              count;
+        rf_trace_data():
+            shot(0),
+            time(0)
+            {}
+        size_t              shot;
         std::vector<double> value;
+        epicsTimeStamp etime; // epics timestamp for value
+        double         time; // epics timestamp doncerted into nano-sec
+        std::string    timeStr; // epics timestamp doncerted into nano-sec
     };
     // The main hardware object
     struct liberallrfObject

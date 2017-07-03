@@ -103,21 +103,16 @@ bool liberallrfInterface::initObjects()
 {
     bool success = configReader.getliberallrfObject(llrf);
 
-
-
     llrf.cav_f_power.value.resize( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD).COUNT );
     llrf.cav_r_power.value.resize( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV).COUNT );
     llrf.kly_f_power.value.resize( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD).COUNT );
     llrf.kly_r_power.value.resize( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV).COUNT );
     llrf.time_vector.value.resize( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR).COUNT );
-
-
-    message( " llrf.cav_f_power.size() = ",  llrf.cav_f_power.value.size());
-    message( " llrf.cav_r_power.size() = ",  llrf.cav_r_power.value.size());
-    message( " llrf.kly_f_power.size() = ",  llrf.kly_f_power.value.size());
-    message( " llrf.kly_r_power.size() = ",  llrf.kly_r_power.value.size());
-    message( " llrf.time_vector.size() = ",  llrf.time_vector.value.size());
-
+//    message("llrf.cav_f_power.size() = ",  llrf.cav_f_power.value.size());
+//    message("llrf.cav_r_power.size() = ",  llrf.cav_r_power.value.size());
+//    message("llrf.kly_f_power.size() = ",  llrf.kly_f_power.value.size());
+//    message("llrf.kly_r_power.size() = ",  llrf.kly_r_power.value.size());
+//    message("llrf.time_vector.size() = ",  llrf.time_vector.value.size());
 
     llrf.type = myLLRFType;
     return success;
@@ -417,22 +412,33 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
 //____________________________________________________________________________________________
 void liberallrfInterface::updateTrace(const event_handler_args args,llrfStructs::rf_trace_data& trace)
 {
-    trace.count += 1;
-    message( "count = ", trace.count  );
-
-//    const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
-//    beamPositionMonitorStructs::rawDataStruct * bpmdo = reinterpret_cast< beamPositionMonitorStructs::rawDataStruct *> (ms -> val);
-
-    //const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
-
-    size_t i = 0;
-    for( auto && it : trace.value)
+    if( isTimeType(args.type) )
     {
-        it = *( (double*)args.dbr + i);
-//        std::cout << trace.second[i] << " ";
-        ++i;
-    }
 
+        const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
+        size_t counter = 0;
+        const dbr_double_t * pValue;
+        pValue = &p->value;
+        for(auto && it : trace.value)
+        {
+            //it = *((double const* const) p->value + counter);
+            it = pValue[counter];
+            ++counter;
+        }
+        trace.etime = p->stamp;// MAGIC_NUMBER
+        updateTime(trace.etime, trace.time, trace.timeStr);
+    }
+    else
+    {
+        size_t i = 0;
+        for( auto && it : trace.value)
+        {
+            it = *( (double*)args.dbr + i);
+    //        std::cout << trace.second[i] << " ";
+            ++i;
+        }
+    }
+    trace.shot += 1;// MAGIC_NUMBER
 }
 //____________________________________________________________________________________________
 double liberallrfInterface::getPhiCalibration()

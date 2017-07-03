@@ -100,6 +100,8 @@ class interface : public baseObject
         bool iLocksAreGood(std::map<VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE> & iLockStates);
 
 
+        bool isTimeType(const long);
+
         void printStatusResult(const int status, const char * success, const char * timeout);
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?

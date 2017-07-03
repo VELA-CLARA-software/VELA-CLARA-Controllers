@@ -310,6 +310,38 @@ void interface::detachFrom_thisCAContext()
 {
     ca_detach_context();
 }
+//______________________________________________________________________________
+bool interface::isTimeType(const long type)
+{
+    bool r = false;
+    switch(type)
+    {
+        case DBR_TIME_STRING:
+            r = true;
+            break;
+        case DBR_TIME_INT:
+            r = true;
+            break;
+        case DBR_TIME_LONG:
+            r = true;
+            break;
+        case  DBR_TIME_FLOAT:
+            r = true;
+            break;
+        case DBR_TIME_ENUM:
+            r = true;
+            break;
+        case DBR_TIME_CHAR:
+            r = true;
+            break;
+        case DBR_TIME_DOUBLE:
+            r = true;
+            break;
+        default:
+            r = false;
+    }
+    return r;
+}
 /// WRITTEN THIS WAY, THIS FUNCTION COULD GO IN THE INTERFACE BASE CLASS
 //______________________________________________________________________________
 void interface::updateTime(const epicsTimeStamp & stamp, double & val, std::string & str)
