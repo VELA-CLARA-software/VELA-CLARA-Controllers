@@ -386,19 +386,19 @@ size_t VCgeneralMonitor::getArrayIndex(const int index, const size_t vec_size )
 {
     // first test to see if entries are oob
     size_t r = vec_size + 1; // init -to unacceptable value
-    if( index > -1 && index + 1 >= vec_size  )//MAGIC_NUMBER
+    if(index > -1 && index + 1 >= vec_size)//MAGIC_NUMBER
     {
         r = 0;//MAGIC_NUMBER
     }
-    else if( index < 0 && vec_size + index < 0  )
+    else if(index < 0 && vec_size + index < 0)
     {
         r = 0;//MAGIC_NUMBER
     }
-    else if( index < 0 )//MAGIC_NUMBER
+    else if(index < 0)//MAGIC_NUMBER
     {
         r = vec_size + index;
     }
-    else if( index > -1  )
+    else if(index > -1)
     {
         r = index;
     }
@@ -491,7 +491,17 @@ std::vector< size_t > VCgeneralMonitor::getArrayRegionOfInterest(const int start
 //______________________________________________________________________________
 size_t VCgeneralMonitor::getPVCount(const std::string & id  )
 {
-if(isIntPV(id) )
+    if(isStringPV(id) )
+    {
+        if(entryExists(stringPVMap, id) )
+        {
+            //message("getPVStruct ",  id, " stringPVMap");
+             return stringPVMap[id].pvs.COUNT;
+            //message("getPVStruct found ",  id, " in stringPVMap");
+//            success = true;
+        }
+    }
+    if(isIntPV(id) )
     {
         if(entryExists(intPVMap, id) )
         {
@@ -573,6 +583,8 @@ bool VCgeneralMonitor::isValidID(const std::string& id)
     else if(entryExists(vec_doublePVMap, id) )
         return true;
     else if(entryExists(vec_intPVMap, id) )
+        return true;
+    else if(entryExists(stringPVMap, id) )
         return true;
     return false;
 }
@@ -666,106 +678,132 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
     {
         std::cout<<"please god, no, never show this... "<<std::endl;
     }
-    switch( args.type)
-    {
-        case  DBR_CHAR:
-            message("!!!! ",id," args.type is DBR_CHAR val = ", *(char*)args.dbr);
-            break;
-        case  DBR_SHORT:
-            message("!!!! ",id," args.type is DBR_SHORT val = ", *(short*)args.dbr);
-            break;
-        case  DBR_ENUM:
-            message("!!!! ",id," args.type is DBR_ENUM val = ", *(unsigned *)args.dbr);
-            break;
-        case  DBR_LONG:
-            message("!!!! ",id," args.type is DBR_LONG val = ", *(long*)args.dbr);
-            break;
-        case  DBR_FLOAT:
-            message("!!!! ",id," args.type is DBR_FLOAT val = ", *(float*)args.dbr);
-            break;
-        case  DBR_DOUBLE:
-            message("!!!! ",id," args.type is DBR_DOUBLE val = ", *(double*)args.dbr);
-            break;
-        case  DBR_STRING:
-            message("!!!! ",id," args.type is DBR_STRING val = ", *(char*)args.dbr);
-            break;
-        case  DBR_TIME_LONG:
-            message("!!!! ",id," args.type is DBR_TIME_LONG val = ", *(char*)args.dbr);
-            break;
-//        case  DBR_INT:
-//            message("args.type is DBR_INT");
+//    switch( args.type)
+//    {
+//        case  DBR_CHAR:
+//            message("!!!! ",id," args.type is DBR_CHAR val = ", *(char*)args.dbr);
 //            break;
-        default:
-            message("args.type is default = ", args.type);
-            message( "size = ", dbr_size_n(args.type,1) );
-            break;
-    }
-//
-    switch( args.type)
+//        case  DBR_SHORT:
+//            message("!!!! ",id," args.type is DBR_SHORT val = ", *(short*)args.dbr);
+//            break;
+//        case  DBR_ENUM:
+//            message("!!!! ",id," args.type is DBR_ENUM val = ", *(unsigned *)args.dbr);
+//            break;
+//        case  DBR_LONG:
+//            message("!!!! ",id," args.type is DBR_LONG val = ", *(long*)args.dbr);
+//            break;
+//        case  DBR_FLOAT:
+//            message("!!!! ",id," args.type is DBR_FLOAT val = ", *(float*)args.dbr);
+//            break;
+//        case  DBR_DOUBLE:
+//            message("!!!! ",id," args.type is DBR_DOUBLE val = ", *(double*)args.dbr);
+//            break;
+//        case  DBR_STRING:
+//            message("!!!! ",id," args.type is DBR_STRING val = ", *(char*)args.dbr);
+//            break;
+//        case  DBR_TIME_LONG:
+//            message("!!!! ",id," args.type is DBR_TIME_LONG val = ", *(char*)args.dbr);
+//            break;
+////        case  DBR_INT:
+////            message("args.type is DBR_INT");
+////            break;
+//        default:
+//            message("args.type is default = ", args.type);
+//            message( "size = ", dbr_size_n(args.type,1) );
+//            break;
+//    }
+////
+    else
     {
-        case  DBR_DOUBLE:
-            //message("updateValue DBR_DOUBLE");
-            if( args.count == 1)
-            {
-                addSingleDouble(id,args);
-            }
-            else if( args.count > 0 )
-            {
-                addArrayDouble(id,args);
-            }
-            break;
-        case  DBR_INT:
-            if( intPVMap[id].data.size() == 0 )
-            {
-                intPVMap[id].data.push_back(new gmStructs::dataEntry<int>() );
-            }
-            intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
-            intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_ENUM:
-            message("VCgeneralMonitor::updateValue() DBR_ENUM");
-            if( enumPVMap[id].data.size() == 0 )
-            {
-                enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
-            }
-            enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
-            enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_TIME_ENUM:
-            message("VCgeneralMonitor::updateValue() DBR_TIME_ENUM");
-            if( enumPVMap[id].data.size() == 0 )
-            {
-                enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
-            }
-            enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
-            enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_LONG:
-            //message("VCgeneralMonitor::updateValue() DBR_LONG");
-            if( longPVMap[id].data.size() == 0 )
-            {
-                longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
-            }
-            longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
-            longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_TIME_LONG:
-            //message("VCgeneralMonitor::updateValue() DBR_TIME_LONG");
-            {
-                const dbr_time_long * pTD = ( const struct dbr_time_long * ) args.dbr;
-    //            epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
-    //            epicsUInt32 nsec = pTD ->stamp.nsec;
+        switch( args.type)
+        {
+            case  DBR_TIME_STRING:
+                updateTimeAndValue( id, args.dbr);
+                break;
+            case  DBR_TIME_SHORT:
+                {
+                    message("VCgeneralMonitor::updateValue() DBR_STRING");
+                    // see db_access.h
+                    if( stringPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
+                    {
+                        stringPVMap.at(id).data.push_back(new gmStructs::dataEntry<std::string>() );
+                    }
+                    std::string temp((const char *)args.dbr);
+                    message("temp = ", temp);
+
+                    //stringPVMap.at(id).data[0]->v = *(std::string*)args.dbr;// meh
+                    stringPVMap.at(id).data[0]->v = temp;// meh
+                    stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            case  DBR_DOUBLE:
+                //message("updateValue DBR_DOUBLE");
+                if( args.count == 1)
+                {
+                    addSingleDouble(id,args);
+                }
+                else if( args.count > 0 )
+                {
+                    addArrayDouble(id,args);
+                }
+                break;
+            case  DBR_INT:
+                if( intPVMap[id].data.size() == 0 )
+                {
+                    intPVMap[id].data.push_back(new gmStructs::dataEntry<int>() );
+                }
+                intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
+                intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                break;
+            case DBR_ENUM:
+                //message("VCgeneralMonitor::updateValue() DBR_ENUM");
+                if( enumPVMap[id].data.size() == 0 )
+                {
+                    enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
+                }
+                enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
+                enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                break;
+            case DBR_TIME_ENUM:  // Yeah i haxxored all this on shift to make it work...
+
+                {
+                    const dbr_time_enum * pTD = ( const struct dbr_time_enum * ) args.dbr;
+                    //message("VCgeneralMonitor::updateValue() DBR_TIME_ENUM");
+                    if( enumPVMap[id].data.size() == 0 )
+                    {
+                        enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
+                    }
+                    enumPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                    enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            case DBR_LONG:
+                //message("VCgeneralMonitor::updateValue() DBR_LONG");
                 if( longPVMap[id].data.size() == 0 )
                 {
                     longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
                 }
-                //longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
-                longPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
                 longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            }
-            break;
-        default:
-            message("VCgeneralMonitor::updateValue() default switch");
+                break;
+            case DBR_TIME_LONG:  // Yeah i haxxored all this on shift to make it work...
+                //message("VCgeneralMonitor::updateValue() DBR_TIME_LONG");
+                {
+                    const dbr_time_long * pTD = ( const struct dbr_time_long * ) args.dbr;
+        //            epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
+        //            epicsUInt32 nsec = pTD ->stamp.nsec;
+                    if( longPVMap[id].data.size() == 0 )
+                    {
+                        longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
+                    }
+                    //longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
+                    longPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                    longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            default:
+                message("VCgeneralMonitor::updateValue() default switch, ", args.type);
+        }
     }
 
 //        if(isStringPV(id))
@@ -851,16 +889,19 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
 //______________________________________________________________________________
 void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * dbr)
 {
-//        if(isStringPV(id))
-//        {
-//            if( stringPVMap.at(id).data.size() == 0 )
-//                stringPVMap.at(id).data.pushBack( dataEntry<std::string>() );
-//            else
-//            {
-//                stringPVMap.at(id).data.v = *(std::string*)dbr;// this probably doesn't work and why do strings?
-//            }
-//        }
-    if(isIntPV(id))
+    if(isStringPV(id))
+    {
+        // see db_access.h
+        const dbr_time_string * p = (const struct dbr_time_string*)dbr;
+        if( stringPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
+        {
+            stringPVMap.at(id).data.push_back(new gmStructs::dataEntry<std::string>() );
+        }
+        stringPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
+        stringPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+    }
+    else if(isIntPV(id))
     {
         // see db_access.h
         const dbr_time_short * p = (const struct dbr_time_short*)dbr;
@@ -1073,6 +1114,10 @@ gmStructs::pvStruct* VCgeneralMonitor::getCHTYPEandPrefix(const std::string & pv
     {
         r  = addToVecDoublePVMap();
     }
+    else if(pvType == UTL::DBR_STRING_STR)
+    {
+        r  = addToStringPVMap();
+    }
     // the rest should probably not be used...
 //    else if(pvType == UTL::DBR_TIME_STRING_STR)
 //    {
@@ -1139,6 +1184,14 @@ bool VCgeneralMonitor::disconnectPV(const std::string & id )
 gmStructs::pvStruct* VCgeneralMonitor::getPVStruct_Ptr(const std::string& id )
 {
     gmStructs::pvStruct* pvs = nullptr;
+    if(isStringPV(id) )
+    {   message("getPVStruct ",  id, " isStringPV");
+        if( entryExists(stringPVMap, id) )
+        {
+            pvs = &stringPVMap[id].pvs;
+            message("getPVStruct found ",  id, " in stringPVMap");
+        }
+    }
     if(isIntPV(id) )
     {   //message("getPVStruct ",  id, " isIntPV");
         if( entryExists(intPVMap, id) )
@@ -1306,6 +1359,10 @@ bool VCgeneralMonitor::deleteID(const std::string& id )
     {
         r = deleteMapEntry(doublePVMap,id);
     }
+    else if(isStringPV(id) )
+    {
+        r = deleteMapEntry(stringPVMap,id);
+    }
     return r;
 }
 //______________________________________________________________________________
@@ -1410,6 +1467,17 @@ bool VCgeneralMonitor::isMonitoring(const std::string & id)
         message("isMonitoring did not find ", id);
         return false;
     }
+}
+//______________________________________________________________________________
+gmStructs::pvStruct* VCgeneralMonitor::addToStringPVMap()
+{
+    std::string id = stringPrefix;
+    id += std::to_string(pvMonitorMapCount);
+    stringPVMap[id].id = id;
+    stringPVMap.at(id).pvs.id = id;
+    stringPVMap.at(id).pvs.CHTYPE = DBR_TIME_INT;
+    debugMessage("connectPV Passed a DBR_STRING. Entry with id =  ",id, " created");
+    return &stringPVMap[id].pvs;
 }
 //______________________________________________________________________________
 gmStructs::pvStruct* VCgeneralMonitor::addToIntPVMap()

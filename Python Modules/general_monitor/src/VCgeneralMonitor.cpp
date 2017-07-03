@@ -75,6 +75,14 @@ void VCgeneralMonitor::setDebugMessage()
     SHOW_MESSAGES      = false;
 }
 //______________________________________________________________________________
+//std::vector<std::string> getVecStr(const boost::python::list& ls)
+//{
+//    std::vector<std::string> r;
+//    for (int i = 0; i < len(ls); ++i)
+//        r.push_back(boost::python::extract<std::string>(ls[i]);
+//    return r;
+//}
+//______________________________________________________________________________
 VCgeneralMonitor::~VCgeneralMonitor()
 {
     for( auto && it : continuousMonitorStructs )
@@ -83,16 +91,16 @@ VCgeneralMonitor::~VCgeneralMonitor()
     }
 }
 //______________________________________________________________________________
-boost::python::dict VCgeneralMonitor::getValue(const std::vector<std::string>& ids )
+boost::python::dict VCgeneralMonitor::getValue(const boost::python::list& ids)
 {
+    std::vector<std::string> idss = to_std_vector<std::string>(ids);
     std::vector<std::string> valid_ids;
-    for(auto && it : ids )
+    for(auto && it : idss)
     {
         if( isValidID(it) )
             valid_ids.push_back(it);
     }
     boost::python::dict r;
-
     for(auto && it : valid_ids )
     {
         r[it] = getValue(it);
@@ -100,10 +108,11 @@ boost::python::dict VCgeneralMonitor::getValue(const std::vector<std::string>& i
     return r;
 }
 //______________________________________________________________________________
-boost::python::dict VCgeneralMonitor::getCounterAndValue(const std::vector<std::string>& ids)
+boost::python::dict VCgeneralMonitor::getCounterAndValue(const boost::python::list& ids)
 {
+    std::vector<std::string> idss = to_std_vector<std::string>(ids);
     std::vector<std::string> valid_ids;
-    for(auto && it : ids )
+    for(auto && it : idss )
     {
         if( isValidID(it) )
             valid_ids.push_back(it);
@@ -310,7 +319,8 @@ boost::python::dict VCgeneralMonitor::getCounterAndTotalValue(const std::string&
             if(entryExists(vec_doublePVMap, id) )
             {
                 boost::python::dict r;
-                r[vec_doublePVMap[id].data[0]->c] = std::accumulate(vec_doublePVMap[id].data[0]->v.begin(), vec_doublePVMap[id].data[0]->v.end(), 0);
+                r[vec_doublePVMap[id].data[0]->c] = std::accumulate(vec_doublePVMap[id].data[0]->v.begin(),
+                                                                    vec_doublePVMap[id].data[0]->v.end(), 0);
                 return r;
             }
         }
@@ -319,7 +329,8 @@ boost::python::dict VCgeneralMonitor::getCounterAndTotalValue(const std::string&
             if( entryExists(vec_intPVMap,id) )
             {
                 boost::python::dict r;
-                r[vec_intPVMap[id].data[0]->c] = std::accumulate(vec_intPVMap[id].data[0]->v.begin(), vec_intPVMap[id].data[0]->v.end(), 0);
+                r[vec_intPVMap[id].data[0]->c] = std::accumulate(vec_intPVMap[id].data[0]->v.begin(),
+                                                                 vec_intPVMap[id].data[0]->v.end(), 0);
                 return r;
             }
         }
@@ -338,7 +349,8 @@ boost::python::object VCgeneralMonitor::getTotalValue(const std::string& id)
         {
             if(entryExists(vec_doublePVMap, id) )
             {
-                double total = std::accumulate(vec_doublePVMap[id].data[0]->v.begin(), vec_doublePVMap[id].data[0]->v.end(), 0);
+                double total = std::accumulate(vec_doublePVMap[id].data[0]->v.begin(),
+                                               vec_doublePVMap[id].data[0]->v.end(), 0);
                 message("total = ", total);
                 return object(total);
             }
@@ -347,7 +359,8 @@ boost::python::object VCgeneralMonitor::getTotalValue(const std::string& id)
         {
             if( entryExists(vec_intPVMap,id) )
             {
-                int total = std::accumulate(vec_intPVMap[id].data[0]->v.begin(), vec_intPVMap[id].data[0]->v.end(), 0);
+                int total = std::accumulate(vec_intPVMap[id].data[0]->v.begin(),
+                                            vec_intPVMap[id].data[0]->v.end(), 0);
                 message("total = ", total);
                 return object(total);
             }
@@ -386,19 +399,19 @@ size_t VCgeneralMonitor::getArrayIndex(const int index, const size_t vec_size )
 {
     // first test to see if entries are oob
     size_t r = vec_size + 1; // init -to unacceptable value
-    if( index > -1 && index + 1 >= vec_size  )//MAGIC_NUMBER
+    if(index > -1 && index + 1 >= vec_size)//MAGIC_NUMBER
     {
         r = 0;//MAGIC_NUMBER
     }
-    else if( index < 0 && vec_size + index < 0  )
+    else if(index < 0 && vec_size + index < 0)
     {
         r = 0;//MAGIC_NUMBER
     }
-    else if( index < 0 )//MAGIC_NUMBER
+    else if(index < 0)//MAGIC_NUMBER
     {
         r = vec_size + index;
     }
-    else if( index > -1  )
+    else if(index > -1)
     {
         r = index;
     }
@@ -491,7 +504,17 @@ std::vector< size_t > VCgeneralMonitor::getArrayRegionOfInterest(const int start
 //______________________________________________________________________________
 size_t VCgeneralMonitor::getPVCount(const std::string & id  )
 {
-if(isIntPV(id) )
+    if(isStringPV(id) )
+    {
+        if(entryExists(stringPVMap, id) )
+        {
+            //message("getPVStruct ",  id, " stringPVMap");
+             return stringPVMap[id].pvs.COUNT;
+            //message("getPVStruct found ",  id, " in stringPVMap");
+//            success = true;
+        }
+    }
+    if(isIntPV(id) )
     {
         if(entryExists(intPVMap, id) )
         {
@@ -574,7 +597,164 @@ bool VCgeneralMonitor::isValidID(const std::string& id)
         return true;
     else if(entryExists(vec_intPVMap, id) )
         return true;
+    else if(entryExists(stringPVMap, id) )
+        return true;
     return false;
+}
+//______________________________________________________________________________
+std::string VCgeneralMonitor::connectPV(const std::string & pvFullName)
+{
+    debugMessage("Looking for ", pvFullName);
+    std::string r = returnFail;
+    chid CHID;
+    ca_create_channel(pvFullName.c_str(), 0, 0, 0,&CHID);
+    int status = sendToEpics(ca_create_channel_str,ca_chid_successmess,ca_chid_failuremess);
+    if( status == ECA_TIMEOUT )
+    {
+        //removeChanel();
+    }
+    else if( status == ECA_NORMAL )
+    {
+        status = ca_field_type( CHID );
+            switch( status )
+            {
+                case 0:
+                    message("PV ", pvFullName, " is a DBR_STRING, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_STRING");
+                    break;
+                case 1:
+                    message("PV ", pvFullName, " is a DBR_INT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_INT");
+                case 2:
+                    message("PV ", pvFullName, " is a DBR_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_FLOAT");
+                    break;
+                case 3:
+                    message("PV ", pvFullName," is a DBR_ENUM, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ENUM");
+                case 4:
+                    message("PV ", pvFullName, " is a DBR_CHAR, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_CHAR");
+                    break;
+                case 5:
+                    message("PV ", pvFullName, " is a DBR_LONG, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_LONG");
+                case 6:
+                    message("PV ", pvFullName, " is a DBR_DOUBLE, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_DOUBLE");
+                    break;
+                case 7:
+                    message("PV ", pvFullName, " is a DBR_STS_STRING, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_STRING");
+                    break;
+                case 8:
+                    message("PV ", pvFullName, " is a DBR_STS_SHORT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_SHORT");
+                    break;
+                case 9:
+                    message("PV ", pvFullName, " is a DBR_STS_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_FLOAT");
+                    break;
+                case 10:
+                    message("PV ", pvFullName, " is a DBR_STS_ENUM, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ENUM");
+                case 11:
+                    message("PV ", pvFullName, " is a DBR_STS_CHAR, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_CHAR");
+                    break;
+                case 12:
+                    message("PV ", pvFullName," is a DBR_STS_LONG, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_LONG");
+                case 13:
+                    message("PV ", pvFullName, " is a DBR_STS_DOUBLE, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_DOUBLE");
+                    break;
+                case 14:
+                    message("PV ", pvFullName, " is a DBR_TIME_STRING, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_STRING");
+                case 15:
+                    message("PV ", pvFullName, " is a DBR_TIME_INT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_INT");
+                    break;
+                case 16:
+                    message("PV ", pvFullName, " is a DBR_TIME_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_FLOAT");
+                    break;
+                case 17:
+                    message("PV ", pvFullName, " is a DBR_TIME_ENUM, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_ENUM");
+                    break;
+                case 18:
+                    message("PV ", pvFullName, " is a DBR_TIME_CHAR, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_CHAR");
+                    break;
+                case 19:
+                    message("PV ", pvFullName, " is a DBR_TIME_LONG, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_LONG");
+                case 20:
+                    message("PV ", pvFullName, " is a DBR_TIME_DOUBLE, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_TIME_DOUBLE");
+                    break;
+                case 21:
+                    message("PV ", pvFullName," is a DBR_GR_STRING, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_STRING");
+                case 22:
+                    message("PV ", pvFullName, " is a DBR_GR_INT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_INT");
+                    break;
+                case 23:
+                    message("PV ", pvFullName, " is a DBR_GR_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_FLOAT");
+                case 24:
+                    message("PV ", pvFullName, " is a DBR_GR_ENUM, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ENUM");
+                    break;
+                case 25:
+                    message("PV ", pvFullName, " is a DBR_GR_CHAR, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_CHAR");
+                    break;
+                case 26:
+                    message("PV ", pvFullName, " is a DBR_GR_LONG, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_LONG");
+                    break;
+                case 27:
+                    message("PV ", pvFullName, " is a DBR_GR_DOUBLE, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_DOUBLE");
+                    break;
+                case 28:
+                    message("PV ", pvFullName, " is a DBR_CTRL_STRING, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_STRING");
+                    break;
+                case 29:
+                    message("PV ", pvFullName, " is a DBR_CTRL_INT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_INT");
+                    break;
+                case 30:
+                    message("PV ", pvFullName," is a DBR_CTRL_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_FLOAT");
+                case 31:
+                    message("PV ", pvFullName, " is a DBR_CTRL_ENUM, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ENUM");
+                    break;
+                case 32:
+                    message("PV ", pvFullName, " is a DBR_CTRL_CHAR, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_CHAR");
+                    break;
+                case 33:
+                    message("PV ", pvFullName, " is a DBR_CTRL_LONG, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_LONG");
+                    break;
+                case 34:
+                    message("PV ", pvFullName, " is a DBR_CTRL_DOUBLE, connecting to channel");
+                    r= connectPV(pvFullName,"DBR_DOUBLE");
+                    break;
+                default:
+                    message("PV ", pvFullName," is an unrecognised EPICS Type.");
+            }
+        }
+        else
+            message("When looking for ", pvFullName," return  status != ECA_NORMAL");
+    return r;
 }
 //______________________________________________________________________________
 std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std::string & pvType )
@@ -701,75 +881,128 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
 //            break;
 //    }
 ////
-    switch( args.type)
+    else
     {
-        case  DBR_DOUBLE:
-            //message("updateValue DBR_DOUBLE");
-            if( args.count == 1)
-            {
-                addSingleDouble(id,args);
-            }
-            else if( args.count > 0 )
-            {
-                addArrayDouble(id,args);
-            }
-            break;
-        case  DBR_INT:
-            if( intPVMap[id].data.size() == 0 )
-            {
-                intPVMap[id].data.push_back(new gmStructs::dataEntry<int>() );
-            }
-            intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
-            intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_ENUM:
-            //message("VCgeneralMonitor::updateValue() DBR_ENUM");
-            if( enumPVMap[id].data.size() == 0 )
-            {
-                enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
-            }
-            enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
-            enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_TIME_ENUM:  // Yeah i haxxored all this on shift to make it work...
+        switch( args.type)
+        {
+            case  DBR_TIME_STRING:
+                message("Update DBR_TIME_STRING ");
+                updateTimeAndValue( id, args.dbr);
+                break;
+            case  DBR_STRING:
+                {
+                    message("VCgeneralMonitor::updateValue() DBR_STRING");
+                    // see db_access.h
+                    if( stringPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
+                    {
+                        stringPVMap.at(id).data.push_back(new gmStructs::dataEntry<std::string>() );
+                    }
+                    std::string temp((const char *)args.dbr);
+                    message("temp = ", temp);
 
-            {
-                const dbr_time_enum * pTD = ( const struct dbr_time_enum * ) args.dbr;
-                //message("VCgeneralMonitor::updateValue() DBR_TIME_ENUM");
+                    //stringPVMap.at(id).data[0]->v = *(std::string*)args.dbr;// meh
+                    stringPVMap.at(id).data[0]->v = temp;// meh
+                    stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            case  DBR_TIME_SHORT:
+                {
+                    const dbr_time_enum * pTD = ( const struct dbr_time_enum * ) args.dbr;
+                    //message("VCgeneralMonitor::updateValue() DBR_TIME_ENUM");
+                    short temp = pTD ->value;;
+                    message("temp = ", temp);
+
+
+//                    if( enumPVMap[id].data.size() == 0 )
+//                    {
+//                        enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
+//                    }
+//                    enumPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+//                    enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+//
+//
+//                    message("VCgeneralMonitor::updateValue() DBR_TIME_SHORT");
+//                    // see db_access.h
+//                    if( stringPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
+//                    {
+//                        stringPVMap.at(id).data.push_back(new gmStructs::dataEntry<std::string>() );
+//                    }
+//                    short temp = *(short*)args.dbr;
+//                    message("temp = ", temp);
+
+                    //stringPVMap.at(id).data[0]->v = *(std::string*)args.dbr;// meh
+//                    stringPVMap.at(id).data[0]->v = temp;// meh
+//                    stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            case  DBR_DOUBLE:
+                //message("updateValue DBR_DOUBLE");
+                if( args.count == 1)
+                {
+                    addSingleDouble(id,args);
+                }
+                else if( args.count > 0 )
+                {
+                    addArrayDouble(id,args);
+                }
+                break;
+            case  DBR_INT:
+                if( intPVMap[id].data.size() == 0 )
+                {
+                    intPVMap[id].data.push_back(new gmStructs::dataEntry<int>() );
+                }
+                intPVMap[id].data[0]->v = *(int*)args.dbr;// MAGIC_NUMBER
+                intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                break;
+            case DBR_ENUM:
+                //message("VCgeneralMonitor::updateValue() DBR_ENUM");
                 if( enumPVMap[id].data.size() == 0 )
                 {
                     enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
                 }
-                enumPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
                 enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            }
-            break;
-        case DBR_LONG:
-            //message("VCgeneralMonitor::updateValue() DBR_LONG");
-            if( longPVMap[id].data.size() == 0 )
-            {
-                longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
-            }
-            longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
-            longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            break;
-        case DBR_TIME_LONG:  // Yeah i haxxored all this on shift to make it work...
-            //message("VCgeneralMonitor::updateValue() DBR_TIME_LONG");
-            {
-                const dbr_time_long * pTD = ( const struct dbr_time_long * ) args.dbr;
-    //            epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
-    //            epicsUInt32 nsec = pTD ->stamp.nsec;
+                break;
+            case DBR_TIME_ENUM:  // Yeah i haxxored all this on shift to make it work...
+
+                {
+                    const dbr_time_enum * pTD = ( const struct dbr_time_enum * ) args.dbr;
+                    //message("VCgeneralMonitor::updateValue() DBR_TIME_ENUM");
+                    if( enumPVMap[id].data.size() == 0 )
+                    {
+                        enumPVMap[id].data.push_back(new gmStructs::dataEntry<unsigned short>() );
+                    }
+                    enumPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                    enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            case DBR_LONG:
+                //message("VCgeneralMonitor::updateValue() DBR_LONG");
                 if( longPVMap[id].data.size() == 0 )
                 {
                     longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
                 }
-                //longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
-                longPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
                 longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-            }
-            break;
-        default:
-            message("VCgeneralMonitor::updateValue() default switch");
+                break;
+            case DBR_TIME_LONG:  // Yeah i haxxored all this on shift to make it work...
+                //message("VCgeneralMonitor::updateValue() DBR_TIME_LONG");
+                {
+                    const dbr_time_long * pTD = ( const struct dbr_time_long * ) args.dbr;
+        //            epicsUInt32 sec  = pTD ->stamp.secPastEpoch;   /* seconds since 0000 Jan 1, 1990 */
+        //            epicsUInt32 nsec = pTD ->stamp.nsec;
+                    if( longPVMap[id].data.size() == 0 )
+                    {
+                        longPVMap[id].data.push_back(new gmStructs::dataEntry<long>() );
+                    }
+                    //longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
+                    longPVMap[id].data[0]->v = pTD ->value;// MAGIC_NUMBER
+                    longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                }
+                break;
+            default:
+                message("VCgeneralMonitor::updateValue() default switch, ", args.type);
+        }
     }
 
 //        if(isStringPV(id))
@@ -855,16 +1088,20 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
 //______________________________________________________________________________
 void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * dbr)
 {
-//        if(isStringPV(id))
-//        {
-//            if( stringPVMap.at(id).data.size() == 0 )
-//                stringPVMap.at(id).data.pushBack( dataEntry<std::string>() );
-//            else
-//            {
-//                stringPVMap.at(id).data.v = *(std::string*)dbr;// this probably doesn't work and why do strings?
-//            }
-//        }
-    if(isIntPV(id))
+    if(isStringPV(id))
+    {
+        // see db_access.h
+        const dbr_time_string * p = (const struct dbr_time_string*)dbr;
+        if( stringPVMap.at(id).data.size() == 0 )// MAGIC_NUMBER
+        {
+            stringPVMap.at(id).data.push_back(new gmStructs::dataEntry<std::string>() );
+        }
+        stringPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
+        stringPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+        message("stringPVMap.at(id).data[0]->v = ", stringPVMap.at(id).data[0]->v);
+    }
+    else if(isIntPV(id))
     {
         // see db_access.h
         const dbr_time_short * p = (const struct dbr_time_short*)dbr;
@@ -1077,12 +1314,15 @@ gmStructs::pvStruct* VCgeneralMonitor::getCHTYPEandPrefix(const std::string & pv
     {
         r  = addToVecDoublePVMap();
     }
+    else if(pvType == UTL::DBR_STRING_STR)
+    {
+        r  = addToStringPVMap();
+    }
     // the rest should probably not be used...
-//    else if(pvType == UTL::DBR_TIME_STRING_STR)
-//    {
-//        success = true;
-//        r = DBR_TIME_STRING;
-//    }
+    else if(pvType == UTL::DBR_TIME_STRING_STR)
+    {
+        r = addToStringPVMap();
+    }
 //    else if(pvType == UTL::DBR_TIME_INT_STR)
 //    {
 //        success = true;
@@ -1143,6 +1383,14 @@ bool VCgeneralMonitor::disconnectPV(const std::string & id )
 gmStructs::pvStruct* VCgeneralMonitor::getPVStruct_Ptr(const std::string& id )
 {
     gmStructs::pvStruct* pvs = nullptr;
+    if(isStringPV(id) )
+    {   message("getPVStruct ",  id, " isStringPV");
+        if( entryExists(stringPVMap, id) )
+        {
+            pvs = &stringPVMap[id].pvs;
+            message("getPVStruct found ",  id, " in stringPVMap");
+        }
+    }
     if(isIntPV(id) )
     {   //message("getPVStruct ",  id, " isIntPV");
         if( entryExists(intPVMap, id) )
@@ -1310,6 +1558,10 @@ bool VCgeneralMonitor::deleteID(const std::string& id )
     {
         r = deleteMapEntry(doublePVMap,id);
     }
+    else if(isStringPV(id) )
+    {
+        r = deleteMapEntry(stringPVMap,id);
+    }
     return r;
 }
 //______________________________________________________________________________
@@ -1414,6 +1666,17 @@ bool VCgeneralMonitor::isMonitoring(const std::string & id)
         message("isMonitoring did not find ", id);
         return false;
     }
+}
+//______________________________________________________________________________
+gmStructs::pvStruct* VCgeneralMonitor::addToStringPVMap()
+{
+    std::string id = stringPrefix;
+    id += std::to_string(pvMonitorMapCount);
+    stringPVMap[id].id = id;
+    stringPVMap.at(id).pvs.id = id;
+    stringPVMap.at(id).pvs.CHTYPE = DBR_TIME_STRING;
+    debugMessage("connectPV Passed a DBR_STRING. Entry with id =  ",id, " created");
+    return &stringPVMap[id].pvs;
 }
 //______________________________________________________________________________
 gmStructs::pvStruct* VCgeneralMonitor::addToIntPVMap()

@@ -1,41 +1,52 @@
 # depslib dependency file v1.0
-1492608924 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1498745095 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	<time.h>
 
-1492608924 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1498745095 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
 
-1492608923 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1499081442 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1492608923 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1499081250 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"interface.h"
 	"baseObject.h"
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1492608923 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1498745095 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
 	"baseObject.h"
 	"structs.h"
 
-1492608924 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1498745095 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	<vector>
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1492763541 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
+1499081404 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
 	<iostream>
 	<iomanip>
 	<numeric>
@@ -43,7 +54,7 @@
 	<epicsTime.h>
 	"VCgeneralMonitor.h"
 
-1492619137 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
+1499082505 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
 	<string>
 	<vector>
 	"controller.h"
@@ -55,7 +66,7 @@
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/return_value_policy.hpp>
 
-1492609490 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
+1498838294 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -64,7 +75,7 @@
 	<cadef.h>
 	<epicsTime.h>
 
-1492608924 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1498838455 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>

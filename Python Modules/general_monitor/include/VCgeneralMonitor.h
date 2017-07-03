@@ -1,5 +1,6 @@
 #ifndef _VC_GENERAL_MONITOR_H
 #define _VCgeneralMonitor_H
+// djs part of VELA_CLARA_CONTROLLERS
 //stl
 #include <string>
 #include <vector>
@@ -14,9 +15,14 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
 
-
 class VCgeneralMonitor : public controller// inherits controller for messaging
 {
+        // this class allows a user to connect and monitor to a PVname purely by name
+        // it is to cover all the cases where a generic hardware controller is not required
+        // if you've looked at the code then, yes, much cancer is to be found
+        // i'm sure this can be neatened up with templates etc.
+        // no, i have no plans to do that at the moment
+
     public:
         VCgeneralMonitor(const bool shouldShowMessage = false,const bool  shouldShowDebugMessage= false );
         ~VCgeneralMonitor();
@@ -26,18 +32,22 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         void setMessage();
         void setDebugMessage();
 
+        std::string connectPV(const std::string & PVName);
         std::string connectPV(const std::string & PVName,const std::string & PYType );
+
         bool disconnectPV(const std::string & id );
 
         boost::python::object getValue(const std::string& id );
-        boost::python::dict getValue(const std::vector<std::string>& ids);
+        boost::python::dict getValue(const boost::python::list& ids);
+        //boost::python::dict getValue(const std::vector<std::string>& ids);
 
         boost::python::object getTotalValue(const std::string& id );
         size_t getCounter(const std::string& id );
 
 
         boost::python::dict getCounterAndValue(const std::string& id);
-        boost::python::dict getCounterAndValue(const std::vector<std::string>& ids);
+        //boost::python::dict getCounterAndValue(const std::vector<std::string>& ids);
+        boost::python::dict getCounterAndValue(const boost::python::list& ids);
 
         boost::python::dict getCounterAndTotalValue(const std::string& id);
 
@@ -74,6 +84,9 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
     private:
         // This is the only ca_client_context attach and detach to this when multi-threading
         ca_client_context * thisCaContext;
+
+
+
 
         bool shouldShowDebugMessage, shouldShowMessage;
         const std::string ca_chid_successmess,ca_chid_failuremess,ca_subs_successmess,
@@ -129,6 +142,7 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         std::map<std::string,gmStructs::pvData<double>>               doublePVMap;
         std::map<std::string,gmStructs::pvData<std::vector<double>> > vec_doublePVMap;
         std::map<std::string,gmStructs::pvData<std::vector<int>>>     vec_intPVMap;
+        std::map<std::string,gmStructs::pvData<std::string>>          stringPVMap;
 
         const std::string stringPrefix,intPrefix,shortPrefix,floatPrefix,enumPrefix,
                           charPrefix,longPrefix,doublePrefix,vecdoublePrefix,vecintPrefix;
@@ -146,65 +160,173 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         gmStructs::pvStruct* addToEnumPVMap();
         gmStructs::pvStruct* addToVecDoublePVMap();
         gmStructs::pvStruct* addToVecIntPVMap();
+        gmStructs::pvStruct* addToStringPVMap();
+
+
+//        std::vector<std::string> getVecStr(const boost::python::list& ids){
+//            std::vector<std::string> r;
+//            for (int i = 0; i < len(ids); ++i)
+//                    r.push_back(boost::python::extract<std::string>(ids[i]);
+//            return r;
+//            }
+
 
         template<typename T, size_t size>
         size_t GetArrLength(T(&)[size]){ return size; }
 };//VCgeneralMonitor
 // function pointers for overloads
-boost::python::object(VCgeneralMonitor::*getValue_1)(const std::string&) = &VCgeneralMonitor::getValue;
-boost::python::object(VCgeneralMonitor::*getValue_2)(const std::string&,const int) = &VCgeneralMonitor::getValue;
-boost::python::list(VCgeneralMonitor::*getValue_3)(const std::string&,const int,const int) = &VCgeneralMonitor::getValue;
-boost::python::dict(VCgeneralMonitor::*getValue_4)(const std::vector<std::string>&) = &VCgeneralMonitor::getValue;
-boost::python::dict(VCgeneralMonitor::*getCounterAndValue_1)(const std::string&) = &VCgeneralMonitor::getCounterAndValue;
-boost::python::dict(VCgeneralMonitor::*getCounterAndValue_2)(const std::vector<std::string>&) = &VCgeneralMonitor::getCounterAndValue;
+// and docstrings
+
+//______________________________________________________________________________
+std::string(VCgeneralMonitor::*connectPV_1)(const std::string&) =
+    &VCgeneralMonitor::connectPV;
+const char *connectPV_1_docstring =
+    "Connects to pv_name process variable, where pv_name is the full PV name.\n"
+    "On success returns a unique id that can be used to access values.";
+//______________________________________________________________________________
+std::string(VCgeneralMonitor::*connectPV_2)(const std::string&,const std::string&) =
+    &VCgeneralMonitor::connectPV;
+const char *connectPV_2_docstring =
+    "Connects to pv_name process variable, where pv_name is the full PV name.\n"
+    "On success returns a unique id that can be used to access values.";
+//______________________________________________________________________________
+const char *setQuiet_docstring =
+    "Minimise message noise.";
+const char *setVerbose_docstring =
+    "Maximise message noise.";
+const char *setMessage_docstring =
+    "Show messages only.";
+const char *setDebugMessage_docstring =
+    "Show debugging messages only.";
+//______________________________________________________________________________
+const char *getPVCount_docstring =
+    "Returns number of values for id.";
+//______________________________________________________________________________
+boost::python::object(VCgeneralMonitor::*getValue_1)(const std::string&) =
+    &VCgeneralMonitor::getValue;
+const char *getValue_1_docstring =
+    "Returns current value for id.";
+
+boost::python::object(VCgeneralMonitor::*getValue_2)(const std::string&,const int) =
+    &VCgeneralMonitor::getValue;
+const char *getValue_2_docstring =
+    "Returns current values for an array PV at position index.";
+boost::python::list(VCgeneralMonitor::*getValue_3)(const std::string&,const int,const int) =
+    &VCgeneralMonitor::getValue;
+const char *getValue_3_docstring =
+    "Returns current values for an array PV in a region of interest defined by start_index"
+    "and end_index, negtive indices counting from the end of the array should work.";
+
+boost::python::dict(VCgeneralMonitor::*getValue_4)(const boost::python::list&) =
+    &VCgeneralMonitor::getValue;
+const char *getValue_4_docstring =
+    "Returns dictionary of current values for list of ids.";
+//______________________________________________________________________________
+boost::python::dict(VCgeneralMonitor::*getCounterAndValue_1)(const std::string&) =
+    &VCgeneralMonitor::getCounterAndValue;
+const char *getCounterAndValue_1_docstring =
+    "Get current counter and value for id.";
+boost::python::dict(VCgeneralMonitor::*getCounterAndValue_2)(const boost::python::list&) =
+    &VCgeneralMonitor::getCounterAndValue;
+const char *getCounterAndValue_2_docstring =
+    "Get current counter and value for list of ids.";
+//______________________________________________________________________________
+
+const char *getCount_docstring =
+    "Get current count for id.";
+const char *getTotalValue_docstring =
+    "Get current counter and value id.";
+const char * getCounterAndTotalValue_docstring =
+    "Get current accumulated value and counter for id.";
+const char *isStringPV_docstring =
+    "return true if PV type is a string.";
+const char *isIntPV_docstring =
+    "return true if PV type is an int.";
+const char *isFloatPV_docstring =
+    "return true if PV type is a float.";
+const char *isEnumPV_docstring =
+    "return true if PV type is an enum.";
+const char *isCharPV_docstring =
+    "return true if PV type is a char.";
+const char *isLongPV_docstring =
+    "return true if PV type is a long.";
+const char *isDoublePV_docstring =
+    "return true if PV type is a double.";
+const char *isArrayPV_docstring =
+    "return true if PV type is an array.";
+const char *isConnected_docstring =
+    "return true if id is connected.";
+const char *isMonitoring_docstring =
+    "return true if id is monitoring.";
+const char *disconnectPV_docstring =
+    "disconnect ID and cancel EPICS subscriptions.";
+
 
 using namespace boost::python;
-BOOST_PYTHON_MODULE( VELA_CLARA_General_Monitor )
-{    // Things that you want to use in python must be exposed:
+BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
+{
+
+    // dispable c++ signatures from docstrings...
+    docstring_options local_docstring_options(true, true, false);
+
     /// containers
 //    class_<std::vector<std::string>>("std_vector_string")
 //            .def(vector_indexing_suite< std::vector< std::string >>() )
 //            ;
-    class_<std::vector<double> >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< double>>() )
-            ;
-    class_<std::vector<int> >("std_vector_int")
-            .def( vector_indexing_suite< std::vector< int>>() )
-            ;
+//    class_<std::vector<double> >("std_vector_double")
+//            .def( vector_indexing_suite< std::vector< double>>() )
+//            ;
+//    class_<std::vector<int> >("std_vector_int")
+//            .def( vector_indexing_suite< std::vector< int>>() )
+//            ;
     // Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
     boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
-        ("controller","controller Doc String", boost::python::no_init) /// forces Python to not be able to construct (init) this object
+        ("controller","", boost::python::no_init) /// forces Python to not be able to construct (init) this object
         ;
     /// The main class that creates all the controller obejcts
     boost::python::class_<VCgeneralMonitor,boost::noncopyable> ("init")
-        .def("setQuiet",        &VCgeneralMonitor::setQuiet )
-        .def("setVerbose",      &VCgeneralMonitor::setVerbose )
-        .def("setMessage",      &VCgeneralMonitor::setMessage )
-        .def("setDebugMessage", &VCgeneralMonitor::setDebugMessage )
-        .def("connectPV",       &VCgeneralMonitor::connectPV )
-        .def("getPVCount",       &VCgeneralMonitor::getPVCount )
-        .def("getValue", getValue_1,(boost::python::arg("id"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
-        .def("getValue", getValue_2,(boost::python::arg("id"),boost::python::arg("index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return teh fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer thta region (negtive indices counting from the end of the array should work."))
-        .def("getValue", getValue_3,(boost::python::arg("id"),boost::python::arg("start_index"),boost::python::arg("end_index"),"get value from PV with id=id, if it is an arry PV then passing no extra values will return the fill array, passing one index will return the elemtn at that index, passing two indeces will give an array ofer that region (negtive indices counting from the end of the array should work."))
-        .def("getValue", getValue_4,(boost::python::arg("ids"),"get values from multiple ids."))
-        .def("getTotalValue", &VCgeneralMonitor::getTotalValue,(boost::python::arg("id"),"get accumulated value of an array PV."))
-        .def("getCounter", &VCgeneralMonitor::getCounter,(boost::python::arg("id"),"get current counter and value."))
-        .def("getCounterAndValue", getCounterAndValue_1,(boost::python::arg("id"),"get current counter and value."))
-        .def("getCounterAndValue", getCounterAndValue_2,(boost::python::arg("ids"),"get current counter and value for multiple ids."))
-        .def("getCounterAndTotalValue", &VCgeneralMonitor::getCounterAndTotalValue,(boost::python::arg("id"),"get current accumulated value and counter."))
-        .def("isStringPV",   &VCgeneralMonitor::isStringPV,(boost::python::arg("id"),"return true if PV type is a string."))
-        .def("isIntPV",      &VCgeneralMonitor::isIntPV,(boost::python::arg("id"),"return true if PV type is an int."))
-        .def("isFloatPV",    &VCgeneralMonitor::isFloatPV,(boost::python::arg("id"),"return true if PV type is a float."))
-        .def("isEnumPV",     &VCgeneralMonitor::isEnumPV,(boost::python::arg("id"),"return true if PV type is an enum."))
-        .def("isCharPV",     &VCgeneralMonitor::isCharPV,(boost::python::arg("id"),"return true if PV type is a char."))
-        .def("isLongPV",     &VCgeneralMonitor::isLongPV,(boost::python::arg("id"),"return true if PV type is a long."))
-        .def("isDoublePV",   &VCgeneralMonitor::isDoublePV,(boost::python::arg("id"),"return true if PV type is a double."))
-        .def("isArrayPV",   &VCgeneralMonitor::isArrayPV,(boost::python::arg("id"),"return true if PV type is an array."))
-        .def("isConnected",  &VCgeneralMonitor::isConnected,(boost::python::arg("id"),"return true if id is connected."))
-        .def("isMonitoring", &VCgeneralMonitor::isMonitoring,(boost::python::arg("id"),"return true if id is monitoring."))
-        .def("disconnectPV", &VCgeneralMonitor::disconnectPV,(boost::python::arg("id"),"disconnect ID and cancel all EPICS subscriptions."))
+        .def("setDebugMessage", &VCgeneralMonitor::setDebugMessage, setDebugMessage_docstring )
+        .def("setVerbose",      &VCgeneralMonitor::setVerbose,      setVerbose_docstring )
+        .def("setMessage",      &VCgeneralMonitor::setMessage,      setMessage_docstring )
+        .def("setQuiet",        &VCgeneralMonitor::setQuiet,        setQuiet_docstring   )
+        .def("getValue",  getValue_3,(boost::python::arg("id"),boost::python::arg("start_index"),boost::python::arg("end_index")),
+                          getValue_3_docstring)
+        .def("getValue",  getValue_2,(boost::python::arg("id"),boost::python::arg("index")),
+                          getValue_2_docstring)
+        .def("getValue",  getValue_4,(boost::python::arg("ids")),
+                          getValue_4_docstring)
+        .def("getValue",  getValue_1,(boost::python::arg("id"),
+                          getValue_1_docstring))
+
+        .def("connectPV", connectPV_1,(boost::python::arg("pv_name")),
+                          connectPV_1_docstring)
+
+        .def("connectPV", connectPV_2,(boost::python::arg("pv_name"),boost::python::arg("pv_type")),
+                          connectPV_2_docstring )
+
+        .def("getCounterAndValue", getCounterAndValue_1,(boost::python::arg("id"),
+                                   getCounterAndValue_1_docstring))
+        .def("getCounterAndValue", getCounterAndValue_2,(boost::python::arg("ids"),
+                                   getCounterAndValue_2_docstring))
+
+        .def("getPVCount",&VCgeneralMonitor::getPVCount,(boost::python::arg("id")),getPVCount_docstring)
+        .def("getTotalValue", &VCgeneralMonitor::getTotalValue,(boost::python::arg("id"),getTotalValue_docstring))
+        .def("getCounter",    &VCgeneralMonitor::getCounter,(boost::python::arg("id"),getCount_docstring))
+        .def("getCounterAndTotalValue",
+                             &VCgeneralMonitor::getCounterAndTotalValue,(boost::python::arg("id"),getCounterAndTotalValue_docstring))
+        .def("isStringPV",   &VCgeneralMonitor::isStringPV,(boost::python::arg("id"),isStringPV_docstring))
+        .def("isIntPV",      &VCgeneralMonitor::isIntPV,(boost::python::arg("id"),isIntPV_docstring))
+        .def("isFloatPV",    &VCgeneralMonitor::isFloatPV,(boost::python::arg("id"),isFloatPV_docstring))
+        .def("isEnumPV",     &VCgeneralMonitor::isEnumPV,(boost::python::arg("id"),isEnumPV_docstring))
+        .def("isCharPV",     &VCgeneralMonitor::isCharPV,(boost::python::arg("id"),isCharPV_docstring))
+        .def("isLongPV",     &VCgeneralMonitor::isLongPV,(boost::python::arg("id"),isLongPV_docstring))
+        .def("isDoublePV",   &VCgeneralMonitor::isDoublePV,(boost::python::arg("id"),isDoublePV_docstring))
+        .def("isArrayPV",    &VCgeneralMonitor::isArrayPV,(boost::python::arg("id"),isArrayPV_docstring))
+        .def("isConnected",  &VCgeneralMonitor::isConnected,(boost::python::arg("id"),isConnected_docstring))
+        .def("isMonitoring", &VCgeneralMonitor::isMonitoring,(boost::python::arg("id"),isMonitoring_docstring))
+        .def("disconnectPV", &VCgeneralMonitor::disconnectPV,(boost::python::arg("id"),disconnectPV_docstring))
         .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
         .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
         ;

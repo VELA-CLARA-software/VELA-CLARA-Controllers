@@ -38,32 +38,31 @@ baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES)
     {
         debugMessagesOff();
     }
-
 }
 //______________________________________________________________________________
 controller::~controller(){}
 //______________________________________________________________________________
 void controller::debugMessagesOn()
 {
-    std::cout << "debugMessages On" << std::endl;
+    std::cout <<"debugMessages On" <<std::endl;
     SHOW_DEBUG_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::debugMessagesOff()
 {
-    std::cout << "debugMessages Off" << std::endl;
+    std::cout <<"debugMessages Off" <<std::endl;
     SHOW_DEBUG_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::messagesOn()
 {
-    std::cout << "messages On" << std::endl;
+    std::cout <<"messages On" <<std::endl;
     SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::messagesOff()
 {
-    std::cout << "messages Off" << std::endl;
+    std::cout <<"messages Off" <<std::endl;
     SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
@@ -81,7 +80,7 @@ void controller::verbose()
 
 bool controller::isSilent()
 {
-    if(!SHOW_DEBUG_MESSAGES && !SHOW_MESSAGES )
+    if(!SHOW_DEBUG_MESSAGES && !SHOW_MESSAGES)
         return true;
     else
         return false;
@@ -92,14 +91,14 @@ bool controller::isVerbose()
 }
 bool controller::isMessageOn()
 {
-    if(SHOW_MESSAGES )
+    if(SHOW_MESSAGES)
         return true;
     else
         return false;
 }
 bool controller::isDebugMessageOn()
 {
-    if(SHOW_DEBUG_MESSAGES )
+    if(SHOW_DEBUG_MESSAGES)
         return true;
     else
         return false;
@@ -108,10 +107,10 @@ bool controller::isDebugMessageOn()
 #ifdef BUILD_DLL
 boost::python::dict controller::getILockStatesDefinition()
 {
-    std::map< VELA_ENUM::ILOCK_STATE,  std::string  > m;
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_BAD   ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_BAD   );
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  );
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_ERROR ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_ERROR );
-    return enumStringMapToPythonDict(m );
+    std::map<VELA_ENUM::ILOCK_STATE,  std::string > m;
+    m[ VELA_ENUM::ILOCK_STATE::ILOCK_BAD   ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_BAD  );
+    m[ VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_GOOD );
+    m[ VELA_ENUM::ILOCK_STATE::ILOCK_ERROR ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_ERROR);
+    return enumStringMapToPythonDict(m);
 }
 #endif //BUILD_DLL

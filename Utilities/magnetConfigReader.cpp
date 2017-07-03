@@ -23,7 +23,7 @@ usingVirtualMachine(startVirtualMachine)
 //______________________________________________________________________________
 magnetConfigReader::~magnetConfigReader(){}
 //______________________________________________________________________________
-bool magnetConfigReader::getMagData(std::map< std::string, magnetStructs::magnetObject > & mapToFill)
+bool magnetConfigReader::getMagData(std::map<std::string, magnetStructs::magnetObject> & mapToFill)
 {
     bool success = true;
     mapToFill.clear();
@@ -61,7 +61,7 @@ bool magnetConfigReader::readConfig()
     if(usingVirtualMachine)
         debugMessage("\n", "**** Using VIRTUAL Machine  ****");
     else
-        debugMessage( "**** Using PHYSICAL Machine  ****","\n");
+        debugMessage("**** Using PHYSICAL Machine  ****","\n");
 
     std::string line, trimmedLine;
     bool success = false;
@@ -81,7 +81,7 @@ bool magnetConfigReader::readConfig()
         {
             //trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
             trimmedLine = trimAllWhiteSpaceExceptBetweenDoubleQuotes(trimToDelimiter(line, UTL::END_OF_LINE));
-            if(trimmedLine.size() > 0)
+            if(trimmedLine.size()> 0)
             {
                 if(stringIsSubString(line, UTL::END_OF_DATA))
                 {
@@ -120,7 +120,7 @@ bool magnetConfigReader::readConfig()
                                 }
                                 break;
                             default:
-                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!" );
+                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!");
                         }
                     }
                 }
@@ -164,7 +164,7 @@ bool magnetConfigReader::readConfig()
 //             message("config file reader returning false");
     }
     else{
-        message("!!!! Error Can't Open Config File after searching for:  ", magConf, " !!!!" );
+        message("!!!! Error Can't Open Config File after searching for:  ", magConf, " !!!!");
     }
     if(success)
         debugMessage("magnetConfigReader readconfig is returning TRUE");
@@ -260,29 +260,29 @@ void magnetConfigReader::addToMagComStructsV1(const std::vector<std::string> &ke
     addToPVStruct(pvMagComStructs, keyVal);
 }
 //______________________________________________________________________________
-void magnetConfigReader::addToPVStruct(std::vector< magnetStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal)
+void magnetConfigReader::addToPVStruct(std::vector<magnetStructs::pvStruct>  & pvStruct_v, const std::vector<std::string> &keyVal)
 {
     if(stringIsSubString(keyVal[0], "SUFFIX"))
     {
         pvStruct_v.push_back(magnetStructs::pvStruct());    /// Any way to avoid the ladders?
         pvStruct_v.back().pvSuffix = keyVal[1];
         //GUN  Protection
-        if(keyVal[0] == UTL::PV_SUFFIX_SPOWER )
+        if(keyVal[0] == UTL::PV_SUFFIX_SPOWER)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SPOWER;
 
-        else if(keyVal[0] == UTL::PV_SUFFIX_RPOWER )
+        else if(keyVal[0] == UTL::PV_SUFFIX_RPOWER)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RPOWER;
 
-        else if(keyVal[0] == UTL::PV_SUFFIX_READI )
+        else if(keyVal[0] == UTL::PV_SUFFIX_READI)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::READI;
 
-        else if(keyVal[0] == UTL::PV_SUFFIX_SETI )
+        else if(keyVal[0] == UTL::PV_SUFFIX_SETI)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SETI;
 
-        else if(keyVal[0] == UTL::PV_SUFFIX_RILK )
+        else if(keyVal[0] == UTL::PV_SUFFIX_RILK)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RILK;
 
-        else if(keyVal[0] == UTL::PV_SUFFIX_GETSETI )
+        else if(keyVal[0] == UTL::PV_SUFFIX_GETSETI)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::GETSETI;
 
          debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType)) ;
@@ -291,7 +291,7 @@ void magnetConfigReader::addToPVStruct(std::vector< magnetStructs::pvStruct >  &
         addCOUNT_MASK_OR_CHTYPE(pvStruct_v, keyVal);
 }
 //______________________________________________________________________________
-void magnetConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector< magnetStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal)
+void magnetConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<magnetStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal)
 {
     if(keyVal[0] == UTL::PV_COUNT)
         pvStruct_v.back().COUNT = getCOUNT(keyVal[ 1 ]);

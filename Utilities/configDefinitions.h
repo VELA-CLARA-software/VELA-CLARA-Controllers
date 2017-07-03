@@ -173,7 +173,7 @@ namespace UTL
     const std::string XN                    = "XN";
     const std::string YN                    = "YN";
     // Modulator
-    const std::string PV_SUFFIX_GUN_RESET     = "PV_SUFFIX_GUN_RESET";
+    const std::string PV_SUFFIX_GUN_RESET         = "PV_SUFFIX_GUN_RESET";
     const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
     const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
     const std::string PV_SUFFIX_GUN_MOD_EXILOCK1  = "PV_SUFFIX_GUN_MOD_EXILOCK1";
@@ -203,7 +203,7 @@ namespace UTL
     const std::string PV_SUFFIX_RI = "PV_SUFFIX_RI";
     const std::string PV_SUFFIX_SI = "PV_SUFFIX_SI";
     const std::string PV_PSU_ROOT  = "PV_PSU_ROOT";
-    const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change >>??
+    const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change>>??
     // clara ... Expect VELA to TAKE on these names ALD
     const std::string PV_SUFFIX_SPOWER  = "PV_SUFFIX_SPOWER";
     const std::string PV_SUFFIX_RPOWER  = "PV_SUFFIX_RPOWER";
@@ -495,7 +495,7 @@ namespace UTL
     const std::string PROGRAMME_CHECKSUM_ERROR  = "PROGRAMME_CHECKSUM_ERROR";
     // master list of everything that can go on a screen driver cassette
     // probably should try and  get rid of this
-    const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
+    const std::vector<std::string> allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
                                                                    HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
                                                                    SLIT_POS, OUT_POS };
 

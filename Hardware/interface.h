@@ -28,17 +28,17 @@
 class interface : public baseObject
 {
     public:
-        interface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr );
+        interface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr);
         ~interface();
 
         /// These pure virtual methods MUST be overwritten in the derived interface (making this an abstract base class)
         /// This also means the destructor need not be protected
 
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates(const std::string & name ) = 0;
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr(const std::string & name ) = 0;
+        virtual std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE>  getILockStates(const std::string & name) = 0;
+        virtual std::map<VELA_ENUM::ILOCK_NUMBER, std::string >  getILockStatesStr(const std::string & name) = 0;
 
         double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT(double val );
+        void   set_CA_PEND_IO_TIMEOUT(double val);
 
         /// this reports back if the main init tasks: reading config, finding chids, setting up monitors (add your own if needed) has worked
         bool interfaceInitReport(bool shouldStartEPICs = true);
@@ -59,15 +59,15 @@ class interface : public baseObject
         bool configFileRead, allChidsInitialised, allMonitorsStarted;
         double CA_PEND_IO_TIMEOUT;
 
-        void updateTime(const epicsTimeStamp & stamp, double & val, std::string & str );
+        void updateTime(const epicsTimeStamp & stamp, double & val, std::string & str);
 
         /// USE THIS!!!
-        template< class T >
-        bool entryExists(std::map< std::string, T > & m, const std::string & name )
+        template<class T>
+        bool entryExists(std::map<std::string, T> & m, const std::string & name)
         {
             bool ret = false;
-            auto it = m.find(name );
-                if(it != m.end() )
+            auto it = m.find(name);
+                if(it != m.end())
                     ret = true;
             return ret;
         }
@@ -79,34 +79,34 @@ class interface : public baseObject
         void attachTo_thisCAContext();
         void detachFrom_thisCAContext();
 
-        void addILockChannels(const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > & iLockPVStructs );
-        void monitorIlocks(std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct >  & iLockPVStructs, std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > & iLockStates );
+        void addILockChannels(const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct> & iLockPVStructs);
+        void monitorIlocks(std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct>  & iLockPVStructs, std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> & iLockStates);
         static void staticEntryILockMonitor(event_handler_args args);
 
-        template< class T, class U >
-        int caput(U TYPE, chid & CHID, T & com, const char * mess1, const char * mess2 )
+        template<class T, class U>
+        int caput(U TYPE, chid & CHID, T & com, const char * mess1, const char * mess2)
         {
             ca_put(TYPE, CHID, &com); /// TYPE is DBR_ENUM, etc.
-            return sendToEpics("ca_put", mess1, mess2 );
+            return sendToEpics("ca_put", mess1, mess2);
         }
 
-        void checkCHIDState(const chid & CHID, const std::string & name );
-        int sendToEpics(const char * ca, const char * mess1, const char * mess2 );
-        int sendToEpics2(const char * ca, const char * mess1, const char * mess2 );
-        int sendToEpics(const  std::string & ca,const  std::string & mess1,const  std::string & mess2 );
-        int sendToEpics2(const  std::string & ca,const  std::string & mess1,const  std::string & mess2 );
+        void checkCHIDState(const chid & CHID, const std::string & name);
+        int sendToEpics(const char * ca, const char * mess1, const char * mess2);
+        int sendToEpics2(const char * ca, const char * mess1, const char * mess2);
+        int sendToEpics(const  std::string & ca,const  std::string & mess1,const  std::string & mess2);
+        int sendToEpics2(const  std::string & ca,const  std::string & mess1,const  std::string & mess2);
 #endif
 
-        bool iLocksAreGood(std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > & iLockStates );
+        bool iLocksAreGood(std::map<VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE> & iLockStates);
 
 
-        void printStatusResult(const int status, const char * success, const char * timeout );
+        void printStatusResult(const int status, const char * success, const char * timeout);
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// though... maybe one day we re-factor, for now remember to delete in the destructor
 
-        std::vector< VELA_ENUM::iLockMonitorStruct * > continuousILockMonitorStructs;
+        std::vector<VELA_ENUM::iLockMonitorStruct *> continuousILockMonitorStructs;
     private:
 
 };
