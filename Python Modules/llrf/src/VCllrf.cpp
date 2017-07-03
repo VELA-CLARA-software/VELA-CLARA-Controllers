@@ -139,19 +139,19 @@ liberaLLRFController& VCllrf::physical_VELA_HRRG_LLRF_Controller()
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::virtual_L01_LLRF_Controller()
 {
-    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    std::cout << "Creating virtual_L01_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::physical_L01_LLRF_Controller()
 {
-    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    std::cout << "Creating physical_L01_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::offline_L01_LLRF_Controller()
 {
-    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    std::cout << "Creating offline_L01_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
