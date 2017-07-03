@@ -299,7 +299,9 @@ namespace UTL
      const std::string DBR_DOUBLE_STR = "DBR_DOUBLE";
 
      const std::string DBR_ARRAY_DOUBLE_STR = "DBR_ARRAY_DOUBLE";
+     const std::string DBR_TIME_ARRAY_DOUBLE_STR = "DBR_TIME_ARRAY_DOUBLE";
      const std::string DBR_ARRY_INT_STR     = "DBR_ARRAY_INT";
+     const std::string DBR_TIME_ARRY_INT_STR     = "DBR_TIME_ARRAY_INT";
      const std::string DBR_TIME_STRING_STR  = "DBR_TIME_STRING";
      const std::string DBR_TIME_INT_STR	    = "DBR_TIME_INT";
      const std::string DBR_TIME_SHORT_STR   = "DBR_TIME_SHORT";

@@ -149,6 +149,7 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
 
         void addSingleDouble(const std::string & id,const event_handler_args& args);
         void addArrayDouble(const std::string & id,const event_handler_args& args);
+        void addArrayInt(const std::string & id,const event_handler_args& args);
 
         int pvMonitorMapCount;
 
@@ -161,6 +162,8 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         gmStructs::pvStruct* addToVecDoublePVMap();
         gmStructs::pvStruct* addToVecIntPVMap();
         gmStructs::pvStruct* addToStringPVMap();
+
+        void updateTime_ns(const epicsTimeStamp & stamp, double& s);
 
 
 //        std::vector<std::string> getVecStr(const boost::python::list& ids){
@@ -270,15 +273,15 @@ BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
     docstring_options local_docstring_options(true, true, false);
 
     /// containers
-//    class_<std::vector<std::string>>("std_vector_string")
-//            .def(vector_indexing_suite< std::vector< std::string >>() )
-//            ;
-//    class_<std::vector<double> >("std_vector_double")
-//            .def( vector_indexing_suite< std::vector< double>>() )
-//            ;
-//    class_<std::vector<int> >("std_vector_int")
-//            .def( vector_indexing_suite< std::vector< int>>() )
-//            ;
+    class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string >>() )
+            ;
+    class_<std::vector<double> >("std_vector_double")
+            .def( vector_indexing_suite< std::vector<double>>() )
+            ;
+    class_<std::vector<int> >("std_vector_int")
+            .def( vector_indexing_suite< std::vector<int>>() )
+            ;
     // Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;

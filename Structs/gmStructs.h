@@ -36,6 +36,7 @@ namespace gmStructs
     struct dataEntry
     {   dataEntry():c(0){}
         epicsTimeStamp t; // epics timestamp for value
+        double         s; // epics timestamp doncerted into nano-sec
         size_t         c; // count, how mnay times has epics updated this value
         T              v; // the actual value EPICS is to update
     };
