@@ -286,7 +286,6 @@ namespace UTL
     const std::string MAG_MAX_I = "MAG_MAX_I";
     const std::string MAG_MIN_I = "MAG_MIN_I";
 
-
     // chtypes
 
      const std::string DBR_STRING_STR = "DBR_STRING";
@@ -320,16 +319,94 @@ namespace UTL
 //    DBR_TIME_INT	15	DBR_GR_ENUM	24	DBR_CTRL_DOUBLE	34
 
 
-     //MASK
-     const std::string DBE_VALUE_STR = "DBE_VALUE";
-     const std::string DBE_LOG_STR	 = "DBE_LOG";
-     const std::string DBE_ALARM_STR = "DBE_ALARM";
-
-
+    //MASK
+    const std::string DBE_VALUE_STR = "DBE_VALUE";
+    const std::string DBE_LOG_STR	 = "DBE_LOG";
+    const std::string DBE_ALARM_STR = "DBE_ALARM";
 
     const std::string PV_SUFFIX_EXILOCK2  = "PV_SUFFIX_EXILOCK2";
     const std::string BAD_MOD_ERR  = "BAD_MOD_ERR";
     const std::string GOOD_MOD_ERR = "GOOD_MOD_ERR";
+
+    // L01 MODULATOR
+    const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";
+    const std::string PV_SYSTEM_STATE_PUT = "PV_SYSTEM_STATE_PUT";
+    const std::string PV_HVPS_VOLTAGE_SET = "PV_HVPS_VOLTAGE_SET";
+    const std::string PV_HVPS_VOLTAGE_LOW_ALARM_SET = "PV_HVPS_VOLTAGE_LOW_ALARM_SET" ;
+    const std::string PV_HVPS_VOLTAGE_HI_ALARM_SET  = "PV_HVPS_VOLTAGE_HI_ALARM_SET"  ;
+    const std::string PV_SYSTEM_STATE_READ = "PV_SYSTEM_STATE_READ";
+    const std::string PV_HVPS_VOLTAGE_SET_READ = "PV_HVPS_VOLTAGE_SET_READ" ;
+    const std::string PV_HVPS_VOLTAGE_LOW_ALARM_SET_READ = "PV_HVPS_VOLTAGE_LOW_ALARM_SET_READ";
+    const std::string PV_HVPS_VOLTAGE_HI_ALARM_SET_READ  = "PV_HVPS_VOLTAGE_HI_ALARM_SET_READ"  ;
+    const std::string PV_HEATER_SETBACK    = "PV_HEATER_SETBACK"     ;
+    const std::string PV_HVPS_VOLTAGE_READ = "PV_HVPS_VOLTAGE_READ" ;
+    const std::string PV_HVPS_CURRENT_READ = "PV_HVPS_CURRENT_READ" ;
+    const std::string PV_HEATER_VOLTAGE    = "PV_HEATER_VOLTAGE"    ;
+    const std::string PV_HEATER_CURRENT    = "PV_HEATER_CURRENT"    ;
+    const std::string PV_RESET_VOLTAGE     = "PV_RESET_VOLTAGE"     ;
+    const std::string PV_RESET_CURRENT     = "PV_RESET_CURRENT"     ;
+    const std::string PV_ION_PUMP_VOLTAGE  = "PV_ION_PUMP_VOLTAGE"  ;
+    const std::string PV_ION_PUMP_CURRENT  = "PV_ION_PUMP_CURRENT"  ;
+    const std::string PV_SUPPLY_TEMP       = "PV_SUPPLY_TEMP"       ;
+    const std::string PV_SUPPLY_PRESSURE   = "PV_SUPPLY_PRESSURE"   ;
+    const std::string PV_RETURN_TEMP       = "PV_RETURN_TEMP"       ;
+    const std::string PV_RETURN_PRESSURE   = "PV_RETURN_PRESSURE"  ;
+    const std::string PV_BODY_FLOW_RATE      = "PV_BODY_FLOW_RATE"       ;
+    const std::string PV_COLLECTOR_FLOW_RATE = "PV_COLLECTOR_FLOW_RATE"  ;
+    const std::string PV_SOLENOID_FLOW_RATE  = "PV_SOLENOID_FLOW_RATE"   ;
+    const std::string PV_TANK_FLOW_RATE      = "PV_TANK_FLOW_RATE"       ;
+    const std::string PV_COLLECTOR_RETURN_RATE   = "PV_COLLECTOR_RETURN_RATE"  ;
+    const std::string PV_BODY_RETURN_TEMPERATURE = "PV_BODY_RETURN_TEMPERATURE";
+    const std::string PV_SOLENOID_1_VOLTAGE = "PV_SOLENOID_1_VOLTAGE";
+    const std::string PV_SOLENOID_2_VOLTAGE = "PV_SOLENOID_2_VOLTAGE";
+    const std::string PV_SOLENOID_3_VOLTAGE = "PV_SOLENOID_3_VOLTAGE";
+    const std::string PV_SOLENOID_1_CURRENT = "PV_SOLENOID_1_CURRENT";
+    const std::string PV_SOLENOID_2_CURRENT = "PV_SOLENOID_2_CURRENT";
+    const std::string PV_SOLENOID_3_CURRENT = "PV_SOLENOID_3_CURRENT";
+    const std::string PV_RESET = "PV_RESET";
+    const std::string PV_FAULT = "PV_FAULT";
+    const std::string PV_ERROR_WORD_1 = "PV_ERROR_WORD_1";
+    const std::string PV_ERROR_WORD_2 = "PV_ERROR_WORD_2";
+    const std::string PV_ERROR_WORD_3 = "PV_ERROR_WORD_3";
+    const std::string PV_ERROR_WORD_4 = "PV_ERROR_WORD_4";
+    const std::string PV_ERROR_WORD_5 = "PV_ERROR_WORD_5";
+    const std::string PV_ERROR_WORD_6 = "PV_ERROR_WORD_6";
+    const std::string PV_ERROR_WORD_7 = "PV_ERROR_WORD_7";
+    const std::string PV_ERROR_WORD_8 = "PV_ERROR_WORD_8";
+    const std::string PV_ERROR_WORD_9 = "PV_ERROR_WORD_9";
+    const std::string PV_ERROR_WORD_10 = "PV_ERROR_WORD_10";
+    const std::string PV_ERROR_WORD_11 = "PV_ERROR_WORD_11";
+    const std::string PV_ERROR_WORD_12 = "PV_ERROR_WORD_12";
+    const std::string PV_ERROR_WORD_13 = "PV_ERROR_WORD_13";
+    const std::string PV_ERROR_WORD_14 = "PV_ERROR_WORD_14";
+    const std::string PV_ERROR_WORD_15 = "PV_ERROR_WORD_15";
+    const std::string PV_ERROR_WORD_16 = "PV_ERROR_WORD_16";
+    const std::string PV_ERROR_WORD_17 = "PV_ERROR_WORD_17";
+    const std::string PV_ERROR_WORD_18 = "PV_ERROR_WORD_18";
+    const std::string PV_ERROR_WORD_19 = "PV_ERROR_WORD_19";
+    const std::string PV_ERROR_WORD_20 = "PV_ERROR_WORD_20";
+    const std::string PV_ERROR_DESC_1  = "PV_ERROR_DESC_1";
+    const std::string PV_ERROR_DESC_2  = "PV_ERROR_DESC_2";
+    const std::string PV_ERROR_DESC_3  = "PV_ERROR_DESC_3";
+    const std::string PV_ERROR_DESC_4  = "PV_ERROR_DESC_4";
+    const std::string PV_ERROR_DESC_5  = "PV_ERROR_DESC_5";
+    const std::string PV_ERROR_DESC_6  = "PV_ERROR_DESC_6";
+    const std::string PV_ERROR_DESC_7  = "PV_ERROR_DESC_7";
+    const std::string PV_ERROR_DESC_8  = "PV_ERROR_DESC_8";
+    const std::string PV_ERROR_DESC_9  = "PV_ERROR_DESC_9";
+    const std::string PV_ERROR_DESC_10 = "PV_ERROR_DESC_10";
+    const std::string PV_ERROR_DESC_11 = "PV_ERROR_DESC_11";
+    const std::string PV_ERROR_DESC_12 = "PV_ERROR_DESC_12";
+    const std::string PV_ERROR_DESC_13 = "PV_ERROR_DESC_13";
+    const std::string PV_ERROR_DESC_14 = "PV_ERROR_DESC_14";
+    const std::string PV_ERROR_DESC_15 = "PV_ERROR_DESC_15";
+    const std::string PV_ERROR_DESC_16 = "PV_ERROR_DESC_16";
+    const std::string PV_ERROR_DESC_17 = "PV_ERROR_DESC_17";
+    const std::string PV_ERROR_DESC_18 = "PV_ERROR_DESC_18";
+    const std::string PV_ERROR_DESC_19 = "PV_ERROR_DESC_19";
+    const std::string PV_ERROR_DESC_20 = "PV_ERROR_DESC_20";
+
+
 //
 //    /// RF_GUN Keywords
 //

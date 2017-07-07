@@ -15,7 +15,7 @@ bool baseObject::polaritiesMatch(const std::vector<double> & vals)
         if(it != 0.0) /// zero can have either polarity
             signs.push_back(std::signbit(it));
     for(auto && it : signs)
-        if(signs[0] != it )
+        if(signs[0] != it)
             ret = false;
     return ret;
 }

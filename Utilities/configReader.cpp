@@ -48,7 +48,7 @@ void configReader::setConfigFilePath(const std::string & path)
 std::string  configReader::getAfterEqualsSign(const std::string & str)
 {
     std::size_t found = str.find_last_of(UTL::EQUALS_SIGN);
-    return str.substr(found + 1, str.size() );
+    return str.substr(found + 1, str.size());
 }
 //______________________________________________________________________________
 void configReader::getVersion(const std::string & str)
@@ -159,7 +159,7 @@ bool configReader::stringIsSubString(const std::string & stringToCheck, const st
     return stringToCheck.find(stringToLookFor) != std::string::npos;
 }
 //______________________________________________________________________________
-std::string configReader::getSubString(std::string & str, std::string & STARTDELIMITER, std::string & STOPDELIMITER )
+std::string configReader::getSubString(std::string & str, std::string & STARTDELIMITER, std::string & STOPDELIMITER)
 {
     unsigned first = str.find(STARTDELIMITER);
     unsigned last  = str.find(STOPDELIMITER);
@@ -175,7 +175,7 @@ std::string configReader::trimWhiteSpaces(const  std::string & str)
     size_t last  = str.find_last_not_of(' ');
     return str.substr(first, (last-first+1));
 }
-std::string configReader::trimBetween(std::string & str, std::string & STARTDELIMITER, std::string & STOPDELIMITER )
+std::string configReader::trimBetween(std::string & str, std::string & STARTDELIMITER, std::string & STOPDELIMITER)
 {
     size_t first = str.find_first_not_of(STARTDELIMITER);
     size_t last  = str.find_last_not_of(STOPDELIMITER);

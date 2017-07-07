@@ -105,7 +105,7 @@ class baseObject
         }
 
         template<typename T = std::string>
-        void getSetDifference(const std::vector<T> & a, const std::vector<T> & b, std::vector<T> & c )
+        void getSetDifference(const std::vector<T> & a, const std::vector<T> & b, std::vector<T> & c)
         {
             c.clear();
             std::vector<T> aCopy = a;
@@ -115,7 +115,7 @@ class baseObject
             std::sort(bCopy.begin(), bCopy.end());
 
 
-            if(aCopy.size()> bCopy.size() )
+            if(aCopy.size()> bCopy.size())
                 c.resize(aCopy.size());
             else
                 c.resize(bCopy.size());

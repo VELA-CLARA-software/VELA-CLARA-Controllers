@@ -86,6 +86,61 @@ namespace rfModStructs
     #endif
     };
 
+
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_PV_TYPE, (SYSTEM_STATE_READ) (SYSTEM_STATE_PUT) (HVPS_VOLTAGE_SET) (HVPS_VOLTAGE_SET_READ)
+                                                          (HVPS_VOLTAGE_LOW_ALARM_SET)
+                                                          (HVPS_VOLTAGE_LOW_ALARM_SET_READ) (HVPS_VOLTAGE_HI_ALARM_SET) (HVPS_VOLTAGE_HI_ALARM_SET_READ)
+                                                          (HVPS_VOLTAGE_READ) (HVPS_CURRENT_READ) (HEATER_VOLTAGE) (HEATER_CURRENT)  (RESET_VOLTAGE)
+                                                          (RESET_CURRENT)  (ION_PUMP_VOLTAGE) (ION_PUMP_CURRENT) (SUPPLY_TEMP)  (SUPPLY_PRESSURE)
+                                                          (RETURN_TEMP)  (RETURN_PRESSURE)  (BODY_FLOW_RATE)  (COLLECTOR_FLOW_RATE) (SOLENOID_FLOW_RATE)
+                                                          (TANK_FLOW_RATE)  (COLLECTOR_RETURN_RATE)  (BODY_RETURN_TEMPERATURE)  (SOLENOID_1_VOLTAGE)
+                                                          (SOLENOID_2_VOLTAGE)  (SOLENOID_3_VOLTAGE)  (SOLENOID_1_CURRENT) (SOLENOID_2_CURRENT)
+                                                          (SOLENOID_3_CURRENT) (L01_RESET) (L01_FAULT)
+                                                          (ERROR_WORD_1) (ERROR_DESC_1)
+                                                          (ERROR_WORD_2) (ERROR_DESC_2)
+                                                          (ERROR_WORD_3) (ERROR_DESC_3)
+                                                          (ERROR_WORD_4) (ERROR_DESC_4)
+                                                          (ERROR_WORD_5) (ERROR_DESC_5)
+                                                          (ERROR_WORD_6) (ERROR_DESC_6)
+                                                          (ERROR_WORD_7) (ERROR_DESC_7)
+                                                          (ERROR_WORD_8) (ERROR_DESC_8)
+                                                          (ERROR_WORD_9) (ERROR_DESC_9)
+                                                          (ERROR_WORD_10) (ERROR_DESC_10)
+                                                          (ERROR_WORD_11) (ERROR_DESC_11)
+                                                          (ERROR_WORD_12) (ERROR_DESC_12)
+                                                          (ERROR_WORD_13) (ERROR_DESC_13)
+                                                          (ERROR_WORD_14) (ERROR_DESC_14)
+                                                          (ERROR_WORD_15) (ERROR_DESC_15)
+                                                          (ERROR_WORD_16) (ERROR_DESC_16)
+                                                          (ERROR_WORD_17) (ERROR_DESC_17)
+                                                          (ERROR_WORD_18) (ERROR_DESC_18)
+                                                          (ERROR_WORD_19) (ERROR_DESC_19)
+                                                          (ERROR_WORD_20) (ERROR_DESC_20))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_STATE, (ERROR)(FAULT) );
+
+
+
+    struct l01ModObject
+    {
+        l01ModObject() :
+            state(L01_MOD_STATE::ERROR),
+            safelyWarmedUP(false)
+            {}
+        std::string name, pvRoot;
+        L01_MOD_STATE state;
+        long          warmuptime;
+        //MOD_EXILOCK1 ilck, ilckstr;
+        bool safelyWarmedUP;
+        double hvpsVSet,hvpsVSetRead,hvpsVRead;
+        std::vector< std::string > modErrorWords, modErrorDescs;
+    #ifndef __CINT__
+        std::map< L01_MOD_PV_TYPE, pvStruct > pvMonStructs, pvComStructs;
+    #endif
+    };
+
+
     struct monitorStruct
     {
         monitorStruct() : rfModObject(nullptr),interface(nullptr){}

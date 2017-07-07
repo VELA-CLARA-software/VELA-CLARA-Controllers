@@ -31,11 +31,9 @@ namespace llrfStructs
                                                      (LIB_KLY_REV)
                                                      (LIB_TIME_VECTOR)
                                                      (LIB_PULSE_LENGTH)
-
                                                      (LIB_PULSE_OFFSET)
-
                                                      (AMP_MVM)(PHI_DEG)(UNKNOWN)
-                                                    )
+                                                   )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)(CLARA_LRRG)(VELA_HRRG)(VELA_LRRG)
                                                   (L01)(UNKNOWN_TYPE))
     // monType is to switch in the staticCallbackFunction

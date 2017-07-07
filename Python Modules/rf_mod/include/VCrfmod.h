@@ -30,6 +30,10 @@ class VCrfmod
         gunModController& physical_GUN_MOD_Controller();
         gunModController& offline_GUN_MOD_Controller();
 
+        l01ModController& virtual_L01_MOD_Controller();
+        l01ModController& physical_L01_MOD_Controller();
+        l01ModController& offline_L01_MOD_Controller();
+
     protected:
 
     private:
@@ -39,9 +43,14 @@ class VCrfmod
         gunModController * physical_GUN_MOD_Controller_Obj;
         gunModController * offline_GUN_MOD_Controller_Obj ;
 
+        l01ModController * virtual_L01_MOD_Controller_Obj ;
+        l01ModController * physical_L01_MOD_Controller_Obj;
+        l01ModController * offline_L01_MOD_Controller_Obj ;
+
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
         const std::string gunModConf;
+        const std::string l01ModConf;
 
 
 };

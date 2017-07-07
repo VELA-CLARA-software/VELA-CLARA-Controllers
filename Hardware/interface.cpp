@@ -19,7 +19,7 @@
 //interface::interface():EPICS_ACTIVATE (1), EPICS_SEND(0), EPICS_RESET(1),DBL_ERR_NUM(-9999.9999){}
 
 interface::interface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr):
-thisCaContext(nullptr ),
+thisCaContext(nullptr),
 configFileRead(false),
 CA_PEND_IO_TIMEOUT(5.0),  //MAGIC_NUMBER
 baseObject(show_messages_ptr, show_debug_messages_ptr),
