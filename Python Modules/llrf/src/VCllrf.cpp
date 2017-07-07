@@ -158,12 +158,12 @@ liberaLLRFController& VCllrf::offline_L01_LLRF_Controller()
 liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrfStructs::LLRF_TYPE llrfType)
 {
     bool createobject = true;
-    if( isaGUN(llrfType)&&GUN_LLRF_Controller_Obj )
+    if(isaGUN(llrfType)&&GUN_LLRF_Controller_Obj)
     {
         std::cout << "A Gun object already exists. Please use killGun() to delete current Gun first." << std::endl;
         createobject = false;
     }
-    if( createobject )
+    if(createobject)
     {
         switch(llrfType)
         {

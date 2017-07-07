@@ -120,9 +120,9 @@ class liberallrfInterface : public interface
         void killMonitor( llrfStructs::monitorStruct * ms );
 
         template<typename T>
-        bool setValue( llrfStructs::pvStruct& pvs, T value);
+        bool setValue(llrfStructs::pvStruct& pvs, T value);
         template<typename T>
-        bool setValue2( llrfStructs::pvStruct& pvs, T value);
+        bool setValue2(llrfStructs::pvStruct& pvs, T value);
 
         // These are private version tha tto the converstion to LLRF units
         bool setPHIDEG();
@@ -133,7 +133,7 @@ class liberallrfInterface : public interface
         void initialise();
         bool initObjects();
         void initChids();
-        void addChannel( const std::string & pvRoot, llrfStructs::pvStruct & pv );
+        void addChannel(const std::string & pvRoot, llrfStructs::pvStruct & pv );
         void startMonitors();
 
         void updateTrace(const event_handler_args args,llrfStructs::rf_trace_data& trace);
