@@ -41,7 +41,7 @@ class baseObject
 
         /// These are const pointers set at instantiation. They point to bools held in the controller
 
-        const bool * SHOW_DEBUG_MESSAGES_PTR, * SHOW_MESSAGES_PTR;
+        const bool *SHOW_DEBUG_MESSAGES_PTR, *SHOW_MESSAGES_PTR;
 
         /// using default template types makes this easy, (c++11 feature !?)
         /// these functions allow you to pass up to 7 arguments for a message,
@@ -58,22 +58,60 @@ class baseObject
                 printMessage(p1.str());
         }
 
-        template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string  , typename Z = std::string, typename A = std::string  >
-        void debugMessage(const T p1, const U p2 = "" , const V p3 = "",const W p4 = "", const X p5 = "",const  Y p6 = "", const Z p7 = "", const A p8 = "")
+        template<typename T = std::string, typename U = std::string,
+                 typename V = std::string, typename W = std::string,
+                 typename X = std::string, typename Y = std::string,
+                 typename Z = std::string, typename A = std::string>
+        void debugMessage(const T p1,
+                          const U p2 = "",
+                          const V p3 = "",
+                          const W p4 = "",
+                          const X p5 = "",
+                          const Y p6 = "",
+                          const Z p7 = "",
+                          const A p8 = "")
         {
             if(*SHOW_DEBUG_MESSAGES_PTR)
                 printMessage(p1, p2, p3, p4, p5, p6, p7, p8);
         }
 
-        template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string  , typename Z = std::string, typename A = std::string  >
-        void message(const T p1,const  U p2 = "" ,const  V p3 = "",const  W p4 = "",const  X p5 = "",const  Y p6 = "", const Z p7 = "",  const A p8 = "")
+        template<typename T = std::string,
+                 typename U = std::string,
+                 typename V = std::string,
+                 typename W = std::string,
+                 typename X = std::string,
+                 typename Y = std::string,
+                 typename Z = std::string,
+                 typename A = std::string>
+        void message(const T p1,
+                     const U p2 = "" ,
+                     const V p3 = "",
+                     const W p4 = "",
+                     const X p5 = "",
+                     const Y p6 = "",
+                     const Z p7 = "",
+                     const A p8 = "")
         {
             if(*SHOW_MESSAGES_PTR)
                 printMessage(p1, p2, p3, p4, p5, p6, p7, p8);
         }
 
-        template<typename T = std::string, typename U = std::string, typename V = std::string, typename W = std::string , typename X = std::string  , typename Y = std::string, typename Z = std::string, typename A = std::string >
-        void printMessage(const T p1,const  U p2 = "" , const V p3 = "",const  W p4 = "", const X p5 = "", const Y p6 = "",const Z p7 = "",  const A p8 = "")
+        template<typename T = std::string,
+                 typename U = std::string,
+                 typename V = std::string,
+                 typename W = std::string,
+                 typename X = std::string,
+                 typename Y = std::string,
+                 typename Z = std::string,
+                 typename A = std::string>
+        void printMessage(const T p1,
+                          const U p2 = "" ,
+                          const V p3 = "",
+                          const W p4 = "",
+                          const X p5 = "",
+                          const Y p6 = "",
+                          const Z p7 = "",
+                          const A p8 = "")
         {
             std::stringstream ss;
             ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 <<"\n";
@@ -100,7 +138,7 @@ class baseObject
         template<typename T = double>
         double roundToN(const T a, const size_t n)
         {
-            double p = pow (10, n);  /// MAGIC_NUMBER
+            double p = pow(10, n);  /// MAGIC_NUMBER
             return std::round(a * p) / p;
         }
 
@@ -110,11 +148,8 @@ class baseObject
             c.clear();
             std::vector<T> aCopy = a;
             std::vector<T> bCopy = b;
-
             std::sort(aCopy.begin(), aCopy.end());
             std::sort(bCopy.begin(), bCopy.end());
-
-
             if(aCopy.size()> bCopy.size())
                 c.resize(aCopy.size());
             else
@@ -122,54 +157,44 @@ class baseObject
             auto it = std::set_difference(aCopy.begin(), aCopy.end(), bCopy.begin(), bCopy.end(), c.begin());
             c.resize(it - c.begin());
         }
-
         std::string currentDateTime();
 
-
-
 #ifdef BUILD_DLL
-    template<typename T>
-    std::vector<T> to_std_vector(const boost::python::object & iterable)
-    {
-        return std::vector<T>(boost::python::stl_input_iterator<T>(iterable),
-                               boost::python::stl_input_iterator<T>());
-    }
+        template<typename T>
+        std::vector<T> to_std_vector(const boost::python::object & iterable)
+        {
+            return std::vector<T>(boost::python::stl_input_iterator<T>(iterable),
+                                  boost::python::stl_input_iterator<T>());
+        }
+
+        template<class T,  class U>
+        boost::python::dict enumMapToPythonDict(std::map<T, U> m)
+        {
+            boost::python::dict dictionary;
+            for(auto & it : m)
+                dictionary[ (int)it.first] = (int)it.second;
+            return dictionary;
+        }
+        template<class T>
+        boost::python::dict enumStringMapToPythonDict(std::map<T,  std::string > m)
+        {
+            boost::python::dict dictionary;
+            for(auto & it : m)
+                dictionary[ (int)it.first] = it.second;
+            return dictionary;
+        }
+        template <class T>
+        boost::python::list toPythonList(std::vector<T> vector)
+        {
+            typename std::vector<T>::iterator iter;
+            boost::python::list list;
+            for (iter = vector.begin(); iter != vector.end(); ++iter)
+            {
+                list.append(*iter);
+            }
+            return list;
+        }
 #endif
-
-//        template<typename T>
-//        bool waitFor(ABoolMemFn f1, RFGunInterface & obj, std::string & m,  time_t waitTime)
-//        {
-//            return waitFor(f1, obj, m.c_str(), waitTime);
-//        }
-//
-//        bool RFGunInterface::waitFor(ABoolMemFn f1, RFGunInterface & obj, const char * m,  time_t waitTime)
-//        {
-//            time_t startTime = time(0);
-//
-//            bool timedOut    = false;
-//
-//            bool state = false;
-//
-//            while(true)
-//            {
-//                if(CALL_MEMBER_FN(obj, f1)())
-//                    break;
-//
-//                else if(time(0)> startTime + waitTime)
-//                    timedOut = true;
-//
-//                if(timedOut)
-//                {
-//                    message(m);
-//                    break;
-//                }
-//            }
-//            return !timedOut;
-//        }
-
-
-
-
     private:
 };
 #endif //BASE_OBJECT_H

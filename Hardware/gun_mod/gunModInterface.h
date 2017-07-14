@@ -44,25 +44,17 @@ class gunModInterface : public interface
 
         ~gunModInterface();
 
-//        double getHpos();
-//        double getVpos();
-//        double getIntensity();
-//        // setters , not sure of type for these parameters (or if they will exist...)
-//        bool setHpos(double value);
-//        bool setHpos(int value);
-//        bool setVpos(double value);
-//        bool setVpos(int value);
-//        bool setIntensity(double value);
-//        bool setIntensity(int value);
-//        const pilaserStructs::pilaserObject &getPILObjConstRef();
-//
-        /// These are pure virtual methods, so need to have some implmentation in derived classes
+
+        const rfModStructs::gunModObject& getGunObjConstRef();
+
+
+        // These are pure virtual methods, so need to have some implmentation in derived classes
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
-//
-//
-//    private:
-//        // MOVE TO BASE CLASS
+
+
+    private:
+        // MOVE TO BASE CLASS
         const bool shouldStartEPICs;
         bool allChidsInitialised;
 //
@@ -71,7 +63,7 @@ class gunModInterface : public interface
         void initialise();
 //        bool initObjects();
         void initChids();
-        void addChannel( const std::string & pvRoot, rfModStructs::pvStruct & pv );
+        void addChannel(const std::string & pvRoot, rfModStructs::pvStruct & pv);
         void startMonitors();
 //        // all client set functions route to here
 //        bool setValue( pilaserStructs::pvStruct& pvs, double value);

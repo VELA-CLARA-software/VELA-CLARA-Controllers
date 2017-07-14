@@ -77,35 +77,7 @@ class controller : public baseObject
 
         bool SHOW_DEBUG_MESSAGES, SHOW_MESSAGES;
 
-#ifdef BUILD_DLL
-        template<class T,  class U>
-        boost::python::dict enumMapToPythonDict(std::map<T, U> m)
-        {
-            boost::python::dict dictionary;
-            for(auto & it : m)
-                dictionary[ (int)it.first] = (int)it.second;
-            return dictionary;
-        }
-        template<class T>
-        boost::python::dict enumStringMapToPythonDict(std::map<T,  std::string > m)
-        {
-            boost::python::dict dictionary;
-            for(auto & it : m)
-                dictionary[ (int)it.first] = it.second;
-            return dictionary;
-        }
-        template <class T>
-        boost::python::list toPythonList(std::vector<T> vector)
-        {
-            typename std::vector<T>::iterator iter;
-            boost::python::list list;
-            for (iter = vector.begin(); iter != vector.end(); ++iter)
-            {
-                list.append(*iter);
-            }
-            return list;
-        }
-#endif
+
 
     private:
 

@@ -1,14 +1,22 @@
 #include "baseObject.h"
 #include <time.h>
 
-baseObject::baseObject(const bool* show_messages_ptr,const bool * show_debug_messages_ptr)
+
+
+baseObject::baseObject():
+SHOW_MESSAGES_PTR(nullptr),
+SHOW_DEBUG_MESSAGES_PTR(nullptr)
+{}
+//______________________________________________________________________________
+baseObject::baseObject(const bool* show_messages_ptr,
+                       const bool * show_debug_messages_ptr)
 : SHOW_MESSAGES_PTR(show_messages_ptr), SHOW_DEBUG_MESSAGES_PTR(show_debug_messages_ptr)
 {}
 //______________________________________________________________________________
-baseObject::~baseObject(){};
+baseObject::~baseObject(){}
 //______________________________________________________________________________
 bool baseObject::polaritiesMatch(const std::vector<double> & vals)
-{/// to make this a template need to think about the test comapring to 0.0
+{// to make this a template need to think about the test comapring to 0.0
     bool ret = true;
     std::vector<bool> signs;
     for(auto && it : vals)
