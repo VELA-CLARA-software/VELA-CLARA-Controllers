@@ -22,15 +22,15 @@ class magnetConfigReader : public configReader
 
         magnetConfigReader();
 
-        magnetConfigReader::magnetConfigReader( const std::string&magConf,
+        magnetConfigReader::magnetConfigReader(const std::string&magConf,
                                                 const bool startVirtualMachine,
                                                 const bool*show_messages_ptr,
-                                                const bool*show_debug_messages_ptr );
+                                                const bool*show_debug_messages_ptr);
 
         ~magnetConfigReader();
 
-        bool readConfig( );
-        bool getMagData( std::map< std::string, magnetStructs::magnetObject > & mapToFill );
+        bool readConfig();
+        bool getMagData(std::map<std::string, magnetStructs::magnetObject> & mapToFill);
         magnetStructs::degaussValues getDeguassStruct();
 
     private:
@@ -40,39 +40,39 @@ class magnetConfigReader : public configReader
         /// base as the functions addToObjectsV1() etc. are in derived classes
         /// This seems like a "nice" use of function pointers (?)
 
-        typedef void (magnetConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );
-        bool readConfig( magnetConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 );
+        typedef void (magnetConfigReader::*aKeyValMemFn)(const std::vector<std::string> &keyVal);
+        bool readConfig(magnetConfigReader & obj, const std::string & fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3);
 
         magnetStructs::degaussValues degstruct;
-        //void addToDegaussObj( const std::vector<std::string> &keyVal );
+        //void addToDegaussObj(const std::vector<std::string> &keyVal);
 
 
-        //void copyPartOfMagObj( magnetStructs::magnetObject & to, magnetStructs::magnetObject & from);
+        //void copyPartOfMagObj(magnetStructs::magnetObject & to, magnetStructs::magnetObject & from);
 
         /// These are read into vectors as you can use the .back() member function, which i find handy.
         /// once all the data is read in we can construct the final map of objects to return to the epicsInterface
 
         // NR-PSU objects
-        std::vector< magnetStructs::pvStruct > pvPSUMonStructs;
-        std::vector< magnetStructs::pvStruct > pvPSUComStructs;
+        std::vector<magnetStructs::pvStruct> pvPSUMonStructs;
+        std::vector<magnetStructs::pvStruct> pvPSUComStructs;
 
         // Magnet Objects
-        std::vector< magnetStructs::magnetObject > magObjects;
-        std::vector< magnetStructs::pvStruct > pvMagMonStructs;
-        std::vector< magnetStructs::pvStruct > pvMagComStructs;
+        std::vector<magnetStructs::magnetObject> magObjects;
+        std::vector<magnetStructs::pvStruct> pvMagMonStructs;
+        std::vector<magnetStructs::pvStruct> pvMagComStructs;
 
-        void addToMagObjectsV1( const std::vector<std::string> &keyVal );
-        void addToMagMonStructsV1( const std::vector<std::string> &keyVal );
-        void addToMagComStructsV1( const std::vector<std::string> &keyVal );
+        void addToMagObjectsV1(const std::vector<std::string> &keyVal);
+        void addToMagMonStructsV1(const std::vector<std::string> &keyVal);
+        void addToMagComStructsV1(const std::vector<std::string> &keyVal);
 
-        void addMagType( const std::vector<std::string> &keyVal );
+        void addMagType(const std::vector<std::string> &keyVal);
 
         const std::string magConf;
 
         const bool usingVirtualMachine;
 
-       void addToPVStruct( std::vector< magnetStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
-        void addCOUNT_MASK_OR_CHTYPE(  std::vector< magnetStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
+       void addToPVStruct(std::vector<magnetStructs::pvStruct> & pvStruct_v, const  std::vector<std::string> &keyVal);
+        void addCOUNT_MASK_OR_CHTYPE( std::vector<magnetStructs::pvStruct>  & pvStruct_v, const std::vector<std::string> &keyVal);
 
 };
 #endif //magnetConfigReader_H_

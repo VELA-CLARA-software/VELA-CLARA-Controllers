@@ -43,7 +43,7 @@ class controller : public baseObject
     public:
 
         //controller();
-        controller(bool show_messages, bool show_debug_messages );
+        controller(bool show_messages, bool show_debug_messages);
         ~controller();
 
         /// Turn on and off debug messages and general messages
@@ -64,10 +64,10 @@ class controller : public baseObject
         /// This pure virtual method MUST be overwritten in the derived controller (making this an abstract base class)
         /// This also means the destructor need not be protected
 
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates(const std::string & name ) = 0;
-        virtual std::map< VELA_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr(const std::string & name ) = 0;
+        virtual std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> getILockStates(const std::string & name) = 0;
+        virtual std::map<VELA_ENUM::ILOCK_NUMBER, std::string>         getILockStatesStr(const std::string & name) = 0;
         virtual double get_CA_PEND_IO_TIMEOUT() = 0;
-        virtual void   set_CA_PEND_IO_TIMEOUT(double val ) = 0;
+        virtual void   set_CA_PEND_IO_TIMEOUT(double val) = 0;
 
 #ifdef BUILD_DLL
         boost::python::dict getILockStatesDefinition();
@@ -77,37 +77,7 @@ class controller : public baseObject
 
         bool SHOW_DEBUG_MESSAGES, SHOW_MESSAGES;
 
-#ifdef BUILD_DLL
-        template< class T,  class U >
-        boost::python::dict enumMapToPythonDict(std::map< T, U > m )
-        {
-            boost::python::dict dictionary;
-            for(auto & it : m )
-                dictionary[ (int)it.first] = (int)it.second;
-            return dictionary;
-        }
-        template< class T >
-        boost::python::dict enumStringMapToPythonDict(std::map< T,  std::string  > m )
-        {
-            boost::python::dict dictionary;
-            for(auto & it : m )
-                dictionary[ (int)it.first] = it.second;
-            return dictionary;
-        }
-        template <class T>
-        boost::python::list toPythonList(std::vector<T> vector)
-        {
-            typename std::vector<T>::iterator iter;
-            boost::python::list list;
-            for (iter = vector.begin(); iter != vector.end(); ++iter)
-            {
-                list.append(*iter);
-            }
-            return list;
-        }
 
-
-#endif
 
     private:
 

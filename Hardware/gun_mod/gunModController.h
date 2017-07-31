@@ -41,7 +41,7 @@ class gunModController : public controller
         // just have 1 constructor, but we have a higher level class that create these objects
         gunModController();
         gunModController(const bool show_messages, const bool show_debug_messagese,
-                          const std::string & pilaserConf, const bool startVirtualMachine,
+                          const std::string & gunModConf, const bool startVirtualMachine,
                           const bool shouldStartEPICs );
         ~gunModController( );
       // These are pure virtual methods, so need to have some implmentation in derived classes
@@ -49,25 +49,11 @@ class gunModController : public controller
         virtual void   set_CA_PEND_IO_TIMEOUT( double val );
         std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
         std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
-//      // any functions that return a map need a wrapper to convert to a python dictionary (?)
-//      // (we need the functions that return std::map types when building c++ applications)
-//#ifdef BUILD_DLL
-////        boost::python::dict getILockStates_Py( std::string magName );
-////        boost::python::dict getILockStatesStr_Py( std::string magName );
-////        boost::python::dict getMagPSUStateDefinition();
-//#endif // BUILD_DLL
-//        // getters, not sure of type for these parameters (or if they will exist...)
-//        double getHpos();
-//        double getVpos();
-//        double getIntensity();
-//        // setters, not sure of type for these parameters (or if they will exist...)
-//        bool setHpos(double value);
-//        bool setHpos(int value);
-//        bool setVpos(double value);
-//        bool setVpos(int value);
-//        bool setIntensity(double value);
-//        bool setIntensity(int value);
-//        const pilaserStructs::pilaserObject& getPILObjConstRef();
+
+        const rfModStructs::gunModObject& getGunObjConstRef();
+
+
+
 //    protected:
 //    private:
 //        void initialise();

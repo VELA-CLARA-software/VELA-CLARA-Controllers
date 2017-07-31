@@ -36,7 +36,8 @@ namespace gmStructs
     struct dataEntry
     {   dataEntry():c(0){}
         epicsTimeStamp t; // epics timestamp for value
-        size_t         c; // count, ho mnay times has epics updated this value
+        double         s; // epics timestamp doncerted into nano-sec
+        size_t         c; // count, how mnay times has epics updated this value
         T              v; // the actual value EPICS is to update
     };
     // monType could be used to switch in the staticCallbackFunction
@@ -46,12 +47,14 @@ namespace gmStructs
     template <typename T>
     struct pvData
     {
-        pvData():id("UNKNOWN"),fully_connected(false){}
+        pvData():
+            id("UNKNOWN"),
+            fully_connected(false)
+            {}
         pvStruct                   pvs;
         std::vector<dataEntry<T>*> data;
         std::string                id;
         bool                       fully_connected;
-
     };
     // this gets sent t to the callback functionk, adn from the ID and interfcace everything can be
     // updated

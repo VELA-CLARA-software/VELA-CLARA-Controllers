@@ -36,9 +36,9 @@ class liberallrfConfigReader:public configReader
 
         void addToPVStruct(std::vector<llrfStructs::pvStruct>& pvs,const llrfStructs::LLRF_PV_TYPE pvtype,const std::string& pvSuffix);
 
-        void addToliberallrfObjectsV1 ( const std::vector<std::string> &keyVal);
-        void addToPVCommandMapV1( const std::vector<std::string> &keyVal);
-        void addToPVMonitorMapV1( const std::vector<std::string> &keyVal);
+        void addToliberallrfObjectsV1 (const std::vector<std::string> &keyVal);
+        void addToPVCommandMapV1(const std::vector<std::string> &keyVal);
+        void addToPVMonitorMapV1(const std::vector<std::string> &keyVal);
         void addToPVMapV1       (const std::vector<std::string>& keyVal);
 
         llrfStructs::pvStruct* lastPVstruct;

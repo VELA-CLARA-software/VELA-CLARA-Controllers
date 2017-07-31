@@ -4,8 +4,11 @@
 VCrfmod::VCrfmod():
 virtual_GUN_MOD_Controller_Obj(nullptr),
 physical_GUN_MOD_Controller_Obj(nullptr),
-offline_GUN_MOD_Controller_Obj(nullptr),
+virtual_L01_MOD_Controller_Obj(nullptr),
+physical_L01_MOD_Controller_Obj(nullptr),
+offline_L01_MOD_Controller_Obj(nullptr),
 gunModConf(UTL::CONFIG_PATH + UTL::RF_GUN_MOD_CONFIG),
+l01ModConf(UTL::CONFIG_PATH + UTL::L01_MOD_CONFIG),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
@@ -82,7 +85,7 @@ gunModController& VCrfmod::virtual_GUN_MOD_Controller()
 //______________________________________________________________________________
 gunModController& VCrfmod::physical_GUN_MOD_Controller()
 {
-    if( virtual_GUN_MOD_Controller_Obj )
+    if( physical_GUN_MOD_Controller_Obj )
     {
         std::cout << "physical_GUN_MOD_Controller object already exists," << std::endl;
     }
@@ -92,33 +95,68 @@ gunModController& VCrfmod::physical_GUN_MOD_Controller()
         physical_GUN_MOD_Controller_Obj =
             new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf, withoutVM,withEPICS);
     }
-    return *virtual_GUN_MOD_Controller_Obj;
+    return *physical_GUN_MOD_Controller_Obj;
 }
 //______________________________________________________________________________
 gunModController& VCrfmod::offline_GUN_MOD_Controller()
 {
-    if( physical_GUN_MOD_Controller_Obj )
+    if( offline_GUN_MOD_Controller_Obj )
     {
         std::cout << "offline_GUN_MOD_Controller object already exists," << std::endl;
     }
     else
     {
         std::cout << "Creating offline_GUN_MOD_Controller object" << std::endl;
-        virtual_GUN_MOD_Controller_Obj =
+        offline_GUN_MOD_Controller_Obj =
             new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
     }
-    return *virtual_GUN_MOD_Controller_Obj;
+    return *offline_GUN_MOD_Controller_Obj;
 }
-
-
-
-
-
-
-
-
-
-
+//______________________________________________________________________________
+l01ModController& VCrfmod::virtual_L01_MOD_Controller()
+{
+    if( virtual_L01_MOD_Controller_Obj )
+    {
+        std::cout << "virtual_L01_MOD_Controller object already exists," << std::endl;
+    }
+    else
+    {
+        std::cout << "Creating virtual_L01_MOD_Controller object" << std::endl;
+        virtual_L01_MOD_Controller_Obj =
+            new l01ModController(shouldShowMessage,shouldShowDebugMessage,l01ModConf,withVM,withEPICS);
+    }
+    return *virtual_L01_MOD_Controller_Obj;
+}
+//______________________________________________________________________________
+l01ModController& VCrfmod::physical_L01_MOD_Controller()
+{
+    if(physical_L01_MOD_Controller_Obj)
+    {
+        std::cout << "physical_L01_MOD_Controller object already exists," << std::endl;
+    }
+    else
+    {
+        std::cout << "Creating physical_L01_MOD_Controller_Obj object" << std::endl;
+        physical_L01_MOD_Controller_Obj =
+            new l01ModController(shouldShowMessage,shouldShowDebugMessage,l01ModConf,withoutVM,withEPICS);
+    }
+    return *physical_L01_MOD_Controller_Obj;
+}
+//______________________________________________________________________________
+l01ModController& VCrfmod::offline_L01_MOD_Controller()
+{
+    if( offline_L01_MOD_Controller_Obj )
+    {
+        std::cout << "offline_L01_MOD_Controller_Obj object already exists," << std::endl;
+    }
+    else
+    {
+        std::cout << "Creating offline_L01_MOD_Controller_Obj object" << std::endl;
+        offline_L01_MOD_Controller_Obj =
+            new l01ModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
+    }
+    return *offline_L01_MOD_Controller_Obj;
+}
 
 
 

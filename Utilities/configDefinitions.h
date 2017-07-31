@@ -1,22 +1,42 @@
 #ifndef CONFIG_DEFINITIONS_H
 #define CONFIG_DEFINITIONS_H
-
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  DJS 14/7/2017
+//
+//  The UTL namespace is for all the Keyword arguemnts in config files
+//  It also holds config file,names, default location, and initialisation values
+//
+//*/
 #include <string>
 #include <vector>
 #include <map>
 
 namespace UTL
 {
+    /// numerical and string constants
     const double DUMMY_DOUBLE = -999.999;
-    const double DUMMY_INT = -999999;
-    const double ZERO_DOUBLE = 0.0;
-    const int    ZERO_INT = 0;
-    const size_t ZERO_SIZET = 0;
+    const double ZERO_DOUBLE  = 0.0;
+    const size_t ZERO_SIZET   = 0;
     const long   DUMMY_LONG   = -999;
+    const double DUMMY_INT    = -999999;
+    const int    ZERO_INT     = 0;
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
-
 
     const std::string END_OF_LINE = ";";
     const std::string SLASH_SLASH = "\\";
@@ -26,34 +46,106 @@ namespace UTL
     const char DOUBLE_QUOTE_C     = '"';
     const char SPACE_C            = ' ';
     const char TAB_C              = '\t';
-
-    const std::string CONFIG_PATH = //"C:\\Users\\wln24624\\Documents\\SOFTWARE\\VELA-CLARA-Controllers\\Config\\";
-    "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    // default config paths -
+    const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
-
+    // config file names
     const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";
+
+    /// General Keywords
+    /// These are the keywords used in hardware config files
+    const std::string START_OF_DATA     = "START_OF_DATA";
+    const std::string END_OF_DATA       = "END_OF_DATA";
+    const std::string VERSION           = "VERSION";
+    const std::string NAME              = "NAME";
+    const std::string PV_ROOT           = "PV_ROOT";
+    const std::string OBJECTS_START     = "OBJECTS_START";
+    const std::string NUMBER_OF_OBJECTS = "NUMBER_OF_OBJECTS";
+    const std::string PV_MONITORS_START = "PV_MONITORS_START";
+    const std::string PV_COMMANDS_START = "PV_COMMANDS_START";
+    const std::string PV_ARRAY_MONITORS_START = "PV_ARRAY_MONITORS_START";
+    const std::string NUMBER_OF_ILOCKS  = "NUMBER_OF_ILOCKS";
+    // General PV suffixes
+    const std::string PV_SUFFIX_ON          = "PV_SUFFIX_ON";
+    const std::string PV_SUFFIX_OFF         = "PV_SUFFIX_OFF";
+    const std::string PV_SUFFIX_STA         = "PV_SUFFIX_STA";
+    const std::string PV_SUFFIX_RST         = "PV_SUFFIX_RST";
+    const std::string PV_SUFFIX_CMI         = "PV_SUFFIX_CMI";
+    const std::string NUMBER_OF_INTERLOCKS  = "NUMBER_OF_INTERLOCKS";
+    // General EPICS PV names
+    const std::string PV_COUNT  = "PV_COUNT" ;
+    const std::string PV_CHTYPE = "PV_CHTYPE";
+    const std::string PV_MASK   = "PV_MASK"  ;
+
+
+
+
+
+/// Laser shutters
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorpilaserShutter.config";
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
+/// BPMs
     const std::string VELA_INJ_BPM_CONFIG              = "velaINJBeamPositionMonitors.config";
     const std::string VELA_BA1_BPM_CONFIG              = "velaBA1BeamPositionMonitors.config";
     const std::string VELA_BA2_BPM_CONFIG              = "velaBA2BeamPositionMonitors.config";
     const std::string CLARA_INJ_BPM_CONFIG             = "claraINJBeamPositionMonitors.config";
     const std::string CLARA_2_VELA_BPM_CONFIG          = "clara2VELABeamPositionMonitors.config";
+    // PVs
+    const std::string PV_SUFFIX_BPM_SA1     = "PV_SUFFIX_BPM_SA1";
+    const std::string PV_SUFFIX_BPM_SA2     = "PV_SUFFIX_BPM_SA2";
+    const std::string PV_SUFFIX_BPM_SD1     = "PV_SUFFIX_BPM_SD1";
+    const std::string PV_SUFFIX_BPM_SD2     = "PV_SUFFIX_BPM_SD2";
+    const std::string PV_SUFFIX_BPM_RA1     = "PV_SUFFIX_BPM_RA1";
+    const std::string PV_SUFFIX_BPM_RA2     = "PV_SUFFIX_BPM_RA2";
+    const std::string PV_SUFFIX_BPM_RD1     = "PV_SUFFIX_BPM_RD1";
+    const std::string PV_SUFFIX_BPM_RD2     = "PV_SUFFIX_BPM_RD2";
+    const std::string PV_SUFFIX_BPM_X       = "PV_SUFFIX_BPM_X";
+    const std::string PV_SUFFIX_BPM_Y       = "PV_SUFFIX_BPM_Y";
+    const std::string PV_SUFFIX_BPM_DATA    = "PV_SUFFIX_BPM_DATA";
+    // BPMobject member variables
+    const std::string ATT1CAL               = "ATT1CAL";
+    const std::string ATT2CAL               = "ATT2CAL";
+    const std::string V1CAL                 = "V1CAL";
+    const std::string V2CAL                 = "V2CAL";
+    const std::string QCAL                  = "QCAL";
+    const std::string MN                    = "MN";
+    const std::string XN                    = "XN";
+    const std::string YN                    = "YN";
+
+
 /// Qscope
     const std::string VELA_SCOPE_CONFIG                = "velaQScope.config";
     const std::string VELA_SCOPE_TRACE_CONFIG          = "velaQScopeTrace.config";
     const std::string CLARA_SCOPE_CONFIG               = "claraQScope.config";
     const std::string CLARA_SCOPE_TRACE_CONFIG         = "claraQScopeTrace.config";
-/// Gun
+
+/// Gun Modulator
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
     const std::string RF_GUN_MOD_CONFIG                = "RFGunModulator.config";
     const std::string VELA_RF_GUN_LLRF_CONFIG          = "velaRFGunLLRF.config";
-    const std::string RF_GUN_PROTECTION_CONFIG          = "RFGunProtection.config";
+    // Gun Modulator PVs
+    const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ";
+    const std::string PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ    = "PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
+    const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
+    const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
+    const std::string PV_SUFFIX_GUN_MOD_EXILOCK1  = "PV_SUFFIX_GUN_MOD_EXILOCK1";
+    const std::string PV_SUFFIX_GUN_MOD_CVD_READ  = "PV_SUFFIX_GUN_MOD_CVD_READ";
+    const std::string PV_SUFFIX_GUN_MOD_EXILOCK2  = "PV_SUFFIX_GUN_MOD_EXILOCK2";
+    const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
+    const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
+    const std::string PV_SUFFIX_GUN_RESET         = "PV_SUFFIX_GUN_RESET";
+
 /// Magnets
-//    const std::string VELA_INJ_MAG_NR_PSU_CONFIG       = "velaINJMagnetsNRpsu.config";
-//    const std::string VELA_BA1_MAG_NR_PSU_CONFIG       = "velaBA1MagnetsNRpsu.config";
-//    const std::string VELA_BA2_MAG_NR_PSU_CONFIG       = "velaBA2MagnetsNRpsu.config";
-//    const std::string CLARA_INJ_MAG_NR_PSU_CONFIG      = "claraINJMagnetsNRpsu.config";// not going to use
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
     const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
     const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
@@ -63,9 +155,11 @@ namespace UTL
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
 /// pilaser (DJS faked 17-02-2017)
     const std::string PILASER_CONFIG        = "velaclaraPILaser.config";
+    // laser PVs
+    const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
     const std::string PV_SUFFIX_LASER_H_POS = "PV_SUFFIX_LASER_H_POS";
     const std::string PV_SUFFIX_LASER_V_POS = "PV_SUFFIX_LASER_V_POS";
-    const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
+
 
 /// Cameras
     const std::string DAQ_CAMERA_CONFIG               = "cameraDAQ.config";
@@ -80,35 +174,29 @@ namespace UTL
     const std::string CLARA_2_VELA_VALVE_CONFIG        = "clara2VELAVacuumValve.config";
     const std::string CLARA_S01_VALVE_CONFIG           = "claraS01VacuumValve.config";
     const std::string CLARA_S02_VALVE_CONFIG           = "claraS02VacuumValve.config";
-    /// These are the keywords used in hardware config files
+/// LIBERA LLRF
+    const std::string CLARA_LRRG_LLRF_CONFIG    = "CLARA_LRRG_LLRF.config";
+    const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
+    // Faked the VM versions atm until (probably not needed now 14/7/2017
+    const std::string VM_CLARA_LRRG_LLRF_CONFIG = "vmCLARA_LRRG_LLRF.config";
+    const std::string VM_CLARA_L01_LLRF_CONFIG = "vmCLARA_L01_LLRF.config";
+    // Not sure about this yet at all,
+    // hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG
+    // (its the same physical LLRF equipment)
+    const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
+    const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
+// L01 MODULATOR
+    const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";
 
-    /// General Keywords
 
-    const std::string START_OF_DATA     = "START_OF_DATA";
-    const std::string END_OF_DATA       = "END_OF_DATA";
-    const std::string VERSION           = "VERSION";
-    const std::string NAME              = "NAME";
-    const std::string PV_ROOT           = "PV_ROOT";
-    const std::string OBJECTS_START     = "OBJECTS_START";
-    const std::string NUMBER_OF_OBJECTS = "NUMBER_OF_OBJECTS";
-    const std::string PV_MONITORS_START = "PV_MONITORS_START";
-    const std::string PV_COMMANDS_START = "PV_COMMANDS_START";
-    const std::string PV_ARRAY_MONITORS_START = "PV_ARRAY_MONITORS_START";
-    const std::string NUMBER_OF_ILOCKS  = "NUMBER_OF_ILOCKS";
 
-    // PVs
-    const std::string PV_SUFFIX_ON          = "PV_SUFFIX_ON";
-    const std::string PV_SUFFIX_OFF         = "PV_SUFFIX_OFF";
-    const std::string PV_SUFFIX_STA         = "PV_SUFFIX_STA";
-    const std::string PV_SUFFIX_RST         = "PV_SUFFIX_RST";
-    const std::string PV_SUFFIX_CMI         = "PV_SUFFIX_CMI";
-    const std::string NUMBER_OF_INTERLOCKS  = "NUMBER_OF_INTERLOCKS";
 
-    const std::string PV_COUNT  = "PV_COUNT" ;
-    const std::string PV_CHTYPE = "PV_CHTYPE";
-    const std::string PV_MASK   = "PV_MASK"  ;
 
-    // RF POWER
+
+
+
+
+// RF POWER
     const std::string PV_SUFFIX_REV   = "PV_SUFFIX_REV";
     const std::string PV_SUFFIX_FWD   = "PV_SUFFIX_FWD";
     const std::string PV_SUFFIX_REVT  = "PV_SUFFIX_REVT";
@@ -117,7 +205,8 @@ namespace UTL
     const std::string PV_SUFFIX_FWDTM = "PV_SUFFIX_FWDTM";
     const std::string PV_SUFFIX_RATIO = "PV_SUFFIX_RATIO";
 
-    // RF Protection
+/// RF Protection
+    const std::string RF_GUN_PROTECTION_CONFIG          = "RFGunProtection.config";
     const std::string GUN_PROT_KEY_BITS = "GUN_PROT_KEY_BITS";
     const std::string RF_GUN_PROT_TYPE = "RF_GUN_PROT_TYPE";
     const std::string ENABLE     = "ENABLE";
@@ -135,7 +224,8 @@ namespace UTL
     // Vac
     const std::string PV_VAC_PRESSURE = "PV_VAC_PRESSURE";
 
-    // Scope
+    /// Scope
+    // Scope PVs
     const std::string PV_SUFFIX_P1    = "PV_SUFFIX_P1";
     const std::string PV_SUFFIX_P2    = "PV_SUFFIX_P2";
     const std::string PV_SUFFIX_P3    = "PV_SUFFIX_P3";
@@ -153,46 +243,8 @@ namespace UTL
     const std::string ICT2            = "ICT2";
     const std::string FCUP            = "FCUP";
     const std::string ED_FCUP         = "ED_FCUP";
-    // BPM
-    const std::string PV_SUFFIX_BPM_SA1     = "PV_SUFFIX_BPM_SA1";
-    const std::string PV_SUFFIX_BPM_SA2     = "PV_SUFFIX_BPM_SA2";
-    const std::string PV_SUFFIX_BPM_SD1     = "PV_SUFFIX_BPM_SD1";
-    const std::string PV_SUFFIX_BPM_SD2     = "PV_SUFFIX_BPM_SD2";
-    const std::string PV_SUFFIX_BPM_RA1     = "PV_SUFFIX_BPM_RA1";
-    const std::string PV_SUFFIX_BPM_RA2     = "PV_SUFFIX_BPM_RA2";
-    const std::string PV_SUFFIX_BPM_RD1     = "PV_SUFFIX_BPM_RD1";
-    const std::string PV_SUFFIX_BPM_RD2     = "PV_SUFFIX_BPM_RD2";
-    const std::string PV_SUFFIX_BPM_X       = "PV_SUFFIX_BPM_X";
-    const std::string PV_SUFFIX_BPM_Y       = "PV_SUFFIX_BPM_Y";
-    const std::string PV_SUFFIX_BPM_DATA    = "PV_SUFFIX_BPM_DATA";
-    const std::string ATT1CAL               = "ATT1CAL";
-    const std::string ATT2CAL               = "ATT2CAL";
-    const std::string V1CAL                 = "V1CAL";
-    const std::string V2CAL                 = "V2CAL";
-    const std::string QCAL                  = "QCAL";
-    const std::string MN                    = "MN";
-    const std::string XN                    = "XN";
-    const std::string YN                    = "YN";
-    // Modulator
-    const std::string PV_SUFFIX_GUN_RESET     = "PV_SUFFIX_GUN_RESET";
-    const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
-    const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
-    const std::string PV_SUFFIX_GUN_MOD_EXILOCK1  = "PV_SUFFIX_GUN_MOD_EXILOCK1";
-    const std::string PV_SUFFIX_GUN_MOD_EXILOCK2  = "PV_SUFFIX_GUN_MOD_EXILOCK2";
-    const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ = "PV_SUFFIX_GUN_MOD_MAGPS4_CURR_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS1_VOLT_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ";
-    const std::string PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ = "PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ";
-    const std::string PV_SUFFIX_GUN_MOD_CT_READ          = "PV_SUFFIX_GUN_MOD_CT_READ";
-    const std::string PV_SUFFIX_GUN_MOD_CVD_READ             = "PV_SUFFIX_GUN_MOD_CVD_READ";
-    const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
-    const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ";
-    const std::string PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ    = "PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ";
+
+
 
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";
@@ -204,7 +256,7 @@ namespace UTL
     const std::string PV_SUFFIX_RI = "PV_SUFFIX_RI";
     const std::string PV_SUFFIX_SI = "PV_SUFFIX_SI";
     const std::string PV_PSU_ROOT  = "PV_PSU_ROOT";
-    const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change >>??
+    const std::string PV_SUFFIX_SETPOWER  = "PV_SUFFIX_SETPOWER"; // clara phase 1 magnets have this for power - may change>>??
     // clara ... Expect VELA to TAKE on these names ALD
     const std::string PV_SUFFIX_SPOWER  = "PV_SUFFIX_SPOWER";
     const std::string PV_SUFFIX_RPOWER  = "PV_SUFFIX_RPOWER";
@@ -215,20 +267,6 @@ namespace UTL
 
 
 
-
-
-
-    // LLRF (DJS faked 21-02-2017)
-    // 24/5/17 UPDATE, the real machine LLRF is now included, and completely different to previous years
-    // I've had to fake the VM versiosn atm until
-    const std::string CLARA_LRRG_LLRF_CONFIG    = "CLARA_LRRG_LLRF.config";
-    const std::string VM_CLARA_LRRG_LLRF_CONFIG = "vmCLARA_LRRG_LLRF.config";
-    // I expect this to look similar to CLARA_LRRG_LLRF
-    const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
-    const std::string VM_CLARA_L01_LLRF_CONFIG = "vmCLARA_L01_LLRF.config";
-    // NOt sure about this yet at all, hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG (its the same physical LLRF equipment)
-    const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
-    const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
 
     // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
     // except, probably, the VELA TDC
@@ -291,29 +329,29 @@ namespace UTL
     const std::string MAG_MAX_I = "MAG_MAX_I";
     const std::string MAG_MIN_I = "MAG_MIN_I";
 
-
     // chtypes
 
-     const std::string DBR_STRING_STR = "DBR_STRING";
-     const std::string DBR_INT_STR	  = "DBR_INT";
-     const std::string DBR_SHORT_STR  = "DBR_SHORT";
-     const std::string DBR_FLOAT_STR  = "DBR_FLOAT";
-     const std::string DBR_ENUM_STR	  = "DBR_ENUM";
-     const std::string DBR_CHAR_STR	  = "DBR_CHAR"  ;
-     const std::string DBR_LONG_STR	  = "DBR_LONG"  ;
-     const std::string DBR_DOUBLE_STR = "DBR_DOUBLE";
 
-     const std::string DBR_ARRAY_DOUBLE_STR = "DBR_ARRAY_DOUBLE";
-     const std::string DBR_ARRY_INT_STR     = "DBR_ARRAY_INT";
-     const std::string DBR_TIME_STRING_STR  = "DBR_TIME_STRING";
-     const std::string DBR_TIME_INT_STR	    = "DBR_TIME_INT";
-     const std::string DBR_TIME_SHORT_STR   = "DBR_TIME_SHORT";
-     const std::string DBR_TIME_FLOAT_STR   = "DBR_TIME_FLOAT";
-     const std::string DBR_TIME_ENUM_STR    = "DBR_TIME_ENUM";
-     const std::string DBR_TIME_CHAR_STR    = "DBR_TIME_CHAR"  ;
-     const std::string DBR_TIME_LONG_STR    = "DBR_TIME_LONG"  ;
-     const std::string DBR_TIME_DOUBLE_STR  = "DBR_TIME_DOUBLE";
-
+     const std::string DBR_TIME_ARRAY_DOUBLE_STR = "DBR_TIME_ARRAY_DOUBLE";
+     const std::string DBR_TIME_ARRY_INT_STR     = "DBR_TIME_ARRAY_INT";
+     const std::string DBR_ARRAY_DOUBLE_STR      = "DBR_ARRAY_DOUBLE";
+     const std::string DBR_TIME_STRING_STR       = "DBR_TIME_STRING";
+     const std::string DBR_TIME_DOUBLE_STR       = "DBR_TIME_DOUBLE";
+     const std::string DBR_TIME_SHORT_STR        = "DBR_TIME_SHORT";
+     const std::string DBR_TIME_FLOAT_STR        = "DBR_TIME_FLOAT";
+     const std::string DBR_TIME_ENUM_STR         = "DBR_TIME_ENUM";
+     const std::string DBR_TIME_CHAR_STR         = "DBR_TIME_CHAR";
+     const std::string DBR_TIME_LONG_STR         = "DBR_TIME_LONG";
+     const std::string DBR_ARRY_INT_STR          = "DBR_ARRAY_INT";
+     const std::string DBR_TIME_INT_STR	         = "DBR_TIME_INT";
+     const std::string DBR_DOUBLE_STR            = "DBR_DOUBLE";
+     const std::string DBR_STRING_STR            = "DBR_STRING";
+     const std::string DBR_SHORT_STR             = "DBR_SHORT";
+     const std::string DBR_FLOAT_STR             = "DBR_FLOAT";
+     const std::string DBR_ENUM_STR	             = "DBR_ENUM";
+     const std::string DBR_CHAR_STR	             = "DBR_CHAR";
+     const std::string DBR_LONG_STR	             = "DBR_LONG";
+     const std::string DBR_INT_STR	             = "DBR_INT";
      /// there are many others... e.g.
 //    DBR_STS_ENUM	10	DBR_TIME_DOUBLE	20	DBR_CTRL_INT
 //    DBR_STS_CHAR	11	DBR_GR_STRING	21	DBR_CTRL_FLOAT
@@ -323,16 +361,95 @@ namespace UTL
 //    DBR_TIME_INT	15	DBR_GR_ENUM	24	DBR_CTRL_DOUBLE	34
 
 
-     //MASK
-     const std::string DBE_VALUE_STR = "DBE_VALUE";
-     const std::string DBE_LOG_STR	 = "DBE_LOG";
-     const std::string DBE_ALARM_STR = "DBE_ALARM";
-
-
+    //MASK
+    const std::string DBE_VALUE_STR = "DBE_VALUE";
+    const std::string DBE_LOG_STR	 = "DBE_LOG";
+    const std::string DBE_ALARM_STR = "DBE_ALARM";
 
     const std::string PV_SUFFIX_EXILOCK2  = "PV_SUFFIX_EXILOCK2";
     const std::string BAD_MOD_ERR  = "BAD_MOD_ERR";
     const std::string GOOD_MOD_ERR = "GOOD_MOD_ERR";
+
+
+    // PV suffixes
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ = "PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ  = "PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET      = "PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET       = "PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET";
+    const std::string PV_SUFFIX_BODY_RETURN_TEMPERATURE         = "PV_SUFFIX_BODY_RETURN_TEMPERATURE";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_SET_READ           = "PV_SUFFIX_HVPS_VOLTAGE_SET_READ";
+    const std::string PV_SUFFIX_COLLECTOR_RETURN_RATE           = "PV_SUFFIX_COLLECTOR_RETURN_RATE";
+    const std::string PV_SUFFIX_COLLECTOR_FLOW_RATE             = "PV_SUFFIX_COLLECTOR_FLOW_RATE";
+    const std::string PV_SUFFIX_SOLENOID_FLOW_RATE              = "PV_SUFFIX_SOLENOID_FLOW_RATE";
+    const std::string PV_SUFFIX_SOLENOID_1_VOLTAGE              = "PV_SUFFIX_SOLENOID_1_VOLTAGE";
+    const std::string PV_SUFFIX_SOLENOID_2_VOLTAGE              = "PV_SUFFIX_SOLENOID_2_VOLTAGE";
+    const std::string PV_SUFFIX_SOLENOID_3_VOLTAGE              = "PV_SUFFIX_SOLENOID_3_VOLTAGE";
+    const std::string PV_SUFFIX_SOLENOID_1_CURRENT              = "PV_SUFFIX_SOLENOID_1_CURRENT";
+    const std::string PV_SUFFIX_SOLENOID_2_CURRENT              = "PV_SUFFIX_SOLENOID_2_CURRENT";
+    const std::string PV_SUFFIX_SOLENOID_3_CURRENT              = "PV_SUFFIX_SOLENOID_3_CURRENT";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_READ               = "PV_SUFFIX_HVPS_VOLTAGE_READ" ;
+    const std::string PV_SUFFIX_HVPS_CURRENT_READ               = "PV_SUFFIX_HVPS_CURRENT_READ" ;
+    const std::string PV_SUFFIX_SYSTEM_STATE_READ               = "PV_SUFFIX_SYSTEM_STATE_READ";
+    const std::string PV_SUFFIX_SYSTEM_STATE_PUT                = "PV_SUFFIX_SYSTEM_STATE_PUT";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_SET                = "PV_SUFFIX_HVPS_VOLTAGE_SET";
+    const std::string PV_SUFFIX_ION_PUMP_VOLTAGE                = "PV_SUFFIX_ION_PUMP_VOLTAGE";
+    const std::string PV_SUFFIX_ION_PUMP_CURRENT                = "PV_SUFFIX_ION_PUMP_CURRENT";
+    const std::string PV_SUFFIX_RETURN_PRESSURE                 = "PV_SUFFIX_RETURN_PRESSURE";
+    const std::string PV_SUFFIX_SUPPLY_PRESSURE                 = "PV_SUFFIX_SUPPLY_PRESSURE";
+    const std::string PV_SUFFIX_HEATER_SETBACK                  = "PV_SUFFIX_HEATER_SETBACK";
+    const std::string PV_SUFFIX_HEATER_VOLTAGE                  = "PV_SUFFIX_HEATER_VOLTAGE";
+    const std::string PV_SUFFIX_HEATER_CURRENT                  = "PV_SUFFIX_HEATER_CURRENT";
+    const std::string PV_SUFFIX_RESET_VOLTAGE                   = "PV_SUFFIX_RESET_VOLTAGE";
+    const std::string PV_SUFFIX_RESET_CURRENT                   = "PV_SUFFIX_RESET_CURRENT";
+    const std::string PV_SUFFIX_BODY_FLOW_RATE                  = "PV_SUFFIX_BODY_FLOW_RATE";
+    const std::string PV_SUFFIX_TANK_FLOW_RATE                  = "PV_SUFFIX_TANK_FLOW_RATE";
+    const std::string PV_SUFFIX_SUPPLY_TEMP                     = "PV_SUFFIX_SUPPLY_TEMP";
+    const std::string PV_SUFFIX_RETURN_TEMP                     = "PV_SUFFIX_RETURN_TEMP";
+    const std::string PV_SUFFIX_L01_RESET                       = "PV_SUFFIX_L01_RESET";
+    const std::string PV_SUFFIX_L01_FAULT                       = "PV_SUFFIX_L01_FAULT";
+
+    const std::string PV_SUFFIX_ERROR_WORD_1  = "PV_SUFFIX_ERROR_WORD_1";
+    const std::string PV_SUFFIX_ERROR_WORD_2  = "PV_SUFFIX_ERROR_WORD_2";
+    const std::string PV_SUFFIX_ERROR_WORD_3  = "PV_SUFFIX_ERROR_WORD_3";
+    const std::string PV_SUFFIX_ERROR_WORD_4  = "PV_SUFFIX_ERROR_WORD_4";
+    const std::string PV_SUFFIX_ERROR_WORD_5  = "PV_SUFFIX_ERROR_WORD_5";
+    const std::string PV_SUFFIX_ERROR_WORD_6  = "PV_SUFFIX_ERROR_WORD_6";
+    const std::string PV_SUFFIX_ERROR_WORD_7  = "PV_SUFFIX_ERROR_WORD_7";
+    const std::string PV_SUFFIX_ERROR_WORD_8  = "PV_SUFFIX_ERROR_WORD_8";
+    const std::string PV_SUFFIX_ERROR_WORD_9  = "PV_SUFFIX_ERROR_WORD_9";
+    const std::string PV_SUFFIX_ERROR_WORD_10 = "PV_SUFFIX_ERROR_WORD_10";
+    const std::string PV_SUFFIX_ERROR_WORD_11 = "PV_SUFFIX_ERROR_WORD_11";
+    const std::string PV_SUFFIX_ERROR_WORD_12 = "PV_SUFFIX_ERROR_WORD_12";
+    const std::string PV_SUFFIX_ERROR_WORD_13 = "PV_SUFFIX_ERROR_WORD_13";
+    const std::string PV_SUFFIX_ERROR_WORD_14 = "PV_SUFFIX_ERROR_WORD_14";
+    const std::string PV_SUFFIX_ERROR_WORD_15 = "PV_SUFFIX_ERROR_WORD_15";
+    const std::string PV_SUFFIX_ERROR_WORD_16 = "PV_SUFFIX_ERROR_WORD_16";
+    const std::string PV_SUFFIX_ERROR_WORD_17 = "PV_SUFFIX_ERROR_WORD_17";
+    const std::string PV_SUFFIX_ERROR_WORD_18 = "PV_SUFFIX_ERROR_WORD_18";
+    const std::string PV_SUFFIX_ERROR_WORD_19 = "PV_SUFFIX_ERROR_WORD_19";
+    const std::string PV_SUFFIX_ERROR_WORD_20 = "PV_SUFFIX_ERROR_WORD_20";
+    const std::string PV_SUFFIX_ERROR_DESC_1  = "PV_SUFFIX_ERROR_DESC_1";
+    const std::string PV_SUFFIX_ERROR_DESC_2  = "PV_SUFFIX_ERROR_DESC_2";
+    const std::string PV_SUFFIX_ERROR_DESC_3  = "PV_SUFFIX_ERROR_DESC_3";
+    const std::string PV_SUFFIX_ERROR_DESC_4  = "PV_SUFFIX_ERROR_DESC_4";
+    const std::string PV_SUFFIX_ERROR_DESC_5  = "PV_SUFFIX_ERROR_DESC_5";
+    const std::string PV_SUFFIX_ERROR_DESC_6  = "PV_SUFFIX_ERROR_DESC_6";
+    const std::string PV_SUFFIX_ERROR_DESC_7  = "PV_SUFFIX_ERROR_DESC_7";
+    const std::string PV_SUFFIX_ERROR_DESC_8  = "PV_SUFFIX_ERROR_DESC_8";
+    const std::string PV_SUFFIX_ERROR_DESC_9  = "PV_SUFFIX_ERROR_DESC_9";
+    const std::string PV_SUFFIX_ERROR_DESC_10 = "PV_SUFFIX_ERROR_DESC_10";
+    const std::string PV_SUFFIX_ERROR_DESC_11 = "PV_SUFFIX_ERROR_DESC_11";
+    const std::string PV_SUFFIX_ERROR_DESC_12 = "PV_SUFFIX_ERROR_DESC_12";
+    const std::string PV_SUFFIX_ERROR_DESC_13 = "PV_SUFFIX_ERROR_DESC_13";
+    const std::string PV_SUFFIX_ERROR_DESC_14 = "PV_SUFFIX_ERROR_DESC_14";
+    const std::string PV_SUFFIX_ERROR_DESC_15 = "PV_SUFFIX_ERROR_DESC_15";
+    const std::string PV_SUFFIX_ERROR_DESC_16 = "PV_SUFFIX_ERROR_DESC_16";
+    const std::string PV_SUFFIX_ERROR_DESC_17 = "PV_SUFFIX_ERROR_DESC_17";
+    const std::string PV_SUFFIX_ERROR_DESC_18 = "PV_SUFFIX_ERROR_DESC_18";
+    const std::string PV_SUFFIX_ERROR_DESC_19 = "PV_SUFFIX_ERROR_DESC_19";
+    const std::string PV_SUFFIX_ERROR_DESC_20 = "PV_SUFFIX_ERROR_DESC_20";
+
+
 //
 //    /// RF_GUN Keywords
 //
@@ -405,11 +522,9 @@ namespace UTL
 
     //Cameras
     const std::string PV_SUFFIX_START           ="PV_SUFFIX_ACQUIRE"    ;
-
     const std::string PV_SUFFIX_CAPTURE            ="PV_SUFFIX_CAPTURE"       ;
     const std::string PV_SUFFIX_NUM_CAPTURE            ="PV_SUFFIX_NUM_CAPTURE"  ;
     const std::string PV_SUFFIX_WRITE            ="PV_SUFFIX_WRITE"  ;
-
     const std::string PV_SUFFIX_DATA            ="PV_SUFFIX_DATA"       ;
     const std::string PV_SUFFIX_BKGRND_DATA     ="PV_SUFFIX_BKGRND_DATA";
     const std::string PV_SUFFIX_FILE_PATH       ="PV_SUFFIX_FILE_PATH"  ;
@@ -422,6 +537,7 @@ namespace UTL
     const std::string PV_SUFFIX_SY              ="PV_SUFFIX_SY"         ;
     const std::string PV_SUFFIX_SXY             ="PV_SUFFIX_SXY"        ;
     const std::string PV_SUFFIX_CAM_STATE       ="PV_SUFFIX_CAM_STATE"  ;
+    // Camera Object Componentns
     const std::string SCREEN_PV                 ="SCREEN_PV"            ;
     const std::string X_CENTER                  ="X_CENTER"             ;
     const std::string Y_CENTER                  ="Y_CENTER"             ;
@@ -456,55 +572,55 @@ namespace UTL
     // and the screenConfigReader
     const std::string H_HOLE_6p3_MM_POS = "H_HOLE_6p3_MM_POS";
     const std::string V_HOLE_6p3_MM_POS = "V_HOLE_6p3_MM_POS";
+    const std::string V_SLIT_50_UM_POS  = "V_SLIT_50_UM_POS";
+    const std::string H_SLIT_50_UM_POS  = "H_SLIT_50_UM_POS";
+    const std::string H_SLIT_25_UM_POS  = "H_SLIT_25_UM_POS";
+    const std::string V_SLIT_25_UM_POS  = "V_SLIT_25_UM_POS";
+    const std::string H_HOLE_10_MM_POS  = "H_HOLE_10_MM_POS";
+    const std::string V_HOLE_10_MM_POS  = "V_HOLE_10_MM_POS";
     const std::string HOLE_6p3_MM_POS   = "HOLE_6p3_MM_POS";
-    const std::string V_SLIT_50_UM_POS = "V_SLIT_50_UM_POS";
-    const std::string H_SLIT_50_UM_POS = "H_SLIT_50_UM_POS";
-    const std::string SLIT_50_UM_POS   = "SLIT_50_UM_POS";
-    const std::string H_SLIT_25_UM_POS = "H_SLIT_25_UM_POS";
-    const std::string V_SLIT_25_UM_POS = "V_SLIT_25_UM_POS";
-    const std::string SLIT_25_UM_POS   = "SLIT_25_UM_POS";
-    const std::string H_HOLE_10_MM_POS = "H_HOLE_10_MM_POS";
-    const std::string V_HOLE_10_MM_POS = "V_HOLE_10_MM_POS";
-    const std::string HOLE_10_MM_POS   = "HOLE_10_MM_POS";
-    const std::string H_MIRROR_POS = "H_MIRROR_POS";
-    const std::string V_MIRROR_POS = "V_MIRROR_POS";
-    const std::string MIRROR_POS   = "MIRROR_POS";
-    const std::string V_SLIT_POS = "V_SLIT_POS";
-    const std::string H_SLIT_POS = "H_SLIT_POS";
-    const std::string SLIT_POS   = "SLIT_POS";
-    const std::string H_YAG_POS = "H_YAG_POS";
-    const std::string V_YAG_POS = "V_YAG_POS";
-    const std::string YAG_POS   = "YAG_POS";
-    const std::string H_OUT_POS = "H_OUT_POS";
-    const std::string V_OUT_POS = "V_OUT_POS";
-    const std::string OUT_POS   = "OUT_POS";
-    const std::string H_RF_POS  = "H_RF_POS";
-    const std::string V_RF_POS  = "V_RF_POS";
-    const std::string RF_POS    = "RF_POS";
+    const std::string SLIT_50_UM_POS    = "SLIT_50_UM_POS";
+    const std::string SLIT_25_UM_POS    = "SLIT_25_UM_POS";
+    const std::string HOLE_10_MM_POS    = "HOLE_10_MM_POS";
+    const std::string H_MIRROR_POS      = "H_MIRROR_POS";
+    const std::string V_MIRROR_POS      = "V_MIRROR_POS";
+    const std::string MIRROR_POS        = "MIRROR_POS";
+    const std::string V_SLIT_POS        = "V_SLIT_POS";
+    const std::string H_SLIT_POS        = "H_SLIT_POS";
+    const std::string SLIT_POS          = "SLIT_POS";
+    const std::string H_YAG_POS         = "H_YAG_POS";
+    const std::string V_YAG_POS         = "V_YAG_POS";
+    const std::string YAG_POS           = "YAG_POS";
+    const std::string H_OUT_POS         = "H_OUT_POS";
+    const std::string V_OUT_POS         = "V_OUT_POS";
+    const std::string H_RF_POS          = "H_RF_POS";
+    const std::string OUT_POS           = "OUT_POS";
+    const std::string V_RF_POS          = "V_RF_POS";
+    const std::string RF_POS            = "RF_POS";
     // other screen config file parameters
-    const std::string SCREEN_DRIVER_POS_TOLERANCE = "SCREEN_DRIVER_POS_TOLERANCE";
     // defintiions of each bit for the STA int
-    const std::string NUM_STA_BITS              = "NUM_STA_BITS";
-    const std::string STA_BIT                   = "STA_BIT";
-    const std::string TRAJECTORY_IN_PROGRESS    = "TRAJECTORY_IN_PROGRESS";
-    const std::string HISTORICAL_POS_HW_LIMIT   = "HISTORICAL_POS_HW_LIMIT";
-    const std::string HISTORICAL_NEG_HW_LIMIT   = "HISTORICAL_NEG_HW_LIMIT";
-    const std::string INDEX_REPORT_AVALABLE     = "INDEX_REPORT_AVALABLE";
-    const std::string WRAPAROUND_OCCURRED       = "WRAPAROUND_OCCURRED";
-    const std::string EXCESSIVE_POSITION_ERROR  = "EXCESSIVE_POSITION_ERROR";
-    const std::string TEMPERATURE_FAULT         = "TEMPERATURE_FAULT";
-    const std::string MOTOR_IS_OFF              = "MOTOR_IS_OFF";
-    const std::string INDEX_INPUT               = "INDEX_INPUT";
-    const std::string POS_HW_LIMIT_ASSERTED     = "POS_HW_LIMIT_ASSERTED";
-    const std::string NEG_HW_LIMIT_ASSERTED     = "NEG_HW_LIMIT_ASSERTED";
-    const std::string MATHS_OVERFLOW            = "MATHS_OVERFLOW";
-    const std::string INDEX_ERROR               = "INDEX_ERROR";
-    const std::string SYNTAX_ERROR              = "SYNTAX_ERROR";
-    const std::string OVER_CURRENT              = "OVER_CURRENT";
-    const std::string PROGRAMME_CHECKSUM_ERROR  = "PROGRAMME_CHECKSUM_ERROR";
+    const std::string SCREEN_DRIVER_POS_TOLERANCE = "SCREEN_DRIVER_POS_TOLERANCE";
+    const std::string EXCESSIVE_POSITION_ERROR    = "EXCESSIVE_POSITION_ERROR";
+    const std::string PROGRAMME_CHECKSUM_ERROR    = "PROGRAMME_CHECKSUM_ERROR";
+    const std::string HISTORICAL_POS_HW_LIMIT     = "HISTORICAL_POS_HW_LIMIT";
+    const std::string HISTORICAL_NEG_HW_LIMIT     = "HISTORICAL_NEG_HW_LIMIT";
+    const std::string TRAJECTORY_IN_PROGRESS      = "TRAJECTORY_IN_PROGRESS";
+    const std::string POS_HW_LIMIT_ASSERTED       = "POS_HW_LIMIT_ASSERTED";
+    const std::string NEG_HW_LIMIT_ASSERTED       = "NEG_HW_LIMIT_ASSERTED";
+    const std::string INDEX_REPORT_AVALABLE       = "INDEX_REPORT_AVALABLE";
+    const std::string WRAPAROUND_OCCURRED         = "WRAPAROUND_OCCURRED";
+    const std::string TEMPERATURE_FAULT           = "TEMPERATURE_FAULT";
+    const std::string MATHS_OVERFLOW              = "MATHS_OVERFLOW";
+    const std::string NUM_STA_BITS                = "NUM_STA_BITS";
+    const std::string MOTOR_IS_OFF                = "MOTOR_IS_OFF";
+    const std::string SYNTAX_ERROR                = "SYNTAX_ERROR";
+    const std::string INDEX_INPUT                 = "INDEX_INPUT";
+    const std::string OVER_CURRENT                = "OVER_CURRENT";
+    const std::string INDEX_ERROR                 = "INDEX_ERROR";
+    const std::string STA_BIT                     = "STA_BIT";
     // master list of everything that can go on a screen driver cassette
     // probably should try and  get rid of this
-    const std::vector< std::string > allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
+    const std::vector<std::string> allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
                                                                    HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
                                                                    SLIT_POS, OUT_POS };
 

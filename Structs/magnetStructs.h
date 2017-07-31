@@ -77,7 +77,8 @@ namespace magnetStructs
                        maxI(UTL::DUMMY_DOUBLE),
                        minI(UTL::DUMMY_DOUBLE),
                        psuRoot(SAME_AS_PV_ROOT),
-                       SETIequalREADI(false)
+                       SETIequalREADI(false),
+                       psuState(ERROR)
                        {}
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_PSU_STATE psuState;
@@ -88,11 +89,11 @@ namespace magnetStructs
                setsiWithPol, // use this value in the controller to actually set the SI  (i.e. write-only)
                riWithPol, riTolerance, position, magneticLength, degTolerance, maxI, minI;
         std::string name, pvRoot, psuRoot, manufacturer, serialNumber, measurementDataLocation,magnetBranch;
-        std::vector< double > degValues, fieldIntegralCoefficients;
+        std::vector<double> degValues, fieldIntegralCoefficients;
         size_t numIlocks,numDegaussSteps, maxWaitTime, numDegaussElements;
         MAG_ILOCK_STATE iLock;
-        std::map< MAG_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< MAG_PV_TYPE, pvStruct > pvComStructs;
+        std::map<MAG_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<MAG_PV_TYPE, pvStruct> pvComStructs;
     };
 
     struct monitorStruct
@@ -112,8 +113,8 @@ namespace magnetStructs
     {   // proviude a default constructor
         degaussValues():numDegaussSteps(UTL::ZERO_INT), maxWaitTime(UTL::ZERO_INT), numDegaussElements(0){}//MAGIC_NUMBER
         size_t numDegaussSteps, maxWaitTime, numDegaussElements;
-        std::map< std::string, std::vector< double > > degValues;
-        std::map< std::string, double > degTolerance;
+        std::map<std::string, std::vector<double>> degValues;
+        std::map<std::string, double> degTolerance;
     };
     /// This holds all info for actually degaussing some magnets, passed into new thread when degaussing
     struct degaussStruct
@@ -133,9 +134,9 @@ namespace magnetStructs
         magnetStateStruct():numMags(UTL::ZERO_INT),machineArea(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA){};
         size_t numMags;
         VELA_ENUM::MACHINE_AREA machineArea;
-        std::vector< std::string > magNames;
-        std::vector< MAG_PSU_STATE > psuStates;
-        std::vector< double > siValues,riValues;
+        std::vector<std::string> magNames;
+        std::vector<MAG_PSU_STATE> psuStates;
+        std::vector<double> siValues,riValues;
     };
 }
 #endif // _VELA_MAGNET_STRUCTS_H_

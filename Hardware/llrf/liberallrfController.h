@@ -38,12 +38,11 @@
 class liberaLLRFController : public controller
 {
     public:
-        /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
-        liberaLLRFController();
+        //liberaLLRFController();
         liberaLLRFController(const bool show_messages,const bool show_debug_messagese,
                        const std::string & laserConf,const bool startVirtualMachine,
                        const bool shouldStartEPICs,const llrfStructs::LLRF_TYPE type);
-        ~liberaLLRFController( );
+        ~liberaLLRFController();
 
         // GETTERS
         double getAmpFF();
@@ -81,54 +80,43 @@ class liberaLLRFController : public controller
         void setPhiCalibration(double value);
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
-
-
+        // Qantifiers
         bool Is_TracePV(llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_TracePV(llrfStructs::LLRF_PV_TYPE pv);
-
         bool isMonitoring(llrfStructs::LLRF_PV_TYPE pv);
         bool isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv);
-
+        // Starters
         void startTraceMonitoring();
         bool startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
-
         bool startCavFwdTraceMonitor();
         bool startCavRevTraceMonitor();
         bool startKlyFwdTraceMonitor();
         bool startKlyRevTraceMonitor();
-
+        // Stoppers
         bool stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
         void stopTraceMonitoring();
         bool stopCavFwdTraceMonitor();
         bool stopCavRevTraceMonitor();
         bool stopKlyFwdTraceMonitor();
         bool stopKlyRevTraceMonitor();
-
-
-
-      // These are pure virtual methods, so need to have some implmentation in derived classes
+        // pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT( double val );
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
-      // any functions that return a map need a wrapper to convert to a python dictionary
-      // (we need the functions that return std::map types when building c++ applications)
-#ifdef BUILD_DLL
-//        boost::python::dict getILockStates_Py( std::string magName );
-//        boost::python::dict getILockStatesStr_Py( std::string magName );
+        void   set_CA_PEND_IO_TIMEOUT(double val);
+        std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> getILockStates(const std::string & name);
+        std::map<VELA_ENUM::ILOCK_NUMBER, std::string> getILockStatesStr(const std::string & name);
+        // any functions that return a map need a wrapper to convert to a python dictionary
+        // (we need the functions that return std::map types when building c++ applications)
+//#ifdef BUILD_DLL
+//        boost::python::dict getILockStates_Pystd::string magName);
+//        boost::python::dict getILockStatesStr_Pystd::string magName);
 //        boost::python::dict getMagPSUStateDefinition();
-#endif // BUILD_DLL
+//#endif // BUILD_DLL
 
     protected:
     private:
 
         void initialise();
-
         const bool shouldStartEPICs;
-
         liberallrfInterface localInterface;
 };
-
-
-
 #endif // VELA_MAG_CONTROLLER_H_

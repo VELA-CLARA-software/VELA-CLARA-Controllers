@@ -52,7 +52,7 @@ gunModInterface::~gunModInterface()
 //    }
 //    debugMessage( "gunModInterface DESTRUCTOR COMPLETE ");
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
 //void gunModInterface::killMonitor( pilaserStructs::monitorStruct * ms )
 //{
 //    int status = ca_clear_subscription( ms -> EVID );
@@ -61,7 +61,7 @@ gunModInterface::~gunModInterface()
 ////    else
 //        //debugMessage("ERROR gunModInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
 //}
-////______________________________________________________________________________
+//______________________________________________________________________________
 void gunModInterface::initialise()
 {
     /// The config file reader
@@ -140,7 +140,7 @@ void gunModInterface::addChannel( const std::string & pvRoot, rfModStructs::pvSt
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
     debugMessage( "Create channel to ", s1 );
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
 void gunModInterface::startMonitors()
 {
     continuousMonitorStructs.clear();
@@ -157,14 +157,20 @@ void gunModInterface::startMonitors()
                                (void*)continuousMonitorStructs.back(),
                                &continuousMonitorStructs.back() -> EVID);
     }
-    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to gun modulator Monitors", "!!TIMEOUT!! Subscription to gun modulator monitors failed" );
+    int status = sendToEpics("ca_create_subscription",
+                             "Succesfully Subscribed to gun modulator Monitors",
+                             "!!TIMEOUT!! Subscription to gun modulator monitors failed");
     if ( status == ECA_NORMAL )
-        allMonitorsStarted = true; /// interface base class member
+        allMonitorsStarted = true; // interface base class member
 }
-////____________________________________________________________________________________________
+//____________________________________________________________________________________________
+const rfModStructs::gunModObject& gunModInterface::getGunObjConstRef()
+{
+    return gunMod;
+}
+//____________________________________________________________________________________________
 void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
 {
-
     rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
     switch(ms -> monType)
     {
@@ -240,68 +246,7 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
             break;
     }
 }
-////____________________________________________________________________________________________
-//double gunModInterface::getHpos()
-//{
-//    return pilaser.hPos;
-//}
-////____________________________________________________________________________________________
-//double gunModInterface::getVpos()
-//{
-//    return pilaser.vPos;
-//}
-////____________________________________________________________________________________________
-//double gunModInterface::getIntensity()
-//{
-//    return pilaser.intensity;
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setHpos(double value)
-//{
-//    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::H_POS),value);
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setHpos(int value)
-//{
-//    return setHpos((double)value);
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setVpos(double value)
-//{
-//    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::V_POS),value);
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setVpos(int value)
-//{
-//    return setVpos((double)value);
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setIntensity(double value)
-//{
-//    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::INTENSITY),value);
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setIntensity(int value)
-//{
-//    return setIntensity((double)value);
-//}
-////____________________________________________________________________________________________
-//const pilaserStructs::pilaserObject& gunModInterface::getPILObjConstRef()
-//{
-//    return pilaser;
-//}
-////____________________________________________________________________________________________
-//bool gunModInterface::setValue( pilaserStructs::pvStruct& pvs, double value)
-//{
-//    bool ret = false;
-//    ca_put(pvs.CHTYPE,pvs.CHID,&value);
-//    std::stringstream ss;
-//    ss << "Timeout setting pilaser," << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
-//    int status = sendToEpics("ca_put","",ss.str().c_str());
-//    if(status==ECA_NORMAL)
-//        ret=true;
-//    return ret;
-//}
+//____________________________________________________________________________________________
 
 
 

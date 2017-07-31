@@ -139,31 +139,31 @@ liberaLLRFController& VCllrf::physical_VELA_HRRG_LLRF_Controller()
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::virtual_L01_LLRF_Controller()
 {
-    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    std::cout << "Creating virtual_L01_LLRF_Controller object" << std::endl;
     return getController(withVM,withEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::physical_L01_LLRF_Controller()
 {
-    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    std::cout << "Creating physical_L01_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::offline_L01_LLRF_Controller()
 {
-    std::cout << "Creating physical_VELA_HRRG_LLRF_Controller object" << std::endl;
+    std::cout << "Creating offline_L01_LLRF_Controller object" << std::endl;
     return getController(withoutVM,withoutEPICS,llrfStructs::L01);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrfStructs::LLRF_TYPE llrfType)
 {
     bool createobject = true;
-    if( isaGUN(llrfType)&&GUN_LLRF_Controller_Obj )
+    if(isaGUN(llrfType)&&GUN_LLRF_Controller_Obj)
     {
         std::cout << "A Gun object already exists. Please use killGun() to delete current Gun first." << std::endl;
         createobject = false;
     }
-    if( createobject )
+    if(createobject)
     {
         switch(llrfType)
         {

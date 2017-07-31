@@ -31,11 +31,9 @@ namespace llrfStructs
                                                      (LIB_KLY_REV)
                                                      (LIB_TIME_VECTOR)
                                                      (LIB_PULSE_LENGTH)
-
                                                      (LIB_PULSE_OFFSET)
-
                                                      (AMP_MVM)(PHI_DEG)(UNKNOWN)
-                                                    )
+                                                   )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)(CLARA_LRRG)(VELA_HRRG)(VELA_LRRG)
                                                   (L01)(UNKNOWN_TYPE))
     // monType is to switch in the staticCallbackFunction
@@ -64,9 +62,15 @@ namespace llrfStructs
     //a custom struct will always stand up better under maintenance.
     struct rf_trace_data
     {
-        rf_trace_data():count(0){}
-        size_t              count;
+        rf_trace_data():
+            shot(0),
+            time(0)
+            {}
+        size_t              shot;
         std::vector<double> value;
+        epicsTimeStamp etime; // epics timestamp for value
+        double         time; // epics timestamp doncerted into nano-sec
+        std::string    timeStr; // epics timestamp doncerted into nano-sec
     };
     // The main hardware object
     struct liberallrfObject

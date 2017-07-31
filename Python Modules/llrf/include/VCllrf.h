@@ -48,7 +48,7 @@ class VCllrf
 
         void killGun();
 
-        //liberaLLRFController& getliberaLLRFController( VELA_ENUM::MACHINE_MODE mode );
+        //liberaLLRFController& getliberaLLRFController(VELA_ENUM::MACHINE_MODE mode);
 
     protected:
 
@@ -99,52 +99,52 @@ bool(liberaLLRFController::*stopTraceMonitoring_2)(llrfStructs::LLRF_PV_TYPE pv)
 
 
 using namespace boost::python;
-BOOST_PYTHON_MODULE( VELA_CLARA_LLRFControl )
+BOOST_PYTHON_MODULE(VELA_CLARA_LLRFControl)
 {
     // Things that you want to use in python muct be exposed:
     // containers
     class_<std::vector< std::string > >("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string >>() )
+            .def(vector_indexing_suite< std::vector< std::string >>())
             ;
     class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>() )
+            .def(vector_indexing_suite< std::vector<double>>())
             ;
     enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
+        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
+        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
         ;
     enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
         ;
     enum_<llrfStructs::LLRF_PV_TYPE>("LLRF_PV_TYPE")
-        .value("LIB_LOCK",   llrfStructs::LLRF_PV_TYPE::LIB_LOCK   )
-        .value("LIB_AMP_FF",  llrfStructs::LLRF_PV_TYPE::LIB_AMP_FF  )
-        .value("LIB_AMP_SP", llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP )
-        .value("LIB_PHI_FF", llrfStructs::LLRF_PV_TYPE::LIB_PHI_FF )
-        .value("LIB_PHI_SP", llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP )
-        .value("LIB_CAV_FWD", llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD )
-        .value("LIB_CAV_REV", llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV )
-        .value("LIB_KLY_FWD", llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD )
-        .value("LIB_KLY_REV", llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV )
-        .value("LIB_TIME_VECTOR", llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR )
-        .value("LIB_PULSE_LENGTH", llrfStructs::LLRF_PV_TYPE::LIB_PULSE_LENGTH )
-        .value("LIB_PULSE_OFFSET", llrfStructs::LLRF_PV_TYPE::LIB_PULSE_OFFSET )
-        .value("LIB_PULSE_OFFSET", llrfStructs::LLRF_PV_TYPE::LIB_PULSE_OFFSET )
-        .value("AMP_MVM", llrfStructs::LLRF_PV_TYPE::AMP_MVM )
-        .value("PHI_DEG", llrfStructs::LLRF_PV_TYPE::PHI_DEG )
-        .value("UNKNOWN", llrfStructs::LLRF_PV_TYPE::UNKNOWN )
+        .value("LIB_LOCK",   llrfStructs::LLRF_PV_TYPE::LIB_LOCK  )
+        .value("LIB_AMP_FF",  llrfStructs::LLRF_PV_TYPE::LIB_AMP_FF )
+        .value("LIB_AMP_SP", llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP)
+        .value("LIB_PHI_FF", llrfStructs::LLRF_PV_TYPE::LIB_PHI_FF)
+        .value("LIB_PHI_SP", llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP)
+        .value("LIB_CAV_FWD", llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD)
+        .value("LIB_CAV_REV", llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV)
+        .value("LIB_KLY_FWD", llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD)
+        .value("LIB_KLY_REV", llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV)
+        .value("LIB_TIME_VECTOR", llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR)
+        .value("LIB_PULSE_LENGTH", llrfStructs::LLRF_PV_TYPE::LIB_PULSE_LENGTH)
+        .value("LIB_PULSE_OFFSET", llrfStructs::LLRF_PV_TYPE::LIB_PULSE_OFFSET)
+        .value("LIB_PULSE_OFFSET", llrfStructs::LLRF_PV_TYPE::LIB_PULSE_OFFSET)
+        .value("AMP_MVM", llrfStructs::LLRF_PV_TYPE::AMP_MVM)
+        .value("PHI_DEG", llrfStructs::LLRF_PV_TYPE::PHI_DEG)
+        .value("UNKNOWN", llrfStructs::LLRF_PV_TYPE::UNKNOWN)
         ;
 
     enum_<llrfStructs::LLRF_TYPE>("LLRF_TYPE")
-        .value("CLARA_HRRG",  llrfStructs::LLRF_TYPE::CLARA_HRRG  )
-        .value("CLARA_LRRG",  llrfStructs::LLRF_TYPE::CLARA_LRRG  )
-        .value("VELA_HRRG", llrfStructs::LLRF_TYPE::VELA_HRRG )
-        .value("VELA_LRRG", llrfStructs::LLRF_TYPE::VELA_LRRG )
-        .value("L01", llrfStructs::LLRF_TYPE::L01 )
-        .value("UNKNOWN_TYPE", llrfStructs::LLRF_TYPE::UNKNOWN_TYPE )
+        .value("CLARA_HRRG",  llrfStructs::LLRF_TYPE::CLARA_HRRG )
+        .value("CLARA_LRRG",  llrfStructs::LLRF_TYPE::CLARA_LRRG )
+        .value("VELA_HRRG", llrfStructs::LLRF_TYPE::VELA_HRRG)
+        .value("VELA_LRRG", llrfStructs::LLRF_TYPE::VELA_LRRG)
+        .value("L01", llrfStructs::LLRF_TYPE::L01)
+        .value("UNKNOWN_TYPE", llrfStructs::LLRF_TYPE::UNKNOWN_TYPE)
         ;
 // map example
 //    class_<std::map<screenStructs::SCREEN_STATE,bool>>("std_map_SCREEN_STATE_bool")
@@ -156,14 +156,23 @@ BOOST_PYTHON_MODULE( VELA_CLARA_LLRFControl )
     // we have to tell boost.python about pure virtual methods in abstract base classes
     boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
         ("controller", boost::python::no_init) /// force Python to not construct (init) this object
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
+        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
+        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
+        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)     )
+        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)        )
+        ;
+
+    // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
+    boost::python::class_<llrfStructs::rf_trace_data,boost::noncopyable>
+        ("rf_trace_data","rf_trace_data Doc String", boost::python::no_init)
+        .def_readonly("trace",         &llrfStructs::rf_trace_data::value,"LLRF Trace Values")
+        .def_readonly("timeStr",         &llrfStructs::rf_trace_data::timeStr,"LLRF Trace Epics TimeStamp (string)")
+        .def_readonly("time",          &llrfStructs::rf_trace_data::time,"LLRF Trace Epics TimeStamp (ns)")
+        .def_readonly("shot",          &llrfStructs::rf_trace_data::shot,"LLRF Trace counter (number of traces recieved since monitoring started)")
         ;
     // liberallrfObject object struct to be exposed, used when returning a liberallrfObject reference
     boost::python::class_<llrfStructs::liberallrfObject,boost::noncopyable>
-        ("pilaserObject","pilaserObject Doc String", boost::python::no_init)
+        ("liberallrfObject","liberallrfObject Doc String", boost::python::no_init)
         .def_readonly("name",          &llrfStructs::liberallrfObject::name,"LLRF Object Name")
         .def_readonly("pvRoot",        &llrfStructs::liberallrfObject::pvRoot,"PV root")
         .def_readonly("phiCalibration",&llrfStructs::liberallrfObject::phiCalibration,"Linear Phase in LLRF units to degrees")
@@ -179,16 +188,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_LLRFControl )
         .def_readonly("type", &llrfStructs::liberallrfObject::type,"LLRF Controller Type.")
         .def_readonly("islocked", &llrfStructs::liberallrfObject::islocked,"LLRF Amplitude &Phase Lock.")
         .def_readonly("powerTraceLength", &llrfStructs::liberallrfObject::powerTraceLength,"Number of elements in a power trace.")
-        .def_readonly("cav_r_power", &llrfStructs::liberallrfObject::cav_r_power,"Cavity Reverse Power trace.")
-        .def_readonly("cav_f_power", &llrfStructs::liberallrfObject::cav_f_power,"Cavity Forward Power trace.")
-        .def_readonly("kly_f_power", &llrfStructs::liberallrfObject::kly_f_power,"Klystron Forward Power trace.")
-        .def_readonly("kly_r_power", &llrfStructs::liberallrfObject::kly_r_power,"Klystron Reverse Power trace.")
+        .def_readonly("cav_r_power", &llrfStructs::liberallrfObject::cav_r_power,"Cavity Reverse Power race data.")
+        .def_readonly("cav_f_power", &llrfStructs::liberallrfObject::cav_f_power,"Cavity Forward Power trace data.")
+        .def_readonly("kly_f_power", &llrfStructs::liberallrfObject::kly_f_power,"Klystron Forward Power trace data.")
+        .def_readonly("kly_r_power", &llrfStructs::liberallrfObject::kly_r_power,"Klystron Reverse Power trace data.")
         .def_readonly("time_vector", &llrfStructs::liberallrfObject::time_vector,"Power trace time values.")
         ;
 
 boost::python::class_<liberaLLRFController, boost::python::bases<controller>, boost::noncopyable>
-    ("liberaLLRFController","liberaLLRFController Doc String",boost::python::no_init   )
-    .def("getILockStates",    &liberaLLRFController::getILockStates )
+    ("liberaLLRFController","liberaLLRFController Doc String",boost::python::no_init  )
+    .def("getILockStates",    &liberaLLRFController::getILockStates)
     .def("getType",           &liberaLLRFController::getType,"Return the Type of LLRF controller.")
     .def("getAmpFF",          &liberaLLRFController::getAmpFF,"Return Amplitude(FF) in LLRF Units")
     .def("getAmpSP",          &liberaLLRFController::getAmpSP,"Return Amplitude(SP) in LLRF Units")
@@ -223,8 +232,6 @@ boost::python::class_<liberaLLRFController, boost::python::bases<controller>, bo
     .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(boost::python::arg("value")),"Set linear calibration of phase from LLRF units to degrees")
     .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(boost::python::arg("value")),"Set linear calibration of ampliutude from LLRF units to MV/m")
     .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(boost::python::arg("value")),"Set the Crest Phi value in LLRF Units")
-
-
     .def("Is_TracePV",  &liberaLLRFController::Is_TracePV,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
     .def("IsNot_TracePV",  &liberaLLRFController::IsNot_TracePV,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
     .def("isMonitoring",  &liberaLLRFController::isMonitoring,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")
@@ -235,17 +242,14 @@ boost::python::class_<liberaLLRFController, boost::python::bases<controller>, bo
     .def("startCavRevTraceMonitor", &liberaLLRFController::startCavRevTraceMonitor,"Start Cavity Reverse Power Trace Monitoring")
     .def("startKlyFwdTraceMonitor", &liberaLLRFController::startKlyFwdTraceMonitor,"Start Klystron Forward Power Trace Monitoring")
     .def("startKlyRevTraceMonitor", &liberaLLRFController::startKlyRevTraceMonitor,"Start Klystron Reverse Power Trace Monitoring")
-    .def("startKlyRevTraceMonitor", &liberaLLRFController::startKlyRevTraceMonitor,"Start Klystron Reverse Power Trace Monitoring")
-
     .def("stopTraceMonitoring", stopTraceMonitoring_1,"Stop all LLRF Trace Monitors")
-    .def("startTraceMonitoring",stopTraceMonitoring_2,(boost::python::arg("LLRF_PV_TYPE")),"Start Trace Monitoring for LLRF_PV_TYPE")
-    .def("startCavFwdTraceMonitor", &liberaLLRFController::stopCavFwdTraceMonitor,"Stop Cavity Forward Power Trace Monitoring")
-    .def("startCavRevTraceMonitor", &liberaLLRFController::stopCavRevTraceMonitor,"Stop Cavity Reverse Power Trace Monitoring")
-    .def("startKlyFwdTraceMonitor", &liberaLLRFController::stopKlyFwdTraceMonitor,"Stop Klystron Forward Power Trace Monitoring")
-    .def("startKlyRevTraceMonitor", &liberaLLRFController::stopKlyRevTraceMonitor,"Stop Klystron Reverse Power Trace Monitoring")
-    .def("startKlyRevTraceMonitor", &liberaLLRFController::stopKlyRevTraceMonitor,"Stop Klystron Reverse Power Trace Monitoring")
-    .def("get_CA_PEND_IO_TIMEOUT",  &liberaLLRFController::get_CA_PEND_IO_TIMEOUT,"Time before Timeout when getting values")
-    .def("set_CA_PEND_IO_TIMEOUT",  &liberaLLRFController::set_CA_PEND_IO_TIMEOUT,"Time before Timeout when setting values")
+    .def("stopTraceMonitoring",stopTraceMonitoring_2,(boost::python::arg("LLRF_PV_TYPE")),"Stop Trace Monitoring for LLRF_PV_TYPE")
+    .def("stopCavFwdTraceMonitor", &liberaLLRFController::stopCavFwdTraceMonitor,"Stop Cavity Forward Power Trace Monitoring")
+    .def("stopCavRevTraceMonitor", &liberaLLRFController::stopCavRevTraceMonitor,"Stop Cavity Reverse Power Trace Monitoring")
+    .def("stopKlyFwdTraceMonitor", &liberaLLRFController::stopKlyFwdTraceMonitor,"Stop Klystron Forward Power Trace Monitoring")
+    .def("stopKlyRevTraceMonitor", &liberaLLRFController::stopKlyRevTraceMonitor,"Stop Klystron Reverse Power Trace Monitoring")
+    .def("get_CA_PEND_IO_TIMEOUT", &liberaLLRFController::get_CA_PEND_IO_TIMEOUT,"Time before Timeout when getting values")
+    .def("set_CA_PEND_IO_TIMEOUT", &liberaLLRFController::set_CA_PEND_IO_TIMEOUT,"Time before Timeout when setting values")
     ;
 
     // The main class that creates all the controller objects
@@ -274,11 +278,11 @@ boost::python::class_<liberaLLRFController, boost::python::bases<controller>, bo
              return_value_policy<reference_existing_object>())
         .def("offline_L01_LLRF_Controller", &VCllrf::offline_L01_LLRF_Controller,
              return_value_policy<reference_existing_object>())
-        .def("killGun",          &VCllrf::killGun )
-        .def("setQuiet",         &VCllrf::setQuiet )
-        .def("setVerbose",       &VCllrf::setVerbose )
-        .def("setMessage",       &VCllrf::setMessage )
-        .def("setDebugMessage",  &VCllrf::setDebugMessage )
+        .def("killGun",          &VCllrf::killGun)
+        .def("setQuiet",         &VCllrf::setQuiet)
+        .def("setVerbose",       &VCllrf::setVerbose)
+        .def("setMessage",       &VCllrf::setMessage)
+        .def("setDebugMessage",  &VCllrf::setDebugMessage)
         ;
 }
 

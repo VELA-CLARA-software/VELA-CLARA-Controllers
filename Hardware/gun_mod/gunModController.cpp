@@ -35,6 +35,11 @@ shouldStartEPICs(shouldStartEPICs)
 //______________________________________________________________________________
 gunModController::~gunModController(){}    //dtor
 //______________________________________________________________________________
+const rfModStructs::gunModObject& gunModController::getGunObjConstRef()
+{
+    return localInterface.getGunObjConstRef();
+}
+//______________________________________________________________________________
 //void gunModController::initialise()
 //{
 //    if( localInterface.interfaceInitReport(shouldStartEPICs) )
