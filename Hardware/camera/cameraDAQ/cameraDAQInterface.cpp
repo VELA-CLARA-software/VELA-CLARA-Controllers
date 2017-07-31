@@ -12,59 +12,54 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "cameraInterface.h"
+#include "cameraDAQInterface.h"
 //djs
 #include "configDefinitions.h"
+//#include "date.h"
+
 // stl
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 #include <chrono>
+#include <ctime>
 #include <thread>
 
 //  __  ___  __   __    /  __  ___  __   __
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-cameraInterface::cameraInterface( const std::string &Conf,
+cameraDAQInterface::cameraDAQInterface( const std::string &Conf,
                                   const bool startVirtualMachine,
                                   const bool* show_messages_ptr,
                                   const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
                                   const VELA_ENUM::MACHINE_AREA myMachineArea ):
 configReader( Conf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-shouldStartEPICs( shouldStartEPICs ), myMachineArea(myMachineArea),selectedCamera(allCamData["VC"])
+cameraInterface( show_messages_ptr, show_debug_messages_ptr ),
+shouldStartEPICs( shouldStartEPICs ), myMachineArea(myMachineArea)
 {
     initialise();
 }
-cameraInterface::~cameraInterface()
+cameraDAQInterface::~cameraDAQInterface()
 {
 }
-void cameraInterface::killMonitor( cameraStructs::monitorStruct * ms )
-{
-    int status = ca_clear_subscription( ms -> EVID );
-    if( status == ECA_NORMAL)
-        debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
-    else
-        debugMessage("ERROR: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
-}
-void cameraInterface::initialise()
+void cameraDAQInterface::initialise()
 {
     /// The config file reader
-    message("The cameraInterface is going to try and read the config file.");
+    message("The cameraDAQInterface is going to try and read the config file.");
     configFileRead = configReader.readConfig();
     std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
     if(configFileRead)
     {
-        message("The cameraInterface has read the config file, acquiring objects");
+        message("The cameraDAQInterface has read the config file, acquiring objects");
         // initialise the objects based on what is read from the config file
         bool getDataSuccess = initObjects();
         if( getDataSuccess )
         {
             if( shouldStartEPICs )
             {
-                message("The cameraInterface has acquired objects, connecting to EPICS");
+                message("The cameraDAQInterface has acquired objects, connecting to EPICS");
                 //std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
                 initChids();
@@ -74,28 +69,36 @@ void cameraInterface::initialise()
                 std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
             }
             else
-             message("The cameraInterface has acquired objects, NOT connecting to EPICS");
+             message("The cameraDAQInterface has acquired objects, NOT connecting to EPICS");
         }
         else
-            message( "!!!The cameraInterface received an Error while getting magnet data!!!" );
+            message( "!!!The cameraDAQInterface received an Error while getting Camera DAQ data!!!" );
     }
     else
-        message("The cameraInterface  Failed to Read the configFile.");
+        message("The cameraDAQInterface  Failed to Read the configFile.");
 }
-bool cameraInterface::initObjects()
+void cameraDAQInterface::killMonitor( cameraStructs::monitorDAQStruct * ms )
 {
-    bool camDatSuccess = configReader.getCamData( allCamData );
-    //degStruct = configReader.getDeguassStruct();
-    //addDummyElementToAllMAgnetData();
-    // set the machine area on each magent, this allows for flavour switching functions, such as switchON etc..
-    for( auto && it : allCamData )
+    int status = ca_clear_subscription( ms -> EVID );
+    if( status == ECA_NORMAL)
+        debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
+    else
+        debugMessage("ERROR: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
+}
+bool cameraDAQInterface::initObjects()
+{
+    bool camDatSuccess = configReader.getCamDAQData( allCamDAQData );
+    vcDAQCamera = &allCamDAQData["VC"]; //MAGIC
+    //selectedDAQCamera = &allCamDAQData["VC"];
+    setCamera("VC");
+    for( auto && it : allCamDAQData )
         it.second.machineArea = myMachineArea;
     return camDatSuccess;
 }
-void cameraInterface::initChids()
+void cameraDAQInterface::initChids()
 {
     message( "\n", "Searching for Camera chids...");
-    for( auto && camObjIt : allCamData )
+    for( auto && camObjIt : allCamDAQData )
     {
         for(auto && it2 : camObjIt.second.pvComStructs)
         {
@@ -110,7 +113,7 @@ void cameraInterface::initChids()
     if( status == ECA_TIMEOUT )
     {
         std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));//MAGIC_NUMBER
-        for( const auto & camObjIt : allCamData )
+        for( const auto & camObjIt : allCamDAQData )
         {
             message("\n", "Checking Chids for ", camObjIt.first );
             for( auto & it2 : camObjIt.second.pvMonStructs )
@@ -124,247 +127,238 @@ void cameraInterface::initChids()
     else if ( status == ECA_NORMAL )
         allChidsInitialised = true;  /// interface base class member
 }
+void cameraDAQInterface::startMonitors()
+{
+    continuousMonitorDAQStructs.clear();
 
-void cameraInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
-{
-    std::string s1 = pvRoot + pv.pvSuffix;
-    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
-    debugMessage( "Create channel to ", s1 );
-}
-void cameraInterface::startMonitors()
-{
-    continuousMonitorStructs.clear();
-//    continuousILockMonitorStructs.clear();
-    for(auto && it : allCamData)
+    for(auto && it : allCamDAQData)
     {
         for(auto && it2 : it.second.pvMonStructs)
         {
-            continuousMonitorStructs.push_back(new cameraStructs::monitorStruct());
-            continuousMonitorStructs.back() -> monType = it2.first;
-            continuousMonitorStructs.back() -> objName = it.second.name;
-            continuousMonitorStructs.back() -> interface = this;
-            ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID,
-                                    it2.second.MASK, cameraInterface::staticEntryMonitor,
-                                    (void*)continuousMonitorStructs.back(), &continuousMonitorStructs.back()->EVID );
+            continuousMonitorDAQStructs.push_back(new cameraStructs::monitorDAQStruct());
+            continuousMonitorDAQStructs.back()->monType = it2.first;
+            continuousMonitorDAQStructs.back()->objName = it.second.name;
+            continuousMonitorDAQStructs.back()->interface = this;
+            continuousMonitorDAQStructs.back() -> CHTYPE  = it2.second.CHTYPE;
+            continuousMonitorDAQStructs.back() -> EVID  = it2.second.EVID;
+            ca_create_subscription(it2.second.CHTYPE,
+                                   it2.second.COUNT,
+                                   it2.second.CHID,
+                                   it2.second.MASK,
+                                   cameraDAQInterface::staticEntryDAQMonitor,
+                                   (void*)continuousMonitorDAQStructs.back(),
+                                   &continuousMonitorDAQStructs.back()->EVID );
             debugMessage("Adding monitor for ",  it.second.name, " ", ENUM_TO_STRING(it2.first));
         }
     }
-    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Camera Monitors", "!!TIMEOUT!! Subscription to Camera monitors failed" );
+    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Camera  DAQ Monitors", "!!TIMEOUT!! Subscription to Camera DAQ monitors failed" );
     if ( status == ECA_NORMAL )
         allMonitorsStarted = true; /// interface base class member
 }
-void cameraInterface::staticEntryMonitor(const event_handler_args args)
+
+void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
 {
-    cameraStructs::monitorStruct*ms = static_cast<  cameraStructs::monitorStruct *>(args.usr);
+    cameraStructs::monitorDAQStruct*ms = static_cast<  cameraStructs::monitorDAQStruct *>(args.usr);
     switch( ms -> monType )
     {
-        case cameraStructs::CAM_PV_TYPE::CAM_STATE:
-            ms->interface->updateState( *(unsigned short*)args.dbr, ms->objName);
+        case cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE:
+            ms->interface->updateAquiring( *(unsigned short*)args.dbr, ms->objName);
             break;
-        case cameraStructs::CAM_PV_TYPE::X:
-            ms->interface->updateX( *(double*)args.dbr, ms->objName );
+        case cameraStructs::CAM_PV_TYPE::CAM_DAQ_STATE:
+            ms->interface->updateState( *(double*)args.dbr, ms->objName );
             break;
-        case cameraStructs::CAM_PV_TYPE::Y:
-            ms->interface->updateY( *(double*)args.dbr, ms->objName );
-            break;
-        case cameraStructs::CAM_PV_TYPE::SIGMA_X:
-            ms->interface->updateSigmaX( *(double*)args.dbr, ms->objName );
-            break;
-        case cameraStructs::CAM_PV_TYPE::SIGMA_Y:
-            ms->interface->updateSigmaY( *(double*)args.dbr, ms->objName );
-            break;
-        case cameraStructs::CAM_PV_TYPE::SIGMA_XY:
-            ms->interface->updateSigmaXY( *(double*)args.dbr, ms->objName );
-            break;
+      //  case cameraStructs::CAM_PV_TYPE::Y:
+      //      ms->interface->updateState( *(double*)args.dbr, ms->objName );
+     //       break;
         default:
             ms->interface->debugMessage( "!!! ERROR !!! Unknown Monitor Type passed to cameraInterface::staticEntryMonitor" );
             break;
     }
 }
-void cameraInterface::updateState(const unsigned short value,const std::string&cameraName)
+
+void cameraDAQInterface::updateState(const unsigned short value,const std::string&cameraName)
 {
-    if(entryExists(allCamData,cameraName))
+    if(entryExists(allCamDAQData,cameraName))
     {
         switch(value)
         {
             case 0:
-                allCamData[cameraName].state = cameraStructs::CAM_STATUS::CAM_OFF;
+                allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_OFF;
                 break;
             case 1:
-                allCamData[cameraName].state = cameraStructs::CAM_STATUS::CAM_ON;
+                allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_ON;
                 break;
             default:
-                allCamData[cameraName].state = cameraStructs::CAM_STATUS::CAM_ERROR;
+                allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_ERROR;
         }
-    message(cameraName, "State is ", ENUM_TO_STRING( allCamData[cameraName].state));
+        if(cameraName==selectedCamera())
+            selectedDAQCamera.state = allCamDAQData[cameraName].state;///This updates the selected camera object
+        message(cameraName, ": State is ", ENUM_TO_STRING( allCamDAQData[cameraName].state));
     }
 }
-void cameraInterface::updateX(const double value,const std::string& cameraName)
+void cameraDAQInterface::updateAquiring(const unsigned short value,const std::string&cameraName)
 {
-    if(entryExists(allCamData,cameraName))
+    if(entryExists(allCamDAQData,cameraName))
     {
-        allCamData[cameraName].rawData.x = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.x,value,allCamData[cameraName].imageStruct.xTolerance))
-            debugMessage(cameraName," NEW X = ", allCamData[cameraName].rawData.x);
-    }
-}
-void cameraInterface::updateY(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.y = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.y,value,allCamData[cameraName].imageStruct.yTolerance))
-            debugMessage(cameraName," NEW Y = ", allCamData[cameraName].rawData.y);
-    }
-}
-void cameraInterface::updateSigmaX(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.xSigma = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.xSigma,value,allCamData[cameraName].imageStruct.xSigmaTolerance))
-            debugMessage(cameraName," NEW SIGMA X = ", allCamData[cameraName].rawData.xSigma);
-    }
-}
-void cameraInterface::updateSigmaY(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.ySigma = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.ySigma,value,allCamData[cameraName].imageStruct.ySigmaTolerance))
-            debugMessage(cameraName," NEW SIGMA Y = ", allCamData[cameraName].rawData.ySigma);
-    }
-}
-void cameraInterface::updateSigmaXY(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.xySigma = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.xySigma,value,allCamData[cameraName].imageStruct.xySigmaTolerance))
-            debugMessage(cameraName," NEW SIGMA XY = ", allCamData[cameraName].rawData.xySigma);
+        switch(value)
+        {
+            case 0:
+                allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_NOT_ACQUIRING;
+                break;
+            case 1:
+                allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_ACQUIRING;
+                break;
+            default:
+                allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_ERROR;
+        }
+        if(cameraName==selectedCamera())
+            selectedDAQCamera.state = allCamDAQData[cameraName].state;///This updates the selected camera object
+        message(cameraName, ": Aquiring state is ", ENUM_TO_STRING( allCamDAQData[cameraName].state));
     }
 }
 
-
-
-
-bool cameraInterface::isON ( const std::string & cam )
+bool cameraDAQInterface::makeANewDirectory()///WRITE
 {
-    bool ans = false;
-    if( entryExists( allCamData, cam ) )
-        if( allCamData[cam].state == cameraStructs::CAM_STATUS::CAM_ON )
-            ans = true;
+    std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+
+    std::time_t t = std::chrono::system_clock::to_time_t(p);
+    tm local_tm = *localtime(&t);
+
+    std::cout << local_tm.tm_year + 1900 << '\n';
+    std::cout << local_tm.tm_mon + 1 << '\n';
+    std::cout << local_tm.tm_mday << '\n';
+
+    std::cout << std::ctime(&t) << std::endl; // fo
+
+    std::string newPath("/home/controls/tim/"+std::to_string(local_tm.tm_year + 1900)+
+                        "/"+std::to_string(local_tm.tm_mon + 1)+
+                        "/"+std::to_string(local_tm.tm_mday)+
+                        "/"+std::to_string(local_tm.tm_hour)+"_"+std::to_string(local_tm.tm_min)+"_"+std::to_string(local_tm.tm_sec)+"/");
+    message(newPath);
+    bool ans=false;
+    /*
+    message(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_FILE_PATH].pvSuffix);
+    ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_FILE_PATH].CHTYPE,
+           selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_FILE_PATH].CHID,
+           &newPath);
+    //message("sendToEpics ");
+    int status = sendToEpics("ca_put", "", "Timeout trying to send new file path state.");
+    if(status == ECA_NORMAL)
+    {
+        ans = true;
+        //message("status return was ECA_NORMAL");
+    }
+    message("New path set to ",newPath," on ",selectedDAQCamera.name," camera.");
+*/
     return ans;
 }
-bool cameraInterface::isOFF( const std::string & cam )
+
+bool cameraDAQInterface::collect(unsigned short &comm)
 {
-    bool ans = false;
-    if( entryExists( allCamData, cam ) )
-        if( allCamData[cam].state == cameraStructs::CAM_STATUS::CAM_OFF )
-            ans = true;
-    return ans;
-}
-bool cameraInterface::isMonitoring ( const std::string & cam )///WRITE
-{
-    return false;
-}
-bool cameraInterface::isNotMonitoring ( const std::string & cam )///WRITE
-{
-    return false;
-}
-std::string cameraInterface::cameraName()
-{
-    return selectedCamera.name;
-}
-bool cameraInterface::setCamera(const std::string & cam)
-{
-    bool ans = false;
-    if( entryExists( allCamData, cam ) )
+    bool ans=false;
+    if( isAquiring(selectedCamera()) )
     {
-            selectedCamera = allCamData[cam];
-            ans = true;
-    }
-    return ans;
-}
-bool cameraInterface::calibrate()///WRITE
-{
-    return false;
-}
-bool cameraInterface::setXRatio(const double & r)///WRITE
-{
-   return false;
-}
-bool cameraInterface::setYRatio(const double & r)///WRITE
-{
-    return false;
-}
-bool cameraInterface::start()
-{
-    message("start() called");
-    bool ret = false;
-    unsigned short comm = (selectedCamera.state == cameraStructs::CAM_STATUS::CAM_ON) ? EPICS_SEND : EPICS_ACTIVATE;
-    message("comm = ", comm);
-        ca_put(selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHTYPE,
-               selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHID,
+        message(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_CAPTURE].pvSuffix);
+        ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_CAPTURE].CHTYPE,
+               selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_CAPTURE].CHID,
                &comm);
-        message("Trying to turn on camera named ", selectedCamera.name);
-    int status = sendToEpics( "ca_put", "", "Timeout sending start value");
-    if ( status == ECA_NORMAL )
-        ret = true; message("status return was ECA_NORMAL");
-    return ret;
+        //message("sendToEpics ");
+        int status = sendToEpics("ca_put", "", "Timeout trying to send Capture state.");
+        if(status == ECA_NORMAL)
+        {
+            ans = true;
+            //message("status return was ECA_NORMAL");
+        }
+        message("Caputure set to ",comm," on ",selectedDAQCamera.name," camera.");
+    }
+    return ans;
 }
-bool cameraInterface::stop()
+
+bool cameraDAQInterface::write(unsigned short &comm)
 {
-    message("start() called");
-    bool ret = false;
-    unsigned short comm = (selectedCamera.state == cameraStructs::CAM_STATUS::CAM_OFF) ? EPICS_SEND : EPICS_ACTIVATE;
-    message("comm = ", comm);
-        ca_put(selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHTYPE,
-               selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHID,
-               &comm);
-        message("Trying to turn on camera named ", selectedCamera.name);
-    int status = sendToEpics( "ca_put", "", "Timeout sending start value");
-    if ( status == ECA_NORMAL )
-        ret = true; message("status return was ECA_NORMAL");
-    return ret;
+    bool ans=false;
+    if( isAquiring(selectedCamera()) )
+    {
+        message(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE].pvSuffix);
+        ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE].CHTYPE,
+                selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE].CHID,
+                &comm);
+        message("Hi2");
+        //message("sendToEpics ");
+        int status = sendToEpics("ca_put", "", "Timeout trying to send Write state.");
+        if(status == ECA_NORMAL)
+        {
+            ans = true;
+            //message("status return was ECA_NORMAL");
+        }
+        message("WriteFile set to ",comm," on ",selectedDAQCamera.name," camera.");
+    }
+    return ans;
 }
-bool cameraInterface::collectAndSave(int & numbOfShots, const std::string & directory)///WRITE
+
+bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
+{
+
+    makeANewDirectory();
+
+    ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE].CHTYPE,
+            selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE].CHID,
+            &numbOfShots);
+    int status = sendToEpics("ca_put", "", "Timeout trying to send NumCapture.");
+
+    //Start collecting
+    //bool cap;
+    unsigned short go(1);
+    collect(go);
+    //when collection is done....
+    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+    //go=0;
+    //collect(go);
+    unsigned short wf(1);
+    write(wf);
+
+
+    return true;
+
+}
+bool cameraDAQInterface::collectAndSave(const int & numbOfShots, const std::string & comment)///WRITE
+{
+    //write to number of shots
+    //write to directory file path
+    //write a comments text file
+    //write save (check it is aquiring and on)
+    return false;
+}
+bool cameraDAQInterface::killCollectAndSave()///WRITE
 {
     return false;
 }
-std::vector< cameraStructs::camDataType > cameraInterface::getRawData()
+const cameraStructs::cameraDAQObject & cameraDAQInterface::getCamDAQObjConstRef( const std::string & camName  )
 {
-    return selectedCamera.rawData.cameraData;
-}
-std::vector< cameraStructs::camDataType > cameraInterface::getBackgroundRawData()
-{
-    return selectedCamera.rawData.cameraBackgroundData;
-}
-double cameraInterface::getX()///WRITE
-{
-    return false;
-}
-double cameraInterface::getY()///WRITE
-{
-    return false;
-}
-double cameraInterface::getSigmaX()///WRITE
-{
-    return false;
-}
-double cameraInterface::getSigmaY()///WRITE
-{
-    return false;
-}
-double cameraInterface::getSigmaXY()///WRITE
-{
-    return false;
-}
-const cameraStructs::cameraObject & cameraInterface::getCamObjConstRef( const std::string & camName  )
-{
-    if( entryExists( allCamData, camName ) )
-        return allCamData[ camName ];
+    if(entryExists(allCamDAQData, camName))
+    {
+        return allCamDAQData[ camName ];
+    }
     else
-        return allCamData[ camName ];
-
+    {
+        for(auto && it : allCamDAQData)
+        {
+            if(it.second.pvRoot == camName)
+                return it.second;
+        }
+    }
+    std::string dummyName("NOPE");
+    return allCamDAQData[ dummyName ];
+}
+const cameraStructs::cameraDAQObject &cameraDAQInterface::getSelectedDAQRef()
+{
+    return selectedDAQCamera;
+}
+cameraStructs::cameraDAQObject* cameraDAQInterface::getSelectedDAQPtr()
+{
+    return &selectedDAQCamera;
+}
+const cameraStructs::cameraDAQObject & cameraDAQInterface::getVCDAQRef()
+{
+    return *vcDAQCamera;
 }

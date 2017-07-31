@@ -32,13 +32,14 @@ class cameraInterface : public interface
         typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
-        cameraInterface::cameraInterface();
-        cameraInterface( const std::string &Conf,
-                         const bool startVirtualMachine,
+        cameraInterface();
+        cameraInterface( //const std::string &Conf,
+                         //const bool startVirtualMachine,
                          const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
-                         const bool shouldStartEPICs,
-                         const VELA_ENUM::MACHINE_AREA myMachineArea );
+                         const bool* show_debug_messages_ptr//,
+                         //const bool shouldStartEPICs,
+                         //const VELA_ENUM::MACHINE_AREA myMachineArea
+                         );
         ~cameraInterface();
 
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
@@ -54,24 +55,29 @@ class cameraInterface : public interface
         bool stopAquiring();
         bool startVCAquiring();
         bool stopVCAquiring();
-    protected:
-
-    private:
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
-        const bool shouldStartEPICs;
-        //void initChids();
-        static void staticEntryMonitor(const event_handler_args args);
-        void updateState(const unsigned short value,const std::string&cameraName);
-        void startMonitors();
-        void addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv );
-        bool sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  );
-        void killMonitor( cameraStructs::monitorStruct * ms );
-        std::vector<  cameraStructs::monitorStruct* > continuousMonitorStructs;
+        std::vector<  cameraStructs::monitorDAQStruct* > continuousMonitorDAQStructs;
         std::map< std::string, cameraStructs::cameraDAQObject > allCamDAQData;
         std::map< std::string, cameraStructs::cameraIAObject > allCamIAData;
-        cameraStructs::cameraIAObject & selectedIACamera;
-        cameraStructs::cameraDAQObject & selectedDAQCamera;
-        cameraStructs::cameraIAObject & vcIACamera;
-        cameraStructs::cameraDAQObject & vcDAQCamera;
+        cameraStructs::cameraIAObject *selectedIACamera;
+        cameraStructs::cameraDAQObject selectedDAQCamera;
+        cameraStructs::cameraDAQObject &selectedDAQCameraRef;
+        cameraStructs::cameraIAObject *vcIACamera;
+        cameraStructs::cameraDAQObject *vcDAQCamera;
+
+    protected:
+        //const VELA_ENUM::MACHINE_AREA myMachineArea;
+        //const bool shouldStartEPICs;
+        //void initChids();
+        void staticEntryMonitor(const event_handler_args args);
+        //void updateState(const unsigned short value,const std::string&cameraName);
+        //void startMonitors();
+        void addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv );
+        //bool sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  );
+        //void killMonitor( cameraStructs::monitorDAQStruct * ms );
+
+
+    private:
+
+
 };
 #endif // CAM_INTERFACE_H

@@ -18,23 +18,20 @@
 
 #include "structs.h"
 
-class cameraInterface;
+class cameraDAQInterface;
 
 namespace cameraStructs
 {
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DAQ_PV_TYPE, (CAM_START) (CAM_STOP) (CAM_DATA) (CAM_BKGRND_DATA)
-                                                     (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_TEMPLATE) (PV_SUFFIX_FILE_WRITE)
-                                                     (CAM_STATE) (UNKNOWN_CAM_PV_TYPE))
-
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(IA_PV_TYPE,  (CAM_START) (CAM_STOP)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE, (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_TEMPLATE) (CAM_FILE_WRITE)
+                                                     (CAM_DAQ_STATE) (CAM_DATA) (CAM_BKGRND_DATA)
                                                      (X) (Y) (SIGMA_X) (SIGMA_Y) (COV_XY)
-                                                     (CAM_STATE) (UNKNOWN_CAM_PV_TYPE))
+                                                     (CAM_IA_STATE) (UNKNOWN_CAM_PV_TYPE) (CAM_ACQUIRE) (CAM_CAPTURE) (CAM_NUM_CAPTURE))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATUS,  (CAM_ACQUIRING) (CAM_NOT ACQUIRING) (CAM_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE, (CAM_OFF) (CAM_ON) (CAM_ACQUIRING) (CAM_NOT_ACQUIRING) (CAM_ERROR))
 
     typedef long camDataType;
     struct pvStruct;
-    struct monitorStruct;
+    struct monitorDAQStruct;
     struct cameraObject;
     struct cameraDAQObject;
     struct cameraIAObject;
@@ -49,25 +46,25 @@ namespace cameraStructs
         chtype          CHTYPE;
         evid            EVID;
     };
-    struct monitorStruct
+    struct monitorDAQStruct
     {
-        monitorStruct(): monType( UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"),
-                         interface(nullptr),EVID(nullptr){}
+        monitorDAQStruct(): monType( UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"),
+                         interface(nullptr),EVID(nullptr){};
         CAM_PV_TYPE      monType;
         std::string      objName;
         chtype           CHTYPE;
-        cameraInterface *interface;
+        cameraDAQInterface *interface;
         evid             EVID;
     };
     struct cameraIAObject
     {
-        cameraIAObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
+        cameraIAObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
         std::string name, pvRoot, screenPV;
         //size_t numIlocks;
-        CAM_STATUS state;
+        CAM_STATE state;
         int shotsTaken, numberOfShots;
         size_t bit_depth, image_height, image_width;
-        double x,y,sigmaX,sigmaY,covXY
+        double x,y,sigmaX,sigmaY,covXY,
                xPix2mm, yPix2mm;
         size_t xPix, yPix,xSigmaPix,ySigmaPix,xyCovPix,
                xCenterPix,yCenterPix,xRad,yRad,
@@ -75,28 +72,16 @@ namespace cameraStructs
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
-    struct cameraDAQStruct
+    struct cameraDAQObject
     {
-        camDataStruct() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
+        cameraDAQObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
         std::string name, pvRoot, screenPV;
         size_t numIlocks;
-        CAM_STATUS state;
+        CAM_STATE state;
         int shotsTaken, numberOfShots;
         double frequency,exposureTime;
         std::vector<camDataType> rawData;
         std::vector<camDataType> rawBackgroundData;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
-    };
-
-    struct cameraObject
-    { // proviude a default constructor
-        cameraObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
-        //size_t numIlocks;
-        std::string name, pvRoot, screenPV;
-        camImageStruct imageStruct;
-        CAM_STATUS state;
-        camDataStruct rawData;
         VELA_ENUM::MACHINE_AREA  machineArea;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;

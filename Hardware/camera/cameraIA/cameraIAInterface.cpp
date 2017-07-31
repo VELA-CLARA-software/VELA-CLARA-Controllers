@@ -143,9 +143,9 @@ void cameraInterface::startMonitors()
             continuousMonitorStructs.back() -> monType = it2.first;
             continuousMonitorStructs.back() -> objName = it.second.name;
             continuousMonitorStructs.back() -> interface = this;
-            ca_create_subscription( it2.second.CHTYPE, it2.second.COUNT,  it2.second.CHID,
-                                    it2.second.MASK, cameraInterface::staticEntryMonitor,
-                                    (void*)continuousMonitorStructs.back(), &continuousMonitorStructs.back()->EVID );
+            ca_create_subscription( it2.second.CHTYPE,it2.second.COUNT,
+                                   it2.second.CHID,it2.second.MASK,
+                                   cameraInterface::staticEntryMonitor,(void*)continuousMonitorStructs.back(), &continuousMonitorStructs.back()->EVID );
             debugMessage("Adding monitor for ",  it.second.name, " ", ENUM_TO_STRING(it2.first));
         }
     }

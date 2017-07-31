@@ -23,6 +23,8 @@
 #include "structs.h"
 #include "cameraStructs.h"
 #include "controller.h"
+#include "controller.h"
+#include "controller.h"
 
 
 class cameraController  : public controller
@@ -74,7 +76,7 @@ class cameraController  : public controller
     private:
 
     /// The interface to EPICS
-        cameraInterface  localInterface;
+        #cameraInterface  localInterface;
         void initialise();
         const bool shouldStartEPICs;
         const VELA_ENUM::MACHINE_AREA myMachineArea;

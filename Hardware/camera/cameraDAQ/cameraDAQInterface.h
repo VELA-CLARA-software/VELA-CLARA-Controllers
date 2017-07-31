@@ -27,7 +27,7 @@
 class cameraDAQInterface : public cameraInterface
 {
     public:
-        cameraDAQInterface::cameraDAQInterface();
+        cameraDAQInterface();
         cameraDAQInterface( const std::string &Conf,
                          const bool startVirtualMachine,
                          const bool* show_messages_ptr,
@@ -36,20 +36,30 @@ class cameraDAQInterface : public cameraInterface
                          const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~cameraDAQInterface();
 
-        bool collectAndSave (int & numbOfShots);
-        bool collectAndSave (int & numbOfShots, const std::string & comments);
+        bool collectAndSave (const int & numbOfShots);
+        bool collectAndSave (const int & numbOfShots, const std::string & comments);
         bool killCollectAndSave();
+        bool collect(unsigned short &comm);
+        bool write(unsigned short &comm);
+        bool makeANewDirectory();
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
         const cameraStructs::cameraDAQObject &getSelectedDAQRef();
+        cameraStructs::cameraDAQObject* getSelectedDAQPtr();
         const cameraStructs::cameraDAQObject &getVCDAQRef();
     protected:
 
     private:
+        //void cameraDAQInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
         const VELA_ENUM::MACHINE_AREA myMachineArea;
         const bool shouldStartEPICs;
         void initialise();
         cameraDAQConfigReader configReader;
         bool initObjects();
         void initChids();
+        void startMonitors();
+        static void staticEntryDAQMonitor(const event_handler_args args);
+        void updateState(const unsigned short value,const std::string&cameraName);
+        void updateAquiring(const unsigned short value,const std::string&cameraName);
+        void killMonitor( cameraStructs::monitorDAQStruct * ms );
 };
 #endif // CAM_DAQ_INTERFACE_H

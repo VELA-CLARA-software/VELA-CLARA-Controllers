@@ -12,9 +12,9 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "cameraController.h"
+#include "cameraDAQController.h"
 // stl
-cameraController::cameraController(
+cameraDAQController::cameraDAQController(
     const bool show_messages,
     const bool show_debug_messages,
     const std::string & magConf,
@@ -32,100 +32,97 @@ myMachineArea(myMachineArea)
 //    message("magnet controller shouldStartEPICs is false");
 //    initialise();
 }
-cameraController::~cameraController(){}    //dtor
-std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraController::getILockStates(const std::string & name)
+cameraDAQController::~cameraDAQController(){}    //dtor
+std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraDAQController::getILockStates(const std::string & name)
 {
     return localInterface.getILockStates( name );
 }
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraController::getILockStatesStr( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraDAQController::getILockStatesStr( const std::string & name )
 {
     return localInterface.getILockStatesStr( name );
 }
-double cameraController::get_CA_PEND_IO_TIMEOUT()
+double cameraDAQController::get_CA_PEND_IO_TIMEOUT()
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }
-void   cameraController::set_CA_PEND_IO_TIMEOUT( double val )
+void   cameraDAQController::set_CA_PEND_IO_TIMEOUT( double val )
 {
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
-bool cameraController::isON ( const std::string & cam )
+bool cameraDAQController::isON ( const std::string & cam )
 {
     return localInterface.isON( cam );
 }
-bool cameraController::isOFF( const std::string & cam )
+bool cameraDAQController::isOFF( const std::string & cam )
 {
     return localInterface.isOFF( cam );
 }
-bool cameraController::isMonitoring ( const std::string & cam )
+bool cameraDAQController::isAquiring ( const std::string & cam )
 {
-    return localInterface.isMonitoring( cam );
+    return localInterface.isAquiring( cam );
 }
-bool cameraController::isNotMonitoring ( const std::string & cam )
+bool cameraDAQController::isNotAquiring ( const std::string & cam )
 {
-    return localInterface.isNotMonitoring( cam );
+    return localInterface.isNotAquiring( cam );
 }
-std::string cameraController::cameraName()
+std::string cameraDAQController::selectedCamera()
 {
-    return localInterface.cameraName();
+    return localInterface.selectedCamera();
 }
-bool cameraController::setCamera(const std::string & cam)
+bool cameraDAQController::setCamera(const std::string & cam)
 {
     return localInterface.setCamera(cam);
 }
-bool cameraController::calibrate()
+bool cameraDAQController::startAquiring()
 {
-    return localInterface.calibrate();
+    return localInterface.startAquiring();
 }
-bool cameraController::setXRatio(const double & r)
+bool cameraDAQController::stopAquiring()
 {
-    return localInterface.setXRatio(r);
+    return localInterface.stopAquiring();
 }
-bool cameraController::setYRatio(const double & r)
+bool cameraDAQController::startVCAquiring()
 {
-    return localInterface.setYRatio(r);
+    return localInterface.startVCAquiring();
 }
-bool cameraController::start()
+bool cameraDAQController::stopVCAquiring()
 {
-    return localInterface.start();
+    return localInterface.stopVCAquiring();
 }
-bool cameraController::stop()
+bool cameraDAQController::collectAndSave(const int & numbOfShots)
 {
-    return localInterface.stop();
+    return localInterface.collectAndSave(numbOfShots);
 }
-bool cameraController::collectAndSave(int & numbOfShots, const std::string & directory)
+bool cameraDAQController::collectAndSave(const int & numbOfShots, const std::string & comments)
 {
-    return localInterface.collectAndSave(numbOfShots, directory);
+    return localInterface.collectAndSave(numbOfShots, comments);
 }
-std::vector< cameraStructs::camDataType > cameraController::getRawData()
+bool cameraDAQController::killCollectAndSave()
 {
-    return localInterface.getRawData();
+    return localInterface.killCollectAndSave();
 }
-std::vector< cameraStructs::camDataType > cameraController::getBackgroundRawData()
+const cameraStructs::cameraDAQObject& cameraDAQController::getCamDAQObjConstRef( const std::string & camName  )
 {
-    return localInterface.getBackgroundRawData();
+    return localInterface.getCamDAQObjConstRef( camName );
 }
-double cameraController::getX()
+const cameraStructs::cameraDAQObject& cameraDAQController::getSelectedDAQRef()
 {
-    return localInterface.getX();
+    return localInterface.getSelectedDAQRef();
 }
-double cameraController::getY()
+//#ifdef BUILD_DLL
+//const boost::python::list cameraDAQController::getSelectedDAQRef()
+//{
+//        boost::python::list list;
+//
+//        return list.append(getSelectedDAQRef());
+//
+//}
+//#endif
+cameraStructs::cameraDAQObject* cameraDAQController::getSelectedDAQPtr()
 {
-    return localInterface.getY();
+    return localInterface.getSelectedDAQPtr();
 }
-double cameraController::getSigmaX()
+const cameraStructs::cameraDAQObject& cameraDAQController::getVCDAQRef()
 {
-    return localInterface.getSigmaX();
-}
-double cameraController::getSigmaY()
-{
-    return localInterface.getSigmaY();
-}
-double cameraController::getSigmaXY()
-{
-    return localInterface.getSigmaXY();
-}
-const cameraStructs::cameraObject& cameraController::getCamObjConstRef( const std::string & camName  )
-{
-    return localInterface.getCamObjConstRef( camName );
+    return localInterface.getVCDAQRef();
 }

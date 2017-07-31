@@ -68,6 +68,7 @@ namespace UTL
     const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
 
 /// Cameras
+    const std::string DAQ_CAMERA_CONFIG               = "cameraDAQ.config";
     const std::string CAMERA_CONFIG               = "camera.config";
     //const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
 /// Vacuum
@@ -403,14 +404,18 @@ namespace UTL
 //    const std::string SOL_DEGAUSS_TOLERANCE  = "SOL_DEGAUSS_TOLERANCE";
 
     //Cameras
-    const std::string PV_SUFFIX_START           ="PV_SUFFIX_START"      ;
-   // const std::string PV_SUFFIX_STOP            ="PV_SUFFIX_STOP"     ;
+    const std::string PV_SUFFIX_START           ="PV_SUFFIX_ACQUIRE"    ;
+
+    const std::string PV_SUFFIX_CAPTURE            ="PV_SUFFIX_CAPTURE"       ;
+    const std::string PV_SUFFIX_NUM_CAPTURE            ="PV_SUFFIX_NUM_CAPTURE"  ;
+    const std::string PV_SUFFIX_WRITE            ="PV_SUFFIX_WRITE"  ;
+
     const std::string PV_SUFFIX_DATA            ="PV_SUFFIX_DATA"       ;
     const std::string PV_SUFFIX_BKGRND_DATA     ="PV_SUFFIX_BKGRND_DATA";
     const std::string PV_SUFFIX_FILE_PATH       ="PV_SUFFIX_FILE_PATH"  ;
     const std::string PV_SUFFIX_FILE_NAME       ="PV_SUFFIX_FILE_NAME"  ;
     const std::string PV_SUFFIX_FILE_TEMPLATE   ="PV_SUFFIX_FILE_TEMPLATE";
-    const std::string PV_SUFFIX_FILE_WRITE      ="PV_SUFFIX_FILE_WRITE" ;
+
     const std::string PV_SUFFIX_X               ="PV_SUFFIX_X"          ;
     const std::string PV_SUFFIX_Y               ="PV_SUFFIX_Y"          ;
     const std::string PV_SUFFIX_SX              ="PV_SUFFIX_SX"         ;
