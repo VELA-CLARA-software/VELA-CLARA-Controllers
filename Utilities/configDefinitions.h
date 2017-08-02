@@ -522,9 +522,13 @@ namespace UTL
 
     //Cameras
     const std::string PV_SUFFIX_START           ="PV_SUFFIX_ACQUIRE"    ;
-    const std::string PV_SUFFIX_CAPTURE            ="PV_SUFFIX_CAPTURE"       ;
-    const std::string PV_SUFFIX_NUM_CAPTURE            ="PV_SUFFIX_NUM_CAPTURE"  ;
-    const std::string PV_SUFFIX_WRITE            ="PV_SUFFIX_WRITE"  ;
+    const std::string PV_SUFFIX_ACQUIRE_RBV     ="PV_SUFFIX_ACQUIRE_RBV";
+    const std::string PV_SUFFIX_CAPTURE         ="PV_SUFFIX_CAPTURE"    ;
+    const std::string PV_SUFFIX_NUM_CAPTURE     ="PV_SUFFIX_NUM_CAPTURE";
+    const std::string PV_SUFFIX_NUM_CAPTURED    ="PV_SUFFIX_NUM_CAPTURED";
+    const std::string PV_SUFFIX_WRITE_STATUS    ="PV_SUFFIX_WRITE_STATUS";
+    const std::string PV_SUFFIX_WRITE_MESSAGE   ="PV_SUFFIX_WRITE_MESSAGE";
+    const std::string PV_SUFFIX_WRITE           ="PV_SUFFIX_WRITE"      ;
     const std::string PV_SUFFIX_DATA            ="PV_SUFFIX_DATA"       ;
     const std::string PV_SUFFIX_BKGRND_DATA     ="PV_SUFFIX_BKGRND_DATA";
     const std::string PV_SUFFIX_FILE_PATH       ="PV_SUFFIX_FILE_PATH"  ;

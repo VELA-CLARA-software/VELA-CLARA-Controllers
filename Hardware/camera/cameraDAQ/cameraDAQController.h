@@ -38,7 +38,7 @@ class cameraDAQController  : public controller
         ~cameraDAQController( );
 
         bool collectAndSave (const int & numbOfShots);
-        bool collectAndSave (const int & numbOfShots, const std::string & comments);
+        //bool collectAndSave (const int & numbOfShots, const std::string & comments);
         bool killCollectAndSave();
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
         const cameraStructs::cameraDAQObject &getSelectedDAQRef();

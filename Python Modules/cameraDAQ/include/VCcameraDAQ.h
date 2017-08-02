@@ -1,8 +1,8 @@
 #ifndef VC_CAMERAS_DAQ_H
 #define VC_CAMERAS_DAQ_H
-//
+//tp
 #include "cameraDAQController.h"
-//
+//boost
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -37,10 +37,10 @@ class VCcameraDAQ
         cameraDAQController * offline_Camera_DAQ_Controller_Obj;
         cameraDAQController * physical_Camera_DAQ_Controller_Obj;
         cameraDAQController& getController(cameraDAQController * cont,const std::string& conf,
-                                        const std::string & name,
-                                        const bool shouldVM,
-                                        const bool shouldEPICS,
-                                        const VELA_ENUM::MACHINE_AREA myMachineArea );
+                                           const std::string & name,
+                                           const bool shouldVM,
+                                           const bool shouldEPICS,
+                                           const VELA_ENUM::MACHINE_AREA myMachineArea );
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
         const VELA_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
@@ -62,31 +62,35 @@ typedef const std::vector<std::string> cves;
 typedef boost::python::list & cbpl;
 
 
-bool(cameraDAQController::*collectAndSave_1)(cinter&) = &cameraDAQController::collectAndSave;
-bool(cameraDAQController::*collectAndSave_2)(cinter&, cstr&) = &cameraDAQController::collectAndSave;
-//cbpl (cameraDAQController::*getSelectedDAQRef_1)() = &cameraDAQController::getSelectedDAQRef();
-
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
 {
     docstring_options doc_options(false);
     doc_options.disable_cpp_signatures();
 
+    //Expose Vectors
     class_<std::vector< std::string > >("std_vector_string")
         .def( vector_indexing_suite< std::vector< std::string >>())
         ;
     class_<std::vector<double>>("std_vector_double")
         .def( vector_indexing_suite< std::vector<double>>())
         ;
-    /// and enums, remember we have a enum to string python dictionary macro too!
+    //Expose Enums
     enum_<cameraStructs::CAM_STATE>("CAM_STATE","CAM_STATE Doc String")
-        .value("CAM_ON",   cameraStructs::CAM_STATE::CAM_ON   )
-        .value("CAM_OFF",    cameraStructs::CAM_STATE::CAM_OFF    )
-        .value("CAM_ACQUIRING",cameraStructs::CAM_STATE::CAM_ACQUIRING)
-        .value("CAM_NOT_ACQUIRING",cameraStructs::CAM_STATE::CAM_NOT_ACQUIRING)
-        .value("CAM_ERROR", cameraStructs::CAM_STATE::CAM_ERROR )
+        .value("CAM_ON",cameraStructs::CAM_STATE::CAM_ON)
+        .value("CAM_OFF",cameraStructs::CAM_STATE::CAM_OFF)
+        .value("CAM_ERROR",cameraStructs::CAM_STATE::CAM_ERROR)
         ;
-
+    enum_<cameraStructs::AQUIRE_STATE>("AQUIRE_STATE","AQUIRE_STATE Doc String")
+        .value("NOT_ACQUIRING", cameraStructs::AQUIRE_STATE::NOT_ACQUIRING)
+        .value("ACQUIRING",cameraStructs::AQUIRE_STATE::ACQUIRING)
+        .value("AQUIRING_ERROR",cameraStructs::AQUIRE_STATE::AQUIRING_ERROR)
+        ;
+    enum_<cameraStructs::WRITE_STATE>("WRITE_STATE","WRITE_STATE Doc String")
+        .value("WRITE_OK",      cameraStructs::WRITE_STATE::WRITE_OK)
+        .value("WRITE_ERROR",   cameraStructs::WRITE_STATE::WRITE_ERROR)
+        ;
+    //Expose Classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
     boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
@@ -102,26 +106,22 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("pvRoot",             &cameraStructs::cameraDAQObject::pvRoot)
         .def_readonly("screenPV",           &cameraStructs::cameraDAQObject::screenPV)
         .def_readonly("state",              &cameraStructs::cameraDAQObject::state)
+        .def_readonly("aquireState",        &cameraStructs::cameraDAQObject::aquireState)
+        .def_readonly("writeState",         &cameraStructs::cameraDAQObject::writeState)
         .def_readonly("shotsTaken",         &cameraStructs::cameraDAQObject::shotsTaken)
         .def_readonly("numberOfShots",      &cameraStructs::cameraDAQObject::numberOfShots)
         .def_readonly("frequency",          &cameraStructs::cameraDAQObject::frequency)
         .def_readonly("exposureTime",       &cameraStructs::cameraDAQObject::exposureTime)
-        //.def_readonly("machineArea",        &cameraStructs::cameraDAQObject::machineArea)
-        // More stuff to be added here?
         ;
     boost::python::class_<cameraDAQController, boost::python::bases<controller>, boost::noncopyable>
         ("cameraDAQController","cameraDAQController Doc String",boost::python::no_init)
-        //.def("getILockStates",           &cameraDAQController::getILockStates          )
-        //.def("getILockStatesDefinition", &cameraDAQController::getILockStatesDefinition)
         .def("get_CA_PEND_IO_TIMEOUT",      &cameraDAQController::get_CA_PEND_IO_TIMEOUT  )
         .def("set_CA_PEND_IO_TIMEOUT",      &cameraDAQController::set_CA_PEND_IO_TIMEOUT  )
-        .def("collectAndSave",              collectAndSave_1  )
-        .def("collectAndSave",              collectAndSave_2  )
-        .def("killCollectAndSave",          &cameraDAQController::killCollectAndSave  )
-        .def("getCamDAQObjConstRef",        &cameraDAQController::getCamDAQObjConstRef,return_value_policy<reference_existing_object>())
-        .def("getSelectedDAQRef",           &cameraDAQController::getSelectedDAQRef,return_value_policy<reference_existing_object>())
-        .def("getSelectedDAQPtr",           &cameraDAQController::getSelectedDAQPtr,return_internal_reference<>())//return_value_policy<reference_existing_object>())
-        .def("getVCDAQRef",                 &cameraDAQController::getVCDAQRef,return_value_policy<reference_existing_object>())
+        .def("collectAndSave",              &cameraDAQController::collectAndSave)
+        .def("killCollectAndSave",          &cameraDAQController::killCollectAndSave)
+        .def("getCamDAQObjConstRef",        &cameraDAQController::getCamDAQObjConstRef, return_value_policy<reference_existing_object>())
+        .def("getSelectedDAQRef",           &cameraDAQController::getSelectedDAQRef,    return_value_policy<reference_existing_object>())
+        .def("getVCDAQRef",                 &cameraDAQController::getVCDAQRef,          return_value_policy<reference_existing_object>())
         .def("isON",                        &cameraDAQController::isON  )
         .def("isOFF",                       &cameraDAQController::isOFF  )
         .def("isAquiring",                  &cameraDAQController::isAquiring  )
@@ -132,19 +132,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("stopAquiring",                &cameraDAQController::stopAquiring  )
         .def("startVCAquiring",             &cameraDAQController::startVCAquiring  )
         .def("stopVCAquiring",              &cameraDAQController::stopVCAquiring  )
-
         ;
     boost::python::class_<VCcameraDAQ,boost::noncopyable>("init")
-        .def("virtual_VELA_Camera_DAQ_Controller",     &VCcameraDAQ::virtual_VELA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_Camera_DAQ_Controller",     &VCcameraDAQ::offline_VELA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_Camera_DAQ_Controller",   &VCcameraDAQ::physical_VELA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_Camera_DAQ_Controller",   &VCcameraDAQ::virtual_CLARA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_Camera_DAQ_Controller",   &VCcameraDAQ::offline_CLARA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_Camera_DAQ_Controller", &VCcameraDAQ::physical_CLARA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
-        .def("setQuiet",              &VCcameraDAQ::setQuiet   )
-        .def("setVerbose",            &VCcameraDAQ::setVerbose )
-        .def("setMessage",            &VCcameraDAQ::setMessage )
-        .def("setDebugMessage",  &VCcameraDAQ::setDebugMessage )
+        .def("virtual_VELA_Camera_DAQ_Controller",      &VCcameraDAQ::virtual_VELA_Camera_DAQ_Controller,   return_value_policy<reference_existing_object>())
+        .def("offline_VELA_Camera_DAQ_Controller",      &VCcameraDAQ::offline_VELA_Camera_DAQ_Controller,   return_value_policy<reference_existing_object>())
+        .def("physical_VELA_Camera_DAQ_Controller",     &VCcameraDAQ::physical_VELA_Camera_DAQ_Controller,  return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_Camera_DAQ_Controller",     &VCcameraDAQ::virtual_CLARA_Camera_DAQ_Controller,  return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_Camera_DAQ_Controller",     &VCcameraDAQ::offline_CLARA_Camera_DAQ_Controller,  return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_Camera_DAQ_Controller",    &VCcameraDAQ::physical_CLARA_Camera_DAQ_Controller, return_value_policy<reference_existing_object>())
+        .def("setQuiet",                                &VCcameraDAQ::setQuiet   )
+        .def("setVerbose",                              &VCcameraDAQ::setVerbose )
+        .def("setMessage",                              &VCcameraDAQ::setMessage )
+        .def("setDebugMessage",                         &VCcameraDAQ::setDebugMessage )
         ;
 }
 

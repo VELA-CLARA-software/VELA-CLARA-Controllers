@@ -12,8 +12,8 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
+//tp
 #include "cameraInterface.h"
-//djs
 #include "configDefinitions.h"
 // stl
 #include <iostream>
@@ -22,36 +22,21 @@
 #include <chrono>
 #include <thread>
 
-//  __  ___  __   __    /  __  ___  __   __
-// /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
-// \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
-//
-cameraInterface::cameraInterface( //const std::string &Conf,
-                                  //const bool startVirtualMachine,
-                                  const bool* show_messages_ptr,
-                                  const bool* show_debug_messages_ptr)://,
-                                  //const bool shouldStartEPICs,
-                                  //const VELA_ENUM::MACHINE_AREA myMachineArea ):
-//configReader( Conf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-//shouldStartEPICs( shouldStartEPICs ), myMachineArea(myMachineArea),
-selectedDAQCameraRef(selectedDAQCamera),
-selectedIACamera(nullptr),
-vcDAQCamera(nullptr),
-vcIACamera(nullptr)
+cameraInterface::cameraInterface(const bool* show_messages_ptr,
+                                 const bool* show_debug_messages_ptr):
+interface(show_messages_ptr, show_debug_messages_ptr), selectedDAQCameraRef(selectedDAQCamera),vcDAQCameraRef(vcDAQCamera),
+selectedIACamera(nullptr),vcIACamera(nullptr)
 {
 }
 cameraInterface::~cameraInterface()
 {
 }
-
 void cameraInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
     debugMessage( "Create channel to ", s1 );
 }
-
 bool cameraInterface::isON ( const std::string & cam )
 {
     bool ans = false;
@@ -68,19 +53,19 @@ bool cameraInterface::isOFF( const std::string & cam )
             ans = true;
     return ans;
 }
-bool cameraInterface::isAquiring( const std::string & cam )///WRITE
+bool cameraInterface::isAquiring( const std::string & cam )
 {
     bool ans = false;
     if( entryExists( allCamDAQData, cam ) )
-        if( allCamDAQData[cam].state == cameraStructs::CAM_STATE::CAM_ACQUIRING )
+        if( allCamDAQData[cam].aquireState == cameraStructs::AQUIRE_STATE::ACQUIRING )
             ans = true;
     return ans;
 }
-bool cameraInterface::isNotAquiring ( const std::string & cam)///WRITE
+bool cameraInterface::isNotAquiring ( const std::string & cam)
 {
     bool ans = false;
     if( entryExists( allCamDAQData, cam ) )
-        if( allCamDAQData[cam].state == cameraStructs::CAM_STATE::CAM_NOT_ACQUIRING )
+        if( allCamDAQData[cam].aquireState == cameraStructs::AQUIRE_STATE::NOT_ACQUIRING )
             ans = true;
     return ans;
 }
@@ -93,8 +78,8 @@ bool cameraInterface::setCamera(const std::string & cam)
     bool ans = false;
     if( entryExists( allCamDAQData, cam ) )
     {
-        //selectedDAQCamera = nullptr;
         selectedDAQCamera = allCamDAQData[cam];
+        vcDAQCamera = allCamDAQData["VC"];
         //selectedIACamera = allCamIAData[cam];
         ans = true;
 
@@ -103,7 +88,7 @@ bool cameraInterface::setCamera(const std::string & cam)
     }
     return ans;
 }
-bool cameraInterface::startAquiring()///WRITE
+bool cameraInterface::startAquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
@@ -113,19 +98,14 @@ bool cameraInterface::startAquiring()///WRITE
         ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
                selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
                &comm);
-               ans=true;
-        message("sendToEpics ");
-        int status = sendToEpics("ca_put", "", "Timeout trying to send new PSU states.");
+        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
         if(status == ECA_NORMAL)
-        {
             ans = true;
-            message("status return was ECA_NORMAL");
-        }
-        message("Sarting to Acquire images on ",selectedDAQCamera.name," camera.");
+        message("Starting to Acquire images on ",selectedDAQCamera.name," camera.");
     }
     return ans;
 }
-bool cameraInterface::stopAquiring()///WRITE
+bool cameraInterface::stopAquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
@@ -134,101 +114,42 @@ bool cameraInterface::stopAquiring()///WRITE
         ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
                selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
                &comm);
-        message("sendToEpics ");
-        int status = sendToEpics("ca_put", "", "Timeout trying to send new PSU states.");
+        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
         if(status == ECA_NORMAL)
-        {
             ans = true;
-            message("status return was ECA_NORMAL");
-        }
         message("Stopping to Acquire images on ",selectedDAQCamera.name," camera.");
     }
     return ans;
 }
-bool cameraInterface::startVCAquiring()///WRITE
+bool cameraInterface::startVCAquiring()
 {
-    return false;
-}
-bool cameraInterface::stopVCAquiring()///WRITE
-{
-    return false;
-}
-
-/*
-}
-void cameraInterface::updateX(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.x = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.x,value,allCamData[cameraName].imageStruct.xTolerance))
-            debugMessage(cameraName," NEW X = ", allCamData[cameraName].rawData.x);
-    }
-}
-void cameraInterface::updateY(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.y = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.y,value,allCamData[cameraName].imageStruct.yTolerance))
-            debugMessage(cameraName," NEW Y = ", allCamData[cameraName].rawData.y);
-    }
-}
-void cameraInterface::updateSigmaX(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.xSigma = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.xSigma,value,allCamData[cameraName].imageStruct.xSigmaTolerance))
-            debugMessage(cameraName," NEW SIGMA X = ", allCamData[cameraName].rawData.xSigma);
-    }
-}
-void cameraInterface::updateSigmaY(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.ySigma = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.ySigma,value,allCamData[cameraName].imageStruct.ySigmaTolerance))
-            debugMessage(cameraName," NEW SIGMA Y = ", allCamData[cameraName].rawData.ySigma);
-    }
-}
-void cameraInterface::updateSigmaXY(const double value,const std::string& cameraName)
-{
-    if(entryExists(allCamData,cameraName))
-    {
-        allCamData[cameraName].rawData.xySigma = roundToN(value,4); /// MAGIC_NUMBER AAAAAAHAHAHAH
-        if( areNotSame(allCamData[cameraName].rawData.xySigma,value,allCamData[cameraName].imageStruct.xySigmaTolerance))
-            debugMessage(cameraName," NEW SIGMA XY = ", allCamData[cameraName].rawData.xySigma);
-    }
-}
-bool cameraInterface::start()
-{
-    message("start() called");
-    bool ret = false;
-    unsigned short comm = (selectedCamera.state == cameraStructs::CAM_STATUS::CAM_ON) ? EPICS_SEND : EPICS_ACTIVATE;
-    message("comm = ", comm);
-        ca_put(selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHTYPE,
-               selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHID,
+    bool ans=false;
+    unsigned short comm = 1;
+    if( isNotAquiring("VC") )
+    {  ;
+        ca_put(vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
+               vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
                &comm);
-        message("Trying to turn on camera named ", selectedCamera.name);
-    int status = sendToEpics( "ca_put", "", "Timeout sending start value");
-    if ( status == ECA_NORMAL )
-        ret = true; message("status return was ECA_NORMAL");
-    return ret;
+        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
+        if(status == ECA_NORMAL)
+            ans = true;
+        message("Starting to Acquire images on ",vcDAQCamera.name," camera.");
+    }
+    return ans;
 }
-bool cameraInterface::stop()
+bool cameraInterface::stopVCAquiring()
 {
-    message("start() called");
-    bool ret = false;
-    unsigned short comm = (selectedCamera.state == cameraStructs::CAM_STATUS::CAM_OFF) ? EPICS_SEND : EPICS_ACTIVATE;
-    message("comm = ", comm);
-        ca_put(selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHTYPE,
-               selectedCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_START].CHID,
+    bool ans=false;
+    unsigned short comm = 0;
+    if( isAquiring("VC") )
+    {
+        ca_put(vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
+               vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
                &comm);
-        message("Trying to turn on camera named ", selectedCamera.name);
-    int status = sendToEpics( "ca_put", "", "Timeout sending start value");
-    if ( status == ECA_NORMAL )
-        ret = true; message("status return was ECA_NORMAL");
-    return ret;
+        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
+        if(status == ECA_NORMAL)
+            ans = true;
+        message("Stopping to Acquire images on ",vcDAQCamera.name," camera.");
+    }
+    return ans;
 }
-*/

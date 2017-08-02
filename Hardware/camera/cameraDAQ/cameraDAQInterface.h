@@ -37,7 +37,7 @@ class cameraDAQInterface : public cameraInterface
         ~cameraDAQInterface();
 
         bool collectAndSave (const int & numbOfShots);
-        bool collectAndSave (const int & numbOfShots, const std::string & comments);
+        //bool collectAndSave (const int & numbOfShots, const std::string & comments);
         bool killCollectAndSave();
         bool collect(unsigned short &comm);
         bool write(unsigned short &comm);
@@ -60,6 +60,10 @@ class cameraDAQInterface : public cameraInterface
         static void staticEntryDAQMonitor(const event_handler_args args);
         void updateState(const unsigned short value,const std::string&cameraName);
         void updateAquiring(const unsigned short value,const std::string&cameraName);
+        void updateWriteState(const unsigned short value,const std::string&cameraName);
+        void updateNumCaptured(const unsigned long value,const std::string&cameraName);
+        void updateNumCapture(const unsigned long value,const std::string&cameraName);
+        std::string getWriteMessage();
         void killMonitor( cameraStructs::monitorDAQStruct * ms );
 };
 #endif // CAM_DAQ_INTERFACE_H

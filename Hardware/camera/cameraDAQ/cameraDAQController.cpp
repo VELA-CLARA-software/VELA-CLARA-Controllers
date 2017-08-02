@@ -93,10 +93,6 @@ bool cameraDAQController::collectAndSave(const int & numbOfShots)
 {
     return localInterface.collectAndSave(numbOfShots);
 }
-bool cameraDAQController::collectAndSave(const int & numbOfShots, const std::string & comments)
-{
-    return localInterface.collectAndSave(numbOfShots, comments);
-}
 bool cameraDAQController::killCollectAndSave()
 {
     return localInterface.killCollectAndSave();
@@ -109,15 +105,6 @@ const cameraStructs::cameraDAQObject& cameraDAQController::getSelectedDAQRef()
 {
     return localInterface.getSelectedDAQRef();
 }
-//#ifdef BUILD_DLL
-//const boost::python::list cameraDAQController::getSelectedDAQRef()
-//{
-//        boost::python::list list;
-//
-//        return list.append(getSelectedDAQRef());
-//
-//}
-//#endif
 cameraStructs::cameraDAQObject* cameraDAQController::getSelectedDAQPtr()
 {
     return localInterface.getSelectedDAQPtr();

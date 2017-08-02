@@ -1,4 +1,4 @@
-//djs
+//tp
 #include "cameraDAQConfigReader.h"
 #include "configDefinitions.h"
 //stl
@@ -11,16 +11,14 @@
 #include <algorithm>
 #include <ctype.h>
 
-cameraDAQConfigReader::cameraDAQConfigReader(const std::string& camConfig  ,const bool startVirtualMachine,
-                                       const bool*show_messages_ptr,const bool* show_debug_messages_ptr ):
-camConfig(camConfig),
-configReader( show_messages_ptr, show_debug_messages_ptr ),
-usingVirtualMachine(startVirtualMachine)
+cameraDAQConfigReader::cameraDAQConfigReader(const std::string& camConfig,
+                                             const bool startVirtualMachine,
+                                             const bool*show_messages_ptr,
+                                             const bool* show_debug_messages_ptr ):
+camConfig(camConfig), configReader( show_messages_ptr, show_debug_messages_ptr ), usingVirtualMachine(startVirtualMachine)
 {
 }
-//______________________________________________________________________________
 cameraDAQConfigReader::~cameraDAQConfigReader(){}
-//______________________________________________________________________________
 bool cameraDAQConfigReader::getCamDAQData(  std::map< std::string, cameraStructs::cameraDAQObject > & mapToFill )
 {
     bool success = true;
@@ -151,16 +149,16 @@ bool cameraDAQConfigReader::readConfig()
 
     return success;
 }
-
 void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal )
 {
     if( stringIsSubString( keyVal[0], "SUFFIX" ) )
     {
-        pvStruct_v.push_back( cameraStructs::pvStruct() );    /// Any way to avoid the ladders?
+        pvStruct_v.push_back( cameraStructs::pvStruct() );
         pvStruct_v.back().pvSuffix = keyVal[1];
-        // NR-PSU PVs
         if( keyVal[0] == UTL::PV_SUFFIX_START  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE;
+        else if( keyVal[0] == UTL::PV_SUFFIX_ACQUIRE_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE_RBV;
         else if( keyVal[0] == UTL::PV_SUFFIX_DATA  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_DATA;
         else if( keyVal[0] == UTL::PV_SUFFIX_BKGRND_DATA  )
@@ -173,18 +171,23 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_TEMPLATE;
         else if( keyVal[0] == UTL::PV_SUFFIX_WRITE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE;
+        else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_STATUS  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_STATUS;
+        else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_MESSAGE  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_MESSAGE;
         else if( keyVal[0] == UTL::PV_SUFFIX_CAM_STATE  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_DAQ_STATE;
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_STATUS;
         else if( keyVal[0] == UTL::PV_SUFFIX_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_CAPTURE;
         else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE;
+        else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURED  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURED;
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
     else
         addCOUNT_MASK_OR_CHTYPE( pvStruct_v, keyVal );
 }
-//______________________________________________________________________________
 void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & keyVal )
 {
     std::string value = keyVal[1];//MAGIC_NUMBER
@@ -211,17 +214,14 @@ void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & 
             camDAQObject.back().screenPV = value;
     }
 }
-//______________________________________________________________________________
 void cameraDAQConfigReader::addToCameraMonitorStructs( const std::vector<std::string> &keyVal )
 {
     addToPVStruct( pvCameraMonStructs, keyVal);
 }
-//______________________________________________________________________________
 void cameraDAQConfigReader::addToCameraCommandStructs( const std::vector<std::string> &keyVal )
 {
     addToPVStruct( pvCameraComStructs, keyVal);
 }
-//______________________________________________________________________________
 void cameraDAQConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< cameraStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal  )
 {
     if( keyVal[0] == UTL::PV_COUNT )

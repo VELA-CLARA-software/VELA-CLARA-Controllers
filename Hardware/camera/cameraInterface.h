@@ -14,14 +14,14 @@
 
 #ifndef CAM_INTERFACE_H
 #define CAM_INTERFACE_H
-
+//tp
+#include "cameraStructs.h"
+#include "interface.h"
+//stl
 #include <string>
 #include <vector>
 #include <atomic>
 #include <map>
-
-#include "cameraStructs.h"
-#include "interface.h"
 
 class cameraInterface : public interface
 {
@@ -33,13 +33,8 @@ class cameraInterface : public interface
         typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         cameraInterface();
-        cameraInterface( //const std::string &Conf,
-                         //const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr//,
-                         //const bool shouldStartEPICs,
-                         //const VELA_ENUM::MACHINE_AREA myMachineArea
-                         );
+        cameraInterface(const bool* show_messages_ptr,
+                        const bool* show_debug_messages_ptr);
         ~cameraInterface();
 
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
@@ -55,25 +50,18 @@ class cameraInterface : public interface
         bool stopAquiring();
         bool startVCAquiring();
         bool stopVCAquiring();
-        std::vector<  cameraStructs::monitorDAQStruct* > continuousMonitorDAQStructs;
+        std::vector<cameraStructs::monitorDAQStruct*> continuousMonitorDAQStructs;
         std::map< std::string, cameraStructs::cameraDAQObject > allCamDAQData;
         std::map< std::string, cameraStructs::cameraIAObject > allCamIAData;
         cameraStructs::cameraIAObject *selectedIACamera;
         cameraStructs::cameraDAQObject selectedDAQCamera;
         cameraStructs::cameraDAQObject &selectedDAQCameraRef;
         cameraStructs::cameraIAObject *vcIACamera;
-        cameraStructs::cameraDAQObject *vcDAQCamera;
+        cameraStructs::cameraDAQObject vcDAQCamera;
+        cameraStructs::cameraDAQObject &vcDAQCameraRef;
 
     protected:
-        //const VELA_ENUM::MACHINE_AREA myMachineArea;
-        //const bool shouldStartEPICs;
-        //void initChids();
-        void staticEntryMonitor(const event_handler_args args);
-        //void updateState(const unsigned short value,const std::string&cameraName);
-        //void startMonitors();
         void addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv );
-        //bool sendCommand( const std::vector< chtype* > & CHTYPE, const std::vector< chid* > & CHID, const std::string & m1, const std::string & m2  );
-        //void killMonitor( cameraStructs::monitorDAQStruct * ms );
 
 
     private:

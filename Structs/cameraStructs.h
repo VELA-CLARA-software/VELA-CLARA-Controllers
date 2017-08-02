@@ -22,12 +22,14 @@ class cameraDAQInterface;
 
 namespace cameraStructs
 {
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE, (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_TEMPLATE) (CAM_FILE_WRITE)
-                                                     (CAM_DAQ_STATE) (CAM_DATA) (CAM_BKGRND_DATA)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE, (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_TEMPLATE) (CAM_FILE_WRITE) (CAM_FILE_WRITE_STATUS) (CAM_FILE_WRITE_MESSAGE)
+                                                     (CAM_STATUS) (CAM_DATA) (CAM_BKGRND_DATA)
                                                      (X) (Y) (SIGMA_X) (SIGMA_Y) (COV_XY)
-                                                     (CAM_IA_STATE) (UNKNOWN_CAM_PV_TYPE) (CAM_ACQUIRE) (CAM_CAPTURE) (CAM_NUM_CAPTURE))
+                                                     (UNKNOWN_CAM_PV_TYPE) (CAM_ACQUIRE) (CAM_ACQUIRE_RBV) (CAM_CAPTURE) (CAM_NUM_CAPTURE)(CAM_NUM_CAPTURED))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE, (CAM_OFF) (CAM_ON) (CAM_ACQUIRING) (CAM_NOT_ACQUIRING) (CAM_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE, (CAM_OFF) (CAM_ON) (CAM_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(AQUIRE_STATE, (NOT_ACQUIRING) (ACQUIRING) (AQUIRING_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_STATE, (WRITE_OK) (WRITE_ERROR))
 
     typedef long camDataType;
     struct pvStruct;
@@ -48,8 +50,7 @@ namespace cameraStructs
     };
     struct monitorDAQStruct
     {
-        monitorDAQStruct(): monType( UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"),
-                         interface(nullptr),EVID(nullptr){};
+        monitorDAQStruct(): monType( UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"), interface(nullptr),EVID(nullptr){}
         CAM_PV_TYPE      monType;
         std::string      objName;
         chtype           CHTYPE;
@@ -76,8 +77,11 @@ namespace cameraStructs
     {
         cameraDAQObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
         std::string name, pvRoot, screenPV;
+        char writeMessage[256];//MAGIC number from EPICS
         size_t numIlocks;
         CAM_STATE state;
+        AQUIRE_STATE aquireState;
+        WRITE_STATE writeState;
         int shotsTaken, numberOfShots;
         double frequency,exposureTime;
         std::vector<camDataType> rawData;
