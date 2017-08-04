@@ -39,7 +39,7 @@ class cameraDAQInterface : public cameraInterface
         bool collectAndSave (const int & numbOfShots);
         //bool collectAndSave (const int & numbOfShots, const std::string & comments);
         bool killCollectAndSave();
-        bool collect(unsigned short &comm);
+        bool collect(unsigned short &comm, const int & numbOfShots);
         bool write(unsigned short &comm);
         bool makeANewDirectory();
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );

@@ -75,10 +75,9 @@ namespace cameraStructs
     };
     struct cameraDAQObject
     {
-        cameraDAQObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), numIlocks(0), state(CAM_ERROR) {}
+        cameraDAQObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
         std::string name, pvRoot, screenPV;
         char writeMessage[256];//MAGIC number from EPICS
-        size_t numIlocks;
         CAM_STATE state;
         AQUIRE_STATE aquireState;
         WRITE_STATE writeState;
@@ -89,6 +88,20 @@ namespace cameraStructs
         VELA_ENUM::MACHINE_AREA  machineArea;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+    };
+
+    struct cameraObject
+    {
+        cameraObject() : name( "NO_NAME" ), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
+        std::string name, pvRoot, screenPV;
+        CAM_STATE state;
+        std::vector<camDataType> rawData;
+        std::vector<camDataType> rawBackgroundData;
+        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        VELA_ENUM::MACHINE_AREA  machineArea;
+        cameraDAQObject CDO;
+        cameraIAObject CIO;
     };
 }
 #endif // CAM_STRUCTS_H_

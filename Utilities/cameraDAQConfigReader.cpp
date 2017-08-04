@@ -196,7 +196,7 @@ void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & 
         camDAQObject.push_back(cameraStructs::cameraDAQObject() );
         camDAQObject.back().name      = value;
 
-        camDAQObject.back().numIlocks = (size_t)numIlocks;
+       // camDAQObject.back().numIlocks = (size_t)numIlocks;
         debugMessage("Added camera ", camDAQObject.back().name );
     }
     else if( keyVal[0] == UTL::PV_ROOT )

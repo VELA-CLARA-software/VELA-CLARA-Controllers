@@ -89,6 +89,22 @@ bool cameraDAQController::stopVCAquiring()
 {
     return localInterface.stopVCAquiring();
 }
+bool cameraDAQController::collect(const int &c, const int & numbOfShots)
+{
+    if(c==1)
+        unsigned short comm(1);
+    if(c==0)
+        unsigned short comm(0);
+    return localInterface.collect(comm, numbOfShots);
+}
+bool cameraDAQController::write(const int &c)
+{
+    if(c==1)
+        unsigned short comm(1);
+    if(c==0)
+        unsigned short comm(0);
+    return localInterface.write(comm);
+}
 bool cameraDAQController::collectAndSave(const int & numbOfShots)
 {
     return localInterface.collectAndSave(numbOfShots);

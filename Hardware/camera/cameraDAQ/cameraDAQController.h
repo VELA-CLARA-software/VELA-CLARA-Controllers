@@ -38,13 +38,11 @@ class cameraDAQController  : public controller
         ~cameraDAQController( );
 
         bool collectAndSave (const int & numbOfShots);
-        //bool collectAndSave (const int & numbOfShots, const std::string & comments);
+        bool collect(const int &c, const int & numbOfShots);
+        bool write(const int &c);
         bool killCollectAndSave();
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
         const cameraStructs::cameraDAQObject &getSelectedDAQRef();
-//        #ifdef BUILD_DLL
-//        const boost::python::list getSelectedDAQRef();
-//        #endif
         cameraStructs::cameraDAQObject *getSelectedDAQPtr();
         const cameraStructs::cameraDAQObject &getVCDAQRef();
         //general functions

@@ -301,8 +301,13 @@ std::string cameraDAQInterface::getWriteMessage()
 
     return out;
 }
-bool cameraDAQInterface::collect(unsigned short &comm)
+bool cameraDAQInterface::collect(unsigned short &comm, const int & numbOfShots)
 {
+    makeANewDirectory();
+    ca_put(selectedDAQCamera.pvMonStructs[cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE].CHTYPE,
+            selectedDAQCamera.pvMonStructs[cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE].CHID,
+            &numbOfShots);
+    int status = sendToEpics("ca_put", "", "Timeout trying to send NumCapture.");
     bool ans=false;
     if( isAquiring(selectedCamera()) )
     {
@@ -342,14 +347,8 @@ bool cameraDAQInterface::write(unsigned short &comm)
 bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
 {
     bool success = false;
-    makeANewDirectory();
-
-    ca_put(selectedDAQCamera.pvMonStructs[cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE].CHTYPE,
-            selectedDAQCamera.pvMonStructs[cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE].CHID,
-            &numbOfShots);
-    int status = sendToEpics("ca_put", "", "Timeout trying to send NumCapture.");
     unsigned short go(1);
-    collect(go);
+    collect(go,numbOfShots);
     //when collection is done....
     std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
     write(go);
