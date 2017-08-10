@@ -19,9 +19,13 @@
 #include "scopeInterface.h"
 
 //______________________________________________________________________________
-scopeController::scopeController( const std::string &configFileLocation1, const std::string &configFileLocation2,
-                                  const bool show_messages, const bool show_debug_messages,
-                                  const bool shouldStartEPICS, const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+scopeController::scopeController( const std::string &configFileLocation1,
+                                  const std::string &configFileLocation2,
+                                  const bool show_messages,
+                                  const bool show_debug_messages,
+                                  const bool shouldStartEPICS,
+                                  const bool startVirtualMachine,
+                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
 controller( show_messages, show_debug_messages ),
 localInterface( configFileLocation1, configFileLocation2, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS, startVirtualMachine, myMachineArea ),
 shouldStartEPICS( shouldStartEPICS ),

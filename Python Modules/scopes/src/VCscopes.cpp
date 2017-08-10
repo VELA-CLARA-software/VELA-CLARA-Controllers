@@ -13,7 +13,7 @@ withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
 withVM(true),
-showDebugMessages(false),
+showDebugMessages(true),
 showMessages(true),
 VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ  ),
 VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1  ),
@@ -27,66 +27,66 @@ UNKNOWN_AREA( VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
 //______________________________________________________________________________
 VCscopes::~VCscopes()
 {
-    if(virtual_VELA_INJ_Scope_Controller_Obj)
-    {
-        delete virtual_VELA_INJ_Scope_Controller_Obj;
-               virtual_VELA_INJ_Scope_Controller_Obj = nullptr;
-    }
-    if(offline_VELA_INJ_Scope_Controller_Obj)
-    {
-        delete offline_VELA_INJ_Scope_Controller_Obj;
-               offline_VELA_INJ_Scope_Controller_Obj = nullptr;
-    }
-    if(physical_VELA_INJ_Scope_Controller_Obj)
-    {
-        delete physical_VELA_INJ_Scope_Controller_Obj;
-               physical_VELA_INJ_Scope_Controller_Obj = nullptr;
-    }
-    if(virtual_VELA_BA1_Scope_Controller_Obj)
-    {
-        delete virtual_VELA_BA1_Scope_Controller_Obj;
-               virtual_VELA_BA1_Scope_Controller_Obj = nullptr;
-    }
-    if(offline_VELA_BA1_Scope_Controller_Obj)
-    {
-        delete offline_VELA_BA1_Scope_Controller_Obj;
-               offline_VELA_BA1_Scope_Controller_Obj = nullptr;
-    }
-    if(physical_VELA_BA1_Scope_Controller_Obj)
-    {
-        delete physical_VELA_BA1_Scope_Controller_Obj;
-               physical_VELA_BA1_Scope_Controller_Obj = nullptr;
-    }
-    if(virtual_VELA_BA2_Scope_Controller_Obj)
-    {
-        delete virtual_VELA_BA2_Scope_Controller_Obj;
-               virtual_VELA_BA2_Scope_Controller_Obj = nullptr;
-    }
-    if(offline_VELA_BA2_Scope_Controller_Obj)
-    {
-        delete offline_VELA_BA2_Scope_Controller_Obj;
-               offline_VELA_BA2_Scope_Controller_Obj = nullptr;
-    }
-    if(physical_VELA_BA2_Scope_Controller_Obj)
-    {
-        delete physical_VELA_BA2_Scope_Controller_Obj;
-               physical_VELA_BA2_Scope_Controller_Obj = nullptr;
-    }
-    if(virtual_CLARA_S01_Scope_Controller_Obj)
-    {
-        delete virtual_CLARA_S01_Scope_Controller_Obj;
-               virtual_CLARA_S01_Scope_Controller_Obj = nullptr;
-    }
-    if(offline_CLARA_S01_Scope_Controller_Obj)
-    {
-        delete offline_CLARA_S01_Scope_Controller_Obj;
-               offline_CLARA_S01_Scope_Controller_Obj = nullptr;
-    }
-    if(physical_CLARA_S01_Scope_Controller_Obj)
-    {
-        delete physical_CLARA_S01_Scope_Controller_Obj;
-               physical_CLARA_S01_Scope_Controller_Obj = nullptr;
-    }
+//    if(virtual_VELA_INJ_Scope_Controller_Obj)
+//    {
+//        delete virtual_VELA_INJ_Scope_Controller_Obj;
+//               virtual_VELA_INJ_Scope_Controller_Obj = nullptr;
+//    }
+//    if(offline_VELA_INJ_Scope_Controller_Obj)
+//    {
+//        delete offline_VELA_INJ_Scope_Controller_Obj;
+//               offline_VELA_INJ_Scope_Controller_Obj = nullptr;
+//    }
+//    if(physical_VELA_INJ_Scope_Controller_Obj)
+//    {
+//        delete physical_VELA_INJ_Scope_Controller_Obj;
+//               physical_VELA_INJ_Scope_Controller_Obj = nullptr;
+//    }
+//    if(virtual_VELA_BA1_Scope_Controller_Obj)
+//    {
+//        delete virtual_VELA_BA1_Scope_Controller_Obj;
+//               virtual_VELA_BA1_Scope_Controller_Obj = nullptr;
+//    }
+//    if(offline_VELA_BA1_Scope_Controller_Obj)
+//    {
+//        delete offline_VELA_BA1_Scope_Controller_Obj;
+//               offline_VELA_BA1_Scope_Controller_Obj = nullptr;
+//    }
+//    if(physical_VELA_BA1_Scope_Controller_Obj)
+//    {
+//        delete physical_VELA_BA1_Scope_Controller_Obj;
+//               physical_VELA_BA1_Scope_Controller_Obj = nullptr;
+//    }
+//    if(virtual_VELA_BA2_Scope_Controller_Obj)
+//    {
+//        delete virtual_VELA_BA2_Scope_Controller_Obj;
+//               virtual_VELA_BA2_Scope_Controller_Obj = nullptr;
+//    }
+//    if(offline_VELA_BA2_Scope_Controller_Obj)
+//    {
+//        delete offline_VELA_BA2_Scope_Controller_Obj;
+//               offline_VELA_BA2_Scope_Controller_Obj = nullptr;
+//    }
+//    if(physical_VELA_BA2_Scope_Controller_Obj)
+//    {
+//        delete physical_VELA_BA2_Scope_Controller_Obj;
+//               physical_VELA_BA2_Scope_Controller_Obj = nullptr;
+//    }
+//    if(virtual_CLARA_S01_Scope_Controller_Obj)
+//    {
+//        delete virtual_CLARA_S01_Scope_Controller_Obj;
+//               virtual_CLARA_S01_Scope_Controller_Obj = nullptr;
+//    }
+//    if(offline_CLARA_S01_Scope_Controller_Obj)
+//    {
+//        delete offline_CLARA_S01_Scope_Controller_Obj;
+//               offline_CLARA_S01_Scope_Controller_Obj = nullptr;
+//    }
+//    if(physical_CLARA_S01_Scope_Controller_Obj)
+//    {
+//        delete physical_CLARA_S01_Scope_Controller_Obj;
+//               physical_CLARA_S01_Scope_Controller_Obj = nullptr;
+//    }
 }    //dtor
 //______________________________________________________________________________
 scopeController & VCscopes::virtual_VELA_INJ_Scope_Controller()

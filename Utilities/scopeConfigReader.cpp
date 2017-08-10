@@ -148,10 +148,6 @@ void scopeConfigReader::addToScopeNumObjectsV1( const std::vector<std::string> &
 //        scopeNumObjects.back().timebase = getNumD( keyVal[ 1 ] );
 //    }
 
-    else if( keyVal[0] == UTL::DIAG_TYPE )
-    {
-        scopeNumObjects.back().diagType = getDiagType( keyVal[ 1 ] );
-    }
 }
 //______________________________________________________________________________
 void scopeConfigReader::addToScopeTraceDataObjectsV1( const std::vector<std::string> &keyVal )
@@ -174,11 +170,6 @@ void scopeConfigReader::addToScopeTraceDataObjectsV1( const std::vector<std::str
     else if( keyVal[0] == UTL::TIMEBASE )
     {
         scopeTraceDataObjects.back().timebase = getNumD( keyVal[ 1 ] );
-    }
-
-    else if( keyVal[0] == UTL::DIAG_TYPE )
-    {
-        scopeTraceDataObjects.back().diagType = getDiagType( keyVal[ 1 ] );
     }
 }
 //______________________________________________________________________________
@@ -229,6 +220,10 @@ void scopeConfigReader::addToPVStruct( std::vector< scopeStructs::pvStruct >  & 
         {
             pvStruct_v.back().pvType    = scopeStructs::SCOPE_PV_TYPE::TR4;
             pvStruct_v.back().scopeType = scopeStructs::SCOPE_TYPE::ARRAY;
+        }
+        else if( keyVal[0] == UTL::DIAG_TYPE )
+        {
+            pvStruct_v.back().diagType = getDiagType( keyVal[ 1 ] );
         }
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
@@ -370,6 +365,7 @@ VELA_ENUM::DIAG_TYPE scopeConfigReader::getDiagType( const std::string & val )
         r = VELA_ENUM::ED_FCUP;
     else if( val == UTL::FCUP )
         r = VELA_ENUM::FCUP;
+
     return r;
 }
 

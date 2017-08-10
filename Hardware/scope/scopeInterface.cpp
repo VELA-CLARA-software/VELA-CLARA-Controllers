@@ -29,9 +29,13 @@
 #include <epicsTime.h>
 
 //______________________________________________________________________________
-scopeInterface::scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2, const bool* show_messages_ptr,
-                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
-                                                            const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+scopeInterface::scopeInterface( const std::string & configFileLocation1,
+                                const std::string & configFileLocation2,
+                                const bool* show_messages_ptr,
+                                const bool * show_debug_messages_ptr,
+                                const bool shouldStartEPICS,
+                                const bool startVirtualMachine,
+                                const VELA_ENUM::MACHINE_AREA myMachineArea ):
 configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine),
 interface( show_messages_ptr, show_debug_messages_ptr ),
 shouldStartEPICS( shouldStartEPICS ),
@@ -43,11 +47,13 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 scopeInterface::~scopeInterface()
 {
-//    for( auto it : continuousMonitorStructs )
-//    {
+    for( auto it : continuousMonitorStructs )
+    {
+        killNumCallBack( it );
         debugMessage("delete scopeInterface continuousMonitorStructs entry.");
-//        delete it;
-//    }
+        delete it;
+    }
+    debugMessage("scopeInterface DESTRUCTOR COMPLETE ");
 }
 //______________________________________________________________________________
 void scopeInterface::initialise()
@@ -63,7 +69,6 @@ void scopeInterface::initialise()
         {
             if( shouldStartEPICS )
             {
-                std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
                 initScopeChids();
                 /// start the monitors: set up the callback functions
@@ -91,11 +96,17 @@ void scopeInterface::initScopeChids()
     // trace objects
     for( auto && it1 : scopeObj.traceObjects )
         for( auto && it2 : it1.second.pvMonStructs )
+        {
             addChannel( it1.second.pvRoot, it2.second );
+        }
+
     // num objects
     for( auto && it1 : scopeObj.numObjects )
         for( auto && it2 : it1.second.pvMonStructs )
+        {
             addChannel( it1.second.pvRoot, it2.second );
+        }
+
     // send
     int status = sendToEpics( "ca_create_channel", "Found scope chids.", "!!TIMEOUT!! Not all scope ChIds found." );
     if( status == ECA_TIMEOUT )
@@ -129,16 +140,24 @@ void scopeInterface::monitorScopes()
     {
         for( auto && it2 : it1.second.pvMonStructs )
         {
-//            if( !isADataPV( it2.second.pvType ) )
-//            {   //NOT SURE ABOUT THIS "IF" -----> I WANT TO SET THIS BOOL TO TRUE EVEN IF IT IS A DATA PV
-                it1.second.isAContinuousMonitorStruct = false;
+            {
+                continuousMonitorStructs.push_back(new scopeStructs::monitorStruct());
+                continuousMonitorStructs.back()->monType = it2.first;
+                continuousMonitorStructs.back()->objName = it1.second.name;
+                continuousMonitorStructs.back()->interface = this;
+                continuousMonitorStructs.back()->val = &it1.second;
+                continuousMonitorStructs.back()->diagType = it2.second.diagType;
+                ca_create_subscription(it2.second.CHTYPE,
+                                       it2.second.COUNT,
+                                       it2.second.CHID,
+                                       it2.second.MASK,
+                                       scopeInterface::staticEntryrMonitor,
+                                       (void*)continuousMonitorStructs.back(),
+                                       &continuousMonitorStructs.back()->EVID);
+                debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
+                it1.second.isAContinuousMonitorStruct = true;
                 it1.second.isATemporaryMonitorStruct = false;
-//                if( it1.second.isAContinuousMonitorStruct )
-//                {
-//                    resetTraceVectors( 1 );
-//                    addToTraceMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
-//                }
-//            }
+            }
         }
     }
 
@@ -147,22 +166,32 @@ void scopeInterface::monitorScopes()
     {
         for( auto && it2 : it1.second.pvMonStructs )
         {
-//            if( !isADataPV( it2.second.pvType ) )
-//            {   //NOT SURE ABOUT THIS "IF" -----> I WANT TO SET THIS BOOL TO TRUE EVEN IF IT IS A DATA PV
+            {
+                continuousMonitorStructs.push_back(new scopeStructs::monitorStruct());
+                continuousMonitorStructs.back()->monType = it2.first;
+                continuousMonitorStructs.back()->objName = it1.second.name;
+                continuousMonitorStructs.back()->interface = this;
+                continuousMonitorStructs.back()->val = &it1.second;
+                continuousMonitorStructs.back()->diagType = it2.second.diagType;
+                ca_create_subscription(it2.second.CHTYPE,
+                                       it2.second.COUNT,
+                                       it2.second.CHID,
+                                       it2.second.MASK,
+                                       scopeInterface::staticEntryrMonitor,
+                                       (void*)continuousMonitorStructs.back(),
+                                       &continuousMonitorStructs.back()->EVID);
+                debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
                 it1.second.isAContinuousMonitorStruct = true;
                 it1.second.isATemporaryMonitorStruct = false;
-//                if( it1.second.isAContinuousMonitorStruct )
-//                {
-//                    resetNumVectors( 1 );
-//                    addToNumMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
-//                }
-//            }
+            }
         }
     }
 
     int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to scope Monitors", "!!TIMEOUT!! Subscription to scope Monitors failed" );
     if ( status == ECA_NORMAL )
+    {
         allMonitorsStarted = true; /// interface base class member
+    }
 }
 //______________________________________________________________________________
 void scopeInterface::addToTraceMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeTraceData * traceObj   )
@@ -250,33 +279,48 @@ void scopeInterface::addToNumMonitorStructs( std::vector< scopeStructs::monitorS
 void scopeInterface::staticEntryrMonitor( const event_handler_args args )
 {
     scopeStructs::monitorStruct * ms = static_cast< scopeStructs::monitorStruct *> ( args.usr );
-    std::cout<<ENUM_TO_STRING(ms->monType)<<std::endl;
     switch( ms -> monType )
     {
         case scopeStructs::SCOPE_PV_TYPE::TR1:
-            ms->interface->updateTrace( ms, args );
-            break;
+            {
+                ms->interface->updateTrace( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::TR2:
-            ms->interface->updateTrace( ms, args );
-            break;
+            {
+                ms->interface->updateTrace( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::TR3:
-            ms->interface->updateTrace( ms, args );
-            break;
+            {
+                ms->interface->updateTrace( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::TR4:
-            ms->interface->updateTrace( ms, args );
-            break;
+            {
+                ms->interface->updateTrace( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::P1:
-            ms->interface->updateValue( ms, args );
-            break;
+            {
+                ms->interface->updateValue( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::P2:
-            ms->interface->updateValue( ms, args );
-            break;
+            {
+                ms->interface->updateValue( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::P3:
-            ms->interface->updateValue( ms, args );
-            break;
+            {
+                ms->interface->updateValue( ms, args );
+                break;
+            }
         case scopeStructs::SCOPE_PV_TYPE::P4:
-            ms->interface->updateValue( ms, args );
-            break;
+            {
+                ms->interface->updateValue( ms, args );
+                break;
+            }
     }
 }
 //______________________________________________________________________________
@@ -288,15 +332,22 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
     td->isMonitoringMap.at( ms -> monType ) = true;
     if( td->isAContinuousMonitorStruct)
     {
-        for( auto && it1 : scopeObj.traceObjects )
+        td->shotCounts.at( ms -> monType ) = 0;
+        td->diagType = ms -> diagType;
+        if( td->timeStamps.at(ms->monType).size() == 0 )
         {
-            it1.second.numShots = 1;
+            td->timeStamps.at(ms->monType).push_back(1);
+            td->strTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
+            td->traceData.at(ms->monType).resize(2000);
+        }
+//        for( auto && it1 : scopeObj.numObjects )
+//        {
+//            it1.second.numShots = 1;
 //            for( auto && it2 : it1.second.shotCounts )
 //            {
 //                it2.second = 0;
 //            }
-            it1.second.shotCounts.at( ms -> monType ) = 0;
-        }
+//        }
     }
     const dbr_double_t * value = &(p  -> value);
     size_t i =1;
@@ -308,6 +359,7 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
     /// resizes the trace vectors dynamically in case the trace being sent to EPICS from the scope changes size
     /// - limited by the array size set in EPICS database (currently (6/4/17) 2000 points)
     td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ].resize(static_cast< int >(*( &p->value ) ) );
+    message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
 
     for( auto && it : td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ] )
     {
@@ -339,21 +391,56 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
 
     if( scno->isAContinuousMonitorStruct)
     {
-        for( auto && it1 : scopeObj.numObjects )
+        scno->shotCounts.at( ms -> monType ) = 0;
+        scno->diagType = ms -> diagType;
+        if( scno->numTimeStamps.at(ms->monType).size() == 0 )
         {
-            it1.second.numShots = 1;
-            for( auto && it2 : it1.second.shotCounts )
-            {
-                it2.second = 0;
-            }
+            scno->numTimeStamps.at(ms->monType).push_back(1);
+            scno->numStrTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
+            scno->numData.at(ms->monType).push_back(UTL::DUMMY_DOUBLE);
         }
+//        for( auto && it1 : scopeObj.numObjects )
+//        {
+//            it1.second.numShots = 1;
+//            for( auto && it2 : it1.second.shotCounts )
+//            {
+//                it2.second = 0;
+//            }
+//        }
     }
 
     const dbr_double_t * val = &(p  -> value);
     size_t i = 0;
+
     updateTime( p->stamp, scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ],
                scno->numStrTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ]  );
-
+     switch( ms -> monType )
+    {
+        case scopeStructs::SCOPE_PV_TYPE::P1:
+            {
+                scno->p1 = *( &p -> value );
+                scno->p1TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
+                break;
+            }
+        case scopeStructs::SCOPE_PV_TYPE::P2:
+            {
+                scno->p2 = *( &p -> value );
+                scno->p2TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
+                break;
+            }
+        case scopeStructs::SCOPE_PV_TYPE::P3:
+            {
+                scno->p3 = *( &p -> value );
+                scno->p3TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
+                break;
+            }
+        case scopeStructs::SCOPE_PV_TYPE::P4:
+            {
+                scno->p4 = *( &p -> value );
+                scno->p4TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
+                break;
+            }
+    }
     scno->numData.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ] = *( &p -> value );
 
     if( scno -> isATemporaryMonitorStruct )
@@ -858,23 +945,23 @@ double scopeInterface::getWCMQ()
         {
             if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
             {
-                minVal = getScopeNums( it.first, it2.second.pvType ).back();
+                minVal = it.second.numData.at( it2.second.pvType ).back();
                 wcmQ   = minVal * -250;
             }
         }
     }
-    for( auto && it : scopeObj.traceObjects )
-    {
-        for( auto && it2 : it.second.pvMonStructs )
-        {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
-            {
-                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
-                wcmQ   = minVal * -250;
-            }
-        }
-    }
-
+    message(wcmQ);
+//    for( auto && it : scopeObj.traceObjects )
+//    {
+//        for( auto && it2 : it.second.pvMonStructs )
+//        {
+//            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
+//            {
+//                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
+//                wcmQ   = minVal * -250;
+//            }
+//        }
+//    }
     if( wcmQ == UTL::DUMMY_DOUBLE )
     {
         message("DID NOT FIND WCM AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
@@ -943,17 +1030,17 @@ double scopeInterface::getFCUPQ()
             }
         }
     }
-    for( auto && it : scopeObj.traceObjects )
-    {
-        for( auto && it2 : it.second.pvMonStructs )
-        {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
-            {
-                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
-                fcupQ   = minVal * -250;
-            }
-        }
-    }
+//    for( auto && it : scopeObj.traceObjects )
+//    {
+//        for( auto && it2 : it.second.pvMonStructs )
+//        {
+//            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
+//            {
+//                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
+//                fcupQ   = minVal * -250;
+//            }
+//        }
+//    }
     if( fcupQ == UTL::DUMMY_DOUBLE )
     {
         message("DID NOT FIND FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
@@ -978,17 +1065,17 @@ double scopeInterface::getEDFCUPQ()
             }
         }
     }
-    for( auto && it : scopeObj.traceObjects )
-    {
-        for( auto && it2 : it.second.pvMonStructs )
-        {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
-            {
-                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
-                edfcupQ   = minVal * -100;
-            }
-        }
-    }
+//    for( auto && it : scopeObj.traceObjects )
+//    {
+//        for( auto && it2 : it.second.pvMonStructs )
+//        {
+//            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
+//            {
+//                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
+//                edfcupQ   = minVal * -100;
+//            }
+//        }
+//    }
     if( edfcupQ == UTL::DUMMY_DOUBLE )
     {
         message("DID NOT FIND ED-FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");

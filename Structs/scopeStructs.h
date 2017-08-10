@@ -2,6 +2,7 @@
 #define _VELA_SCOPE_STRUCTS_H_
 //
 #include "structs.h"
+#include "configDefinitions.h"
 //stl
 #include <string>
 #include <map>
@@ -42,7 +43,9 @@ namespace scopeStructs
 
     struct scopeNumObject
     {
-        scopeNumObject() : p1ShotCount( 0 ), p2ShotCount( 0 ), p3ShotCount( 0 ), p4ShotCount( 0 ), numShots( 0 ) {}
+        scopeNumObject() : p1ShotCount( -2 ), p2ShotCount( -2 ), p3ShotCount( -2 ), p4ShotCount( -2 ),
+                           numShots( UTL::ZERO_INT ),
+                           p1( UTL::DUMMY_DOUBLE ), p2( UTL::DUMMY_DOUBLE ), p3( UTL::DUMMY_DOUBLE ), p4( UTL::DUMMY_DOUBLE ) {}
         std::string                name, pvRoot;
         VELA_ENUM::DIAG_TYPE       diagType;
         bool                       isAContinuousMonitorStruct, isATemporaryMonitorStruct;
@@ -100,13 +103,14 @@ namespace scopeStructs
 
     struct monitorStruct /// We use pointers when we wnat acces to the object (data) or... just  make a copy
     {
-        SCOPE_PV_TYPE      monType;
-        scopeObject*       scopeObject;
-        std::string        objName;
-        chtype             CHTYPE;
-        void *             val;
-        scopeInterface *interface;
-        evid               EVID;
+        SCOPE_PV_TYPE        monType;
+        VELA_ENUM::DIAG_TYPE diagType;
+        scopeObject*         scopeObject;
+        std::string          objName;
+        chtype               CHTYPE;
+        void *               val;
+        scopeInterface *     interface;
+        evid                 EVID;
     };
 }
 #endif
