@@ -60,6 +60,7 @@
 					<Add directory="../../Hardware/invertedMagnetronGauge" />
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/pilaser" />
+					<Add directory="../../Hardware/l01_mod" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -70,6 +71,7 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/VCheader.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/gun_mod/gunModController.cpp" />
@@ -78,6 +80,10 @@
 		<Unit filename="../../Hardware/gun_mod/gunModInterface.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
+		<Unit filename="../../Hardware/l01_mod/l01ModController.cpp" />
+		<Unit filename="../../Hardware/l01_mod/l01ModController.h" />
+		<Unit filename="../../Hardware/l01_mod/l01ModInterface.cpp" />
+		<Unit filename="../../Hardware/l01_mod/l01ModInterface.h" />
 		<Unit filename="../../Structs/rfModStructs.h" />
 		<Unit filename="../../Structs/structs.h">
 			<Option target="Debug" />
@@ -91,6 +97,8 @@
 		<Unit filename="../../Utilities/configReader.h" />
 		<Unit filename="../../Utilities/gunModConfigReader.cpp" />
 		<Unit filename="../../Utilities/gunModConfigReader.h" />
+		<Unit filename="../../Utilities/l01ModConfigReader.cpp" />
+		<Unit filename="../../Utilities/l01ModConfigReader.h" />
 		<Unit filename="include/VCrfmod.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />

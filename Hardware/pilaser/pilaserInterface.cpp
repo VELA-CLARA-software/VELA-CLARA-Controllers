@@ -151,8 +151,11 @@ void pilaserInterface::startMonitors()
         continuousMonitorStructs.back() -> monType    = it.first;
         continuousMonitorStructs.back() -> pilaserObj = &pilaser;
         continuousMonitorStructs.back() -> interface  = this;
-        ca_create_subscription(it.second.CHTYPE, it.second.COUNT,  it.second.CHID,
-                               it.second.MASK, pilaserInterface::staticEntryPILMonitor,
+        ca_create_subscription(it.second.CHTYPE,
+                               it.second.COUNT,
+                               it.second.CHID,
+                               it.second.MASK,
+                               pilaserInterface::staticEntryPILMonitor,
                                (void*)continuousMonitorStructs.back(),
                                &continuousMonitorStructs.back() -> EVID);
     }
@@ -163,7 +166,7 @@ void pilaserInterface::startMonitors()
 //____________________________________________________________________________________________
 void pilaserInterface::staticEntryPILMonitor(const event_handler_args args)
 {
-    pilaserStructs::monitorStruct*ms = static_cast<  pilaserStructs::monitorStruct *>(args.usr);
+    pilaserStructs::monitorStruct*ms = static_cast<pilaserStructs::monitorStruct *>(args.usr);
     switch(ms -> monType)
     {
         case pilaserStructs::PILASER_PV_TYPE::H_POS:

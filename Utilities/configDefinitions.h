@@ -185,6 +185,26 @@ namespace UTL
     // (its the same physical LLRF equipment)
     const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
     const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
+
+
+
+    // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
+    // except, probably, the VELA TDC
+    const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
+    const std::string PV_SUFFIX_LIB_AMP_SP      = "PV_SUFFIX_LIB_AMP_SP";
+    const std::string PV_SUFFIX_LIB_PHI_FF      = "PV_SUFFIX_LIB_PHI_FF";
+    const std::string PV_SUFFIX_LIB_PHI_SP      = "PV_SUFFIX_LIB_PHI_SP";
+    const std::string PV_SUFFIX_LIB_CAV_FWD     = "PV_SUFFIX_LIB_CAV_FWD";
+    const std::string PV_SUFFIX_LIB_CAV_REV     = "PV_SUFFIX_LIB_CAV_REV";
+    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
+    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
+    const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
+    const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
+    const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
+    const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
+
+
+
 // L01 MODULATOR
     const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";
 
@@ -268,20 +288,6 @@ namespace UTL
 
 
 
-    // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
-    // except, probably, the VELA TDC
-    const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
-    const std::string PV_SUFFIX_LIB_AMP_SP      = "PV_SUFFIX_LIB_AMP_SP";
-    const std::string PV_SUFFIX_LIB_PHI_FF      = "PV_SUFFIX_LIB_PHI_FF";
-    const std::string PV_SUFFIX_LIB_PHI_SP      = "PV_SUFFIX_LIB_PHI_SP";
-    const std::string PV_SUFFIX_LIB_CAV_FWD     = "PV_SUFFIX_LIB_CAV_FWD";
-    const std::string PV_SUFFIX_LIB_CAV_REV     = "PV_SUFFIX_LIB_CAV_REV";
-    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
-    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
-    const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
-    const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
-    const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
-    const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
 
     // LEGACY LLRF PVS from the Dark Days oF VELA 2015 :(
     const std::string PV_SUFFIX_AMPR = "PV_SUFFIX_AMPR";

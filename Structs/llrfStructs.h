@@ -51,9 +51,10 @@ namespace llrfStructs
     // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
     struct pvStruct
     {
+        pvStruct():name("NO_NAME"){}
         LLRF_PV_TYPE  pvType;
         chid          CHID;
-        std::string   pvSuffix;
+        std::string   pvSuffix,name;
         unsigned long COUNT, MASK;
         chtype        CHTYPE;
         evid          EVID;
@@ -69,8 +70,8 @@ namespace llrfStructs
         size_t              shot;
         std::vector<double> value;
         epicsTimeStamp etime; // epics timestamp for value
-        double         time; // epics timestamp doncerted into nano-sec
-        std::string    timeStr; // epics timestamp doncerted into nano-sec
+        double         time; // epics timestamp converted into nano-sec
+        std::string    timeStr; // epics timestamp converted into nano-sec
     };
     // The main hardware object
     struct liberallrfObject
