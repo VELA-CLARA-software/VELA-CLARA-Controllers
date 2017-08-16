@@ -49,6 +49,8 @@ void   cameraDAQController::set_CA_PEND_IO_TIMEOUT( double val )
 {
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
+///Functions Accessible to Python Controller///
+//Generic Functions
 bool cameraDAQController::isON ( const std::string & cam )
 {
     return localInterface.isON( cam );
@@ -89,21 +91,28 @@ bool cameraDAQController::stopVCAquiring()
 {
     return localInterface.stopVCAquiring();
 }
-bool cameraDAQController::collect(const int &c, const int & numbOfShots)
+//DAQ Specific Functions
+bool cameraDAQController::collect(const std::string &io, const int & numbOfShots)
 {
-    if(c==1)
-        unsigned short comm(1);
-    if(c==0)
-        unsigned short comm(0);
+    unsigned short comm(0);
+    if(io=="ON"||io=="On"||io=="on")
+        comm=1;
+    else if(io=="OFF"||io=="Off"||io=="off")
+        comm=0;
+    else
+        message("Collect input not recognised, please use 'ON' or 'OFF'");
     return localInterface.collect(comm, numbOfShots);
 }
-bool cameraDAQController::write(const int &c)
+bool cameraDAQController::save(const std::string &io)
 {
-    if(c==1)
-        unsigned short comm(1);
-    if(c==0)
-        unsigned short comm(0);
-    return localInterface.write(comm);
+    unsigned short comm(0);
+    if(io=="ON"||io=="On"||io=="on")
+        comm=1;
+    else if(io=="OFF"||io=="Off"||io=="off")
+        comm=0;
+    else
+        message("Write input not recognised, please use 'ON' or 'OFF'");
+    return localInterface.save(comm);
 }
 bool cameraDAQController::collectAndSave(const int & numbOfShots)
 {
@@ -120,10 +129,6 @@ const cameraStructs::cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(
 const cameraStructs::cameraDAQObject& cameraDAQController::getSelectedDAQRef()
 {
     return localInterface.getSelectedDAQRef();
-}
-cameraStructs::cameraDAQObject* cameraDAQController::getSelectedDAQPtr()
-{
-    return localInterface.getSelectedDAQPtr();
 }
 const cameraStructs::cameraDAQObject& cameraDAQController::getVCDAQRef()
 {

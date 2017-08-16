@@ -165,12 +165,16 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_BKGRND_DATA;
         else if( keyVal[0] == UTL::PV_SUFFIX_FILE_PATH  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_PATH;
+        else if( keyVal[0] == UTL::PV_SUFFIX_FILE_NUMBER  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_NUMBER;
         else if( keyVal[0] == UTL::PV_SUFFIX_FILE_NAME  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_NAME;
         else if( keyVal[0] == UTL::PV_SUFFIX_FILE_TEMPLATE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_TEMPLATE;
         else if( keyVal[0] == UTL::PV_SUFFIX_WRITE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE;
+        else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_RBV;
         else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_STATUS  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_STATUS;
         else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_MESSAGE  )
@@ -179,6 +183,8 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_STATUS;
         else if( keyVal[0] == UTL::PV_SUFFIX_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_CAPTURE;
+        else if( keyVal[0] == UTL::PV_SUFFIX_CAPTURE_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_CAPTURE_RBV;
         else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE;
         else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURED  )

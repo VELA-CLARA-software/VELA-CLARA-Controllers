@@ -35,19 +35,17 @@ class cameraDAQInterface : public cameraInterface
                          const bool shouldStartEPICs,
                          const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~cameraDAQInterface();
-
+        ///Functions Accessible to Python Controller///
         bool collectAndSave (const int & numbOfShots);
-        //bool collectAndSave (const int & numbOfShots, const std::string & comments);
         bool killCollectAndSave();
         bool collect(unsigned short &comm, const int & numbOfShots);
-        bool write(unsigned short &comm);
-        bool makeANewDirectory();
+        bool save(unsigned short &comm);
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
         const cameraStructs::cameraDAQObject &getSelectedDAQRef();
         cameraStructs::cameraDAQObject* getSelectedDAQPtr();
         const cameraStructs::cameraDAQObject &getVCDAQRef();
-    protected:
 
+    protected:
     private:
         //void cameraDAQInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
         const VELA_ENUM::MACHINE_AREA myMachineArea;
@@ -57,13 +55,20 @@ class cameraDAQInterface : public cameraInterface
         bool initObjects();
         void initChids();
         void startMonitors();
+        void killMonitor( cameraStructs::monitorDAQStruct * ms );
         static void staticEntryDAQMonitor(const event_handler_args args);
         void updateState(const unsigned short value,const std::string&cameraName);
         void updateAquiring(const unsigned short value,const std::string&cameraName);
+        void updateCapturing(const unsigned short value,const std::string&cameraName);
         void updateWriteState(const unsigned short value,const std::string&cameraName);
+        void updateWriteCheck(const unsigned short value,const std::string&cameraName);
         void updateNumCaptured(const unsigned long value,const std::string&cameraName);
         void updateNumCapture(const unsigned long value,const std::string&cameraName);
+        ///Useful Functions for the Class///
         std::string getWriteMessage();
-        void killMonitor( cameraStructs::monitorDAQStruct * ms );
+        bool makeANewDirectory();
+        bool setNumberOfShots(const int &numberOfShots);
+        bool setStartFileNumber(const int &startNumber);
+
 };
 #endif // CAM_DAQ_INTERFACE_H

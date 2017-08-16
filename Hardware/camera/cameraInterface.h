@@ -39,7 +39,7 @@ class cameraInterface : public interface
 
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
-
+        ///Functions Accessible to Python Controller///
         bool isON ( const std::string & cam );
         bool isOFF( const std::string & cam );
         bool isAquiring( const std::string & cam );
@@ -59,7 +59,9 @@ class cameraInterface : public interface
         cameraStructs::cameraIAObject *vcIACamera;
         cameraStructs::cameraDAQObject vcDAQCamera;
         cameraStructs::cameraDAQObject &vcDAQCameraRef;
-
+        ///Useful Functions for the Controller///
+        bool isCollecting(const std::string&cameraName);
+        bool isSaving(const std::string&cameraName);
     protected:
         void addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv );
 

@@ -527,26 +527,30 @@ namespace UTL
 //    const std::string SOL_DEGAUSS_TOLERANCE  = "SOL_DEGAUSS_TOLERANCE";
 
     //Cameras
+    const std::string PV_SUFFIX_CAM_STATE       ="PV_SUFFIX_CAM_STATE"  ;
     const std::string PV_SUFFIX_START           ="PV_SUFFIX_ACQUIRE"    ;
     const std::string PV_SUFFIX_ACQUIRE_RBV     ="PV_SUFFIX_ACQUIRE_RBV";
     const std::string PV_SUFFIX_CAPTURE         ="PV_SUFFIX_CAPTURE"    ;
+    const std::string PV_SUFFIX_CAPTURE_RBV     ="PV_SUFFIX_CAPTURE_RBV"    ;
     const std::string PV_SUFFIX_NUM_CAPTURE     ="PV_SUFFIX_NUM_CAPTURE";
     const std::string PV_SUFFIX_NUM_CAPTURED    ="PV_SUFFIX_NUM_CAPTURED";
     const std::string PV_SUFFIX_WRITE_STATUS    ="PV_SUFFIX_WRITE_STATUS";
     const std::string PV_SUFFIX_WRITE_MESSAGE   ="PV_SUFFIX_WRITE_MESSAGE";
     const std::string PV_SUFFIX_WRITE           ="PV_SUFFIX_WRITE"      ;
+    const std::string PV_SUFFIX_WRITE_RBV       ="PV_SUFFIX_WRITE_RBV"      ;
     const std::string PV_SUFFIX_DATA            ="PV_SUFFIX_DATA"       ;
     const std::string PV_SUFFIX_BKGRND_DATA     ="PV_SUFFIX_BKGRND_DATA";
     const std::string PV_SUFFIX_FILE_PATH       ="PV_SUFFIX_FILE_PATH"  ;
     const std::string PV_SUFFIX_FILE_NAME       ="PV_SUFFIX_FILE_NAME"  ;
     const std::string PV_SUFFIX_FILE_TEMPLATE   ="PV_SUFFIX_FILE_TEMPLATE";
+    const std::string PV_SUFFIX_FILE_NUMBER     ="PV_SUFFIX_FILE_NUMBER"  ;
 
     const std::string PV_SUFFIX_X               ="PV_SUFFIX_X"          ;
     const std::string PV_SUFFIX_Y               ="PV_SUFFIX_Y"          ;
     const std::string PV_SUFFIX_SX              ="PV_SUFFIX_SX"         ;
     const std::string PV_SUFFIX_SY              ="PV_SUFFIX_SY"         ;
     const std::string PV_SUFFIX_SXY             ="PV_SUFFIX_SXY"        ;
-    const std::string PV_SUFFIX_CAM_STATE       ="PV_SUFFIX_CAM_STATE"  ;
+
     // Camera Object Componentns
     const std::string SCREEN_PV                 ="SCREEN_PV"            ;
     const std::string X_CENTER                  ="X_CENTER"             ;

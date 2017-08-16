@@ -13,8 +13,23 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
+typedef int inter;
+typedef const int cinter;
+typedef double doub;
+typedef const double cdou;
+typedef std::vector<double> vecd;
+typedef std::vector<std::vector<double>> vvcd;
+typedef const std::vector<double> cved;
+typedef const size_t csiz;
+typedef size_t size;
+typedef std::vector<size_t> vsiz;
+typedef std::string stri;
+typedef const std::string cstr;
+typedef std::vector<std::string> vecs;
+typedef const std::vector<std::string> cves;
+typedef boost::python::list & cbpl;
 
-
+///Top Class///
 class VCcameraDAQ
 {
     public:
@@ -45,37 +60,21 @@ class VCcameraDAQ
         bool  shouldShowDebugMessage, shouldShowMessage;
         const VELA_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
 };
-typedef int inter;
-typedef const int cinter;
-typedef double doub;
-typedef const double cdou;
-typedef std::vector<double> vecd;
-typedef std::vector<std::vector<double>> vvcd;
-typedef const std::vector<double> cved;
-typedef const size_t csiz;
-typedef size_t size;
-typedef std::vector<size_t> vsiz;
-typedef std::string stri;
-typedef const std::string cstr;
-typedef std::vector<std::string> vecs;
-typedef const std::vector<std::string> cves;
-typedef boost::python::list & cbpl;
-
-
+///Expose Relevant Classes, Vectors and Enums to Python///
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
 {
     docstring_options doc_options(false);
     doc_options.disable_cpp_signatures();
 
-    //Expose Vectors
+    ///Expose Vectors
     class_<std::vector< std::string > >("std_vector_string")
         .def( vector_indexing_suite< std::vector< std::string >>())
         ;
     class_<std::vector<double>>("std_vector_double")
         .def( vector_indexing_suite< std::vector<double>>())
         ;
-    //Expose Enums
+    ///Expose Enums
     enum_<cameraStructs::CAM_STATE>("CAM_STATE","CAM_STATE Doc String")
         .value("CAM_ON",cameraStructs::CAM_STATE::CAM_ON)
         .value("CAM_OFF",cameraStructs::CAM_STATE::CAM_OFF)
@@ -86,11 +85,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .value("ACQUIRING",cameraStructs::AQUIRE_STATE::ACQUIRING)
         .value("AQUIRING_ERROR",cameraStructs::AQUIRE_STATE::AQUIRING_ERROR)
         ;
-    enum_<cameraStructs::WRITE_STATE>("WRITE_STATE","WRITE_STATE Doc String")
-        .value("WRITE_OK",      cameraStructs::WRITE_STATE::WRITE_OK)
-        .value("WRITE_ERROR",   cameraStructs::WRITE_STATE::WRITE_ERROR)
+    enum_<cameraStructs::WRITE_CHECK>("WRITE_CHECK","WRITE_CHECK Doc String")
+        .value("WRITE_OK",      cameraStructs::WRITE_CHECK::WRITE_OK)
+        .value("WRITE_CHECK_ERROR",   cameraStructs::WRITE_CHECK::WRITE_CHECK_ERROR)
         ;
-    //Expose Classes
+    ///Expose Classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
     boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
@@ -118,7 +117,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("get_CA_PEND_IO_TIMEOUT",      &cameraDAQController::get_CA_PEND_IO_TIMEOUT  )
         .def("set_CA_PEND_IO_TIMEOUT",      &cameraDAQController::set_CA_PEND_IO_TIMEOUT  )
         .def("collect",                     &cameraDAQController::collect)
-        .def("write",                       &cameraDAQController::write)
+        .def("save",                        &cameraDAQController::save)
         .def("collectAndSave",              &cameraDAQController::collectAndSave)
         .def("killCollectAndSave",          &cameraDAQController::killCollectAndSave)
         .def("getCamDAQObjConstRef",        &cameraDAQController::getCamDAQObjConstRef, return_value_policy<reference_existing_object>())
@@ -148,6 +147,4 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("setDebugMessage",                         &VCcameraDAQ::setDebugMessage )
         ;
 }
-
-
 #endif // VC_CAMERA_DAQ_H

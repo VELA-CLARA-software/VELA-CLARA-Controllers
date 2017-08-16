@@ -28,24 +28,20 @@
 class cameraDAQController  : public controller
 {
     public:
-        /// we have overloaded constructors to specify config-file location
         cameraDAQController();
-        /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         cameraDAQController( const bool show_messages,    const bool show_debug_messagese,
                           const std::string &camConf, const bool startVirtualMachine,
                           const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea);
-
         ~cameraDAQController( );
+        // These are pure virtual methods, so need to have some implmentation in derived classes
+        double get_CA_PEND_IO_TIMEOUT();
+        void   set_CA_PEND_IO_TIMEOUT( double val );
+        // This pure virtual method MUST be overwritten in the derived controller ( making this an abstract base class)
+        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
+        std::map< VELA_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name );
 
-        bool collectAndSave (const int & numbOfShots);
-        bool collect(const int &c, const int & numbOfShots);
-        bool write(const int &c);
-        bool killCollectAndSave();
-        const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
-        const cameraStructs::cameraDAQObject &getSelectedDAQRef();
-        cameraStructs::cameraDAQObject *getSelectedDAQPtr();
-        const cameraStructs::cameraDAQObject &getVCDAQRef();
-        //general functions
+        ///Functions Accessible to Python Controller///
+        //Generic Functions
         bool isON ( const std::string & cam );
         bool isOFF( const std::string & cam );
         bool isAquiring( const std::string & cam );
@@ -56,25 +52,22 @@ class cameraDAQController  : public controller
         bool stopAquiring();
         bool startVCAquiring();
         bool stopVCAquiring();
-        // These are pure virtual methods, so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT( double val );
+        //DAQ Specific Functions
+        bool collectAndSave (const int & numbOfShots);
+        bool collect(const std::string &io, const int & numbOfShots);
+        bool save(const std::string &io);
+        bool killCollectAndSave();
+        const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
+        const cameraStructs::cameraDAQObject &getSelectedDAQRef();
+        const cameraStructs::cameraDAQObject &getVCDAQRef();
 
-
-        /// This pure virtual method MUST be overwritten in the derived controller ( making this an abstract base class)
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name );
-
-        //const cameraStructs::cameraObject &getCamObjConstRef( const std::string & camName  );
     protected:
     private:
-
-    /// The interface to EPICS
+        // The interface to EPICS
         cameraDAQInterface  localInterface;
         void initialise();
         const bool shouldStartEPICs;
         const VELA_ENUM::MACHINE_AREA myMachineArea;
-
 };
 
 #endif // cameraDAQController_H

@@ -37,6 +37,7 @@ void cameraInterface::addChannel( const std::string & pvRoot, cameraStructs::pvS
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
     debugMessage( "Create channel to ", s1 );
 }
+///Functions Accessible to Python Controller///
 bool cameraInterface::isON ( const std::string & cam )
 {
     bool ans = false;
@@ -109,7 +110,7 @@ bool cameraInterface::stopAquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
-    if( isAquiring(selectedCamera()) )
+    if( isAquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
     {
         ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
                selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
@@ -141,7 +142,7 @@ bool cameraInterface::stopVCAquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
-    if( isAquiring("VC") )
+    if( isAquiring("VC") && isCollecting("VC")==false )
     {
         ca_put(vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
                vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
@@ -153,3 +154,27 @@ bool cameraInterface::stopVCAquiring()
     }
     return ans;
 }
+///Useful Functions for the Controller///
+bool cameraInterface::isCollecting(const std::string&cameraName)
+ {
+     bool ans = false;
+
+    if (allCamDAQData[cameraName].captureState==1)
+            ans=true;
+     else if (allCamDAQData[cameraName].captureState==0)
+            ans=false;
+     else
+        debugMessage("Problem with isCollecting() function.");
+     return ans;
+ }
+bool cameraInterface::isSaving(const std::string&cameraName)
+ {
+     bool ans = false;
+     if (allCamDAQData[cameraName].writeState==1)
+            ans=true;
+     else if (allCamDAQData[cameraName].writeState==0)
+            ans=false;
+     else
+        debugMessage("Problem with isSaving() function.");
+     return ans;
+ }

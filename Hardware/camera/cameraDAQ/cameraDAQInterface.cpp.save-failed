@@ -162,11 +162,8 @@ void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
         case cameraStructs::CAM_PV_TYPE::CAM_STATUS:
             ms->interface->updateState( *(unsigned short*)args.dbr, ms->objName );
             break;
-        case cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_RBV:
-            ms->interface->updateWriteState( *(unsigned short*)args.dbr, ms->objName );
-            break;
         case cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_STATUS:
-            ms->interface->updateWriteCheck( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateWriteState( *(unsigned short*)args.dbr, ms->objName );
             break;
         case cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURED:
             ms->interface->updateNumCaptured( *(unsigned long*)args.dbr, ms->objName );
@@ -201,28 +198,6 @@ void cameraDAQInterface::updateState(const unsigned short value,const std::strin
         message(cameraName, ": State is ", ENUM_TO_STRING( allCamDAQData[cameraName].state));
     }
 }
-void cameraDAQInterface::updateWriteCheck(const unsigned short value,const std::string&cameraName)
-{
-    if(entryExists(allCamDAQData,cameraName))
-    {
-        switch(value)
-        {
-            case 0:
-                allCamDAQData[cameraName].writeCheck = cameraStructs::WRITE_CHECK::WRITE_OK;
-                break;
-            case 1:
-                allCamDAQData[cameraName].writeCheck = cameraStructs::WRITE_CHECK::WRITE_CHECK_ERROR;
-                break;
-            default:
-                allCamDAQData[cameraName].writeCheck = cameraStructs::WRITE_CHECK::WRITE_CHECK_ERROR;
-        }
-        if(cameraName==selectedCamera())
-            selectedDAQCamera.writeCheck = allCamDAQData[cameraName].writeCheck;//Update the selected camera object
-        if(cameraName=="VC")
-            vcDAQCamera.writeCheck = allCamDAQData[cameraName].writeCheck;//Update the VC camera object
-        message(cameraName, ": Write Status is ", ENUM_TO_STRING( allCamDAQData[cameraName].writeCheck));
-    }
-}
 void cameraDAQInterface::updateWriteState(const unsigned short value,const std::string&cameraName)
 {
     if(entryExists(allCamDAQData,cameraName))
@@ -230,10 +205,10 @@ void cameraDAQInterface::updateWriteState(const unsigned short value,const std::
         switch(value)
         {
             case 0:
-                allCamDAQData[cameraName].writeState = cameraStructs::WRITE_STATE::WRITE_DONE;
+                allCamDAQData[cameraName].writeState = cameraStructs::WRITE_STATE::WRITE_OK;
                 break;
             case 1:
-                allCamDAQData[cameraName].writeState = cameraStructs::WRITE_STATE::WRITING;
+                allCamDAQData[cameraName].writeState = cameraStructs::WRITE_STATE::WRITE_ERROR;
                 break;
             default:
                 allCamDAQData[cameraName].writeState = cameraStructs::WRITE_STATE::WRITE_ERROR;
@@ -367,7 +342,7 @@ bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
     //Ensure messages update by waiting a second (is saving is quick)
     std::this_thread::sleep_for(std::chrono::milliseconds( 1000 )); //MAGIC_NUMBER
     //check how status of save
-    if (allCamDAQData[selectedCamera()].writeCheck==cameraStructs::WRITE_CHECK::WRITE_OK)
+    if (allCamDAQData[selectedCamera()].writeState==cameraStructs::WRITE_STATE::WRITE_OK)
     {
         success = true;
         message("Successful wrote image to disk.");
