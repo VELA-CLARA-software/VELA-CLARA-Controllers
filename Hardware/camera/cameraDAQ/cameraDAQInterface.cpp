@@ -350,30 +350,44 @@ bool cameraDAQInterface::save(unsigned short &comm)
 }
 bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
 {
+    new std::thread(&cameraDAQInterface::staticCollectAndSave,numbOfShots,this);
+    return true;
+}
+bool cameraDAQInterface::staticCollectAndSave(const int & numbOfShots,cameraDAQInterface * CDI)
+{   CDI->attachTo_thisCAContext();
     bool success = false;
     unsigned short go(1);
     //starting collecting images
-    collect(go,numbOfShots);
+    CDI->collect(go,numbOfShots);
     //wait until collecting is done....
     bool collecting=true;
+    int c=0;
     while(collecting==true)
-        collecting=isCollecting(selectedCamera());
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
+        collecting=CDI->isCollecting(CDI->selectedCamera());
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
     //now start saving
-    save(go);
+    CDI->save(go);
     //wait until saving is done....
     bool saving=true;
     while(saving==true)
-        saving=isSaving(selectedCamera());
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
+        saving=CDI->isSaving(CDI->selectedCamera());
+    }
     //Ensure messages update by waiting a second (is saving is quick)
-    std::this_thread::sleep_for(std::chrono::milliseconds( 1000 )); //MAGIC_NUMBER
+    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
     //check how status of save
-    if (allCamDAQData[selectedCamera()].writeCheck==cameraStructs::WRITE_CHECK::WRITE_OK)
+    if (CDI->allCamDAQData[CDI->selectedCamera()].writeCheck==cameraStructs::WRITE_CHECK::WRITE_OK)
     {
         success = true;
-        message("Successful wrote image to disk.");
+        CDI->message("Successful wrote image to disk.");
     }
     else
-        debugMessage("WRITE ERROR: ",getWriteMessage());
+        CDI->debugMessage("WRITE ERROR: ",CDI->getWriteMessage());
 
     return success;
 

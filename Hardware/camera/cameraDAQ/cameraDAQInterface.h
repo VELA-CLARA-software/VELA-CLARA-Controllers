@@ -37,6 +37,7 @@ class cameraDAQInterface : public cameraInterface
         ~cameraDAQInterface();
         ///Functions Accessible to Python Controller///
         bool collectAndSave (const int & numbOfShots);
+        bool staticCollectAndSave(const int & numbOfShots, cameraDAQInterface * CDI);
         bool killCollectAndSave();
         bool collect(unsigned short &comm, const int & numbOfShots);
         bool save(unsigned short &comm);
