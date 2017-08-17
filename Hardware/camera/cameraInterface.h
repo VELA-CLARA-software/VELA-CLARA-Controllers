@@ -39,20 +39,30 @@ class cameraInterface : public interface
 
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+
         ///Functions Accessible to Python Controller///
         bool isON ( const std::string & cam );
         bool isOFF( const std::string & cam );
         bool isAquiring( const std::string & cam );
         bool isNotAquiring( const std::string & cam );
+
+        // we're going have cameras named by screen AND camera number
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
+
+        //
         bool startAquiring();
         bool stopAquiring();
+        // assume the VC can act independant of all other cameras
         bool startVCAquiring();
         bool stopVCAquiring();
+
+
         std::vector<cameraStructs::monitorDAQStruct*> continuousMonitorDAQStructs;
+
         std::map< std::string, cameraStructs::cameraDAQObject > allCamDAQData;
         std::map< std::string, cameraStructs::cameraIAObject > allCamIAData;
+
         cameraStructs::cameraIAObject *selectedIACamera;
         cameraStructs::cameraDAQObject selectedDAQCamera;
         cameraStructs::cameraDAQObject &selectedDAQCameraRef;

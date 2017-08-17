@@ -35,9 +35,12 @@ class VCcameraDAQ
     public:
         VCcameraDAQ();
         ~VCcameraDAQ();
+        // no need atm VELA system is completely different
         cameraDAQController& virtual_VELA_Camera_DAQ_Controller();
         cameraDAQController& offline_VELA_Camera_DAQ_Controller();
         cameraDAQController& physical_VELA_Camera_DAQ_Controller();
+
+
         cameraDAQController& virtual_CLARA_Camera_DAQ_Controller();
         cameraDAQController& offline_CLARA_Camera_DAQ_Controller();
         cameraDAQController& physical_CLARA_Camera_DAQ_Controller();
@@ -68,6 +71,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
     doc_options.disable_cpp_signatures();
 
     ///Expose Vectors
+    // if not used don't inlcude
     class_<std::vector< std::string > >("std_vector_string")
         .def( vector_indexing_suite< std::vector< std::string >>())
         ;
@@ -123,7 +127,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("getCamDAQObjConstRef",        &cameraDAQController::getCamDAQObjConstRef, return_value_policy<reference_existing_object>())
         .def("getSelectedDAQRef",           &cameraDAQController::getSelectedDAQRef,    return_value_policy<reference_existing_object>())
         .def("getVCDAQRef",                 &cameraDAQController::getVCDAQRef,          return_value_policy<reference_existing_object>())
-        .def("isON",                        &cameraDAQController::isON  )
+        .def("isON",                        &cameraDAQController::isON,(arg("name")),"Returns True if Camera 'name' is ON")
         .def("isOFF",                       &cameraDAQController::isOFF  )
         .def("isAquiring",                  &cameraDAQController::isAquiring  )
         .def("isNotAquiring",               &cameraDAQController::isNotAquiring  )

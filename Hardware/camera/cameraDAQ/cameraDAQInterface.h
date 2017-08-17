@@ -35,12 +35,16 @@ class cameraDAQInterface : public cameraInterface
                          const bool shouldStartEPICs,
                          const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~cameraDAQInterface();
+
         ///Functions Accessible to Python Controller///
+        // add in a VC specific version of this
         bool collectAndSave (const int & numbOfShots);
         bool staticCollectAndSave(const int & numbOfShots, cameraDAQInterface * CDI);
         bool killCollectAndSave();
+
         bool collect(unsigned short &comm, const int & numbOfShots);
         bool save(unsigned short &comm);
+
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
         const cameraStructs::cameraDAQObject &getSelectedDAQRef();
         cameraStructs::cameraDAQObject* getSelectedDAQPtr();
@@ -50,6 +54,7 @@ class cameraDAQInterface : public cameraInterface
     private:
         //void cameraDAQInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
         const VELA_ENUM::MACHINE_AREA myMachineArea;
+        // bvase class member?
         const bool shouldStartEPICs;
         void initialise();
         cameraDAQConfigReader configReader;

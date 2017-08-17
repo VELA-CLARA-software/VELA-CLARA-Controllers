@@ -81,13 +81,14 @@ void cameraDAQInterface::killMonitor(cameraStructs::monitorDAQStruct * ms)
 bool cameraDAQInterface::initObjects()
 {
     bool camDatSuccess = configReader.getCamDAQData( allCamDAQData );
-    vcDAQCamera = allCamDAQData["VC"]; //MAGIC
+    vcDAQCamera = allCamDAQData["VC"]; //MAGIC_STRING
     //selectedDAQCamera = &allCamDAQData["VC"];
     setCamera("VC");
     for( auto && it : allCamDAQData )
         it.second.machineArea = myMachineArea;
     return camDatSuccess;
 }
+
 void cameraDAQInterface::initChids()
 {
     message( "\n", "Searching for Camera chids...");
@@ -194,9 +195,10 @@ void cameraDAQInterface::updateState(const unsigned short value,const std::strin
             default:
                 allCamDAQData[cameraName].state = cameraStructs::CAM_STATE::CAM_ERROR;
         }
+        // this is also copying the pvstructs maps that we know will never be used (danger?)
         if(cameraName==selectedCamera())
             selectedDAQCamera.state = allCamDAQData[cameraName].state;//Update the selected camera object
-        if(cameraName=="VC")
+        if(cameraName=="VC") // MAGIC_STRING
             vcDAQCamera.state = allCamDAQData[cameraName].state;//Update the VC camera object
         message(cameraName, ": State is ", ENUM_TO_STRING( allCamDAQData[cameraName].state));
     }
@@ -240,7 +242,7 @@ void cameraDAQInterface::updateWriteState(const unsigned short value,const std::
         }
         if(cameraName==selectedCamera())
             selectedDAQCamera.writeState = allCamDAQData[cameraName].writeState;//Update the selected camera object
-        if(cameraName=="VC")
+        if(cameraName=="VC")// MAGIC_STRING
             vcDAQCamera.writeState = allCamDAQData[cameraName].writeState;//Update the VC camera object
         message(cameraName, ": Write Status is ", ENUM_TO_STRING( allCamDAQData[cameraName].writeState));
     }
@@ -328,7 +330,7 @@ bool cameraDAQInterface::collect(unsigned short &comm, const int & numbOfShots)
 }
 bool cameraDAQInterface::save(unsigned short &comm)
 {
-    int startNumber(1);
+    int startNumber(1);// MAGIC_NUMBER should this be a one or a zero?
     setStartFileNumber(startNumber);
 
     bool ans=false;
@@ -348,11 +350,14 @@ bool cameraDAQInterface::save(unsigned short &comm)
         message("Camera was still collecting images when save function was called.");
     return ans;
 }
+
+
 bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
 {
     new std::thread(&cameraDAQInterface::staticCollectAndSave,numbOfShots,this);
     return true;
 }
+
 bool cameraDAQInterface::staticCollectAndSave(const int & numbOfShots,cameraDAQInterface * CDI)
 {   CDI->attachTo_thisCAContext();
     bool success = false;
@@ -450,6 +455,8 @@ bool cameraDAQInterface::makeANewDirectory()
                         "/"+std::to_string(local_tm.tm_mday)+
                         "/"+std::to_string(local_tm.tm_hour)+"_"+std::to_string(local_tm.tm_min)+"_"+std::to_string(local_tm.tm_sec));*/
 
+    // this data needs to go into the object as a string
+
     char dir[256];//MAGIC NUMBER
     strncpy(dir, newPath.c_str(),sizeof(dir));
 
@@ -466,6 +473,8 @@ bool cameraDAQInterface::makeANewDirectory()
     }
     return ans;
 }
+// this should be monitored...
+// and in the object
 std::string cameraDAQInterface::getWriteMessage()
 {
     std::string out("Failed to get message!!!");
@@ -484,6 +493,7 @@ std::string cameraDAQInterface::getWriteMessage()
 
     return out;
 }
+// there is actuall ya STE and RBV version of this parameter
 bool cameraDAQInterface::setNumberOfShots(const int &numberOfShots)
 {
     bool ans = false;

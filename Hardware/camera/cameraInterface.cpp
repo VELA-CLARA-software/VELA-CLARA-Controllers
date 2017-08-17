@@ -80,7 +80,7 @@ bool cameraInterface::setCamera(const std::string & cam)
     if( entryExists( allCamDAQData, cam ) )
     {
         selectedDAQCamera = allCamDAQData[cam];
-        vcDAQCamera = allCamDAQData["VC"];
+        vcDAQCamera = allCamDAQData["VC"];// MAGIC_STRING
         //selectedIACamera = allCamIAData[cam];
         ans = true;
 
@@ -89,6 +89,7 @@ bool cameraInterface::setCamera(const std::string & cam)
     }
     return ans;
 }
+/// this could be neatend up - much code repetition
 bool cameraInterface::startAquiring()
 {
     bool ans=false;
@@ -104,6 +105,7 @@ bool cameraInterface::startAquiring()
             ans = true;
         message("Starting to Acquire images on ",selectedDAQCamera.name," camera.");
     }
+    // else message(IS ALRREADY ACQUIRING)
     return ans;
 }
 bool cameraInterface::stopAquiring()

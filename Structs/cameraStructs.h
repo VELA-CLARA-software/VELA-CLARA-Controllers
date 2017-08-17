@@ -34,6 +34,7 @@ namespace cameraStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_STATE, (WRITE_DONE) (WRITING) (WRITE_ERROR))
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAPTURE_STATE, (CAPTURE_DONE) (CAPTURING) (CAPTURE_ERROR))
 
+    // bit depth of the camera... could be dynamic (!)
     typedef long camDataType;
     struct pvStruct;
     struct monitorDAQStruct;
@@ -60,7 +61,10 @@ namespace cameraStructs
         cameraDAQInterface *interface;
         evid             EVID;
     };
-    struct cameraIAObject
+
+    //add dummy values form UTL namespace, no hardcoded constants
+    // eventually (aspiration) harmonize this with VELA cams ...
+    struct cameraIAObject// image analysis object
     {
         cameraIAObject() : x(9999.9999),y(9999.9999),sigmaX(9999.9999),sigmaY(9999.9999),covXY(9999.9999),xPix2mm(9999.9999),yPix2mm(9999.9999),
                            xPix(9999),yPix(9999),xSigmaPix(9999),ySigmaPix(9999),xyCovPix(999),xCenterPix(9999),yCenterPix(9999),xRad(9999),yRad(9999),bitDepth(9999),imageHeight(9999),imageWidth(9999){}
@@ -72,20 +76,28 @@ namespace cameraStructs
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
+
     struct cameraDAQObject
     {
         cameraDAQObject() : name("NO_NAME"), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
         std::string name, pvRoot, screenPV;
-        char writeMessage[256];//MAGIC number from EPICS
+        char writeMessage[256];//MAGIC_NUMBER from EPICS
         CAM_STATE state;
+        // rolling acquisation
         AQUIRE_STATE aquireState;
+        // write state indicates if saving to disc / or
         WRITE_STATE writeState;
+        // write check is whether the last write was succesful
         WRITE_CHECK writeCheck;
+        // actuall "capturing" images to then save to disc
         CAPTURE_STATE captureState;
         int shotsTaken, numberOfShots;
         double frequency,exposureTime;
+        // doesn't exist for CLARA
         std::vector<camDataType> rawData;
+        // we're going to store a background image array ion a PV
         std::vector<camDataType> rawBackgroundData;
+        //
         VELA_ENUM::MACHINE_AREA  machineArea;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
