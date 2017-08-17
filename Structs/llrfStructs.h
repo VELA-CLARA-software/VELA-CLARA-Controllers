@@ -6,6 +6,7 @@
 //stl
 #include <string>
 #include <map>
+#include <deque>
 //epics
 #include <cadef.h>
 
@@ -25,14 +26,28 @@ namespace llrfStructs
                                                      (LIB_AMP_SP)
                                                      (LIB_PHI_FF)
                                                      (LIB_PHI_SP)
-                                                     (LIB_CAV_FWD)
-                                                     (LIB_CAV_REV)
-                                                     (LIB_KLY_FWD)
-                                                     (LIB_KLY_REV)
+                                                     (LIB_CH1_PWR_REM)
+                                                     (LIB_CH2_PWR_REM)
+                                                     (LIB_CH3_PWR_REM)
+                                                     (LIB_CH4_PWR_REM)
+                                                     (LIB_CH5_PWR_REM)
+                                                     (LIB_CH6_PWR_REM)
+                                                     (LIB_CH7_PWR_REM)
+                                                     (LIB_CH8_PWR_REM)
+                                                     (LIB_CH1_PHASE_REM)
+                                                     (LIB_CH2_PHASE_REM)
+                                                     (LIB_CH3_PHASE_REM)
+                                                     (LIB_CH4_PHASE_REM)
+                                                     (LIB_CH5_PHASE_REM)
+                                                     (LIB_CH6_PHASE_REM)
+                                                     (LIB_CH7_PHASE_REM)
+                                                     (LIB_CH8_PHASE_REM)
                                                      (LIB_TIME_VECTOR)
                                                      (LIB_PULSE_LENGTH)
                                                      (LIB_PULSE_OFFSET)
-                                                     (AMP_MVM)(PHI_DEG)(UNKNOWN)
+                                                     (AMP_MVM)
+                                                     (PHI_DEG)
+                                                     (UNKNOWN)
                                                    )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)(CLARA_LRRG)(VELA_HRRG)(VELA_LRRG)
                                                   (L01)(UNKNOWN_TYPE))
@@ -46,6 +61,7 @@ namespace llrfStructs
         chtype          CHTYPE;
         evid            EVID;
         liberallrfObject*     llrfObj;
+        std::string     name;
     };
     // The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
     // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
@@ -61,18 +77,54 @@ namespace llrfStructs
     };
 
     //a custom struct will always stand up better under maintenance.
-    struct rf_trace_data
+    struct rf_trace
     {
-        rf_trace_data():
+        rf_trace():
             shot(0),
-            time(0)
+            time(0),
+            timeStr("")
             {}
         size_t              shot;
         std::vector<double> value;
-        epicsTimeStamp etime; // epics timestamp for value
-        double         time; // epics timestamp converted into nano-sec
+        epicsTimeStamp etime;   // epics timestamp for value
+        double         time;    // epics timestamp converted into nano-sec
         std::string    timeStr; // epics timestamp converted into nano-sec
     };
+    //a custom struct will always stand up better under maintenance.
+    struct rf_trace_data
+    {
+        rf_trace_data():
+            buffersize(2),
+            check_mask(false), //inside the mask or not
+            hi_mask_set(false),
+            low_mask_set(false),
+            keep_rolling_average(false),
+            trace_size(0),
+            average_size(1)
+            {}
+        bool                check_mask, hi_mask_set,low_mask_set,keep_rolling_average;
+        size_t              buffersize, trace_size, average_size;
+        std::deque<rf_trace> traces;
+        std::vector<double> high_mask, low_mask, rolling_average;
+    };
+
+    struct outside_mask_trace
+    {
+        size_t              shot;
+        std::string         trace_name;
+        std::vector<double> value,high_mask,low_mask;
+        epicsTimeStamp etime;   // epics timestamp for value
+        double         time;    // epics timestamp converted into nano-sec
+        std::string    timeStr; // epics timestamp converted into nano-sec
+
+        // when exposing a vector of outside_mask_trace to python I ran into trouble...
+        //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
+        bool operator==(const outside_mask_trace& rhs)
+        {
+            return this == &rhs; //< implement your own rules.
+        }
+    };
+
     // The main hardware object
     struct liberallrfObject
     {
@@ -81,21 +133,23 @@ namespace llrfStructs
                      phiCalibration(UTL::DUMMY_DOUBLE),ampCalibration(UTL::DUMMY_DOUBLE),
                      phi_DEG(UTL::DUMMY_DOUBLE),amp_MVM(UTL::DUMMY_DOUBLE),
                      powerTraceLength(0),islocked(false),maxAmp(UTL::DUMMY_DOUBLE),
-                     pulse_length(UTL::DUMMY_DOUBLE),pulse_offset(UTL::DUMMY_DOUBLE)
-                     //ampR(UTL::DUMMY_LONG),ampW(0),phiLLRF(UTL::DUMMY_LONG),maxAmp(UTL::DUMMY_LONG),
+                     pulse_length(UTL::DUMMY_DOUBLE),pulse_offset(UTL::DUMMY_DOUBLE),
+                     event_count(0),check_mask(false)
                      {}
-        std::string name, pvRoot;
+        std::string name, pvRoot,EVIDStr;
         double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
         double phi_sp, phi_ff, crestPhi;
         double amp_sp, amp_ff,maxAmp;
         double pulse_length,pulse_offset;
-        bool islocked;
+        bool islocked, check_mask;
         //long ampR,phiLLRF,ampW,crestPhi,maxAmp;
         int numIlocks;
         LLRF_TYPE type;
-        size_t powerTraceLength;
-        //a custom struct will always stand up better under maintenance.
-        rf_trace_data cav_r_power,cav_f_power,kly_f_power,kly_r_power,time_vector;
+        size_t powerTraceLength,event_count;
+        //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
+        std::map<std::string, rf_trace_data> trace_data;
+        std::vector<outside_mask_trace> outside_mask_traces;
+        rf_trace_data time_vector;
         std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::iLockPVStruct> iLockPVStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvMonStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvComStructs;

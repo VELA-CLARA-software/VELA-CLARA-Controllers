@@ -97,18 +97,18 @@ void liberallrfInterface::initialise()
 bool liberallrfInterface::initObjects()
 {
     bool success = configReader.getliberallrfObject(llrf);
-    if(success )
+    if( success )
     {
-        llrf.cav_f_power.value.resize(
-            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD).COUNT);
-        llrf.cav_r_power.value.resize(
-            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV).COUNT);
-        llrf.kly_f_power.value.resize(
-            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD).COUNT);
-        llrf.kly_r_power.value.resize(
-            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV).COUNT);
-        llrf.time_vector.value.resize(
-            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR).COUNT);
+//        llrf.cav_f_power.value.resize(
+//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD).COUNT);
+//        llrf.cav_r_power.value.resize(
+//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV).COUNT);
+//        llrf.kly_f_power.value.resize(
+//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD).COUNT);
+//        llrf.kly_r_power.value.resize(
+//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV).COUNT);
+//        llrf.time_vector.value.resize(
+//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR).COUNT);
 //    message("llrf.cav_f_power.size() = ",  llrf.cav_f_power.value.size());
 //    message("llrf.cav_r_power.size() = ",  llrf.cav_r_power.value.size());
 //    message("llrf.kly_f_power.size() = ",  llrf.kly_f_power.value.size());
@@ -207,29 +207,10 @@ void liberallrfInterface::startMonitors()
     if (status == ECA_NORMAL )
         allMonitorsStarted = true; /// interface base class member
 }
-//____________________________________________________________________________________________
-bool liberallrfInterface::isMonitoring(llrfStructs::LLRF_PV_TYPE pv)
-{
-    bool r = false;
-    for(auto && it : continuousMonitorStructs )
-    {
-        if(it->monType == pv )
-        {
-            r = true;
-            break;
-        }
-    }
-    return r;
-}
-//____________________________________________________________________________________________
-bool liberallrfInterface::isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv)
-{
-    return !isMonitoring(pv);
-}
+
 //____________________________________________________________________________________________
 void liberallrfInterface::startTraceMonitoring()
 {
-
     for(auto && it : llrf.pvMonStructs )
     {
         if(Is_TracePV(it.first) )
@@ -268,6 +249,7 @@ bool liberallrfInterface::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
             continuousMonitorStructs.back() -> monType   = pv;
             continuousMonitorStructs.back() -> llrfObj   = &llrf;
             continuousMonitorStructs.back() -> interface = this;
+            continuousMonitorStructs.back() -> name      = getLLRFChannelName(pv);
             ca_create_subscription(llrf.pvMonStructs.at(pv).CHTYPE,
                                llrf.pvMonStructs.at(pv).COUNT,
                                llrf.pvMonStructs.at(pv).CHID,
@@ -276,44 +258,118 @@ bool liberallrfInterface::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
                                (void*)continuousMonitorStructs.back(),
                                &continuousMonitorStructs.back() -> EVID);
         }
+        std::stringstream ss;
+        ss <<"Succesfully Subscribed to LLRF Trace Monitor " << ENUM_TO_STRING(pv);
+        std::string s1 = ss.str();
+        ss.str(std::string());
+        ss <<"!!TIMEOUT!! Subscription to LLRF Trace monitor " << ENUM_TO_STRING(pv) << " failed";
+        std::string s2 = ss.str();
+
+        int status = sendToEpics("ca_create_subscription",s1.c_str(),s2.c_str());
+        if (status == ECA_NORMAL )
+            debugMessage(ENUM_TO_STRING(pv)," Monitor Started");
+        return isMonitoring(pv);
     }
-    int status = sendToEpics("ca_create_subscription",
-                             "Succesfully Subscribed to LLRF Trace Monitors",
-                             "!!TIMEOUT!! Subscription to LLRF Trace monitors failed" );
-    if (status == ECA_NORMAL )
-        debugMessage(ENUM_TO_STRING(pv)," Monitor Started");
-    return isMonitoring(pv);
+    else
+        return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::startTraceMonitoring(const std::string& name)
+{
+    return startTraceMonitoring( getLLRFPVType(name) );
+}
+//____________________________________________________________________________________________
+std::vector<std::string> liberallrfInterface::getChannelNames()
+{
+    std::vector<std::string>  r;
+    for(auto && it:llrf.pvMonStructs )
+    {
+        if( Is_TracePV(it.first) )
+        {
+            r.push_back(it.second.name);
+        }
+    }
+    return r;
+}
+//____________________________________________________________________________________________
+llrfStructs::LLRF_PV_TYPE liberallrfInterface::getLLRFPVType(const std::string& name)
+{
+    for(auto && it:llrf.pvMonStructs )
+    {
+        if( it.second.name == name )
+        {
+            return it.first;
+        }
+    }
+    return llrfStructs::LLRF_PV_TYPE::UNKNOWN;
+}
+//____________________________________________________________________________________________
+std::string liberallrfInterface::getLLRFChannelName(const llrfStructs::LLRF_PV_TYPE pv)
+{
+    for(auto && it:llrf.pvMonStructs )
+    {
+        if( it.first == pv )
+        {
+            return it.second.name;
+        }
+    }
+    return ENUM_TO_STRING(llrfStructs::LLRF_PV_TYPE::UNKNOWN);
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::startCavFwdTraceMonitor()
 {
-    return startTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD);
+    bool a1 = startTraceMonitoring(UTL::CAVITY_FORWARD_PHASE);
+    bool a2 = startTraceMonitoring(UTL::CAVITY_FORWARD_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::startCavRevTraceMonitor()
 {
-    return startTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV);
+    bool a1 = startTraceMonitoring(UTL::CAVITY_REVERSE_PHASE);
+    bool a2 = startTraceMonitoring(UTL::CAVITY_REVERSE_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::startKlyFwdTraceMonitor()
 {
-    return startTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD);
+    bool a1 = startTraceMonitoring(UTL::KLYSTRON_FORWARD_PHASE);
+    bool a2 = startTraceMonitoring(UTL::KLYSTRON_FORWARD_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::startKlyRevTraceMonitor()
 {
-    return startTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV);
+    bool a1 = startTraceMonitoring(UTL::KLYSTRON_REVERSE_PHASE);
+    bool a2 = startTraceMonitoring(UTL::KLYSTRON_REVERSE_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::stopTraceMonitoring(const std::string& name)
+{
+    return stopTraceMonitoring( getLLRFPVType(name) );
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
 {
-    for(auto && it : continuousMonitorStructs )
+    for(auto && it : continuousMonitorStructs)
     {
-        if(Is_TracePV(it->monType)  )
+        if(Is_TracePV(it->monType))
         {
-            if(it->monType == pv )
+            if(it->monType == pv)
             {
-                killMonitor(it );
+                killMonitor(it);
                 delete it;
             }
         }
@@ -335,28 +391,51 @@ void liberallrfInterface::stopTraceMonitoring()
 //____________________________________________________________________________________________
 bool liberallrfInterface::stopCavFwdTraceMonitor()
 {
-    return stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD);
+    bool a1 = stopTraceMonitoring(UTL::CAVITY_FORWARD_PHASE);
+    bool a2 = stopTraceMonitoring(UTL::CAVITY_FORWARD_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::stopCavRevTraceMonitor()
 {
-    return stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV);
+    bool a1 = stopTraceMonitoring(UTL::CAVITY_REVERSE_PHASE);
+    bool a2 = stopTraceMonitoring(UTL::CAVITY_REVERSE_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::stopKlyFwdTraceMonitor()
 {
-    return stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD);
+    bool a1 = stopTraceMonitoring(UTL::KLYSTRON_FORWARD_PHASE);
+    bool a2 = stopTraceMonitoring(UTL::KLYSTRON_FORWARD_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::stopKlyRevTraceMonitor()
 {
-    return stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV);
+    bool a1 = stopTraceMonitoring(UTL::KLYSTRON_REVERSE_PHASE);
+    bool a2 = stopTraceMonitoring(UTL::KLYSTRON_REVERSE_POWER);
+    if(a1 && a2)
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
 {
     // Make the below neater at some point!
     llrfStructs::monitorStruct*ms = static_cast<  llrfStructs::monitorStruct *>(args.usr);
+
+    if(ms->interface->Is_TracePV(ms -> monType))
+        ms->interface->updateTrace(args,ms->llrfObj->trace_data.at( ms->name ) );
     switch(ms -> monType)
     {
         case llrfStructs::LLRF_PV_TYPE::LIB_LOCK:
@@ -381,22 +460,6 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
             //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_PHI_SP = ",*(double*)args.dbr);
             ms->llrfObj->phi_sp = *(double*)args.dbr;
             break;
-        case llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD:
-            //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_CAV_FWD = ",*(double*)args.dbr);
-            ms->interface->updateTrace(args,ms->llrfObj->cav_f_power);
-            break;
-        case llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV:
-            //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_CAV_REV = ",*(double*)args.dbr);
-            ms->interface->updateTrace(args, ms->llrfObj->cav_r_power);
-            break;
-        case llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD:
-            //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_KLY_FWD = ",*(double*)args.dbr);
-            ms->interface->updateTrace(args,ms->llrfObj->kly_f_power);
-            break;
-        case llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV:
-            //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_KLY_REV = ",*(double*)args.dbr);
-            ms->interface->updateTrace(args,ms->llrfObj->kly_r_power);
-            break;
         case llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR:
             //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_TIME_VECTOR = ",*(double*)args.dbr);
             ms->interface->updateTrace(args,ms->llrfObj->time_vector);
@@ -410,16 +473,49 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
             ms->llrfObj->pulse_offset = *(double*)args.dbr;
             break;
         default:
-            ms->interface->debugMessage("ERROR staticEntryLLRFMonitor passed UNknown PV Type");
+            ms->interface->debugMessage("ERROR staticEntryLLRFMonitor passed Unknown PV Type");
             // ERROR
     }
 }
 //____________________________________________________________________________________________
-void liberallrfInterface::updateTrace(const event_handler_args args,llrfStructs::rf_trace_data& trace)
+void liberallrfInterface::updateTrace(const event_handler_args& args,llrfStructs::rf_trace_data& trace)
+{
+    trace.traces.push_back(llrfStructs::rf_trace());
+    trace.traces.back().value.resize(trace.trace_size);
+    updateValues(args, trace.traces.back());
+
+    // check mask
+    if( shouldCheckMasks(trace) )
+    {
+        bool trace_good = checkTraceIsInMask(trace);
+    }
+    if( trace.keep_rolling_average )
+    {
+        bool trace_good = checkTraceIsInMask(trace);
+    }
+
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::checkTraceIsInMask(llrfStructs::rf_trace_data& trace)
+{
+    return false;
+}
+//____________________________________________________________________________________________
+//____________________________________________________________________________________________
+void liberallrfInterface::calcRollingAverage(llrfStructs::rf_trace_data& trace)
+{
+    //
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::shouldCheckMasks(llrfStructs::rf_trace_data& trace)
+{
+    return trace.check_mask && trace.hi_mask_set && trace.low_mask_set;
+}
+//____________________________________________________________________________________________
+void liberallrfInterface::updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace)
 {
     if(isTimeType(args.type) )
     {
-
         const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
         size_t counter = 0;
         const dbr_double_t * pValue;
@@ -511,6 +607,35 @@ double liberallrfInterface::getPulseOffset()
     return llrf.pulse_offset;
 }
 //____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getHighMask(const std::string&name)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        return llrf.trace_data.at(name).high_mask;
+    }
+    std::vector<double> r(1, 0);
+    return r;
+}
+//____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getLowMask(const std::string&name)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        return llrf.trace_data.at(name).low_mask;
+    }
+    std::vector<double> r(1, 0);
+    return r;
+}
+//____________________________________________________________________________________________
+size_t liberallrfInterface::getNumBufferTraces(const std::string&name)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        return llrf.trace_data.at(name).buffersize;
+    }
+    return 0;
+}
+//____________________________________________________________________________________________
 bool liberallrfInterface::isLocked()
 {
     return llrf.islocked;
@@ -526,24 +651,154 @@ size_t liberallrfInterface::getPowerTraceLength()
     return llrf.powerTraceLength;
 }
 //____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getTraceValues(const std::string& name)
+{
+    if(entryExists(llrf.trace_data,name))
+    {
+        return llrf.trace_data.at(name).traces.back().value;
+    }
+    std::vector<double> r(1, 0);
+    return r;
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getTraceData(const std::string& name)
+{
+    if(entryExists(llrf.trace_data,name))
+    {
+        return llrf.trace_data.at(name).traces.back();
+    }
+    llrfStructs::rf_trace r;
+    return r;
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getTraceBuffer(const std::string& name)
+{
+    if(entryExists(llrf.trace_data,name))
+    {
+        return llrf.trace_data.at(name).traces;
+    }
+    std::deque<llrfStructs::rf_trace> r;
+    return r;
+}
+//____________________________________________________________________________________________
 std::vector<double> liberallrfInterface::getCavRevPower()
 {
-    return llrf.cav_r_power.value;
+    return getTraceValues(UTL::CAVITY_REVERSE_POWER);
+}
+//____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getCavRevPhase()
+{
+    return getTraceValues(UTL::CAVITY_REVERSE_PHASE);
 }
 //____________________________________________________________________________________________
 std::vector<double> liberallrfInterface::getCavFwdPower()
 {
-    return llrf.cav_f_power.value;
+    return getTraceValues(UTL::CAVITY_FORWARD_POWER);
+}
+//____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getCavFwdPhase()
+{
+    return getTraceValues(UTL::CAVITY_FORWARD_PHASE);
 }
 //____________________________________________________________________________________________
 std::vector<double> liberallrfInterface::getKlyRevPower()
 {
-    return llrf.kly_f_power.value;
+    return getTraceValues(UTL::KLYSTRON_REVERSE_POWER);
+}
+//____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getKlyRevPhase()
+{
+    return getTraceValues(UTL::KLYSTRON_REVERSE_PHASE);
 }
 //____________________________________________________________________________________________
 std::vector<double> liberallrfInterface::getKlyFwdPower()
 {
-    return llrf.kly_f_power.value;
+    return getTraceValues(UTL::KLYSTRON_FORWARD_POWER);
+}
+//____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getKlyFwdPhase()
+{
+    return getTraceValues(UTL::KLYSTRON_FORWARD_PHASE);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getCavRevPowerData()
+{
+    return getTraceData(UTL::CAVITY_REVERSE_POWER);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getCavRevPhaseData()
+{
+    return getTraceData(UTL::CAVITY_REVERSE_PHASE);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getCavFwdPowerData()
+{
+    return getTraceData(UTL::CAVITY_FORWARD_POWER);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getCavFwdPhaseData()
+{
+    return getTraceData(UTL::CAVITY_FORWARD_PHASE);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getKlyRevPowerData()
+{
+    return getTraceData(UTL::KLYSTRON_REVERSE_POWER);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getKlyRevPhaseData()
+{
+    return getTraceData(UTL::KLYSTRON_REVERSE_PHASE);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getKlyFwdPowerData()
+{
+    return getTraceData(UTL::KLYSTRON_FORWARD_POWER);
+}
+//____________________________________________________________________________________________
+llrfStructs::rf_trace liberallrfInterface::getKlyFwdPhaseData()
+{
+    return getTraceData(UTL::KLYSTRON_FORWARD_PHASE);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getCavRevPowerBuffer()
+{
+    return getTraceBuffer(UTL::CAVITY_REVERSE_POWER);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getCavRevPhaseBuffer()
+{
+    return getTraceBuffer(UTL::CAVITY_REVERSE_PHASE);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getCavFwdPowerBuffer()
+{
+    return getTraceBuffer(UTL::CAVITY_FORWARD_POWER);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getCavFwdPhaseBuffer()
+{
+    return getTraceBuffer(UTL::CAVITY_FORWARD_PHASE);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getKlyRevPowerBuffer()
+{
+    return getTraceBuffer(UTL::KLYSTRON_REVERSE_POWER);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getKlyRevPhaseBuffer()
+{
+    return getTraceBuffer(UTL::KLYSTRON_REVERSE_PHASE);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getKlyFwdPowerBuffer()
+{
+    return getTraceBuffer(UTL::KLYSTRON_FORWARD_POWER);
+}
+//____________________________________________________________________________________________
+std::deque<llrfStructs::rf_trace> liberallrfInterface::getKlyFwdPhaseBuffer()
+{
+    return getTraceBuffer(UTL::KLYSTRON_REVERSE_PHASE);
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::setPulseLength(double value)
@@ -599,6 +854,78 @@ void liberallrfInterface::setAmpCalibration(double value)
 void liberallrfInterface::setCrestPhiLLRF(double value) // in LLRF units
 {
     llrf.crestPhi = value;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setHighMask(const std::string&name, std::vector<double>& value)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        llrf.trace_data.at(name).high_mask = value;
+        llrf.trace_data.at(name).hi_mask_set  = true;
+        return true;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setLowMask(const std::string&name, std::vector<double>& value)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        llrf.trace_data.at(name).low_mask = value;
+        llrf.trace_data.at(name).low_mask_set = true;
+        return true;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setNumBufferTraces(const std::string&name, size_t value)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        llrf.trace_data.at(name).buffersize = value;
+
+        // and set their sizes based on buffersize and COUNT
+
+        llrf.trace_data.at(name).traces.clear();
+        llrf.trace_data.at(name).traces.resize( llrf.trace_data.at(name).buffersize );
+//        for( auto && it2: llrf.trace_data.at(name).traces)
+//            it2.vresize(it.COUNT);
+        return true;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setCheckMask(const std::string&name, bool value = true)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        llrf.trace_data.at(name).check_mask = value;
+        return true;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setKeepRollingAverage(const std::string&name, bool value = true)
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        llrf.trace_data.at(name).keep_rolling_average = value;
+        return true;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setNumRollingAverageTraces(const std::string&name, size_t value )
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        if(value <= llrf.trace_data.at(name).buffersize)
+            llrf.trace_data.at(name).average_size = value;
+        else
+            llrf.trace_data.at(name).average_size = llrf.trace_data.at(name).buffersize;
+        return true;
+    }
+    return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::setAmpMVM(double value)// MV / m amplitude
@@ -697,19 +1024,67 @@ bool liberallrfInterface::setValue2(llrfStructs::pvStruct& pvs, T value)
 bool liberallrfInterface::Is_TracePV(llrfStructs::LLRF_PV_TYPE pv)
 {
     bool r = false;
-    if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD)
+    if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM)
     {
         r = true;
     }
-    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV)
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM)
     {
         r = true;
     }
-    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD)
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM)
     {
         r = true;
     }
-    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV)
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM)
     {
         r = true;
     }
@@ -720,7 +1095,35 @@ bool liberallrfInterface::IsNot_TracePV(llrfStructs::LLRF_PV_TYPE pv)
 {
     return !Is_TracePV(pv);
 }
-
+//____________________________________________________________________________________________
+bool liberallrfInterface::isMonitoring(llrfStructs::LLRF_PV_TYPE pv)
+{
+    bool r = false;
+    for(auto && it : continuousMonitorStructs )
+    {
+        if(it->monType == pv )
+        {
+            r = true;
+            break;
+        }
+    }
+    return r;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv)
+{
+    return !isMonitoring(pv);
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isMonitoring(const std::string& name)
+{
+    return isMonitoring( getLLRFPVType(name));
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isNotMonitoring(const std::string& name)
+{
+    return isNotMonitoring( getLLRFPVType(name));
+}
 
 
 

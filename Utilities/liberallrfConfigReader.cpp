@@ -167,22 +167,51 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP,keyVal[1]);
         }
-        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CAV_FWD)
-        {
-            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD,keyVal[1]);
-        }
-        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CAV_REV)
-        {
-            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV,keyVal[1]);
-        }
-        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_KLY_FWD)
-        {
-            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD,keyVal[1]);
-        }
-        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_KLY_REV)
-        {
-            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV,keyVal[1]);
-        }
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH1_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH2_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH3_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH4_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH5_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH6_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH7_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH8_PHASE_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM,keyVal[1]);
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH1_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH2_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH3_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH4_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH5_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH6_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH7_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM,keyVal[1]);
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH8_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM,keyVal[1]);
+//        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH2_PHASE_REM)
+//        {
+//            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV,keyVal[1]);
+//        }
+//        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_KLY_FWD)
+//        {
+//            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD,keyVal[1]);
+//        }
+//        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_KLY_REV)
+//        {
+//            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV,keyVal[1]);
+//        }
         else if(keyVal[0] == UTL::PV_SUFFIX_LIB_TIME_VECTOR)
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR,keyVal[1]);
@@ -210,6 +239,8 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
             lastPVstruct->MASK = getMASK(keyVal[ 1 ]);
         else if(keyVal[0] == UTL::PV_CHTYPE)
             lastPVstruct->CHTYPE = getCHTYPE(keyVal[ 1 ]);
+        else if(keyVal[0] == UTL::PV_NAME)
+            lastPVstruct->name = keyVal[ 1 ];
     }
 }
 //______________________________________________________________________________
@@ -264,6 +295,12 @@ bool liberallrfConfigReader::getliberallrfObject(llrfStructs::liberallrfObject& 
     for(auto && it : pvMonStructs)
     {
         obj.pvMonStructs[it.pvType] = it;
+        // create the traces objects keyed by their name from the config file
+        // and set their sizes based on buffersize and COUNT
+        obj.trace_data[it.name].traces.resize( obj.trace_data[it.name].buffersize );
+//        for( auto && it2: obj.trace_data[it.name].value)
+//            it2.resize(it.COUNT);
+        obj.trace_data[it.name].trace_size = it.COUNT;
     }
     for(auto && it : pvComStructs)
     {

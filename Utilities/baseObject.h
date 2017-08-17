@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+#include <deque>
 //
 #ifdef BUILD_DLL
 #include <boost/python.hpp>
@@ -189,6 +190,17 @@ class baseObject
             typename std::vector<T>::iterator iter;
             boost::python::list list;
             for (iter = vector.begin(); iter != vector.end(); ++iter)
+            {
+                list.append(*iter);
+            }
+            return list;
+        }
+        template <class T>
+        boost::python::list toPythonList(std::deque<T> deque)
+        {
+            typename std::deque<T>::iterator iter;
+            boost::python::list list;
+            for (iter = deque.begin(); iter != deque.end(); ++iter)
             {
                 list.append(*iter);
             }

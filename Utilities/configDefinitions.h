@@ -77,6 +77,7 @@ namespace UTL
     const std::string PV_COUNT  = "PV_COUNT" ;
     const std::string PV_CHTYPE = "PV_CHTYPE";
     const std::string PV_MASK   = "PV_MASK"  ;
+    const std::string PV_NAME   = "PV_NAME"  ;
 
 
 
@@ -186,24 +187,43 @@ namespace UTL
     const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
     const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
 
-
-
     // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
-    // except, probably, the VELA TDC
+    // except, probably, the VELA TDC :((
     const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
     const std::string PV_SUFFIX_LIB_AMP_SP      = "PV_SUFFIX_LIB_AMP_SP";
     const std::string PV_SUFFIX_LIB_PHI_FF      = "PV_SUFFIX_LIB_PHI_FF";
     const std::string PV_SUFFIX_LIB_PHI_SP      = "PV_SUFFIX_LIB_PHI_SP";
-    const std::string PV_SUFFIX_LIB_CAV_FWD     = "PV_SUFFIX_LIB_CAV_FWD";
-    const std::string PV_SUFFIX_LIB_CAV_REV     = "PV_SUFFIX_LIB_CAV_REV";
-    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
-    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
     const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
     const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
     const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
     const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
-
-
+    const std::string PV_SUFFIX_LIB_CH1_PHASE_REM  = "PV_SUFFIX_LIB_CH1_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH2_PHASE_REM  = "PV_SUFFIX_LIB_CH2_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH3_PHASE_REM  = "PV_SUFFIX_LIB_CH3_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH4_PHASE_REM  = "PV_SUFFIX_LIB_CH4_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH5_PHASE_REM  = "PV_SUFFIX_LIB_CH5_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH6_PHASE_REM  = "PV_SUFFIX_LIB_CH6_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH7_PHASE_REM  = "PV_SUFFIX_LIB_CH7_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH8_PHASE_REM  = "PV_SUFFIX_LIB_CH8_PHASE_REM";
+    const std::string PV_SUFFIX_LIB_CH1_PWR_REM    = "PV_SUFFIX_LIB_CH1_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH2_PWR_REM    = "PV_SUFFIX_LIB_CH2_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH3_PWR_REM    = "PV_SUFFIX_LIB_CH3_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH4_PWR_REM    = "PV_SUFFIX_LIB_CH4_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH5_PWR_REM    = "PV_SUFFIX_LIB_CH5_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH6_PWR_REM    = "PV_SUFFIX_LIB_CH6_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH7_PWR_REM    = "PV_SUFFIX_LIB_CH7_PWR_REM";
+    const std::string PV_SUFFIX_LIB_CH8_PWR_REM    = "PV_SUFFIX_LIB_CH8_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
+//    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
+    // specific names for common channels that have named functions to start/stop them in the llrfinterface/controller
+    const std::string CAVITY_REVERSE_PHASE   = "CAVITY_REVERSE_PHASE";
+    const std::string CAVITY_REVERSE_POWER   = "CAVITY_REVERSE_POWER";
+    const std::string CAVITY_FORWARD_PHASE   = "CAVITY_FORWARD_PHASE";
+    const std::string CAVITY_FORWARD_POWER   = "CAVITY_FORWARD_POWER";
+    const std::string KLYSTRON_REVERSE_PHASE = "KLYSTRON_REVERSE_PHASE";
+    const std::string KLYSTRON_REVERSE_POWER = "KLYSTRON_REVERSE_POWER";
+    const std::string KLYSTRON_FORWARD_PHASE = "KLYSTRON_FORWARD_PHASE";
+    const std::string KLYSTRON_FORWARD_POWER = "KLYSTRON_FORWARD_POWER";
 
 // L01 MODULATOR
     const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";

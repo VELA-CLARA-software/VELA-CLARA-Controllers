@@ -182,11 +182,11 @@ liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrf
 //                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,VELA_HRRG_LLRF_CONFIG,
 //                               shouldVM,shouldEPICS,llrfType);
 //                break;
-//            case llrfStructs::VELA_LRRG:
-//                GUN_LLRF_Controller_Obj =
-//                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,VELA_LRRG_LLRF_CONFIG,
-//                               shouldVM,shouldEPICS,llrfType);
-//                break;
+            case llrfStructs::VELA_LRRG:
+                GUN_LLRF_Controller_Obj =
+                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_LRRG_LLRF_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                break;
             case llrfStructs::L01:
                 L01_LLRF_Controller_Obj =
                     new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_L01_LLRF_CONFIG,
