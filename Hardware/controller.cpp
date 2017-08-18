@@ -68,12 +68,14 @@ void controller::messagesOff()
 //______________________________________________________________________________
 void controller::silence()
 {
+    std::cout <<"silence" <<std::endl;
     SHOW_DEBUG_MESSAGES = false;
     SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::verbose()
 {
+    std::cout <<"verbose" <<std::endl;
     SHOW_DEBUG_MESSAGES = true;
     SHOW_MESSAGES = true;
 }

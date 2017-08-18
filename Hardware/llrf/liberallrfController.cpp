@@ -478,24 +478,44 @@ bool liberaLLRFController::setNumRollingAverageTraces(const std::string&name, si
     return localInterface.setNumRollingAverageTraces(name, value);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::Is_TracePV(llrfStructs::LLRF_PV_TYPE pv)
+bool liberaLLRFController::isTracePV(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.Is_TracePV(pv);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::IsNot_TracePV(llrfStructs::LLRF_PV_TYPE pv)
+bool liberaLLRFController::isNotTracePV(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.IsNot_TracePV(pv);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::isMonitoring(llrfStructs::LLRF_PV_TYPE pv)
+bool liberaLLRFController::isMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.isMonitoring(pv);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv)
+bool liberaLLRFController::isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.isNotMonitoring(pv);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::isCheckingMask(const std::string& name)
+{
+    return localInterface.isCheckingMask(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
+{
+    return localInterface.isNotCheckingMask(pv);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::isNotCheckingMask(const std::string& name)
+{
+    return localInterface.isCheckingMask(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
+{
+    return localInterface.isNotCheckingMask(pv);
 }
 //______________________________________________________________________________
 void liberaLLRFController::startTraceMonitoring()
@@ -503,9 +523,14 @@ void liberaLLRFController::startTraceMonitoring()
     localInterface.startTraceMonitoring();
 }
 //______________________________________________________________________________
-bool liberaLLRFController::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
+bool liberaLLRFController::startTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
 {
-    return localInterface.Is_TracePV(pv);
+    return localInterface.startTraceMonitoring(pv);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::startTraceMonitoring(const std::string& name)
+{
+    return localInterface.startTraceMonitoring(name);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::startCavFwdTraceMonitor()
@@ -528,9 +553,14 @@ bool liberaLLRFController::startKlyRevTraceMonitor()
     return localInterface.startKlyRevTraceMonitor();
 }
 //______________________________________________________________________________
-bool liberaLLRFController::stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
+bool liberaLLRFController::stopTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.stopTraceMonitoring(pv);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::stopTraceMonitoring(const std::string& name)
+{
+    return localInterface.stopTraceMonitoring(name);
 }
 //______________________________________________________________________________
 void liberaLLRFController::stopTraceMonitoring()

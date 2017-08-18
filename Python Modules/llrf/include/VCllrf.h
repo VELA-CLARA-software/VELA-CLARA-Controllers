@@ -87,15 +87,26 @@ typedef const std::string cstr;
 typedef std::vector<std::string> vecs;
 typedef const std::vector<std::string> cves;
 typedef std::vector<bool> vecb;
+typedef llrfStructs::LLRF_PV_TYPE rfpv;
+typedef const llrfStructs::LLRF_PV_TYPE crfpv;
 //
 
 
 
 void(liberaLLRFController::*startTraceMonitoring_1)() = &liberaLLRFController::startTraceMonitoring;
-bool(liberaLLRFController::*startTraceMonitoring_2)(llrfStructs::LLRF_PV_TYPE pv) = &liberaLLRFController::startTraceMonitoring;
+bool(liberaLLRFController::*startTraceMonitoring_2)(crfpv pv) = &liberaLLRFController::startTraceMonitoring;
+bool(liberaLLRFController::*startTraceMonitoring_3)(cstr& name) = &liberaLLRFController::startTraceMonitoring;
 void(liberaLLRFController::*stopTraceMonitoring_1)() = &liberaLLRFController::stopTraceMonitoring;
-bool(liberaLLRFController::*stopTraceMonitoring_2)(llrfStructs::LLRF_PV_TYPE pv) = &liberaLLRFController::stopTraceMonitoring;
+bool(liberaLLRFController::*stopTraceMonitoring_2)(crfpv pv) = &liberaLLRFController::stopTraceMonitoring;
+bool(liberaLLRFController::*stopTraceMonitoring_3)(cstr& name) = &liberaLLRFController::stopTraceMonitoring;
 
+
+
+bool(liberaLLRFController::*isCheckingMask_1)(cstr& name) = &liberaLLRFController::isCheckingMask;
+bool(liberaLLRFController::*isCheckingMask_2)(crfpv pv ) = &liberaLLRFController::isCheckingMask;
+
+bool(liberaLLRFController::*isNotCheckingMask_1)(cstr& name) = &liberaLLRFController::isNotCheckingMask;
+bool(liberaLLRFController::*isNotCheckingMask_2)(crfpv pv  ) = &liberaLLRFController::isNotCheckingMask;
 
 
 using namespace boost::python;
@@ -328,19 +339,29 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("setKeepRollingAverage",  &liberaLLRFController::setKeepRollingAverage,(arg("name"),arg("value")),"Set whetrher to keep a rolling average of previous traces (pass 'name' and true or false)")
         .def("setNumRollingAverageTraces",  &liberaLLRFController::setNumRollingAverageTraces,(arg("name"),arg("value")),"Set the number of traces used for the rolling average")
 
-        .def("Is_TracePV",  &liberaLLRFController::Is_TracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
-        .def("IsNot_TracePV",  &liberaLLRFController::IsNot_TracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
+        .def("isTracePV",  &liberaLLRFController::isTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
+        .def("isNotTracePV",  &liberaLLRFController::isNotTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
         .def("isMonitoring",  &liberaLLRFController::isMonitoring,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")
         .def("isNotMonitoring", &liberaLLRFController::isNotMonitoring,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT being monitored?")
 
+        .def("isCheckingMask", isCheckingMask_1,(arg("name")),"Is trace 'name' checking against a mask?")
+        .def("isCheckingMask", isCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE checking against a  mask?")
+
+        .def("isNotCheckingMask", isNotCheckingMask_1,(arg("name")),"Is trace 'name' NOT Checking against a mask?")
+        .def("isNotCheckingMask", isNotCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT checking against a  mask?")
+
         .def("startTraceMonitoring", startTraceMonitoring_1,"Start all LLRF Trace Monitors")
         .def("startTraceMonitoring", startTraceMonitoring_2,(arg("LLRF_PV_TYPE")),"Start Trace Monitoring for LLRF_PV_TYPE")
+        .def("startTraceMonitoring", startTraceMonitoring_3,(arg("name")),"Start Trace Monitoring for 'name'")
         .def("startCavFwdTraceMonitor", &liberaLLRFController::startCavFwdTraceMonitor,"Start Cavity Forward Power Trace Monitoring")
         .def("startCavRevTraceMonitor", &liberaLLRFController::startCavRevTraceMonitor,"Start Cavity Reverse Power Trace Monitoring")
         .def("startKlyFwdTraceMonitor", &liberaLLRFController::startKlyFwdTraceMonitor,"Start Klystron Forward Power Trace Monitoring")
         .def("startKlyRevTraceMonitor", &liberaLLRFController::startKlyRevTraceMonitor,"Start Klystron Reverse Power Trace Monitoring")
-        .def("stopTraceMonitoring", stopTraceMonitoring_1,"Stop all LLRF Trace Monitors")
+
+        .def("stopTraceMonitoring",stopTraceMonitoring_1,"Stop all LLRF Trace Monitors")
         .def("stopTraceMonitoring",stopTraceMonitoring_2,(arg("LLRF_PV_TYPE")),"Stop Trace Monitoring for LLRF_PV_TYPE")
+        .def("stopTraceMonitoring",stopTraceMonitoring_3,(arg("name")),"Stop Trace Monitoring for trace 'name'")
+
         .def("stopCavFwdTraceMonitor", &liberaLLRFController::stopCavFwdTraceMonitor,"Stop Cavity Forward Power Trace Monitoring")
         .def("stopCavRevTraceMonitor", &liberaLLRFController::stopCavRevTraceMonitor,"Stop Cavity Reverse Power Trace Monitoring")
         .def("stopKlyFwdTraceMonitor", &liberaLLRFController::stopKlyFwdTraceMonitor,"Stop Klystron Forward Power Trace Monitoring")

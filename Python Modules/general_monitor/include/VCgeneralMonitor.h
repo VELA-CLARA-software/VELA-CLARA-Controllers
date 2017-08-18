@@ -9,11 +9,13 @@
 #include "structs.h"
 #include "gmStructs.h"
 
+#ifdef BUILD_DLL
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
+#endif
 
 class VCgeneralMonitor : public controller// inherits controller for messaging
 {
@@ -24,7 +26,7 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         // no, i have no plans to do that at the moment
 
     public:
-        VCgeneralMonitor(const bool shouldShowMessage = false,const bool  shouldShowDebugMessage= false );
+        VCgeneralMonitor(const bool shouldShowMessage,const bool  shouldShowDebugMessage);
         ~VCgeneralMonitor();
         // should be base class functions?
         void setQuiet();
@@ -36,26 +38,22 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         std::string connectPV(const std::string & PVName,const std::string & PYType );
 
         bool disconnectPV(const std::string & id );
+        size_t getCounter(const std::string& id );
 
+#ifdef BUILD_DLL
         boost::python::object getValue(const std::string& id );
         boost::python::dict getValue(const boost::python::list& ids);
         //boost::python::dict getValue(const std::vector<std::string>& ids);
-
         boost::python::object getTotalValue(const std::string& id );
-        size_t getCounter(const std::string& id );
-
-
         boost::python::dict getCounterAndValue(const std::string& id);
         //boost::python::dict getCounterAndValue(const std::vector<std::string>& ids);
         boost::python::dict getCounterAndValue(const boost::python::list& ids);
-
         boost::python::dict getCounterAndTotalValue(const std::string& id);
-
         boost::python::object getValue(const std::string& id, const int position);
         boost::python::list getValue(const std::string& id, const int start_position, const int end_position);
+#endif
 
-        size_t getPVCount(const std::string & id  );
-
+        size_t getPVCount(const std::string & id);
         bool isStringPV(const std::string& id);
         bool isIntPV(const std::string& id);
         bool isFloatPV(const std::string& id);
@@ -63,16 +61,12 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool isCharPV(const std::string& id);
         bool isLongPV(const std::string& id);
         bool isDoublePV(const std::string& id);
-        bool isConnected(const std::string & id);
-        bool isMonitoring(const std::string & id);
-
+        bool isConnected(const std::string& id);
+        bool isMonitoring(const std::string& id);
         bool isArrayDoublePV(const std::string& id);
         bool isArrayIntPV(const std::string& id);
-
         bool isArrayPV(const std::string& id);
-
         bool isValidID(const std::string& id);
-
       /// These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT(double val );
@@ -98,7 +92,7 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool getandSetArraySize(gmStructs::pvStruct& pvs);
 
 
-        std::vector< size_t > getArrayRegionOfInterest(const int start_position,const int end_position,const size_t vec_size );
+        std::vector<size_t> getArrayRegionOfInterest(const int start_position,const int end_position,const size_t vec_size );
         size_t getArrayIndex(const int index,const size_t vec_size);
 
         int sendToEpics(const std::string& ca,const std::string& mess1,const std::string& mess2 );
@@ -165,6 +159,8 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         template<typename T, size_t size>
         size_t GetArrLength(T(&)[size]){ return size; }
 };//VCgeneralMonitor
+
+#ifdef BUILD_DLL
 // function pointers for overloads
 // and docstrings
 //______________________________________________________________________________
@@ -249,7 +245,6 @@ const char *isMonitoring_docstring =
     "return true if id is monitoring.";
 const char *disconnectPV_docstring =
     "disconnect ID and cancel EPICS subscriptions.";
-
 using namespace boost::python;
 BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
 {
@@ -267,13 +262,24 @@ BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
             .def( vector_indexing_suite< std::vector<int>>() )
             ;
     // Expose base classes
-    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
+    // Expose base classes
+    class_<baseObject, boost::noncopyable>("baseObject", no_init)
         ;
-    boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
-        ("controller","", boost::python::no_init) /// forces Python to not be able to construct (init) this object
+    // we have to tell boost.python about pure virtual methods in abstract base classes
+    class_<controller,bases<baseObject>,boost::noncopyable>
+        ("controller", no_init) /// force Python to not construct (init) this object
+        .def("get_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
+        .def("set_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
+        .def("getILockStatesStr",      pure_virtual(&controller::getILockStatesStr)     )
+        .def("getILockStates",         pure_virtual(&controller::getILockStates)        )
+        .def("isSilent",         &controller::isSilent)
+        .def("isVerbose",        &controller::isVerbose)
+        .def("isMessageOn",      &controller::isMessageOn)
+        .def("isDebugMessageOn", &controller::isDebugMessageOn)
         ;
     /// The main class that creates all the controller obejcts
-    boost::python::class_<VCgeneralMonitor,boost::noncopyable> ("init")
+    //class_<VCgeneralMonitor,boost::noncopyable> ("init")
+    class_<VCgeneralMonitor,bases<controller>, boost::noncopyable> ("init")
         .def("setDebugMessage", &VCgeneralMonitor::setDebugMessage, setDebugMessage_docstring )
         .def("setVerbose",      &VCgeneralMonitor::setVerbose,      setVerbose_docstring )
         .def("setMessage",      &VCgeneralMonitor::setMessage,      setMessage_docstring )
@@ -378,5 +384,5 @@ BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
         .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
         ;
 }
-
+#endif //#ifdef BUILD_DLL
 #endif // _VCgeneralMonitor_H

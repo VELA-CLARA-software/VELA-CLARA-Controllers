@@ -59,7 +59,9 @@ liberallrfInterface::~liberallrfInterface()
 //______________________________________________________________________________
 void liberallrfInterface::killMonitor(llrfStructs::monitorStruct * ms)
 {
-    int status = ca_clear_subscription(ms -> EVID);
+    int status = ca_clear_subscription(ms->EVID);
+    // should check if ca_clear_subscription was a success
+    delete ms;
 }
 //______________________________________________________________________________
 void liberallrfInterface::initialise()
@@ -84,7 +86,7 @@ void liberallrfInterface::initialise()
                 debugMessage("Starting Monitors");
                 startMonitors();
                 // The pause allows EPICS to catch up.
-                std::this_thread::sleep_for(std::chrono::milliseconds(2000 )); // MAGIC_NUMBER
+                std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // MAGIC_NUMBER
             }
             else
              message("The liberallrfInterface has acquired objects, NOT connecting to EPICS");
@@ -97,24 +99,6 @@ void liberallrfInterface::initialise()
 bool liberallrfInterface::initObjects()
 {
     bool success = configReader.getliberallrfObject(llrf);
-    if( success )
-    {
-//        llrf.cav_f_power.value.resize(
-//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_FWD).COUNT);
-//        llrf.cav_r_power.value.resize(
-//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_CAV_REV).COUNT);
-//        llrf.kly_f_power.value.resize(
-//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_FWD).COUNT);
-//        llrf.kly_r_power.value.resize(
-//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_KLY_REV).COUNT);
-//        llrf.time_vector.value.resize(
-//            llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR).COUNT);
-//    message("llrf.cav_f_power.size() = ",  llrf.cav_f_power.value.size());
-//    message("llrf.cav_r_power.size() = ",  llrf.cav_r_power.value.size());
-//    message("llrf.kly_f_power.size() = ",  llrf.kly_f_power.value.size());
-//    message("llrf.kly_r_power.size() = ",  llrf.kly_r_power.value.size());
-//    message("llrf.time_vector.size() = ",  llrf.time_vector.value.size());
-    }
     llrf.type = myLLRFType;
     return success;
 }
@@ -217,24 +201,28 @@ void liberallrfInterface::startTraceMonitoring()
         {
             if(isNotMonitoring(it.first) )
             {
-                debugMessage("ca_create_subscription to ", ENUM_TO_STRING(it.first));
-                continuousMonitorStructs.push_back(new llrfStructs::monitorStruct() );
-                continuousMonitorStructs.back() -> monType    = it.first;
-                continuousMonitorStructs.back() -> llrfObj = &llrf;
-                continuousMonitorStructs.back() -> interface  = this;
-                ca_create_subscription(it.second.CHTYPE,
-                                   it.second.COUNT,
-                                   it.second.CHID,
-                                   it.second.MASK,
-                                   liberallrfInterface::staticEntryLLRFMonitor,
-                                   (void*)continuousMonitorStructs.back(),
-                                   &continuousMonitorStructs.back() -> EVID);
+                startTraceMonitoring(it.first);
             }
+//            if(isNotMonitoring(it.first) )
+//            {
+//                debugMessage("ca_create_subscription to ", ENUM_TO_STRING(it.first));
+//                continuousMonitorStructs.push_back(new llrfStructs::monitorStruct() );
+//                continuousMonitorStructs.back() -> monType    = it.first;
+//                continuousMonitorStructs.back() -> llrfObj = &llrf;
+//                continuousMonitorStructs.back() -> interface  = this;
+//                ca_create_subscription(it.second.CHTYPE,
+//                                   it.second.COUNT,
+//                                   it.second.CHID,
+//                                   it.second.MASK,
+//                                   liberallrfInterface::staticEntryLLRFMonitor,
+//                                   (void*)continuousMonitorStructs.back(),
+//                                   &continuousMonitorStructs.back() -> EVID);
+//            }
         }
     }
-    int status = sendToEpics("ca_create_subscription", "Succesfully Subscribed to LLRF Trace Monitors", "!!TIMEOUT!! Subscription to LLRF Trace monitors failed" );
-    if (status == ECA_NORMAL )
-        debugMessage("All LLRF Trace Monitors Started");
+//    int status = sendToEpics("ca_create_subscription", "Succesfully Subscribed to LLRF Trace Monitors", "!!TIMEOUT!! Subscription to LLRF Trace monitors failed" );
+//    if (status == ECA_NORMAL )
+//        debugMessage("All LLRF Trace Monitors Started");
 
 }
 //____________________________________________________________________________________________
@@ -242,8 +230,13 @@ bool liberallrfInterface::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
 {
     if(Is_TracePV(pv) )
     {
-        if(isNotMonitoring(pv) )
+        if(isNotMonitoring(pv))
         {
+            std::string name = getLLRFChannelName(pv);
+            llrf.trace_data[name].traces.resize( llrf.trace_data[name].buffersize );
+            for( auto && it2: llrf.trace_data[name].traces)
+                it2.value.resize( llrf.pvMonStructs.at(pv).COUNT);
+
             debugMessage("ca_create_subscription to ", ENUM_TO_STRING(pv));
             continuousMonitorStructs.push_back(new llrfStructs::monitorStruct() );
             continuousMonitorStructs.back() -> monType   = pv;
@@ -257,18 +250,25 @@ bool liberallrfInterface::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
                                liberallrfInterface::staticEntryLLRFMonitor,
                                (void*)continuousMonitorStructs.back(),
                                &continuousMonitorStructs.back() -> EVID);
-        }
-        std::stringstream ss;
-        ss <<"Succesfully Subscribed to LLRF Trace Monitor " << ENUM_TO_STRING(pv);
-        std::string s1 = ss.str();
-        ss.str(std::string());
-        ss <<"!!TIMEOUT!! Subscription to LLRF Trace monitor " << ENUM_TO_STRING(pv) << " failed";
-        std::string s2 = ss.str();
+            std::stringstream ss;
+            ss <<"Succesfully Subscribed to LLRF Trace Monitor " << ENUM_TO_STRING(pv);
+            std::string s1 = ss.str();
+            ss.str(std::string());
+            ss <<"!!TIMEOUT!! Subscription to LLRF Trace monitor " << ENUM_TO_STRING(pv) << " failed";
+            std::string s2 = ss.str();
 
-        int status = sendToEpics("ca_create_subscription",s1.c_str(),s2.c_str());
-        if (status == ECA_NORMAL )
-            debugMessage(ENUM_TO_STRING(pv)," Monitor Started");
-        return isMonitoring(pv);
+            int status = sendToEpics("ca_create_subscription",s1.c_str(),s2.c_str());
+            if (status == ECA_NORMAL )
+            {
+                debugMessage(ENUM_TO_STRING(pv)," Monitor Started");
+            }
+            else
+            {
+                killMonitor(continuousMonitorStructs.back());
+            }
+            return isMonitoring(pv);
+        }
+
     }
     else
         return false;
@@ -276,7 +276,7 @@ bool liberallrfInterface::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
 //____________________________________________________________________________________________
 bool liberallrfInterface::startTraceMonitoring(const std::string& name)
 {
-    return startTraceMonitoring( getLLRFPVType(name) );
+    return startTraceMonitoring(getLLRFPVType(name));
 }
 //____________________________________________________________________________________________
 std::vector<std::string> liberallrfInterface::getChannelNames()
@@ -634,11 +634,6 @@ size_t liberallrfInterface::getNumBufferTraces(const std::string&name)
         return llrf.trace_data.at(name).buffersize;
     }
     return 0;
-}
-//____________________________________________________________________________________________
-bool liberallrfInterface::isLocked()
-{
-    return llrf.islocked;
 }
 //____________________________________________________________________________________________
 llrfStructs::LLRF_TYPE liberallrfInterface::getType()
@@ -1117,13 +1112,62 @@ bool liberallrfInterface::isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv)
 //____________________________________________________________________________________________
 bool liberallrfInterface::isMonitoring(const std::string& name)
 {
-    return isMonitoring( getLLRFPVType(name));
+    return isMonitoring(getLLRFPVType(name));
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::isNotMonitoring(const std::string& name)
 {
-    return isNotMonitoring( getLLRFPVType(name));
+    return isNotMonitoring(getLLRFPVType(name));
 }
+//____________________________________________________________________________________________
+bool liberallrfInterface::isLocked()
+{
+    return llrf.islocked;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isCheckingMask(const std::string& name)
+{
+    if( entryExists(llrf.trace_data,name))
+        return llrf.trace_data.at(name).check_mask;
+    else
+        return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
+{
+    return isCheckingMask(getLLRFChannelName(pv));
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isNotCheckingMask(const std::string& name)
+{
+    return !isCheckingMask(name);
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
+{
+    return !isCheckingMask(pv);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

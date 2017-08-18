@@ -1,8 +1,6 @@
 #include "baseObject.h"
 #include <time.h>
 
-
-
 baseObject::baseObject():
 SHOW_MESSAGES_PTR(nullptr),
 SHOW_DEBUG_MESSAGES_PTR(nullptr)

@@ -16,8 +16,9 @@
 #define _VELA_CONTOLLER_H
 
 /// project
-#include "interface.h"
+#include "structs.h"
 #include "baseObject.h"
+#include <map>
 
 
 #ifdef BUILD_DLL

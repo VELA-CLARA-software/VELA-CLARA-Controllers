@@ -6,9 +6,10 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
-#include <deque>
+#include <iostream>
 //
 #ifdef BUILD_DLL
+#include <deque>
 #include <boost/python.hpp>
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
@@ -42,7 +43,7 @@ class baseObject
 
         /// These are const pointers set at instantiation. They point to bools held in the controller
 
-        const bool *SHOW_DEBUG_MESSAGES_PTR, *SHOW_MESSAGES_PTR;
+
 
         /// using default template types makes this easy, (c++11 feature !?)
         /// these functions allow you to pass up to 7 arguments for a message,
@@ -115,8 +116,10 @@ class baseObject
                           const A p8 = "")
         {
             std::stringstream ss;
-            ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 <<"\n";
-            printf(ss.str().c_str());
+            //ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 <<"\n";
+            //printf(ss.str().c_str());
+            ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8;
+            std::cout << ss.str() << std::endl;
         }
 
         template<typename T = int>
@@ -208,5 +211,6 @@ class baseObject
         }
 #endif
     private:
+        const bool *SHOW_DEBUG_MESSAGES_PTR, *SHOW_MESSAGES_PTR;
 };
 #endif //BASE_OBJECT_H

@@ -116,7 +116,6 @@ namespace llrfStructs
         epicsTimeStamp etime;   // epics timestamp for value
         double         time;    // epics timestamp converted into nano-sec
         std::string    timeStr; // epics timestamp converted into nano-sec
-
         // when exposing a vector of outside_mask_trace to python I ran into trouble...
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
         bool operator==(const outside_mask_trace& rhs)

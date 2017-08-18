@@ -86,8 +86,6 @@ class liberallrfInterface : public interface
         llrfStructs::rf_trace getKlyRevPhaseData();
         llrfStructs::rf_trace getKlyFwdPhaseData();
 
-
-
         std::deque<llrfStructs::rf_trace> getCavRevPowerBuffer();
         std::deque<llrfStructs::rf_trace> getCavFwdPowerBuffer();
         std::deque<llrfStructs::rf_trace> getKlyRevPowerBuffer();
@@ -137,7 +135,9 @@ class liberallrfInterface : public interface
         bool isNotMonitoring(const std::string& name);
 
         bool isCheckingMask(const std::string& name);
+        bool isNotCheckingMask(const std::string& name);
         bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
+        bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
         bool isLocked();
 
         // start trace monitoring (not automatic as mostly not needed)

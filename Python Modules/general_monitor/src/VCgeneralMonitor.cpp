@@ -3,13 +3,15 @@
 #include <iomanip>
 #include <numeric>
 #include <sstream>
+#include <thread>
+#include <chrono>
 // epics
 #include <epicsTime.h>
 // VC-HWC
 #include "VCgeneralMonitor.h"
 
 
-VCgeneralMonitor::VCgeneralMonitor(const bool shouldShowMessage,const bool  shouldShowDebugMessage):
+VCgeneralMonitor::VCgeneralMonitor(const bool shouldShowMessage = false,const bool  shouldShowDebugMessage = false):
 controller( shouldShowMessage, shouldShowDebugMessage),
 pvMonitorMapCount(UTL::ZERO_INT),
 defaultCOUNT(1),
@@ -49,30 +51,24 @@ CA_PEND_IO_TIMEOUT(2.0)
 //______________________________________________________________________________
 void VCgeneralMonitor::setQuiet()
 {
-    std::cout << "VCgeneralMonitor Quiet Mode Set." << std::endl;
-    SHOW_DEBUG_MESSAGES = false;
-    SHOW_MESSAGES = false;
+    silence();
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::setVerbose()
 {
-    std::cout << "VCgeneralMonitor Verbose Mode Set." << std::endl;
-    SHOW_DEBUG_MESSAGES = true;
-    SHOW_MESSAGES = true;
+    verbose();
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::setMessage()
 {
-    std::cout << "VCgeneralMonitor Message Mode Set." << std::endl;
-    SHOW_DEBUG_MESSAGES = false;
-    SHOW_MESSAGES = true;
+    debugMessagesOff();
+    messagesOn();
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::setDebugMessage()
 {
-    std::cout << "VCgeneralMonitor DebugMessage Mode Set." << std::endl;
-    SHOW_DEBUG_MESSAGES = true;
-    SHOW_MESSAGES      = false;
+    debugMessagesOn();
+    messagesOff();
 }
 //______________________________________________________________________________
 VCgeneralMonitor::~VCgeneralMonitor()
@@ -82,6 +78,7 @@ VCgeneralMonitor::~VCgeneralMonitor()
         delete it;
     }
 }
+#ifdef BUILD_DLL
 //______________________________________________________________________________
 boost::python::dict VCgeneralMonitor::getValue(const boost::python::list& ids)
 {
@@ -184,6 +181,7 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id)
     }
     return object();
 }
+#endif
 //______________________________________________________________________________
 size_t VCgeneralMonitor::getCounter(const std::string & id)
 {
@@ -254,6 +252,7 @@ size_t VCgeneralMonitor::getCounter(const std::string & id)
     return r;
 }
 //______________________________________________________________________________
+#ifdef BUILD_DLL
 boost::python::dict VCgeneralMonitor::getCounterAndValue(const std::string& id)
 {
     boost::python::dict r;
@@ -407,6 +406,7 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id,const in
     }
     return object();
 }
+#endif
 //______________________________________________________________________________
 size_t VCgeneralMonitor::getArrayIndex(const int index, const size_t vec_size)
 {
@@ -431,6 +431,7 @@ size_t VCgeneralMonitor::getArrayIndex(const int index, const size_t vec_size)
     message("Array Size = ", vec_size, ", requested index = ", index, ", returning ", r);
     return r;
 }
+#ifdef BUILD_DLL
 //______________________________________________________________________________
 boost::python::list VCgeneralMonitor::getValue(const std::string & id,const int start_pos,const int end_pos)
 {
@@ -459,6 +460,7 @@ boost::python::list VCgeneralMonitor::getValue(const std::string & id,const int 
     }
     return output;
 }
+#endif
 //______________________________________________________________________________
 std::vector< size_t > VCgeneralMonitor::getArrayRegionOfInterest(const int start_position,const int end_position,const size_t vec_size)
 {
@@ -615,7 +617,7 @@ bool VCgeneralMonitor::isValidID(const std::string& id)
     return false;
 }
 //______________________________________________________________________________
-std::string VCgeneralMonitor::connectPV(const std::string & pvFullName)
+std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
 {
     debugMessage("Looking for ", pvFullName);
     std::string r = returnFail;
@@ -630,8 +632,6 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName)
     {
         status = ca_field_type( CHID);
         int COUNT = ca_element_count(CHID);
-
-
             switch( status)
             {
                 case 0:
@@ -656,7 +656,6 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName)
                     message("PV ", pvFullName, " is a DBR_LONG, connecting to channel");
                     r= connectPV(pvFullName, "DBR_LONG");
                 case 6:
-
                     if( COUNT > 1)
                     {
                         message("PV ", pvFullName, " is a DBR_ARRAY_DOUBLE, connecting to channel");
@@ -667,7 +666,6 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName)
                         message("PV ", pvFullName, " is a DBR_DOUBLE, connecting to channel");
                         r= connectPV(pvFullName, "DBR_DOUBLE");
                     }
-
                     break;
                 case 7:
                     message("PV ", pvFullName, " is a DBR_STS_STRING, connecting to channel");
@@ -779,7 +777,10 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName)
             }
         }
         else
-            message("When looking for ", pvFullName," return  status != ECA_NORMAL");
+            message("When looking for ", pvFullName," EPICS return  status != ECA_NORMAL");
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // MAGIC_NUMBER
+
     return r;
 }
 //______________________________________________________________________________
@@ -898,6 +899,9 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                 updateTimeAndValue(id, args.dbr);
                 break;
             case DBR_TIME_LONG:
+                updateTimeAndValue(id, args.dbr);
+                break;
+            case DBR_TIME_DOUBLE:
                 updateTimeAndValue(id, args.dbr);
                 break;
             case  DBR_STRING:

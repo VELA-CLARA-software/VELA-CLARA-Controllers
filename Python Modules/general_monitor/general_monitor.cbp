@@ -48,10 +48,10 @@
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="../../Hardware/interface.h">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="../../Structs/gmStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
@@ -59,17 +59,17 @@
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="../../Utilities/configReader.h">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="include/VCgeneralMonitor.h" />
 		<Unit filename="main.cpp">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="main.h">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="src/VCgeneralMonitor.cpp" />
 		<Extensions>

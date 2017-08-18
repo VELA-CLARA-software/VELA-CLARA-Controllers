@@ -134,29 +134,35 @@ class liberaLLRFController : public controller
         void setPhiCalibration(double value);
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
-        bool setHighMask(const std::string&name, std::vector<double>& value);
-        bool setLowMask(const std::string&name, std::vector<double>& value);
+        bool setHighMask(const std::string& name, std::vector<double>& value);
+        bool setLowMask(const std::string& name, std::vector<double>& value);
         bool setNumBufferTraces(const std::string&name, size_t value);
         bool setCheckMask(const std::string&name, bool value);
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setNumRollingAverageTraces(const std::string&name, size_t value );
         // Qantifiers
-        bool Is_TracePV(llrfStructs::LLRF_PV_TYPE pv);
-        bool IsNot_TracePV(llrfStructs::LLRF_PV_TYPE pv);
-        bool isMonitoring(llrfStructs::LLRF_PV_TYPE pv);
-        bool isNotMonitoring(llrfStructs::LLRF_PV_TYPE pv);
+        bool isTracePV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool isNotTracePV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+        bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
 
         bool isCheckingMask(const std::string& name);
+        bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
+        bool isNotCheckingMask(const std::string& name);
+        bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
+
 
         // Starters
         void startTraceMonitoring();
-        bool startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
+        bool startTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+        bool startTraceMonitoring(const std::string& name);
         bool startCavFwdTraceMonitor();
         bool startCavRevTraceMonitor();
         bool startKlyFwdTraceMonitor();
         bool startKlyRevTraceMonitor();
         // Stoppers
-        bool stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
+        bool stopTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+        bool stopTraceMonitoring(const std::string& name);
         void stopTraceMonitoring();
         bool stopCavFwdTraceMonitor();
         bool stopCavRevTraceMonitor();
