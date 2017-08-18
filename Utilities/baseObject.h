@@ -43,7 +43,7 @@ class baseObject
 
         /// These are const pointers set at instantiation. They point to bools held in the controller
 
-
+        const bool *SHOW_DEBUG_MESSAGES_PTR, *SHOW_MESSAGES_PTR;
 
         /// using default template types makes this easy, (c++11 feature !?)
         /// these functions allow you to pass up to 7 arguments for a message,
@@ -211,6 +211,6 @@ class baseObject
         }
 #endif
     private:
-        const bool *SHOW_DEBUG_MESSAGES_PTR, *SHOW_MESSAGES_PTR;
+
 };
 #endif //BASE_OBJECT_H

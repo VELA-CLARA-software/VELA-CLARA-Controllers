@@ -191,8 +191,9 @@ class liberallrfInterface : public interface
         void updateTrace(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
 
-        bool checkTraceIsInMask(llrfStructs::rf_trace_data& trace);
+        bool isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
+        void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
         void calcRollingAverage(llrfStructs::rf_trace_data& trace);
 
         //std::map< std::string, magnetStructs::magnetObject > allMagnetData;

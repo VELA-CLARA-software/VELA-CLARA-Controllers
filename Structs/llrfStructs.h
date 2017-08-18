@@ -84,7 +84,8 @@ namespace llrfStructs
             time(0),
             timeStr("")
             {}
-        size_t              shot;
+        size_t shot;
+        bool   in_mask;
         std::vector<double> value;
         epicsTimeStamp etime;   // epics timestamp for value
         double         time;    // epics timestamp converted into nano-sec
@@ -99,10 +100,11 @@ namespace llrfStructs
             hi_mask_set(false),
             low_mask_set(false),
             keep_rolling_average(false),
+            has_average(false),
             trace_size(0),
             average_size(1)
             {}
-        bool                check_mask, hi_mask_set,low_mask_set,keep_rolling_average;
+        bool                check_mask, hi_mask_set,low_mask_set,keep_rolling_average,has_average;
         size_t              buffersize, trace_size, average_size;
         std::deque<rf_trace> traces;
         std::vector<double> high_mask, low_mask, rolling_average;
@@ -110,12 +112,12 @@ namespace llrfStructs
 
     struct outside_mask_trace
     {
-        size_t              shot;
-        std::string         trace_name;
-        std::vector<double> value,high_mask,low_mask;
-        epicsTimeStamp etime;   // epics timestamp for value
-        double         time;    // epics timestamp converted into nano-sec
-        std::string    timeStr; // epics timestamp converted into nano-sec
+        outside_mask_trace():
+            trace_name(UTL::UNKNOWN_NAME)
+            {}
+        rf_trace    trace;
+        std::string trace_name;
+        std::vector<double> high_mask,low_mask;
         // when exposing a vector of outside_mask_trace to python I ran into trouble...
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
         bool operator==(const outside_mask_trace& rhs)

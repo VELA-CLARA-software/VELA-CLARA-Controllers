@@ -221,19 +221,16 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
     //using namespace llrfStructs;
     // outside_mask_trace is a sturct that holds flagged traces...
     class_<outside_mask_trace>
-        ("rf_trace","rf_trace Doc String", no_init)
-        .def_readonly("value",     &outside_mask_trace::value,     "trace values")
-        .def_readonly("trace_name",&outside_mask_trace::trace_name,"Name of channel trace came from")
-        .def_readonly("high_mask", &outside_mask_trace::high_mask, "high_mask values")
-        .def_readonly("low_mask",  &outside_mask_trace::low_mask,  "low_mask values")
-        .def_readonly("time",      &outside_mask_trace::time,   "Epics TimeStamp: ns since epoch (double)")
-        .def_readonly("timeStr",   &outside_mask_trace::timeStr,"Epics TimeStamp: ns since epoch (string)")
-        .def_readonly("shot",      &outside_mask_trace::shot,   "shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber)")
+        ("outside_mask_trace","outside_mask_trace Doc String", no_init)
+        .def_readonly("rf_trace",   &outside_mask_trace::trace   ,  "rf_trace object")
+        .def_readonly("trace_name", &outside_mask_trace::trace_name,"Channel name trace came from")
+        .def_readonly("high_mask",  &outside_mask_trace::high_mask, "High mask values")
+        .def_readonly("low_mask",   &outside_mask_trace::low_mask,  "Low mask values")
         ;
 
     class_<std::vector<outside_mask_trace>,boost::noncopyable>("std_vector_outside_mask_trace", no_init)
-            .def(vector_indexing_suite< std::vector<outside_mask_trace>>())
-            ;
+        .def(vector_indexing_suite< std::vector<outside_mask_trace>>())
+        ;
 
     // liberallrfObject object struct to be exposed, used when returning a liberallrfObject reference
     class_<liberallrfObject,boost::noncopyable>
@@ -287,7 +284,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(arg("name")),"Return latest Trace Values for channel 'name'")
         .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(arg("name")),"Return buffer of rf_trace objects for channel 'name'")
 
-
         .def("getCavRevPowerData",&liberaLLRFController::getCavRevPowerData,"Return latest cavity reverse power rf_trace object")
         .def("getCavFwdPowerData",&liberaLLRFController::getCavFwdPowerData,"Return latest cavity forward power rf_trace object")
         .def("getKlyRevPowerData",&liberaLLRFController::getKlyRevPowerData,"Return latest klystron reverse power rf_trace object")
@@ -297,7 +293,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("getKlyRevPhaseData",&liberaLLRFController::getKlyRevPhaseData,"Return latest klystron reverse phase rf_trace object")
         .def("getKlyFwdPhaseData",&liberaLLRFController::getKlyFwdPhaseData,"Return latest klystron forward phase rf_trace object")
 
-
         .def("getCavRevPowerBuffer",&liberaLLRFController::getCavRevPowerBuffer_Py,"Return buffer of cavity reverse power rf_trace objects")
         .def("getCavFwdPowerBuffer",&liberaLLRFController::getCavFwdPowerBuffer_Py,"Return buffer of cavity forward power rf_trace objects")
         .def("getKlyRevPowerBuffer",&liberaLLRFController::getKlyRevPowerBuffer_Py,"Return buffer of klystron reverse power rf_trace objects")
@@ -306,9 +301,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("getCavFwdPhaseBuffer",&liberaLLRFController::getCavFwdPhaseBuffer_Py,"Return buffer of cavity forward phase rf_trace objects")
         .def("getKlyRevPhaseBuffer",&liberaLLRFController::getKlyRevPhaseBuffer_Py,"Return buffer of klystron reverse phase rf_trace objects")
         .def("getKlyFwdPhaseBuffer",&liberaLLRFController::getKlyFwdPhaseBuffer_Py,"Return buffer of klystron forward phase rf_trace objects")
-
-
-
         .def("getCavRevPower",  &liberaLLRFController::getCavRevPower_Py,"Return latest cavity reverse power trace")
         .def("getCavFwdPower",  &liberaLLRFController::getCavFwdPower_Py,"Return latest cavity forward power trace")
         .def("getKlyRevPower",  &liberaLLRFController::getKlyRevPower_Py,"Return latest klystron reverse power trace")
@@ -317,12 +309,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("getCavFwdPhase",  &liberaLLRFController::getCavFwdPhase_Py,"Return latest cavity forward phase trace")
         .def("getKlyRevPhase",  &liberaLLRFController::getKlyRevPhase_Py,"Return latest klystron reverse phase trace")
 
-
-
-        .def("setPhiLLRF",        &liberaLLRFController::setPhiLLRF,(arg("value")),"Set Phase in LLRF Units")
-        .def("setAmpLLLRF",       &liberaLLRFController::setAmpLLRF,(arg("value")),"Set Amplitude in LLRF units")
-        .def("setPhiDEG",         &liberaLLRFController::setPhiDEG,(arg("value")),"Set Cavity Phase Relative to Creset [degrees] (+ve sense?)")
-        .def("setAmpMVM",         &liberaLLRFController::setAmpMVM,(arg("value")),"Set Cavity Amplitude [MV/m]")
+        .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(arg("value")),"Set Phase in LLRF Units")
+        .def("setAmpLLLRF",&liberaLLRFController::setAmpLLRF,(arg("value")),"Set Amplitude in LLRF units")
+        .def("setPhiDEG",  &liberaLLRFController::setPhiDEG,(arg("value")),"Set Cavity Phase Relative to Creset [degrees] (+ve sense?)")
+        .def("setAmpMVM",  &liberaLLRFController::setAmpMVM,(arg("value")),"Set Cavity Amplitude [MV/m]")
         .def("setPhiSP",  &liberaLLRFController::setPhiSP,(arg("value")),"Set Phase(SP) in LLRF Units")
         .def("setPhiFF",  &liberaLLRFController::setPhiFF,(arg("value")),"Set Phase(FF) in LLRF Units")
         .def("setAmpSP",  &liberaLLRFController::setAmpSP,(arg("value")),"Set Amplitude(SP) in LLRF Units")

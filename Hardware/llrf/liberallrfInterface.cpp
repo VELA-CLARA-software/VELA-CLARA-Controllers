@@ -483,28 +483,63 @@ void liberallrfInterface::updateTrace(const event_handler_args& args,llrfStructs
     trace.traces.push_back(llrfStructs::rf_trace());
     trace.traces.back().value.resize(trace.trace_size);
     updateValues(args, trace.traces.back());
-
     // check mask
     if( shouldCheckMasks(trace) )
     {
-        bool trace_good = checkTraceIsInMask(trace);
+        bool trace_good = isTraceInMask(trace);
+        if( trace_good )
+        {
+
+        }
+        else
+        {
+            llrfStructs::monitorStruct*ms = static_cast<  llrfStructs::monitorStruct *>(args.usr);
+            addToOutsideMaskTraces(trace,  ms->name);
+        }
     }
     if( trace.keep_rolling_average )
     {
-        bool trace_good = checkTraceIsInMask(trace);
+        calcRollingAverage(trace);
     }
-
+    trace.traces.pop_front();
 }
 //____________________________________________________________________________________________
-bool liberallrfInterface::checkTraceIsInMask(llrfStructs::rf_trace_data& trace)
+bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
 {
-    return false;
+    std::vector<double>& to_check = trace.traces.back().value;
+    std::vector<double>& hi = trace.high_mask;
+    std::vector<double>& lo = trace.low_mask;
+    for( auto i = 0; i < to_check.size(); ++i )
+    {
+        if( to_check[i] > hi[i] )
+            return false;
+        if( to_check[i] < lo[i] )
+            return false;
+    }
+    return true;
 }
 //____________________________________________________________________________________________
+void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name)
+{
+    llrfStructs::outside_mask_trace new_outside_mask_trace;
+    new_outside_mask_trace.trace      = trace.traces.back();
+    new_outside_mask_trace.trace_name = name;
+    new_outside_mask_trace.high_mask  = trace.high_mask;
+    new_outside_mask_trace.low_mask   = trace.low_mask;
+    llrf.outside_mask_traces.push_back(new_outside_mask_trace);
+}
 //____________________________________________________________________________________________
 void liberallrfInterface::calcRollingAverage(llrfStructs::rf_trace_data& trace)
 {
-    //
+    if( trace.has_average )
+    {
+        // subtract the oldest trace from teh rolling average...
+    }
+    else
+    {
+
+    }
+
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::shouldCheckMasks(llrfStructs::rf_trace_data& trace)
