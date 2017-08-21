@@ -118,9 +118,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
     class_<std::vector< std::string > >("std_vector_string")
             .def(vector_indexing_suite< std::vector< std::string >>())
             ;
-// can't get deque to work in a simple way
-//    class_<std::deque< llrfStructs::rf_trace > >("std_deque_rf_trace")
-//            .def(vector_indexing_suite< std::deque< llrfStructs::rf_trace >>())
+// can't get vector to work in a simple way
+//    class_<std::vector< llrfStructs::rf_trace > >("std_vector_rf_trace")
+//            .def(vector_indexing_suite< std::vector< llrfStructs::rf_trace >>())
 //            ;
 
     class_<std::vector<double> >("std_vector_double")
@@ -194,6 +194,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def_readonly("time",     &rf_trace::time   ,"Epics TimeStamp ns since epoch (double)")
         .def_readonly("timeStr",  &rf_trace::timeStr,"Epics TimeStamp ns since epoch (string)")
         .def_readonly("shot",     &rf_trace::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber)")
+        .def_readonly("EVID",     &rf_trace::EVID   ,"Trace EVID string")
+        .def_readonly("EVID_time",&rf_trace::EVID_time   ,"Trace EVID time in ns since the epoch")
+        .def_readonly("EVID_timeStr",&rf_trace::EVID_timeStr   ,"Trace EVID time as a string")
         ;
 
     // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
@@ -203,14 +206,18 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def_readonly("hi_mask_set",     &rf_trace_data::hi_mask_set,"is hi mask set")
         .def_readonly("low_mask_set",    &rf_trace_data::low_mask_set,"is low mask set")
         .def_readonly("keep_rolling_average",&rf_trace_data::keep_rolling_average,"should keep rolling average")
+        .def_readonly("has_average",     &rf_trace_data::has_average,"has the trace calcualted an an average yet?")
         .def_readonly("buffersize",      &rf_trace_data::buffersize,"number of traces in buffer")
         .def_readonly("trace_size",      &rf_trace_data::trace_size,"number of elements in a trace")
         .def_readonly("average_size",    &rf_trace_data::average_size,"number of traces to average")
+        .def_readonly("rolling_sum_counter",    &rf_trace_data::rolling_sum_counter,"Total number of traces that have been added to the rolling sum (NOT the number of traces IN the rolling sum)")
         .def_readonly("high_mask",       &rf_trace_data::high_mask,"high mask values")
         .def_readonly("low_mask",        &rf_trace_data::low_mask,"low mask values")
         .def_readonly("rolling_average", &rf_trace_data::rolling_average,"rolling average values")
-        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::deque<llrfStructs::rf_trace> does this work?)")
+        .def_readonly("rolling_sum",     &rf_trace_data::rolling_sum,"rolling sum values")
+        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
         ;
+
 
     // The map with all the TRACE data (keyed by trace name from conifg file
     class_< std::map<std::string, llrfStructs::rf_trace_data> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)

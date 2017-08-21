@@ -357,3 +357,13 @@ void interface::updateTime(const epicsTimeStamp & stamp, double & val, std::stri
     //std::cout <<std::setprecision(15) <<std::showpoint<<  val <<std::endl;
     str = timeString;
 }
+
+
+
+
+
+
+
+
+
+

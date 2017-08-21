@@ -18,7 +18,7 @@
 class liberallrfConfigReader:public configReader
 {
     public:
-        liberallrfConfigReader(const std::string & configFileLocation1,const bool startVirtualMachine,
+        liberallrfConfigReader(const std::string & llrfFileLocation1,const bool startVirtualMachine,
                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
         ~liberallrfConfigReader();
 

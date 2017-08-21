@@ -142,7 +142,7 @@ llrfStructs::rf_trace liberaLLRFController::getTraceData(const std::string& name
     return localInterface.getTraceData(name);
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getTraceBuffer(const std::string& name)
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getTraceBuffer(const std::string& name)
 {
     return localInterface.getTraceBuffer(name);
 }
@@ -331,42 +331,42 @@ llrfStructs::rf_trace liberaLLRFController::getKlyFwdPhaseData()
     return localInterface.getKlyFwdPhaseData();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getCavRevPowerBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavRevPowerBuffer()
 {
     return localInterface.getCavRevPowerBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPowerBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPowerBuffer()
 {
     return localInterface.getCavFwdPowerBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPowerBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPowerBuffer()
 {
     return localInterface.getKlyRevPowerBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPowerBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPowerBuffer()
 {
     return localInterface.getKlyFwdPowerBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getCavRevPhaseBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavRevPhaseBuffer()
 {
     return localInterface.getCavRevPhaseBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPhaseBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPhaseBuffer()
 {
     return localInterface.getCavFwdPhaseBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPhaseBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPhaseBuffer()
 {
     return localInterface.getKlyRevPhaseBuffer();
 }
 //______________________________________________________________________________
-std::deque<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPhaseBuffer()
+std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPhaseBuffer()
 {
     return localInterface.getKlyFwdPhaseBuffer();
 }

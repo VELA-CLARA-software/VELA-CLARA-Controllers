@@ -24,7 +24,7 @@
 #include <string>
 #include <atomic>
 #include <map>
-#include <deque>
+#include <vector>
 
 class liberallrfInterface : public interface
 {
@@ -66,7 +66,7 @@ class liberallrfInterface : public interface
         std::vector<std::string> getChannelNames();
         std::vector<double> getTraceValues(const std::string& name);
         llrfStructs::rf_trace getTraceData(const std::string& name);
-        std::deque<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
+        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
         std::vector<double> getCavRevPower();
         std::vector<double> getCavFwdPower();
@@ -86,14 +86,14 @@ class liberallrfInterface : public interface
         llrfStructs::rf_trace getKlyRevPhaseData();
         llrfStructs::rf_trace getKlyFwdPhaseData();
 
-        std::deque<llrfStructs::rf_trace> getCavRevPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getCavFwdPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyRevPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getCavRevPhaseBuffer();
-        std::deque<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getCavRevPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getCavFwdPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyRevPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getCavRevPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
         llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name);
@@ -126,6 +126,7 @@ class liberallrfInterface : public interface
 
         //  quantification
         bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool Is_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
 
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
@@ -188,15 +189,17 @@ class liberallrfInterface : public interface
         void addChannel(const std::string& pvRoot, llrfStructs::pvStruct & pv );
         void startMonitors();
 
+        void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateTrace(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
 
         bool isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
         void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
+        bool shoudlSubtractTraceFromRollingAverage(llrfStructs::rf_trace_data& trace);
         void calcRollingAverage(llrfStructs::rf_trace_data& trace);
-
-        //std::map< std::string, magnetStructs::magnetObject > allMagnetData;
+        void updateRollingSum(llrfStructs::rf_trace_data& trace);
+        void resetAverageTraces(llrfStructs::rf_trace_data& trace);
 
         llrfStructs::liberallrfObject llrf;
         llrfStructs::LLRF_TYPE myLLRFType;

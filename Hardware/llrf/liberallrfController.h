@@ -65,7 +65,7 @@ class liberaLLRFController : public controller
         std::vector<std::string> getChannelNames();
         std::vector<double> getTraceValues(const std::string& name);
         llrfStructs::rf_trace getTraceData(const std::string& name);
-        std::deque<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
+        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
 #ifdef BUILD_DLL
         boost::python::list getChannelNames_Py();
@@ -100,14 +100,14 @@ class liberaLLRFController : public controller
         llrfStructs::rf_trace getKlyRevPhaseData();
         llrfStructs::rf_trace getKlyFwdPhaseData();
 
-        std::deque<llrfStructs::rf_trace> getCavRevPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getCavFwdPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyRevPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
-        std::deque<llrfStructs::rf_trace> getCavRevPhaseBuffer();
-        std::deque<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
-        std::deque<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getCavRevPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getCavFwdPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyRevPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
+        std::vector<llrfStructs::rf_trace> getCavRevPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
+        std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 #ifdef BUILD_DLL
         boost::python::list getCavRevPowerBuffer_Py();
         boost::python::list getCavFwdPowerBuffer_Py();

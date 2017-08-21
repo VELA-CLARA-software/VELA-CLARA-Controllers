@@ -196,6 +196,7 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
     const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
     const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
+ //   const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
     const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
     const std::string PV_SUFFIX_LIB_CH1_PHASE_REM  = "PV_SUFFIX_LIB_CH1_PHASE_REM";
     const std::string PV_SUFFIX_LIB_CH2_PHASE_REM  = "PV_SUFFIX_LIB_CH2_PHASE_REM";
@@ -213,6 +214,24 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_CH6_PWR_REM    = "PV_SUFFIX_LIB_CH6_PWR_REM";
     const std::string PV_SUFFIX_LIB_CH7_PWR_REM    = "PV_SUFFIX_LIB_CH7_PWR_REM";
     const std::string PV_SUFFIX_LIB_CH8_PWR_REM    = "PV_SUFFIX_LIB_CH8_PWR_REM";
+
+
+    const std::string PV_SUFFIX_LIB_CH1_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH1_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH2_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH2_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH3_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH3_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH4_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH4_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH5_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH5_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH6_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH6_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH7_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH7_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH8_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH8_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH1_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH1_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH2_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH2_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH3_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH3_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH4_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH4_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH5_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH5_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH6_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH6_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH7_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH7_PWR_REM_EVID";
+    const std::string PV_SUFFIX_LIB_CH8_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH8_PWR_REM_EVID";
 //    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
 //    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
     // specific names for common channels that have named functions to start/stop them in the llrfinterface/controller

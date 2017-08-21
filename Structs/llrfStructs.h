@@ -6,7 +6,7 @@
 //stl
 #include <string>
 #include <map>
-#include <deque>
+#include <vector>
 //epics
 #include <cadef.h>
 
@@ -42,6 +42,22 @@ namespace llrfStructs
                                                      (LIB_CH6_PHASE_REM)
                                                      (LIB_CH7_PHASE_REM)
                                                      (LIB_CH8_PHASE_REM)
+                                                     (LIB_CH1_PWR_REM_EVID)
+                                                     (LIB_CH2_PWR_REM_EVID)
+                                                     (LIB_CH3_PWR_REM_EVID)
+                                                     (LIB_CH4_PWR_REM_EVID)
+                                                     (LIB_CH5_PWR_REM_EVID)
+                                                     (LIB_CH6_PWR_REM_EVID)
+                                                     (LIB_CH7_PWR_REM_EVID)
+                                                     (LIB_CH8_PWR_REM_EVID)
+                                                     (LIB_CH1_PHASE_REM_EVID)
+                                                     (LIB_CH2_PHASE_REM_EVID)
+                                                     (LIB_CH3_PHASE_REM_EVID)
+                                                     (LIB_CH4_PHASE_REM_EVID)
+                                                     (LIB_CH5_PHASE_REM_EVID)
+                                                     (LIB_CH6_PHASE_REM_EVID)
+                                                     (LIB_CH7_PHASE_REM_EVID)
+                                                     (LIB_CH8_PHASE_REM_EVID)
                                                      (LIB_TIME_VECTOR)
                                                      (LIB_PULSE_LENGTH)
                                                      (LIB_PULSE_OFFSET)
@@ -90,6 +106,10 @@ namespace llrfStructs
         epicsTimeStamp etime;   // epics timestamp for value
         double         time;    // epics timestamp converted into nano-sec
         std::string    timeStr; // epics timestamp converted into nano-sec
+        std::string    EVID;    // LLRF EVID string
+        double         EVID_time;    // LLRF EVID string
+        std::string    EVID_timeStr;    // LLRF EVID string
+        epicsTimeStamp EVID_etime;   // epics timestamp for value
     };
     //a custom struct will always stand up better under maintenance.
     struct rf_trace_data
@@ -102,12 +122,20 @@ namespace llrfStructs
             keep_rolling_average(false),
             has_average(false),
             trace_size(0),
-            average_size(1)
+            average_size(1),
+            rolling_sum_counter(0),
+            current_trace(0),
+            evid_current_trace(0),
+            sub_trace(0)
             {}
-        bool                check_mask, hi_mask_set,low_mask_set,keep_rolling_average,has_average;
-        size_t              buffersize, trace_size, average_size;
-        std::deque<rf_trace> traces;
-        std::vector<double> high_mask, low_mask, rolling_average;
+        bool                check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average;
+        size_t              buffersize, trace_size, average_size,rolling_sum_counter;
+        // Counter allowing you to access/update the correct part of  traces
+        size_t              current_trace,evid_current_trace;
+        // Counter allowing you to access the correct traces to delete off the rolling average
+        size_t              sub_trace;
+        std::vector<rf_trace> traces;
+        std::vector<double> high_mask, low_mask, rolling_average,rolling_sum;
     };
 
     struct outside_mask_trace
@@ -137,7 +165,7 @@ namespace llrfStructs
                      pulse_length(UTL::DUMMY_DOUBLE),pulse_offset(UTL::DUMMY_DOUBLE),
                      event_count(0),check_mask(false)
                      {}
-        std::string name, pvRoot,EVIDStr;
+        std::string name, pvRoot, EVIDStr;
         double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
         double phi_sp, phi_ff, crestPhi;
         double amp_sp, amp_ff,maxAmp;
