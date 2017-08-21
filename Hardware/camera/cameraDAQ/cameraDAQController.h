@@ -51,14 +51,12 @@ class cameraDAQController  : public controller
         bool isNotAquiring( const std::string & cam );
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
-        bool startAquiring();
-        bool stopAquiring();
-        bool startVCAquiring();
-        bool stopVCAquiring();
+        bool startAcquiring();
+        bool stopAcquiring();
+        bool startVCAcquiring();
+        bool stopVCAcquiring();
         //DAQ Specific Functions
         bool collectAndSave (const int & numbOfShots);
-        bool collect(const std::string &io, const int & numbOfShots);
-        bool save(const std::string &io);
         bool killCollectAndSave();
         const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
         const cameraStructs::cameraDAQObject &getSelectedDAQRef();

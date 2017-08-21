@@ -80,45 +80,23 @@ bool cameraDAQController::setCamera(const std::string & cam)
 {
     return localInterface.setCamera(cam);
 }
-bool cameraDAQController::startAquiring()
+bool cameraDAQController::startAcquiring()
 {
-    return localInterface.startAquiring();
+    return localInterface.startAcquiring();
 }
-bool cameraDAQController::stopAquiring()
+bool cameraDAQController::stopAcquiring()
 {
-    return localInterface.stopAquiring();
+    return localInterface.stopAcquiring();
 }
-bool cameraDAQController::startVCAquiring()
+bool cameraDAQController::startVCAcquiring()
 {
-    return localInterface.startVCAquiring();
+    return localInterface.startVCAcquiring();
 }
-bool cameraDAQController::stopVCAquiring()
+bool cameraDAQController::stopVCAcquiring()
 {
-    return localInterface.stopVCAquiring();
+    return localInterface.stopVCAcquiring();
 }
 //DAQ Specific Functions
-bool cameraDAQController::collect(const std::string &io, const int & numbOfShots)
-{
-    unsigned short comm(0);
-    if(io=="ON"||io=="On"||io=="on")
-        comm=1;
-    else if(io=="OFF"||io=="Off"||io=="off")
-        comm=0;
-    else
-        message("Collect input not recognised, please use 'ON' or 'OFF'");
-    return localInterface.collect(comm, numbOfShots);
-}
-bool cameraDAQController::save(const std::string &io)
-{
-    unsigned short comm(0);
-    if(io=="ON"||io=="On"||io=="on")
-        comm=1;
-    else if(io=="OFF"||io=="Off"||io=="off")
-        comm=0;
-    else
-        message("Write input not recognised, please use 'ON' or 'OFF'");
-    return localInterface.save(comm);
-}
 bool cameraDAQController::collectAndSave(const int & numbOfShots)
 {
     return localInterface.collectAndSave(numbOfShots);

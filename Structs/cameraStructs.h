@@ -25,27 +25,27 @@ class cameraDAQInterface;
 namespace cameraStructs
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE,
-        (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_NUMBER) (CAM_FILE_TEMPLATE)
-        (CAM_FILE_WRITE) (CAM_FILE_WRITE_RBV) (CAM_FILE_WRITE_STATUS)
-        (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS) (CAM_ACQUIRE) (CAM_CAPTURE)
-        (CAM_CAPTURE_RBV) (CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)(CAM_NUM_CAPTURED)
-        (CAM_DATA) (CAM_BKGRND_DATA)(X) (Y) (SIGMA_X) (SIGMA_Y) (COV_XY)
-        (UNKNOWN_CAM_PV_TYPE))
+        (CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
+        (CAM_FILE_WRITE)(CAM_FILE_WRITE_RBV)(CAM_FILE_WRITE_CHECK)
+        (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_ACQUIRE)(CAM_CAPTURE)
+        (CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
+        (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)(X)
+        (Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(UNKNOWN_CAM_PV_TYPE))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
         (CAM_OFF) (CAM_ON) (CAM_ERROR))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(AQUIRE_STATE,
-        (NOT_ACQUIRING) (ACQUIRING) (AQUIRING_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(ACQUIRE_STATE,
+        (NOT_ACQUIRING) (ACQUIRING) (ACQUIRING_ERROR))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAPTURE_STATE,
-        (CAPTURE_DONE) (CAPTURING) (CAPTURE_ERROR))
+        (NOT_CAPTURING) (CAPTURING) (CAPTURING_ERROR))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_STATE,
-        (WRITE_DONE) (WRITING) (WRITE_ERROR))
+        (NOT_WRITING) (WRITING) (WRITING_ERROR))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_CHECK,
-        (WRITE_OK) (WRITE_CHECK_ERROR))
+        (WRITE_CHECK_OK) (WRITE_CHECK_ERROR))
 
     // bit depth of the camera... could be dynamic (!)
     typedef long camDataType;
@@ -74,7 +74,6 @@ namespace cameraStructs
         cameraDAQInterface *interface;
         evid             EVID;
     };
-    //add dummy values form UTL namespace, no hardcoded constants
     // eventually (aspiration) harmonize this with VELA cams ...
     struct cameraIAObject// image analysis object
     {
@@ -92,35 +91,35 @@ namespace cameraStructs
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
-
     struct cameraDAQObject
     {
         cameraDAQObject() : name(UTL::UNKNOWN_NAME),
                             pvRoot(UTL::UNKNOWN_PVROOT),
                             screenName(UTL::UNKNOWN_STRING),
                             state(CAM_ERROR),
-                            aquireState(AQUIRING_ERROR),
-                            captureState(CAPTURE_ERROR),
-                            writeState(WRITE_ERROR),
+                            acquireState(ACQUIRING_ERROR),
+                            captureState(CAPTURING_ERROR),
+                            writeState(WRITING_ERROR),
                             writeCheck(WRITE_CHECK_ERROR),
                             shotsTaken(UTL::DUMMY_INT),
                             numberOfShots(UTL::DUMMY_INT),
                             frequency(UTL::DUMMY_DOUBLE),
                             exposureTime(UTL::DUMMY_DOUBLE) {}
+        //ID
         std::string name, pvRoot, screenName;
         //On/Off
         CAM_STATE state;
-        // rolling acquisation
-        AQUIRE_STATE aquireState;
+        // Rolling a
+        ACQUIRE_STATE acquireState;
         // actually "capturing" images to then save to disc
         CAPTURE_STATE captureState;
         // write state indicates if saving to disc / or
         WRITE_STATE writeState;
         // write check is whether the last write was succesful
         WRITE_CHECK writeCheck;
-        char writeMessage[256]; /// This can eventually go and we can just use the string
-        std::string writeMessageStr;
-        int shotsTaken, numberOfShots;
+        // If error this string will get updated
+        std::string writeErrorMessage;
+        int shotsTaken, numberOfShots, maxShots;
         double frequency,exposureTime;
         // doesn't exist for CLARA
         std::vector<camDataType> rawData;
@@ -130,7 +129,6 @@ namespace cameraStructs
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
-
     ///Not using this yet but will use it eventually for DAQ and IA
     struct cameraObject
     {

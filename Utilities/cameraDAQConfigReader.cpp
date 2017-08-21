@@ -175,8 +175,8 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE;
         else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_RBV  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_RBV;
-        else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_STATUS  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_STATUS;
+        else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_CHECK  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_CHECK;
         else if( keyVal[0] == UTL::PV_SUFFIX_WRITE_MESSAGE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_MESSAGE;
         else if( keyVal[0] == UTL::PV_SUFFIX_CAM_STATE  )
@@ -187,6 +187,8 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_CAPTURE_RBV;
         else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE;
+        else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURE_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE_RBV;
         else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURED  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURED;
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
@@ -218,6 +220,10 @@ void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & 
             camDAQObject.back().screenName = UTL::VM_PREFIX + value;
         else
             camDAQObject.back().screenName = value;
+    }
+    else if(keyVal[0] == UTL::MAX_SHOTS_NUMBER)
+    {
+        camDAQObject.back().maxShots  = getNum(value);
     }
 }
 void cameraDAQConfigReader::addToCameraMonitorStructs( const std::vector<std::string> &keyVal )

@@ -32,7 +32,7 @@ namespace UTL
     const double ZERO_DOUBLE  = 0.0;
     const size_t ZERO_SIZET   = 0;
     const long   DUMMY_LONG   = -999;
-    const double DUMMY_INT    = -999999;
+    const int    DUMMY_INT    = -9999;
     const int    ZERO_INT     = 0;
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
@@ -572,8 +572,9 @@ namespace UTL
     const std::string PV_SUFFIX_CAPTURE         ="PV_SUFFIX_CAPTURE"    ;
     const std::string PV_SUFFIX_CAPTURE_RBV     ="PV_SUFFIX_CAPTURE_RBV";
     const std::string PV_SUFFIX_NUM_CAPTURE     ="PV_SUFFIX_NUM_CAPTURE";
+    const std::string PV_SUFFIX_NUM_CAPTURE_RBV ="PV_SUFFIX_NUM_CAPTURE_RBV";
     const std::string PV_SUFFIX_NUM_CAPTURED    ="PV_SUFFIX_NUM_CAPTURED";
-    const std::string PV_SUFFIX_WRITE_STATUS    ="PV_SUFFIX_WRITE_STATUS";
+    const std::string PV_SUFFIX_WRITE_CHECK     ="PV_SUFFIX_WRITE_CHECK";
     const std::string PV_SUFFIX_WRITE_MESSAGE   ="PV_SUFFIX_WRITE_MESSAGE";
     const std::string PV_SUFFIX_WRITE           ="PV_SUFFIX_WRITE"      ;
     const std::string PV_SUFFIX_WRITE_RBV       ="PV_SUFFIX_WRITE_RBV"  ;
@@ -583,6 +584,9 @@ namespace UTL
     const std::string PV_SUFFIX_FILE_NAME       ="PV_SUFFIX_FILE_NAME"  ;
     const std::string PV_SUFFIX_FILE_TEMPLATE   ="PV_SUFFIX_FILE_TEMPLATE";
     const std::string PV_SUFFIX_FILE_NUMBER     ="PV_SUFFIX_FILE_NUMBER"  ;
+
+
+
 
     const std::string PV_SUFFIX_X               ="PV_SUFFIX_X"          ;
     const std::string PV_SUFFIX_Y               ="PV_SUFFIX_Y"          ;
@@ -601,6 +605,7 @@ namespace UTL
     const std::string BIT_DEPTH                 ="BIT_DEPTH"            ;
     const std::string IMAGE_WIDTH               ="IMAGE_WIDTH"          ;
     const std::string IMAGE_HEIGHT              ="IMAGE_HEIGHT"         ;
+    const std::string MAX_SHOTS_NUMBER          ="MAX_SHOTS_NUMBER"     ;
 
     // SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
     const std::string VELA_PNEUMATIC_SCREEN =  "VELA_PNEUMATIC_SCREEN";

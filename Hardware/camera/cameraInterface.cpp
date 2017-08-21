@@ -43,33 +43,37 @@ void cameraInterface::addChannel( const std::string & pvRoot, cameraStructs::pvS
 ///Functions Accessible to Python Controller///
 bool cameraInterface::isON ( const std::string & cam )
 {
+    std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cam ) )
-        if( allCamDAQData[cam].state == cameraStructs::CAM_STATE::CAM_ON )
+    if( entryExists( allCamDAQData, cameraName ) )
+        if( allCamDAQData[cameraName].state == cameraStructs::CAM_STATE::CAM_ON )
             ans = true;
     return ans;
 }
 bool cameraInterface::isOFF( const std::string & cam )
 {
+    std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cam ) )
-        if( allCamDAQData[cam].state == cameraStructs::CAM_STATE::CAM_OFF )
+    if( entryExists( allCamDAQData, cameraName ) )
+        if( allCamDAQData[cameraName].state == cameraStructs::CAM_STATE::CAM_OFF )
             ans = true;
     return ans;
 }
 bool cameraInterface::isAquiring( const std::string & cam )
 {
+    std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cam ) )
-        if( allCamDAQData[cam].aquireState == cameraStructs::AQUIRE_STATE::ACQUIRING )
+    if( entryExists( allCamDAQData, cameraName ) )
+        if( allCamDAQData[cameraName].acquireState == cameraStructs::ACQUIRE_STATE::ACQUIRING )
             ans = true;
     return ans;
 }
 bool cameraInterface::isNotAquiring ( const std::string & cam)
 {
+    std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cam ) )
-        if( allCamDAQData[cam].aquireState == cameraStructs::AQUIRE_STATE::NOT_ACQUIRING )
+    if( entryExists( allCamDAQData, cameraName ) )
+        if( allCamDAQData[cameraName].acquireState == cameraStructs::ACQUIRE_STATE::NOT_ACQUIRING )
             ans = true;
     return ans;
 }
@@ -79,12 +83,13 @@ std::string cameraInterface::selectedCamera()
 }
 bool cameraInterface::setCamera(const std::string & cam)
 {
+    std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cam ) )
+    if( entryExists( allCamDAQData, cameraName ) )
     {
-        selectedDAQCamera = allCamDAQData[cam];
+        selectedDAQCamera = allCamDAQData[cameraName];
         vcDAQCamera = allCamDAQData["VC"];// MAGIC_STRING
-        //selectedIACamera = allCamIAData[cam];
+        //selectedIACamera = allCamIAData[cameraName];
         ans = true;
 
         message("new setCamera = ",selectedDAQCamera.name);
@@ -93,7 +98,7 @@ bool cameraInterface::setCamera(const std::string & cam)
     return ans;
 }
 /// this could be neatend up - much code repetition
-bool cameraInterface::startAquiring()
+bool cameraInterface::startAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
@@ -111,7 +116,7 @@ bool cameraInterface::startAquiring()
     // else message(IS ALRREADY ACQUIRING)
     return ans;
 }
-bool cameraInterface::stopAquiring()
+bool cameraInterface::stopAcquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
@@ -127,7 +132,7 @@ bool cameraInterface::stopAquiring()
     }
     return ans;
 }
-bool cameraInterface::startVCAquiring()
+bool cameraInterface::startVCAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
@@ -143,7 +148,7 @@ bool cameraInterface::startVCAquiring()
     }
     return ans;
 }
-bool cameraInterface::stopVCAquiring()
+bool cameraInterface::stopVCAcquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
@@ -184,20 +189,26 @@ bool cameraInterface::isSaving(const std::string&cameraName)
      return ans;
  }
  std::string cameraInterface::useCameraFrom(const std::string camOrScreen)
- {  std::string cameraName;
+ {
+     std::string cameraName;
      if (entryExists(allCamDAQData,camOrScreen))
         cameraName=camOrScreen;
      else
      {
-        for (auto it=allCamDAQData.begin();it!=allCamDAQData.end();++it)
+        bool usingAScreenName=false;
+        for (auto && it : allCamDAQData)
         {
-            if (it->second.screenName==camOrScreen)
-                cameraName==it->second.name;
-            else
-                message("ERROR: Screen or Cam name is not Know to the Contoller");
-                cameraName="UNKNOWN";
+            if (it.second.screenName==camOrScreen)
+            {
+                cameraName=it.second.name;
+                usingAScreenName=true;
+            }
         }
-
+        if (usingAScreenName==false)
+        {
+            message("ERROR: Controller does not recognise the name used.");
+            cameraName="UNKNOWN";
+        }
      }
      return cameraName;
 

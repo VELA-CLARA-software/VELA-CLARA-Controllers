@@ -47,11 +47,11 @@ class cameraInterface : public interface
         // we're going have cameras named by screen AND camera number
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
-        bool startAquiring();
-        bool stopAquiring();
+        bool startAcquiring();
+        bool stopAcquiring();
         // assume the VC can act independant of all other cameras
-        bool startVCAquiring();
-        bool stopVCAquiring();
+        bool startVCAcquiring();
+        bool stopVCAcquiring();
 
         std::vector<cameraStructs::monitorDAQStruct*> continuousMonitorDAQStructs;
         std::map< std::string, cameraStructs::cameraDAQObject > allCamDAQData;

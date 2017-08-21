@@ -31,7 +31,8 @@ std::string baseObject::currentDateTime()
     time_t     now = time(0);
     struct tm  tstruct;
     char       buf[80];
-    tstruct = *localtime(&now);
+    localtime_s(&tstruct, &now);
+    //tstruct = *localtime(&now);//this is the 'new' way but it throws a warning
     // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
     // for more information about date/time format
     strftime(buf, sizeof(buf), "%Y-%m-%d-%H%M", &tstruct);
