@@ -331,17 +331,12 @@ bool liberallrfConfigReader::getliberallrfObject(llrfStructs::liberallrfObject& 
     for(auto && it : pvMonStructs)
     {
         obj.pvMonStructs[it.pvType] = it;
-        // create the traces objects keyed by their name from the config file
-        // and set their sizes based on buffersize and COUNT
-//        obj.trace_data[it.name].traces.resize( obj.trace_data[it.name].buffersize );
-////        for( auto && it2: obj.trace_data[it.name].value)
-////            it2.resize(it.COUNT);
-//        obj.trace_data[it.name].trace_size = it.COUNT;
     }
     for(auto && it : pvComStructs)
     {
         obj.pvComStructs[it.pvType] = it;
     }
+    message("liberallrfConfigReader::getliberallrfObject FIN ");
     return true;
 }
 

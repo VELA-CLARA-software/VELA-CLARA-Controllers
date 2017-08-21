@@ -70,8 +70,12 @@ namespace llrfStructs
     // monType is to switch in the staticCallbackFunction
     struct monitorStruct
     {
-        monitorStruct():monType(UNKNOWN),interface(nullptr),EVID(nullptr),
-                        llrfObj(nullptr){}
+        monitorStruct():
+            monType(UNKNOWN),
+            interface(nullptr),
+            EVID(nullptr),
+            llrfObj(nullptr)
+            {}
         LLRF_PV_TYPE    monType;
         liberallrfInterface*  interface;
         chtype          CHTYPE;
@@ -83,7 +87,9 @@ namespace llrfStructs
     // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
     struct pvStruct
     {
-        pvStruct():name("NO_NAME"){}
+        pvStruct():
+            name(UTL::UNKNOWN_NAME)
+            {}
         LLRF_PV_TYPE  pvType;
         chid          CHID;
         std::string   pvSuffix,name;
@@ -96,8 +102,8 @@ namespace llrfStructs
     struct rf_trace
     {
         rf_trace():
-            shot(0),
-            time(0),
+            shot(UTL::ZERO_SIZET),
+            time(UTL::ZERO_DOUBLE),
             timeStr("")
             {}
         size_t shot;
@@ -115,25 +121,25 @@ namespace llrfStructs
     struct rf_trace_data
     {
         rf_trace_data():
-            buffersize(2),
+            buffersize(UTL::TWO_SIZET),
             check_mask(false), //inside the mask or not
             hi_mask_set(false),
             low_mask_set(false),
             keep_rolling_average(false),
             has_average(false),
-            trace_size(0),
-            average_size(1),
-            rolling_sum_counter(0),
-            current_trace(0),
-            evid_current_trace(0),
-            sub_trace(0)
+            trace_size(UTL::ZERO_SIZET),
+            average_size(UTL::ONE_SIZET),
+            rolling_sum_counter(UTL::ZERO_SIZET),
+            current_trace(UTL::ZERO_SIZET),
+            evid_current_trace(UTL::ZERO_SIZET),
+            sub_trace(UTL::ZERO_SIZET)
             {}
-        bool                check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average;
-        size_t              buffersize, trace_size, average_size,rolling_sum_counter;
+        bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average;
+        size_t  buffersize, trace_size, average_size,rolling_sum_counter;
         // Counter allowing you to access/update the correct part of  traces
-        size_t              current_trace,evid_current_trace;
+        size_t  current_trace,evid_current_trace;
         // Counter allowing you to access the correct traces to delete off the rolling average
-        size_t              sub_trace;
+        size_t  sub_trace;
         std::vector<rf_trace> traces;
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum;
     };
@@ -157,13 +163,22 @@ namespace llrfStructs
     // The main hardware object
     struct liberallrfObject
     {
-        liberallrfObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),type(UNKNOWN_TYPE),
-                     crestPhi(UTL::DUMMY_DOUBLE),numIlocks(UTL::DUMMY_INT),
-                     phiCalibration(UTL::DUMMY_DOUBLE),ampCalibration(UTL::DUMMY_DOUBLE),
-                     phi_DEG(UTL::DUMMY_DOUBLE),amp_MVM(UTL::DUMMY_DOUBLE),
-                     powerTraceLength(0),islocked(false),maxAmp(UTL::DUMMY_DOUBLE),
-                     pulse_length(UTL::DUMMY_DOUBLE),pulse_offset(UTL::DUMMY_DOUBLE),
-                     event_count(0),check_mask(false)
+        liberallrfObject():
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            type(UNKNOWN_TYPE),
+            crestPhi(UTL::DUMMY_DOUBLE),
+            numIlocks(UTL::DUMMY_INT),
+            phiCalibration(UTL::DUMMY_DOUBLE),
+            ampCalibration(UTL::DUMMY_DOUBLE),
+            phi_DEG(UTL::DUMMY_DOUBLE),
+            amp_MVM(UTL::DUMMY_DOUBLE),
+            powerTraceLength(UTL::ZERO_SIZET),
+            islocked(false),maxAmp(UTL::DUMMY_DOUBLE),
+            pulse_length(UTL::DUMMY_DOUBLE),
+            pulse_offset(UTL::DUMMY_DOUBLE),
+            event_count(UTL::ZERO_SIZET),
+            check_mask(false)
                      {}
         std::string name, pvRoot, EVIDStr;
         double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
@@ -178,7 +193,7 @@ namespace llrfStructs
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
         std::map<std::string, rf_trace_data> trace_data;
         std::vector<outside_mask_trace> outside_mask_traces;
-        rf_trace_data time_vector;
+        rf_trace time_vector;
         std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::iLockPVStruct> iLockPVStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvMonStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvComStructs;

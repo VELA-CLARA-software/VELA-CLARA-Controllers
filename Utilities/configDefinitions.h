@@ -31,6 +31,8 @@ namespace UTL
     const double DUMMY_DOUBLE = -999.999;
     const double ZERO_DOUBLE  = 0.0;
     const size_t ZERO_SIZET   = 0;
+    const size_t ONE_SIZET    = 1;
+    const size_t TWO_SIZET    = 2;
     const long   DUMMY_LONG   = -999;
     const int    DUMMY_INT    = -9999;
     const int    ZERO_INT     = 0;

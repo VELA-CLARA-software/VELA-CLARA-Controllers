@@ -127,6 +127,7 @@ class liberallrfInterface : public interface
         //  quantification
         bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
         bool Is_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool Is_Time_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
 
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
@@ -192,6 +193,7 @@ class liberallrfInterface : public interface
         void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateTrace(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
+        void updateTimeVector(const event_handler_args& args);
 
         bool isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
