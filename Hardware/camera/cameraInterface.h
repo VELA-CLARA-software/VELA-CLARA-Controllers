@@ -36,7 +36,6 @@ class cameraInterface : public interface
         cameraInterface(const bool* show_messages_ptr,
                         const bool* show_debug_messages_ptr);
         ~cameraInterface();
-
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
 
@@ -45,21 +44,16 @@ class cameraInterface : public interface
         bool isOFF( const std::string & cam );
         bool isAquiring( const std::string & cam );
         bool isNotAquiring( const std::string & cam );
-
         // we're going have cameras named by screen AND camera number
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
-
-        //
         bool startAquiring();
         bool stopAquiring();
         // assume the VC can act independant of all other cameras
         bool startVCAquiring();
         bool stopVCAquiring();
 
-
         std::vector<cameraStructs::monitorDAQStruct*> continuousMonitorDAQStructs;
-
         std::map< std::string, cameraStructs::cameraDAQObject > allCamDAQData;
         std::map< std::string, cameraStructs::cameraIAObject > allCamIAData;
 
@@ -72,6 +66,7 @@ class cameraInterface : public interface
         ///Useful Functions for the Controller///
         bool isCollecting(const std::string&cameraName);
         bool isSaving(const std::string&cameraName);
+        std::string useCameraFrom(const std::string camOrScreen);
     protected:
         void addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv );
 

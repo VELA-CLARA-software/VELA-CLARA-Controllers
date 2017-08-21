@@ -24,8 +24,11 @@
 
 cameraInterface::cameraInterface(const bool* show_messages_ptr,
                                  const bool* show_debug_messages_ptr):
-interface(show_messages_ptr, show_debug_messages_ptr), selectedDAQCameraRef(selectedDAQCamera),vcDAQCameraRef(vcDAQCamera),
-selectedIACamera(nullptr),vcIACamera(nullptr)
+interface(show_messages_ptr, show_debug_messages_ptr),
+selectedDAQCameraRef(selectedDAQCamera),
+vcDAQCameraRef(vcDAQCamera)//,
+//selectedIACamera(nullptr),
+//vcIACamera(nullptr)
 {
 }
 cameraInterface::~cameraInterface()
@@ -179,4 +182,23 @@ bool cameraInterface::isSaving(const std::string&cameraName)
      else
         debugMessage("Problem with isSaving() function.");
      return ans;
+ }
+ std::string cameraInterface::useCameraFrom(const std::string camOrScreen)
+ {  std::string cameraName;
+     if (entryExists(allCamDAQData,camOrScreen))
+        cameraName=camOrScreen;
+     else
+     {
+        for (auto it=allCamDAQData.begin();it!=allCamDAQData.end();++it)
+        {
+            if (it->second.screenName==camOrScreen)
+                cameraName==it->second.name;
+            else
+                message("ERROR: Screen or Cam name is not Know to the Contoller");
+                cameraName="UNKNOWN";
+        }
+
+     }
+     return cameraName;
+
  }

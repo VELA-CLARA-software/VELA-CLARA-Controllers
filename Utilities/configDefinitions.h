@@ -551,13 +551,13 @@ namespace UTL
     const std::string PV_SUFFIX_START           ="PV_SUFFIX_ACQUIRE"    ;
     const std::string PV_SUFFIX_ACQUIRE_RBV     ="PV_SUFFIX_ACQUIRE_RBV";
     const std::string PV_SUFFIX_CAPTURE         ="PV_SUFFIX_CAPTURE"    ;
-    const std::string PV_SUFFIX_CAPTURE_RBV     ="PV_SUFFIX_CAPTURE_RBV"    ;
+    const std::string PV_SUFFIX_CAPTURE_RBV     ="PV_SUFFIX_CAPTURE_RBV";
     const std::string PV_SUFFIX_NUM_CAPTURE     ="PV_SUFFIX_NUM_CAPTURE";
     const std::string PV_SUFFIX_NUM_CAPTURED    ="PV_SUFFIX_NUM_CAPTURED";
     const std::string PV_SUFFIX_WRITE_STATUS    ="PV_SUFFIX_WRITE_STATUS";
     const std::string PV_SUFFIX_WRITE_MESSAGE   ="PV_SUFFIX_WRITE_MESSAGE";
     const std::string PV_SUFFIX_WRITE           ="PV_SUFFIX_WRITE"      ;
-    const std::string PV_SUFFIX_WRITE_RBV       ="PV_SUFFIX_WRITE_RBV"      ;
+    const std::string PV_SUFFIX_WRITE_RBV       ="PV_SUFFIX_WRITE_RBV"  ;
     const std::string PV_SUFFIX_DATA            ="PV_SUFFIX_DATA"       ;
     const std::string PV_SUFFIX_BKGRND_DATA     ="PV_SUFFIX_BKGRND_DATA";
     const std::string PV_SUFFIX_FILE_PATH       ="PV_SUFFIX_FILE_PATH"  ;
@@ -572,7 +572,7 @@ namespace UTL
     const std::string PV_SUFFIX_SXY             ="PV_SUFFIX_SXY"        ;
 
     // Camera Object Componentns
-    const std::string SCREEN_PV                 ="SCREEN_PV"            ;
+    const std::string SCREEN_NAME                 ="SCREEN_NAME"        ;
     const std::string X_CENTER                  ="X_CENTER"             ;
     const std::string Y_CENTER                  ="Y_CENTER"             ;
     const std::string X_RAD                     ="X_RAD"                ;

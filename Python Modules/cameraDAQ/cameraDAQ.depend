@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1501489548 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqcontroller.cpp
+1502874653 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqcontroller.cpp
 	"cameraDAQController.h"
 
-1501489548 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqcontroller.h
+1502874653 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -11,7 +11,7 @@
 	"cameraStructs.h"
 	"controller.h"
 
-1501489548 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqinterface.h
+1502975521 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqinterface.h
 	<string>
 	<vector>
 	<atomic>
@@ -20,7 +20,7 @@
 	"cameraInterface.h"
 	"cameraDAQConfigReader.h"
 
-1501493202 c:\users\wln24624\documents\software\vela-clara-controllers\structs\camerastructs.h
+1502970640 c:\users\wln24624\documents\software\vela-clara-controllers\structs\camerastructs.h
 	<vector>
 	<string>
 	<thread>
@@ -34,13 +34,13 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1501493320 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\camerainterface.h
+1502970640 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\camerainterface.h
+	"cameraStructs.h"
+	"interface.h"
 	<string>
 	<vector>
 	<atomic>
 	<map>
-	"cameraStructs.h"
-	"interface.h"
 
 1501489548 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
@@ -49,12 +49,13 @@
 	"baseObject.h"
 	"structs.h"
 
-1501489556 c:\users\wln24624\documents\software\vela-clara-controllers\utilities\baseobject.h
+1502960813 c:\users\wln24624\documents\software\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
+	<deque>
 	<boost/python.hpp>
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
@@ -82,7 +83,7 @@
 	<vector>
 	<cadef.h>
 
-1501489556 c:\users\wln24624\documents\software\vela-clara-controllers\utilities\configdefinitions.h
+1502960813 c:\users\wln24624\documents\software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -106,7 +107,7 @@
 	<thread>
 	<boost/filesystem.hpp>
 
-1501489548 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\camerainterface.cpp
+1502970640 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\camerainterface.cpp
 	"cameraInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -115,7 +116,7 @@
 	<chrono>
 	<thread>
 
-1501489548 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\\cameradaqinterface.h
+1502975521 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\\cameradaqinterface.h
 	<string>
 	<vector>
 	<atomic>
@@ -138,7 +139,7 @@
 	"baseObject.h"
 	<time.h>
 
-1501489556 source:c:\users\wln24624\documents\software\vela-clara-controllers\utilities\cameradaqconfigreader.cpp
+1502874654 source:c:\users\wln24624\documents\software\vela-clara-controllers\utilities\cameradaqconfigreader.cpp
 	"cameraDAQConfigReader.h"
 	"configDefinitions.h"
 	<iostream>
@@ -171,7 +172,7 @@
 	<iostream>
 	<string>
 
-1501489549 c:\users\wln24624\documents\software\vela-clara-controllers\python modules\cameradaq\include\vccameradaq.h
+1502970640 c:\users\wln24624\documents\software\vela-clara-controllers\python modules\cameradaq\include\vccameradaq.h
 	"cameraDAQController.h"
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
@@ -184,7 +185,7 @@
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/return_value_policy.hpp>
 
-1501489548 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\\cameradaqcontroller.h
+1502874653 c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\\cameradaqcontroller.h
 	<string>
 	<vector>
 	<map>

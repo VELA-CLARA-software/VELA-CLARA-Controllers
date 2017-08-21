@@ -29,9 +29,12 @@ class cameraDAQController  : public controller
 {
     public:
         cameraDAQController();
-        cameraDAQController( const bool show_messages,    const bool show_debug_messagese,
-                          const std::string &camConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea);
+        cameraDAQController(const bool show_messages,
+                            const bool show_debug_messagese,
+                            const std::string &camConf,
+                            const bool startVirtualMachine,
+                            const bool shouldStartEPICs,
+                            const VELA_ENUM::MACHINE_AREA myMachineArea);
         ~cameraDAQController( );
         // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();

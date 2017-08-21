@@ -350,53 +350,49 @@ bool cameraDAQInterface::save(unsigned short &comm)
         message("Camera was still collecting images when save function was called.");
     return ans;
 }
-
-
-bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
+bool cameraDAQInterface::collectAndSave(const int & numbOfShots)//need to make sure your python  is running while this thread is active
 {
-    new std::thread(&cameraDAQInterface::staticCollectAndSave,numbOfShots,this);
+    new std::thread(&cameraDAQInterface::staticCollectAndSave,this,numbOfShots);
     return true;
 }
-
-bool cameraDAQInterface::staticCollectAndSave(const int & numbOfShots,cameraDAQInterface * CDI)
-{   CDI->attachTo_thisCAContext();
+bool cameraDAQInterface::staticCollectAndSave(const int & numbOfShots)
+{
+    this->attachTo_thisCAContext();
     bool success = false;
     unsigned short go(1);
     //starting collecting images
-    CDI->collect(go,numbOfShots);
+    this->collect(go,numbOfShots);
     //wait until collecting is done....
     bool collecting=true;
-    int c=0;
-    while(collecting==true)
+    while(collecting)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
-        collecting=CDI->isCollecting(CDI->selectedCamera());
+        collecting=this->isCollecting(this->selectedCamera());;
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
     //now start saving
-    CDI->save(go);
+    this->save(go);
     //wait until saving is done....
     bool saving=true;
     while(saving==true)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
-        saving=CDI->isSaving(CDI->selectedCamera());
+        saving=isSaving(this->selectedCamera());
     }
     //Ensure messages update by waiting a second (is saving is quick)
     std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
     //check how status of save
-    if (CDI->allCamDAQData[CDI->selectedCamera()].writeCheck==cameraStructs::WRITE_CHECK::WRITE_OK)
+    if (this->allCamDAQData[this->selectedCamera()].writeCheck==cameraStructs::WRITE_CHECK::WRITE_OK)
     {
         success = true;
-        CDI->message("Successful wrote image to disk.");
+        this->message("Successful wrote image to disk.");
     }
     else
-        CDI->debugMessage("WRITE ERROR: ",CDI->getWriteMessage());
+        this->debugMessage("WRITE ERROR: ",this->getWriteMessage());
 
     return success;
 
 }
+
 bool cameraDAQInterface::killCollectAndSave()
 {
     bool killed = false;
@@ -414,10 +410,11 @@ bool cameraDAQInterface::killCollectAndSave()
         message("Killing while saving...");
         unsigned short s(0);
         killed=save(s);
-    } ///THIS DOES NOT WORK (TRIED IT AND THE IOC CRASHES)      THIS MESSAGE WILL ONLY BE REMOVED AFTER SUCESSFUL TEST OF THIS FUNCTION
+    }
+    //currently this function works but setting the save to 0 does not forcable stop the process!!!!!
     return killed;
 }
-const cameraStructs::cameraDAQObject & cameraDAQInterface::getCamDAQObjConstRef(const std::string & camName)
+const cameraStructs::cameraDAQObject &cameraDAQInterface::getCamDAQObjConstRef(const std::string &camName)
 {
     if(entryExists(allCamDAQData, camName))
     {
@@ -438,7 +435,7 @@ const cameraStructs::cameraDAQObject &cameraDAQInterface::getSelectedDAQRef()
 {
     return selectedDAQCamera;
 }
-const cameraStructs::cameraDAQObject & cameraDAQInterface::getVCDAQRef()
+const cameraStructs::cameraDAQObject &cameraDAQInterface::getVCDAQRef()
 {
     return vcDAQCamera;
 }
@@ -453,7 +450,9 @@ bool cameraDAQInterface::makeANewDirectory()
     std::string newPath("/home/controls/tim/");/* +std::to_string(local_tm.tm_year + 1900)+
                         "/"+std::to_string(local_tm.tm_mon + 1)+
                         "/"+std::to_string(local_tm.tm_mday)+
-                        "/"+std::to_string(local_tm.tm_hour)+"_"+std::to_string(local_tm.tm_min)+"_"+std::to_string(local_tm.tm_sec));*/
+                        "/"+std::to_string(local_tm.tm_hour)+
+                        "_"+std::to_string(local_tm.tm_min)+
+                        "_"+std::to_string(local_tm.tm_sec));*/
 
     // this data needs to go into the object as a string
 

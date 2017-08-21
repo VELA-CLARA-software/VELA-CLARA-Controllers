@@ -17,22 +17,35 @@
 #endif
 
 #include "structs.h"
+#include "configDefinitions.h"
+
 
 class cameraDAQInterface;
 
 namespace cameraStructs
 {
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE, (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_NUMBER) (CAM_FILE_TEMPLATE) (CAM_FILE_WRITE) (CAM_FILE_WRITE_RBV) (CAM_FILE_WRITE_STATUS) (CAM_FILE_WRITE_MESSAGE)
-                                                     (CAM_STATUS) (CAM_ACQUIRE) (CAM_CAPTURE) (CAM_CAPTURE_RBV) (CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)(CAM_NUM_CAPTURED)
-                                                     (CAM_DATA) (CAM_BKGRND_DATA)
-                                                     (X) (Y) (SIGMA_X) (SIGMA_Y) (COV_XY)
-                                                     (UNKNOWN_CAM_PV_TYPE))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE,
+        (CAM_FILE_PATH) (CAM_FILE_NAME) (CAM_FILE_NUMBER) (CAM_FILE_TEMPLATE)
+        (CAM_FILE_WRITE) (CAM_FILE_WRITE_RBV) (CAM_FILE_WRITE_STATUS)
+        (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS) (CAM_ACQUIRE) (CAM_CAPTURE)
+        (CAM_CAPTURE_RBV) (CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)(CAM_NUM_CAPTURED)
+        (CAM_DATA) (CAM_BKGRND_DATA)(X) (Y) (SIGMA_X) (SIGMA_Y) (COV_XY)
+        (UNKNOWN_CAM_PV_TYPE))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE, (CAM_OFF) (CAM_ON) (CAM_ERROR))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(AQUIRE_STATE, (NOT_ACQUIRING) (ACQUIRING) (AQUIRING_ERROR))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_CHECK, (WRITE_OK) (WRITE_CHECK_ERROR))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_STATE, (WRITE_DONE) (WRITING) (WRITE_ERROR))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAPTURE_STATE, (CAPTURE_DONE) (CAPTURING) (CAPTURE_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
+        (CAM_OFF) (CAM_ON) (CAM_ERROR))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(AQUIRE_STATE,
+        (NOT_ACQUIRING) (ACQUIRING) (AQUIRING_ERROR))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAPTURE_STATE,
+        (CAPTURE_DONE) (CAPTURING) (CAPTURE_ERROR))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_STATE,
+        (WRITE_DONE) (WRITING) (WRITE_ERROR))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_CHECK,
+        (WRITE_OK) (WRITE_CHECK_ERROR))
 
     // bit depth of the camera... could be dynamic (!)
     typedef long camDataType;
@@ -61,13 +74,16 @@ namespace cameraStructs
         cameraDAQInterface *interface;
         evid             EVID;
     };
-
     //add dummy values form UTL namespace, no hardcoded constants
     // eventually (aspiration) harmonize this with VELA cams ...
     struct cameraIAObject// image analysis object
     {
-        cameraIAObject() : x(9999.9999),y(9999.9999),sigmaX(9999.9999),sigmaY(9999.9999),covXY(9999.9999),xPix2mm(9999.9999),yPix2mm(9999.9999),
-                           xPix(9999),yPix(9999),xSigmaPix(9999),ySigmaPix(9999),xyCovPix(999),xCenterPix(9999),yCenterPix(9999),xRad(9999),yRad(9999),bitDepth(9999),imageHeight(9999),imageWidth(9999){}
+        cameraIAObject() :
+            x(9999.9999),y(9999.9999),sigmaX(9999.9999),sigmaY(9999.9999),
+            covXY(9999.9999),xPix2mm(9999.9999),yPix2mm(9999.9999),xPix(9999),
+            yPix(9999),xSigmaPix(9999),ySigmaPix(9999),xyCovPix(999),
+            xCenterPix(9999),yCenterPix(9999),xRad(9999),yRad(9999),
+            bitDepth(9999),imageHeight(9999),imageWidth(9999){}
         double x,y,sigmaX,sigmaY,covXY,
                xPix2mm, yPix2mm;
         size_t xPix, yPix,xSigmaPix,ySigmaPix,xyCovPix,
@@ -79,25 +95,37 @@ namespace cameraStructs
 
     struct cameraDAQObject
     {
-        cameraDAQObject() : name("NO_NAME"), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
-        std::string name, pvRoot, screenPV;
-        char writeMessage[256];//MAGIC_NUMBER from EPICS
+        cameraDAQObject() : name(UTL::UNKNOWN_NAME),
+                            pvRoot(UTL::UNKNOWN_PVROOT),
+                            screenName(UTL::UNKNOWN_STRING),
+                            state(CAM_ERROR),
+                            aquireState(AQUIRING_ERROR),
+                            captureState(CAPTURE_ERROR),
+                            writeState(WRITE_ERROR),
+                            writeCheck(WRITE_CHECK_ERROR),
+                            shotsTaken(UTL::DUMMY_INT),
+                            numberOfShots(UTL::DUMMY_INT),
+                            frequency(UTL::DUMMY_DOUBLE),
+                            exposureTime(UTL::DUMMY_DOUBLE) {}
+        std::string name, pvRoot, screenName;
+        //On/Off
         CAM_STATE state;
         // rolling acquisation
         AQUIRE_STATE aquireState;
+        // actually "capturing" images to then save to disc
+        CAPTURE_STATE captureState;
         // write state indicates if saving to disc / or
         WRITE_STATE writeState;
         // write check is whether the last write was succesful
         WRITE_CHECK writeCheck;
-        // actuall "capturing" images to then save to disc
-        CAPTURE_STATE captureState;
+        char writeMessage[256]; /// This can eventually go and we can just use the string
+        std::string writeMessageStr;
         int shotsTaken, numberOfShots;
         double frequency,exposureTime;
         // doesn't exist for CLARA
         std::vector<camDataType> rawData;
         // we're going to store a background image array ion a PV
         std::vector<camDataType> rawBackgroundData;
-        //
         VELA_ENUM::MACHINE_AREA  machineArea;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;

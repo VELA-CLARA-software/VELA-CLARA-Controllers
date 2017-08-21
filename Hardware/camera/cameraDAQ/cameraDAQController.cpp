@@ -22,7 +22,12 @@ cameraDAQController::cameraDAQController(
     const bool shouldStartEPICs,
     const VELA_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages ),
-localInterface(magConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
+localInterface(magConf,
+               startVirtualMachine,
+               &SHOW_MESSAGES,
+               &SHOW_DEBUG_MESSAGES,
+               shouldStartEPICs,
+               myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {
@@ -37,7 +42,7 @@ std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraDAQController::ge
 {
     return localInterface.getILockStates( name );
 }
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraDAQController::getILockStatesStr( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraDAQController::getILockStatesStr(const std::string & name)
 {
     return localInterface.getILockStatesStr( name );
 }
@@ -51,19 +56,19 @@ void   cameraDAQController::set_CA_PEND_IO_TIMEOUT( double val )
 }
 ///Functions Accessible to Python Controller///
 //Generic Functions
-bool cameraDAQController::isON ( const std::string & cam )
+bool cameraDAQController::isON (const std::string & cam)
 {
     return localInterface.isON( cam );
 }
-bool cameraDAQController::isOFF( const std::string & cam )
+bool cameraDAQController::isOFF(const std::string & cam)
 {
     return localInterface.isOFF( cam );
 }
-bool cameraDAQController::isAquiring ( const std::string & cam )
+bool cameraDAQController::isAquiring (const std::string & cam)
 {
     return localInterface.isAquiring( cam );
 }
-bool cameraDAQController::isNotAquiring ( const std::string & cam )
+bool cameraDAQController::isNotAquiring (const std::string & cam)
 {
     return localInterface.isNotAquiring( cam );
 }
@@ -122,7 +127,7 @@ bool cameraDAQController::killCollectAndSave()
 {
     return localInterface.killCollectAndSave();
 }
-const cameraStructs::cameraDAQObject& cameraDAQController::getCamDAQObjConstRef( const std::string & camName  )
+const cameraStructs::cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(const std::string & camName)
 {
     return localInterface.getCamDAQObjConstRef( camName );
 }

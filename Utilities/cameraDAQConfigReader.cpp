@@ -212,12 +212,12 @@ void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & 
         else
             camDAQObject.back().pvRoot = value;
     }
-    else if( keyVal[0] == UTL::SCREEN_PV )
+    else if( keyVal[0] == UTL::SCREEN_NAME )
     {
         if( usingVirtualMachine )
-            camDAQObject.back().screenPV = UTL::VM_PREFIX + value;
+            camDAQObject.back().screenName = UTL::VM_PREFIX + value;
         else
-            camDAQObject.back().screenPV = value;
+            camDAQObject.back().screenName = value;
     }
 }
 void cameraDAQConfigReader::addToCameraMonitorStructs( const std::vector<std::string> &keyVal )
