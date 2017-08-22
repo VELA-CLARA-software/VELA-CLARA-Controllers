@@ -167,6 +167,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .value("CLARA_2_VELA",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
             ;
 
+    //typedef &llrfStructs::rf_trace rtr;
+    //using namespace llrfStructs;
+    // outside_mask_trace is a sturct that holds flagged traces...
+    class_<vacuumValveStructs::vacValveObject>
+        ("vacValveObject","vacValveObject Doc String", no_init)
+        .def_readonly("name",   &vacuumValveStructs::vacValveObject::name   ,  "valve name")
+        .def_readonly("pvRoot", &vacuumValveStructs::vacValveObject::pvRoot,"valve pvRoot")
+        .def_readonly("vacValveState",  &vacuumValveStructs::vacValveObject::vacValveState, "valve state")
+        .def_readonly("numIlocks",   &vacuumValveStructs::vacValveObject::numIlocks,  "numIlocks")
+        ;
+
+
+
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
 
@@ -195,6 +208,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             ("vacuumValveController","This class contains all the functions in the vacuum valve controller for monitoring and controlling PVs",boost::python::no_init)
 //            .def("getVacValveStateDefinition",      &vacuumValveController::getVacValveStateDefinition  )
             .def("getILockStatesDefinition",        &vacuumValveController::getILockStatesDefinition    )
+            .def("getVacValveObjConstRef",        &vacuumValveController::getVacValveObjConstRef,return_value_policy<reference_existing_object>() )
             .def("get_CA_PEND_IO_TIMEOUT",          &vacuumValveController::get_CA_PEND_IO_TIMEOUT      )
             .def("set_CA_PEND_IO_TIMEOUT",          &vacuumValveController::set_CA_PEND_IO_TIMEOUT      )
             .def("getVacValveState",                &vacuumValveController::getVacValveState, getVacValveStateString            )
