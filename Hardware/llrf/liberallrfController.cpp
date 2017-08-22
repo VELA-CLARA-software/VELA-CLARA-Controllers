@@ -122,7 +122,7 @@ bool   liberaLLRFController::isLocked()
     return localInterface.isLocked();
 }
 //______________________________________________________________________________
-size_t liberaLLRFController::getPowerTraceLength()
+size_t liberaLLRFController::getTraceLength()
 {
     return localInterface.getPowerTraceLength();
 }
@@ -286,8 +286,15 @@ boost::python::list liberaLLRFController::getKlyFwdPhaseBuffer_Py()
     return toPythonList(getCavRevPowerBuffer());
 }
 //______________________________________________________________________________
-
-
+bool liberaLLRFController::setHighMask_Py(const std::string& name, boost::python::list& value)
+{
+    return setHighMask(name,to_std_vector<double>(value));
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setLowMask_Py(const std::string& name, boost::python::list& value)
+{
+    return setLowMask(name,to_std_vector<double>(value));
+}
 //______________________________________________________________________________
 #endif
 //______________________________________________________________________________
@@ -458,6 +465,11 @@ bool liberaLLRFController::setLowMask(const std::string&name, std::vector<double
     return localInterface.setHighMask(name, value);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::clearMask(const std::string&name)
+{
+    return localInterface.clearMask(name);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setNumBufferTraces(const std::string&name, size_t value)
 {
     return localInterface.setNumBufferTraces(name, value);
@@ -468,9 +480,29 @@ bool liberaLLRFController::setCheckMask(const std::string&name, bool value)
     return localInterface.setCheckMask(name, value);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::setShouldCheckMask(const std::string&name)
+{
+    return localInterface.setShouldCheckMask(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setShouldNotCheckMask(const std::string&name)
+{
+    return localInterface.setShouldNotCheckMask(name);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setKeepRollingAverage(const std::string&name, bool value)
 {
     return localInterface.setKeepRollingAverage(name, value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setShouldKeepRollingAverage(const std::string&name)
+{
+    return localInterface.setShouldKeepRollingAverage(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string&name)
+{
+    return localInterface.setShouldNotKeepRollingAverage(name);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setNumRollingAverageTraces(const std::string&name, size_t value )

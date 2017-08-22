@@ -117,11 +117,24 @@ class liberallrfInterface : public interface
         void setPhiCalibration(double value);
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
+
+
         bool setHighMask(const std::string&name, std::vector<double>& value);
         bool setLowMask(const std::string&name, std::vector<double>& value);
+
+        bool clearMask(const std::string&name);
+
+
         bool setNumBufferTraces(const std::string&name, size_t value);
         bool setCheckMask(const std::string&name, bool value);
+        bool setShouldCheckMask(const std::string&name);
+        bool setShouldNotCheckMask(const std::string&name);
+
         bool setKeepRollingAverage(const std::string&name, bool value);
+        bool setShouldKeepRollingAverage(const std::string&name);
+        bool setShouldNotKeepRollingAverage(const std::string&name);
+
+
         bool setNumRollingAverageTraces(const std::string&name, size_t value );
 
         //  quantification
@@ -174,9 +187,9 @@ class liberallrfInterface : public interface
         void killMonitor(llrfStructs::monitorStruct* ms);
 
         template<typename T>
-        bool setValue(llrfStructs::pvStruct& pvs, T value);
+        bool setValue(llrfStructs::pvStruct& pvs,T value);
         template<typename T>
-        bool setValue2(llrfStructs::pvStruct& pvs, T value);
+        bool setValue2(llrfStructs::pvStruct& pvs,T value);
 
         // These are private version that do the converstion to LLRF units
         bool setPHIDEG();
@@ -191,9 +204,12 @@ class liberallrfInterface : public interface
         void startMonitors();
 
         void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
-        void updateTrace(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
+//        void updateTraceValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
-        void updateTimeVector(const event_handler_args& args);
+        void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
+        //void updateTimeVector(const event_handler_args& args);
+
+        void updateTraceIndex(size_t& index,size_t trace_size);
 
         bool isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);

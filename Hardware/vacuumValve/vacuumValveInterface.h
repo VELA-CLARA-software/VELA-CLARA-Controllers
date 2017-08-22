@@ -48,6 +48,8 @@ class vacuumValveInterface : public interface
 
         void updateValveState( vacuumValveStructs::monitorStruct * ms, const unsigned short args );
 
+        const vacuumValveStructs::vacValveObject& getVacValveObjConstRef(const std::string & vacValveName);
+
         vacuumValveStructs::vacValveObject getVacValveObject( const std::string & vacValveName );
         bool entryExists2(const std::string & name, bool weKnowEntryExists );
 
@@ -97,6 +99,8 @@ class vacuumValveInterface : public interface
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
 
         std::vector< vacuumValveStructs::monitorStruct * > continuousMonitorStructs;
+
+        const std::string dummyname;
 
 };
 #endif // VELA_PyIL_SHUTTER_INTERFACE_H

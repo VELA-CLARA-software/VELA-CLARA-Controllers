@@ -54,6 +54,11 @@ void vacuumValveController::closeVacValve( const std::string & name )
     localInterface.closeVacValve( name );
 }
 //______________________________________________________________________________
+const vacuumValveStructs::vacValveObject& vacuumValveController::getVacValveObjConstRef(const std::string & vacValveName)
+{
+    return localInterface.getVacValveObjConstRef( vacValveName );
+}
+//______________________________________________________________________________
 void vacuumValveController::openValve1( )
 {
     if( vacValveNames.size() >= 1 )

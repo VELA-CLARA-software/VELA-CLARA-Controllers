@@ -284,7 +284,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-s]")
         .def("getPulseOffset",  &liberaLLRFController::getPulseOffset,"Return RF Pulse Offset [micro-s]")
         .def("isLocked",  &liberaLLRFController::isLocked,"Return true if LLRf Locked")
-        .def("getPowerTraceLength",  &liberaLLRFController::getPowerTraceLength,"Return Number of elements in a power trace")
+        .def("getPowerTraceLength",  &liberaLLRFController::getTraceLength,"Return Number of elements in a power trace")
 
         .def("getChannelNames",&liberaLLRFController::getChannelNames_Py,"Return Channel names (defined in config file)" )
         .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")
@@ -324,13 +324,21 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("setPhiFF",  &liberaLLRFController::setPhiFF,(arg("value")),"Set Phase(FF) in LLRF Units")
         .def("setAmpSP",  &liberaLLRFController::setAmpSP,(arg("value")),"Set Amplitude(SP) in LLRF Units")
         .def("setAmpFF",  &liberaLLRFController::setAmpFF,(arg("value")),"Set Amplitude(FF) in LLRF Units")
+
+        .def("setShouldKeepRollingAverage",  &liberaLLRFController::setShouldKeepRollingAverage,(arg("name")),"Set keep rolling average to true for trace 'name'")
+        .def("setShouldNotKeepRollingAverage",  &liberaLLRFController::setShouldNotKeepRollingAverage,(arg("name")),"Set keep rolling average to false for trace 'name'")
+        .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(arg("name")),"Set check mask to true for trace 'name'")
+        .def("setShouldCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(arg("name")),"Set check mask to false for trace 'name'")
+
+        .def("clearMask",  &liberaLLRFController::clearMask,(arg("name")),"Cleark the masks for trace 'name'")
+
         .def("setPulseLength",  &liberaLLRFController::setPulseLength,(arg("value")),"Set RF pulse length [micro-s]")
         .def("setPulseOffset",  &liberaLLRFController::setPulseOffset,(arg("value")),"Set RF pulse offset [micro-sec]")
         .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(arg("value")),"Set linear calibration of phase from LLRF units to degrees")
         .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(arg("value")),"Set linear calibration of amplitude from LLRF units to MV/m")
         .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(arg("value")),"Set the Crest Phi value in LLRF Units")
-        .def("setHighMask",  &liberaLLRFController::setHighMask,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
-        .def("setLowMask",  &liberaLLRFController::setLowMask,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
+        .def("setHighMask",  &liberaLLRFController::setHighMask_Py,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
+        .def("setLowMask",  &liberaLLRFController::setLowMask_Py,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
         .def("setNumBufferTraces",  &liberaLLRFController::setNumBufferTraces,(arg("name"),arg("value")),"Set the number of buffer traces to keep for trace 'name'")
         .def("setCheckMask",  &liberaLLRFController::setCheckMask,(arg("name"),arg("value")),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")
         .def("setKeepRollingAverage",  &liberaLLRFController::setKeepRollingAverage,(arg("name"),arg("value")),"Set whetrher to keep a rolling average of previous traces (pass 'name' and true or false)")
@@ -345,7 +353,11 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("isCheckingMask", isCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE checking against a  mask?")
 
         .def("isNotCheckingMask", isNotCheckingMask_1,(arg("name")),"Is trace 'name' NOT Checking against a mask?")
-        .def("isNotCheckingMask", isNotCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT checking against a  mask?")
+
+
+
+
+
 
         .def("startTraceMonitoring", startTraceMonitoring_1,"Start all LLRF Trace Monitors")
         .def("startTraceMonitoring", startTraceMonitoring_2,(arg("LLRF_PV_TYPE")),"Start Trace Monitoring for LLRF_PV_TYPE")

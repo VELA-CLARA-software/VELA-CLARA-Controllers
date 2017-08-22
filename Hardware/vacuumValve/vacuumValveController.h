@@ -53,6 +53,8 @@ class vacuumValveController : public controller
         VELA_ENUM::VALVE_STATE getVacValveState( const std::string & vacValveName );
         std::string getVacValveStateStr( const std::string & name );
 
+        const vacuumValveStructs::vacValveObject& getVacValveObjConstRef( const std::string & vacValveName);
+
         void openValve1();
         void closeValve1();
         void openValve2();

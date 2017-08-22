@@ -60,7 +60,7 @@ class liberaLLRFController : public controller
         double getCrestPhiLLRF();
         bool   isLocked();
         llrfStructs::LLRF_TYPE getType();
-        size_t getPowerTraceLength();
+        size_t getTraceLength();
 
         std::vector<std::string> getChannelNames();
         std::vector<double> getTraceValues(const std::string& name);
@@ -134,8 +134,24 @@ class liberaLLRFController : public controller
         void setPhiCalibration(double value);
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
+
+        bool setShouldKeepRollingAverage(const std::string&name);
+        bool setShouldNotKeepRollingAverage(const std::string&name);
+        bool setShouldCheckMask(const std::string&name);
+        bool setShouldNotCheckMask(const std::string&name);
+
+
         bool setHighMask(const std::string& name, std::vector<double>& value);
         bool setLowMask(const std::string& name, std::vector<double>& value);
+
+        bool clearMask(const std::string&name);
+
+#ifdef BUILD_DLL
+        bool setHighMask_Py(const std::string& name, boost::python::list& value);
+        bool setLowMask_Py(const std::string& name, boost::python::list& value);
+#endif
+
+
         bool setNumBufferTraces(const std::string&name, size_t value);
         bool setCheckMask(const std::string&name, bool value);
         bool setKeepRollingAverage(const std::string&name, bool value);

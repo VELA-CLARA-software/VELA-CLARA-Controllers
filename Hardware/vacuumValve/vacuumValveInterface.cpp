@@ -28,7 +28,8 @@ configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr, st
 interface( show_messages_ptr, show_debug_messages_ptr ),
 shouldStartEPICS( shouldStartEPICS ),
 startVM( startVirtualMachine ),
-machineArea( myMachineArea )
+machineArea( myMachineArea ),
+dummyname("DUMMY")
 {
     initialise();
 }
@@ -46,6 +47,16 @@ vacuumValveInterface::~vacuumValveInterface()
 //        debugMessage("in vacuumValveInterface: delete allVacValveData ", it.first );
 //    }
 //        debugMessage("delete vacuumValveInterface continuousMonitorStructs entry.");
+}
+//______________________________________________________________________________
+const vacuumValveStructs::vacValveObject& vacuumValveInterface::getVacValveObjConstRef(const std::string & vacValveName)
+{
+    if( entryExists(allVacValveData,vacValveName))
+    {
+        return allVacValveData.at(vacValveName);
+
+    }
+    return allVacValveData.at(dummyname);
 }
 //______________________________________________________________________________
 void vacuumValveInterface::initialise( )
@@ -100,6 +111,9 @@ bool vacuumValveInterface::initVacValveObjects()
     {
         allVacValveData[ it.name ] = it;
     }
+
+    allVacValveData[ dummyname].name = dummyname;
+
     return true;
 }
 //______________________________________________________________________________
