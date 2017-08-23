@@ -587,6 +587,10 @@ namespace UTL
     const std::string PV_SUFFIX_FILE_TEMPLATE   ="PV_SUFFIX_FILE_TEMPLATE";
     const std::string PV_SUFFIX_FILE_NUMBER     ="PV_SUFFIX_FILE_NUMBER"  ;
 
+    const std::string PV_SUFFIX_EXPOSURE_RBV    ="PV_SUFFIX_EXPOSURE_RBV" ;
+    const std::string PV_SUFFIX_ACQ_PERIOD_RBV  ="PV_SUFFIX_ACQ_PERIOD_RBV";
+    const std::string PV_SUFFIX_FREQ_RBV        ="PV_SUFFIX_FREQ_RBV"     ;
+
 
 
 

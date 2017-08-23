@@ -191,6 +191,12 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE_RBV;
         else if( keyVal[0] == UTL::PV_SUFFIX_NUM_CAPTURED  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURED;
+        else if( keyVal[0] == UTL::PV_SUFFIX_EXPOSURE_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_EXPOSURE_TIME;
+        else if( keyVal[0] == UTL::PV_SUFFIX_ACQ_PERIOD_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE_PERIOD;
+        else if( keyVal[0] == UTL::PV_SUFFIX_FREQ_RBV  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FREQ;
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
     else

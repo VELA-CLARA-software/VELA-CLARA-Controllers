@@ -31,20 +31,15 @@ localInterface(magConf,
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {
-//    if( shouldStartEPICs )
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
-//    initialise();
 }
 cameraDAQController::~cameraDAQController(){}    //dtor
-std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraDAQController::getILockStates(const std::string & name)
+std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraDAQController::getILockStates(const std::string &name)
 {
-    return localInterface.getILockStates( name );
+    return localInterface.getILockStates(name);
 }
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraDAQController::getILockStatesStr(const std::string & name)
+std::map<VELA_ENUM::ILOCK_NUMBER,std::string> cameraDAQController::getILockStatesStr(const std::string &name)
 {
-    return localInterface.getILockStatesStr( name );
+    return localInterface.getILockStatesStr(name);
 }
 double cameraDAQController::get_CA_PEND_IO_TIMEOUT()
 {
@@ -54,29 +49,30 @@ void   cameraDAQController::set_CA_PEND_IO_TIMEOUT( double val )
 {
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
+
 ///Functions Accessible to Python Controller///
 //Generic Functions
-bool cameraDAQController::isON (const std::string & cam)
+bool cameraDAQController::isON (const std::string &cam)
 {
-    return localInterface.isON( cam );
+    return localInterface.isON(cam);
 }
-bool cameraDAQController::isOFF(const std::string & cam)
+bool cameraDAQController::isOFF(const std::string &cam)
 {
-    return localInterface.isOFF( cam );
+    return localInterface.isOFF(cam);
 }
-bool cameraDAQController::isAquiring (const std::string & cam)
+bool cameraDAQController::isAquiring (const std::string &cam)
 {
-    return localInterface.isAquiring( cam );
+    return localInterface.isAquiring(cam);
 }
-bool cameraDAQController::isNotAquiring (const std::string & cam)
+bool cameraDAQController::isNotAquiring (const std::string &cam)
 {
-    return localInterface.isNotAquiring( cam );
+    return localInterface.isNotAquiring(cam);
 }
 std::string cameraDAQController::selectedCamera()
 {
     return localInterface.selectedCamera();
 }
-bool cameraDAQController::setCamera(const std::string & cam)
+bool cameraDAQController::setCamera(const std::string &cam)
 {
     return localInterface.setCamera(cam);
 }
@@ -96,8 +92,9 @@ bool cameraDAQController::stopVCAcquiring()
 {
     return localInterface.stopVCAcquiring();
 }
+
 //DAQ Specific Functions
-bool cameraDAQController::collectAndSave(const int & numbOfShots)
+bool cameraDAQController::collectAndSave(const int &numbOfShots)
 {
     return localInterface.collectAndSave(numbOfShots);
 }
@@ -105,15 +102,15 @@ bool cameraDAQController::killCollectAndSave()
 {
     return localInterface.killCollectAndSave();
 }
-const cameraStructs::cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(const std::string & camName)
+const cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(const std::string &camName)
 {
-    return localInterface.getCamDAQObjConstRef( camName );
+    return localInterface.getCamDAQObjConstRef(camName);
 }
-const cameraStructs::cameraDAQObject& cameraDAQController::getSelectedDAQRef()
+const cameraDAQObject& cameraDAQController::getSelectedDAQRef()
 {
     return localInterface.getSelectedDAQRef();
 }
-const cameraStructs::cameraDAQObject& cameraDAQController::getVCDAQRef()
+const cameraDAQObject& cameraDAQController::getVCDAQRef()
 {
     return localInterface.getVCDAQRef();
 }

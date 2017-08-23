@@ -24,6 +24,7 @@
 #include "cameraStructs.h"
 #include "controller.h"
 
+using namespace cameraStructs;
 
 class cameraDAQController  : public controller
 {
@@ -36,19 +37,21 @@ class cameraDAQController  : public controller
                             const bool shouldStartEPICs,
                             const VELA_ENUM::MACHINE_AREA myMachineArea);
         ~cameraDAQController( );
-        // These are pure virtual methods, so need to have some implmentation in derived classes
+        // These are pure virtual methods,
+        //so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT( double val );
-        // This pure virtual method MUST be overwritten in the derived controller ( making this an abstract base class)
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name );
+        void   set_CA_PEND_IO_TIMEOUT(double val);
+        // This pure virtual method MUST be overwritten in
+        //the derived controller ( making this an abstract base class)
+        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string &name);
+        std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string &name);
 
         ///Functions Accessible to Python Controller///
         //Generic Functions
-        bool isON ( const std::string & cam );
-        bool isOFF( const std::string & cam );
-        bool isAquiring( const std::string & cam );
-        bool isNotAquiring( const std::string & cam );
+        bool isON (const std::string &cam);
+        bool isOFF(const std::string &cam);
+        bool isAquiring(const std::string &cam);
+        bool isNotAquiring(const std::string &cam);
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
         bool startAcquiring();
@@ -56,11 +59,11 @@ class cameraDAQController  : public controller
         bool startVCAcquiring();
         bool stopVCAcquiring();
         //DAQ Specific Functions
-        bool collectAndSave (const int & numbOfShots);
+        bool collectAndSave (const int &numbOfShots);
         bool killCollectAndSave();
-        const cameraStructs::cameraDAQObject &getCamDAQObjConstRef( const std::string & camName  );
-        const cameraStructs::cameraDAQObject &getSelectedDAQRef();
-        const cameraStructs::cameraDAQObject &getVCDAQRef();
+        const cameraDAQObject &getCamDAQObjConstRef(const std::string &camName);
+        const cameraDAQObject &getSelectedDAQRef();
+        const cameraDAQObject &getVCDAQRef();
 
     protected:
     private:

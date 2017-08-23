@@ -24,6 +24,8 @@
 #include "cameraInterface.h"
 #include "cameraDAQConfigReader.h"
 
+using namespace cameraStructs;
+
 class cameraDAQInterface : public cameraInterface
 {
     public:
@@ -41,20 +43,16 @@ class cameraDAQInterface : public cameraInterface
         bool collectAndSave (const int & numbOfShots);
         bool staticCollectAndSave(const int & numbOfShots);
         bool killCollectAndSave();
-
         bool collect(unsigned short &comm, const int & numbOfShots);
         bool save(unsigned short &comm);
 
-        const cameraStructs::cameraDAQObject &getCamDAQObjConstRef(const std::string &cam);
-        const cameraStructs::cameraDAQObject &getSelectedDAQRef();
-        cameraStructs::cameraDAQObject* getSelectedDAQPtr();
-        const cameraStructs::cameraDAQObject &getVCDAQRef();
+        const cameraDAQObject &getCamDAQObjConstRef(const std::string &cam);
+        const cameraDAQObject &getSelectedDAQRef();
+        const cameraDAQObject &getVCDAQRef();
 
     protected:
     private:
-        //void cameraDAQInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
         const VELA_ENUM::MACHINE_AREA myMachineArea;
-        // bvase class member?
         const bool shouldStartEPICs;
         void initialise();
         cameraDAQConfigReader configReader;
@@ -63,19 +61,23 @@ class cameraDAQInterface : public cameraInterface
         void startMonitors();
         void killMonitor( cameraStructs::monitorDAQStruct * ms );
         static void staticEntryDAQMonitor(const event_handler_args args);
-        void updateState(const unsigned short value,const std::string&cameraName);
-        void updateAcquiring(const unsigned short value,const std::string&cameraName);
-        void updateCapturing(const unsigned short value,const std::string&cameraName);
-        void updateWriteState(const unsigned short value,const std::string&cameraName);
-        void updateWriteCheck(const unsigned short value,const std::string&cameraName);
-        void updateNumCaptured(const unsigned long value,const std::string&cameraName);
-        void updateNumCapture(const unsigned long value,const std::string&cameraName);
-        void updateWriteErrorMessage(const void *const value,const std::string&cameraName);
+        void updateState(const unsigned short value,const std::string &cameraName);
+        void updateAcquiring(const unsigned short value,const std::string &cameraName);
+        void updateCapturing(const unsigned short value,const std::string &cameraName);
+        void updateWriteState(const unsigned short value,const std::string &cameraName);
+        void updateWriteCheck(const unsigned short value,const std::string &cameraName);
+        void updateNumCaptured(const unsigned long value,const std::string &cameraName);
+        void updateNumCapture(const unsigned long value,const std::string &cameraName);
+        void updateWriteErrorMessage(const void *const value,const std::string &cameraName);
+        void updateExposure(const double value,const std::string &cameraName);
+        void updateAcquirePeriod(const double value,const std::string &cameraName);
+        void updateFrequency(const double value,const std::string &cameraName);
         ///Useful Functions for the Class///
         std::string getWriteErrorMessage();
         bool makeANewDirectory();
         bool setNumberOfShots(const int &numberOfShots);
         bool setStartFileNumber(const int &startNumber);
+        void updateSelectedOrVC(const std::string cameraName);
 
 };
 #endif // CAM_DAQ_INTERFACE_H

@@ -21,20 +21,20 @@
 #include <sstream>
 #include <chrono>
 #include <thread>
+using namespace cameraStructs;
 
 cameraInterface::cameraInterface(const bool* show_messages_ptr,
                                  const bool* show_debug_messages_ptr):
 interface(show_messages_ptr, show_debug_messages_ptr),
 selectedDAQCameraRef(selectedDAQCamera),
-vcDAQCameraRef(vcDAQCamera)//,
-//selectedIACamera(nullptr),
-//vcIACamera(nullptr)
+vcDAQCameraRef(vcDAQCamera)
+
 {
 }
 cameraInterface::~cameraInterface()
 {
 }
-void cameraInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
+void cameraInterface::addChannel( const std::string & pvRoot, pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
@@ -45,8 +45,8 @@ bool cameraInterface::isON ( const std::string & cam )
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cameraName ) )
-        if( allCamDAQData[cameraName].state == cameraStructs::CAM_STATE::CAM_ON )
+    if(entryExists( allCamDAQData, cameraName))
+        if(allCamDAQData.at(cameraName).state == CAM_STATE::CAM_ON)
             ans = true;
     return ans;
 }
@@ -55,7 +55,7 @@ bool cameraInterface::isOFF( const std::string & cam )
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
     if( entryExists( allCamDAQData, cameraName ) )
-        if( allCamDAQData[cameraName].state == cameraStructs::CAM_STATE::CAM_OFF )
+        if(allCamDAQData.at(cameraName).state == CAM_STATE::CAM_OFF)
             ans = true;
     return ans;
 }
@@ -64,7 +64,7 @@ bool cameraInterface::isAquiring( const std::string & cam )
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
     if( entryExists( allCamDAQData, cameraName ) )
-        if( allCamDAQData[cameraName].acquireState == cameraStructs::ACQUIRE_STATE::ACQUIRING )
+        if( allCamDAQData.at(cameraName).acquireState == ACQUIRE_STATE::ACQUIRING )
             ans = true;
     return ans;
 }
@@ -73,7 +73,7 @@ bool cameraInterface::isNotAquiring ( const std::string & cam)
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
     if( entryExists( allCamDAQData, cameraName ) )
-        if( allCamDAQData[cameraName].acquireState == cameraStructs::ACQUIRE_STATE::NOT_ACQUIRING )
+        if( allCamDAQData.at(cameraName).acquireState == ACQUIRE_STATE::NOT_ACQUIRING )
             ans = true;
     return ans;
 }
@@ -87,11 +87,9 @@ bool cameraInterface::setCamera(const std::string & cam)
     bool ans = false;
     if( entryExists( allCamDAQData, cameraName ) )
     {
-        selectedDAQCamera = allCamDAQData[cameraName];
-        vcDAQCamera = allCamDAQData["VC"];// MAGIC_STRING
-        //selectedIACamera = allCamIAData[cameraName];
+        selectedDAQCamera = allCamDAQData.at(cameraName);
+        vcDAQCamera = allCamDAQData.at("VC");// MAGIC_STRING
         ans = true;
-
         message("new setCamera = ",selectedDAQCamera.name);
 
     }
@@ -102,18 +100,13 @@ bool cameraInterface::startAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
-    message("C++ selected camera aquiring:",isAquiring(selectedCamera()));
-    if( isNotAquiring(selectedCamera()) )
+    if( isNotAquiring(selectedCamera()))
     {
-        ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
-               selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
-               &comm);
-        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
-        if(status == ECA_NORMAL)
-            ans = true;
-        message("Starting to Acquire images on ",selectedDAQCamera.name," camera.");
+        pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        ans=shortCaput(comm,S);
+        message("Starting to Acquire images on ",
+                selectedDAQCamera.name," camera.");
     }
-    // else message(IS ALRREADY ACQUIRING)
     return ans;
 }
 bool cameraInterface::stopAcquiring()
@@ -122,13 +115,10 @@ bool cameraInterface::stopAcquiring()
     unsigned short comm = 0;
     if( isAquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
     {
-        ca_put(selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
-               selectedDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
-               &comm);
-        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
-        if(status == ECA_NORMAL)
-            ans = true;
-        message("Stopping to Acquire images on ",selectedDAQCamera.name," camera.");
+        pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        ans=shortCaput(comm,S);
+        message("Stopping to Acquire images on ",
+                selectedDAQCamera.name," camera.");
     }
     return ans;
 }
@@ -137,13 +127,9 @@ bool cameraInterface::startVCAcquiring()
     bool ans=false;
     unsigned short comm = 1;
     if( isNotAquiring("VC") )
-    {  ;
-        ca_put(vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
-               vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
-               &comm);
-        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
-        if(status == ECA_NORMAL)
-            ans = true;
+    {
+        pvStruct S(vcDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        ans=shortCaput(comm,S);
         message("Starting to Acquire images on ",vcDAQCamera.name," camera.");
     }
     return ans;
@@ -154,47 +140,43 @@ bool cameraInterface::stopVCAcquiring()
     unsigned short comm = 0;
     if( isAquiring("VC") && isCollecting("VC")==false )
     {
-        ca_put(vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHTYPE,
-               vcDAQCamera.pvComStructs[cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE].CHID,
-               &comm);
-        int status = sendToEpics("ca_put", "", "Timeout trying to send new Aquiring state.");
-        if(status == ECA_NORMAL)
-            ans = true;
+        pvStruct S(vcDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        ans=shortCaput(comm,S);
         message("Stopping to Acquire images on ",vcDAQCamera.name," camera.");
     }
     return ans;
 }
 ///Useful Functions for the Controller///
 bool cameraInterface::isCollecting(const std::string&cameraName)
- {
-     bool ans = false;
+{
+    bool ans = false;
 
-    if (allCamDAQData[cameraName].captureState==1)
-            ans=true;
-     else if (allCamDAQData[cameraName].captureState==0)
-            ans=false;
-     else
+    if (allCamDAQData.at(cameraName).captureState==1)
+        ans=true;
+    else if (allCamDAQData.at(cameraName).captureState==0)
+        ans=false;
+    else
         debugMessage("Problem with isCollecting() function.");
-     return ans;
- }
+    return ans;
+}
 bool cameraInterface::isSaving(const std::string&cameraName)
- {
-     bool ans = false;
-     if (allCamDAQData[cameraName].writeState==1)
-            ans=true;
-     else if (allCamDAQData[cameraName].writeState==0)
-            ans=false;
-     else
+{
+    bool ans = false;
+    if (allCamDAQData.at(cameraName).writeState==1)
+        ans=true;
+    else if (allCamDAQData.at(cameraName).writeState==0)
+        ans=false;
+    else
         debugMessage("Problem with isSaving() function.");
-     return ans;
- }
- std::string cameraInterface::useCameraFrom(const std::string camOrScreen)
- {
-     std::string cameraName;
-     if (entryExists(allCamDAQData,camOrScreen))
+    return ans;
+}
+std::string cameraInterface::useCameraFrom(const std::string camOrScreen)
+{
+    std::string cameraName;
+    if (entryExists(allCamDAQData,camOrScreen))
         cameraName=camOrScreen;
-     else
-     {
+    else
+    {
         bool usingAScreenName=false;
         for (auto && it : allCamDAQData)
         {
@@ -209,7 +191,18 @@ bool cameraInterface::isSaving(const std::string&cameraName)
             message("ERROR: Controller does not recognise the name used.");
             cameraName="UNKNOWN";
         }
-     }
-     return cameraName;
+    }
+    return cameraName;
 
  }
+bool cameraInterface::shortCaput(const unsigned short &comm, pvStruct& S)
+{
+    bool ans(false);
+    ca_put(S.CHTYPE,S.CHID, &comm);
+    int status = sendToEpics("ca_put", "", "Timeout trying to sendToEpics.");
+    if(status == ECA_NORMAL)
+    {
+        ans = true;
+    }
+    return ans;
+}

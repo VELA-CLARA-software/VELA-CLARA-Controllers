@@ -1,3 +1,16 @@
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 #include "VCcameraDAQ.h"
 //stl
 #include <iostream>
@@ -53,39 +66,74 @@ cameraDAQController& VCcameraDAQ::physical_CLARA_Camera_DAQ_Controller()
 {
     std::string cconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "physical_CLARA_Camera_Controller";
-    return getController(physical_Camera_DAQ_Controller_Obj,cconf,name,withoutVM,withEPICS,CLARA_PH1);
+    return getController(physical_Camera_DAQ_Controller_Obj,
+                         cconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         CLARA_PH1);
 }
 cameraDAQController& VCcameraDAQ::virtual_CLARA_Camera_DAQ_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "virtual_CLARA_Camera_Controller";
-    return getController(virtual_Camera_DAQ_Controller_Obj,mconf,name,withVM,withEPICS,CLARA_PH1);
+    return getController(virtual_Camera_DAQ_Controller_Obj,
+                         mconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         CLARA_PH1);
 }
 cameraDAQController& VCcameraDAQ::offline_CLARA_Camera_DAQ_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "offline_CLARA_Camera_Controller";
-    return getController(offline_Camera_DAQ_Controller_Obj,mconf,name,withoutVM,withoutEPICS,CLARA_PH1);
+    return getController(offline_Camera_DAQ_Controller_Obj,
+                         mconf,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         CLARA_PH1);
 }
 cameraDAQController& VCcameraDAQ::physical_VELA_Camera_DAQ_Controller()
 {
     std::string cconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "physical_VELA_Camera_Controller";
-    return getController(physical_Camera_DAQ_Controller_Obj,cconf,name,withoutVM,withEPICS,VELA_INJ);
+    return getController(physical_Camera_DAQ_Controller_Obj,
+                         cconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         VELA_INJ);
 }
 cameraDAQController& VCcameraDAQ::virtual_VELA_Camera_DAQ_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "virtual_VELA_Camera_Controller";
-    return getController(virtual_Camera_DAQ_Controller_Obj,mconf,name,withVM,withEPICS,VELA_INJ);
+    return getController(virtual_Camera_DAQ_Controller_Obj,
+                         mconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         VELA_INJ);
 }
 cameraDAQController& VCcameraDAQ::offline_VELA_Camera_DAQ_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "offline_VELA_Camera_Controller";
-    return getController(offline_Camera_DAQ_Controller_Obj,mconf,name,withoutVM,withoutEPICS,VELA_INJ);
+    return getController(offline_Camera_DAQ_Controller_Obj,
+                         mconf,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         VELA_INJ);
 }
-cameraDAQController& VCcameraDAQ::getController(cameraDAQController * cont,const std::string& conf,const std::string & name, const bool shouldVM, const bool shouldEPICS, const VELA_ENUM::MACHINE_AREA myMachineArea )
+cameraDAQController& VCcameraDAQ::getController(cameraDAQController *cont,
+                                            const std::string &conf,
+                                            const std::string &name,
+                                            const bool shouldVM,
+                                            const bool shouldEPICS,
+                                            const VELA_ENUM::MACHINE_AREA myMachineArea)
 {
     if(cont)
     {
@@ -94,7 +142,12 @@ cameraDAQController& VCcameraDAQ::getController(cameraDAQController * cont,const
     else
     {
         std::cout << "Creating " << name << " object" << std::endl;
-        cont = new cameraDAQController(shouldShowMessage, shouldShowDebugMessage, conf, shouldVM, shouldEPICS, myMachineArea);
+        cont = new cameraDAQController(shouldShowMessage,
+                                       shouldShowDebugMessage,
+                                       conf,
+                                       shouldVM,
+                                       shouldEPICS,
+                                       myMachineArea);
     }
     return *cont;
 }

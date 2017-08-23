@@ -1,9 +1,16 @@
-//
-// Tim Price May 2017
-//
-// Holds all the stucts required by different classes
-// one place to make updates
-//
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 #ifndef CAM_STRUCTS_H_
 #define CAM_STRUCTS_H_
 //stl
@@ -30,7 +37,8 @@ namespace cameraStructs
         (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_ACQUIRE)(CAM_CAPTURE)
         (CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
         (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)(X)
-        (Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(UNKNOWN_CAM_PV_TYPE))
+        (Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(UNKNOWN_CAM_PV_TYPE)
+        (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
         (CAM_OFF) (CAM_ON) (CAM_ERROR))
@@ -120,7 +128,7 @@ namespace cameraStructs
         // If error this string will get updated
         std::string writeErrorMessage;
         int shotsTaken, numberOfShots, maxShots;
-        double frequency,exposureTime;
+        double frequency,exposureTime,acquisitionPeriod;
         // doesn't exist for CLARA
         std::vector<camDataType> rawData;
         // we're going to store a background image array ion a PV

@@ -22,6 +22,7 @@
 #include <vector>
 #include <atomic>
 #include <map>
+using namespace cameraStructs;
 
 class cameraInterface : public interface
 {
@@ -36,43 +37,55 @@ class cameraInterface : public interface
         cameraInterface(const bool* show_messages_ptr,
                         const bool* show_debug_messages_ptr);
         ~cameraInterface();
-        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
-        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+
+        IlockMap1 getILockStates(const std::string &name)
+        {
+            IlockMap1 r;
+            return r;
+        }
+        IlockMap2 getILockStatesStr(const std::string &name)
+        {
+            IlockMap2 r;
+            return r;
+        }
+
+        ///Objects to hold Data///
+        std::vector<monitorDAQStruct*> continuousMonitorDAQStructs;
+        std::map<std::string,cameraDAQObject>    allCamDAQData;
+        std::map<std::string,cameraIAObject>     allCamIAData;
+
+        //cameraIAObject   selectedIACamera;
+        //cameraIAObject  &selectedIACameraRef;
+        //cameraIAObject   vcIACamera;
+        //cameraIAObject  &vcIACameraRef;
+
+        cameraDAQObject  selectedDAQCamera;
+        cameraDAQObject &selectedDAQCameraRef;
+        cameraDAQObject  vcDAQCamera;
+        cameraDAQObject &vcDAQCameraRef;
 
         ///Functions Accessible to Python Controller///
-        bool isON ( const std::string & cam );
-        bool isOFF( const std::string & cam );
-        bool isAquiring( const std::string & cam );
-        bool isNotAquiring( const std::string & cam );
-        // we're going have cameras named by screen AND camera number
+        bool isON (const std::string &cam); //Can use Camera name or asociated
+        bool isOFF(const std::string &cam); //screen name.
+        bool isAquiring(const std::string &cam);
+        bool isNotAquiring(const std::string &cam);
         std::string selectedCamera();
-        bool setCamera(const std::string & cam);
+        bool setCamera(const std::string &cam);
         bool startAcquiring();
         bool stopAcquiring();
-        // assume the VC can act independant of all other cameras
-        bool startVCAcquiring();
+        bool startVCAcquiring();//VC independant of all other cameras
         bool stopVCAcquiring();
 
-        std::vector<cameraStructs::monitorDAQStruct*> continuousMonitorDAQStructs;
-        std::map< std::string, cameraStructs::cameraDAQObject > allCamDAQData;
-        std::map< std::string, cameraStructs::cameraIAObject > allCamIAData;
-
-        cameraStructs::cameraIAObject *selectedIACamera;
-        cameraStructs::cameraDAQObject selectedDAQCamera;
-        cameraStructs::cameraDAQObject &selectedDAQCameraRef;
-        cameraStructs::cameraIAObject *vcIACamera;
-        cameraStructs::cameraDAQObject vcDAQCamera;
-        cameraStructs::cameraDAQObject &vcDAQCameraRef;
         ///Useful Functions for the Controller///
         bool isCollecting(const std::string&cameraName);
         bool isSaving(const std::string&cameraName);
         std::string useCameraFrom(const std::string camOrScreen);
-    protected:
-        void addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv );
+        bool shortCaput(const unsigned short &comm, pvStruct &S);
 
+    protected:
+        void addChannel(const std::string &pvRoot, pvStruct &pv);
 
     private:
-
 
 };
 #endif // CAM_INTERFACE_H
