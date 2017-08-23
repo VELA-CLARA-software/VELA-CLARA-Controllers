@@ -156,6 +156,8 @@ class liberaLLRFController : public controller
         bool setCheckMask(const std::string&name, bool value);
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setNumRollingAverageTraces(const std::string&name, size_t value );
+        size_t getNumRollingAverageTraces(const std::string&name);
+        bool clearRollingAverage(const std::string&name);
         // Qantifiers
         bool isTracePV(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotTracePV(const llrfStructs::LLRF_PV_TYPE pv);

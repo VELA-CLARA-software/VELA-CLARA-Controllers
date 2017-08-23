@@ -124,7 +124,7 @@ bool   liberaLLRFController::isLocked()
 //______________________________________________________________________________
 size_t liberaLLRFController::getTraceLength()
 {
-    return localInterface.getPowerTraceLength();
+    return localInterface.getTraceLength();
 }
 //______________________________________________________________________________
 std::vector<std::string> liberaLLRFController::getChannelNames()
@@ -462,7 +462,7 @@ bool liberaLLRFController::setHighMask(const std::string&name, std::vector<doubl
 //______________________________________________________________________________
 bool liberaLLRFController::setLowMask(const std::string&name, std::vector<double>& value)
 {
-    return localInterface.setHighMask(name, value);
+    return localInterface.setLowMask(name, value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::clearMask(const std::string&name)
@@ -508,6 +508,16 @@ bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string&name
 bool liberaLLRFController::setNumRollingAverageTraces(const std::string&name, size_t value )
 {
     return localInterface.setNumRollingAverageTraces(name, value);
+}
+//______________________________________________________________________________
+size_t liberaLLRFController::getNumRollingAverageTraces(const std::string&name)
+{
+    return localInterface.getNumRollingAverageTraces(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::clearRollingAverage(const std::string&name)
+{
+    return localInterface.clearRollingAverage(name);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::isTracePV(const llrfStructs::LLRF_PV_TYPE pv)

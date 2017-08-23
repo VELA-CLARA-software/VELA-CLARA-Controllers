@@ -256,7 +256,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def_readonly("maxAmp",  &liberallrfObject::maxAmp,"Maximum Amplitude Setting.")
         .def_readonly("type",    &liberallrfObject::type,"LLRF Controller Type.")
         .def_readonly("islocked",&liberallrfObject::islocked,"LLRF Amplitude &Phase Lock.")
-        .def_readonly("powerTraceLength", &liberallrfObject::powerTraceLength,"Number of elements in a power trace.")
+        .def_readonly("traceLength", &liberallrfObject::traceLength,"Number of elements in a trace.")
         .def_readonly("trace_data", &liberallrfObject::trace_data,"Map of rf_trace_data objects, keyed by the Trace Name (defined in config file).")
         .def_readonly("time_vector", &liberallrfObject::time_vector,"The time vector, stored in a rf_trace_data object.")
         .def_readonly("outside_mask_traces", &liberallrfObject::outside_mask_traces,"The time vector, stored in a rf_trace_data object.")
@@ -284,7 +284,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-s]")
         .def("getPulseOffset",  &liberaLLRFController::getPulseOffset,"Return RF Pulse Offset [micro-s]")
         .def("isLocked",  &liberaLLRFController::isLocked,"Return true if LLRf Locked")
-        .def("getPowerTraceLength",  &liberaLLRFController::getTraceLength,"Return Number of elements in a power trace")
+        .def("getTraceLength",  &liberaLLRFController::getTraceLength,"Return Number of elements in a power trace")
 
         .def("getChannelNames",&liberaLLRFController::getChannelNames_Py,"Return Channel names (defined in config file)" )
         .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")
@@ -325,10 +325,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("setAmpSP",  &liberaLLRFController::setAmpSP,(arg("value")),"Set Amplitude(SP) in LLRF Units")
         .def("setAmpFF",  &liberaLLRFController::setAmpFF,(arg("value")),"Set Amplitude(FF) in LLRF Units")
 
-        .def("setShouldKeepRollingAverage",  &liberaLLRFController::setShouldKeepRollingAverage,(arg("name")),"Set keep rolling average to true for trace 'name'")
-        .def("setShouldNotKeepRollingAverage",  &liberaLLRFController::setShouldNotKeepRollingAverage,(arg("name")),"Set keep rolling average to false for trace 'name'")
-        .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(arg("name")),"Set check mask to true for trace 'name'")
-        .def("setShouldCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(arg("name")),"Set check mask to false for trace 'name'")
+
 
         .def("clearMask",  &liberaLLRFController::clearMask,(arg("name")),"Cleark the masks for trace 'name'")
 
@@ -341,8 +338,18 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("setLowMask",  &liberaLLRFController::setLowMask_Py,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
         .def("setNumBufferTraces",  &liberaLLRFController::setNumBufferTraces,(arg("name"),arg("value")),"Set the number of buffer traces to keep for trace 'name'")
         .def("setCheckMask",  &liberaLLRFController::setCheckMask,(arg("name"),arg("value")),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")
+        .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(arg("name")),"Set check mask to true for trace 'name'")
+        .def("setShouldNotCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(arg("name")),"Set check mask to false for trace 'name'")
+
         .def("setKeepRollingAverage",  &liberaLLRFController::setKeepRollingAverage,(arg("name"),arg("value")),"Set whetrher to keep a rolling average of previous traces (pass 'name' and true or false)")
         .def("setNumRollingAverageTraces",  &liberaLLRFController::setNumRollingAverageTraces,(arg("name"),arg("value")),"Set the number of traces used for the rolling average")
+
+        .def("setShouldKeepRollingAverage",  &liberaLLRFController::setShouldKeepRollingAverage,(arg("name")),"Set keep rolling average to true for trace 'name'")
+        .def("setShouldNotKeepRollingAverage",  &liberaLLRFController::setShouldNotKeepRollingAverage,(arg("name")),"Set keep rolling average to false for trace 'name'")
+        .def("getNumRollingAverageTraces",  &liberaLLRFController::getNumRollingAverageTraces,(arg("name")),"Get the number of traces to average for trace 'name'")
+        .def("clearRollingAverage",  &liberaLLRFController::clearRollingAverage,(arg("name")),"Clear the Rolling Average data for trace 'name' This also rests other counters to zero, meaning any/all current data in the rolling averages will be lost. ")
+
+
 
         .def("isTracePV",  &liberaLLRFController::isTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
         .def("isNotTracePV",  &liberaLLRFController::isNotTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
@@ -353,10 +360,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
         .def("isCheckingMask", isCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE checking against a  mask?")
 
         .def("isNotCheckingMask", isNotCheckingMask_1,(arg("name")),"Is trace 'name' NOT Checking against a mask?")
-
-
-
-
 
 
         .def("startTraceMonitoring", startTraceMonitoring_1,"Start all LLRF Trace Monitors")

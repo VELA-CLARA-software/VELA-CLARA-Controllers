@@ -129,6 +129,7 @@ namespace llrfStructs
             has_average(false),
             trace_size(UTL::ZERO_SIZET),
             average_size(UTL::ONE_SIZET),
+            // how many traces have been added to rolling sums
             rolling_sum_counter(UTL::ZERO_SIZET),
             current_trace(UTL::ZERO_SIZET),
             evid_current_trace(UTL::ZERO_SIZET),
@@ -173,7 +174,7 @@ namespace llrfStructs
             ampCalibration(UTL::DUMMY_DOUBLE),
             phi_DEG(UTL::DUMMY_DOUBLE),
             amp_MVM(UTL::DUMMY_DOUBLE),
-            powerTraceLength(UTL::ZERO_SIZET),
+            traceLength(UTL::ZERO_SIZET),
             islocked(false),maxAmp(UTL::DUMMY_DOUBLE),
             pulse_length(UTL::DUMMY_DOUBLE),
             pulse_offset(UTL::DUMMY_DOUBLE),
@@ -189,7 +190,7 @@ namespace llrfStructs
         //long ampR,phiLLRF,ampW,crestPhi,maxAmp;
         int numIlocks;
         LLRF_TYPE type;
-        size_t powerTraceLength,event_count;
+        size_t traceLength,event_count;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
         std::map<std::string, rf_trace_data> trace_data;
         std::vector<outside_mask_trace> outside_mask_traces;

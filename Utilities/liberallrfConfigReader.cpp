@@ -271,12 +271,14 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
             //lastPVstruct.back().COUNT = getCOUNT(keyVal[ 1 ]);
             lastPVstruct->COUNT = getCOUNT(keyVal[ 1 ]);
         else if(keyVal[0] == UTL::PV_MASK)
-            //pvMonStructs.back().MASK = getMASK(keyVal[ 1 ]);
             lastPVstruct->MASK = getMASK(keyVal[ 1 ]);
         else if(keyVal[0] == UTL::PV_CHTYPE)
             lastPVstruct->CHTYPE = getCHTYPE(keyVal[ 1 ]);
         else if(keyVal[0] == UTL::PV_NAME)
+        {
             lastPVstruct->name = keyVal[ 1 ];
+            debugMessage("Added name =  ", lastPVstruct->name );
+        }
     }
 }
 //______________________________________________________________________________

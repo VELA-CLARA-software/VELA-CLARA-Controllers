@@ -61,7 +61,7 @@ class liberallrfInterface : public interface
         double getAmpCalibration();
         double getCrestPhiLLRF();
         llrfStructs::LLRF_TYPE getType();
-        size_t getPowerTraceLength();
+        size_t getTraceLength();
 
         std::vector<std::string> getChannelNames();
         std::vector<double> getTraceValues(const std::string& name);
@@ -101,7 +101,6 @@ class liberallrfInterface : public interface
         std::vector<double> getLowMask(const std::string&name);
         std::vector<double> getHighMask(const std::string&name);
         size_t getNumBufferTraces(const std::string&name);
-        size_t getTraceLength();
 
         // SETTERS
         bool setPhiSP(double value);
@@ -123,6 +122,7 @@ class liberallrfInterface : public interface
         bool setLowMask(const std::string&name, std::vector<double>& value);
 
         bool clearMask(const std::string&name);
+        bool clearRollingAverage(const std::string&name);
 
 
         bool setNumBufferTraces(const std::string&name, size_t value);
@@ -134,8 +134,8 @@ class liberallrfInterface : public interface
         bool setShouldKeepRollingAverage(const std::string&name);
         bool setShouldNotKeepRollingAverage(const std::string&name);
 
-
         bool setNumRollingAverageTraces(const std::string&name, size_t value );
+        size_t getNumRollingAverageTraces(const std::string&name);
 
         //  quantification
         bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);

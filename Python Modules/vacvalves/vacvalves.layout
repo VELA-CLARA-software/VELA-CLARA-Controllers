@@ -2,39 +2,14 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="src\VCvacValves.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1077" topLine="0" />
+			<Cursor1 position="3121" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\VCvacValves.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6061" topLine="115" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\vacuumValveConfigReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="398" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\vacuumValveConfigReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8092" topLine="168" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1914" topLine="186" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="677" topLine="5" />
-		</Cursor>
-	</File>
-	<File name="..\..\Structs\vacuumValveStructs.h" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1514" topLine="24" />
+			<Cursor1 position="2678" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -42,24 +17,39 @@
 			<Cursor1 position="2442" topLine="33" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Structs\vacuumValveStructs.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2580" topLine="25" />
+			<Cursor1 position="248" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="14985" topLine="319" />
+			<Cursor1 position="677" topLine="5" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveController.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3555" topLine="7" />
+			<Cursor1 position="1914" topLine="186" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveController.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Utilities\vacuumValveConfigReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1243" topLine="0" />
+			<Cursor1 position="8092" topLine="168" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\vacuumValveConfigReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="398" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\VCvacValves.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13127" topLine="180" />
+		</Cursor>
+	</File>
+	<File name="src\VCvacValves.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1837" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -67,5 +57,14 @@
 			<Cursor1 position="577" topLine="0" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="09670be058dd05781e31eeb900000002=0;vacvalves:..\..\Hardware\vacuumValve\vacuumValveInterface.cpp,1;screenPYD:..\..\Hardware\screen\screenInterface.cpp,*2;vacvalves:..\..\Structs\vacuumValveStructs.h,3;vacvalves:src\VCvacValves.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=711;besth=347;minw=711;minh=347;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09670be058dd05781e31eeb900000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<File name="..\..\Hardware\vacuumValve\vacuumValveController.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3242" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveController.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2865" topLine="0" />
+		</Cursor>
+	</File>
 </CodeBlocks_layout_file>
