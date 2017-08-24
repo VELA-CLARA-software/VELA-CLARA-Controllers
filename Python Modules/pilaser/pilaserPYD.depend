@@ -4,28 +4,42 @@
 	<iostream>
 	<sstream>
 
-1491469810 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
-	"interface.h"
+1503048297 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"structs.h"
 	"baseObject.h"
+	<map>
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1488474377 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1499099270 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
 	"baseObject.h"
 	"structs.h"
 
-1485433377 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1503323828 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
+	<iostream>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
 
-1491381402 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1499161166 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	<vector>
 	<cadef.h>
@@ -50,24 +64,24 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1487876006 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+1498745008 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
 	<vector>
 	<cadef.h>
 
-1491568775 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1503485875 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
 
-1487608482 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
+1493198634 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
 	"pilaserController.h"
 	<fstream>
 	<iostream>
 
-1487608935 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
+1493198634 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
 	<string>
 	<vector>
 	<map>
@@ -84,7 +98,7 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 
-1487607283 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
+1493198634 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
 	"interface.h"
 	"pilaserStructs.h"
 	"structs.h"
@@ -94,14 +108,14 @@
 	<atomic>
 	<map>
 
-1487605590 d:\vela\git projects\vela-clara-controllers\structs\pilaserstructs.h
+1493198639 d:\vela\git projects\vela-clara-controllers\structs\pilaserstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
 	<map>
 	<cadef.h>
 
-1487876006 d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.h
+1493198639 d:\vela\git projects\vela-clara-controllers\utilities\pilaserconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -170,17 +184,17 @@
 	<algorithm>
 	<ctype.h>
 
-1446671344 source:d:\vela\git projects\vela-clara-controllers\python modules\pilaser\main.cpp
+1493198637 source:d:\vela\git projects\vela-clara-controllers\python modules\pilaser\main.cpp
 	"main.h"
 
-1446671344 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\main.h
+1493198637 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\main.h
 	<windows.h>
 
-1487596543 source:d:\vela\git projects\vela-clara-controllers\python modules\pilaser\src\vcpilaser.cpp
+1493198637 source:d:\vela\git projects\vela-clara-controllers\python modules\pilaser\src\vcpilaser.cpp
 	"VCpilaser.h"
 	<iostream>
 
-1491497816 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
+1503580233 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
 	<string>
 	"pilaserController.h"
 	<boost/python/detail/wrap_python.hpp>

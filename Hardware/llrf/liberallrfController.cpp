@@ -540,6 +540,16 @@ bool liberaLLRFController::isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
     return localInterface.isNotMonitoring(pv);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::isMonitoring(const std::string& name)
+{
+    return localInterface.isMonitoring(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::isNotMonitoring(const std::string& name)
+{
+    return localInterface.isNotMonitoring(name);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::isCheckingMask(const std::string& name)
 {
     return localInterface.isCheckingMask(name);

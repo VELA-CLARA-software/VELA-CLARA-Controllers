@@ -164,6 +164,9 @@ class liberaLLRFController : public controller
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
 
+        bool isMonitoring(const std::string& name);
+        bool isNotMonitoring(const std::string& name);
+
         bool isCheckingMask(const std::string& name);
         bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotCheckingMask(const std::string& name);

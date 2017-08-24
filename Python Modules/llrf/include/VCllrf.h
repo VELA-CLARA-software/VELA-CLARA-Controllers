@@ -6,6 +6,12 @@
 #include "liberaLLRFController.h"
 #include "llrfStructs.h"
 //boost
+
+
+#define MODULE_NAME VELA_CLARA_LLRF_Control
+
+//#include "VCheader.h"
+
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -100,42 +106,112 @@ void(liberaLLRFController::*stopTraceMonitoring_1)() = &liberaLLRFController::st
 bool(liberaLLRFController::*stopTraceMonitoring_2)(crfpv pv) = &liberaLLRFController::stopTraceMonitoring;
 bool(liberaLLRFController::*stopTraceMonitoring_3)(cstr& name) = &liberaLLRFController::stopTraceMonitoring;
 
-
-
 bool(liberaLLRFController::*isCheckingMask_1)(cstr& name) = &liberaLLRFController::isCheckingMask;
 bool(liberaLLRFController::*isCheckingMask_2)(crfpv pv ) = &liberaLLRFController::isCheckingMask;
 
 bool(liberaLLRFController::*isNotCheckingMask_1)(cstr& name) = &liberaLLRFController::isNotCheckingMask;
 bool(liberaLLRFController::*isNotCheckingMask_2)(crfpv pv  ) = &liberaLLRFController::isNotCheckingMask;
 
+bool(liberaLLRFController::*isMonitoring_1)(cstr& name) = &liberaLLRFController::isMonitoring;
+bool(liberaLLRFController::*isMonitoring_2)(crfpv pv  ) = &liberaLLRFController::isNotCheckingMask;
+
+bool(liberaLLRFController::*isNotMonitoring_1)(cstr& name) = &liberaLLRFController::isNotMonitoring;
+bool(liberaLLRFController::*isNotMonitoring_2)(crfpv pv  ) = &liberaLLRFController::isNotMonitoring;
+
 
 using namespace boost::python;
 using namespace llrfStructs; // !!!!
-BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
+BOOST_PYTHON_MODULE(MODULE_NAME)
 {
     // Things that you want to use in python muct be exposed:
     // containers
-    class_<std::vector< std::string > >("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string >>())
-            ;
-// can't get vector to work in a simple way
-//    class_<std::vector< llrfStructs::rf_trace > >("std_vector_rf_trace")
-//            .def(vector_indexing_suite< std::vector< llrfStructs::rf_trace >>())
-//            ;
 
-    class_<std::vector<double> >("std_vector_double")
+//    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+
+    boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
+    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite<std::vector<std::string>>())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite<std::vector<std::string>>())
+            ;
+    }
+
+    info = boost::python::type_id<std::vector<double> >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_<std::vector<double> >("std_vector_double")
             .def(vector_indexing_suite< std::vector<double>>())
             ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_<std::vector<double> >("std_vector_double")
+            .def(vector_indexing_suite< std::vector<double>>())
+            ;
+    }
+
+
+
+    info = boost::python::type_id<std::vector<double> >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
+        ;
+    } else if ((*reg).m_to_python == NULL) {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
+        ;
+    }
+
+
+    info = boost::python::type_id<std::vector<double> >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
+        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
+        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
+        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+        ;
+    } else if ((*reg).m_to_python == NULL) {
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
+        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
+        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
+        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+        ;
+    }
+
+
+
+
     enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
         .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
         .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
         .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
         ;
-    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
+
 
     enum_<llrfStructs::LLRF_PV_TYPE>("LLRF_PV_TYPE")
         .value("LIB_LOCK",   LLRF_PV_TYPE::LIB_LOCK  )
@@ -353,13 +429,18 @@ BOOST_PYTHON_MODULE(VELA_CLARA_LLRF_Control)
 
         .def("isTracePV",  &liberaLLRFController::isTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
         .def("isNotTracePV",  &liberaLLRFController::isNotTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
-        .def("isMonitoring",  &liberaLLRFController::isMonitoring,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")
-        .def("isNotMonitoring", &liberaLLRFController::isNotMonitoring,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT being monitored?")
+
+        .def("isMonitoring",  isMonitoring_1,(arg("name")),"Is the trace 'name' being monitored?")
+        .def("isMonitoring",  isMonitoring_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")
+
+        .def("isNotMonitoring",  isNotMonitoring_1,(arg("name")),"Is the trace 'name' NOT being monitored?")
+        .def("isNotMonitoring",  isNotMonitoring_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT being monitored?")
 
         .def("isCheckingMask", isCheckingMask_1,(arg("name")),"Is trace 'name' checking against a mask?")
         .def("isCheckingMask", isCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE checking against a  mask?")
 
         .def("isNotCheckingMask", isNotCheckingMask_1,(arg("name")),"Is trace 'name' NOT Checking against a mask?")
+        .def("isNotCheckingMask", isNotCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is trace LLRF_PV_TYPE  NOT Checking against a mask?")
 
 
         .def("startTraceMonitoring", startTraceMonitoring_1,"Start all LLRF Trace Monitors")

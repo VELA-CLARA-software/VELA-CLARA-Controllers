@@ -11,6 +11,35 @@
 
 namespace BOOST_PYTHON_INCLUDE
 {
+
+        boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
+    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+
+
+    register_conversion()
+    if (reg == NULL)  {
+        class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite<std::vector<std::string>>())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite<std::vector<std::string>>())
+            ;
+    }
+
+    info = boost::python::type_id<std::vector<double> >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_<std::vector<double> >("std_vector_double")
+            .def(vector_indexing_suite< std::vector<double>>())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_<std::vector<double> >("std_vector_double")
+            .def(vector_indexing_suite< std::vector<double>>())
+            ;
+    }
+
+
     void export_BaseObjects()
     {
         using namespace boost::python;

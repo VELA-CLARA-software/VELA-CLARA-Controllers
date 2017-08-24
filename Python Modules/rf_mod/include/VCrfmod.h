@@ -105,7 +105,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("reset",             &l01ModController::reset,"")
         ;
 
-
+    /// https://stackoverflow.com/questions/19597087/c-listt-to-python-list
     boost::python::class_<rfModStructs::gunModObject,boost::noncopyable>
         ("gunModObject","gunModObject Doc String", boost::python::no_init)
         .def_readonly("name",          &rfModStructs::gunModObject::name,"LLRF Object Name")
