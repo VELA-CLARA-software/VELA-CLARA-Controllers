@@ -168,8 +168,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .def(vector_indexing_suite< std::vector<double>>())
             ;
     }
-
-    info = boost::python::type_id<std::vector<double> >();
+    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
         enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
@@ -186,7 +185,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
     }
 
 
-    info = boost::python::type_id<std::vector<double> >();
+    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
     enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")

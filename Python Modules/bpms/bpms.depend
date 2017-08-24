@@ -400,7 +400,7 @@
 	"VCBPMs.h"
 	<iostream>
 
-1503580319 d:\vela\git projects\vela-clara-controllers\python modules\bpms\include\vcbpms.h
+1503582399 d:\vela\git projects\vela-clara-controllers\python modules\bpms\include\vcbpms.h
 	"beamPositionMonitorController.h"
 	<string>
 	<vector>
@@ -414,4 +414,41 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/docstring_options.hpp>
+
+1503044142 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1503324296 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1503335533 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1493198639 source:d:\vela\git projects\vela-clara-controllers\utilities\beampositionmonitorconfigreader.cpp
+	"beamPositionMonitorConfigReader.h"
+	"configDefinitions.h"
+	"beamPositionMonitorStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1499161037 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
 
