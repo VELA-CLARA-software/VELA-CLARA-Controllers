@@ -338,45 +338,45 @@ void cameraDAQInterface::updateFrequency(const double value,const std::string&ca
 }
 
 ///Functions Accessible to Python Controller///
-bool cameraDAQInterface::collect(unsigned short &comm, const int & numbOfShots)
+bool cameraDAQInterface::collect(cameraDAQObject camera, unsigned short &comm, const int & numbOfShots)
 {
     bool ans=false;
-    pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_CAPTURE));
+    pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::CAM_CAPTURE));
 
     makeANewDirectory();
 
-    if(numbOfShots<=selectedDAQCamera.maxShots)
+    if(numbOfShots<=camera.maxShots)
     {
         setNumberOfShots(numbOfShots);
-        if( isAquiring(selectedCamera()) )
+        if( isAquiring(camera.name) )
         {
             ans=shortCaput(comm,S);
             message("Caputure set to ",comm,
-                    " on ",selectedDAQCamera.name," camera.");
+                    " on ",camera.name," camera.");
         }
     }
     else
     {
         message("Requested number of shots too large.",
                 " Please set number of shot to be less than or equal to ",
-                 selectedDAQCamera.maxShots,".");
+                 camera.maxShots,".");
     }
 
     return ans;
 }
-bool cameraDAQInterface::save(unsigned short &comm)
+bool cameraDAQInterface::save(cameraDAQObject camera, unsigned short &comm)
 {
     bool ans=false;
     int startNumber(1);// MAGIC_NUMBER should this be a one or a zero?
-    pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_WRITE));
+    pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_WRITE));
 
     setStartFileNumber(startNumber);
 
-    if( isCollecting(selectedCamera())==0 )
+    if( isCollecting(camera.name)==0 )
     {
         ans=shortCaput(comm,S);
         message("WriteFile set to ",comm,
-                " on ",selectedDAQCamera.name," camera.");
+                " on ",camera.name," camera.");
     }
     else
         message("Still collecting images when save function was called.");
@@ -386,40 +386,47 @@ bool cameraDAQInterface::save(unsigned short &comm)
 bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
 {
     //need to make sure your python is running while this thread is active
-    new std::thread(&cameraDAQInterface::staticCollectAndSave,this,numbOfShots);
+    new std::thread(&cameraDAQInterface::staticCollectAndSave,this,selectedDAQCamera,numbOfShots);
     return true;
 }
-bool cameraDAQInterface::staticCollectAndSave(const int & numbOfShots)
+
+bool cameraDAQInterface::collectAndSaveVC(const int & numbOfShots)
+{
+    //need to make sure your python is running while this thread is active
+    new std::thread(&cameraDAQInterface::staticCollectAndSave,this,vcDAQCamera, numbOfShots);
+    return true;
+}
+bool cameraDAQInterface::staticCollectAndSave(cameraDAQObject camera, const int & numbOfShots)
 {
     this->attachTo_thisCAContext();
     bool success = false;
     unsigned short go(1);
 
-    this->collect(go,numbOfShots);//starting collecting images
+    this->collect(camera,go,numbOfShots);//starting collecting images
 
     bool collecting=true;
     while(collecting)   //wait until collecting is done...
     {
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
-        collecting=this->isCollecting(this->selectedCamera());;
+        collecting=this->isCollecting(camera.name);;
     }
 
-    this->save(go);//start saving
+    this->save(camera,go);//start saving
 
     bool saving=true;
     while(saving==true)    //wait until saving is done...
     {
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
-        saving=isSaving(this->selectedCamera());
+        saving=isSaving(camera.name);
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
 
     //check status of save
-    if (this->allCamDAQData.at(this->selectedCamera()).writeCheck==WRITE_CHECK::WRITE_CHECK_OK)
+    if (this->allCamDAQData.at(camera.name).writeCheck==WRITE_CHECK::WRITE_CHECK_OK)
         success = true;//this->message("Successful wrote image to disk.");
     else
-        this->debugMessage("WRITE ERROR: ",this->getWriteErrorMessage());
+        this->debugMessage("WRITE ERROR: ",camera.writeErrorMessage);///!!!!!!!!!!!!!!!!!!!!!!!
 
     return success;
 
@@ -432,12 +439,30 @@ bool cameraDAQInterface::killCollectAndSave()///can only kill while saving.
     if (isCollecting(selectedCamera()))//stop collecting
     {
         message("Killing while collecting...");
-        killed=collect(c,dummyNumber);
+        killed=collect(selectedDAQCamera,c,dummyNumber);
     }
     else if (isSaving(selectedCamera()))//stop saving
     {
         message("Killing while saving...");
-        killed=save(c);
+        killed=save(selectedDAQCamera,c);
+    }
+
+    return killed;
+}
+bool cameraDAQInterface::killCollectAndSaveVC()///can only kill while saving.
+{
+    bool killed = false;
+    unsigned short c(0);
+    int dummyNumber(1);
+    if (isCollecting("VC"))//stop collecting
+    {
+        message("Killing while collecting...");
+        killed=collect(vcDAQCamera,c,dummyNumber);
+    }
+    else if (isSaving("VC"))//stop saving
+    {
+        message("Killing while saving...");
+        killed=save(vcDAQCamera,c);
     }
 
     return killed;

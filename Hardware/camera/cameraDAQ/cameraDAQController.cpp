@@ -98,9 +98,17 @@ bool cameraDAQController::collectAndSave(const int &numbOfShots)
 {
     return localInterface.collectAndSave(numbOfShots);
 }
+bool cameraDAQController::collectAndSaveVC(const int &numbOfShots)
+{
+    return localInterface.collectAndSaveVC(numbOfShots);
+}
 bool cameraDAQController::killCollectAndSave()
 {
     return localInterface.killCollectAndSave();
+}
+bool cameraDAQController::killCollectAndSaveVC()
+{
+    return localInterface.killCollectAndSaveVC();
 }
 const cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(const std::string &camName)
 {
