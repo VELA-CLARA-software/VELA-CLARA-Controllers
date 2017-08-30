@@ -10,13 +10,13 @@
 
 #define MODULE_NAME VELA_CLARA_LLRF_Control
 
-//#include "VCheader.h"
-
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
+#include "VCheader.h"
+//
+//#include <boost/python/detail/wrap_python.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#include <boost/python/return_value_policy.hpp>
 class VCllrf
 {
         /// These VC classes could all be done more elegantly, with less copypasta
@@ -125,93 +125,14 @@ using namespace boost::python;
 using namespace llrfStructs; // !!!!
 BOOST_PYTHON_MODULE(MODULE_NAME)
 {
+
+    docstring_options local_docstring_options(true, true, false);
+    local_docstring_options.disable_cpp_signatures();
+
     // Things that you want to use in python muct be exposed:
     // containers
 
-//    BOOST_PYTHON_INCLUDE::export_BaseObjects();
-
-    boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    }
-
-    boost::python::type_info info2 = boost::python::type_id<std::vector<double>>();
-    const boost::python::converter::registration* reg2 = boost::python::converter::registry::query(info2);
-    if (reg2 == NULL)  {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    } else if ((*reg2).m_to_python == NULL) {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    }
-
-    boost::python::type_info info3 = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    const boost::python::converter::registration* reg3 = boost::python::converter::registry::query(info3);
-    if (reg3 == NULL)
-    {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-    else if ((*reg3).m_to_python == NULL) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-
-
-    boost::python::type_info info4 = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    const boost::python::converter::registration* reg4 = boost::python::converter::registry::query(info4);
-    if (reg4 == NULL)
-    {
-        enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-            .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-            .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-            .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-            .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-            .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-            .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-            .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-            .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-            .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-            .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-            .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-            ;
-    }
-//    } else if ((*reg4).m_to_python == NULL) {
-//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-//        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-//        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-//        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-//        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-//        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-//        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-//        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-//        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-//        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-//        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-//        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-//        ;
-//    }
-
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
-        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
-        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
-        ;
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
 
     enum_<llrfStructs::LLRF_PV_TYPE>("LLRF_PV_TYPE")
@@ -253,17 +174,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("UNKNOWN_TYPE", LLRF_TYPE::UNKNOWN_TYPE)
         ;
 
-    // Expose base classes
-    class_<baseObject, boost::noncopyable>("baseObject", no_init)
-        ;
-    // we have to tell boost.python about pure virtual methods in abstract base classes
-    class_<controller,bases<baseObject>,boost::noncopyable>
-        ("controller", no_init) /// force Python to not construct (init) this object
-        .def("get_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
-        .def("set_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-        .def("getILockStatesStr",      pure_virtual(&controller::getILockStatesStr)     )
-        .def("getILockStates",         pure_virtual(&controller::getILockStates)        )
-        ;
+
 
     class_<llrfStructs::rf_trace,boost::noncopyable>
         ("rf_trace","rf_trace Doc String", no_init)

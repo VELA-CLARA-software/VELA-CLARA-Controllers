@@ -251,18 +251,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
     // disable c++ signatures from docstrings...
     docstring_options local_docstring_options(true, true, false);
 
-    // containers GET RID OF THESE
-    class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string >>() )
-            ;
-    class_<std::vector<double> >("std_vector_double")
-            .def( vector_indexing_suite< std::vector<double>>() )
-            ;
-    class_<std::vector<int> >("std_vector_int")
-            .def( vector_indexing_suite< std::vector<int>>() )
-            ;
-    // Expose base classes
-    // Expose base classes
+
     class_<baseObject, boost::noncopyable>("baseObject", no_init)
         ;
     // we have to tell boost.python about pure virtual methods in abstract base classes

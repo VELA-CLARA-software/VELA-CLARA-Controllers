@@ -3,10 +3,17 @@
 
 // project
 #include "beamPositionMonitorController.h"
+
+
+#include "VCheader.h"
+//
+
+
 // stl
 #include <string>
 #include <vector>
 //boost
+
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
 #define BOOST_LIB_DIAGNOSTIC
@@ -124,142 +131,19 @@ void(beamPositionMonitorController::*monitorMultipleDataForNShots)(size_t, const
 void(beamPositionMonitorController::*monitorDataForNShots)(size_t, const std::string &) = &beamPositionMonitorController::monitorDataForNShots;
 
 
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorDataForNShots, beamPositionMonitorController::monitorDataForNShots, 2, 2)
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorMultipleDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
-
 using namespace boost::python;
-
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
-
 BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
 
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
     /// Include ALL the enums you want to expose to Python
-
-     boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    }
-
-    info = boost::python::type_id<std::vector<double> >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    }
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    }
-
-
-//
-//    class_< std::vector< std::string > >("std_vector_string")
-//        .def( vector_indexing_suite< std::vector< std::string > >() )
-//        ;
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
     class_< std::vector< std::vector< double > > > ("v2_double")
         .def( vector_indexing_suite< std::vector< std::vector< double > > >())
         ;
 
-//    class_< std::vector< double > > ("v_double")
-//        .def( vector_indexing_suite< std::vector< double > >())
-//        ;
-
-//    class_< vecString >("vecString")
-//        .def(vector_indexing_suite< vecString >() )
-//        ;
-//
-//    class_< getVecString >("getVecString")
-//        .def("returnVecString", &getVecString::returnVecString)
-//        .def("setVecString",    &getVecString::setVecString)
-//        ;
-
-//    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-//        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
-//        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-//        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
-//        ;
-//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-//        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
-//        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
-//        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
-//        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ )
-//        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-//        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
-//        ;
-
-    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
-        ;
-
-    /// we have to tell boost.python about pure virtual methods in abstract base classes
-
-    boost::python::class_<controller, boost::python::bases<baseObject>,  boost::noncopyable> ("controller", boost::python::no_init)
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
-		;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>

@@ -82,7 +82,7 @@
 	<atomic>
 	<map>
 
-1503485879 d:\vela\git projects\vela-clara-controllers\structs\llrfstructs.h
+1504088713 d:\vela\git projects\vela-clara-controllers\structs\llrfstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -180,14 +180,15 @@
 1493198636 d:\vela\git projects\vela-clara-controllers\python modules\llrf\main.h
 	<windows.h>
 
-1504003120 source:d:\vela\git projects\vela-clara-controllers\python modules\llrf\src\vcllrf.cpp
+1504088713 source:d:\vela\git projects\vela-clara-controllers\python modules\llrf\src\vcllrf.cpp
 	"VCllrf.h"
 	<iostream>
 
-1504003368 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf.h
+1504091732 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf.h
 	<string>
 	"liberaLLRFController.h"
 	"llrfStructs.h"
+	"VCheader.h"
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -246,7 +247,7 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1503485878 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+1504088712 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
 	"liberallrfInterface.h"
 	"dburt.h"
 	"configDefinitions.h"
@@ -269,7 +270,7 @@
 	<algorithm>
 	<ctype.h>
 
-1503570194 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1504092222 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
