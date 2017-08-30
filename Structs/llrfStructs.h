@@ -141,7 +141,14 @@ namespace llrfStructs
         size_t  current_trace,evid_current_trace;
         // Counter allowing you to access the correct traces to delete off the rolling average
         size_t  sub_trace;
+        // EVID are always monitored and updated to the traces[evid_current_trace]
+        // when monitroing traces is enabled, new trace data is updated to traces[current_trace]
+        // this means these two can go out of synch
+        // traces has a length, buffersize
         std::vector<rf_trace> traces;
+        // rolling sum is the sum of the traces to be averaged,
+        // when a new tracce arrives it adds it to rolling_sum and subtracts traces[sub_trace]
+        // rolling_average is then calcaulte by dividing rolling_sum by average_size
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum;
     };
 
@@ -173,7 +180,11 @@ namespace llrfStructs
             phiCalibration(UTL::DUMMY_DOUBLE),
             ampCalibration(UTL::DUMMY_DOUBLE),
             phi_DEG(UTL::DUMMY_DOUBLE),
+            phi_sp(UTL::DUMMY_DOUBLE),
+            phi_ff(UTL::DUMMY_DOUBLE),
             amp_MVM(UTL::DUMMY_DOUBLE),
+            amp_sp(UTL::DUMMY_DOUBLE),
+            amp_ff(UTL::DUMMY_DOUBLE),
             traceLength(UTL::ZERO_SIZET),
             islocked(false),maxAmp(UTL::DUMMY_DOUBLE),
             pulse_length(UTL::DUMMY_DOUBLE),
@@ -183,6 +194,7 @@ namespace llrfStructs
                      {}
         std::string name, pvRoot, EVIDStr;
         double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
+        // WE SHOULD ONLY USE one of ff or sp (ff i think) but we have access to all of them)
         double phi_sp, phi_ff, crestPhi;
         double amp_sp, amp_ff,maxAmp;
         double pulse_length,pulse_offset;
@@ -192,6 +204,7 @@ namespace llrfStructs
         LLRF_TYPE type;
         size_t traceLength,event_count;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
+        // they name teh channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )
         std::map<std::string, rf_trace_data> trace_data;
         std::vector<outside_mask_trace> outside_mask_traces;
         rf_trace time_vector;

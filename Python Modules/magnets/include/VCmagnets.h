@@ -243,15 +243,15 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
             ;
     }
 
-    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
+    boost::python::type_info info2 = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
+    const boost::python::converter::registration* reg2 = boost::python::converter::registry::query(info2);
+    if (reg2 == NULL)  {
         enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
         .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
         .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
         .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
         ;
-    } else if ((*reg).m_to_python == NULL) {
+    } else if ((*reg2).m_to_python == NULL) {
         enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
         .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
         .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
@@ -390,7 +390,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def_readonly("degValues",    &magnetStructs::magnetObject::degValues)
         .def_readonly("position",     &magnetStructs::magnetObject::position)
         .def_readonly("fieldIntegralCoefficients1",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
-        .add_property("fieldIntegralCoefficients",  &magnetStructs::magnetObject::fieldIntegralCoefficients )
+        .def_readonly("fieldIntegralCoefficients",  &magnetStructs::magnetObject::fieldIntegralCoefficients )
         .def_readonly("numDegaussSteps", &magnetStructs::magnetObject::numDegaussSteps)
         .def_readonly("manufacturer",    &magnetStructs::magnetObject::manufacturer)
         .def_readonly("serialNumber",    &magnetStructs::magnetObject::serialNumber)

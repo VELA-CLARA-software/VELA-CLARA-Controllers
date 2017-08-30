@@ -526,6 +526,15 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
         if( trace_good )
         {
             //debugMessage("Trace was good");
+            // update rolling average
+            // at the moment the rolling average will NOT get updated with an outside mask trace,
+            // this is probably what we want to do, but maybe not... ?
+                if(trace.keep_rolling_average)
+                {
+                    debugMessage("Calculating Rolling Average");
+                    calcRollingAverage(trace);
+                }
+
         }
         else
         {
@@ -537,13 +546,17 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
     }
     else
     {
+        // update rolling average
+        // at the moment the rolling average will get updated with an outside mas trace,
+        // this is probably not what we want to do
+
+        if(trace.keep_rolling_average)
+        {
+            debugMessage("Calculating Rolling Average");
+            calcRollingAverage(trace);
+        }
+
         //debugMessage("NOT CHECKING MASKS ");
-    }
-    // update rolling average
-    if(trace.keep_rolling_average)
-    {
-        debugMessage("Calculating Rolling Average");
-        calcRollingAverage(trace);
     }
     // the trace index tells us which part of 'traces' if the next to update
     // it circles 'round
@@ -1134,6 +1147,10 @@ bool liberallrfInterface::setNumBufferTraces(const std::string&name, size_t valu
 //        debugMessage(name," buffersize set to ", llrf.trace_data.at(name).buffersize,
 //                     " setting trace lengths to ", llrf.trace_data.at(name).trace_size
 //                      );
+
+        // this might loose the number of trace in the average
+
+
 
         for( auto && it2: llrf.trace_data.at(name).traces)
         {

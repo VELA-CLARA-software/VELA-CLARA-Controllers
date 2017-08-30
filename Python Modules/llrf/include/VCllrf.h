@@ -45,6 +45,9 @@ class VCllrf
         liberaLLRFController& physical_L01_LLRF_Controller();
         liberaLLRFController& offline_L01_LLRF_Controller();
 
+
+        liberaLLRFController& getLLRFController(VELA_ENUM::MACHINE_MODE mode, llrfStructs::LLRF_TYPE type);
+
         // base class functions?
         void setQuiet();
         void setVerbose();
@@ -98,7 +101,6 @@ typedef const llrfStructs::LLRF_PV_TYPE crfpv;
 //
 
 
-
 void(liberaLLRFController::*startTraceMonitoring_1)() = &liberaLLRFController::startTraceMonitoring;
 bool(liberaLLRFController::*startTraceMonitoring_2)(crfpv pv) = &liberaLLRFController::startTraceMonitoring;
 bool(liberaLLRFController::*startTraceMonitoring_3)(cstr& name) = &liberaLLRFController::startTraceMonitoring;
@@ -140,70 +142,70 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
             ;
     }
 
-    info = boost::python::type_id<std::vector<double> >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
+    boost::python::type_info info2 = boost::python::type_id<std::vector<double>>();
+    const boost::python::converter::registration* reg2 = boost::python::converter::registry::query(info2);
+    if (reg2 == NULL)  {
         class_<std::vector<double> >("std_vector_double")
             .def(vector_indexing_suite< std::vector<double>>())
             ;
-    } else if ((*reg).m_to_python == NULL) {
+    } else if ((*reg2).m_to_python == NULL) {
         class_<std::vector<double> >("std_vector_double")
             .def(vector_indexing_suite< std::vector<double>>())
             ;
     }
 
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
+    boost::python::type_info info3 = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
+    const boost::python::converter::registration* reg3 = boost::python::converter::registry::query(info3);
+    if (reg3 == NULL)
+    {
         enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
         .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
         .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
         .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
         ;
     }
-
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+    else if ((*reg3).m_to_python == NULL) {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
         ;
     }
 
 
-
+    boost::python::type_info info4 = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
+    const boost::python::converter::registration* reg4 = boost::python::converter::registry::query(info4);
+    if (reg4 == NULL)
+    {
+        enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+            .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
+            .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
+            .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
+            .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+            .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
+            .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+            .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
+            .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
+            .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
+            .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
+            .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+            ;
+    }
+//    } else if ((*reg4).m_to_python == NULL) {
+//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+//        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
+//        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
+//        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
+//        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+//        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
+//        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+//        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
+//        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
+//        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
+//        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
+//        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+//        ;
+//    }
 
     enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
         .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
@@ -489,6 +491,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("physical_L01_LLRF_Controller", &VCllrf::physical_L01_LLRF_Controller,
              return_value_policy<reference_existing_object>())
         .def("offline_L01_LLRF_Controller", &VCllrf::offline_L01_LLRF_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("getLLRFController", &VCllrf::getLLRFController,
              return_value_policy<reference_existing_object>())
         .def("killGun",          &VCllrf::killGun)
         .def("setQuiet",         &VCllrf::setQuiet)
