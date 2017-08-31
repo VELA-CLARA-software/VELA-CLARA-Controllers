@@ -141,22 +141,22 @@ void scopeInterface::monitorScopes()
         for( auto && it2 : it1.second.pvMonStructs )
         {
             {
-                continuousMonitorStructs.push_back(new scopeStructs::monitorStruct());
-                continuousMonitorStructs.back()->monType = it2.first;
-                continuousMonitorStructs.back()->objName = it1.second.name;
-                continuousMonitorStructs.back()->interface = this;
-                continuousMonitorStructs.back()->val = &it1.second;
-                continuousMonitorStructs.back()->diagType = it2.second.diagType;
+                continuousTraceMonitorStructs.push_back(new scopeStructs::monitorStruct());
+                continuousTraceMonitorStructs.back()->monType = it2.first;
+                continuousTraceMonitorStructs.back()->objName = it1.second.name;
+                continuousTraceMonitorStructs.back()->interface = this;
+                continuousTraceMonitorStructs.back()->val = &it1.second;
+                continuousTraceMonitorStructs.back()->diagType = it2.second.diagType;
+                it1.second.isAContinuousMonitorStruct = true;
+                it1.second.isATemporaryMonitorStruct = false;
                 ca_create_subscription(it2.second.CHTYPE,
                                        it2.second.COUNT,
                                        it2.second.CHID,
                                        it2.second.MASK,
                                        scopeInterface::staticEntryrMonitor,
-                                       (void*)continuousMonitorStructs.back(),
-                                       &continuousMonitorStructs.back()->EVID);
+                                       (void*)continuousTraceMonitorStructs.back(),
+                                       &continuousTraceMonitorStructs.back()->EVID);
                 debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
-                it1.second.isAContinuousMonitorStruct = true;
-                it1.second.isATemporaryMonitorStruct = false;
             }
         }
     }
@@ -167,22 +167,22 @@ void scopeInterface::monitorScopes()
         for( auto && it2 : it1.second.pvMonStructs )
         {
             {
-                continuousMonitorStructs.push_back(new scopeStructs::monitorStruct());
-                continuousMonitorStructs.back()->monType = it2.first;
-                continuousMonitorStructs.back()->objName = it1.second.name;
-                continuousMonitorStructs.back()->interface = this;
-                continuousMonitorStructs.back()->val = &it1.second;
-                continuousMonitorStructs.back()->diagType = it2.second.diagType;
+                continuousNumMonitorStructs.push_back(new scopeStructs::monitorStruct());
+                continuousNumMonitorStructs.back()->monType = it2.first;
+                continuousNumMonitorStructs.back()->objName = it1.second.name;
+                continuousNumMonitorStructs.back()->interface = this;
+                continuousNumMonitorStructs.back()->val = &it1.second;
+                continuousNumMonitorStructs.back()->diagType = it2.second.diagType;
+                it1.second.isAContinuousMonitorStruct = true;
+                it1.second.isATemporaryMonitorStruct = false;
                 ca_create_subscription(it2.second.CHTYPE,
                                        it2.second.COUNT,
                                        it2.second.CHID,
                                        it2.second.MASK,
                                        scopeInterface::staticEntryrMonitor,
-                                       (void*)continuousMonitorStructs.back(),
-                                       &continuousMonitorStructs.back()->EVID);
+                                       (void*)continuousNumMonitorStructs.back(),
+                                       &continuousNumMonitorStructs.back()->EVID);
                 debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
-                it1.second.isAContinuousMonitorStruct = true;
-                it1.second.isATemporaryMonitorStruct = false;
             }
         }
     }
@@ -329,8 +329,8 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
     /// this could be better, with the type passed from the config
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
     scopeStructs::scopeTraceData * td = reinterpret_cast< scopeStructs::scopeTraceData *> (ms -> val);
-    td->isMonitoringMap.at( ms -> monType ) = true;
-    if( td->isAContinuousMonitorStruct)
+
+    if( td->isAContinuousMonitorStruct )
     {
         td->shotCounts.at( ms -> monType ) = 0;
         td->diagType = ms -> diagType;
@@ -338,16 +338,9 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
         {
             td->timeStamps.at(ms->monType).push_back(1);
             td->strTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
-            td->traceData.at(ms->monType).resize(2000);
+            td->traceData.at(ms->monType).resize(1);
+            td->traceDataBuffer.at(ms->monType).resize(td->buffer);
         }
-//        for( auto && it1 : scopeObj.numObjects )
-//        {
-//            it1.second.numShots = 1;
-//            for( auto && it2 : it1.second.shotCounts )
-//            {
-//                it2.second = 0;
-//            }
-//        }
     }
     const dbr_double_t * value = &(p  -> value);
     size_t i =1;
@@ -359,13 +352,13 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
     /// resizes the trace vectors dynamically in case the trace being sent to EPICS from the scope changes size
     /// - limited by the array size set in EPICS database (currently (6/4/17) 2000 points)
     td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ].resize(static_cast< int >(*( &p->value ) ) );
-    message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
 
     for( auto && it : td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ] )
     {
         it = *( &p->value + i );
         ++i;
     }
+    td->traceDataBuffer.at( ms -> monType ).push_back(td->traceData.at( ms -> monType ).back());
 
     if( td -> isATemporaryMonitorStruct )
     {
@@ -387,9 +380,9 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
     scopeStructs::scopeNumObject * scno = reinterpret_cast< scopeStructs::scopeNumObject* > (ms -> val);
 
-    scno->isMonitoringMap.at( ms -> monType ) = true;
+//    scno->isMonitoringMap.at( ms -> monType ) = true;
 
-    if( scno->isAContinuousMonitorStruct)
+    if( scno->isAContinuousMonitorStruct )
     {
         scno->shotCounts.at( ms -> monType ) = 0;
         scno->diagType = ms -> diagType;
@@ -398,15 +391,8 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
             scno->numTimeStamps.at(ms->monType).push_back(1);
             scno->numStrTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
             scno->numData.at(ms->monType).push_back(UTL::DUMMY_DOUBLE);
+            scno->numDataBuffer.at(ms->monType).resize(scno->buffer);
         }
-//        for( auto && it1 : scopeObj.numObjects )
-//        {
-//            it1.second.numShots = 1;
-//            for( auto && it2 : it1.second.shotCounts )
-//            {
-//                it2.second = 0;
-//            }
-//        }
     }
 
     const dbr_double_t * val = &(p  -> value);
@@ -442,6 +428,7 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
             }
     }
     scno->numData.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ] = *( &p -> value );
+    scno->numDataBuffer.at( ms -> monType ).push_back(*( &p -> value ));
 
     if( scno -> isATemporaryMonitorStruct )
     {
@@ -458,11 +445,51 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
     }
 }
 //______________________________________________________________________________
+void scopeInterface::clearContinuousMonitorStructs()
+{
+    if( continuousMonitorStructs.size() != 0 )
+    {
+        for( auto && it : continuousMonitorStructs )
+        {
+            killNumCallBack(it);
+
+        }
+        continuousMonitorStructs.clear();
+    }
+}
+//______________________________________________________________________________
+void scopeInterface::clearContinuousTraceMonitorStructs()
+{
+    if( continuousTraceMonitorStructs.size() != 0 )
+    {
+        for( auto && it : continuousTraceMonitorStructs )
+        {
+            killNumCallBack(it);
+
+        }
+        continuousTraceMonitorStructs.clear();
+    }
+}
+//______________________________________________________________________________
+void scopeInterface::clearContinuousNumMonitorStructs()
+{
+    if( continuousNumMonitorStructs.size() != 0 )
+    {
+        for( auto && it : continuousNumMonitorStructs )
+        {
+            killNumCallBack(it);
+
+        }
+        continuousNumMonitorStructs.clear();
+    }
+}
+//______________________________________________________________________________
 void scopeInterface::monitorTracesForNShots( size_t N )
 {
     if( !monitoringTraces )
     {
         traceMonitorStructs.clear();
+        clearContinuousTraceMonitorStructs();
         debugMessage( "Starting scope Traces Monitor " );
         resetTraceVectors( N );
         debugMessage( "Vectors Reset" );
@@ -503,14 +530,15 @@ void scopeInterface::monitorATraceForNShots( const std::string trace, scopeStruc
     if( !isMonitoringScopeTrace( trace, channel ) )
     {
         traceMonitorStructs.clear();
+        clearContinuousTraceMonitorStructs();
         debugMessage( "Starting scope Traces Monitor for ", channel );
 //        resetATraceVector( trace, channel, N );
         resetTraceVectors( N );
         debugMessage( "Vector ", channel, " Reset" );
         scopeObj.traceObjects.at( trace );
         scopeObj.traceObjects.at( trace ).numShots = N;
-        scopeObj.traceObjects.at( trace ).isAContinuousMonitorStruct=false;
-        scopeObj.traceObjects.at( trace ).isATemporaryMonitorStruct=true;
+        scopeObj.traceObjects.at( trace ).isAContinuousMonitorStruct = false;
+        scopeObj.traceObjects.at( trace ).isATemporaryMonitorStruct = true;
         scopeObj.traceObjects.at( trace ).isMonitoringMap.at( channel ) = true;
 
         addToTraceMonitorStructs( traceMonitorStructs, scopeObj.traceObjects.at( trace ).pvMonStructs.at( channel ), &scopeObj.traceObjects.at( trace ) );
@@ -586,6 +614,7 @@ void scopeInterface::monitorNumsForNShots( size_t N )
     if( !monitoringNums )
     {
         numMonitorStructs.clear();
+        clearContinuousNumMonitorStructs();
         debugMessage( "Starting scope Nums Monitor " );
         resetNumVectors( N );
         debugMessage( "Vectors Reset" );
@@ -598,7 +627,7 @@ void scopeInterface::monitorNumsForNShots( size_t N )
             {
                 if( isANumPV( it2.first ) )
                 {
-                    addToNumMonitorStructs( traceMonitorStructs, it2.second, &it1.second  );
+                    addToNumMonitorStructs( numMonitorStructs, it2.second, &it1.second  );
                 }
             }
         }
@@ -615,6 +644,31 @@ void scopeInterface::monitorNumsForNShots( size_t N )
     }
 }
 //______________________________________________________________________________
+void scopeInterface::monitorANumForNShots( const std::string num, scopeStructs::SCOPE_PV_TYPE channel, size_t N )
+{
+    if( !isMonitoringScopeNum( num, channel ) )
+    {
+        numMonitorStructs.clear();
+        clearContinuousNumMonitorStructs();
+        debugMessage( "Starting scope Num Monitor for ", channel );
+//        resetATraceVector( num, channel, N );
+        resetNumVectors( N );
+        debugMessage( "Vector ", channel, " Reset" );
+        scopeObj.numObjects.at( num );
+        scopeObj.numObjects.at( num ).numShots = N;
+        scopeObj.numObjects.at( num ).isAContinuousMonitorStruct = false;
+        scopeObj.numObjects.at( num ).isATemporaryMonitorStruct = true;
+        scopeObj.numObjects.at( num ).isMonitoringMap.at( channel ) = true;
+
+        addToNumMonitorStructs( numMonitorStructs, scopeObj.numObjects.at( num ).pvMonStructs.at( channel ), &scopeObj.numObjects.at( num ) );
+        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to scope Num Monitors failed" );
+    }
+    else
+    {
+        message( "Already Monitoring Nums " ); /// make more useful
+    }
+}
+//______________________________________________________________________________
 void scopeInterface::resetNumVectors( size_t N )
 {
     numMonitorStructs.clear();
@@ -623,7 +677,6 @@ void scopeInterface::resetNumVectors( size_t N )
         /// Resize to N shots
         for( auto && it2 : it.second.numData )
         {
-
             it2.second.clear();
             it2.second.resize( N );
         }
@@ -651,6 +704,18 @@ void scopeInterface::resetNumVectors( size_t N )
 //        for( auto && it2 : it.second.tr4TraceData )
 //            it2.resize( it.second.pvMonStructs[ scopeStructs::SCOPE_PV_TYPE::TR4 ].COUNT );
     }
+}
+//______________________________________________________________________________
+void scopeInterface::resetANumVector( const std::string scopeName, scopeStructs::SCOPE_PV_TYPE channel, size_t N )
+{
+    numMonitorStructs.clear();
+    scopeObj.numObjects.at( scopeName ).numData.at( channel ).clear();
+    scopeObj.numObjects.at( scopeName ).numData.at( channel ).resize( N );
+    scopeObj.numObjects.at( scopeName ).numTimeStamps.at( channel ).clear();
+    scopeObj.numObjects.at( scopeName ).numTimeStamps.at( channel ).resize( N );
+    scopeObj.numObjects.at( scopeName ).numStrTimeStamps.at( channel ).clear();
+    scopeObj.numObjects.at( scopeName ).numStrTimeStamps.at( channel ).resize( N );
+    scopeObj.numObjects.at( scopeName ).shotCounts.at( channel ) = 0;
 }
 //______________________________________________________________________________
 bool scopeInterface::isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -772,22 +837,22 @@ std::vector< std::string > scopeInterface::getStrTimeStamps( const std::string &
 //______________________________________________________________________________
 double scopeInterface::getScopeP1( const std::string & name )
 {
-    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P1 ).back();
+    return scopeObj.numObjects.at( name ).p1;
 }
 //______________________________________________________________________________
 double scopeInterface::getScopeP2( const std::string & name )
 {
-    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P1 ).back();
+    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P2 ).back();
 }
 //______________________________________________________________________________
 double scopeInterface::getScopeP3( const std::string & name )
 {
-    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P1 ).back();
+    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P3 ).back();
 }
 //______________________________________________________________________________
 double scopeInterface::getScopeP4( const std::string & name )
 {
-    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P1 ).back();
+    return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P4 ).back();
 }
 //______________________________________________________________________________
 std::vector< double > scopeInterface::getScopeP1Vec( const std::string & name )
@@ -808,6 +873,123 @@ std::vector< double > scopeInterface::getScopeP3Vec( const std::string & name )
 std::vector< double > scopeInterface::getScopeP4Vec( const std::string & name )
 {
     return scopeObj.numObjects.at( name ).numData.at( scopeStructs::SCOPE_PV_TYPE::P4 );
+}
+//______________________________________________________________________________
+void scopeInterface::setBufferSize( size_t bufferSize )
+{
+    for( auto && it : scopeObj.numObjects )
+    {
+        for( auto && it1 : it.second.numDataBuffer )
+        {
+            it1.second.clear();
+            it1.second.resize( bufferSize );
+        }
+        it.second.buffer = bufferSize;
+    }
+    for( auto && it : scopeObj.traceObjects )
+    {
+        for( auto && it1 : it.second.traceDataBuffer )
+        {
+            it1.second.clear();
+            it1.second.resize( bufferSize );
+        }
+        it.second.buffer = bufferSize;
+    }
+}
+//______________________________________________________________________________
+void scopeInterface::setNumBufferSize( size_t bufferSize )
+{
+    for( auto && it : scopeObj.numObjects )
+    {
+        for( auto && it1 : it.second.numDataBuffer )
+        {
+            it1.second.clear();
+            it1.second.resize( bufferSize );
+        }
+        it.second.buffer = bufferSize;
+    }
+}
+//______________________________________________________________________________
+void scopeInterface::setTraceBufferSize( size_t bufferSize )
+{
+    for( auto && it : scopeObj.traceObjects )
+    {
+        for( auto && it1 : it.second.traceDataBuffer )
+        {
+            it1.second.clear();
+            it1.second.resize( bufferSize );
+        }
+        it.second.buffer = bufferSize;
+    }
+}
+//______________________________________________________________________________
+void scopeInterface::restartContinuousMonitoring()
+{
+    monitorScopes();
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeInterface::getScopeP1Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.numObjects, name ) && scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P1 ).size() != 0 )
+    {
+        return scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P1 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeInterface::getScopeP2Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.numObjects, name ) && scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P2 ).size() != 0 )
+    {
+        return scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P2 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeInterface::getScopeP3Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.numObjects, name ) && scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P3 ).size() != 0 )
+    {
+        return scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P3 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeInterface::getScopeP4Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.numObjects, name ) && scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 ).size() != 0 )
+    {
+        return scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR1Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR1 ).size() != 0 )
+    {
+        return scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR1 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR2Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR2 ).size() != 0 )
+    {
+        return scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR2 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR3Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR3 ).size() != 0 )
+    {
+        return scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR3 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR4Buffer( const std::string & name )
+{
+    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 ).size() != 0 )
+    {
+        return scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR4 );
+    }
 }
 //______________________________________________________________________________
 void scopeInterface::killTraceCallBack( scopeStructs::monitorStruct * ms )
@@ -899,8 +1081,9 @@ std::vector< std::vector< double > > scopeInterface::getPartOfTrace( const std::
     /// may change with time. If this function isn't behaving sensibly then it is
     /// possible that the scope hasn't been set up properly for taking this measurement
 
-    std::vector< std::vector< double > > vecPart( scopeObj.traceObjects.at( name ).numShots );
+    std::vector< std::vector< double > > vecPart( scopeObj.traceObjects.at( name ).traceData.at( pvType ).size() );
     int i = 0;
+
     for( auto && it : scopeObj.traceObjects.at( name ).traceData.at( pvType ) )
     {
         std::vector< double >::const_iterator vec1 = it.begin() + part1;

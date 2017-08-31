@@ -22,14 +22,19 @@
 #include <thread>
 #include <ctime>
 
-invertedMagnetronGaugeInterface::invertedMagnetronGaugeInterface( const std::string & configFileLocation, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
-: configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr ), interface( show_messages_ptr, show_debug_messages_ptr )
-{
-    initialise();
-}
 //______________________________________________________________________________
-invertedMagnetronGaugeInterface::invertedMagnetronGaugeInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
-: configReader( show_messages_ptr, show_debug_messages_ptr  ), interface( show_messages_ptr, show_debug_messages_ptr  )
+invertedMagnetronGaugeInterface::invertedMagnetronGaugeInterface( const std::string & configFileLocation1,
+                                                                  const bool *show_messages_ptr,
+                                                                  const bool *show_debug_messages_ptr,
+                                                                  const bool shouldStartEPICS,
+                                                                  const bool startVirtualMachine,
+                                                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
+configReader( configFileLocation1, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine),
+interface( show_messages_ptr, show_debug_messages_ptr ),
+shouldStartEPICS( shouldStartEPICS ),
+startVM( startVirtualMachine ),
+machineArea( myMachineArea ),
+dummyname("DUMMY")
 {
     initialise();
 }
@@ -41,6 +46,15 @@ invertedMagnetronGaugeInterface::~invertedMagnetronGaugeInterface()
         debugMessage("delete invertedMagnetronGaugeInterface continuousMonitorStructs entry.");
 //        delete it;
 //    }
+}
+//______________________________________________________________________________
+const invertedMagnetronGaugeStructs::vacImgObject & invertedMagnetronGaugeInterface::getIMGObjConstRef(const std::string & imgName)
+{
+    if( entryExists(allVacImgData,imgName))
+    {
+        return allVacImgData.at(imgName);
+    }
+    return allVacImgData.at(dummyname);
 }
 //______________________________________________________________________________
 void invertedMagnetronGaugeInterface::initialise()

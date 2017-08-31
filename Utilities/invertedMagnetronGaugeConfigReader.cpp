@@ -11,14 +11,13 @@
 #include <algorithm>
 #include <ctype.h>
 //______________________________________________________________________________
-invertedMagnetronGaugeConfigReader::invertedMagnetronGaugeConfigReader( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
-: configReader( UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
-{
-}
-//______________________________________________________________________________
-invertedMagnetronGaugeConfigReader::invertedMagnetronGaugeConfigReader( const std::string & configFileLocation,
-                                                 const bool* show_messages_ptr, const bool * show_debug_messages_ptr  )
-:  configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr )
+invertedMagnetronGaugeConfigReader::invertedMagnetronGaugeConfigReader( const std::string & imgconf1,
+                                                                        const bool* show_messages_ptr,
+                                                                        const bool * show_debug_messages_ptr,
+                                                                        const bool startVirtualMachine  ):
+imgconf1( imgconf1 ),
+configReader( show_messages_ptr, show_debug_messages_ptr ),
+usingVirtualMachine(startVirtualMachine)
 {
 }
 //______________________________________________________________________________

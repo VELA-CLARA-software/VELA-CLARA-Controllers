@@ -21,6 +21,8 @@
 //stl
 #include <vector>
 #include <string>
+//boost
+#include <boost/circular_buffer.hpp>
 
 class scopeInterface : public interface
 {
@@ -52,12 +54,24 @@ class scopeInterface : public interface
         double getICT2Q( const int part1, const int part2 )  ;
         double getFCUPQ()  ;
         double getEDFCUPQ();
+        void setBufferSize( size_t bufferSize );
+        void setNumBufferSize( size_t bufferSize );
+        void setTraceBufferSize( size_t bufferSize );
+        void restartContinuousMonitoring();
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
-        std::vector< double > getScopeNums(   const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
-        std::vector< double > getScopeP1Vec(  const std::string & name );
-        std::vector< double > getScopeP2Vec(  const std::string & name );
-        std::vector< double > getScopeP3Vec(  const std::string & name );
-        std::vector< double > getScopeP4Vec(  const std::string & name );
+        std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeP1Vec( const std::string & name );
+        std::vector< double > getScopeP2Vec( const std::string & name );
+        std::vector< double > getScopeP3Vec( const std::string & name );
+        std::vector< double > getScopeP4Vec( const std::string & name );
+        boost::circular_buffer< double > getScopeP1Buffer( const std::string & name );
+        boost::circular_buffer< double > getScopeP2Buffer( const std::string & name );
+        boost::circular_buffer< double > getScopeP3Buffer( const std::string & name );
+        boost::circular_buffer< double > getScopeP4Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR1Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR2Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR3Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR4Buffer( const std::string & name );
         std::vector< double > getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getMaxOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
@@ -70,6 +84,7 @@ class scopeInterface : public interface
         void monitorTracesForNShots( size_t N );
         void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void monitorNumsForNShots( size_t N );
+        void monitorANumForNShots( const std::string num, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void cancelDataMonitors();
         std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< std::string > getScopeNames();
@@ -117,6 +132,9 @@ class scopeInterface : public interface
         void addChannel( const std::string & pvRoot, scopeStructs::pvStruct & pv );
 
         void monitorScopes();
+        void clearContinuousMonitorStructs();
+        void clearContinuousTraceMonitorStructs();
+        void clearContinuousNumMonitorStructs();
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the scope is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
@@ -135,6 +153,7 @@ class scopeInterface : public interface
         void resetTraceVectors( size_t N );
         void resetATraceVector( const std::string scopeName, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
         void resetNumVectors( size_t N );
+        void resetANumVector( const std::string scopeName, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
 
         scopeStructs::scopeObject scopeObj;
 
@@ -148,6 +167,8 @@ class scopeInterface : public interface
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
 
         std::vector< scopeStructs::monitorStruct * > continuousMonitorStructs;
+        std::vector< scopeStructs::monitorStruct * > continuousTraceMonitorStructs;
+        std::vector< scopeStructs::monitorStruct * > continuousNumMonitorStructs;
 
         std::map< std::string, scopeStructs::scopeObject > allScopeData; /// All the scope data is stored in this map, keyed by the scope name
 

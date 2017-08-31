@@ -21,6 +21,7 @@
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/overloads.hpp>
 #include <boost/python/stl_iterator.hpp>
+#include <boost/circular_buffer.hpp>
 #endif
 
 
@@ -204,6 +205,17 @@ class baseObject
             typename std::deque<T>::iterator iter;
             boost::python::list list;
             for (iter = deque.begin(); iter != deque.end(); ++iter)
+            {
+                list.append(*iter);
+            }
+            return list;
+        }
+        template <class T>
+        boost::python::list toPythonList(boost::circular_buffer<T> circular_buffer)
+        {
+            typename boost::circular_buffer<T>::iterator iter;
+            boost::python::list list;
+            for (iter = circular_buffer.begin(); iter != circular_buffer.end(); ++iter)
             {
                 list.append(*iter);
             }

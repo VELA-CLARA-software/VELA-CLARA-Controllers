@@ -30,8 +30,13 @@ class invertedMagnetronGaugeController : public controller
 
         /// we have overloaded constructors to specify config-file location
 
-        invertedMagnetronGaugeController( const bool show_messages = true, const bool show_debug_messages = true );
-        invertedMagnetronGaugeController( const std::string configFileLocation, const  bool show_messages = true, const bool show_debug_messages = true );
+        invertedMagnetronGaugeController();
+        invertedMagnetronGaugeController( const std::string &configFileLocation1,
+                                          const bool show_messages,
+                                          const bool show_debug_messages,
+                                          const bool shouldStartEPICS,
+                                          const bool startVirtualMachine,
+                                          const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~invertedMagnetronGaugeController();
 
         double get_CA_PEND_IO_TIMEOUT();
@@ -39,6 +44,7 @@ class invertedMagnetronGaugeController : public controller
 
         double getImgP( const std::string & vacImgName );
         std::vector< std::vector< double > > monitorForNCounts( const std::string & vacImgName, int numcounts );
+        const invertedMagnetronGaugeStructs::vacImgObject & getIMGObjConstRef(const std::string & imgName);
 
         /// write a method that returns string version of enums using ENUM_TO_STRING
 
@@ -63,6 +69,9 @@ class invertedMagnetronGaugeController : public controller
         invertedMagnetronGaugeInterface localInterface;
 
         std::vector< std::string > vacImgNames;
+
+        const bool shouldStartEPICS;
+        const VELA_ENUM::MACHINE_AREA machineArea;
 };
 
 

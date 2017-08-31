@@ -33,6 +33,7 @@ namespace UTL
     const size_t ZERO_SIZET   = 0;
     const size_t ONE_SIZET    = 1;
     const size_t TWO_SIZET    = 2;
+    const size_t BUFFER_TEN   = 10;
     const long   DUMMY_LONG   = -999;
     const int    DUMMY_INT    = -9999;
     const int    ZERO_INT     = 0;
@@ -169,7 +170,14 @@ namespace UTL
     const std::string CAMERA_CONFIG               = "camera.config";
     //const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
 /// Vacuum
-    const std::string VELA_IMG_CONFIG                  = "velaInvertedMagnetronGauge.config";
+    const std::string VELA_INJ_IMG_CONFIG              = "velaINJInvertedMagnetronGauge.config";
+    const std::string VELA_BA1_IMG_CONFIG              = "velaBA1InvertedMagnetronGauge.config";
+    const std::string VELA_BA2_IMG_CONFIG              = "velaBA2InvertedMagnetronGauge.config";
+    const std::string CLARA_INJ_IMG_CONFIG             = "claraINJInvertedMagnetronGauge.config";
+    const std::string CLARA_2_VELA_IMG_CONFIG          = "clara2VELAInvertedMagnetronGauge.config";
+    const std::string CLARA_S01_IMG_CONFIG             = "claraS01InvertedMagnetronGauge.config";
+    const std::string CLARA_S02_IMG_CONFIG             = "claraS02InvertedMagnetronGauge.config";
+    const std::string CLARA_PH1_IMG_CONFIG             = "claraPH1InvertedMagnetronGauge.config";
     const std::string VELA_INJ_VALVE_CONFIG            = "velaINJVacuumValve.config";
     const std::string VELA_BA1_VALVE_CONFIG            = "velaBA1VacuumValve.config";
     const std::string VELA_BA2_VALVE_CONFIG            = "velaBA2VacuumValve.config";
@@ -177,6 +185,7 @@ namespace UTL
     const std::string CLARA_2_VELA_VALVE_CONFIG        = "clara2VELAVacuumValve.config";
     const std::string CLARA_S01_VALVE_CONFIG           = "claraS01VacuumValve.config";
     const std::string CLARA_S02_VALVE_CONFIG           = "claraS02VacuumValve.config";
+    const std::string CLARA_PH1_VALVE_CONFIG           = "claraPH1VacuumValve.config";
 /// LIBERA LLRF
     const std::string CLARA_LRRG_LLRF_CONFIG    = "CLARA_LRRG_LLRF.config";
     const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";

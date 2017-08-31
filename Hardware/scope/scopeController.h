@@ -21,6 +21,20 @@
 // stl
 #include <string>
 #include <vector>
+// boost
+#ifdef BUILD_DLL
+#include <boost/python.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#include <boost/python.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/args.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/return_value_policy.hpp>
+#include <boost/python/overloads.hpp>
+#include <boost/circular_buffer.hpp>
+#endif
 
 class scopeController : public controller
 {
@@ -53,14 +67,31 @@ class scopeController : public controller
         double getICT2Q( const int part1, const int part2 )  ;
         double getFCUPQ()  ;
         double getEDFCUPQ();
+        void setBufferSize( size_t bufferSize );
+        void setNumBufferSize( size_t bufferSize );
+        void setTraceBufferSize( size_t bufferSize );
+        void restartContinuousMonitoring();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
+        void monitorTracesForNShots( size_t N );
+        void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
+        void monitorNumsForNShots( size_t N );
+        void monitorANumForNShots( const std::string num, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
+
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getScopeP1Vec( const std::string & name );
         std::vector< double > getScopeP2Vec( const std::string & name );
         std::vector< double > getScopeP3Vec( const std::string & name );
         std::vector< double > getScopeP4Vec( const std::string & name );
+        boost::circular_buffer< double > getScopeP1Buffer( const std::string & name );
+        boost::circular_buffer< double > getScopeP2Buffer( const std::string & name );
+        boost::circular_buffer< double > getScopeP3Buffer( const std::string & name );
+        boost::circular_buffer< double > getScopeP4Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR1Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR2Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR3Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTR4Buffer( const std::string & name );
         std::vector< double > getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getMaxOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
@@ -70,13 +101,37 @@ class scopeController : public controller
         std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
         std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
 
-        void monitorTracesForNShots( size_t N );
-        void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
-        void monitorNumsForNShots( size_t N );
         std::vector< std::string > getScopeNames();
         std::vector< std::string > getScopePVs();
         std::vector< std::string > getScopeTracePVs();
         std::vector< std::string > getScopeNumPVs();
+
+        #ifdef BUILD_DLL
+        boost::python::list getScopeNums_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getScopeP1Vec_Py( const std::string & name );
+        boost::python::list getScopeP2Vec_Py( const std::string & name );
+        boost::python::list getScopeP3Vec_Py( const std::string & name );
+        boost::python::list getScopeP4Vec_Py( const std::string & name );
+        boost::python::list getScopeP1Buffer_Py( const std::string & name );
+        boost::python::list getScopeP2Buffer_Py( const std::string & name );
+        boost::python::list getScopeP3Buffer_Py( const std::string & name );
+        boost::python::list getScopeP4Buffer_Py( const std::string & name );
+        boost::python::list getScopeTR1Buffer_Py( const std::string & name );
+        boost::python::list getScopeTR2Buffer_Py( const std::string & name );
+        boost::python::list getScopeTR3Buffer_Py( const std::string & name );
+        boost::python::list getScopeTR4Buffer_Py( const std::string & name );
+        boost::python::list getMinOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getMaxOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getAreaUnderTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getTimeStamps_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getStrTimeStamps_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getAreaUnderPartOfTrace_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        boost::python::list getAvgNoise_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        boost::python::list getScopeNames_Py();
+        boost::python::list getScopePVs_Py();
+        boost::python::list getScopeTracePVs_Py();
+        boost::python::list getScopeNumPVs_Py();
+        #endif
         /// write a method that returns string version of enums using ENUM_TO_STRING
 
 //        VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );

@@ -51,6 +51,10 @@ class VCvacValves// : public vacuumValveController
         vacuumValveController & virtual_CLARA_S02_Vac_Valve_Controller();
         vacuumValveController & offline_CLARA_S02_Vac_Valve_Controller();
         vacuumValveController & physical_CLARA_S02_Vac_Valve_Controller();
+        ///CLARA_PH1
+        vacuumValveController & virtual_CLARA_PH1_Vac_Valve_Controller();
+        vacuumValveController & offline_CLARA_PH1_Vac_Valve_Controller();
+        vacuumValveController & physical_CLARA_PH1_Vac_Valve_Controller();
         ///C2V
         vacuumValveController & virtual_C2V_Vac_Valve_Controller();
         vacuumValveController & offline_C2V_Vac_Valve_Controller();
@@ -77,6 +81,7 @@ class VCvacValves// : public vacuumValveController
         const VELA_ENUM::MACHINE_AREA CLARA_INJ;
         const VELA_ENUM::MACHINE_AREA CLARA_S01;
         const VELA_ENUM::MACHINE_AREA CLARA_S02;
+        const VELA_ENUM::MACHINE_AREA CLARA_PH1;
         const VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
         const VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
@@ -100,6 +105,10 @@ class VCvacValves// : public vacuumValveController
         vacuumValveController * virtual_CLARA_S02_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_CLARA_S02_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_CLARA_S02_Vac_Valve_Controller_Obj;
+        ///CLARA_PH1
+        vacuumValveController * virtual_CLARA_PH1_Vac_Valve_Controller_Obj;
+        vacuumValveController * offline_CLARA_PH1_Vac_Valve_Controller_Obj;
+        vacuumValveController * physical_CLARA_PH1_Vac_Valve_Controller_Obj;
         ///C2V
         vacuumValveController * virtual_C2V_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_C2V_Vac_Valve_Controller_Obj;
@@ -133,18 +142,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
 {
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
-//    /// Include ALL the enums you want to expose to Python
-//    class_<std::vector< std::string > >("std_vector_string")
-//        .def( vector_indexing_suite< std::vector< std::string >>() )
-//        ;
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
     const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
@@ -292,6 +290,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .def("get_CA_PEND_IO_TIMEOUT",          &vacuumValveController::get_CA_PEND_IO_TIMEOUT      )
             .def("set_CA_PEND_IO_TIMEOUT",          &vacuumValveController::set_CA_PEND_IO_TIMEOUT      )
             .def("getVacValveState",                &vacuumValveController::getVacValveState, getVacValveStateString            )
+            .def("getVacValveStateStr",             &vacuumValveController::getVacValveStateStr, getVacValveStateString            )
             .def("getILockStates",                  &vacuumValveController::getILockStates, getILockStates              )
             .def("closeVacValve",                   &vacuumValveController::closeVacValve, closeValveString               )
             .def("closeValve1",                     &vacuumValveController::closeValve1                 )
@@ -355,6 +354,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .def("virtual_CLARA_S02_Vac_Valve_Controller",  &VCvacValves::virtual_CLARA_S02_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_S02_Vac_Valve_Controller",  &VCvacValves::offline_CLARA_S02_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_S02_Vac_Valve_Controller", &VCvacValves::physical_CLARA_S02_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_PH1_Vac_Valve_Controller",  &VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_PH1_Vac_Valve_Controller",  &VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_PH1_Vac_Valve_Controller", &VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("virtual_C2V_Vac_Valve_Controller",        &VCvacValves::virtual_C2V_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("offline_C2V_Vac_Valve_Controller",        &VCvacValves::offline_C2V_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("physical_C2V_Vac_Valve_Controller",       &VCvacValves::offline_C2V_Vac_Valve_Controller, return_value_policy<reference_existing_object>())

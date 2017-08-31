@@ -43,6 +43,9 @@ class VCscopes// : public beamPositionMonitorController
         scopeController & virtual_CLARA_S01_Scope_Controller();
         scopeController & offline_CLARA_S01_Scope_Controller();
         scopeController & physical_CLARA_S01_Scope_Controller();
+        scopeController & virtual_CLARA_PH1_Scope_Controller();
+        scopeController & offline_CLARA_PH1_Scope_Controller();
+        scopeController & physical_CLARA_PH1_Scope_Controller();
         scopeController & getScopeController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
         void setQuiet();
@@ -66,6 +69,7 @@ class VCscopes// : public beamPositionMonitorController
         VELA_ENUM::MACHINE_AREA VELA_BA1;
         VELA_ENUM::MACHINE_AREA VELA_BA2;
         VELA_ENUM::MACHINE_AREA CLARA_S01;
+        VELA_ENUM::MACHINE_AREA CLARA_PH1;
         VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
         VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
@@ -81,6 +85,9 @@ class VCscopes// : public beamPositionMonitorController
         scopeController * virtual_CLARA_S01_Scope_Controller_Obj;
         scopeController * offline_CLARA_S01_Scope_Controller_Obj;
         scopeController * physical_CLARA_S01_Scope_Controller_Obj;
+        scopeController * virtual_CLARA_PH1_Scope_Controller_Obj;
+        scopeController * offline_CLARA_PH1_Scope_Controller_Obj;
+        scopeController * physical_CLARA_PH1_Scope_Controller_Obj;
 
 };
 
@@ -114,23 +121,86 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     local_docstring_options.disable_cpp_signatures();
     /// Include ALL the enums you want to expose to Python
 
-    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > > ("v2_map")
-        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >());
+//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > > ("v2_map")
+//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >());
+//
+//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("vv2_map")
+//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >());
+//
+//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >("bool_map")
+//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >());
 
-    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("vv2_map")
-        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >());
+    boost::python::type_info info = boost::python::type_id< std::vector< std::string > > ();
+    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< std::string > >("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string > > ())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< std::string > >("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string > > ())
+            ;
+    }
 
-    class_< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >("bool_map")
-        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >());
+    info = boost::python::type_id< std::vector< double > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< double > >("std_vector_double")
+            .def(vector_indexing_suite< std::vector< double > > ())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< double > >("std_vector_double")
+            .def(vector_indexing_suite< std::vector< double > > ())
+            ;
+    }
 
-    class_< std::vector< std::string > >("std_vector_string")
-        .def( vector_indexing_suite< std::vector< std::string > >());
+    info = boost::python::type_id< std::vector< std::vector< double > > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< std::vector< double > > >("std_vector_vector_double")
+            .def(vector_indexing_suite< std::vector< std::vector< double > > > ())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< std::vector< double > > >("std_vector_vector_double")
+            .def(vector_indexing_suite< std::vector< std::vector< double > > > ())
+            ;
+    }
 
-    class_< std::vector< double > >("v_double")
-        .def( vector_indexing_suite< std::vector< double > >());
+    info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_bool")
+            .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_bool")
+            .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >())
+            ;
+    }
 
-    class_< std::vector< std::vector< double > > >("v2_double")
-        .def( vector_indexing_suite< std::vector< std::vector< double > > >());
+    info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_vector_double")
+            .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_vector_double")
+            .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >())
+            ;
+    }
+
+    info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("std_scope_map_vector_vector_double")
+            .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("std_scope_map_vector_vector_double")
+            .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >())
+            ;
+    }
 
     enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
             .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
@@ -143,6 +213,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
             .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
             .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
+            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
             .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
             .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
             ;
@@ -199,6 +270,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def_readonly("numData",         &scopeStructs::scopeNumObject::numData        )
         .def_readonly("numTimeStamps",   &scopeStructs::scopeNumObject::numTimeStamps  )
         .def_readonly("shotCounts",      &scopeStructs::scopeNumObject::shotCounts     )
+        .def_readonly("buffer",          &scopeStructs::scopeNumObject::buffer         )
         ;
 
     char const* scopeTraceDataStructString = "This struct contains trace data for the four channels on the scope - e.g. tr1TraceData contains a vector of the EPICS PV for channel 1 on the scope.\n"
@@ -243,6 +315,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     char const* isMonitoringNumDocString = "Returns true if str(scopeName) P values are being monitored - these are defined in the config file.";
     char const* isNotMonitoringTraceDocString = "Returns true if str(scopeName) traces are not being monitored - these are defined in the config file.";
     char const* isNotMonitoringNumDocString = "Returns true if str(scopeName) P values are not being monitored - these are defined in the config file.";
+    char const* setBufferSizeDocString = "Set size of buffer for continuous monitor.";
+    char const* setNumBufferSizeDocString = "Set size of buffer for continuous P values monitor.";
+    char const* setTraceBufferSizeDocString = "Set size of buffer for continuous trace monitor.";
+    char const* restartMonitoringDocString = "Restarts continuous monitoring of scope parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
     char const* getScopeNumsDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), after using monitorNumsForNShots.";
     char const* getScopeP1VecDocString = "Returns a vector of doubles for str(scopeName), for channel P1, after using monitorNumsForNShots.";
     char const* getScopeP2VecDocString = "Returns a vector of doubles for str(scopeName), for channel P2, after using monitorNumsForNShots.";
@@ -252,6 +328,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     char const* getScopeP2DocString = "Returns a double containing the value for channel P2 for str(scopeName).";
     char const* getScopeP3DocString = "Returns a double containing the value for channel P3 for str(scopeName).";
     char const* getScopeP4DocString = "Returns a double containing the value for channel P4 for str(scopeName).";
+    char const* getScopeNumBufferDocString = "Returns a vector containing the last (buffersize) values for a given channel for str(scopeName).";
+    char const* getScopeTraceBufferDocString = "Returns a vector of vectors containing the last (buffersize) traces for a given channel for str(scopeName).";
     char const* getWCMQDocString = "Returns a double containing the current value for the WCM, provided that the WCM channel is defined in the config file.\n"
                           "This should work regardless of whether traces or P values are being submitted to EPICS (not for dark current measurements).";
     char const* getICT1QDocString = "Returns a double containing the current value for the ICT1, provided that the ICT1 channel is defined in the config file.\n"
@@ -283,7 +361,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
                                       "Data can be accessed using getScopeNums, or getScopeP(1/2/3/4)Vec.\n";
     char const* monitorTracesDocString = "Monitors traces (see scope) for str(scopeName) - these should be defined in the config file. This will fill four vectors of vectors of doubles with scope trace data.\n"
                                       "Data can be accessed using getScopeTraces - see documentation.\n";
-    char const* monitorATraceDocString = "Monitors a specific trace (see scope) for channel (pvType) of str(scopeName) - these should be defined in the config file. This will fill four vectors of vectors of doubles with scope trace data.\n"
+    char const* monitorATraceDocString = "Monitors a specific trace (see scope) for channel (pvType) of str(scopeName) - these should be defined in the config file. This will fill a vectors of vectors of doubles with scope trace data.\n"
+                                      "Data can be accessed using getScopeTraces - see documentation.\n";
+    char const* monitorANumDocString = "Monitors a specific P value (see scope) for channel (pvType) of str(scopeName) - these should be defined in the config file. This will fill a vector of doubles with scope data.\n"
                                       "Data can be accessed using getScopeTraces - see documentation.\n";
 
 	boost::python::class_<scopeController, boost::python::bases<controller>, boost::noncopyable>
@@ -300,40 +380,53 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
 //            .def("hasTrig",                         &velaChargeScopeController::hasTrig_Py, boost::python::args("name")   )
             .def("getScopeTraceDataStruct",         &scopeController::getScopeTraceDataStruct, getScopeTraceDataStructString, return_value_policy<reference_existing_object>())
             .def("getScopeNumDataStruct",           &scopeController::getScopeNumDataStruct, getScopeNumDataStructString, return_value_policy<reference_existing_object>()  )
-            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString        )
-            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum, isMonitoringNumDocString            )
-            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace, isNotMonitoringNumDocString    )
-            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum, isNotMonitoringNumDocString      )
-            .def("getScopeNums",                    &scopeController::getScopeNums, getScopeNumsDocString                       )
-            .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec, getScopeP1VecDocString                     )
-            .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec, getScopeP2VecDocString                     )
-            .def("getScopeP3Vec",                   &scopeController::getScopeP3Vec, getScopeP3VecDocString                     )
-            .def("getScopeP4Vec",                   &scopeController::getScopeP4Vec, getScopeP4VecDocString                     )
-            .def("getScopeP1",                      &scopeController::getScopeP1, getScopeP1DocString                           )
-            .def("getScopeP2",                      &scopeController::getScopeP2, getScopeP2DocString                           )
-            .def("getScopeP3",                      &scopeController::getScopeP3, getScopeP3DocString                           )
-            .def("getScopeP4",                      &scopeController::getScopeP4, getScopeP4DocString                           )
-            .def("getWCMQ",                         &scopeController::getWCMQ, getWCMQDocString                                 )
-            .def("getICT1Q",                        &scopeController::getICT1Q, getICT1QDocString                               )
-            .def("getICT2Q",                        &scopeController::getICT2Q, getICT2QDocString                               )
-            .def("getFCUPQ",                        &scopeController::getFCUPQ, getFCUPQDocString                               )
-            .def("getEDFCUPQ",                      &scopeController::getEDFCUPQ, getEDFCUPQDocString                           )
-            .def("getScopeTraces",                  &scopeController::getScopeTraces, getScopeTracesDocString                   )
-            .def("getMinOfTraces",                  &scopeController::getMinOfTraces, getMinOfTracesDocString                   )
-            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces, getMaxOfTracesDocString                   )
-            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces, getAreaUnderTracesDocString           )
-            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace, getAreaUnderPartOfTraceDocString )
-            .def("getAvgNoise",                     &scopeController::getAvgNoise, getAvgNoiseDocString                         )
-            .def("getPartOfTrace",                  &scopeController::getPartOfTrace, getPartOfTraceDocString                   )
-            .def("getTimeStamps",                   &scopeController::getTimeStamps, getTimeStampsDocString                     )
-            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps, getStrTimeStampsDocString               )
-            .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                )
-            .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString            )
-            .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots, monitorATraceDocString            )
-            .def("getScopeNames",                   &scopeController::getScopeNames                                             )
-            .def("getScopePVs",                     &scopeController::getScopePVs                                               )
-            .def("getScopeTracePVs",                &scopeController::getScopeTracePVs                                          )
-            .def("getScopeNumPVs",                  &scopeController::getScopeNumPVs                                            )
+            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString           )
+            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum, isMonitoringNumDocString               )
+            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace, isNotMonitoringNumDocString       )
+            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum, isNotMonitoringNumDocString         )
+            .def("setBufferSize",                   &scopeController::setBufferSize, setBufferSizeDocString                        )
+            .def("setNumBufferSize",                &scopeController::setBufferSize, setNumBufferSizeDocString                     )
+            .def("setTraceBufferSize",              &scopeController::setBufferSize, setTraceBufferSizeDocString                   )
+            .def("restartContinuousMonitoring",     &scopeController::restartContinuousMonitoring, restartMonitoringDocString      )
+            .def("getScopeNums",                    &scopeController::getScopeNums_Py, getScopeNumsDocString                       )
+            .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec_Py, getScopeP1VecDocString                     )
+            .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec_Py, getScopeP2VecDocString                     )
+            .def("getScopeP3Vec",                   &scopeController::getScopeP3Vec_Py, getScopeP3VecDocString                     )
+            .def("getScopeP4Vec",                   &scopeController::getScopeP4Vec_Py, getScopeP4VecDocString                     )
+            .def("getScopeP1Buffer",                &scopeController::getScopeP1Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeP2Buffer",                &scopeController::getScopeP2Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeP3Buffer",                &scopeController::getScopeP3Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeP4Buffer",                &scopeController::getScopeP4Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeTR1Buffer",               &scopeController::getScopeTR1Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeTR2Buffer",               &scopeController::getScopeTR2Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeTR3Buffer",               &scopeController::getScopeTR3Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeTR4Buffer",               &scopeController::getScopeTR4Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeP1",                      &scopeController::getScopeP1, getScopeP1DocString                              )
+            .def("getScopeP2",                      &scopeController::getScopeP2, getScopeP2DocString                              )
+            .def("getScopeP3",                      &scopeController::getScopeP3, getScopeP3DocString                              )
+            .def("getScopeP4",                      &scopeController::getScopeP4, getScopeP4DocString                              )
+            .def("getWCMQ",                         &scopeController::getWCMQ, getWCMQDocString                                    )
+            .def("getICT1Q",                        &scopeController::getICT1Q, getICT1QDocString                                  )
+            .def("getICT2Q",                        &scopeController::getICT2Q, getICT2QDocString                                  )
+            .def("getFCUPQ",                        &scopeController::getFCUPQ, getFCUPQDocString                                  )
+            .def("getEDFCUPQ",                      &scopeController::getEDFCUPQ, getEDFCUPQDocString                              )
+            .def("getScopeTraces",                  &scopeController::getScopeTraces, getScopeTracesDocString                      )
+            .def("getMinOfTraces",                  &scopeController::getMinOfTraces_Py, getMinOfTracesDocString                   )
+            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces_Py, getMaxOfTracesDocString                   )
+            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces_Py, getAreaUnderTracesDocString           )
+            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace_Py, getAreaUnderPartOfTraceDocString )
+            .def("getAvgNoise",                     &scopeController::getAvgNoise_Py, getAvgNoiseDocString                         )
+            .def("getPartOfTrace",                  &scopeController::getPartOfTrace, getPartOfTraceDocString                      )
+            .def("getTimeStamps",                   &scopeController::getTimeStamps_Py, getTimeStampsDocString                     )
+            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps_Py, getStrTimeStampsDocString               )
+            .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                   )
+            .def("monitorANumForNShots",            &scopeController::monitorANumForNShots, monitorANumDocString                   )
+            .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString               )
+            .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots, monitorATraceDocString               )
+            .def("getScopeNames",                   &scopeController::getScopeNames_Py                                             )
+            .def("getScopePVs",                     &scopeController::getScopePVs_Py                                               )
+            .def("getScopeTracePVs",                &scopeController::getScopeTracePVs_Py                                          )
+            .def("getScopeNumPVs",                  &scopeController::getScopeNumPVs_Py                                            )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &scopeController::debugMessagesOff                       )
             .def("debugMessagesOn",                 &scopeController::debugMessagesOn                        )
@@ -356,6 +449,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def("virtual_CLARA_S01_Scope_Controller",  &VCscopes::virtual_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_S01_Scope_Controller",  &VCscopes::offline_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_S01_Scope_Controller", &VCscopes::physical_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_PH1_Scope_Controller",  &VCscopes::virtual_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_PH1_Scope_Controller",  &VCscopes::offline_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_PH1_Scope_Controller", &VCscopes::physical_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("getScopeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
         ;
 

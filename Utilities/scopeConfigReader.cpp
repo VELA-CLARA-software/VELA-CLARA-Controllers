@@ -52,6 +52,7 @@ scopeStructs::scopeObject scopeConfigReader::getScopeObject()
             it.second.numTimeStamps[ it2.pvType ] = numtstamps;
             it.second.numStrTimeStamps[ it2.pvType ] = numstrtstamps;
             it.second.shotCounts[ it2.pvType ] = numshotcounts;
+            it.second.numDataBuffer[ it2.pvType ] = numsbuffer;
         }
     }
 
@@ -72,6 +73,7 @@ scopeStructs::scopeObject scopeConfigReader::getScopeObject()
             it.second.timeStamps[ it2.pvType ] = tstamps;
             it.second.strTimeStamps[ it2.pvType ] = strtstamps;
             it.second.shotCounts[ it2.pvType ] = shotcounts;
+            it.second.traceDataBuffer[ it2.pvType ] = tracesbuffer;
         }
     }
 

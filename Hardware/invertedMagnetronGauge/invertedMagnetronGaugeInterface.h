@@ -28,15 +28,19 @@ class invertedMagnetronGaugeInterface : public interface
 
         /// Not a singleton, two construction methods....
 
-        invertedMagnetronGaugeInterface( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        invertedMagnetronGaugeInterface( const std::string & configFileLocation, const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-
+        invertedMagnetronGaugeInterface();
+        invertedMagnetronGaugeInterface( const std::string &configFileLocation1,
+                                          const bool *show_messages_ptr,
+                                          const bool *show_debug_messages_ptr,
+                                          const bool shouldStartEPICS,
+                                          const bool startVirtualMachine,
+                                          const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~invertedMagnetronGaugeInterface();
 
         void getImgNames( std::vector< std::string >  & vacImgNames );
         double getImgP( const std::string & vacImg );
         std::vector< std::vector< double > > monitorForNCounts( const std::string & vacImgName, int numcounts );
-
+        const invertedMagnetronGaugeStructs::vacImgObject & getIMGObjConstRef(const std::string & imgName);
         void getNewVacImgData( const std::string vacImg1, std::vector< std::vector< double > > & vacImgData, std::vector< invertedMagnetronGaugeStructs::dataCollectionResult > & status  );
         void cancelDataMonitors();
         char getTimestamp( std::string & vacImg );
@@ -60,7 +64,11 @@ class invertedMagnetronGaugeInterface : public interface
 
         void initialise();
 
+        const bool shouldStartEPICS;
+        const bool startVM;
+        const VELA_ENUM::MACHINE_AREA machineArea;
         invertedMagnetronGaugeConfigReader configReader;
+        const std::string dummyname;
 
         void initVacImgObjects();
         void initVacImgChids();

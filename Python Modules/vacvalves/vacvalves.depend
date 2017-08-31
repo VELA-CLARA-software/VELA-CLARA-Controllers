@@ -119,49 +119,63 @@
 1383686517 d:\vela-clara_software\vela-clara-controllers-new-structure-with-magnets\python modules\vacvalves\main.h
 	<windows.h>
 
-1485782645 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
+1503089840 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1489152674 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
-	"interface.h"
+1503089840 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
+	"structs.h"
 	"baseObject.h"
+	<map>
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1489152674 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
+1499162578 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
 	"baseObject.h"
 	"structs.h"
 
-1485782699 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
+1503089840 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
+	<iostream>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
 
-1490948025 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
+1502372943 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
 	<string>
 	<vector>
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1489152674 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
+1504000547 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
 
-1491234493 source:d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
+1504000547 source:d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
 	"vacuumValveController.h"
 	<iostream>
 	"vacuumValveInterface.h"
 
-1490948024 d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.h
+1504000547 d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.h
 	"vacuumValveStructs.h"
 	"vacuumValveInterface.h"
 	"controller.h"
@@ -169,13 +183,13 @@
 	<string>
 	<vector>
 
-1491229515 d:\vela-clara_software\vela-clara-controllers\structs\vacuumvalvestructs.h
+1491554982 d:\vela-clara_software\vela-clara-controllers\structs\vacuumvalvestructs.h
 	"structs.h"
 	<string>
 	<map>
 	<cadef.h>
 
-1491234294 d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.h
+1504005058 d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.h
 	"interface.h"
 	"vacuumValveStructs.h"
 	"vacuumValveConfigReader.h"
@@ -189,19 +203,19 @@
 	"configReader.h"
 	"vacuumValveStructs.h"
 
-1487947767 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
+1499162584 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
 	<vector>
 	<cadef.h>
 
-1490948025 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
+1504018180 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
 
-1491292582 source:d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
+1504005060 source:d:\vela-clara_software\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
 	"vacuumValveInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -209,11 +223,11 @@
 	<chrono>
 	<thread>
 
-1485782668 source:d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.cpp
+1504000547 source:d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	<time.h>
 
-1487947767 source:d:\vela-clara_software\vela-clara-controllers\utilities\configreader.cpp
+1502372943 source:d:\vela-clara_software\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<sstream>
@@ -235,17 +249,17 @@
 	<algorithm>
 	<ctype.h>
 
-1485782665 source:d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\main.cpp
+1491299411 source:d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\main.cpp
 	"main.h"
 
-1485782666 d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\main.h
+1491299407 d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\main.h
 	<windows.h>
 
-1490964494 source:d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\src\vcvacvalves.cpp
+1504018146 source:d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\src\vcvacvalves.cpp
 	"VCvacValves.h"
 	<iostream>
 
-1490948025 d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\include\vcvacvalves.h
+1504018348 d:\vela-clara_software\vela-clara-controllers\python modules\vacvalves\include\vcvacvalves.h
 	"vacuumValveController.h"
 	<string>
 	<vector>

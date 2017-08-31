@@ -62,6 +62,11 @@ void scopeController::monitorNumsForNShots( size_t N )
     localInterface.monitorNumsForNShots( N );
 }
 //______________________________________________________________________________
+void scopeController::monitorANumForNShots( const std::string num, scopeStructs::SCOPE_PV_TYPE channel, size_t N )
+{
+    localInterface.monitorANumForNShots( num, channel, N );
+}
+//______________________________________________________________________________
 bool scopeController::isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.isMonitoringScopeTrace( scopeName, pvType );
@@ -130,6 +135,66 @@ std::vector< double > scopeController::getScopeP3Vec( const std::string & name )
 std::vector< double > scopeController::getScopeP4Vec( const std::string & name )
 {
     return localInterface.getScopeP4Vec( name );
+}
+//______________________________________________________________________________
+void scopeController::setBufferSize( size_t bufferSize )
+{
+    localInterface.setBufferSize( bufferSize );
+}
+//______________________________________________________________________________
+void scopeController::setNumBufferSize( size_t bufferSize )
+{
+    localInterface.setNumBufferSize( bufferSize );
+}
+//______________________________________________________________________________
+void scopeController::setTraceBufferSize( size_t bufferSize )
+{
+    localInterface.setTraceBufferSize( bufferSize );
+}
+//______________________________________________________________________________
+void scopeController::restartContinuousMonitoring()
+{
+    localInterface.restartContinuousMonitoring();
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeController::getScopeP1Buffer( const std::string & name )
+{
+    return localInterface.getScopeP1Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeController::getScopeP2Buffer( const std::string & name )
+{
+    return localInterface.getScopeP2Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeController::getScopeP3Buffer( const std::string & name )
+{
+    return localInterface.getScopeP3Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > scopeController::getScopeP4Buffer( const std::string & name )
+{
+    return localInterface.getScopeP4Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > scopeController::getScopeTR1Buffer( const std::string & name )
+{
+    return localInterface.getScopeTR1Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > scopeController::getScopeTR2Buffer( const std::string & name )
+{
+    return localInterface.getScopeTR2Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > scopeController::getScopeTR3Buffer( const std::string & name )
+{
+    return localInterface.getScopeTR3Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > scopeController::getScopeTR4Buffer( const std::string & name )
+{
+    return localInterface.getScopeTR4Buffer( name );
 }
 //______________________________________________________________________________
 std::vector< double > scopeController::getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -226,6 +291,128 @@ std::vector< std::string > scopeController::getScopeNumPVs()
 {
     return localInterface.getScopeNumPVs();
 }
+//______________________________________________________________________________
+#ifdef BUILD_DLL
+boost::python::list scopeController::getScopeP1Vec_Py( const std::string & name )
+{
+    return toPythonList(getScopeP1Vec( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP2Vec_Py( const std::string & name )
+{
+    return toPythonList(getScopeP2Vec( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP3Vec_Py( const std::string & name )
+{
+    return toPythonList(getScopeP3Vec( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP4Vec_Py( const std::string & name )
+{
+    return toPythonList(getScopeP4Vec( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getMinOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getMinOfTraces( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getMaxOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getMaxOfTraces( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getAreaUnderTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getAreaUnderTraces( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getTimeStamps_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getTimeStamps( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getStrTimeStamps_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getStrTimeStamps( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getAvgNoise_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+{
+    return toPythonList(getAvgNoise( name, pvType, part1, part2 ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP1Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeP1Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP2Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeP2Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP3Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeP3Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeP4Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeP4Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeTR1Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeTR1Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeTR2Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeTR2Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeTR3Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeTR3Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeTR4Buffer_Py( const std::string & name )
+{
+    return toPythonList(getScopeTR4Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeNums_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getScopeNums( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getAreaUnderPartOfTrace_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+{
+    return toPythonList(getAreaUnderPartOfTrace( name, pvType, part1, part2 ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeNames_Py()
+{
+    return toPythonList(getScopeNames());
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopePVs_Py()
+{
+    return toPythonList(getScopePVs());
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeTracePVs_Py()
+{
+    return toPythonList(getScopeTracePVs());
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeNumPVs_Py()
+{
+    return toPythonList(getScopeNumPVs());
+}
+#endif
 //______________________________________________________________________________
 //bool scopeController::hasTrig( const std::string & name )
 //{

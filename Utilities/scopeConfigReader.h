@@ -14,6 +14,8 @@
 // me
 #include "configReader.h"
 #include "scopeStructs.h"
+// boost
+#include <boost/circular_buffer.hpp>
 
 
 class scopeConfigReader : public configReader
@@ -62,13 +64,15 @@ class scopeConfigReader : public configReader
 
         VELA_ENUM::DIAG_TYPE getDiagType( const std::string & val );
 
-        std::vector< double >                tstamps;
-        std::vector< double >                numtstamps;
-        std::vector< std::string >           strtstamps;
-        std::vector< std::string >           numstrtstamps;
-        std::vector< std::vector< double > > traces;
-        std::vector< double >                nums;
-        int                                  shotcounts;
-        int                                  numshotcounts;
+        std::vector< double >                           tstamps;
+        std::vector< double >                           numtstamps;
+        std::vector< std::string >                      strtstamps;
+        std::vector< std::string >                      numstrtstamps;
+        std::vector< std::vector< double > >            traces;
+        std::vector< double >                           nums;
+        boost::circular_buffer< double >                numsbuffer;
+        boost::circular_buffer< std::vector< double > > tracesbuffer;
+        int                                             shotcounts;
+        int                                             numshotcounts;
 };
 #endif //scopeConfigReader2_H_

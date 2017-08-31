@@ -11,7 +11,7 @@ import epics
 def main():
 	s=vcsc.init()
 	p=s.virtual_VELA_INJ_Scope_Controller()
-	numShots = 10
+	numShots = 1
 	sc01 = 'WVF01'
 	tr1 = vcsc.SCOPE_PV_TYPE.TR1
 	tr2 = vcsc.SCOPE_PV_TYPE.TR2

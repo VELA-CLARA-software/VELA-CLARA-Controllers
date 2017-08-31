@@ -165,15 +165,32 @@ void beamPositionMonitorInterface::monitorBPMs()
         {
 //            if( !isADataPV( it2.second.pvType ) )
 //            {   //NOT SURE ABOUT THIS "IF" -----> I WANT TO SET THIS BOOL TO TRUE EVEN IF IT IS A DATA PV
-                it1.second.bpmRawData.isAContinuousMonitorStruct = true;
-                it1.second.bpmRawData.isATemporaryMonitorStruct = false;
-                it1.second.bpmRawData.appendingData = false;
-                if( it1.second.bpmRawData.isAContinuousMonitorStruct )
-                {
-                    resetDataVectors( 1 );
-                    addToMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
-                }
+//                it1.second.bpmRawData.isAContinuousMonitorStruct = true;
+//                it1.second.bpmRawData.isATemporaryMonitorStruct = false;
+//                it1.second.bpmRawData.appendingData = false;
+//                if( it1.second.bpmRawData.isAContinuousMonitorStruct )
+//                {
+//                    resetDataVectors( 1 );
+//                    addToMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
+//                }
 //            }
+            {
+            continuousMonitorStructs.push_back(new beamPositionMonitorStructs::monitorStruct());
+            continuousMonitorStructs.back()->monType = it2.first;
+            continuousMonitorStructs.back()->objName = it1.second.name;
+            continuousMonitorStructs.back()->interface = this;
+            continuousMonitorStructs.back()->val = &it1.second;
+            it1.second.isAContinuousMonitorStruct = true;
+            it1.second.isATemporaryMonitorStruct = false;
+            ca_create_subscription(it2.second.CHTYPE,
+                                   it2.second.COUNT,
+                                   it2.second.CHID,
+                                   it2.second.MASK,
+                                   scopeInterface::staticEntryrMonitor,
+                                   (void*)continuousMonitorStructs.back(),
+                                   &continuousMonitorStructs.back()->EVID);
+            debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
+            }
         }
     }
 

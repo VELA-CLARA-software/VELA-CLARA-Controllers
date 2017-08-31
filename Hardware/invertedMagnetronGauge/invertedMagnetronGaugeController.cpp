@@ -19,25 +19,24 @@
 #include "invertedMagnetronGaugeInterface.h"
 
 //______________________________________________________________________________
-invertedMagnetronGaugeController::invertedMagnetronGaugeController( const std::string configFileLocation, const  bool show_messages, const bool show_debug_messages )
-: controller( show_messages, show_debug_messages ), localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
-{
-    initialise();
-}
-//______________________________________________________________________________
-invertedMagnetronGaugeController::invertedMagnetronGaugeController( const  bool show_messages, const bool show_debug_messages  )
-: controller( show_messages, show_debug_messages ), localInterface( &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES )
+invertedMagnetronGaugeController::invertedMagnetronGaugeController( const std::string &configFileLocation1,
+                                                                    const bool show_messages,
+                                                                    const bool show_debug_messages,
+                                                                    const bool shouldStartEPICS,
+                                                                    const bool startVirtualMachine,
+                                                                    const VELA_ENUM::MACHINE_AREA myMachineArea ):
+controller( show_messages, show_debug_messages ),
+localInterface( configFileLocation1, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS, startVirtualMachine, myMachineArea ),
+shouldStartEPICS( shouldStartEPICS ),
+machineArea( myMachineArea )
 {
     initialise();
 }
 //______________________________________________________________________________
 void invertedMagnetronGaugeController::initialise()
 {
-    /// Keep a local copy of all the existing shutter names for openShutter1(), openShutter2(), etc...
-
-    localInterface.getImgNames( vacImgNames );
-
-    message("The invertedMagnetronGaugeController succesfully instantiated a invertedMagnetronGaugeInterface.");
+    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
+        message("invertedMagnetronGaugeController instantiation success.");
 }
 //______________________________________________________________________________
 invertedMagnetronGaugeController::~invertedMagnetronGaugeController(){}    //dtor
@@ -62,9 +61,14 @@ double invertedMagnetronGaugeController::getImgP( const std::string & name )
     return localInterface.getImgP( name );
 }
 //______________________________________________________________________________
-VELA_ENUM::IMG_STATE  invertedMagnetronGaugeController::getImgState( const std::string & name )
+VELA_ENUM::IMG_STATE invertedMagnetronGaugeController::getImgState( const std::string & name )
 {
     return localInterface.getImgState( name );
+}
+//______________________________________________________________________________
+const invertedMagnetronGaugeStructs::vacImgObject & invertedMagnetronGaugeController::getIMGObjConstRef( const std::string & name )
+{
+    return localInterface.getIMGObjConstRef( name );
 }
 //______________________________________________________________________________
 std::string invertedMagnetronGaugeController::getImgStateStr( const std::string & name )
