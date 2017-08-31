@@ -188,10 +188,20 @@ liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrf
                                shouldVM,shouldEPICS,llrfType);
                 break;
             case llrfStructs::L01:
-                L01_LLRF_Controller_Obj =
-                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_L01_LLRF_CONFIG,
-                               shouldVM,shouldEPICS,llrfType);
-                return *L01_LLRF_Controller_Obj;
+                {/// YUCK
+                    if( L01_LLRF_Controller_Obj )
+                    {
+                        return *L01_LLRF_Controller_Obj;
+                    }
+                    else
+                    {
+                        L01_LLRF_Controller_Obj =
+                        new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_L01_LLRF_CONFIG,
+                                   shouldVM,shouldEPICS,llrfType);
+                        return *L01_LLRF_Controller_Obj;
+
+                    }
+                }
                 break;
         }
     }
@@ -209,8 +219,46 @@ bool VCllrf::isaGUN(llrfStructs::LLRF_TYPE llrfType)
     }
     return r;
 }
+//______________________________________________________________________________
+liberaLLRFController& VCllrf::getLLRFController(VELA_ENUM::MACHINE_MODE mode,
+                                                llrfStructs::LLRF_TYPE type)
+{
+    if(mode == VELA_ENUM::OFFLINE && type == llrfStructs::LLRF_TYPE::CLARA_HRRG)
+        return offline_CLARA_HRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::VIRTUAL && type == llrfStructs::LLRF_TYPE::CLARA_HRRG)
+        return virtual_CLARA_HRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::PHYSICAL && type == llrfStructs::LLRF_TYPE::CLARA_HRRG)
+        return physical_CLARA_HRRG_LLRF_Controller();
 
+    else if(mode == VELA_ENUM::OFFLINE && type == llrfStructs::LLRF_TYPE::CLARA_LRRG)
+        return offline_CLARA_LRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::VIRTUAL && type ==llrfStructs::LLRF_TYPE::CLARA_LRRG)
+        return virtual_CLARA_LRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::PHYSICAL && type == llrfStructs::LLRF_TYPE::CLARA_LRRG)
+        return physical_CLARA_LRRG_LLRF_Controller();
 
+    else if(mode == VELA_ENUM::OFFLINE && type ==  llrfStructs::LLRF_TYPE::VELA_HRRG)
+        return offline_VELA_HRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::VIRTUAL && type == llrfStructs::LLRF_TYPE::VELA_HRRG)
+        return virtual_VELA_HRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::PHYSICAL && type == llrfStructs::LLRF_TYPE::VELA_HRRG)
+        return physical_VELA_HRRG_LLRF_Controller();
+
+    else if(mode == VELA_ENUM::OFFLINE && type == llrfStructs::LLRF_TYPE::VELA_LRRG)
+        return offline_VELA_LRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::VIRTUAL && type == llrfStructs::LLRF_TYPE::VELA_LRRG)
+        return virtual_VELA_LRRG_LLRF_Controller();
+    else if(mode == VELA_ENUM::PHYSICAL && type == llrfStructs::LLRF_TYPE::VELA_LRRG)
+        return physical_VELA_LRRG_LLRF_Controller();
+
+    else if(mode == VELA_ENUM::OFFLINE && type == llrfStructs::LLRF_TYPE::L01)
+        return offline_L01_LLRF_Controller();
+    else if(mode == VELA_ENUM::VIRTUAL && type == llrfStructs::LLRF_TYPE::L01)
+        return virtual_L01_LLRF_Controller();
+    else if(mode == VELA_ENUM::PHYSICAL && type == llrfStructs::LLRF_TYPE::L01)
+        return physical_L01_LLRF_Controller();
+
+}
 
 
 

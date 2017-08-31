@@ -2,6 +2,8 @@
 #define VCMAGNETS_H
 //
 #include "magnetController.h"
+#include "VCheader.h"
+//
 //
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
@@ -204,96 +206,12 @@ bool  (magnetController::*setSIZero_2)(cves &) = &magnetController::setSIZero;
 using namespace boost::python;
 BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
 {
-    docstring_options doc_options(false);
-    doc_options.disable_cpp_signatures();
-
-    //scope().attr("__doc__") = "VELA_CLARA_MagnetControl module's docstring";
-
     /// Things that you want to use in python must be exposed:
-    // containers
+    docstring_options local_docstring_options(true, true, false);
+    local_docstring_options.disable_cpp_signatures();
+    /// Include ALL the enums you want to expose to Python
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
-    //https://stackoverflow.com/questions/9888289/checking-whether-a-converter-has-already-been-registered
-
-//    // register the QString-to-python converter
-//boost::python::to_python_converter<
-//  QString,
-//  QString_to_python_str>()
-
-    boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    }
-
-    info = boost::python::type_id<std::vector<double> >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    }
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    }
-//    class_<std::vector<double>>("std_vector_double")
-//        .def(vector_indexing_suite<std::vector<double>>())
-//        ;
     class_<std::vector<magnetStructs::MAG_TYPE>>("std_vector_mag_type ")
         .def(vector_indexing_suite<std::vector<magnetStructs::MAG_TYPE>>())
         ;
@@ -304,35 +222,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .value("MAG_PSU_ERROR", magnetStructs::MAG_PSU_STATE::ERROR)
         .value("MAG_PSU_NONE",  magnetStructs::MAG_PSU_STATE::NONE )
         ;
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
-        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
-        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
-        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
-        ;
 
-//    class_<std::vector<std::string>>("std_vector_string")
-//        .def(vector_indexing_suite<std::vector<std::string>>())
-//        ;
-
-
-//    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
-//        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-//        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-//        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-//        ;
-//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-//        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-//        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-//        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-//        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-//        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-//        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-//        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-//        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-//        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-//        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-//        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-//        ;
     /// and enums, remember we have a enum to string python dictionary macro too!
     enum_<magnetStructs::MAG_TYPE>("MAG_TYPE","MAG_TYPE Doc String")
         .value("QUAD", magnetStructs::MAG_TYPE::QUAD)
@@ -362,17 +252,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .add_property("siValues",    &magnetStructs::magnetStateStruct::siValues)
         .add_property("riValues",    &magnetStructs::magnetStateStruct::riValues)
         ;
-    /// Expose base classes
-    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
-        ;
-    /// we have to tell boost.python about pure virtual methods in abstract base classes
-    boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
-        ("controller","controller Doc String", boost::python::no_init) /// forces Python to not be able to construct (init) this object
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)     )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)        )
-        ;
+
     // magnet object struct to be exposed, used when returning a magnetobject reference
     boost::python::class_<magnetStructs::magnetObject,boost::noncopyable>
         ("magnetObject","magnetObject Doc String", boost::python::no_init)
@@ -390,7 +270,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def_readonly("degValues",    &magnetStructs::magnetObject::degValues)
         .def_readonly("position",     &magnetStructs::magnetObject::position)
         .def_readonly("fieldIntegralCoefficients1",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
-        .add_property("fieldIntegralCoefficients",  &magnetStructs::magnetObject::fieldIntegralCoefficients )
+        .def_readonly("fieldIntegralCoefficients",  &magnetStructs::magnetObject::fieldIntegralCoefficients )
         .def_readonly("numDegaussSteps", &magnetStructs::magnetObject::numDegaussSteps)
         .def_readonly("manufacturer",    &magnetStructs::magnetObject::manufacturer)
         .def_readonly("serialNumber",    &magnetStructs::magnetObject::serialNumber)
