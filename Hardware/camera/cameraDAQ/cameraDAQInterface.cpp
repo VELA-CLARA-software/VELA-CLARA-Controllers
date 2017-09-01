@@ -389,7 +389,6 @@ bool cameraDAQInterface::collectAndSave(const int & numbOfShots)
     new std::thread(&cameraDAQInterface::staticCollectAndSave,this,selectedDAQCamera,numbOfShots);
     return true;
 }
-
 bool cameraDAQInterface::collectAndSaveVC(const int & numbOfShots)
 {
     //need to make sure your python is running while this thread is active
@@ -467,6 +466,10 @@ bool cameraDAQInterface::killCollectAndSaveVC()///can only kill while saving.
 
     return killed;
 }
+std::string cameraDAQInterface::getlatestDirectory()
+{
+    return selectedDAQCamera.latestDirectory;
+}
 const cameraDAQObject &cameraDAQInterface::getCamDAQObjConstRef(const std::string &cam)///THIS NEEDS FIXING  at "NOPE"
 {
     std::string cameraName = useCameraFrom(cam);
@@ -521,6 +524,7 @@ bool cameraDAQInterface::makeANewDirectory()///YUCK (make it look nice)
     if(status == ECA_NORMAL)
     {
         ans = true;
+        selectedDAQCamera.latestDirectory = newPath;
         message("New path set to ",newPath," on ",selectedDAQCamera.name," camera.");
     }
 

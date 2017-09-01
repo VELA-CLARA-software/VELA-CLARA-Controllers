@@ -66,6 +66,7 @@ class cameraDAQController  : public controller
         const cameraDAQObject &getCamDAQObjConstRef(const std::string &camName);
         const cameraDAQObject &getSelectedDAQRef();
         const cameraDAQObject &getVCDAQRef();
+        std::string getlatestDirectory();
 
     protected:
     private:

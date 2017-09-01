@@ -126,7 +126,7 @@ namespace cameraStructs
         // write check is whether the last write was succesful
         WRITE_CHECK writeCheck;
         // If error this string will get updated
-        std::string writeErrorMessage;
+        std::string writeErrorMessage, latestDirectory;
         int shotsTaken, numberOfShots, maxShots;
         double frequency,exposureTime,acquisitionPeriod;
         // doesn't exist for CLARA

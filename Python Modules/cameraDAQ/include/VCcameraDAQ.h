@@ -179,8 +179,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
                       "Time (seconds) of full acquisition period, that includes expoture time.")
         .def_readonly("writeErrorMessage",
                       &cameraStructs::cameraDAQObject::writeErrorMessage,
-                      "If there is an error with saving the images a message willl be displayed here.")
+                      "If there is an error with saving the images a message will be displayed here.")
+          .def_readonly("latestDirectory",
+                      &cameraStructs::cameraDAQObject::latestDirectory,
+                      "Latest directory images were saved to.")
         ;
+
     class_<cameraDAQController, bases<controller>, boost::noncopyable>
         ("cameraDAQController","cameraDAQController", no_init)
         .def("get_CA_PEND_IO_TIMEOUT",
@@ -249,6 +253,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("stopVCAcquiring",
              &cameraDAQController::stopVCAcquiring,
              "Stops VC Camera acquiring and returns True if successful")
+         .def("getlatestDirectory",
+             &cameraDAQController::getlatestDirectory,
+             "Returns a string indicating directory selected camers last saved images to.")
         ;
 
     class_<VCcameraDAQ,boost::noncopyable>("init")

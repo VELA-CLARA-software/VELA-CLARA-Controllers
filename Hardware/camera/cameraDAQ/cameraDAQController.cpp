@@ -122,3 +122,7 @@ const cameraDAQObject& cameraDAQController::getVCDAQRef()
 {
     return localInterface.getVCDAQRef();
 }
+std::string cameraDAQController::getlatestDirectory()
+{
+    return localInterface.getlatestDirectory();
+}

@@ -47,6 +47,7 @@ class cameraDAQInterface : public cameraInterface
         bool killCollectAndSaveVC();
         bool collect(cameraDAQObject camera,unsigned short &comm, const int & numbOfShots);
         bool save(cameraDAQObject camera,unsigned short &comm);
+        std::string getlatestDirectory();
 
         const cameraDAQObject &getCamDAQObjConstRef(const std::string &cam);
         const cameraDAQObject &getSelectedDAQRef();
