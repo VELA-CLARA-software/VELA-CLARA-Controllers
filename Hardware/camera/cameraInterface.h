@@ -67,8 +67,8 @@ class cameraInterface : public interface
         ///Functions Accessible to Python Controller///
         bool isON (const std::string &cam); //Can use Camera name or asociated
         bool isOFF(const std::string &cam); //screen name.
-        bool isAquiring(const std::string &cam);
-        bool isNotAquiring(const std::string &cam);
+        bool isAcquiring(const std::string &cam);
+        bool isNotAcquiring(const std::string &cam);
         std::string selectedCamera();
         bool setCamera(const std::string &cam);
         bool startAcquiring();

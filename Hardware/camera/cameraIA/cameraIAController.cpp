@@ -12,9 +12,9 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "cameraController.h"
+#include "cameraIAController.h"
 // stl
-cameraController::cameraController(
+cameraIAController::cameraIAController(
     const bool show_messages,
     const bool show_debug_messages,
     const std::string & magConf,
@@ -22,110 +22,92 @@ cameraController::cameraController(
     const bool shouldStartEPICs,
     const VELA_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages ),
-localInterface(magConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
+localInterface(magConf,
+               startVirtualMachine,
+               &SHOW_MESSAGES,
+               &SHOW_DEBUG_MESSAGES,
+               shouldStartEPICs,
+               myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {
-//    if( shouldStartEPICs )
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
-//    initialise();
 }
-cameraController::~cameraController(){}    //dtor
-std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraController::getILockStates(const std::string & name)
+cameraIAController::~cameraIAController(){}    //dtor
+std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraIAController::getILockStates(const std::string &name)
 {
-    return localInterface.getILockStates( name );
+    return localInterface.getILockStates(name);
 }
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > cameraController::getILockStatesStr( const std::string & name )
+std::map<VELA_ENUM::ILOCK_NUMBER,std::string> cameraIAController::getILockStatesStr(const std::string &name)
 {
-    return localInterface.getILockStatesStr( name );
+    return localInterface.getILockStatesStr(name);
 }
-double cameraController::get_CA_PEND_IO_TIMEOUT()
+double cameraIAController::get_CA_PEND_IO_TIMEOUT()
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }
-void   cameraController::set_CA_PEND_IO_TIMEOUT( double val )
+void   cameraIAController::set_CA_PEND_IO_TIMEOUT( double val )
 {
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
-bool cameraController::isON ( const std::string & cam )
+
+///Functions Accessible to Python Controller///
+//Generic Functions
+bool cameraIAController::isON (const std::string &cam)
 {
-    return localInterface.isON( cam );
+    return localInterface.isON(cam);
 }
-bool cameraController::isOFF( const std::string & cam )
+bool cameraIAController::isOFF(const std::string &cam)
 {
-    return localInterface.isOFF( cam );
+    return localInterface.isOFF(cam);
 }
-bool cameraController::isMonitoring ( const std::string & cam )
+bool cameraIAController::isAcquiring (const std::string &cam)
 {
-    return localInterface.isMonitoring( cam );
+    return localInterface.isAcquiring(cam);
 }
-bool cameraController::isNotMonitoring ( const std::string & cam )
+bool cameraIAController::isNotAcquiring (const std::string &cam)
 {
-    return localInterface.isNotMonitoring( cam );
+    return localInterface.isNotAcquiring(cam);
 }
-std::string cameraController::cameraName()
+std::string cameraIAController::selectedCamera()
 {
-    return localInterface.cameraName();
+    return localInterface.selectedCamera();
 }
-bool cameraController::setCamera(const std::string & cam)
+bool cameraIAController::setCamera(const std::string &cam)
 {
     return localInterface.setCamera(cam);
 }
-bool cameraController::calibrate()
+bool cameraIAController::startAcquiring()
 {
-    return localInterface.calibrate();
+    return localInterface.startAcquiring();
 }
-bool cameraController::setXRatio(const double & r)
+bool cameraIAController::stopAcquiring()
 {
-    return localInterface.setXRatio(r);
+    return localInterface.stopAcquiring();
 }
-bool cameraController::setYRatio(const double & r)
+bool cameraIAController::startVCAcquiring()
 {
-    return localInterface.setYRatio(r);
+    return localInterface.startVCAcquiring();
 }
-bool cameraController::start()
+bool cameraIAController::stopVCAcquiring()
 {
-    return localInterface.start();
+    return localInterface.stopVCAcquiring();
 }
-bool cameraController::stop()
+
+//IA Specific Functions
+bool cameraIAController::setBackground()
 {
-    return localInterface.stop();
+    return localInterface.setBackground();
 }
-bool cameraController::collectAndSave(int & numbOfShots, const std::string & directory)
+const cameraObject &cameraIAController::getCamIAObjConstRef(const std::string &camName)
 {
-    return localInterface.collectAndSave(numbOfShots, directory);
+    return localInterface.getCamIAObjConstRef(camName);
 }
-std::vector< cameraStructs::camDataType > cameraController::getRawData()
+const cameraObject &cameraIAController::getSelectedIARef()
 {
-    return localInterface.getRawData();
+    return localInterface.getSelectedIARef();
 }
-std::vector< cameraStructs::camDataType > cameraController::getBackgroundRawData()
+const cameraObject &cameraIAController::getVCIARef()
 {
-    return localInterface.getBackgroundRawData();
+    return localInterface.getVCIARef();
 }
-double cameraController::getX()
-{
-    return localInterface.getX();
-}
-double cameraController::getY()
-{
-    return localInterface.getY();
-}
-double cameraController::getSigmaX()
-{
-    return localInterface.getSigmaX();
-}
-double cameraController::getSigmaY()
-{
-    return localInterface.getSigmaY();
-}
-double cameraController::getSigmaXY()
-{
-    return localInterface.getSigmaXY();
-}
-const cameraStructs::cameraObject& cameraController::getCamObjConstRef( const std::string & camName  )
-{
-    return localInterface.getCamObjConstRef( camName );
-}
+

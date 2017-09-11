@@ -60,13 +60,13 @@ bool cameraDAQController::isOFF(const std::string &cam)
 {
     return localInterface.isOFF(cam);
 }
-bool cameraDAQController::isAquiring (const std::string &cam)
+bool cameraDAQController::isAcquiring (const std::string &cam)
 {
-    return localInterface.isAquiring(cam);
+    return localInterface.isAcquiring(cam);
 }
-bool cameraDAQController::isNotAquiring (const std::string &cam)
+bool cameraDAQController::isNotAcquiring (const std::string &cam)
 {
-    return localInterface.isNotAquiring(cam);
+    return localInterface.isNotAcquiring(cam);
 }
 std::string cameraDAQController::selectedCamera()
 {

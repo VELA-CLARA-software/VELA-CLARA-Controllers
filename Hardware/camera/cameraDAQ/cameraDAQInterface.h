@@ -39,7 +39,6 @@ class cameraDAQInterface : public cameraInterface
         ~cameraDAQInterface();
 
         ///Functions Accessible to Python Controller///
-        // add in a VC specific version of this
         bool collectAndSave (const int & numbOfShots);
         bool collectAndSaveVC (const int & numbOfShots);
         bool staticCollectAndSave(cameraDAQObject camera,const int & numbOfShots);

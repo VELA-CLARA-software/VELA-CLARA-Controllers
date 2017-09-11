@@ -107,14 +107,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .value("ACQUIRING_ERROR",   ACQUIRE_STATE::ACQUIRING_ERROR)
         ;
     enum_<CAPTURE_STATE>("CAPTURE_STATE","Enum to interpet the capturing state of camera.")
-        .value("NOT_ACQUIRING",     CAPTURE_STATE::NOT_CAPTURING)
-        .value("ACQUIRING",         CAPTURE_STATE::CAPTURING)
-        .value("ACQUIRING_ERROR",   CAPTURE_STATE::CAPTURING_ERROR)
+        .value("NOT_CAPTURING",     CAPTURE_STATE::NOT_CAPTURING)
+        .value("CAPTURING",         CAPTURE_STATE::CAPTURING)
+        .value("CAPTURING_ERROR",   CAPTURE_STATE::CAPTURING_ERROR)
         ;
     enum_<WRITE_STATE>("WRITE_STATE","Enum to interpet the saving state of camera.")
-        .value("NOT_ACQUIRING",     WRITE_STATE::NOT_WRITING)
-        .value("ACQUIRING",         WRITE_STATE::WRITING)
-        .value("ACQUIRING_ERROR",   WRITE_STATE::WRITING_ERROR)
+        .value("NOT_WRITING",     WRITE_STATE::NOT_WRITING)
+        .value("WRITING",         WRITE_STATE::WRITING)
+        .value("WRITING_ERROR",   WRITE_STATE::WRITING_ERROR)
         ;
     enum_<WRITE_CHECK>("WRITE_CHECK","Enum to interpet the saving errors of camera.")
         .value("WRITE_OK",          WRITE_CHECK::WRITE_CHECK_OK)
@@ -226,12 +226,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
              &cameraDAQController::isOFF,
              (arg("name")),
              "Returns True if camera 'name' is OFF")
-        .def("isAquiring",
-             &cameraDAQController::isAquiring,
+        .def("isAcquiring",
+             &cameraDAQController::isAcquiring,
              (arg("name")),
              "Returns True if camera 'name' is acquiring")
-        .def("isNotAquiring",
-             &cameraDAQController::isNotAquiring,
+        .def("isNotAcquiring",
+             &cameraDAQController::isNotAcquiring,
              (arg("name")),
              "Returns True if camera 'name' is not acquiring")
         .def("selectedCamera",

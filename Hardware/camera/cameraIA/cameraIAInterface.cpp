@@ -12,7 +12,7 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "cameraInterface.h"
+#include "cameraIAInterface.h"
 //djs
 #include "configDefinitions.h"
 // stl
@@ -26,22 +26,23 @@
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-cameraInterface::cameraInterface( const std::string &Conf,
+cameraIAInterface::cameraIAInterface( const std::string &Conf,
                                   const bool startVirtualMachine,
                                   const bool* show_messages_ptr,
                                   const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
-                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
-configReader( Conf, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-shouldStartEPICs( shouldStartEPICs ), myMachineArea(myMachineArea),selectedCamera(allCamData["VC"])
+                                  const VELA_ENUM::MACHINE_AREA myMachineArea):
+configReader(Conf,startVirtualMachine,show_messages_ptr,show_debug_messages_ptr),
+cameraInterface(show_messages_ptr,show_debug_messages_ptr),
+shouldStartEPICs(shouldStartEPICs),
+myMachineArea(myMachineArea)
 {
     initialise();
 }
-cameraInterface::~cameraInterface()
+cameraIAInterface::~cameraIAInterface()
 {
 }
-void cameraInterface::killMonitor( cameraStructs::monitorStruct * ms )
+void cameraIAInterface::killMonitor( cameraStructs::monitorStruct * ms )
 {
     int status = ca_clear_subscription( ms -> EVID );
     if( status == ECA_NORMAL)
@@ -49,7 +50,7 @@ void cameraInterface::killMonitor( cameraStructs::monitorStruct * ms )
     else
         debugMessage("ERROR: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
 }
-void cameraInterface::initialise()
+void cameraIAInterface::initialise()
 {
     /// The config file reader
     message("The cameraInterface is going to try and read the config file.");
@@ -82,7 +83,7 @@ void cameraInterface::initialise()
     else
         message("The cameraInterface  Failed to Read the configFile.");
 }
-bool cameraInterface::initObjects()
+bool cameraIAInterface::initObjects()
 {
     bool camDatSuccess = configReader.getCamData( allCamData );
     //degStruct = configReader.getDeguassStruct();
@@ -92,7 +93,7 @@ bool cameraInterface::initObjects()
         it.second.machineArea = myMachineArea;
     return camDatSuccess;
 }
-void cameraInterface::initChids()
+void cameraIAInterface::initChids()
 {
     message( "\n", "Searching for Camera chids...");
     for( auto && camObjIt : allCamData )
@@ -125,13 +126,13 @@ void cameraInterface::initChids()
         allChidsInitialised = true;  /// interface base class member
 }
 
-void cameraInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
+void cameraIAInterface::addChannel( const std::string & pvRoot, cameraStructs::pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
     debugMessage( "Create channel to ", s1 );
 }
-void cameraInterface::startMonitors()
+void cameraIAInterface::startMonitors()
 {
     continuousMonitorStructs.clear();
 //    continuousILockMonitorStructs.clear();
@@ -153,7 +154,7 @@ void cameraInterface::startMonitors()
     if ( status == ECA_NORMAL )
         allMonitorsStarted = true; /// interface base class member
 }
-void cameraInterface::staticEntryMonitor(const event_handler_args args)
+void cameraIAInterface::staticEntryMonitor(const event_handler_args args)
 {
     cameraStructs::monitorStruct*ms = static_cast<  cameraStructs::monitorStruct *>(args.usr);
     switch( ms -> monType )
@@ -173,15 +174,15 @@ void cameraInterface::staticEntryMonitor(const event_handler_args args)
         case cameraStructs::CAM_PV_TYPE::SIGMA_Y:
             ms->interface->updateSigmaY( *(double*)args.dbr, ms->objName );
             break;
-        case cameraStructs::CAM_PV_TYPE::SIGMA_XY:
-            ms->interface->updateSigmaXY( *(double*)args.dbr, ms->objName );
+        case cameraStructs::CAM_PV_TYPE::COV_XY:
+            ms->interface->updateCovXY( *(double*)args.dbr, ms->objName );
             break;
         default:
             ms->interface->debugMessage( "!!! ERROR !!! Unknown Monitor Type passed to cameraInterface::staticEntryMonitor" );
             break;
     }
 }
-void cameraInterface::updateState(const unsigned short value,const std::string&cameraName)
+void cameraIAInterface::updateState(const unsigned short value,const std::string&cameraName)
 {
     if(entryExists(allCamData,cameraName))
     {
@@ -199,7 +200,7 @@ void cameraInterface::updateState(const unsigned short value,const std::string&c
     message(cameraName, "State is ", ENUM_TO_STRING( allCamData[cameraName].state));
     }
 }
-void cameraInterface::updateX(const double value,const std::string& cameraName)
+void cameraIAInterface::updateX(const double value,const std::string& cameraName)
 {
     if(entryExists(allCamData,cameraName))
     {
@@ -208,7 +209,7 @@ void cameraInterface::updateX(const double value,const std::string& cameraName)
             debugMessage(cameraName," NEW X = ", allCamData[cameraName].rawData.x);
     }
 }
-void cameraInterface::updateY(const double value,const std::string& cameraName)
+void cameraIAInterface::updateY(const double value,const std::string& cameraName)
 {
     if(entryExists(allCamData,cameraName))
     {
@@ -217,7 +218,7 @@ void cameraInterface::updateY(const double value,const std::string& cameraName)
             debugMessage(cameraName," NEW Y = ", allCamData[cameraName].rawData.y);
     }
 }
-void cameraInterface::updateSigmaX(const double value,const std::string& cameraName)
+void cameraIAInterface::updateSigmaX(const double value,const std::string& cameraName)
 {
     if(entryExists(allCamData,cameraName))
     {
@@ -226,7 +227,7 @@ void cameraInterface::updateSigmaX(const double value,const std::string& cameraN
             debugMessage(cameraName," NEW SIGMA X = ", allCamData[cameraName].rawData.xSigma);
     }
 }
-void cameraInterface::updateSigmaY(const double value,const std::string& cameraName)
+void cameraIAInterface::updateSigmaY(const double value,const std::string& cameraName)
 {
     if(entryExists(allCamData,cameraName))
     {
@@ -235,7 +236,7 @@ void cameraInterface::updateSigmaY(const double value,const std::string& cameraN
             debugMessage(cameraName," NEW SIGMA Y = ", allCamData[cameraName].rawData.ySigma);
     }
 }
-void cameraInterface::updateSigmaXY(const double value,const std::string& cameraName)
+void cameraIAInterface::updateCovXY(const double value,const std::string& cameraName)
 {
     if(entryExists(allCamData,cameraName))
     {

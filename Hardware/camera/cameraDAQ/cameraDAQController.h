@@ -50,8 +50,8 @@ class cameraDAQController  : public controller
         //Generic Functions
         bool isON (const std::string &cam);
         bool isOFF(const std::string &cam);
-        bool isAquiring(const std::string &cam);
-        bool isNotAquiring(const std::string &cam);
+        bool isAcquiring(const std::string &cam);
+        bool isNotAcquiring(const std::string &cam);
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
         bool startAcquiring();

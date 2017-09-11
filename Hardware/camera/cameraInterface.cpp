@@ -59,7 +59,7 @@ bool cameraInterface::isOFF( const std::string & cam )
             ans = true;
     return ans;
 }
-bool cameraInterface::isAquiring( const std::string & cam )
+bool cameraInterface::isAcquiring( const std::string & cam )
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
@@ -68,7 +68,7 @@ bool cameraInterface::isAquiring( const std::string & cam )
             ans = true;
     return ans;
 }
-bool cameraInterface::isNotAquiring ( const std::string & cam)
+bool cameraInterface::isNotAcquiring ( const std::string & cam)
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
@@ -100,7 +100,7 @@ bool cameraInterface::startAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
-    if( isNotAquiring(selectedCamera()))
+    if( isNotAcquiring(selectedCamera()))
     {
         pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
@@ -113,7 +113,7 @@ bool cameraInterface::stopAcquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
-    if( isAquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
+    if( isAcquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
     {
         pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
@@ -126,7 +126,7 @@ bool cameraInterface::startVCAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
-    if( isNotAquiring("VC") )
+    if( isNotAcquiring("VC") )
     {
         pvStruct S(vcDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
@@ -138,7 +138,7 @@ bool cameraInterface::stopVCAcquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
-    if( isAquiring("VC") && isCollecting("VC")==false )
+    if( isAcquiring("VC") && isCollecting("VC")==false )
     {
         pvStruct S(vcDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);

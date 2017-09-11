@@ -348,7 +348,7 @@ bool cameraDAQInterface::collect(cameraDAQObject camera, unsigned short &comm, c
     if(numbOfShots<=camera.maxShots)
     {
         setNumberOfShots(numbOfShots);
-        if( isAquiring(camera.name) )
+        if( isAcquiring(camera.name) )
         {
             ans=shortCaput(comm,S);
             message("Caputure set to ",comm,

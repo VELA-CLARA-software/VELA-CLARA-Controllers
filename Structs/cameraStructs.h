@@ -85,19 +85,33 @@ namespace cameraStructs
     // eventually (aspiration) harmonize this with VELA cams ...
     struct cameraIAObject// image analysis object
     {
-        cameraIAObject() :
-            x(9999.9999),y(9999.9999),sigmaX(9999.9999),sigmaY(9999.9999),
-            covXY(9999.9999),xPix2mm(9999.9999),yPix2mm(9999.9999),xPix(9999),
-            yPix(9999),xSigmaPix(9999),ySigmaPix(9999),xyCovPix(999),
-            xCenterPix(9999),yCenterPix(9999),xRad(9999),yRad(9999),
-            bitDepth(9999),imageHeight(9999),imageWidth(9999){}
-        double x,y,sigmaX,sigmaY,covXY,
-               xPix2mm, yPix2mm;
+        cameraIAObject() : x(UTL::DUMMY_DOUBLE),
+                           y(UTL::DUMMY_DOUBLE),
+                           sigmaX(UTL::DUMMY_DOUBLE),
+                           sigmaY(UTL::DUMMY_DOUBLE),
+                           covXY(UTL::DUMMY_DOUBLE),
+                           pix2mm(UTL::DUMMY_DOUBLE),
+                           xPix(UTL::DUMMY_INT),
+                           yPix(UTL::DUMMY_INT),
+                           xSigmaPix(UTL::DUMMY_INT),
+                           ySigmaPix(UTL::DUMMY_INT),
+                           xyCovPix(UTL::DUMMY_INT),
+                           xCenterPix(UTL::DUMMY_INT),
+                           yCenterPix(UTL::DUMMY_INT),
+                           xRad(UTL::DUMMY_INT),
+                           yRad(UTL::DUMMY_INT),
+                           bitDepth(UTL::DUMMY_INT),
+                           imageHeight(UTL::DUMMY_INT),
+                           imageWidth(UTL::DUMMY_INT){}
+
+        double x,y,sigmaX,sigmaY,covXY,pix2mm;
         size_t xPix, yPix,xSigmaPix,ySigmaPix,xyCovPix,
                xCenterPix,yCenterPix,xRad,yRad,
                bitDepth,imageHeight,imageWidth;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        //Time of last background set
+        //.......put here....
+        //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
     struct cameraDAQObject
     {
@@ -140,16 +154,21 @@ namespace cameraStructs
     ///Not using this yet but will use it eventually for DAQ and IA
     struct cameraObject
     {
-        cameraObject() : name("NO_NAME"), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
+        cameraObject() : name(UTL::UNKNOWN_NAME),
+                         pvRoot(UTL::UNKNOWN_PVROOT),
+                         screenPV(UTL::UNKNOWN_STRING),
+                         state(CAM_ERROR) {}
         std::string name, pvRoot, screenPV;
         CAM_STATE state;
-        std::vector<camDataType> rawData;
-        std::vector<camDataType> rawBackgroundData;
+        // Rolling acquire
+        ACQUIRE_STATE acquireState;
+        //std::vector<camDataType> rawData;
+        //std::vector<camDataType> rawBackgroundData;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
         VELA_ENUM::MACHINE_AREA  machineArea;
-        cameraDAQObject CDO;
-        cameraIAObject CIO;
+        cameraDAQObject DAQ;
+        cameraIAObject IA;
     };
 }
 #endif // CAM_STRUCTS_H_
