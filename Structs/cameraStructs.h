@@ -29,15 +29,21 @@
 
 class cameraDAQInterface;
 
+class cameraIAInterface;
+
 namespace cameraStructs
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE,
-        (CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
+        (TEST)(CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
         (CAM_FILE_WRITE)(CAM_FILE_WRITE_RBV)(CAM_FILE_WRITE_CHECK)
         (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_ACQUIRE)(CAM_CAPTURE)
         (CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
-        (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)(X)
-        (Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(UNKNOWN_CAM_PV_TYPE)
+        (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)
+        (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)
+        (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
+        (X_RAD)(Y_RAD)(X_CENTER_PIX)(Y_CENTER_PIX)
+        (BIT_DEPTH)(IMAGE_HEIGHT)(IMAGE_WIDTH)
+        (UNKNOWN_CAM_PV_TYPE)
         (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
@@ -82,6 +88,15 @@ namespace cameraStructs
         cameraDAQInterface *interface;
         evid             EVID;
     };
+    struct monitorIAStruct
+    {
+        monitorIAStruct(): monType(UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"), interface(nullptr),EVID(nullptr){}
+        CAM_PV_TYPE      monType;
+        std::string      objName;
+        chtype           CHTYPE;
+        cameraIAInterface *interface;
+        evid             EVID;
+    };
     // eventually (aspiration) harmonize this with VELA cams ...
     struct cameraIAObject// image analysis object
     {
@@ -93,9 +108,9 @@ namespace cameraStructs
                            pix2mm(UTL::DUMMY_DOUBLE),
                            xPix(UTL::DUMMY_INT),
                            yPix(UTL::DUMMY_INT),
-                           xSigmaPix(UTL::DUMMY_INT),
-                           ySigmaPix(UTL::DUMMY_INT),
-                           xyCovPix(UTL::DUMMY_INT),
+                           sigmaXPix(UTL::DUMMY_INT),
+                           sigmaYPix(UTL::DUMMY_INT),
+                           covXYPix(UTL::DUMMY_INT),
                            xCenterPix(UTL::DUMMY_INT),
                            yCenterPix(UTL::DUMMY_INT),
                            xRad(UTL::DUMMY_INT),
@@ -105,13 +120,14 @@ namespace cameraStructs
                            imageWidth(UTL::DUMMY_INT){}
 
         double x,y,sigmaX,sigmaY,covXY,pix2mm;
-        size_t xPix, yPix,xSigmaPix,ySigmaPix,xyCovPix,
+        size_t xPix, yPix,sigmaXPix,sigmaYPix,covXYPix,
                xCenterPix,yCenterPix,xRad,yRad,
                bitDepth,imageHeight,imageWidth;
-        //Time of last background set
-        //.......put here....
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+
+        //Time of last background set
+        //.......put here....
     };
     struct cameraDAQObject
     {
@@ -147,18 +163,18 @@ namespace cameraStructs
         std::vector<camDataType> rawData;
         // we're going to store a background image array ion a PV
         std::vector<camDataType> rawBackgroundData;
-        VELA_ENUM::MACHINE_AREA  machineArea;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        //VELA_ENUM::MACHINE_AREA  machineArea;
+        //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
     ///Not using this yet but will use it eventually for DAQ and IA
     struct cameraObject
     {
         cameraObject() : name(UTL::UNKNOWN_NAME),
                          pvRoot(UTL::UNKNOWN_PVROOT),
-                         screenPV(UTL::UNKNOWN_STRING),
+                         screenName(UTL::UNKNOWN_STRING),
                          state(CAM_ERROR) {}
-        std::string name, pvRoot, screenPV;
+        std::string name, pvRoot, screenName;
         CAM_STATE state;
         // Rolling acquire
         ACQUIRE_STATE acquireState;

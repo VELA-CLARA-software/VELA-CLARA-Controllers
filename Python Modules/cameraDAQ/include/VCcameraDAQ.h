@@ -135,24 +135,29 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("getILockStates",
              pure_virtual(&controller::getILockStates)                  )
         ;
-
-    class_<cameraStructs::cameraDAQObject,boost::noncopyable>
-        ("cameraDAQObject","cameraDAQObject (read only values)", no_init)
+    boost::python::class_<cameraStructs::cameraObject,boost::noncopyable>
+        ("cameraObject","cameraObject Doc String", boost::python::no_init)
         .def_readonly("name",
-                      &cameraStructs::cameraDAQObject::name,
+                      &cameraStructs::cameraObject::name,
                       "Name of the camera (defined in the config file).")
         .def_readonly("pvRoot",
-                      &cameraStructs::cameraDAQObject::pvRoot,
+                      &cameraStructs::cameraObject::pvRoot,
                       "Camera's PV preffix (defined in the config file).")
         .def_readonly("screenName",
-                      &cameraStructs::cameraDAQObject::screenName,
+                      &cameraStructs::cameraObject::screenName,
                       "Name of screen associated Camera (defined in config file).")
         .def_readonly("state",
-                      &cameraStructs::cameraDAQObject::state,
+                      &cameraStructs::cameraObject::state,
                       "The state indicating whether Camera is 'reachable', i.e. power is on. ")
         .def_readonly("acquireState",
-                      &cameraStructs::cameraDAQObject::acquireState,
-                      "The state indicating whether Camera is aquiring images (not necessarily collectin/saving them).")
+                      &cameraStructs::cameraObject::acquireState,
+                      "Horizontal position of beam's centroid in millemetres.")
+        .def_readonly("DAQ",
+                      &cameraStructs::cameraObject::DAQ,
+                      "Object (cameraDAQObject) containing all the DAQ data.")
+        ;
+    class_<cameraStructs::cameraDAQObject,boost::noncopyable>
+        ("cameraDAQObject","cameraDAQObject (read only values)", no_init)
         .def_readonly("captureState",
                       &cameraStructs::cameraDAQObject::captureState,
                       "The state indicating whether the Camera is collecting images.")

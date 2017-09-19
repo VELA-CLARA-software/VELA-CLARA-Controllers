@@ -62,66 +62,66 @@ void VCcameraIA::setDebugMessage()
     shouldShowDebugMessage = true;
     shouldShowMessage = false;
 }
-cameraIAController& VCcameraIA::physical_CLARA_Camera_DAQ_Controller()
+cameraIAController& VCcameraIA::physical_CLARA_Camera_IA_Controller()
 {
     std::string cconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "physical_CLARA_Camera_Controller";
-    return getController(physical_Camera_DAQ_Controller_Obj,
+    return getController(physical_Camera_IA_Controller_Obj,
                          cconf,
                          name,
                          withoutVM,
                          withEPICS,
                          CLARA_PH1);
 }
-cameraIAController& VCcameraIA::virtual_CLARA_Camera_DAQ_Controller()
+cameraIAController& VCcameraIA::virtual_CLARA_Camera_IA_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "virtual_CLARA_Camera_Controller";
-    return getController(virtual_Camera_DAQ_Controller_Obj,
+    return getController(virtual_Camera_IA_Controller_Obj,
                          mconf,
                          name,
                          withVM,
                          withEPICS,
                          CLARA_PH1);
 }
-cameraIAController& VCcameraIA::offline_CLARA_Camera_DAQ_Controller()
+cameraIAController& VCcameraIA::offline_CLARA_Camera_IA_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "offline_CLARA_Camera_Controller";
-    return getController(offline_Camera_DAQ_Controller_Obj,
+    return getController(offline_Camera_IA_Controller_Obj,
                          mconf,
                          name,
                          withoutVM,
                          withoutEPICS,
                          CLARA_PH1);
 }
-cameraIAController& VCcameraIA::physical_VELA_Camera_DAQ_Controller()
+cameraIAController& VCcameraIA::physical_VELA_Camera_IA_Controller()
 {
     std::string cconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "physical_VELA_Camera_Controller";
-    return getController(physical_Camera_DAQ_Controller_Obj,
+    return getController(physical_Camera_IA_Controller_Obj,
                          cconf,
                          name,
                          withoutVM,
                          withEPICS,
                          VELA_INJ);
 }
-cameraIAController& VCcameraIA::virtual_VELA_Camera_DAQ_Controller()
+cameraIAController& VCcameraIA::virtual_VELA_Camera_IA_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "virtual_VELA_Camera_Controller";
-    return getController(virtual_Camera_DAQ_Controller_Obj,
+    return getController(virtual_Camera_IA_Controller_Obj,
                          mconf,
                          name,
                          withVM,
                          withEPICS,
                          VELA_INJ);
 }
-cameraIAController& VCcameraIA::offline_VELA_Camera_DAQ_Controller()
+cameraIAController& VCcameraIA::offline_VELA_Camera_IA_Controller()
 {
     std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
     std::string name  = "offline_VELA_Camera_Controller";
-    return getController(offline_Camera_DAQ_Controller_Obj,
+    return getController(offline_Camera_IA_Controller_Obj,
                          mconf,
                          name,
                          withoutVM,

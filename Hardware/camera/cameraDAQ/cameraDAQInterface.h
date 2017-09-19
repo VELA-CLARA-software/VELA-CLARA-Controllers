@@ -41,16 +41,16 @@ class cameraDAQInterface : public cameraInterface
         ///Functions Accessible to Python Controller///
         bool collectAndSave (const int & numbOfShots);
         bool collectAndSaveVC (const int & numbOfShots);
-        bool staticCollectAndSave(cameraDAQObject camera,const int & numbOfShots);
+        bool staticCollectAndSave(cameraObject camera,const int & numbOfShots);
         bool killCollectAndSave();
         bool killCollectAndSaveVC();
-        bool collect(cameraDAQObject camera,unsigned short &comm, const int & numbOfShots);
-        bool save(cameraDAQObject camera,unsigned short &comm);
+        bool collect(cameraObject camera,unsigned short &comm, const int & numbOfShots);
+        bool save(cameraObject camera,unsigned short &comm);
         std::string getlatestDirectory();
 
-        const cameraDAQObject &getCamDAQObjConstRef(const std::string &cam);
-        const cameraDAQObject &getSelectedDAQRef();
-        const cameraDAQObject &getVCDAQRef();
+        const cameraObject &getCamDAQObjConstRef(const std::string &cam);
+        const cameraObject &getSelectedDAQRef();
+        const cameraObject &getVCDAQRef();
 
     protected:
     private:

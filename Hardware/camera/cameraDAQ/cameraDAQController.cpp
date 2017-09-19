@@ -110,15 +110,15 @@ bool cameraDAQController::killCollectAndSaveVC()
 {
     return localInterface.killCollectAndSaveVC();
 }
-const cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(const std::string &camName)
+const cameraObject& cameraDAQController::getCamDAQObjConstRef(const std::string &camName)
 {
     return localInterface.getCamDAQObjConstRef(camName);
 }
-const cameraDAQObject& cameraDAQController::getSelectedDAQRef()
+const cameraObject& cameraDAQController::getSelectedDAQRef()
 {
     return localInterface.getSelectedDAQRef();
 }
-const cameraDAQObject& cameraDAQController::getVCDAQRef()
+const cameraObject& cameraDAQController::getVCDAQRef()
 {
     return localInterface.getVCDAQRef();
 }

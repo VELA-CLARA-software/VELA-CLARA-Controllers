@@ -34,7 +34,7 @@ class cameraDAQConfigReader : public configReader
         ~cameraDAQConfigReader();
 
         bool readConfig();
-        bool getCamDAQData(std::map<std::string,cameraDAQObject> &mapToFill);
+        bool getCamDAQData(std::map<std::string,cameraObject> &mapToFill);
 
     private:
         bool readCameraConfig();
@@ -49,7 +49,7 @@ class cameraDAQConfigReader : public configReader
         void addCOUNT_MASK_OR_CHTYPE(std::vector<pvStruct> &pvStruct_v,
                                      const std::vector<std::string> &keyVal  );
 
-        std::vector< cameraDAQObject > camDAQObject;
+        std::vector< cameraObject > camObject;
         std::vector< pvStruct > pvCameraMonStructs;
         std::vector< pvStruct > pvCameraComStructs;
 
