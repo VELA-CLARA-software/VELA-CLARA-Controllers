@@ -7,8 +7,6 @@
 #include <string>
 #include <vector>
 //boost
-#define MODULE_NAME VELA_CLARA_BPM_Control
-#include "VCheader.h"
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
 #define BOOST_LIB_DIAGNOSTIC
@@ -45,16 +43,6 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController & virtual_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & offline_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & physical_CLARA_2_VELA_BPM_Controller();
-        beamPositionMonitorController & virtual_CLARA_S01_BPM_Controller();
-        beamPositionMonitorController & offline_CLARA_S01_BPM_Controller();
-        beamPositionMonitorController & physical_CLARA_S01_BPM_Controller();
-        beamPositionMonitorController & virtual_CLARA_S02_BPM_Controller();
-        beamPositionMonitorController & offline_CLARA_S02_BPM_Controller();
-        beamPositionMonitorController & physical_CLARA_S02_BPM_Controller();
-        beamPositionMonitorController & virtual_CLARA_PH1_BPM_Controller();
-        beamPositionMonitorController & offline_CLARA_PH1_BPM_Controller();
-        beamPositionMonitorController & physical_CLARA_PH1_BPM_Controller();
-
         beamPositionMonitorController & getBPMController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
         void setQuiet();
@@ -80,9 +68,6 @@ class VCBPMs// : public beamPositionMonitorController
         VELA_ENUM::MACHINE_AREA VELA_BA2;
         VELA_ENUM::MACHINE_AREA CLARA_INJ;
         VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
-        VELA_ENUM::MACHINE_AREA CLARA_S01;
-        VELA_ENUM::MACHINE_AREA CLARA_S02;
-        VELA_ENUM::MACHINE_AREA CLARA_PH1;
         VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
         beamPositionMonitorController * virtual_VELA_INJ_BPM_Controller_Obj;
@@ -100,15 +85,6 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController * virtual_CLARA_2_VELA_BPM_Controller_Obj;
         beamPositionMonitorController * offline_CLARA_2_VELA_BPM_Controller_Obj;
         beamPositionMonitorController * physical_CLARA_2_VELA_BPM_Controller_Obj;
-        beamPositionMonitorController * virtual_CLARA_S01_BPM_Controller_Obj;
-        beamPositionMonitorController * offline_CLARA_S01_BPM_Controller_Obj;
-        beamPositionMonitorController * physical_CLARA_S01_BPM_Controller_Obj;
-        beamPositionMonitorController * virtual_CLARA_S02_BPM_Controller_Obj;
-        beamPositionMonitorController * offline_CLARA_S02_BPM_Controller_Obj;
-        beamPositionMonitorController * physical_CLARA_S02_BPM_Controller_Obj;
-        beamPositionMonitorController * virtual_CLARA_PH1_BPM_Controller_Obj;
-        beamPositionMonitorController * offline_CLARA_PH1_BPM_Controller_Obj;
-        beamPositionMonitorController * physical_CLARA_PH1_BPM_Controller_Obj;
 
 };
 
@@ -156,14 +132,88 @@ using namespace boost::python;
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
 
-BOOST_PYTHON_MODULE( MODULE_NAME )
+BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
 
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
     /// Include ALL the enums you want to expose to Python
 
-    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+    boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
+    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite<std::vector<std::string>>())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_<std::vector<std::string>>("std_vector_string")
+            .def(vector_indexing_suite<std::vector<std::string>>())
+            ;
+    }
+
+    info = boost::python::type_id<std::vector<double> >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_<std::vector<double> >("std_vector_double")
+            .def(vector_indexing_suite< std::vector<double>>())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_<std::vector<double> >("std_vector_double")
+            .def(vector_indexing_suite< std::vector<double>>())
+            ;
+    }
+
+    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
+        ;
+    } else if ((*reg).m_to_python == NULL) {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
+        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
+        ;
+    }
+
+
+    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
+        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
+        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
+        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+        ;
+    } else if ((*reg).m_to_python == NULL) {
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
+        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
+        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
+        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
+        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
+        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
+        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
+        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
+        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
+        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
+        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
+        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
+        ;
+    }
+
+    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
+        ;
 
     /// we have to tell boost.python about pure virtual methods in abstract base classes
 
@@ -245,13 +295,6 @@ BOOST_PYTHON_MODULE( MODULE_NAME )
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getQVecDocString = "Returns a vector containing the Q values for str(bpmName) - these are defined in the config file.\n"
                                    "To be used in conjunction with function monitorDataForNShots.";
-    char const* getXBufferDocString = "Returns a vector containing the X values for str(bpmName) for the last (buffersize) values.";
-    char const* getYBufferDocString = "Returns a vector containing the Y values for str(bpmName) for the last (buffersize) values.";
-    char const* getQBufferDocString = "Returns a vector containing the Q values for str(bpmName) for the last (buffersize) values.";
-    char const* getXPVBufferDocString = "Returns a vector containing the X PV values for str(bpmName) for the last (buffersize) values.";
-    char const* getYPVBufferDocString = "Returns a vector containing the Y PV values for str(bpmName) for the last (buffersize) values.";
-    char const* setBufferDocString = "Sets size of the buffer.";
-    char const* restartDocString = "Restarts continuous monitoring. !!!!!WARNING!!!!! this will reset your vectors of values.";
     char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(bpmName) - these are defined in the config file.\n"
                                          "To be used in conjunction with function monitorDataForNShots.";
     char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(bpmName) - these are defined in the config file.\n"
@@ -269,68 +312,62 @@ BOOST_PYTHON_MODULE( MODULE_NAME )
     char const* getModeDocString = "Returns, as a VELA_ENUM, the machine mode for the controller (OFFLINE, PHYSICAL, VIRTUAL).";
     char const* getILocksDocString = "Why are you here? BPMs don't have interlocks. At least as far as I'm aware. I'm not sure why they would.";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
-        ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
+            ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
 //            .def(boost::python::init<const std::string, optional<const bool, const bool > >())
 //            .def(boost::python::init< optional<const bool, const bool, const bool >>())
-        .def("getBPMObjectConstRef",            &beamPositionMonitorController::getBPMObjectConstRef, getBPMDataObjectDocString, return_value_policy<reference_existing_object>()    )
-        .def("getBPMRawDataStructConstRef",     &beamPositionMonitorController::getBPMRawDataStructConstRef, getAllBPMDataDocString, return_value_policy<reference_existing_object>())
+            .def("getAllBPMData",                   &beamPositionMonitorController::getAllBPMData, getAllBPMDataDocString, return_value_policy<reference_existing_object>())
+            .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, getBPMDataObjectDocString, return_value_policy<reference_existing_object>()            )
 //            .def("getBPMStateDefinition",           &beamPositionMonitorController::getBPMStateDefinition                     )
-        .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition    )
-        .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT      )
-        .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT      )
+            .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition    )
+            .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT      )
+            .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT      )
 //            .def("getBPMState",                     &velaINJBeamPositionMonitorController::getBPMState_Py                            )
-        .def("getILockStates",                  &beamPositionMonitorController::getILockStates, getILocksDocString               )
+            .def("getILockStates",                  &beamPositionMonitorController::getILockStates, getILocksDocString              )
 //            .def("hasNoTrig",                       &velaINJBeamPositionMonitorController::hasNoTrig_Py, boost::python::args("name") )
 //            .def("hasTrig",                         &velaINJBeamPositionMonitorController::hasTrig_Py, boost::python::args("name")   )
-        .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData, isMonitoringDocString       )
-        .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData, isNotMonitoringDocString )
-        .def("getX",                            &beamPositionMonitorController::getX, getXDocString                              )
-        .def("getY",                            &beamPositionMonitorController::getY, getQDocString                              )
-        .def("getQ",                            &beamPositionMonitorController::getQ, getQDocString                              )
-        .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation, reCalAttDocString              )
-        .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV, getXPVDocString                      )
-        .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV, getYPVDocString                      )
-        .def("getBPMResolution",                &beamPositionMonitorController::getBPMResolution, getResDocString                )
-        .def("getBPMXVec",                      &beamPositionMonitorController::getBPMXVec_Py, getXVecDocString                  )
-        .def("getBPMYVec",                      &beamPositionMonitorController::getBPMYVec_Py, getYVecDocString                  )
-        .def("getBPMQVec",                      &beamPositionMonitorController::getBPMQVec_Py, getQVecDocString                  )
-        .def("getBPMXBuffer",                   &beamPositionMonitorController::getBPMXBuffer_Py, getXVecDocString               )
-        .def("getBPMYBuffer",                   &beamPositionMonitorController::getBPMYBuffer_Py, getYVecDocString               )
-        .def("getBPMQBuffer",                   &beamPositionMonitorController::getBPMQBuffer_Py, getQVecDocString               )
-        .def("getBPMXPVBuffer",                 &beamPositionMonitorController::getBPMXPVBuffer_Py, getXPVBufferDocString        )
-        .def("getBPMYPVBuffer",                 &beamPositionMonitorController::getBPMYPVBuffer_Py, getYPVBufferDocString        )
-        .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps_Py, getTimeStampsDocString         )
-        .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps_Py, getStrTimeStampsDocString   )
-        .def("getRA1",                          &beamPositionMonitorController::getRA1, getRA1DocString                          )
-        .def("getRA2",                          &beamPositionMonitorController::getRA2, getRA2DocString                          )
-        .def("getRD1",                          &beamPositionMonitorController::getRD1, getRD1DocString                          )
-        .def("getRD2",                          &beamPositionMonitorController::getRD2, getRD2DocString                          )
-        .def("setSA1",                          &beamPositionMonitorController::setSA1, setSA2DocString                          )
-        .def("setSA2",                          &beamPositionMonitorController::setSA2, setSA2DocString                          )
-        .def("setSD1",                          &beamPositionMonitorController::setSD1, setSD1DocString                          )
-        .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                          )
-        .def("setX",                            &beamPositionMonitorController::setX, setXDocString                              )
-        .def("setY",                            &beamPositionMonitorController::setY, setYDocString                              )
-        .def("setBufferSize",                   &beamPositionMonitorController::setBufferSize, setBufferDocString                )
-        .def("restartContinuousMonitoring",     &beamPositionMonitorController::restartContinuousMonitoring, restartDocString    )
-        .def("getMachineArea",                  &beamPositionMonitorController::getMachineArea, getAreaDocString                 )
-        .def("getMachineMode",                  &beamPositionMonitorController::getMachineMode, getModeDocString                 )
-        .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                )
-        .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                        )
-        //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::vector< std::string >&)>
-        //    (&beamPositionMonitorController::monitorDataForNShots), monitorMultipleDataForNShots()          )
-        //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::string&)>
-        //    (&beamPositionMonitorController::monitorDataForNShots), monitorDataForNShots()                  )
-        .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames, getBPMNamesDocString                 )
-        /// Don't forget functions in the base class we want to expose....
-        .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )
-        .def("debugMessagesOn",                 &beamPositionMonitorController::debugMessagesOn             )
-        .def("messagesOff",                     &beamPositionMonitorController::messagesOff                 )
-        .def("messagesOn",                      &beamPositionMonitorController::messagesOn                  )
-        .def("silence",                         &beamPositionMonitorController::silence                     )
-        .def("verbose",                         &beamPositionMonitorController::verbose                     )
-        .def("isSilent",                        &beamPositionMonitorController::isSilent                    )
-        .def("isVerbose",                       &beamPositionMonitorController::isVerbose                   )
+            .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData, isMonitoringDocString         )
+            .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData, isNotMonitoringDocString      )
+            .def("getX",                            &beamPositionMonitorController::getX, getXDocString         )
+            .def("getY",                            &beamPositionMonitorController::getY, getQDocString                        )
+            .def("getQ",                            &beamPositionMonitorController::getQ, getQDocString                        )
+            .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation, reCalAttDocString            )
+            .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV, getXPVDocString                  )
+            .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV, getYPVDocString                  )
+            .def("getBPMResolution",                &beamPositionMonitorController::getBPMResolution, getResDocString            )
+            .def("getBPMXVec",                      &beamPositionMonitorController::getBPMXVec, getXVecDocString                  )
+            .def("getBPMYVec",                      &beamPositionMonitorController::getBPMYVec, getYVecDocString                  )
+            .def("getBPMQVec",                      &beamPositionMonitorController::getBPMQVec, getQVecDocString                  )
+            .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps, getTimeStampsDocString               )
+            .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps, getStrTimeStampsDocString            )
+            .def("getBPMRawData",                   &beamPositionMonitorController::getBPMRawData, getBPMRawDataDocString               )
+            .def("getRA1",                          &beamPositionMonitorController::getRA1, getRA1DocString                      )
+            .def("getRA2",                          &beamPositionMonitorController::getRA2, getRA2DocString                      )
+            .def("getRD1",                          &beamPositionMonitorController::getRD1, getRD1DocString                      )
+            .def("getRD2",                          &beamPositionMonitorController::getRD2, getRD2DocString                      )
+            .def("setSA1",                          &beamPositionMonitorController::setSA1, setSA2DocString                      )
+            .def("setSA2",                          &beamPositionMonitorController::setSA2, setSA2DocString                      )
+            .def("setSD1",                          &beamPositionMonitorController::setSD1, setSD1DocString                      )
+            .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                      )
+            .def("setX",                            &beamPositionMonitorController::setX, setXDocString                        )
+            .def("setY",                            &beamPositionMonitorController::setY, setYDocString                        )
+            .def("getMachineArea",                  &beamPositionMonitorController::getMachineArea, getAreaDocString                        )
+            .def("getMachineMode",                  &beamPositionMonitorController::getMachineMode, getModeDocString                        )
+            .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                )
+            .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                        )
+            //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::vector< std::string >&)>
+            //    (&beamPositionMonitorController::monitorDataForNShots), monitorMultipleDataForNShots()          )
+            //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::string&)>
+            //    (&beamPositionMonitorController::monitorDataForNShots), monitorDataForNShots()                  )
+            .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames, getBPMNamesDocString                 )
+            /// Don't forget functions in the base class we want to expose....
+            .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )
+            .def("debugMessagesOn",                 &beamPositionMonitorController::debugMessagesOn             )
+            .def("messagesOff",                     &beamPositionMonitorController::messagesOff                 )
+            .def("messagesOn",                      &beamPositionMonitorController::messagesOn                  )
+            .def("silence",                         &beamPositionMonitorController::silence                     )
+            .def("verbose",                         &beamPositionMonitorController::verbose                     )
+            .def("isSilent",                        &beamPositionMonitorController::isSilent                    )
+            .def("isVerbose",                       &beamPositionMonitorController::isVerbose                   )
             .def("isMessageOn",                     &beamPositionMonitorController::isMessageOn                 )
             .def("isDebugMessageOn",                &beamPositionMonitorController::isDebugMessageOn            )
 		;
@@ -354,15 +391,6 @@ BOOST_PYTHON_MODULE( MODULE_NAME )
         .def("virtual_CLARA_2_VELA_BPM_Controller",  &VCBPMs::virtual_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_2_VELA_BPM_Controller",  &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_2_VELA_BPM_Controller", &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_S01_BPM_Controller",  &VCBPMs::virtual_CLARA_S01_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_S01_BPM_Controller",  &VCBPMs::offline_CLARA_S01_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_S01_BPM_Controller", &VCBPMs::offline_CLARA_S01_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_S02_BPM_Controller",  &VCBPMs::virtual_CLARA_S02_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_S02_BPM_Controller",  &VCBPMs::offline_CLARA_S02_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_S02_BPM_Controller", &VCBPMs::offline_CLARA_S02_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_PH1_BPM_Controller",  &VCBPMs::virtual_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_PH1_BPM_Controller",  &VCBPMs::offline_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_PH1_BPM_Controller", &VCBPMs::offline_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("getBPMController", &VCBPMs::getBPMController, getControllerDocString, return_value_policy<reference_existing_object>())
         .def("setQuiet",         &VCBPMs::setQuiet )
         .def("setVerbose",       &VCBPMs::setVerbose )

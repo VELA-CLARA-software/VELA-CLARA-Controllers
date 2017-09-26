@@ -10,11 +10,12 @@ os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = "10000000"
 import VELA_CLARA_BPM_Control as vbpmc
 import epics
 
+
 #srPV = randomPVs.setRandomPV()
 s=vbpmc.init()
 p=s.virtual_VELA_INJ_BPM_Controller()
 numShots = 1
-time.sleep(1)
+p.setY('BPM01',1)
 tr=p.getYFromPV('BPM01')
 print tr
 #pv1 = 'VM-EBT-INJ-DIA-BPMC-02:DATA:B2V.VALA'

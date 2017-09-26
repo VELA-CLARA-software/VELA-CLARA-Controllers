@@ -31,8 +31,8 @@
 //______________________________________________________________________________
 scopeInterface::scopeInterface( const std::string & configFileLocation1,
                                 const std::string & configFileLocation2,
-                                const bool *show_messages_ptr,
-                                const bool *show_debug_messages_ptr,
+                                const bool* show_messages_ptr,
+                                const bool * show_debug_messages_ptr,
                                 const bool shouldStartEPICS,
                                 const bool startVirtualMachine,
                                 const VELA_ENUM::MACHINE_AREA myMachineArea ):
@@ -138,10 +138,6 @@ void scopeInterface::monitorScopes()
 
     for( auto && it1 : scopeObj.traceObjects )
     {
-        for( auto && it3 : it1.second.isMonitoringMap )
-        {
-            it3.second = false;
-        }
         for( auto && it2 : it1.second.pvMonStructs )
         {
             {
@@ -344,12 +340,7 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
             td->strTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
             td->traceData.at(ms->monType).resize(1);
             td->traceDataBuffer.at(ms->monType).resize(td->buffer);
-            td->isMonitoringMap.at(ms->monType) = false;
         }
-    }
-    if( td->isATemporaryMonitorStruct )
-    {
-        td->isMonitoringMap.at(ms->monType) = true;
     }
     const dbr_double_t * value = &(p  -> value);
     size_t i =1;
@@ -377,8 +368,8 @@ void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_
         }
         if( td->shotCounts.at( ms -> monType ) == td->numShots )
         {
-            td->isMonitoringMap.at( ms->monType ) = false;
             message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+            td->isMonitoringMap.at( ms->monType ) = false;
             killTraceCallBack( ms );
         }
     }
@@ -402,10 +393,6 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
             scno->numData.at(ms->monType).push_back(UTL::DUMMY_DOUBLE);
             scno->numDataBuffer.at(ms->monType).resize(scno->buffer);
         }
-    }
-    if( scno->isATemporaryMonitorStruct )
-    {
-        scno->isMonitoringMap.at(ms->monType) = true;
     }
 
     const dbr_double_t * val = &(p  -> value);
@@ -451,8 +438,8 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
         }
         if( scno->shotCounts.at( ms -> monType ) == scno->numShots )
         {
-            scno->isMonitoringMap.at( ms->monType ) = false;
             message( "Collected ", scno->shotCounts.at( ms -> monType ), " shots for ", scno -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+            scno->isMonitoringMap.at( ms->monType ) = false;
             ms->interface->killNumCallBack( ms );
         }
     }
@@ -465,6 +452,7 @@ void scopeInterface::clearContinuousMonitorStructs()
         for( auto && it : continuousMonitorStructs )
         {
             killNumCallBack(it);
+
         }
         continuousMonitorStructs.clear();
     }
@@ -477,6 +465,7 @@ void scopeInterface::clearContinuousTraceMonitorStructs()
         for( auto && it : continuousTraceMonitorStructs )
         {
             killNumCallBack(it);
+
         }
         continuousTraceMonitorStructs.clear();
     }
@@ -489,6 +478,7 @@ void scopeInterface::clearContinuousNumMonitorStructs()
         for( auto && it : continuousNumMonitorStructs )
         {
             killNumCallBack(it);
+
         }
         continuousNumMonitorStructs.clear();
     }
@@ -496,7 +486,7 @@ void scopeInterface::clearContinuousNumMonitorStructs()
 //______________________________________________________________________________
 void scopeInterface::monitorTracesForNShots( size_t N )
 {
-    if( !isMonitoringScopeTraces() )
+    if( !monitoringTraces )
     {
         traceMonitorStructs.clear();
         clearContinuousTraceMonitorStructs();
@@ -508,19 +498,18 @@ void scopeInterface::monitorTracesForNShots( size_t N )
             it1.second.numShots = N;
             it1.second.isAContinuousMonitorStruct=false;
             it1.second.isATemporaryMonitorStruct=true;
-            it1.second.isMonitoring = true;
-            monitoringTraces = true;
-            for( auto it3 : it1.second.isMonitoringMap )
-            {
-                it3.second = true;
-            }
             for( auto && it2 : it1.second.pvMonStructs )
             {
-//                if( isATracePV( it2.first ) )
-//                {
+                if( isATracePV( it2.first ) )
+                {
+                    for( auto it3 : it1.second.isMonitoringMap )
+                    {
+                        it3.second = true;
+                    }
+//                    monitoringTraces = true;
 
                     addToTraceMonitorStructs( traceMonitorStructs, it2.second, &it1.second  );
-//                }
+                }
             }
         }
         int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
@@ -622,7 +611,7 @@ void scopeInterface::resetATraceVector( const std::string scopeName, scopeStruct
 //______________________________________________________________________________
 void scopeInterface::monitorNumsForNShots( size_t N )
 {
-    if( !isMonitoringScopeNums() )
+    if( !monitoringNums )
     {
         numMonitorStructs.clear();
         clearContinuousNumMonitorStructs();
@@ -634,10 +623,6 @@ void scopeInterface::monitorNumsForNShots( size_t N )
             it1.second.numShots = N;
             it1.second.isAContinuousMonitorStruct=false;
             it1.second.isATemporaryMonitorStruct=true;
-            for( auto it3 : it1.second.isMonitoringMap )
-            {
-                it3.second = true;
-            }
             for( auto && it2 : it1.second.pvMonStructs )
             {
                 if( isANumPV( it2.first ) )
@@ -732,68 +717,18 @@ void scopeInterface::resetANumVector( const std::string scopeName, scopeStructs:
     scopeObj.numObjects.at( scopeName ).numStrTimeStamps.at( channel ).resize( N );
     scopeObj.numObjects.at( scopeName ).shotCounts.at( channel ) = 0;
 }
-//____________________________________________________________________________________________
-scopeStructs::SCOPE_PV_TYPE scopeInterface::getScopePVType( const std::string & name )
-{
-    for(auto && it: scopeObj.numObjects.at( name ).pvMonStructs )
-    {
-        if( it.second.objName == name )
-        {
-            return it.first;
-        }
-    }
-    for(auto && it:scopeObj.traceObjects.at( name ).pvMonStructs )
-    {
-        if( it.second.objName == name )
-        {
-            return it.first;
-        }
-    }
-    return scopeStructs::SCOPE_PV_TYPE::UNKNOWN;
-}
 //______________________________________________________________________________
 bool scopeInterface::isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-    if( scopeObj.traceObjects.at( scopeName ).isMonitoringMap.at( pvType ) )
-    {
+    if( scopeObj.traceObjects.at( scopeName ).isMonitoringMap.at( pvType ) == true )
         return true;
-    }
     else
-    {
         return false;
-    }
-}
-//______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeTraces( const std::string & scopeName )
-{
-    for( auto && it : scopeObj.traceObjects.at( scopeName ).isMonitoringMap )
-    {
-        if( it.second )
-        {
-            monitoringTraces = true;
-            return true;
-        }
-    }
-    monitoringTraces = false;
-    return false;
-}
-//______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeTraces()
-{
-    for( auto && it1 : scopeObj.traceObjects )
-    {
-        return isMonitoringScopeTraces( it1.first );
-    }
 }
 //______________________________________________________________________________
 bool scopeInterface::isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return !isMonitoringScopeTrace( scopeName, pvType );
-}
-//______________________________________________________________________________
-bool scopeInterface::isNotMonitoringScopeTraces( const std::string & scopeName )
-{
-    return !isMonitoringScopeTraces( scopeName );
 }
 //______________________________________________________________________________
 bool scopeInterface::isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -804,37 +739,9 @@ bool scopeInterface::isMonitoringScopeNum( const std::string & scopeName, scopeS
         return false;
 }
 //______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeNums( const std::string & scopeName )
-{
-    for( auto && it : scopeObj.numObjects.at( scopeName ).isMonitoringMap )
-    {
-        if( it.second = true )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-}
-//______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeNums()
-{
-    for( auto && it1 : scopeObj.numObjects )
-    {
-        return isMonitoringScopeNums( it1.first );
-    }
-}
-//______________________________________________________________________________
 bool scopeInterface::isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return !isMonitoringScopeNum( scopeName, pvType );
-}
-//______________________________________________________________________________
-bool scopeInterface::isNotMonitoringScopeNums( const std::string & scopeName )
-{
-    return !isMonitoringScopeNums( scopeName );
 }
 //______________________________________________________________________________
 const scopeStructs::scopeTraceData & scopeInterface::getScopeTraceDataStruct( const std::string & scopeName )
@@ -898,6 +805,7 @@ std::vector< double > scopeInterface::getAreaUnderTraces( const std::string & na
 {
     /// For now this just uses the rectangle rule to calculate the area under a scope trace -
     /// there is probably a better way to do this.
+    /// Currently we only need to integrate the ICT traces
     std::vector< double > areaElements;
 
     for( auto && it : scopeObj.traceObjects.at( name ).traceData.at( pvType ) )
@@ -1078,7 +986,7 @@ boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR3Buffe
 //______________________________________________________________________________
 boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR4Buffer( const std::string & name )
 {
-    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR4 ).size() != 0 )
+    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 ).size() != 0 )
     {
         return scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR4 );
     }
@@ -1089,8 +997,8 @@ void scopeInterface::killTraceCallBack( scopeStructs::monitorStruct * ms )
     int status = ca_clear_subscription( ms -> EVID );
     if( status == ECA_NORMAL)
     {
-        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
         delete ms;
+        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
     }
     else
     {
@@ -1139,9 +1047,22 @@ bool scopeInterface::isANumPV( scopeStructs::SCOPE_PV_TYPE pv )
         ret = true;
     return ret;
 }
+////______________________________________________________________________________
+//VELA_ENUM::TRIG_STATE scopeInterface::getScopeState( const  std::string & objName )
+//{
+//    VELA_ENUM::TRIG_STATE r =  VELA_ENUM::TRIG_STATE::TRIG_ERROR;
+//    auto iter = allScopeData.find( objName );
+//    if (iter != allScopeData.end() )
+//        r = iter -> second.scopeState;
+//    return r;
+//}
 //______________________________________________________________________________
-std::vector< double > scopeInterface::getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+std::vector< double > scopeInterface::getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
 {
+    /// Here we take the mean of a part of the scope trace which has no beam on it
+    /// for noise subtraction - this is potentially stupid as the region of interest
+    /// may change with time. If this function isn't behaving sensibly then it is
+    /// possible that the scope hasn't been set up properly for taking this measurement
     std::vector< double > noise, noiseTotal;
     for( auto && it : scopeObj.traceObjects.at( name ).traceData.at( pvType ) )
     {
@@ -1153,8 +1074,13 @@ std::vector< double > scopeInterface::getAvgNoise( const std::string & name, sco
     return noiseTotal;
 }
 //______________________________________________________________________________
-std::vector< std::vector< double > > scopeInterface::getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+std::vector< std::vector< double > > scopeInterface::getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
 {
+    /// Here we take the mean of a part of the scope trace which has no beam on it
+    /// for noise subtraction - this is potentially stupid as the region of interest
+    /// may change with time. If this function isn't behaving sensibly then it is
+    /// possible that the scope hasn't been set up properly for taking this measurement
+
     std::vector< std::vector< double > > vecPart( scopeObj.traceObjects.at( name ).traceData.at( pvType ).size() );
     int i = 0;
 
@@ -1170,7 +1096,7 @@ std::vector< std::vector< double > > scopeInterface::getPartOfTrace( const std::
     return vecPart;
 }
 //______________________________________________________________________________
-std::vector< double > scopeInterface::getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+std::vector< double > scopeInterface::getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
 {
     double sum_of_elems;
     std::vector< double > areaElements;
@@ -1338,76 +1264,6 @@ double scopeInterface::getEDFCUPQ()
         message("DID NOT FIND ED-FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
     }
     return edfcupQ;
-}
-//______________________________________________________________________________
-void scopeInterface::monitorATraceForNShots( const std::string trace, const std::string channel, size_t N )
-{
-    monitorATraceForNShots( trace, getScopePVType( channel ), N);
-}
-//______________________________________________________________________________
-void scopeInterface::monitorANumForNShots( const std::string trace, const std::string channel, size_t N )
-{
-    monitorANumForNShots( trace, getScopePVType( channel ), N);
-}
-//______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeTrace( const std::string & scopeName, const std::string & pvType )
-{
-    return isMonitoringScopeTrace( scopeName, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-bool scopeInterface::isNotMonitoringScopeTrace( const std::string & scopeName, const std::string & pvType )
-{
-    return isNotMonitoringScopeTrace( scopeName, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-bool scopeInterface::isMonitoringScopeNum( const std::string & scopeName, const std::string & pvType )
-{
-    return isMonitoringScopeTrace( scopeName, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-bool scopeInterface::isNotMonitoringScopeNum( const std::string & scopeName, const std::string & pvType )
-{
-    return isNotMonitoringScopeTrace( scopeName, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-std::vector< double > scopeInterface::getAvgNoise( const std::string & name, const std::string & pvType, const int part1, const int part2 )
-{
-    return getAvgNoise( name, getScopePVType( pvType ), part1, part2 );
-}
-//______________________________________________________________________________
-std::vector< std::vector< double > > scopeInterface::getPartOfTrace( const std::string & name, const std::string & pvType, const int part1, const int part2 )
-{
-    return getPartOfTrace( name, getScopePVType( pvType ), part1, part2 );
-}
-//______________________________________________________________________________
-std::vector< double > scopeInterface::getAreaUnderPartOfTrace( const std::string & name, const std::string & pvType, const int part1, const int part2 )
-{
-    return getAreaUnderPartOfTrace( name, getScopePVType( pvType ), part1, part2 );
-}
-//______________________________________________________________________________
-std::vector< std::vector< double > > scopeInterface::getScopeTraces( const std::string & name, const std::string & pvType )
-{
-    return getScopeTraces( name, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-std::vector< double > scopeInterface::getScopeNums( const std::string & name, const std::string & pvType )
-{
-    return getScopeNums( name, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-std::vector< double > scopeInterface::getMinOfTraces( const std::string & name, const std::string & pvType )
-{
-    return getMinOfTraces( name, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-std::vector< double > scopeInterface::getMaxOfTraces( const std::string & name, const std::string & pvType )
-{
-    return getMaxOfTraces( name, getScopePVType( pvType ) );
-}
-//______________________________________________________________________________
-std::vector< double > scopeInterface::getAreaUnderTraces( const std::string & name, const std::string & pvType )
-{
-    return getAreaUnderTraces( name, getScopePVType( pvType ) );
 }
 //______________________________________________________________________________
 std::vector< std::string > scopeInterface::getScopeNames()

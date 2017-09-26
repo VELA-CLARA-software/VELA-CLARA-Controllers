@@ -22,8 +22,6 @@
 // stl
 #include <string>
 #include <vector>
-// boost
-#include <boost/circular_buffer.hpp>
 
 class beamPositionMonitorController : public controller
 {
@@ -47,19 +45,14 @@ class beamPositionMonitorController : public controller
         double getXFromPV( const std::string & bpm );
         double getYFromPV( const std::string & bpm );
         double getBPMResolution( const std::string & name );
-        const beamPositionMonitorStructs::rawDataStruct & getBPMRawDataStructConstRef( const std::string & name );
-        const beamPositionMonitorStructs::bpmDataObject & getBPMObjectConstRef( const std::string & name );
+        const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
+        const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );
         std::vector< double > getBPMQVec( const std::string & bpmName );
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
-        boost::circular_buffer< double > getBPMXBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMYBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMQBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMXPVBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMYPVBuffer( const std::string & name );
         long getRA1( const std::string & bpmName );
         long getRA2( const std::string & bpmName );
         long getRD1( const std::string & bpmName );
@@ -73,26 +66,13 @@ class beamPositionMonitorController : public controller
         void reCalAttenuation( const std::string & bpmName, double qScope );
         void monitorDataForNShots( size_t N, const std::string & name );
         void monitorDataForNShots( size_t N, const std::vector< std::string > & names );
-        void setBufferSize( size_t bufferSize );
-        void restartContinuousMonitoring();
         VELA_ENUM::MACHINE_AREA getMachineArea();
         VELA_ENUM::MACHINE_MODE getMachineMode();
 
         std::vector< std::string > getBPMNames();
 
-        #ifdef BUILD_DLL
-        boost::python::list getBPMXVec_Py( const std::string & bpmName );
-        boost::python::list getBPMYVec_Py( const std::string & bpmName );
-        boost::python::list getBPMQVec_Py( const std::string & bpmName );
-        boost::python::list getTimeStamps_Py( const std::string & bpmName );
-        boost::python::list getStrTimeStamps_Py( const std::string & bpmName );
-        boost::python::list getBPMXBuffer_Py( const std::string & name );
-        boost::python::list getBPMYBuffer_Py( const std::string & name );
-        boost::python::list getBPMQBuffer_Py( const std::string & name );
-        boost::python::list getBPMXPVBuffer_Py( const std::string & name );
-        boost::python::list getBPMYPVBuffer_Py( const std::string & name );
-        boost::python::list getBPMNames_Py();
-        #endif
+        bool hasTrig( const std::string & bpmName );
+        bool hasNoTrig( const std::string & bpmName );
 
         /// write a method that returns string version of enums using ENUM_TO_STRING
 

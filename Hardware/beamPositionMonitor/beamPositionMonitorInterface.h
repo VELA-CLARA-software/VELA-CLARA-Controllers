@@ -21,8 +21,6 @@
 //stl
 #include <vector>
 #include <string>
-//boost
-#include <boost/circular_buffer.hpp>
 
 class beamPositionMonitorInterface : public interface
 {
@@ -50,19 +48,14 @@ class beamPositionMonitorInterface : public interface
         double getQ( const std::string & bpm );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
-        const beamPositionMonitorStructs::rawDataStruct & getBPMRawDataStructConstRef( const std::string & name );
-        const beamPositionMonitorStructs::bpmDataObject & getBPMObjectConstRef( const std::string & name );
+        const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
+        const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );
         std::vector< double > getBPMQVec( const std::string & bpmName );
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
-        boost::circular_buffer< double > getBPMXBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMYBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMQBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMXPVBuffer( const std::string & name );
-        boost::circular_buffer< double > getBPMYPVBuffer( const std::string & name );
         long getRA1( const std::string & bpm );
         long getRA2( const std::string & bpm );
         long getRD1( const std::string & bpm );
@@ -78,8 +71,6 @@ class beamPositionMonitorInterface : public interface
                                   beamPositionMonitorStructs::bpmDataObject * bpmObj );
         void monitorDataForNShots( size_t N, const std::vector< std::string > & bpmNames );
         void monitorDataForNShots( size_t N, const std::string & name );
-        void setBufferSize( size_t bufferSize );
-        void restartContinuousMonitoring();
         VELA_ENUM::MACHINE_AREA getMachineArea();
         VELA_ENUM::MACHINE_MODE getMachineMode();
 
@@ -94,7 +85,7 @@ class beamPositionMonitorInterface : public interface
         beamPositionMonitorStructs::bpmObject bpmObj;
         beamPositionMonitorStructs::bpmObject getBPMObject( const std::string & bpmName );
 
-        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
+        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
 
         VELA_ENUM::TRIG_STATE getBPMState( const std::string & bpmName );
 
@@ -121,7 +112,6 @@ class beamPositionMonitorInterface : public interface
         void addChannel( const std::string & pvRoot, beamPositionMonitorStructs::pvStruct & pv );
 
         void monitorBPMs();
-        void clearContinuousMonitorStructs();
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close) the bpm is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members

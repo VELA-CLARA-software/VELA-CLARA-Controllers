@@ -107,7 +107,7 @@ void claraScreenInterface::initIsLockedMap()
 //_______________________________________________________________________________________
 bool claraScreenInterface::initvelaINJscreenObjects()
 {
-    return configReader.getScreenObjects( allScreentData );
+    return configReader.getvelaINJscreenObjects( allScreentData );
 }
 //_______________________________________________________________________________________________________________
 void claraScreenInterface::initScreenChids()

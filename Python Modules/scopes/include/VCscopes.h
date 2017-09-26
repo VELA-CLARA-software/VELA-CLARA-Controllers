@@ -9,9 +9,18 @@
 #include <map>
 #include <list>
 //boost
-#define MODULE_NAME VELA_CLARA_Scope_Control
-
-#include "VCheader.h"
+#include <boost/python/detail/wrap_python.hpp>
+#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+#define BOOST_LIB_DIAGNOSTIC
+#include <boost/config.hpp>
+#include <boost/python.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/object/function.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/docstring_options.hpp>
 
 class VCscopes// : public beamPositionMonitorController
 {
@@ -105,19 +114,48 @@ using namespace boost::python;
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
 
-BOOST_PYTHON_MODULE( MODULE_NAME )
+BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
 {
 
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
-
-    BOOST_PYTHON_INCLUDE::export_BaseObjects();
-
     /// Include ALL the enums you want to expose to Python
 
-    boost::python::type_info info = boost::python::type_id< std::vector< std::vector< double > > > ();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > > ("v2_map")
+//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >());
+//
+//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("vv2_map")
+//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >());
+//
+//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >("bool_map")
+//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >());
 
+    boost::python::type_info info = boost::python::type_id< std::vector< std::string > > ();
+    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< std::string > >("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string > > ())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< std::string > >("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string > > ())
+            ;
+    }
+
+    info = boost::python::type_id< std::vector< double > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< double > >("std_vector_double")
+            .def(vector_indexing_suite< std::vector< double > > ())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< double > >("std_vector_double")
+            .def(vector_indexing_suite< std::vector< double > > ())
+            ;
+    }
+
+    info = boost::python::type_id< std::vector< std::vector< double > > > ();
+    reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
         class_< std::vector< std::vector< double > > >("std_vector_vector_double")
             .def(vector_indexing_suite< std::vector< std::vector< double > > > ())
@@ -128,55 +166,74 @@ BOOST_PYTHON_MODULE( MODULE_NAME )
             ;
     }
 
-    boost::python::type_info info1 = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
-    const boost::python::converter::registration* reg1 = boost::python::converter::registry::query(info1);
-
-    if (reg1 == NULL)  {
+    info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
         class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_bool")
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >())
             ;
-    } else if ((*reg1).m_to_python == NULL) {
+    } else if ((*reg).m_to_python == NULL) {
         class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_bool")
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >())
             ;
     }
 
-    boost::python::type_info info2 = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >();
-    const boost::python::converter::registration* reg2 = boost::python::converter::registry::query(info2);
-
-    if (reg2 == NULL)  {
+    info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
         class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_vector_double")
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >())
             ;
-    } else if ((*reg2).m_to_python == NULL) {
+    } else if ((*reg).m_to_python == NULL) {
         class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >("std_scope_map_vector_double")
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >())
             ;
     }
 
-    boost::python::type_info info3 = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > > ();
-    const boost::python::converter::registration* reg3 = boost::python::converter::registry::query(info3);
-
-    if (reg3 == NULL)  {
+    info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
         class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("std_scope_map_vector_vector_double")
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >())
             ;
-    } else if ((*reg3).m_to_python == NULL) {
+    } else if ((*reg).m_to_python == NULL) {
         class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("std_scope_map_vector_vector_double")
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >())
             ;
     }
+
+    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
+            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+            .value("PHYSICAL",  VELA_ENUM::MACHINE_MODE::PHYSICAL )
+            ;
+
+    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+            .value("VELA_INJ",  VELA_ENUM::MACHINE_AREA::VELA_INJ  )
+            .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
+            .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
+            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
+            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
+            .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
+            .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+            ;
+
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+            ;
 
     enum_<scopeStructs::SCOPE_PV_TYPE>("SCOPE_PV_TYPE")
-            .value("TR1",       scopeStructs::SCOPE_PV_TYPE::TR1      )
-            .value("TR2",       scopeStructs::SCOPE_PV_TYPE::TR2      )
-            .value("TR3",       scopeStructs::SCOPE_PV_TYPE::TR3      )
-            .value("TR4",       scopeStructs::SCOPE_PV_TYPE::TR4      )
-            .value("P1",        scopeStructs::SCOPE_PV_TYPE::P1       )
-            .value("P2",        scopeStructs::SCOPE_PV_TYPE::P2       )
-            .value("P3",        scopeStructs::SCOPE_PV_TYPE::P3       )
-            .value("P4",        scopeStructs::SCOPE_PV_TYPE::P4       )
-            .value("UNKNOWN",   scopeStructs::SCOPE_PV_TYPE::UNKNOWN  )
+            .value("TR1", scopeStructs::SCOPE_PV_TYPE::TR1 )
+            .value("TR2", scopeStructs::SCOPE_PV_TYPE::TR2 )
+            .value("TR3", scopeStructs::SCOPE_PV_TYPE::TR3 )
+            .value("TR4", scopeStructs::SCOPE_PV_TYPE::TR4 )
+            .value("P1",  scopeStructs::SCOPE_PV_TYPE::P1  )
+            .value("P2",  scopeStructs::SCOPE_PV_TYPE::P2  )
+            .value("P3",  scopeStructs::SCOPE_PV_TYPE::P3  )
+            .value("P4",  scopeStructs::SCOPE_PV_TYPE::P4  )
+            .value("UNKNOWN",  scopeStructs::SCOPE_PV_TYPE::UNKNOWN  )
             ;
 
     enum_<VELA_ENUM::DIAG_TYPE>("DIAG_TYPE")
@@ -190,69 +247,53 @@ BOOST_PYTHON_MODULE( MODULE_NAME )
                                        "This will only contain real-time data if scope number data is being submitted to EPICS - you will need to check this on the scope.\n"
                                        "p1Vec contains a vector of values after monitorNumsForNShots, and numData contains a vector of vectors, with data from all four channels on the scope.\n"
                                        "Timestamps can also be accessed.";
-    char const* nameString = "Name of scope.";
-    char const* pvrootString = "EPICS PV root name.";
-    char const* numDataBufferString = "A map of vectors of vectors, keyed by SCOPE_PV_TYPE, containing the last (buffersize) traces for all channels.";
-    char const* isMonitoringNumsString = "Check if monitorNumsForNShots / monitorANumForNShots is still acquiring - a map of bools keyed by SCOPE_PV_TYPE.";
-    char const* numDataString = "A map of vectors, keyed by SCOPE_PV_TYPE, containing the data filled after monitorNumsForNShots.";
-    char const* timebaseString = "The timebase set for the traces - defined in the config file.";
-    char const* pString = "The current P value (e.g. measured charge) for a given diagnostic.";
-    char const* pVecString = "A vector of P values for a given diagnostic, filled during monitorNumsForNShots.";
-    char const* bufferString = "The current size of the buffer.";
     boost::python::class_<scopeStructs::scopeNumObject,boost::noncopyable>
         ("scopeNumObject",scopeNumObjectStructString,boost::python::no_init)
-//        .def_readonly("isMonitoringMap", &scopeStructs::scopeNumObject::isMonitoringMap)
-        .def_readonly("name",            &scopeStructs::scopeNumObject::name, nameString                        )
-        .def_readonly("pvRoot",          &scopeStructs::scopeNumObject::pvRoot, pvrootString                    )
-        .def_readonly("isMonitoringMap", &scopeStructs::scopeNumObject::isMonitoringMap, isMonitoringNumsString )
-        .def_readonly("p1",              &scopeStructs::scopeNumObject::p1, pString                             )
-        .def_readonly("p2",              &scopeStructs::scopeNumObject::p2, pString                             )
-        .def_readonly("p3",              &scopeStructs::scopeNumObject::p3, pString                             )
-        .def_readonly("p4",              &scopeStructs::scopeNumObject::p4, pString                             )
-        .def_readonly("p1TimeStamp",     &scopeStructs::scopeNumObject::p1TimeStamp                             )
-        .def_readonly("p2TimeStamp",     &scopeStructs::scopeNumObject::p2TimeStamp                             )
-        .def_readonly("p3TimeStamp",     &scopeStructs::scopeNumObject::p3TimeStamp                             )
-        .def_readonly("p4TimeStamp",     &scopeStructs::scopeNumObject::p4TimeStamp                             )
-        .def_readonly("p1TimeStamps",    &scopeStructs::scopeNumObject::p1TimeStamps                            )
-        .def_readonly("p2TimeStamps",    &scopeStructs::scopeNumObject::p2TimeStamps                            )
-        .def_readonly("p3TimeStamps",    &scopeStructs::scopeNumObject::p3TimeStamps                            )
-        .def_readonly("p4TimeStamps",    &scopeStructs::scopeNumObject::p4TimeStamps                            )
-        .def_readonly("p1Vec",           &scopeStructs::scopeNumObject::p1Vec, pVecString                       )
-        .def_readonly("p2Vec",           &scopeStructs::scopeNumObject::p2Vec, pVecString                       )
-        .def_readonly("p3Vec",           &scopeStructs::scopeNumObject::p3Vec, pVecString                       )
-        .def_readonly("p4Vec",           &scopeStructs::scopeNumObject::p4Vec, pVecString                       )
-        .def_readonly("numData",         &scopeStructs::scopeNumObject::numData, numDataString                  )
-        .def_readonly("numTimeStamps",   &scopeStructs::scopeNumObject::numTimeStamps                           )
-        .def_readonly("shotCounts",      &scopeStructs::scopeNumObject::shotCounts                              )
-        .def_readonly("buffer",          &scopeStructs::scopeNumObject::buffer, bufferString                    )
-        .def_readonly("numDataBuffer",   &scopeStructs::scopeNumObject::numDataBuffer, numDataBufferString      )
+        .def_readonly("isMonitoringMap", &scopeStructs::scopeNumObject::isMonitoringMap)
+        .def_readonly("name",            &scopeStructs::scopeNumObject::name           )
+        .def_readonly("p1",              &scopeStructs::scopeNumObject::p1             )
+        .def_readonly("p2",              &scopeStructs::scopeNumObject::p2             )
+        .def_readonly("p3",              &scopeStructs::scopeNumObject::p3             )
+        .def_readonly("p4",              &scopeStructs::scopeNumObject::p4             )
+        .def_readonly("p1TimeStamp",     &scopeStructs::scopeNumObject::p1TimeStamp    )
+        .def_readonly("p2TimeStamp",     &scopeStructs::scopeNumObject::p2TimeStamp    )
+        .def_readonly("p3TimeStamp",     &scopeStructs::scopeNumObject::p3TimeStamp    )
+        .def_readonly("p4TimeStamp",     &scopeStructs::scopeNumObject::p4TimeStamp    )
+        .def_readonly("p1TimeStamps",    &scopeStructs::scopeNumObject::p1TimeStamps   )
+        .def_readonly("p2TimeStamps",    &scopeStructs::scopeNumObject::p2TimeStamps   )
+        .def_readonly("p3TimeStamps",    &scopeStructs::scopeNumObject::p3TimeStamps   )
+        .def_readonly("p4TimeStamps",    &scopeStructs::scopeNumObject::p4TimeStamps   )
+        .def_readonly("p1Vec",           &scopeStructs::scopeNumObject::p1Vec          )
+        .def_readonly("p2Vec",           &scopeStructs::scopeNumObject::p2Vec          )
+        .def_readonly("p3Vec",           &scopeStructs::scopeNumObject::p3Vec          )
+        .def_readonly("p4Vec",           &scopeStructs::scopeNumObject::p4Vec          )
+        .def_readonly("numData",         &scopeStructs::scopeNumObject::numData        )
+        .def_readonly("numTimeStamps",   &scopeStructs::scopeNumObject::numTimeStamps  )
+        .def_readonly("shotCounts",      &scopeStructs::scopeNumObject::shotCounts     )
+        .def_readonly("buffer",          &scopeStructs::scopeNumObject::buffer         )
         ;
 
-    char const* scopeTraceDataStructString = "This struct contains trace data for the four channels on the scope, which can be accessed through traceData[SCOPE_PV_TYPE].\n"
+    char const* scopeTraceDataStructString = "This struct contains trace data for the four channels on the scope - e.g. tr1TraceData contains a vector of the EPICS PV for channel 1 on the scope.\n"
                                              "This will only contain real-time data if scope trace data is being submitted to EPICS - you will need to check this on the scope.\n";
+                                             "traceData contains a vector of vectors, with data from all four channels on the scope.\n"
                                              "Timestamps can also be accessed.";
-    char const* traceDataBufferString = "A map of vectors of vectors, keyed by SCOPE_PV_TYPE, containing the last (buffersize) traces for all channels.";
-    char const* isMonitoringTracesString = "Check if monitorTracesForNShots / monitorATraceForNShots is still acquiring - a map of bools keyed by SCOPE_PV_TYPE.";
-    char const* traceDataString = "A map of vectors of vectors, keyed by SCOPE_PV_TYPE, containing the data filled after monitorTracesForNShots.";
     boost::python::class_<scopeStructs::scopeTraceData,boost::noncopyable>
         ("scopeTraceData",scopeTraceDataStructString,boost::python::no_init)
-        .def_readonly("isMonitoringMap", &scopeStructs::scopeTraceData::isMonitoringMap, isMonitoringTracesString )
-        .def_readonly("name",            &scopeStructs::scopeTraceData::name, nameString                          )
-        .def_readonly("pvRoot",          &scopeStructs::scopeTraceData::pvRoot, pvrootString                      )
-        .def_readonly("tr1TraceData",    &scopeStructs::scopeTraceData::tr1TraceData                              )
-        .def_readonly("tr2TraceData",    &scopeStructs::scopeTraceData::tr2TraceData                              )
-        .def_readonly("tr3TraceData",    &scopeStructs::scopeTraceData::tr3TraceData                              )
-        .def_readonly("tr4TraceData",    &scopeStructs::scopeTraceData::tr4TraceData                              )
-        .def_readonly("traceData",       &scopeStructs::scopeTraceData::traceData, traceDataString                )
-        .def_readonly("tr1TimeStamps",   &scopeStructs::scopeTraceData::tr1TimeStamps                             )
-        .def_readonly("tr2TimeStamps",   &scopeStructs::scopeTraceData::tr2TimeStamps                             )
-        .def_readonly("tr3TimeStamps",   &scopeStructs::scopeTraceData::tr3TimeStamps                             )
-        .def_readonly("tr4TimeStamps",   &scopeStructs::scopeTraceData::tr4TimeStamps                             )
-        .def_readonly("shotCounts",      &scopeStructs::scopeTraceData::shotCounts                                )
-        .def_readonly("timebase",        &scopeStructs::scopeTraceData::timebase, timebaseString                  )
-        .def_readonly("timeStamps",      &scopeStructs::scopeTraceData::timeStamps                                )
-        .def_readonly("traceDataBuffer", &scopeStructs::scopeTraceData::traceDataBuffer, traceDataBufferString    )
-        .def_readonly("buffer",          &scopeStructs::scopeTraceData::buffer, bufferString                      )
+        .def_readonly("isMonitoringMap", &scopeStructs::scopeTraceData::isMonitoringMap)
+        .def_readonly("name",            &scopeStructs::scopeTraceData::name           )
+        .def_readonly("pvRoot",          &scopeStructs::scopeTraceData::pvRoot         )
+        .def_readonly("tr1TraceData",    &scopeStructs::scopeTraceData::tr1TraceData   )
+        .def_readonly("tr2TraceData",    &scopeStructs::scopeTraceData::tr1TraceData   )
+        .def_readonly("tr3TraceData",    &scopeStructs::scopeTraceData::tr1TraceData   )
+        .def_readonly("tr4TraceData",    &scopeStructs::scopeTraceData::tr1TraceData   )
+        .def_readonly("traceData",       &scopeStructs::scopeTraceData::traceData      )
+        .def_readonly("tr1TimeStamps",   &scopeStructs::scopeTraceData::tr1TimeStamps  )
+        .def_readonly("tr2TimeStamps",   &scopeStructs::scopeTraceData::tr2TimeStamps  )
+        .def_readonly("tr3TimeStamps",   &scopeStructs::scopeTraceData::tr3TimeStamps  )
+        .def_readonly("tr4TimeStamps",   &scopeStructs::scopeTraceData::tr4TimeStamps  )
+        .def_readonly("shotCounts",      &scopeStructs::scopeTraceData::shotCounts     )
+        .def_readonly("timebase",        &scopeStructs::scopeTraceData::timebase       )
+        .def_readonly("timeStamps",      &scopeStructs::scopeTraceData::timeStamps     )
         ;
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
@@ -339,71 +380,53 @@ BOOST_PYTHON_MODULE( MODULE_NAME )
 //            .def("hasTrig",                         &velaChargeScopeController::hasTrig_Py, boost::python::args("name")   )
             .def("getScopeTraceDataStruct",         &scopeController::getScopeTraceDataStruct, getScopeTraceDataStructString, return_value_policy<reference_existing_object>())
             .def("getScopeNumDataStruct",           &scopeController::getScopeNumDataStruct, getScopeNumDataStructString, return_value_policy<reference_existing_object>()  )
-            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString                )
-//            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace_str, isMonitoringTraceDocString            )
-            .def("isMonitoringScopeTraces",         &scopeController::isMonitoringScopeTraces, isMonitoringTraceDocString               )
-            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum, isMonitoringNumDocString                    )
-//            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum_str, isMonitoringNumDocString                )
-            .def("isMonitoringScopeNums",           &scopeController::isMonitoringScopeNums, isMonitoringNumDocString                   )
-            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace, isNotMonitoringNumDocString            )
-//            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace_str, isNotMonitoringNumDocString        )
-            .def("isNotMonitoringScopeTraces",      &scopeController::isNotMonitoringScopeTraces, isNotMonitoringNumDocString           )
-            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum, isNotMonitoringNumDocString              )
-//            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum_str, isNotMonitoringNumDocString          )
-            .def("isNotMonitoringScopeNums",        &scopeController::isNotMonitoringScopeNums, isNotMonitoringNumDocString             )
-            .def("setBufferSize",                   &scopeController::setBufferSize, setBufferSizeDocString                             )
-            .def("setNumBufferSize",                &scopeController::setBufferSize, setNumBufferSizeDocString                          )
-            .def("setTraceBufferSize",              &scopeController::setBufferSize, setTraceBufferSizeDocString                        )
-            .def("restartContinuousMonitoring",     &scopeController::restartContinuousMonitoring, restartMonitoringDocString           )
-            .def("getScopeNums",                    &scopeController::getScopeNums_Py, getScopeNumsDocString                            )
-            .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec_Py, getScopeP1VecDocString                          )
-            .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec_Py, getScopeP2VecDocString                          )
-            .def("getScopeP3Vec",                   &scopeController::getScopeP3Vec_Py, getScopeP3VecDocString                          )
-            .def("getScopeP4Vec",                   &scopeController::getScopeP4Vec_Py, getScopeP4VecDocString                          )
-            .def("getScopeP1Buffer",                &scopeController::getScopeP1Buffer_Py, getScopeNumBufferDocString                   )
-            .def("getScopeP2Buffer",                &scopeController::getScopeP2Buffer_Py, getScopeNumBufferDocString                   )
-            .def("getScopeP3Buffer",                &scopeController::getScopeP3Buffer_Py, getScopeNumBufferDocString                   )
-            .def("getScopeP4Buffer",                &scopeController::getScopeP4Buffer_Py, getScopeNumBufferDocString                   )
-            .def("getScopeTR1Buffer",               &scopeController::getScopeTR1Buffer_Py, getScopeTraceBufferDocString                )
-            .def("getScopeTR2Buffer",               &scopeController::getScopeTR2Buffer_Py, getScopeTraceBufferDocString                )
-            .def("getScopeTR3Buffer",               &scopeController::getScopeTR3Buffer_Py, getScopeTraceBufferDocString                )
-            .def("getScopeTR4Buffer",               &scopeController::getScopeTR4Buffer_Py, getScopeTraceBufferDocString                )
-            .def("getScopeP1",                      &scopeController::getScopeP1, getScopeP1DocString                                   )
-            .def("getScopeP2",                      &scopeController::getScopeP2, getScopeP2DocString                                   )
-            .def("getScopeP3",                      &scopeController::getScopeP3, getScopeP3DocString                                   )
-            .def("getScopeP4",                      &scopeController::getScopeP4, getScopeP4DocString                                   )
-            .def("getWCMQ",                         &scopeController::getWCMQ, getWCMQDocString                                         )
-            .def("getICT1Q",                        &scopeController::getICT1Q, getICT1QDocString                                       )
-            .def("getICT2Q",                        &scopeController::getICT2Q, getICT2QDocString                                       )
-            .def("getFCUPQ",                        &scopeController::getFCUPQ, getFCUPQDocString                                       )
-            .def("getEDFCUPQ",                      &scopeController::getEDFCUPQ, getEDFCUPQDocString                                   )
-            .def("getScopeTraces",                  &scopeController::getScopeTraces, getScopeTracesDocString                           )
-            .def("getMinOfTraces",                  &scopeController::getMinOfTraces_Py, getMinOfTracesDocString                        )
-            .def("getMinOfTraces",                  &scopeController::getMinOfTraces_Py_str, getMinOfTracesDocString                    )
-            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces_Py, getMaxOfTracesDocString                        )
-            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces_Py_str, getMaxOfTracesDocString                    )
-            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces_Py, getAreaUnderTracesDocString                )
-            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces_Py_str, getAreaUnderTracesDocString            )
-            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace_Py, getAreaUnderPartOfTraceDocString      )
-            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace_Py_str, getAreaUnderPartOfTraceDocString  )
-            .def("getAvgNoise",                     &scopeController::getAvgNoise_Py, getAvgNoiseDocString                              )
-            .def("getAvgNoise",                     &scopeController::getAvgNoise_Py_str, getAvgNoiseDocString                          )
-            .def("getPartOfTrace",                  &scopeController::getPartOfTrace, getPartOfTraceDocString                           )
-            .def("getPartOfTrace",                  &scopeController::getPartOfTrace_str, getPartOfTraceDocString                       )
-            .def("getTimeStamps",                   &scopeController::getTimeStamps_Py, getTimeStampsDocString                          )
-            .def("getTimeStamps",                   &scopeController::getTimeStamps_Py_str, getTimeStampsDocString                      )
-            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps_Py, getStrTimeStampsDocString                    )
-            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps_Py_str, getStrTimeStampsDocString                )
-            .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                        )
-            .def("monitorANumForNShots",            &scopeController::monitorANumForNShots, monitorANumDocString                        )
-            .def("monitorANumForNShots",            &scopeController::monitorANumForNShots_str, monitorANumDocString                    )
-            .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString                )
-            .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots, monitorATraceDocString                    )
-            .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots_str, monitorATraceDocString                )
-            .def("getScopeNames",                   &scopeController::getScopeNames_Py                                                  )
-            .def("getScopePVs",                     &scopeController::getScopePVs_Py                                                    )
-            .def("getScopeTracePVs",                &scopeController::getScopeTracePVs_Py                                               )
-            .def("getScopeNumPVs",                  &scopeController::getScopeNumPVs_Py                                                 )
+            .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString           )
+            .def("isMonitoringScopeNum",            &scopeController::isMonitoringScopeNum, isMonitoringNumDocString               )
+            .def("isNotMonitoringScopeTrace",       &scopeController::isNotMonitoringScopeTrace, isNotMonitoringNumDocString       )
+            .def("isNotMonitoringScopeNum",         &scopeController::isNotMonitoringScopeNum, isNotMonitoringNumDocString         )
+            .def("setBufferSize",                   &scopeController::setBufferSize, setBufferSizeDocString                        )
+            .def("setNumBufferSize",                &scopeController::setBufferSize, setNumBufferSizeDocString                     )
+            .def("setTraceBufferSize",              &scopeController::setBufferSize, setTraceBufferSizeDocString                   )
+            .def("restartContinuousMonitoring",     &scopeController::restartContinuousMonitoring, restartMonitoringDocString      )
+            .def("getScopeNums",                    &scopeController::getScopeNums_Py, getScopeNumsDocString                       )
+            .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec_Py, getScopeP1VecDocString                     )
+            .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec_Py, getScopeP2VecDocString                     )
+            .def("getScopeP3Vec",                   &scopeController::getScopeP3Vec_Py, getScopeP3VecDocString                     )
+            .def("getScopeP4Vec",                   &scopeController::getScopeP4Vec_Py, getScopeP4VecDocString                     )
+            .def("getScopeP1Buffer",                &scopeController::getScopeP1Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeP2Buffer",                &scopeController::getScopeP2Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeP3Buffer",                &scopeController::getScopeP3Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeP4Buffer",                &scopeController::getScopeP4Buffer_Py, getScopeNumBufferDocString              )
+            .def("getScopeTR1Buffer",               &scopeController::getScopeTR1Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeTR2Buffer",               &scopeController::getScopeTR2Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeTR3Buffer",               &scopeController::getScopeTR3Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeTR4Buffer",               &scopeController::getScopeTR4Buffer_Py, getScopeTraceBufferDocString           )
+            .def("getScopeP1",                      &scopeController::getScopeP1, getScopeP1DocString                              )
+            .def("getScopeP2",                      &scopeController::getScopeP2, getScopeP2DocString                              )
+            .def("getScopeP3",                      &scopeController::getScopeP3, getScopeP3DocString                              )
+            .def("getScopeP4",                      &scopeController::getScopeP4, getScopeP4DocString                              )
+            .def("getWCMQ",                         &scopeController::getWCMQ, getWCMQDocString                                    )
+            .def("getICT1Q",                        &scopeController::getICT1Q, getICT1QDocString                                  )
+            .def("getICT2Q",                        &scopeController::getICT2Q, getICT2QDocString                                  )
+            .def("getFCUPQ",                        &scopeController::getFCUPQ, getFCUPQDocString                                  )
+            .def("getEDFCUPQ",                      &scopeController::getEDFCUPQ, getEDFCUPQDocString                              )
+            .def("getScopeTraces",                  &scopeController::getScopeTraces, getScopeTracesDocString                      )
+            .def("getMinOfTraces",                  &scopeController::getMinOfTraces_Py, getMinOfTracesDocString                   )
+            .def("getMaxOfTraces",                  &scopeController::getMaxOfTraces_Py, getMaxOfTracesDocString                   )
+            .def("getAreaUnderTraces",              &scopeController::getAreaUnderTraces_Py, getAreaUnderTracesDocString           )
+            .def("getAreaUnderPartOfTrace",         &scopeController::getAreaUnderPartOfTrace_Py, getAreaUnderPartOfTraceDocString )
+            .def("getAvgNoise",                     &scopeController::getAvgNoise_Py, getAvgNoiseDocString                         )
+            .def("getPartOfTrace",                  &scopeController::getPartOfTrace, getPartOfTraceDocString                      )
+            .def("getTimeStamps",                   &scopeController::getTimeStamps_Py, getTimeStampsDocString                     )
+            .def("getStrTimeStamps",                &scopeController::getStrTimeStamps_Py, getStrTimeStampsDocString               )
+            .def("monitorNumsForNShots",            &scopeController::monitorNumsForNShots, monitorNumsDocString                   )
+            .def("monitorANumForNShots",            &scopeController::monitorANumForNShots, monitorANumDocString                   )
+            .def("monitorTracesForNShots",          &scopeController::monitorTracesForNShots, monitorTracesDocString               )
+            .def("monitorATraceForNShots",          &scopeController::monitorATraceForNShots, monitorATraceDocString               )
+            .def("getScopeNames",                   &scopeController::getScopeNames_Py                                             )
+            .def("getScopePVs",                     &scopeController::getScopePVs_Py                                               )
+            .def("getScopeTracePVs",                &scopeController::getScopeTracePVs_Py                                          )
+            .def("getScopeNumPVs",                  &scopeController::getScopeNumPVs_Py                                            )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &scopeController::debugMessagesOff                       )
             .def("debugMessagesOn",                 &scopeController::debugMessagesOn                        )
