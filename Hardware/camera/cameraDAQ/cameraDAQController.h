@@ -50,8 +50,8 @@ class cameraDAQController  : public controller
         //Generic Functions
         bool isON (const std::string &cam);
         bool isOFF(const std::string &cam);
-        bool isAquiring(const std::string &cam);
-        bool isNotAquiring(const std::string &cam);
+        bool isAcquiring(const std::string &cam);
+        bool isNotAcquiring(const std::string &cam);
         std::string selectedCamera();
         bool setCamera(const std::string & cam);
         bool startAcquiring();
@@ -63,9 +63,10 @@ class cameraDAQController  : public controller
         bool killCollectAndSave();
         bool collectAndSaveVC (const int &numbOfShots);
         bool killCollectAndSaveVC();
-        const cameraDAQObject &getCamDAQObjConstRef(const std::string &camName);
-        const cameraDAQObject &getSelectedDAQRef();
-        const cameraDAQObject &getVCDAQRef();
+        const cameraObject &getCamDAQObjConstRef(const std::string &camName);
+        const cameraObject &getSelectedDAQRef();
+        const cameraObject &getVCDAQRef();
+        std::string getlatestDirectory();
 
     protected:
     private:

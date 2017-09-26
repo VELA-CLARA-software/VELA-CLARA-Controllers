@@ -24,29 +24,25 @@
 #include "cameraInterface.h"
 #include "cameraIAConfigReader.h"
 
+using namespace cameraStructs;
+
 class cameraIAInterface : public cameraInterface
 {
     public:
         cameraIAInterface::cameraIAInterface();
-        cameraIAInterface( const std::string &Conf,
-                         const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
-                         const bool shouldStartEPICs,
-                         const VELA_ENUM::MACHINE_AREA myMachineArea );
+        cameraIAInterface(const std::string &Conf,
+                          const bool startVirtualMachine,
+                          const bool* show_messages_ptr,
+                          const bool* show_debug_messages_ptr,
+                          const bool shouldStartEPICs,
+                          const VELA_ENUM::MACHINE_AREA myMachineArea);
         ~cameraIAInterface();
 
-        std::vector< cameraStructs::camDataType > getRawData();
-        std::vector< cameraStructs::camDataType > getBackgroundRawData();
-        double getX();
-        double getY();
-        double getSigmaX();
-        double getSigmaY();
-        double getSigmaXY();
-        const cameraStructs::cameraIAObject &getCamIAObjConstRef( const std::string & camName  );
-        const cameraStructs::cameraIAObject &getSelectedDAQRef();
-        const cameraStructs::cameraIAObject &getVCDAQRef();
-        bool calibrate(); //Takes 10 successive x and y postitions, averages to set centre in which to determine all x and y position from
+        ///Functions Accessible to Python Controller///
+        bool setBackground();
+        const cameraObject &getCamIAObjConstRef(const std::string &camName);
+        const cameraObject &getSelectedIARef();
+        const cameraObject &getVCIARef();
     protected:
 
     private:
@@ -55,12 +51,30 @@ class cameraIAInterface : public cameraInterface
         void initialise();
         cameraIAConfigReader configReader; /// class member so we can pass in file path in ctor
         bool initObjects();
-        static void staticEntryMonitor(const event_handler_args args);
+        void initChids();
+        void startMonitors();
+        void killMonitor( cameraStructs::monitorDAQStruct * ms );
+        static void staticEntryIAMonitor(const event_handler_args args);
+        void updateSelectedOrVC(const std::string cameraName);
+
         void updateState(const unsigned short value,const std::string&cameraName);
+        void updateAcquiring(const unsigned short value,const std::string &cameraName);
         void updateX(const double value,const std::string& cameraName);
         void updateY(const double value,const std::string& cameraName);
         void updateSigmaX(const double value,const std::string& cameraName);
         void updateSigmaY(const double value,const std::string& cameraName);
-        void updateSigmaXY(const double value,const std::string& cameraName);
+        void updateCovXY(const double value,const std::string& cameraName);
+        void updateXPix(const unsigned long value,const std::string& cameraName);
+        void updateYPix(const unsigned long value,const std::string& cameraName);
+        void updateSigmaXPix(const unsigned long value,const std::string& cameraName);
+        void updateSigmaYPix(const unsigned long value,const std::string& cameraName);
+        void updateCovXYPix(const unsigned long value,const std::string& cameraName);
+        void updateXRad(const unsigned long value,const std::string&cameraName);
+        void updateYRad(const unsigned long value,const std::string&cameraName);
+        void updateXCenterPix(const unsigned long value,const std::string&cameraName);
+        void updateYCenterPix(const unsigned long value,const std::string&cameraName);
+        void updateBitDepth(const unsigned long value,const std::string&cameraName);
+        void updateImageWidth(const unsigned long value,const std::string&cameraName);
+        void updateImageHeight(const unsigned long value,const std::string&cameraName);
 };
 #endif // CAM_IA_INTERFACE_H

@@ -107,14 +107,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .value("ACQUIRING_ERROR",   ACQUIRE_STATE::ACQUIRING_ERROR)
         ;
     enum_<CAPTURE_STATE>("CAPTURE_STATE","Enum to interpet the capturing state of camera.")
-        .value("NOT_ACQUIRING",     CAPTURE_STATE::NOT_CAPTURING)
-        .value("ACQUIRING",         CAPTURE_STATE::CAPTURING)
-        .value("ACQUIRING_ERROR",   CAPTURE_STATE::CAPTURING_ERROR)
+        .value("NOT_CAPTURING",     CAPTURE_STATE::NOT_CAPTURING)
+        .value("CAPTURING",         CAPTURE_STATE::CAPTURING)
+        .value("CAPTURING_ERROR",   CAPTURE_STATE::CAPTURING_ERROR)
         ;
     enum_<WRITE_STATE>("WRITE_STATE","Enum to interpet the saving state of camera.")
-        .value("NOT_ACQUIRING",     WRITE_STATE::NOT_WRITING)
-        .value("ACQUIRING",         WRITE_STATE::WRITING)
-        .value("ACQUIRING_ERROR",   WRITE_STATE::WRITING_ERROR)
+        .value("NOT_WRITING",     WRITE_STATE::NOT_WRITING)
+        .value("WRITING",         WRITE_STATE::WRITING)
+        .value("WRITING_ERROR",   WRITE_STATE::WRITING_ERROR)
         ;
     enum_<WRITE_CHECK>("WRITE_CHECK","Enum to interpet the saving errors of camera.")
         .value("WRITE_OK",          WRITE_CHECK::WRITE_CHECK_OK)
@@ -126,6 +126,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
 
     class_<controller, bases<baseObject>,boost::noncopyable>
         ("controller","controller Doc String", no_init) /// forces Python to not be able to construct (init) this object
+
         .def("get_CA_PEND_IO_TIMEOUT",
              pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT)          )
         .def("set_CA_PEND_IO_TIMEOUT",
@@ -135,24 +136,29 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("getILockStates",
              pure_virtual(&controller::getILockStates)                  )
         ;
-
-    class_<cameraStructs::cameraDAQObject,boost::noncopyable>
-        ("cameraDAQObject","cameraDAQObject (read only values)", no_init)
+    boost::python::class_<cameraStructs::cameraObject,boost::noncopyable>
+        ("cameraObject","cameraObject Doc String", boost::python::no_init)
         .def_readonly("name",
-                      &cameraStructs::cameraDAQObject::name,
+                      &cameraStructs::cameraObject::name,
                       "Name of the camera (defined in the config file).")
         .def_readonly("pvRoot",
-                      &cameraStructs::cameraDAQObject::pvRoot,
+                      &cameraStructs::cameraObject::pvRoot,
                       "Camera's PV preffix (defined in the config file).")
         .def_readonly("screenName",
-                      &cameraStructs::cameraDAQObject::screenName,
+                      &cameraStructs::cameraObject::screenName,
                       "Name of screen associated Camera (defined in config file).")
         .def_readonly("state",
-                      &cameraStructs::cameraDAQObject::state,
+                      &cameraStructs::cameraObject::state,
                       "The state indicating whether Camera is 'reachable', i.e. power is on. ")
         .def_readonly("acquireState",
-                      &cameraStructs::cameraDAQObject::acquireState,
-                      "The state indicating whether Camera is aquiring images (not necessarily collectin/saving them).")
+                      &cameraStructs::cameraObject::acquireState,
+                      "Horizontal position of beam's centroid in millemetres.")
+        .def_readonly("DAQ",
+                      &cameraStructs::cameraObject::DAQ,
+                      "Object (cameraDAQObject) containing all the DAQ data.")
+        ;
+    class_<cameraStructs::cameraDAQObject,boost::noncopyable>
+        ("cameraDAQObject","cameraDAQObject (read only values)", no_init)
         .def_readonly("captureState",
                       &cameraStructs::cameraDAQObject::captureState,
                       "The state indicating whether the Camera is collecting images.")
@@ -179,8 +185,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
                       "Time (seconds) of full acquisition period, that includes expoture time.")
         .def_readonly("writeErrorMessage",
                       &cameraStructs::cameraDAQObject::writeErrorMessage,
-                      "If there is an error with saving the images a message willl be displayed here.")
+                      "If there is an error with saving the images a message will be displayed here.")
+          .def_readonly("latestDirectory",
+                      &cameraStructs::cameraDAQObject::latestDirectory,
+                      "Latest directory images were saved to.")
         ;
+
     class_<cameraDAQController, bases<controller>, boost::noncopyable>
         ("cameraDAQController","cameraDAQController", no_init)
         .def("get_CA_PEND_IO_TIMEOUT",
@@ -222,12 +232,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
              &cameraDAQController::isOFF,
              (arg("name")),
              "Returns True if camera 'name' is OFF")
-        .def("isAquiring",
-             &cameraDAQController::isAquiring,
+        .def("isAcquiring",
+             &cameraDAQController::isAcquiring,
              (arg("name")),
              "Returns True if camera 'name' is acquiring")
-        .def("isNotAquiring",
-             &cameraDAQController::isNotAquiring,
+        .def("isNotAcquiring",
+             &cameraDAQController::isNotAcquiring,
              (arg("name")),
              "Returns True if camera 'name' is not acquiring")
         .def("selectedCamera",
@@ -249,6 +259,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("stopVCAcquiring",
              &cameraDAQController::stopVCAcquiring,
              "Stops VC Camera acquiring and returns True if successful")
+         .def("getlatestDirectory",
+             &cameraDAQController::getlatestDirectory,
+             "Returns a string indicating directory selected camers last saved images to.")
         ;
 
     class_<VCcameraDAQ,boost::noncopyable>("init")

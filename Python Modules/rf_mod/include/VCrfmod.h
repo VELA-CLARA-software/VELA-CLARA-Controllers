@@ -105,6 +105,13 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("reset",             &l01ModController::reset,"")
         ;
 
+    boost::python::class_<gunModController, boost::python::bases<controller>, boost::noncopyable>
+        ("gunModController","gunModController Doc String",boost::python::no_init  )
+
+        .def("getObjConstRef",&gunModController::getGunObjConstRef,return_value_policy<reference_existing_object>(),
+             "Return L01 Modulator Object Reference")
+        //.def("reset",             &gunModController::reset,"")
+        ;
     /// https://stackoverflow.com/questions/19597087/c-listt-to-python-list
     boost::python::class_<rfModStructs::gunModObject,boost::noncopyable>
         ("gunModObject","gunModObject Doc String", boost::python::no_init)

@@ -60,13 +60,13 @@ bool cameraDAQController::isOFF(const std::string &cam)
 {
     return localInterface.isOFF(cam);
 }
-bool cameraDAQController::isAquiring (const std::string &cam)
+bool cameraDAQController::isAcquiring (const std::string &cam)
 {
-    return localInterface.isAquiring(cam);
+    return localInterface.isAcquiring(cam);
 }
-bool cameraDAQController::isNotAquiring (const std::string &cam)
+bool cameraDAQController::isNotAcquiring (const std::string &cam)
 {
-    return localInterface.isNotAquiring(cam);
+    return localInterface.isNotAcquiring(cam);
 }
 std::string cameraDAQController::selectedCamera()
 {
@@ -110,15 +110,19 @@ bool cameraDAQController::killCollectAndSaveVC()
 {
     return localInterface.killCollectAndSaveVC();
 }
-const cameraDAQObject& cameraDAQController::getCamDAQObjConstRef(const std::string &camName)
+const cameraObject& cameraDAQController::getCamDAQObjConstRef(const std::string &camName)
 {
     return localInterface.getCamDAQObjConstRef(camName);
 }
-const cameraDAQObject& cameraDAQController::getSelectedDAQRef()
+const cameraObject& cameraDAQController::getSelectedDAQRef()
 {
     return localInterface.getSelectedDAQRef();
 }
-const cameraDAQObject& cameraDAQController::getVCDAQRef()
+const cameraObject& cameraDAQController::getVCDAQRef()
 {
     return localInterface.getVCDAQRef();
+}
+std::string cameraDAQController::getlatestDirectory()
+{
+    return localInterface.getlatestDirectory();
 }

@@ -342,7 +342,7 @@ void l01ModConfigReader::addToPVStruct(std::vector<rfModStructs::l01_pvStruct>& 
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::L01_RESET;
         else
         {
-            messager("CONFIG FILE ERROR ", keyVal[0],
+            message("CONFIG FILE ERROR ", keyVal[0],
                      " is not recognised BE WARY, PROCEED WITH CAUTION. FIX source of config file.");
         }
     }

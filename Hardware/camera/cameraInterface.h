@@ -51,24 +51,24 @@ class cameraInterface : public interface
 
         ///Objects to hold Data///
         std::vector<monitorDAQStruct*> continuousMonitorDAQStructs;
-        std::map<std::string,cameraDAQObject>    allCamDAQData;
-        std::map<std::string,cameraIAObject>     allCamIAData;
+        std::vector<monitorIAStruct*> continuousMonitorIAStructs;
+        std::map<std::string,cameraObject>    allCamData;
 
         //cameraIAObject   selectedIACamera;
         //cameraIAObject  &selectedIACameraRef;
         //cameraIAObject   vcIACamera;
         //cameraIAObject  &vcIACameraRef;
 
-        cameraDAQObject  selectedDAQCamera;
-        cameraDAQObject &selectedDAQCameraRef;
-        cameraDAQObject  vcDAQCamera;
-        cameraDAQObject &vcDAQCameraRef;
+        cameraObject  selectedCameraObj;
+        cameraObject &selectedCameraRef;
+        cameraObject  vcCameraObj;
+        cameraObject &vcCameraRef;
 
         ///Functions Accessible to Python Controller///
         bool isON (const std::string &cam); //Can use Camera name or asociated
         bool isOFF(const std::string &cam); //screen name.
-        bool isAquiring(const std::string &cam);
-        bool isNotAquiring(const std::string &cam);
+        bool isAcquiring(const std::string &cam);
+        bool isNotAcquiring(const std::string &cam);
         std::string selectedCamera();
         bool setCamera(const std::string &cam);
         bool startAcquiring();

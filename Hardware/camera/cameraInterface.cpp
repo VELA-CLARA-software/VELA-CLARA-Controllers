@@ -26,8 +26,8 @@ using namespace cameraStructs;
 cameraInterface::cameraInterface(const bool* show_messages_ptr,
                                  const bool* show_debug_messages_ptr):
 interface(show_messages_ptr, show_debug_messages_ptr),
-selectedDAQCameraRef(selectedDAQCamera),
-vcDAQCameraRef(vcDAQCamera)
+selectedCameraRef(selectedCameraObj),
+vcCameraRef(vcCameraObj)
 
 {
 }
@@ -45,8 +45,8 @@ bool cameraInterface::isON ( const std::string & cam )
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if(entryExists( allCamDAQData, cameraName))
-        if(allCamDAQData.at(cameraName).state == CAM_STATE::CAM_ON)
+    if(entryExists( allCamData, cameraName))
+        if(allCamData.at(cameraName).state == CAM_STATE::CAM_ON)
             ans = true;
     return ans;
 }
@@ -54,43 +54,43 @@ bool cameraInterface::isOFF( const std::string & cam )
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cameraName ) )
-        if(allCamDAQData.at(cameraName).state == CAM_STATE::CAM_OFF)
+    if( entryExists( allCamData, cameraName ) )
+        if(allCamData.at(cameraName).state == CAM_STATE::CAM_OFF)
             ans = true;
     return ans;
 }
-bool cameraInterface::isAquiring( const std::string & cam )
+bool cameraInterface::isAcquiring( const std::string & cam )
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cameraName ) )
-        if( allCamDAQData.at(cameraName).acquireState == ACQUIRE_STATE::ACQUIRING )
+    if( entryExists( allCamData, cameraName ) )
+        if( allCamData.at(cameraName).acquireState == ACQUIRE_STATE::ACQUIRING )
             ans = true;
     return ans;
 }
-bool cameraInterface::isNotAquiring ( const std::string & cam)
+bool cameraInterface::isNotAcquiring ( const std::string & cam)
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cameraName ) )
-        if( allCamDAQData.at(cameraName).acquireState == ACQUIRE_STATE::NOT_ACQUIRING )
+    if( entryExists( allCamData, cameraName ) )
+        if( allCamData.at(cameraName).acquireState == ACQUIRE_STATE::NOT_ACQUIRING )
             ans = true;
     return ans;
 }
 std::string cameraInterface::selectedCamera()
 {
-        return selectedDAQCamera.name;
+        return selectedCameraObj.name;
 }
 bool cameraInterface::setCamera(const std::string & cam)
 {
     std::string cameraName = useCameraFrom(cam);
     bool ans = false;
-    if( entryExists( allCamDAQData, cameraName ) )
+    if( entryExists( allCamData, cameraName ) )
     {
-        selectedDAQCamera = allCamDAQData.at(cameraName);
-        vcDAQCamera = allCamDAQData.at("VC");// MAGIC_STRING
+        selectedCameraObj = allCamData.at(cameraName);
+        vcCameraObj = allCamData.at("VC");// MAGIC_STRING
         ans = true;
-        message("new setCamera = ",selectedDAQCamera.name);
+        message("new setCamera = ",selectedCameraObj.name);
 
     }
     return ans;
@@ -100,12 +100,12 @@ bool cameraInterface::startAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
-    if( isNotAquiring(selectedCamera()))
+    if( isNotAcquiring(selectedCamera()))
     {
-        pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
         message("Starting to Acquire images on ",
-                selectedDAQCamera.name," camera.");
+                selectedCameraObj.name," camera.");
     }
     return ans;
 }
@@ -113,12 +113,12 @@ bool cameraInterface::stopAcquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
-    if( isAquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
+    if( isAcquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
     {
-        pvStruct S(selectedDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
         message("Stopping to Acquire images on ",
-                selectedDAQCamera.name," camera.");
+                selectedCameraObj.name," camera.");
     }
     return ans;
 }
@@ -126,11 +126,11 @@ bool cameraInterface::startVCAcquiring()
 {
     bool ans=false;
     unsigned short comm = 1;
-    if( isNotAquiring("VC") )
+    if( isNotAcquiring("VC") )
     {
-        pvStruct S(vcDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(vcCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
-        message("Starting to Acquire images on ",vcDAQCamera.name," camera.");
+        message("Starting to Acquire images on ",vcCameraObj.name," camera.");
     }
     return ans;
 }
@@ -138,11 +138,11 @@ bool cameraInterface::stopVCAcquiring()
 {
     bool ans=false;
     unsigned short comm = 0;
-    if( isAquiring("VC") && isCollecting("VC")==false )
+    if( isAcquiring("VC") && isCollecting("VC")==false )
     {
-        pvStruct S(vcDAQCamera.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(vcCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
         ans=shortCaput(comm,S);
-        message("Stopping to Acquire images on ",vcDAQCamera.name," camera.");
+        message("Stopping to Acquire images on ",vcCameraObj.name," camera.");
     }
     return ans;
 }
@@ -151,9 +151,9 @@ bool cameraInterface::isCollecting(const std::string&cameraName)
 {
     bool ans = false;
 
-    if (allCamDAQData.at(cameraName).captureState==1)
+    if (allCamData.at(cameraName).DAQ.captureState==1)
         ans=true;
-    else if (allCamDAQData.at(cameraName).captureState==0)
+    else if (allCamData.at(cameraName).DAQ.captureState==0)
         ans=false;
     else
         debugMessage("Problem with isCollecting() function.");
@@ -162,9 +162,9 @@ bool cameraInterface::isCollecting(const std::string&cameraName)
 bool cameraInterface::isSaving(const std::string&cameraName)
 {
     bool ans = false;
-    if (allCamDAQData.at(cameraName).writeState==1)
+    if (allCamData.at(cameraName).DAQ.writeState==1)
         ans=true;
-    else if (allCamDAQData.at(cameraName).writeState==0)
+    else if (allCamData.at(cameraName).DAQ.writeState==0)
         ans=false;
     else
         debugMessage("Problem with isSaving() function.");
@@ -173,12 +173,12 @@ bool cameraInterface::isSaving(const std::string&cameraName)
 std::string cameraInterface::useCameraFrom(const std::string camOrScreen)
 {
     std::string cameraName;
-    if (entryExists(allCamDAQData,camOrScreen))
+    if (entryExists(allCamData,camOrScreen))
         cameraName=camOrScreen;
     else
     {
         bool usingAScreenName=false;
-        for (auto && it : allCamDAQData)
+        for (auto && it : allCamData)
         {
             if (it.second.screenName==camOrScreen)
             {

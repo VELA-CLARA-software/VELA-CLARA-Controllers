@@ -29,15 +29,21 @@
 
 class cameraDAQInterface;
 
+class cameraIAInterface;
+
 namespace cameraStructs
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE,
-        (CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
+        (TEST)(CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
         (CAM_FILE_WRITE)(CAM_FILE_WRITE_RBV)(CAM_FILE_WRITE_CHECK)
         (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_ACQUIRE)(CAM_CAPTURE)
         (CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
-        (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)(X)
-        (Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(UNKNOWN_CAM_PV_TYPE)
+        (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)
+        (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)
+        (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
+        (X_RAD)(Y_RAD)(X_CENTER_PIX)(Y_CENTER_PIX)
+        (BIT_DEPTH)(IMAGE_HEIGHT)(IMAGE_WIDTH)
+        (UNKNOWN_CAM_PV_TYPE)
         (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
@@ -82,30 +88,54 @@ namespace cameraStructs
         cameraDAQInterface *interface;
         evid             EVID;
     };
+    struct monitorIAStruct
+    {
+        monitorIAStruct(): monType(UNKNOWN_CAM_PV_TYPE),objName("UNKNOWN"), interface(nullptr),EVID(nullptr){}
+        CAM_PV_TYPE      monType;
+        std::string      objName;
+        chtype           CHTYPE;
+        cameraIAInterface *interface;
+        evid             EVID;
+    };
     // eventually (aspiration) harmonize this with VELA cams ...
     struct cameraIAObject// image analysis object
     {
-        cameraIAObject() :
-            x(9999.9999),y(9999.9999),sigmaX(9999.9999),sigmaY(9999.9999),
-            covXY(9999.9999),xPix2mm(9999.9999),yPix2mm(9999.9999),xPix(9999),
-            yPix(9999),xSigmaPix(9999),ySigmaPix(9999),xyCovPix(999),
-            xCenterPix(9999),yCenterPix(9999),xRad(9999),yRad(9999),
-            bitDepth(9999),imageHeight(9999),imageWidth(9999){}
-        double x,y,sigmaX,sigmaY,covXY,
-               xPix2mm, yPix2mm;
-        size_t xPix, yPix,xSigmaPix,ySigmaPix,xyCovPix,
+        cameraIAObject() : x(UTL::DUMMY_DOUBLE),
+                           y(UTL::DUMMY_DOUBLE),
+                           sigmaX(UTL::DUMMY_DOUBLE),
+                           sigmaY(UTL::DUMMY_DOUBLE),
+                           covXY(UTL::DUMMY_DOUBLE),
+                           pix2mm(UTL::DUMMY_DOUBLE),
+                           xPix(UTL::DUMMY_INT),
+                           yPix(UTL::DUMMY_INT),
+                           sigmaXPix(UTL::DUMMY_INT),
+                           sigmaYPix(UTL::DUMMY_INT),
+                           covXYPix(UTL::DUMMY_INT),
+                           xCenterPix(UTL::DUMMY_INT),
+                           yCenterPix(UTL::DUMMY_INT),
+                           xRad(UTL::DUMMY_INT),
+                           yRad(UTL::DUMMY_INT),
+                           bitDepth(UTL::DUMMY_INT),
+                           imageHeight(UTL::DUMMY_INT),
+                           imageWidth(UTL::DUMMY_INT){}
+
+        double x,y,sigmaX,sigmaY,covXY,pix2mm;
+        size_t xPix, yPix,sigmaXPix,sigmaYPix,covXYPix,
                xCenterPix,yCenterPix,xRad,yRad,
                bitDepth,imageHeight,imageWidth;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+
+        //Time of last background set
+        //.......put here....
     };
     struct cameraDAQObject
     {
         cameraDAQObject() : name(UTL::UNKNOWN_NAME),
                             pvRoot(UTL::UNKNOWN_PVROOT),
                             screenName(UTL::UNKNOWN_STRING),
-                            state(CAM_ERROR),
-                            acquireState(ACQUIRING_ERROR),
+//state(CAM_ERROR),
+                            //acquireState(ACQUIRING_ERROR),
                             captureState(CAPTURING_ERROR),
                             writeState(WRITING_ERROR),
                             writeCheck(WRITE_CHECK_ERROR),
@@ -116,9 +146,9 @@ namespace cameraStructs
         //ID
         std::string name, pvRoot, screenName;
         //On/Off
-        CAM_STATE state;
+        //CAM_STATE state;
         // Rolling a
-        ACQUIRE_STATE acquireState;
+        //ACQUIRE_STATE acquireState;
         // actually "capturing" images to then save to disc
         CAPTURE_STATE captureState;
         // write state indicates if saving to disc / or
@@ -126,30 +156,35 @@ namespace cameraStructs
         // write check is whether the last write was succesful
         WRITE_CHECK writeCheck;
         // If error this string will get updated
-        std::string writeErrorMessage;
+        std::string writeErrorMessage, latestDirectory;
         int shotsTaken, numberOfShots, maxShots;
         double frequency,exposureTime,acquisitionPeriod;
         // doesn't exist for CLARA
         std::vector<camDataType> rawData;
         // we're going to store a background image array ion a PV
         std::vector<camDataType> rawBackgroundData;
-        VELA_ENUM::MACHINE_AREA  machineArea;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        //VELA_ENUM::MACHINE_AREA  machineArea;
+        //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
     ///Not using this yet but will use it eventually for DAQ and IA
     struct cameraObject
     {
-        cameraObject() : name("NO_NAME"), pvRoot("NO_PV_ROOT"), screenPV("NO_SCREEN_PV"), state(CAM_ERROR) {}
-        std::string name, pvRoot, screenPV;
+        cameraObject() : name(UTL::UNKNOWN_NAME),
+                         pvRoot(UTL::UNKNOWN_PVROOT),
+                         screenName(UTL::UNKNOWN_STRING),
+                         state(CAM_ERROR) {}
+        std::string name, pvRoot, screenName;
         CAM_STATE state;
-        std::vector<camDataType> rawData;
-        std::vector<camDataType> rawBackgroundData;
+        // Rolling acquire
+        ACQUIRE_STATE acquireState;
+        //std::vector<camDataType> rawData;
+        //std::vector<camDataType> rawBackgroundData;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
         VELA_ENUM::MACHINE_AREA  machineArea;
-        cameraDAQObject CDO;
-        cameraIAObject CIO;
+        cameraDAQObject DAQ;
+        cameraIAObject IA;
     };
 }
 #endif // CAM_STRUCTS_H_
