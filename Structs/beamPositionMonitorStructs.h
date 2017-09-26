@@ -2,6 +2,7 @@
 #define _VELA_BPM_STRUCTS_H_
 //
 #include "structs.h"
+#include "configDefinitions.h"
 //stl
 #include <string>
 #include <map>
@@ -9,6 +10,8 @@
 #ifndef __CINT__
 #include <cadef.h>
 #endif
+//boost
+#include <boost/circular_buffer.hpp>
 
 class beamPositionMonitorInterface;
 
@@ -38,7 +41,7 @@ namespace beamPositionMonitorStructs
         chtype             CHTYPE;
         void *             val;
         beamPositionMonitorInterface *interface;
-        evid               *EVID;
+        evid               EVID;
     };
 
     struct pvStruct
@@ -53,19 +56,28 @@ namespace beamPositionMonitorStructs
 
     struct rawDataStruct
     {
-        rawDataStruct() : shotCount( 0 ), numShots( 1 ) {}
+        rawDataStruct() : shotCount( 0 ),
+                          numShots( 1 ),
+                          buffer( UTL::BUFFER_TEN ) {}
         std::string name;
         int shotCount, numShots;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct, appendingData;
+        size_t buffer;
         std::vector< double > p1, p2, pu1, pu2, pu3, pu4, c1, c2, x, y, q;
         std::vector< double > timeStamps;
         std::vector< std::vector< double > > rawBPMData;
         std::vector< std::string > strTimeStamps;
+        boost::circular_buffer< double > xBuffer, yBuffer, qBuffer;
+        boost::circular_buffer< double > timeStampsBuffer;
+        boost::circular_buffer< std::string > strTimeStampsBuffer;
+        boost::circular_buffer< std::vector< double > > rawDataBuffer;
     };
 
     struct bpmDataObject
     {
-        bpmDataObject() : shotCount( 0 ), numShots( 1 ) {}
+        bpmDataObject() : shotCount( 0 ),
+                          numShots( 1 ),
+                          buffer( UTL::BUFFER_TEN ) {}
         std::string name, pvRoot;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct;
         bool appendingData;
@@ -74,10 +86,12 @@ namespace beamPositionMonitorStructs
         double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn;
         double awak, rdy, q;
         long sa1, sa2, ra1, ra2, sd1, sd2, rd1, rd2;
+        size_t buffer;
         rawDataStruct bpmRawData;
         std::vector< double > timeStamps;
         std::vector< std::string > strTimeStamps;
         std::vector< std::vector< double > > bpmData;
+        boost::circular_buffer< double > xPVBuffer, yPVBuffer;
         VELA_ENUM::TRIG_STATE bpmState;
         VELA_ENUM::MACHINE_AREA machineArea;
         VELA_ENUM::MACHINE_MODE machineMode;

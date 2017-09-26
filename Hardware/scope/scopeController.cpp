@@ -67,9 +67,24 @@ void scopeController::monitorANumForNShots( const std::string num, scopeStructs:
     localInterface.monitorANumForNShots( num, channel, N );
 }
 //______________________________________________________________________________
+void scopeController::monitorATraceForNShots_str( const std::string trace, const std::string & channel, size_t N )
+{
+    localInterface.monitorATraceForNShots( trace, getScopePVType( channel ), N );
+}
+//______________________________________________________________________________
+void scopeController::monitorANumForNShots_str( const std::string num, const std::string & channel, size_t N )
+{
+    localInterface.monitorANumForNShots( num, getScopePVType( channel ), N );
+}
+//______________________________________________________________________________
 bool scopeController::isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.isMonitoringScopeTrace( scopeName, pvType );
+}
+//______________________________________________________________________________
+bool scopeController::isMonitoringScopeTraces( const std::string & scopeName )
+{
+    return localInterface.isMonitoringScopeTraces( scopeName );
 }
 //______________________________________________________________________________
 bool scopeController::isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
@@ -77,14 +92,49 @@ bool scopeController::isNotMonitoringScopeTrace( const std::string & scopeName, 
     return localInterface.isNotMonitoringScopeTrace( scopeName, pvType );
 }
 //______________________________________________________________________________
+bool scopeController::isNotMonitoringScopeTraces( const std::string & scopeName )
+{
+    return localInterface.isNotMonitoringScopeTraces( scopeName );
+}
+//______________________________________________________________________________
 bool scopeController::isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.isMonitoringScopeNum( scopeName, pvType );
 }
 //______________________________________________________________________________
+bool scopeController::isMonitoringScopeNums( const std::string & scopeName )
+{
+    return localInterface.isMonitoringScopeNums( scopeName );
+}
+//______________________________________________________________________________
 bool scopeController::isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.isNotMonitoringScopeNum( scopeName, pvType );
+}
+//______________________________________________________________________________
+bool scopeController::isNotMonitoringScopeNums( const std::string & scopeName )
+{
+    return localInterface.isNotMonitoringScopeNums( scopeName );
+}
+//______________________________________________________________________________
+bool scopeController::isMonitoringScopeTrace_str( const std::string & scopeName, const std::string & pvType )
+{
+    return localInterface.isMonitoringScopeTrace( scopeName, getScopePVType( pvType ) );
+}
+//______________________________________________________________________________
+bool scopeController::isNotMonitoringScopeTrace_str( const std::string & scopeName, const std::string & pvType )
+{
+    return localInterface.isNotMonitoringScopeTrace( scopeName, getScopePVType( pvType ) );
+}
+//______________________________________________________________________________
+bool scopeController::isMonitoringScopeNum_str( const std::string & scopeName, const std::string & pvType )
+{
+    return localInterface.isMonitoringScopeNum( scopeName, getScopePVType( pvType ) );
+}
+//______________________________________________________________________________
+bool scopeController::isNotMonitoringScopeNum_str( const std::string & scopeName, const std::string & pvType )
+{
+    return localInterface.isNotMonitoringScopeNum( scopeName, getScopePVType( pvType ) );
 }
 //______________________________________________________________________________
 const scopeStructs::scopeTraceData & scopeController::getScopeTraceDataStruct( const std::string & scopeName )
@@ -102,6 +152,11 @@ std::vector< std::vector< double > > scopeController::getScopeTraces( const std:
     return localInterface.getScopeTraces( name, pvType );
 }
 //______________________________________________________________________________
+std::vector< std::vector< double > > scopeController::getScopeTraces_str( const std::string & name, const std::string & pvType )
+{
+    return localInterface.getScopeTraces( name, getScopePVType( pvType ) );
+}
+//______________________________________________________________________________
 std::vector< double > scopeController::getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.getScopeNums( name, pvType );
@@ -110,6 +165,11 @@ std::vector< double > scopeController::getScopeNums( const std::string & name, s
 std::vector< std::vector< double > > scopeController::getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
 {
     return localInterface.getPartOfTrace( name, pvType, part1, part2 );
+}
+//______________________________________________________________________________
+std::vector< std::vector< double > > scopeController::getPartOfTrace_str( const std::string & name, const std::string & pvType, const int part1, const int part2 )
+{
+    return localInterface.getPartOfTrace( name, getScopePVType( pvType ), part1, part2 );
 }
 //______________________________________________________________________________
 std::vector< double > scopeController::getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
@@ -271,6 +331,11 @@ double scopeController::getEDFCUPQ()
 {
     return localInterface.getEDFCUPQ();
 }
+//____________________________________________________________________________________________
+scopeStructs::SCOPE_PV_TYPE scopeController::getScopePVType( const std::string & name )
+{
+    return localInterface.getScopePVType( name );
+}
 //______________________________________________________________________________
 std::vector< std::string > scopeController::getScopeNames()
 {
@@ -391,6 +456,46 @@ boost::python::list scopeController::getScopeNums_Py( const std::string & name, 
 boost::python::list scopeController::getAreaUnderPartOfTrace_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
 {
     return toPythonList(getAreaUnderPartOfTrace( name, pvType, part1, part2 ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeNums_Py_str( const std::string & name, const std::string & pvType )
+{
+    return toPythonList(getScopeNums( name, getScopePVType( pvType ) ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getAreaUnderPartOfTrace_Py_str( const std::string & name, const std::string & pvType, const int part1, const int part2 )
+{
+    return toPythonList(getAreaUnderPartOfTrace( name, getScopePVType( pvType ), part1, part2 ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getMinOfTraces_Py_str( const std::string & name, const std::string & pvType )
+{
+    return toPythonList(getMinOfTraces( name, getScopePVType( pvType ) ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getMaxOfTraces_Py_str( const std::string & name, const std::string & pvType )
+{
+    return toPythonList(getMaxOfTraces( name, getScopePVType( pvType ) ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getAreaUnderTraces_Py_str( const std::string & name, const std::string & pvType )
+{
+    return toPythonList(getAreaUnderTraces( name, getScopePVType( pvType ) ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getTimeStamps_Py_str( const std::string & name, const std::string & pvType )
+{
+    return toPythonList(getTimeStamps( name, getScopePVType( pvType ) ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getStrTimeStamps_Py_str( const std::string & name, const std::string & pvType )
+{
+    return toPythonList(getStrTimeStamps( name, getScopePVType( pvType ) ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getAvgNoise_Py_str( const std::string & name, const std::string & pvType, const int part1, const int part2 )
+{
+    return toPythonList(getAvgNoise( name, getScopePVType( pvType ), part1, part2 ));
 }
 //______________________________________________________________________________
 boost::python::list scopeController::getScopeNames_Py()

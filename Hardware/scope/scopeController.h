@@ -54,9 +54,17 @@ class scopeController : public controller
         bool monitoringTraces;
         bool monitoringNums;
         bool isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeTrace_str( const std::string & scopeName, const std::string & pvType );
+        bool isMonitoringScopeTraces( const std::string & scopeName );
         bool isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeNum_str( const std::string & scopeName, const std::string & pvType );
+        bool isMonitoringScopeNums( const std::string & scopeName );
         bool isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeTrace_str( const std::string & scopeName, const std::string & pvType );
+        bool isNotMonitoringScopeTraces( const std::string & scopeName );
         bool isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeNum_str( const std::string & scopeName, const std::string & pvType );
+        bool isNotMonitoringScopeNums( const std::string & scopeName );
 
         double getScopeP1( const std::string & scopeName );
         double getScopeP2( const std::string & scopeName );
@@ -73,13 +81,18 @@ class scopeController : public controller
         void restartContinuousMonitoring();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
+        scopeStructs::SCOPE_PV_TYPE getScopePVType( const std::string & pvType );
         void monitorTracesForNShots( size_t N );
         void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
+        void monitorATraceForNShots_str( const std::string trace, const std::string & channel, size_t N );
         void monitorNumsForNShots( size_t N );
         void monitorANumForNShots( const std::string num, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
+        void monitorANumForNShots_str( const std::string num, const std::string & channel, size_t N );
 
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< std::vector< double > > getScopeTraces_str( const std::string & name, const std::string & pvType );
         std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeNums_str( const std::string & name, const std::string & pvType );
         std::vector< double > getScopeP1Vec( const std::string & name );
         std::vector< double > getScopeP2Vec( const std::string & name );
         std::vector< double > getScopeP3Vec( const std::string & name );
@@ -98,6 +111,7 @@ class scopeController : public controller
         std::vector< double > getTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< std::string > getStrTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< std::vector< double > > getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        std::vector< std::vector< double > > getPartOfTrace_str( const std::string & name, const std::string & pvType, const int part1, const int part2 );
         std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
         std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
 
@@ -108,6 +122,7 @@ class scopeController : public controller
 
         #ifdef BUILD_DLL
         boost::python::list getScopeNums_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getScopeNums_Py_str( const std::string & name, const std::string & pvType );
         boost::python::list getScopeP1Vec_Py( const std::string & name );
         boost::python::list getScopeP2Vec_Py( const std::string & name );
         boost::python::list getScopeP3Vec_Py( const std::string & name );
@@ -121,12 +136,19 @@ class scopeController : public controller
         boost::python::list getScopeTR3Buffer_Py( const std::string & name );
         boost::python::list getScopeTR4Buffer_Py( const std::string & name );
         boost::python::list getMinOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getMinOfTraces_Py_str( const std::string & name, const std::string & pvType );
         boost::python::list getMaxOfTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getMaxOfTraces_Py_str( const std::string & name, const std::string & pvType );
         boost::python::list getAreaUnderTraces_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getAreaUnderTraces_Py_str( const std::string & name, const std::string & pvType );
         boost::python::list getTimeStamps_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getTimeStamps_Py_str( const std::string & name, const std::string & pvType );
         boost::python::list getStrTimeStamps_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        boost::python::list getStrTimeStamps_Py_str( const std::string & name, const std::string & pvType );
         boost::python::list getAreaUnderPartOfTrace_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        boost::python::list getAreaUnderPartOfTrace_Py_str( const std::string & name, const std::string & pvType, const int part1, const int part2 );
         boost::python::list getAvgNoise_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        boost::python::list getAvgNoise_Py_str( const std::string & name, const std::string & pvType, const int part1, const int part2 );
         boost::python::list getScopeNames_Py();
         boost::python::list getScopePVs_Py();
         boost::python::list getScopeTracePVs_Py();

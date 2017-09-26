@@ -3,22 +3,22 @@
 //stl
 #include <string>
 //
-#include "velaINJscreenController.h"
+#include "screenController.h"
+// stl
+#include <string>
+#include <vector>
+#include <map>
+#include <list>
+//boost
+#define MODULE_NAME VELA_CLARA_Screen_Control
 
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
+#include "VCheader.h"
 
-
-OK i should think about a compelte change in approach here
-
-maybe we should have a screenController base-class that is returned,
-
-but there are different falvours of it?
-
-
+//OK i should think about a compelte change in approach here
+//
+//maybe we should have a screenController base-class that is returned,
+//
+//but there are different falvours of it?
 
 class VCscreens
 {
@@ -28,54 +28,62 @@ class VCscreens
     public:
         VCscreens();
         ~VCscreens();
-        velaINJscreenController& virtual_VELA_INJ_Screen_Controller();
-        velaINJscreenController& offline_VELA_INJ_Screen_Controller();
-        velaINJscreenController& physical_VELA_INJ_Screen_Controller();
+        screenController& virtual_VELA_INJ_Screen_Controller();
+        screenController& offline_VELA_INJ_Screen_Controller();
+        screenController& physical_VELA_INJ_Screen_Controller();
 
-        velaINJscreenController& virtual_VELA_BA1_Screen_Controller();
-        velaINJscreenController& offline_VELA_BA1_Screen_Controller();
-        velaINJscreenController& physical_VELA_BA1_Screen_Controller();
+        screenController& virtual_VELA_BA1_Screen_Controller();
+        screenController& offline_VELA_BA1_Screen_Controller();
+        screenController& physical_VELA_BA1_Screen_Controller();
 
-        velaINJscreenController& virtual_VELA_BA2_Screen_Controller();
-        velaINJscreenController& offline_VELA_BA2_Screen_Controller();
-        velaINJscreenController& physical_VELA_BA2_Screen_Controller();
+        screenController& virtual_VELA_BA2_Screen_Controller();
+        screenController& offline_VELA_BA2_Screen_Controller();
+        screenController& physical_VELA_BA2_Screen_Controller();
 
-        velaINJscreenController& virtual_CLARA_INJ_Screen_Controller();
-        velaINJscreenController& offline_CLARA_INJ_Screen_Controller();
-        velaINJscreenController& physical_CLARA_INJ_Screen_Controller();
+        screenController& virtual_CLARA_INJ_Screen_Controller();
+        screenController& offline_CLARA_INJ_Screen_Controller();
+        screenController& physical_CLARA_INJ_Screen_Controller();
+
+        screenController& virtual_CLARA_PH1_Screen_Controller();
+        screenController& offline_CLARA_PH1_Screen_Controller();
+        screenController& physical_CLARA_PH1_Screen_Controller();
 
         void setQuiet();
         void setVerbose();
         void setMessage();
         void setDebugMessage();
 
-        velaINJscreenController& getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
+        screenController& getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
     protected:
 
     private:
 
      /// we just need to decide good names for these things...
-        velaINJscreenController * virtual_VELA_INJ_Screen_Controller_Obj ;
-        velaINJscreenController * physical_VELA_INJ_Screen_Controller_Obj;
-        velaINJscreenController * offline_VELA_INJ_Screen_Controller_Obj ;
+        screenController * virtual_VELA_INJ_Screen_Controller_Obj ;
+        screenController * physical_VELA_INJ_Screen_Controller_Obj;
+        screenController * offline_VELA_INJ_Screen_Controller_Obj ;
 
-        velaINJscreenController * virtual_VELA_BA1_Screen_Controller_Obj ;
-        velaINJscreenController * physical_VELA_BA1_Screen_Controller_Obj;
-        velaINJscreenController * offline_VELA_BA1_Screen_Controller_Obj ;
+        screenController * virtual_VELA_BA1_Screen_Controller_Obj ;
+        screenController * physical_VELA_BA1_Screen_Controller_Obj;
+        screenController * offline_VELA_BA1_Screen_Controller_Obj ;
 
-        velaINJscreenController * virtual_VELA_BA2_Screen_Controller_Obj;
-        velaINJscreenController * offline_VELA_BA2_Screen_Controller_Obj;
-        velaINJscreenController * physical_VELA_BA2_Screen_Controller_Obj;
+        screenController * virtual_VELA_BA2_Screen_Controller_Obj;
+        screenController * offline_VELA_BA2_Screen_Controller_Obj;
+        screenController * physical_VELA_BA2_Screen_Controller_Obj;
 
-        velaINJscreenController * virtual_CLARA_INJ_Screen_Controller_Obj;
-        velaINJscreenController * offline_CLARA_INJ_Screen_Controller_Obj;
-        velaINJscreenController * physical_CLARA_INJ_Screen_Controller_Obj;
+        screenController * virtual_CLARA_INJ_Screen_Controller_Obj;
+        screenController * offline_CLARA_INJ_Screen_Controller_Obj;
+        screenController * physical_CLARA_INJ_Screen_Controller_Obj;
+
+        screenController * virtual_CLARA_PH1_Screen_Controller_Obj;
+        screenController * offline_CLARA_PH1_Screen_Controller_Obj;
+        screenController * physical_CLARA_PH1_Screen_Controller_Obj;
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
 
-        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_INJ,UNKNOWN_AREA;
+        const VELA_ENUM::MACHINE_AREA  VELA_INJ, VELA_BA1, VELA_BA2, CLARA_INJ, CLARA_PH1, UNKNOWN_AREA;
 };
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
 /// Create a load of different function pointers and use them in the bindings
@@ -103,50 +111,31 @@ typedef const std::vector< screenStructs::SCREEN_STATE > stav;
 
 typedef std::vector<bool> vecb;
 ///
-bool(velaINJscreenController::*screenIN_1)  (cstr& ) = &velaINJscreenController::screenIN;
-bool(velaINJscreenController::*screenIN_2)  (cves& ) = &velaINJscreenController::screenIN;
-bool(velaINJscreenController::*screenOUT_1) (cstr& ) = &velaINJscreenController::screenOUT;
-bool(velaINJscreenController::*screenOUT_2) (cves& ) = &velaINJscreenController::screenOUT;
+bool(screenController::*screenIN_1)  (cstr& ) = &screenController::screenIN;
+bool(screenController::*screenIN_2)  (cves& ) = &screenController::screenIN;
+bool(screenController::*screenOUT_1) (cstr& ) = &screenController::screenOUT;
+bool(screenController::*screenOUT_2) (cves& ) = &screenController::screenOUT;
 
-bool(velaINJscreenController::*screenMoveTo_1)(cves&, stav& ) = &velaINJscreenController::screenMoveTo;
-bool(velaINJscreenController::*screenMoveTo_2)(cstr&, csta& ) = &velaINJscreenController::screenMoveTo;
+bool(screenController::*screenMoveTo_1)(cves&, stav& ) = &screenController::screenMoveTo;
+bool(screenController::*screenMoveTo_2)(cstr&, csta& ) = &screenController::screenMoveTo;
 
-bool(velaINJscreenController::*isScreenIN_1)(cstr& ) = &velaINJscreenController::isScreenIN;
-vecb(velaINJscreenController::*isScreenIN_2)(cves& ) = &velaINJscreenController::isScreenIN;
-bool(velaINJscreenController::*isScreenOUT_1)(cstr&) = &velaINJscreenController::isScreenOUT;
-vecb(velaINJscreenController::*isScreenOUT_2)(cves&) = &velaINJscreenController::isScreenOUT;
+bool(screenController::*isScreenIN_1)(cstr& ) = &screenController::isScreenIN;
+vecb(screenController::*isScreenIN_2)(cves& ) = &screenController::isScreenIN;
+bool(screenController::*isScreenOUT_1)(cstr&) = &screenController::isScreenOUT;
+vecb(screenController::*isScreenOUT_2)(cves&) = &screenController::isScreenOUT;
 
 
 
 using namespace boost::python;
-BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
+BOOST_PYTHON_MODULE( MODULE_NAME )
 {
+    docstring_options local_docstring_options(true, true, false);
+    local_docstring_options.disable_cpp_signatures();
+
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+
     /// Things that you want to use in python muct be exposed:
     /// containers
-    class_<std::vector< std::string > >("std_vector_string")
-            .def( vector_indexing_suite< std::vector< std::string >>() )
-            ;
-    class_<std::vector< double> >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< double>>() )
-            ;
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-        ;
-    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
-        ;
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
     // screen structs
     enum_<screenStructs::SCREEN_STATE>("SCREEN_STATE")
         .value("SCREEN_IN",       screenStructs::SCREEN_STATE::SCREEN_IN  )
@@ -166,25 +155,41 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .value("V_10MM_HOLE",     screenStructs::SCREEN_STATE::V_10MM_HOLE)
         .value("H_YAG",           screenStructs::SCREEN_STATE::H_YAG)
         .value("V_YAG",           screenStructs::SCREEN_STATE::V_YAG)
+        .value("H_YAG",           screenStructs::SCREEN_STATE::H_YAG)
+        .value("V_YAG",           screenStructs::SCREEN_STATE::V_YAG)
         .value("H_SLIT",          screenStructs::SCREEN_STATE::H_SLIT)
         .value("V_SLIT",          screenStructs::SCREEN_STATE::V_SLIT)
         .value("H_RF",            screenStructs::SCREEN_STATE::H_RF)
         .value("V_RF",            screenStructs::SCREEN_STATE::V_RF)
         .value("V_OUT",           screenStructs::SCREEN_STATE::V_OUT )
+        .value("V_OUT_POS",       screenStructs::SCREEN_STATE::V_OUT_POS )
+        .value("H_OUT",           screenStructs::SCREEN_STATE::H_OUT )
+        .value("H_SLIT_1",        screenStructs::SCREEN_STATE::H_SLIT_1)
+        .value("H_SLIT_2",        screenStructs::SCREEN_STATE::H_SLIT_2)
+        .value("H_SLIT_3",        screenStructs::SCREEN_STATE::H_SLIT_3)
+        .value("V_SLIT_1",        screenStructs::SCREEN_STATE::V_SLIT_1)
+        .value("V_GRATICULE",     screenStructs::SCREEN_STATE::V_GRATICULE)
+        .value("V_COLLIMATOR",    screenStructs::SCREEN_STATE::V_COLLIMATOR)
+        .value("H_4MM_APERTURE",  screenStructs::SCREEN_STATE::H_4MM_APERTURE)
+        .value("H_6MM_APERTURE",  screenStructs::SCREEN_STATE::H_6MM_APERTURE)
+        .value("H_9MM_APERTURE",  screenStructs::SCREEN_STATE::H_9MM_APERTURE)
         .value("H_OUT",           screenStructs::SCREEN_STATE::H_OUT )
         .value("UNKNOWN_POSITION",screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
         ;
     enum_<screenStructs::SCREEN_TYPE>("SCREEN_TYPE")
         .value("UNKNOWN_SCREEN_TYPE", screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE )
-        .value("VELA_HV_MOVER",       screenStructs::SCREEN_TYPE::VELA_HV_MOVER  )
-        .value("VELA_PNEUMATIC",      screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
+        .value("VELA_HV_MOVER",       screenStructs::SCREEN_TYPE::VELA_HV_MOVER   )
+        .value("CLARA_HV_MOVER",      screenStructs::SCREEN_TYPE::CLARA_HV_MOVER  )
+        .value("CLARA_V_MOVER",       screenStructs::SCREEN_TYPE::CLARA_V_MOVER   )
+        .value("VELA_PNEUMATIC",      screenStructs::SCREEN_TYPE::VELA_PNEUMATIC  )
+        .value("CLARA_PNEUMATIC",     screenStructs::SCREEN_TYPE::CLARA_PNEUMATIC )
         ;
     enum_<screenStructs::DRIVER_STATE>("DRIVER_STATE")
-        .value("DRIVER_MOVING", screenStructs::DRIVER_STATE::DRIVER_MOVING )
-        .value("DRIVER_STATIONARY",       screenStructs::DRIVER_STATE::DRIVER_STATIONARY )
+        .value("DRIVER_MOVING",        screenStructs::DRIVER_STATE::DRIVER_MOVING )
+        .value("DRIVER_STATIONARY",    screenStructs::DRIVER_STATE::DRIVER_STATIONARY )
         .value("DRIVER_DISABLED",      screenStructs::DRIVER_STATE::DRIVER_DISABLED )
-        .value("DRIVER_ENABLED",      screenStructs::DRIVER_STATE::DRIVER_ENABLED )
-        .value("DRIVER_ERROR",      screenStructs::DRIVER_STATE::DRIVER_ERROR )
+        .value("DRIVER_ENABLED",       screenStructs::DRIVER_STATE::DRIVER_ENABLED )
+        .value("DRIVER_ERROR",         screenStructs::DRIVER_STATE::DRIVER_ERROR )
         ;
     enum_<screenStructs::DRIVER_DIRECTION>("DRIVER_DIRECTION")
         .value("HORIZONTAL",  screenStructs::DRIVER_DIRECTION::HORIZONTAL )
@@ -220,6 +225,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .def_readonly("posTolerance",               &screenStructs::screenCassette::posTolerance)
         .def_readonly("cassetteElements",           &screenStructs::screenCassette::cassetteElements)
         .def_readonly("cassetteElementsPosition",   &screenStructs::screenCassette::cassetteElementsPosition)
+        .def_readonly("cassetteElementsPos",        &screenStructs::screenCassette::cassetteElementsPos)
         .def_readonly("dir",                        &screenStructs::screenCassette::dir)
         ;
     boost::python::class_<screenStructs::screenDriver,boost::noncopyable>
@@ -233,12 +239,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .def_readonly("vCassette",      &screenStructs::screenDriver::vCassette)
         ;
 
-    boost::python::class_<screenStructs::velaINJscreenObject,boost::noncopyable>
-        ("velaINJscreenObject", boost::python::no_init)
-        .def_readonly("screenType",  &screenStructs::velaINJscreenObject::screenType)
-        .def_readonly("driver",      &screenStructs::velaINJscreenObject::driver)
-        .def_readonly("screenState", &screenStructs::velaINJscreenObject::screenState)
-        .def_readonly("numIlocks",   &screenStructs::velaINJscreenObject::numIlocks)
+    boost::python::class_<screenStructs::screenObject,boost::noncopyable>
+        ("screenObject", boost::python::no_init)
+        .def_readonly("screenType",  &screenStructs::screenObject::screenType)
+        .def_readonly("driver",      &screenStructs::screenObject::driver)
+        .def_readonly("screenState", &screenStructs::screenObject::screenState)
+        .def_readonly("numIlocks",   &screenStructs::screenObject::numIlocks)
         ;
 
 
@@ -254,42 +260,46 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
         ;
 
-    boost::python::class_<velaINJscreenController, boost::python::bases<controller>, boost::noncopyable>
-        ("velaINJscreenController","velaINJscreenController Doc String",boost::python::no_init)
-        .def("getILockStates",           &velaINJscreenController::getILockStates        )
+    boost::python::class_<screenController, boost::python::bases<controller>, boost::noncopyable>
+        ("screenController","screenController Doc String",boost::python::no_init)
+        .def("getILockStates",             &screenController::getILockStates        )
 //        .def("getMagPSUStateDefinition", &magnetController::getMagPSUStateDefinition )
 //        .def("getILockStatesDefinition", &magnetController::getILockStatesDefinition )
-        .def("get_CA_PEND_IO_TIMEOUT",  &velaINJscreenController::get_CA_PEND_IO_TIMEOUT   )
-        .def("set_CA_PEND_IO_TIMEOUT",  &velaINJscreenController::set_CA_PEND_IO_TIMEOUT   )
-        .def("screenIN",                screenIN_1  )
-        .def("screenIN",                screenIN_2  )
-        .def("screenOUT",               screenOUT_1 )
-        .def("screenOUT",               screenOUT_2 )
-        .def("is_VELA_PNEUMATIC",       &velaINJscreenController::is_VELA_PNEUMATIC )
-        .def("is_VELA_HV_MOVER",        &velaINJscreenController::is_VELA_HV_MOVER  )
-        .def("get_VELA_PNEUMATIC_Screens", &velaINJscreenController::get_VELA_PNEUMATIC_Screens )
-        .def("get_VELA_HV_MOVER_Screens",  &velaINJscreenController::get_VELA_HV_MOVER_Screens )
+        .def("get_CA_PEND_IO_TIMEOUT",     &screenController::get_CA_PEND_IO_TIMEOUT   )
+        .def("set_CA_PEND_IO_TIMEOUT",     &screenController::set_CA_PEND_IO_TIMEOUT   )
+        .def("screenIN",                   screenIN_1  )
+        .def("screenIN",                   screenIN_2  )
+        .def("screenOUT",                  screenOUT_1 )
+        .def("screenOUT",                  screenOUT_2 )
+        .def("is_VELA_PNEUMATIC",          &screenController::is_VELA_PNEUMATIC )
+        .def("is_VELA_HV_MOVER",           &screenController::is_VELA_HV_MOVER  )
+        .def("is_CLARA_PNEUMATIC",         &screenController::is_CLARA_PNEUMATIC )
+        .def("is_CLARA_HV_MOVER",          &screenController::is_CLARA_HV_MOVER )
+        .def("is_CLARA_V_MOVER",           &screenController::is_CLARA_V_MOVER )
+        .def("get_VELA_PNEUMATIC_Screens", &screenController::get_VELA_PNEUMATIC_Screens )
+        .def("get_VELA_HV_MOVER_Screens",  &screenController::get_VELA_HV_MOVER_Screens )
+        .def("get_CLARA_PNEUMATIC_Screens",&screenController::get_CLARA_PNEUMATIC_Screens )
+        .def("get_CLARA_HV_MOVER_Screens", &screenController::get_CLARA_HV_MOVER_Screens )
+        .def("get_CLARA_V_MOVER_Screens",  &screenController::get_CLARA_V_MOVER_Screens )
         .def("screenMoveTo",               screenMoveTo_1 )
         .def("screenMoveTo",               screenMoveTo_2 )
-        .def("setPosition",                &velaINJscreenController::setPosition )
-        .def("isMoving",                   &velaINJscreenController::isMoving )
-        .def("isNotMoving",                &velaINJscreenController::isNotMoving )
-        .def("is_VELA_PNEUMATIC",          &velaINJscreenController::is_VELA_PNEUMATIC )
-        .def("is_VELA_HV_MOVER",           &velaINJscreenController::is_VELA_HV_MOVER )
-        .def("is_H_Element",               &velaINJscreenController::is_H_Element )
-        .def("is_V_Element",               &velaINJscreenController::is_V_Element )
+        .def("setPosition",                &screenController::setPosition )
+        .def("get_H_ACTPOS",               &screenController::get_H_ACTPOS )
+        .def("get_V_ACTPOS",               &screenController::get_V_ACTPOS )
+        .def("isMoving",                   &screenController::isMoving )
+        .def("isNotMoving",                &screenController::isNotMoving )
+        .def("is_H_Element",               &screenController::is_H_Element )
+        .def("is_V_Element",               &screenController::is_V_Element )
         .def("isScreenOUT",                isScreenOUT_1 )
         .def("isScreenOUT",                isScreenOUT_2 )
         .def("isScreenIN",                 isScreenIN_1  )
         .def("isScreenIN",                 isScreenIN_2  )
-        .def("exists_and_isLocked",        &velaINJscreenController::exists_and_isLocked        )
-        .def("exists_and_isNotLocked",     &velaINJscreenController::exists_and_isNotLocked     )
-        .def("get_VELA_PNEUMATIC_Screens", &velaINJscreenController::get_VELA_PNEUMATIC_Screens )
-        .def("get_VELA_HV_MOVER_Screens",  &velaINJscreenController::get_VELA_HV_MOVER_Screens  )
-        .def("getScreenState",             &velaINJscreenController::getScreenState             )
-        .def("isScreenInState",            &velaINJscreenController::isScreenInState            )
-        .def("get_SCREEN_STATE_Definition",&velaINJscreenController::get_SCREEN_STATE_Definition )
-        .def("get_DRIVER_STATE_Definition",&velaINJscreenController::get_DRIVER_STATE_Definition )
+        .def("exists_and_isLocked",        &screenController::exists_and_isLocked        )
+        .def("exists_and_isNotLocked",     &screenController::exists_and_isNotLocked     )
+        .def("getScreenState",             &screenController::getScreenState             )
+        .def("isScreenInState",            &screenController::isScreenInState            )
+        .def("get_SCREEN_STATE_Definition",&screenController::get_SCREEN_STATE_Definition )
+        .def("get_DRIVER_STATE_Definition",&screenController::get_DRIVER_STATE_Definition )
         ;
 
     /// The main class that creates all the controller obejcts
@@ -318,7 +328,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_ScreenControl )
              return_value_policy<reference_existing_object>())
         .def("physical_CLARA_INJ_Screen_Controller",  &VCscreens::physical_CLARA_INJ_Screen_Controller,
              return_value_policy<reference_existing_object>())
-        .def("getvelaINJscreenController",  &VCscreens::getvelaINJscreenController,
+        .def("virtual_CLARA_PH1_Screen_Controller",  &VCscreens::virtual_CLARA_PH1_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_PH1_Screen_Controller",  &VCscreens::offline_CLARA_PH1_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_PH1_Screen_Controller",  &VCscreens::physical_CLARA_PH1_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("getScreenController",  &VCscreens::getScreenController,
              return_value_policy<reference_existing_object>())
         .def("setQuiet",         &VCscreens::setQuiet )
         .def("setVerbose",       &VCscreens::setVerbose )

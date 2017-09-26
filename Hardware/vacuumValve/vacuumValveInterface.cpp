@@ -239,7 +239,7 @@ void vacuumValveInterface::updateValveState( vacuumValveStructs::monitorStruct *
                 obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
             }
     }
-    ms->interface->debugMessage( obj->name ," vacValveState = ", ENUM_TO_STRING(obj->vacValveState) );
+    ms->interface->message( obj->name ," vacValveState = ", ENUM_TO_STRING(obj->vacValveState) );
 }
 ////______________________________________________________________________________
 //void vacuumValveInterface::staticEntryVacValveMonitor( const event_handler_args args )
@@ -321,7 +321,9 @@ void vacuumValveInterface::closeVacValve( const std::string & vacValve )
             chid   & chi = allVacValveData[ vacValve ].pvComStructs[ vacuumValveStructs::VAC_VALVE_PV_TYPE::Off ].CHID;
             int status = caput( cht, chi, EPICS_ACTIVATE, "", "!!TIMEOUT!! FAILED TO EPICS_SEND EPICS_ACTIVATE TO VAC VALVE CLOSE" );
             if( status == ECA_NORMAL )
+            {
                 int status2 = caput( cht, chi, EPICS_SEND, "", "!!TIMEOUT!! FAILED TO EPICS_SEND VAC VALVE CLOSE" );
+            }
         }
         else
         {

@@ -34,15 +34,26 @@ class scopeInterface : public interface
         scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
                         const bool* show_messages_ptr, const bool * show_debug_messages_ptr, const bool shouldStartEPICS,
                         const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
+        ~scopeInterface();
 
         bool monitoringTraces = false;
         bool monitoringNums = false;
         bool isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeTrace( const std::string & scopeName, const std::string & pvType );
+        bool isMonitoringScopeTraces( const std::string & scopeName );
+        bool isMonitoringScopeTraces();
         bool isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeNum( const std::string & scopeName, const std::string & pvType );
+        bool isMonitoringScopeNums( const std::string & scopeName );
+        bool isMonitoringScopeNums();
         bool isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeTrace( const std::string & scopeName, const std::string & pvType );
+        bool isNotMonitoringScopeTraces( const std::string & scopeName );
+        bool isNotMonitoringScopeTraces();
         bool isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
-
-        ~scopeInterface();
+        bool isNotMonitoringScopeNum( const std::string & scopeName, const std::string & pvType );
+        bool isNotMonitoringScopeNums( const std::string & scopeName );
+        bool isNotMonitoringScopeNums();
 
         void getScopeNames( std::vector< std::string >  & scopeNames );
         double getScopeP1( const std::string & scope );
@@ -59,7 +70,9 @@ class scopeInterface : public interface
         void setTraceBufferSize( size_t bufferSize );
         void restartContinuousMonitoring();
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< std::vector< double > > getScopeTraces( const std::string & name, const std::string & pvType );
         std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getScopeNums( const std::string & name, const std::string & pvType );
         std::vector< double > getScopeP1Vec( const std::string & name );
         std::vector< double > getScopeP2Vec( const std::string & name );
         std::vector< double > getScopeP3Vec( const std::string & name );
@@ -73,26 +86,37 @@ class scopeInterface : public interface
         boost::circular_buffer< std::vector< double > > getScopeTR3Buffer( const std::string & name );
         boost::circular_buffer< std::vector< double > > getScopeTR4Buffer( const std::string & name );
         std::vector< double > getMinOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getMinOfTraces( const std::string & name, const std::string & pvType );
         std::vector< double > getMaxOfTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getMaxOfTraces( const std::string & name, const std::string & pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< double > getAreaUnderTraces( const std::string & name, const std::string & pvType );
         std::vector< double > getTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
-        std::vector< std::vector< double > > getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
-        std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
+        std::vector< double > getTimeStamps( const std::string & name, const std::string & pvType );
+        std::vector< std::vector< double > > getPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        std::vector< std::vector< double > > getPartOfTrace( const std::string & name, const std::string & pvType, const int part1, const int part2 );
+        std::vector< double > getAreaUnderPartOfTrace( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        std::vector< double > getAreaUnderPartOfTrace( const std::string & name, const std::string & pvType, const int part1, const int part2 );
         std::vector< std::string > getStrTimeStamps( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
+        std::vector< std::string > getStrTimeStamps( const std::string & name, const std::string & pvType );
         void updateTrace( scopeStructs::monitorStruct * ms, const event_handler_args args );
         void updateValue( scopeStructs::monitorStruct * ms, const event_handler_args args );
         void monitorTracesForNShots( size_t N );
         void monitorATraceForNShots( const std::string trace, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
+        void monitorATraceForNShots( const std::string trace, const std::string channel, size_t N );
         void monitorNumsForNShots( size_t N );
         void monitorANumForNShots( const std::string num, scopeStructs::SCOPE_PV_TYPE channel, size_t N );
+        void monitorANumForNShots( const std::string num, const std::string channel, size_t N );
         void cancelDataMonitors();
-        std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 );
+        std::vector< double > getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 );
+        std::vector< double > getAvgNoise( const std::string & name, const std::string & pvType, const int part1, const int part2 );
         std::vector< std::string > getScopeNames();
         std::vector< std::string > getScopePVs();
         std::vector< std::string > getScopeTracePVs();
         std::vector< std::string > getScopeNumPVs();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
+        scopeStructs::SCOPE_PV_TYPE getScopePVType( const std::string & name );
 //        char getTimestamp( std::string & scope );
 //        bool hasTrig( const std::string & scope );
 //        bool hasNoTrig( const std::string & scope );

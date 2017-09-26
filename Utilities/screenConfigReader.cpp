@@ -35,12 +35,30 @@ bool screenConfigReader::readConfig()
 {
     // clear local copies of structs
     scrObjects.clear();
+    pvScrComStructs_HV_MOVER.clear();
+    pvScrMonStructs_HV_MOVER.clear();
+    pvScrComStructs_HV_MOVER_V.clear();
+    pvScrComStructs_HV_MOVER_H.clear();
+    pvScrComStructs_PNEUMATIC.clear();
+    pvScrMonStructs_HV_MOVER_H.clear();
+    pvScrMonStructs_HV_MOVER_V.clear();
+    pvScrMonStructs_PNEUMATIC.clear();
+    pvScrComStructs_V_MOVER.clear();
+    pvScrMonStructs_V_MOVER.clear();
+    pvScrComStructs_V_MOVER_V.clear();
+    pvScrMonStructs_V_MOVER_V.clear();
     pvScrComStructs_VELA_HV_MOVER_H.clear();
     pvScrComStructs_VELA_HV_MOVER_V.clear();
     pvScrComStructs_VELA_PNEUMATIC.clear();
     pvScrMonStructs_VELA_HV_MOVER_H.clear();
     pvScrMonStructs_VELA_HV_MOVER_V.clear();
     pvScrMonStructs_VELA_PNEUMATIC.clear();
+    pvScrComStructs_CLARA_HV_MOVER_H.clear();
+    pvScrComStructs_CLARA_HV_MOVER_V.clear();
+    pvScrComStructs_CLARA_PNEUMATIC.clear();
+    pvScrMonStructs_CLARA_HV_MOVER_H.clear();
+    pvScrMonStructs_CLARA_HV_MOVER_V.clear();
+    pvScrMonStructs_CLARA_PNEUMATIC.clear();
     // call the main read config funciton, pass in function pointers to the funcs
     // that know how to read a object, command or monitor
     bool scrSuccess = readConfig(*this, configFile1, &screenConfigReader::addToScrObjectsV1,&screenConfigReader::addToPVStructMain);
@@ -56,87 +74,183 @@ void screenConfigReader::addToPVStructMain( const std::vector<std::string> &keyV
 
         if( keyVal[0] == UTL::PV_SUFFIX_STA  )
         {
-            addToPVStruct(pvScrMonStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Sta,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Sta,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_ON  )
         {
-            addToPVStruct(pvScrComStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::On,keyVal[1] );
+            addToPVStruct( pvScrComStructs_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::On,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_OFF )
         {
-            addToPVStruct(pvScrComStructs_VELA_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Off,keyVal[1] );
+            addToPVStruct( pvScrComStructs_PNEUMATIC, screenStructs::SCREEN_PV_TYPE::Off,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_PROT01 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::PROT01,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::PROT01,keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER_H );
+            setH( pvScrMonStructs_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_PROT01 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::PROT01,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::PROT01,keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER_V );
+            setV( pvScrMonStructs_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_RPWRLOSS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER_H );
+            setH( pvScrMonStructs_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_RPWRLOSS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::RPWRLOSS,keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER_V );
+            setV( pvScrMonStructs_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_RPOS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::RPOS,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::RPOS,keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER_V );
+            setV( pvScrMonStructs_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_RPOS )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::RPOS,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::RPOS,keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER_H );
+            setH( pvScrMonStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_POS )
+        {
+            addToPVStruct( pvScrComStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::POS,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrComStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_POS )
+        {
+            addToPVStruct( pvScrComStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::POS,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrComStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_EN )
+        {
+            addToPVStruct( pvScrComStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::EN,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrComStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_EN )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::EN,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrMonStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_CAL )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::CAL,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrMonStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_CAL )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::CAL,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrMonStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_READY )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::READY,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrMonStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_READY )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::READY,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrMonStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_JOGDOWN )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::JOGDOWN,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrMonStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_JOGDOWN )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::JOGDOWN,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrMonStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_JOGUP )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::JOGUP,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrMonStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_JOGUP )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::JOGUP,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrMonStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_JOGINC )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::JOGINC,keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrMonStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_JOGINC )
+        {
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::JOGINC,keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrMonStructs_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_PROT05 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT05,keyVal[1]);
+            addToPVStruct( pvScrMonStructs_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT05,keyVal[1]);
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_PROT03 )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT03,keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER, screenStructs::SCREEN_PV_TYPE::PROT03,keyVal[1] );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_STA )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::STA, keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::STA, keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrMonStructs_VELA_HV_MOVER_H );
+            setH( pvScrMonStructs_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_STA )
         {
-            addToPVStruct(pvScrMonStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::STA, keyVal[1] );
+            addToPVStruct( pvScrMonStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::STA, keyVal[1] );
             // set this PV to vertical
-            setV( pvScrMonStructs_VELA_HV_MOVER_V );
+            setV( pvScrMonStructs_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_H_MABS )
         {
-            addToPVStruct(pvScrComStructs_VELA_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::MABS, keyVal[1] );
+            addToPVStruct( pvScrComStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::MABS, keyVal[1] );
             // set this PV to horizontal
-            setH( pvScrComStructs_VELA_HV_MOVER_H );
+            setH( pvScrComStructs_HV_MOVER_H );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_V_MABS )
         {
-            addToPVStruct(pvScrComStructs_VELA_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::MABS, keyVal[1] );
+            addToPVStruct( pvScrComStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::MABS, keyVal[1] );
             // set this PV to vertical
-            setV( pvScrComStructs_VELA_HV_MOVER_V );
+            setV( pvScrComStructs_HV_MOVER_V );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_H_ACTPOS )
+        {
+            addToPVStruct( pvScrComStructs_HV_MOVER_H, screenStructs::SCREEN_PV_TYPE::ACTPOS, keyVal[1] );
+            // set this PV to horizontal
+            setH( pvScrComStructs_HV_MOVER_H );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_ACTPOS )
+        {
+            addToPVStruct( pvScrComStructs_HV_MOVER_V, screenStructs::SCREEN_PV_TYPE::ACTPOS, keyVal[1] );
+            // set this PV to vertical
+            setV( pvScrComStructs_HV_MOVER_V );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_STOP )
         {
-            addToPVStruct(pvScrComStructs_VELA_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STOP, keyVal[1] );
+            addToPVStruct( pvScrComStructs_HV_MOVER, screenStructs::SCREEN_PV_TYPE::STOP, keyVal[1] );
         }
     }
     else // must be a mask, chtype config entry, if the config file follows the rules
@@ -181,7 +295,7 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
 {
     if( keyVal[0] == UTL::NAME )
     {
-        screenStructs::velaINJscreenObject scr = screenStructs::velaINJscreenObject();
+        screenStructs::screenObject scr = screenStructs::screenObject();
         scr.name = keyVal [ 1 ];
         scr.numIlocks = (size_t)numIlocks;
         // each screen gets a driver and an H and V driver status
@@ -214,7 +328,6 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     }
     else if( keyVal[0] == UTL::SCREEN_DRIVER_POS_TOLERANCE )
     {
-        //message( "set ", scrObjects.back().name, " pos tolerance to ", getNumD(keyVal[1]));
         scrObjects.back().driver.hCassette.posTolerance = getNumD(keyVal[1]);
         scrObjects.back().driver.vCassette.posTolerance = getNumD(keyVal[1]);
     }
@@ -222,126 +335,230 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         scrObjects.back().screenType = getScreenType( keyVal[ 1 ] );
     // the cassette  knows all the positions of screens, slits etc, plus current position
     // if a cassette element exists we update the cassetteElements  map to refelct this (init to false above)
+    else if( keyVal[0] == UTL::H_MIRROR )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::MIRROR) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::MIRROR)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_MIRROR )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::MIRROR) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::MIRROR) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_50_UM )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_SLIT_50_UM )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_25_UM )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_SLIT_25_UM )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[        screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_HOLE_6p3_MM )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_HOLE_6p3_MM )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_HOLE_10_MM )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_HOLE_10_MM )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_YAG )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::YAG) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::YAG)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_YAG )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::YAG) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::YAG) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_OUT )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::OUT) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::OUT)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_OUT )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::OUT) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::OUT) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_RF )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::RF) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::RF)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_RF )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::RF) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::RF) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_1 )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::H_SLIT_1) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::H_SLIT_1)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_2 )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::H_SLIT_2) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::H_SLIT_2) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_3)
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::H_SLIT_3) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::H_SLIT_3)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_SLIT_1 )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::V_SLIT_1) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::V_SLIT_1) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_4MM_APERTURE)
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::H_4MM_APERTURE) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::H_4MM_APERTURE)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_6MM_APERTURE )
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::H_6MM_APERTURE) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::H_6MM_APERTURE) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_9MM_APERTURE)
+    {
+        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::H_9MM_APERTURE) ] = true;
+        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::H_9MM_APERTURE)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_GRATICULE )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::V_GRATICULE) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::V_GRATICULE) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_COLLIMATOR )
+    {
+        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::V_COLLIMATOR) ] = true;
+        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::V_COLLIMATOR) ] = getNumD(keyVal[1]);
+    }
     else if( keyVal[0] == UTL::H_MIRROR_POS )
     {
-        // the cassettes have a map of whether the the element exists, and it's "offline" position, from the config file
-        //scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[1]);
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::MIRROR_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::MIRROR_POS)] = getNumD(keyVal[1]);
-        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::MIRROR_POS );
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::MIRROR_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_MIRROR_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::MIRROR_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::MIRROR_POS) ] = getNumD(keyVal[1]);
-//        scrObjects.back().driver.vCassette.cassetteElementsPosition[ UTL::MIRROR_POS] = getNumD(keyVal[ 1 ]);
-//        setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::MIRROR_POS );
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::MIRROR_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::H_SLIT_50_UM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[         screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.hCassette.cassetteElementsPosition[ UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_50_UM_POS );
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_SLIT_50_UM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = getNumD(keyVal[1]);
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_50_UM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_50_UM_POS );
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::SLIT_50_UM_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::H_SLIT_25_UM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM_POS)] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::SLIT_25_UM_POS );
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::SLIT_25_UM_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_SLIT_25_UM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[        screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::SLIT_25_UM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::SLIT_25_UM_POS);
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::SLIT_25_UM_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::H_HOLE_6p3_MM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM_POS)] = getNumD(keyVal[1]);
-        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_6p3_MM_POS);
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::HOLE_6p3_MM_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_HOLE_6p3_MM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_6p3_MM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_6p3_MM_POS);
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::HOLE_6p3_MM_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::H_HOLE_10_MM_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM_POS)] = getNumD(keyVal[1]);
-        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::HOLE_10_MM_POS);
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::HOLE_10_MM_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_HOLE_10_MM_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::HOLE_10_MM_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::HOLE_10_MM_POS);
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::HOLE_10_MM_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::H_YAG_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::YAG_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::YAG_POS)] = getNumD(keyVal[1]);
-        //scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::YAG_POS);
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::YAG_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_YAG_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::YAG_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::YAG_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::YAG_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::YAG_POS);
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::YAG_POS) ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::H_OUT_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::OUT_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::OUT_POS)] = getNumD(keyVal[1]);
-//        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
-//        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::OUT_POS);
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::OUT_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_OUT_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::OUT_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::OUT_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::OUT_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::OUT_POS);
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::OUT_POS) ] = getNumD(keyVal[1]);
     }
-    else if( keyVal[0] == UTL::H_RF_POS)
+    else if( keyVal[0] == UTL::H_RF_POS )
     {
-        scrObjects.back().driver.hCassette.cassetteElements[ screenStructs::hCassetteElementMap.at(UTL::RF_POS) ] = true;
-        scrObjects.back().driver.hCassette.cassetteElementsPosition[ screenStructs::hCassetteElementMap.at(UTL::RF_POS)] = getNumD(keyVal[1]);
-//        scrObjects.back().driver.hCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
-//        setCassetteElementExists( scrObjects.back().driver.hCassette, UTL::RF_POS);
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::RF_POS)] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_RF_POS )
     {
-        scrObjects.back().driver.vCassette.cassetteElements[         screenStructs::vCassetteElementMap.at(UTL::RF_POS) ] = true;
-        scrObjects.back().driver.vCassette.cassetteElementsPosition[ screenStructs::vCassetteElementMap.at(UTL::RF_POS) ] = getNumD(keyVal[1]);
-
-        //scrObjects.back().driver.vCassette.cassetteElementsPosition[UTL::RF_POS] = getNumD(keyVal[ 1 ]);
-        //setCassetteElementExists( scrObjects.back().driver.vCassette, UTL::RF_POS);
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::RF_POS) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_1_POS )
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::H_SLIT_1_POS)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_2_POS )
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::H_SLIT_2_POS) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_SLIT_3_POS )
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::H_SLIT_3_POS)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_SLIT_1_POS )
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::V_SLIT_1_POS) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_4MM_APERTURE_POS )
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::H_4MM_APERTURE_POS)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_6MM_APERTURE_POS )
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::H_6MM_APERTURE_POS) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::H_9MM_APERTURE_POS )
+    {
+        scrObjects.back().driver.hCassette.cassetteElementsPos[ screenStructs::hCassetteElementMap.at(UTL::H_9MM_APERTURE_POS)] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_GRATICULE_POS )
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::V_GRATICULE_POS) ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_COLLIMATOR_POS )
+    {
+        scrObjects.back().driver.vCassette.cassetteElementsPos[ screenStructs::vCassetteElementMap.at(UTL::V_COLLIMATOR_POS) ] = getNumD(keyVal[1]);
     }
     // at the moment the H and V driver status are identical, so they are not distinguished in the config
     else if( keyVal[0] == UTL::NUM_STA_BITS )
@@ -353,13 +570,8 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     {
         /// ad this bit to the map and lable for H and V
         scrObjects.back().driver.hDriverSTA.STA_bit_label.push_back( keyVal[1] );
-        //scrObjects.back().driver.hDriverSTA.STA_bit_label.push_back( keyVal[1] );
         scrObjects.back().driver.hDriverSTA.STA_bit_map[ keyVal[1] ] = false;
-        //scrObjects.back().driver.hDriverSTA.STA_bit_map[ keyVal[1] ] = false;
-
-        //scrObjects.back().driver.vDriverSTA.STA_bit_label.push_back( keyVal[1] );
         scrObjects.back().driver.vDriverSTA.STA_bit_label.push_back( keyVal[1] );
-        //scrObjects.back().driver.vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
         scrObjects.back().driver.vDriverSTA.STA_bit_map[ keyVal[1] ] = false;
     }
 }
@@ -376,6 +588,12 @@ screenStructs::SCREEN_TYPE screenConfigReader::getScreenType( const std::string 
         ret = screenStructs::SCREEN_TYPE::VELA_HV_MOVER;
     else if( val == UTL::VELA_PNEUMATIC_SCREEN )
         ret = screenStructs::SCREEN_TYPE::VELA_PNEUMATIC;
+    else if( val == UTL::CLARA_HV_MOVER_SCREEN )
+        ret = screenStructs::SCREEN_TYPE::CLARA_HV_MOVER;
+    else if( val == UTL::CLARA_V_MOVER_SCREEN )
+        ret = screenStructs::SCREEN_TYPE::CLARA_V_MOVER;
+    else if( val == UTL::CLARA_PNEUMATIC_SCREEN )
+        ret = screenStructs::SCREEN_TYPE::CLARA_PNEUMATIC;
     return ret;
 }
 //______________________________________________________________________________________________________
@@ -494,7 +712,7 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
 
 }
 //__________________________________________________________________________________________
-bool screenConfigReader::getvelaINJscreenObjects( std::map< std::string, screenStructs::velaINJscreenObject > & mapToFill )
+bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs::screenObject > & mapToFill )
 {
     mapToFill.clear();
 
@@ -509,36 +727,90 @@ bool screenConfigReader::getvelaINJscreenObjects( std::map< std::string, screenS
 
             case screenStructs::SCREEN_TYPE::VELA_PNEUMATIC:
                 message( it.name, " is a VELA_PNEUMATIC screen");
-                for( auto && it2 : pvScrMonStructs_VELA_PNEUMATIC )
+                for( auto && it2 : pvScrMonStructs_PNEUMATIC )
                     mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
-                for( auto && it2 : pvScrComStructs_VELA_PNEUMATIC)
+                for( auto && it2 : pvScrComStructs_PNEUMATIC)
+                    mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
+                break;
+            case screenStructs::SCREEN_TYPE::CLARA_PNEUMATIC:
+                message( it.name, " is a CLARA_PNEUMATIC screen");
+                for( auto && it2 : pvScrMonStructs_PNEUMATIC )
+                    mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
+                for( auto && it2 : pvScrComStructs_PNEUMATIC)
                     mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
                 break;
 
             case screenStructs::SCREEN_TYPE::VELA_HV_MOVER:
                 message( it.name, " is a VELA_HV_MOVER screen");
-                for( auto && it2 : pvScrComStructs_VELA_HV_MOVER )
+                for( auto && it2 : pvScrComStructs_HV_MOVER )
                 {
                     mapToFill[ it.name ].driver.pvComStructs[ it2.pvType ] = it2;
                 }
-                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER )
+                for( auto && it2 : pvScrMonStructs_HV_MOVER )
                 {
                     mapToFill[ it.name ].driver.pvMonStructs[ it2.pvType ] = it2;
                 }
 
-                for( auto && it2 : pvScrComStructs_VELA_HV_MOVER_H )
+                for( auto && it2 : pvScrComStructs_HV_MOVER_H )
                 {
                     mapToFill[ it.name ].driver.hDriverSTA.pvComStructs[ it2.pvType ] = it2;
                 }
-                for( auto && it2 : pvScrComStructs_VELA_HV_MOVER_V )
+                for( auto && it2 : pvScrComStructs_HV_MOVER_V )
                 {
                     mapToFill[ it.name ].driver.vDriverSTA.pvComStructs[ it2.pvType ] = it2;
                 }
-                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER_H )
+                for( auto && it2 : pvScrMonStructs_HV_MOVER_H )
                 {
                     mapToFill[ it.name ].driver.hDriverSTA.pvMonStructs[ it2.pvType ] = it2;
                 }
-                for( auto && it2 : pvScrMonStructs_VELA_HV_MOVER_V )
+                for( auto && it2 : pvScrMonStructs_HV_MOVER_V )
+                {
+                    mapToFill[ it.name ].driver.vDriverSTA.pvMonStructs[ it2.pvType ] = it2;
+                }
+                break;
+            case screenStructs::SCREEN_TYPE::CLARA_HV_MOVER:
+                message( it.name, " is a CLARA_HV_MOVER screen");
+                for( auto && it2 : pvScrComStructs_CLARA_HV_MOVER )
+                {
+                    message(ENUM_TO_STRING(it2.pvType));
+                    mapToFill[ it.name ].driver.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_HV_MOVER )
+                {
+                    mapToFill[ it.name ].driver.pvMonStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrComStructs_HV_MOVER_H )
+                {
+                    mapToFill[ it.name ].driver.hDriverSTA.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrComStructs_HV_MOVER_V )
+                {
+                    mapToFill[ it.name ].driver.vDriverSTA.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_HV_MOVER_H )
+                {
+                    mapToFill[ it.name ].driver.hDriverSTA.pvMonStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_HV_MOVER_V )
+                {
+                    mapToFill[ it.name ].driver.vDriverSTA.pvMonStructs[ it2.pvType ] = it2;
+                }
+                break;
+            case screenStructs::SCREEN_TYPE::CLARA_V_MOVER:
+                message( it.name, " is a CLARA_V_MOVER screen");
+                for( auto && it2 : pvScrComStructs_V_MOVER )
+                {
+                    mapToFill[ it.name ].driver.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_V_MOVER )
+                {
+                    mapToFill[ it.name ].driver.pvMonStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrComStructs_V_MOVER_V )
+                {
+                    mapToFill[ it.name ].driver.vDriverSTA.pvComStructs[ it2.pvType ] = it2;
+                }
+                for( auto && it2 : pvScrMonStructs_V_MOVER_V )
                 {
                     mapToFill[ it.name ].driver.vDriverSTA.pvMonStructs[ it2.pvType ] = it2;
                 }
