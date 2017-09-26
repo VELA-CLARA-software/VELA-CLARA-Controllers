@@ -54,6 +54,7 @@ class VCllrf
         void setMessage();
         void setDebugMessage();
 
+        //std::string CLARA_LRRG_LLRF_CONFIG,CLARA_L01_LLRF_CONFIG,VELA_HRRG_LLRF_CONFIG;
 
         void killGun();
 
@@ -410,6 +411,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setVerbose",       &VCllrf::setVerbose)
         .def("setMessage",       &VCllrf::setMessage)
         .def("setDebugMessage",  &VCllrf::setDebugMessage)
+
+        //.def_readwrite("CLARA_LRRG_LLRF_CONFIG", &VCllrf::CLARA_LRRG_LLRF_CONFIG)
+        //.def_readwrite("CLARA_L01_LLRF_CONFIG",  &VCllrf::CLARA_L01_LLRF_CONFIG)
+        //.def_readwrite("VELA_HRRG_LLRF_CONFIG",  &VCllrf::VELA_HRRG_LLRF_CONFIG)
         ;
 }
 

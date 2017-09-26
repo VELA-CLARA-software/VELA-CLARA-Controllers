@@ -202,8 +202,8 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FREQ;
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
-    //else
-      //  addCOUNT_MASK_OR_CHTYPE( pvStruct_v, keyVal );
+    else
+        addCOUNT_MASK_OR_CHTYPE( pvStruct_v, keyVal );
 }
 void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & keyVal )
 {
@@ -245,7 +245,7 @@ void cameraDAQConfigReader::addToCameraCommandStructs( const std::vector<std::st
 }
 void cameraDAQConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< cameraStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal  )
 {
-    message("HIHI");
+    //message("HIHI");
     if( keyVal[0] == UTL::PV_COUNT )
         pvStruct_v.back().COUNT = getCOUNT( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_MASK )

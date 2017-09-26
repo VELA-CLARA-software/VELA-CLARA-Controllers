@@ -134,8 +134,8 @@ namespace cameraStructs
         cameraDAQObject() : name(UTL::UNKNOWN_NAME),
                             pvRoot(UTL::UNKNOWN_PVROOT),
                             screenName(UTL::UNKNOWN_STRING),
-                            state(CAM_ERROR),
-                            acquireState(ACQUIRING_ERROR),
+//state(CAM_ERROR),
+                            //acquireState(ACQUIRING_ERROR),
                             captureState(CAPTURING_ERROR),
                             writeState(WRITING_ERROR),
                             writeCheck(WRITE_CHECK_ERROR),
@@ -146,9 +146,9 @@ namespace cameraStructs
         //ID
         std::string name, pvRoot, screenName;
         //On/Off
-        CAM_STATE state;
+        //CAM_STATE state;
         // Rolling a
-        ACQUIRE_STATE acquireState;
+        //ACQUIRE_STATE acquireState;
         // actually "capturing" images to then save to disc
         CAPTURE_STATE captureState;
         // write state indicates if saving to disc / or

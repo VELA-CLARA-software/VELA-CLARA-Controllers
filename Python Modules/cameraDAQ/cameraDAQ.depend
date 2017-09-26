@@ -20,7 +20,7 @@
 	"cameraInterface.h"
 	"cameraDAQConfigReader.h"
 
-1505402440 c:\users\wln24624\documents\software\vela-clara-controllers\structs\camerastructs.h
+1505922013 c:\users\wln24624\documents\software\vela-clara-controllers\structs\camerastructs.h
 	<vector>
 	<string>
 	<thread>
@@ -98,4 +98,28 @@
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1505378613 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\cameradaq\cameradaqinterface.cpp
+	"cameraDAQInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<iomanip>
+	<sstream>
+	<chrono>
+	<ctime>
+	<thread>
+
+1505308057 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\camera\camerainterface.cpp
+	"cameraInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<iomanip>
+	<sstream>
+	<chrono>
+	<thread>
+
+1503306788 source:c:\users\wln24624\documents\software\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
 

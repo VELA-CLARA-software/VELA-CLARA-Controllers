@@ -126,6 +126,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
 
     class_<controller, bases<baseObject>,boost::noncopyable>
         ("controller","controller Doc String", no_init) /// forces Python to not be able to construct (init) this object
+
         .def("get_CA_PEND_IO_TIMEOUT",
              pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT)          )
         .def("set_CA_PEND_IO_TIMEOUT",
