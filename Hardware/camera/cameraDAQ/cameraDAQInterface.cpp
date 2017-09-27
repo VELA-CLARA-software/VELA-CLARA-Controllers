@@ -506,7 +506,7 @@ bool cameraDAQInterface::makeANewDirectory()///YUCK (make it look nice)
     //tm local_tm = *localtime(&t);
     struct tm local_tm;
     localtime_s(&local_tm, &t);
-    char  newPath[256]="/media/";
+    char  newPath[256]="/home/controls/tim/flash/";
     message("File Directory would be: ",
                         std::to_string(local_tm.tm_year + 1900)+
                         "/"+std::to_string(local_tm.tm_mon + 1)+
