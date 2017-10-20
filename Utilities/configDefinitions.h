@@ -606,6 +606,7 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_EXPOSURE_RBV    ="PV_DAQ_SUFFIX_EXPOSURE_RBV";
     const std::string PV_DAQ_SUFFIX_ACQ_PERIOD_RBV  ="PV_DAQ_SUFFIX_ACQ_PERIOD_RBV";
     const std::string PV_DAQ_SUFFIX_FREQ_RBV        ="PV_DAQ_SUFFIX_FREQ_RBV";
+    const std::string PV_DAQ_SUFFIX_SENSOR_TEMP_RBV ="PV_DAQ_SUFFIX_SENSOR_TEMP_RBV";
 
     const std::string PV_IA_SUFFIX_CAM_X           ="PV_IA_SUFFIX_CAM_X";
     const std::string PV_IA_SUFFIX_CAM_Y           ="PV_IA_SUFFIX_CAM_Y" ;

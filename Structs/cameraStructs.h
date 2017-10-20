@@ -44,7 +44,7 @@ namespace cameraStructs
         (X_RAD)(Y_RAD)(X_CENTER_PIX)(Y_CENTER_PIX)
         (BIT_DEPTH)(IMAGE_HEIGHT)(IMAGE_WIDTH)
         (UNKNOWN_CAM_PV_TYPE)
-        (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ))
+        (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ) (CAM_SENSOR_TEMP))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
         (CAM_OFF) (CAM_ON) (CAM_ERROR))
@@ -158,7 +158,7 @@ namespace cameraStructs
         // If error this string will get updated
         std::string writeErrorMessage, latestDirectory;
         int shotsTaken, numberOfShots, maxShots;
-        double frequency,exposureTime,acquisitionPeriod;
+        double frequency,exposureTime,acquisitionPeriod, sensorTemp;
         // doesn't exist for CLARA
         std::vector<camDataType> rawData;
         // we're going to store a background image array ion a PV

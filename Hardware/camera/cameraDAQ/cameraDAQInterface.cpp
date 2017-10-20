@@ -195,6 +195,9 @@ void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
         case CAM_PV_TYPE::CAM_FREQ:
             ms->interface->updateFrequency(*(double*)args.dbr, ms->objName );
             break;
+        case CAM_PV_TYPE::CAM_SENSOR_TEMP:
+            ms->interface->updateSensorTemp(*(double*)args.dbr, ms->objName );
+            break;
         default:
             ms->interface->debugMessage("!!! ERROR !!! Unknown Monitor Type passed to cameraDAQInterface::staticEntryMonitor");
             break;
@@ -334,6 +337,11 @@ void cameraDAQInterface::updateAcquirePeriod(const double value,const std::strin
 void cameraDAQInterface::updateFrequency(const double value,const std::string&cameraName)
 {
     allCamData.at(cameraName).DAQ.frequency = value;
+    updateSelectedOrVC(cameraName);
+}
+void cameraDAQInterface::updateSensorTemp(const double value,const std::string&cameraName)
+{
+    allCamData.at(cameraName).DAQ.sensorTemp = value;
     updateSelectedOrVC(cameraName);
 }
 

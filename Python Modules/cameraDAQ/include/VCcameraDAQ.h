@@ -176,7 +176,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
                       "The number of shots sett to collect.")
         .def_readonly("frequency",
                       &cameraStructs::cameraDAQObject::frequency,
-                      "Frequency of Cameras image acquisiton.")
+                      "Frequency of Camera's image acquisiton.")
+        .def_readonly("snesorTemp",
+                      &cameraStructs::cameraDAQObject::sensorTemp,
+                      "Temperature of Sensor (CCD) in celcius.")
         .def_readonly("exposureTime",
                       &cameraStructs::cameraDAQObject::exposureTime,
                       "Time (seconds) of exposure for single camera image.")
@@ -186,7 +189,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("writeErrorMessage",
                       &cameraStructs::cameraDAQObject::writeErrorMessage,
                       "If there is an error with saving the images a message will be displayed here.")
-          .def_readonly("latestDirectory",
+        .def_readonly("latestDirectory",
                       &cameraStructs::cameraDAQObject::latestDirectory,
                       "Latest directory images were saved to.")
         ;

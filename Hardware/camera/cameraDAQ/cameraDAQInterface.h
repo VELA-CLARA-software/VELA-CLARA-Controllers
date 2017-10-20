@@ -74,6 +74,7 @@ class cameraDAQInterface : public cameraInterface
         void updateExposure(const double value,const std::string &cameraName);
         void updateAcquirePeriod(const double value,const std::string &cameraName);
         void updateFrequency(const double value,const std::string &cameraName);
+        void updateSensorTemp(const double value,const std::string &cameraName);
         ///Useful Functions for the Class///
         std::string getWriteErrorMessage();
         bool makeANewDirectory();
