@@ -343,6 +343,24 @@ void cameraDAQInterface::updateSensorTemp(const double value,const std::string&c
 {
     allCamData.at(cameraName).DAQ.sensorTemp = value;
     updateSelectedOrVC(cameraName);
+    // If the sensor temp of the camera is out of operable range (5-10 celcius)
+    //kill any collecting of data then stop any rolling aquiring that is in progress.
+    if (selectedCameraObj.DAQ.sensorTemp>10||selectedCameraObj.DAQ.sensorTemp<5)
+    {
+        killCollectAndSave();
+        stopAcquiring();
+        message("WARNING: Sensor temp is out correct operable temperature!!");
+        message("   1. Temperature of sensor on ",selectedCameraObj.name," is: ",selectedCameraObj.DAQ.sensorTemp,"C");
+        message("   2. Please CHECK FAN or CONSULT SOMEONE (DAVE WALSH or TIM PRICE).");
+    }
+    if (vcCameraObj.DAQ.sensorTemp>10||vcCameraObj.DAQ.sensorTemp<5)
+    {
+        killCollectAndSaveVC();
+        stopVCAcquiring();
+        message("WARNING: Sensor temp is out correct operable temperature!!");
+        message("   1. Temperature of sensor on ",vcCameraObj.name," is: ",vcCameraObj.DAQ.sensorTemp,"C");
+        message("   2. Please CHECK FAN or CONSULT SOMEONE (DAVE WALSH or TIM PRICE).");
+    }
 }
 
 ///Functions Accessible to Python Controller///

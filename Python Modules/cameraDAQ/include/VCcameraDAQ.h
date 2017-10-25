@@ -177,7 +177,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("frequency",
                       &cameraStructs::cameraDAQObject::frequency,
                       "Frequency of Camera's image acquisiton.")
-        .def_readonly("snesorTemp",
+        .def_readonly("sensorTemp",
                       &cameraStructs::cameraDAQObject::sensorTemp,
                       "Temperature of Sensor (CCD) in celcius.")
         .def_readonly("exposureTime",
