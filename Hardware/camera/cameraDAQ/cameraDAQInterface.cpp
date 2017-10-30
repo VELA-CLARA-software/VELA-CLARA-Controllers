@@ -351,7 +351,7 @@ void cameraDAQInterface::updateSensorTemp(const double value,const std::string&c
         stopAcquiring();
         message("WARNING: Sensor temp is out correct operable temperature!!");
         message("   1. Temperature of sensor on ",selectedCameraObj.name," is: ",selectedCameraObj.DAQ.sensorTemp,"C");
-        message("   2. Please CHECK FAN or CONSULT SOMEONE (DAVE WALSH or TIM PRICE).");
+        message("   2. Please CHECK FAN and FILTER (CONSULT SOMEONE).");
     }
     if (vcCameraObj.DAQ.sensorTemp>10||vcCameraObj.DAQ.sensorTemp<5)
     {
@@ -359,7 +359,7 @@ void cameraDAQInterface::updateSensorTemp(const double value,const std::string&c
         stopVCAcquiring();
         message("WARNING: Sensor temp is out correct operable temperature!!");
         message("   1. Temperature of sensor on ",vcCameraObj.name," is: ",vcCameraObj.DAQ.sensorTemp,"C");
-        message("   2. Please CHECK FAN or CONSULT SOMEONE (DAVE WALSH or TIM PRICE).");
+        message("   2. Please CHECK FAN and FILTER (CONSULT SOMEONE).");
     }
 }
 
