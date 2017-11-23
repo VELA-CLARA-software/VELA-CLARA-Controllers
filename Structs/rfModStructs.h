@@ -27,8 +27,7 @@ namespace rfModStructs
 
     // GUNS MODULATOR (SCANDINOVA)
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_PV_TYPE, (PULSE_WIDTH_FWHM_READ)
-                                                         (IONP_PRESSURE_READ)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_PV_TYPE, (IONP_PRESSURE_READ)
                                                          (PULSE_WIDTH_READ)
                                                          (MAGPS1_CURR_READ)
                                                          (MAGPS2_CURR_READ)
@@ -38,6 +37,11 @@ namespace rfModStructs
                                                          (MAGPS2_VOLT_READ)
                                                          (MAGPS3_VOLT_READ)
                                                          (MAGPS4_VOLT_READ)
+                                                         (ILOCK1)
+                                                         (ILOCK2)
+                                                         (ILOCK3)
+                                                         (ILOCK4)
+                                                         (ILOCK5)
                                                          (ERROR_READ_STR)
                                                          (WARMUP_TIME)
                                                          (STATE_READ)
@@ -45,7 +49,9 @@ namespace rfModStructs
                                                          (STATE_SET)
                                                          (CVD_READ)
                                                          (CT_READ)
-                                                         (RESET))
+                                                         (RESET)
+                                                         (PULSE_WIDTH_FWHM_READ)
+                                        )
 
 //
 //    /// These are possible modulator states
@@ -84,9 +90,10 @@ namespace rfModStructs
             PrfSet(UTL::DUMMY_DOUBLE),PrfRead(UTL::DUMMY_DOUBLE),
             CtRead(UTL::DUMMY_DOUBLE),CvdRead(UTL::DUMMY_DOUBLE),
             PlswthRead(UTL::DUMMY_DOUBLE),PlswthFwhmRead(UTL::DUMMY_DOUBLE),
-            ionp(UTL::DUMMY_DOUBLE)
+            ionp(UTL::DUMMY_DOUBLE),
+            error_read("UNKNOWN")
             {}
-        std::string name, pvRoot;
+        std::string name, pvRoot, error_read, ilock1,ilock2,ilock3,ilock4,ilock5;
         GUN_MOD_STATE state;
         long   warmuptime;
         bool   safelyWarmedUP;

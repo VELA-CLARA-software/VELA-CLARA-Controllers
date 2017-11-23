@@ -33,10 +33,13 @@ namespace UTL
     const size_t ZERO_SIZET   = 0;
     const size_t ONE_SIZET    = 1;
     const size_t TWO_SIZET    = 2;
-    const size_t BUFFER_TEN   = 10;
     const long   DUMMY_LONG   = -999;
     const int    DUMMY_INT    = -9999;
+    const size_t TEN_SIZET    = 10;
+    const size_t BUFFER_TEN   = 10;
     const int    ZERO_INT     = 0;
+    const int    MINUS_ONE_INT= -1;
+    const int    MINUS_TWO_INT= -2;
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
@@ -51,6 +54,7 @@ namespace UTL
     const char TAB_C              = '\t';
     // default config paths -
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
+    const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1\\ControlRoomApps\\Controllers\\Config\\";
     // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
     // config file names
@@ -202,6 +206,13 @@ namespace UTL
     const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
     const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
 
+    // llrf object parameters
+    const std::string LLRF_MAX_AMPLITUDE = "LLRF_MAX_AMPLITUDE";
+    const std::string LLRF_AMP_CALIBRATION = "LLRF_AMP_CALIBRATION";
+    const std::string LLRF_PHI_CALIBRATION = "LLRF_PHI_CALIBRATION";
+    const std::string LLRF_CREST_PHI = "LLRF_CREST_PHI";
+    const std::string LLRF_PULSE_LATENCY = "LLRF_PULSE_LATENCY";
+
     // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
     // except, probably, the VELA TDC :((
     const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
@@ -210,8 +221,9 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_PHI_SP      = "PV_SUFFIX_LIB_PHI_SP";
     const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
     const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
-    const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
- //   const std::string PV_SUFFIX_LIB_LOCK        = "PV_SUFFIX_LIB_LOCK";
+    const std::string PV_SUFFIX_LIB_RF_OUTPUT        = "PV_SUFFIX_LIB_RF_OUTPUT";
+    const std::string PV_SUFFIX_ILOCK_STATE     = "PV_SUFFIX_ILOCK_STATE";
+    const std::string PV_SUFFIX_SP_LOCK_STATE   = "PV_SUFFIX_SP_LOCK_STATE";
     const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
     const std::string PV_SUFFIX_LIB_CH1_PHASE_REM  = "PV_SUFFIX_LIB_CH1_PHASE_REM";
     const std::string PV_SUFFIX_LIB_CH2_PHASE_REM  = "PV_SUFFIX_LIB_CH2_PHASE_REM";
@@ -258,13 +270,11 @@ namespace UTL
     const std::string KLYSTRON_REVERSE_POWER = "KLYSTRON_REVERSE_POWER";
     const std::string KLYSTRON_FORWARD_PHASE = "KLYSTRON_FORWARD_PHASE";
     const std::string KLYSTRON_FORWARD_POWER = "KLYSTRON_FORWARD_POWER";
+    const std::string CAVITY_PROBE_POWER = "CAVITY_PROBE_POWER";
+    const std::string CAVITY_PROBE_PHASE = "CAVITY_PROBE_PHASE";
 
 // L01 MODULATOR
     const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";
-
-
-
-
 
 
 
@@ -349,10 +359,7 @@ namespace UTL
     const std::string PV_SUFFIX_AMPW = "PV_SUFFIX_AMPW";
     const std::string PV_SUFFIX_AMP_MVM = "PV_SUFFIX_AMP_MVM";
     const std::string PV_SUFFIX_PHI_DEG = "PV_SUFFIX_PHI_DEG";
-    const std::string LLRF_MAX_AMPLITUDE = "LLRF_MAX_AMPLITUDE";
-    const std::string LLRF_AMP_CALIBRATION = "LLRF_AMP_CALIBRATION";
-    const std::string LLRF_PHI_CALIBRATION = "LLRF_PHI_CALIBRATION";
-    const std::string LLRF_CREST_PHI = "LLRF_CREST_PHI";
+
 
     const std::string MAG_TYPE  = "MAG_TYPE";
     const std::string SOL   = "SOL";

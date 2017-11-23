@@ -4,9 +4,9 @@
 VCllrf::VCllrf():
 GUN_LLRF_Controller_Obj(nullptr),
 L01_LLRF_Controller_Obj(nullptr),
-CLARA_LRRG_LLRF_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_LRRG_LLRF_CONFIG),
-CLARA_L01_LLRF_CONFIG(UTL::CONFIG_PATH + UTL::CLARA_L01_LLRF_CONFIG),
-VELA_HRRG_LLRF_CONFIG (UTL::CONFIG_PATH + UTL::VELA_HRRG_LLRF_CONFIG),
+CLARA_LRRG_LLRF_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_LRRG_LLRF_CONFIG),
+CLARA_L01_LLRF_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_L01_LLRF_CONFIG),
+VELA_HRRG_LLRF_CONFIG (UTL::APCLARA1_CONFIG_PATH + UTL::VELA_HRRG_LLRF_CONFIG),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
@@ -177,11 +177,11 @@ liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrf
                     new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_LRRG_LLRF_CONFIG,
                                shouldVM,shouldEPICS,llrfType);
                 break;
-//            case llrfStructs::VELA_HRRG:
-//                GUN_LLRF_Controller_Obj =
-//                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,VELA_HRRG_LLRF_CONFIG,
-//                               shouldVM,shouldEPICS,llrfType);
-//                break;
+            case llrfStructs::VELA_HRRG:
+                GUN_LLRF_Controller_Obj =
+                    new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,VELA_HRRG_LLRF_CONFIG,
+                               shouldVM,shouldEPICS,llrfType);
+                break;
             case llrfStructs::VELA_LRRG:
                 GUN_LLRF_Controller_Obj =
                     new liberaLLRFController(shouldShowMessage,shouldShowDebugMessage,CLARA_LRRG_LLRF_CONFIG,

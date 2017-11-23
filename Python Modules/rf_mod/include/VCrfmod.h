@@ -68,7 +68,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ;
 
     /// The main class that creates all the controller obejcts
-        boost::python::class_<VCrfmod,boost::python::bases<baseObject>,boost::noncopyable> ("init")
+        class_<VCrfmod,bases<baseObject>,boost::noncopyable> ("init")
         .def("virtual_GUN_MOD_Controller",  &VCrfmod::virtual_GUN_MOD_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the virtual gun modulator object.")
@@ -97,14 +97,38 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
              "set Debug Mode (no messages, all debug messages) for all PI laser objects." )
         ;
 
-    boost::python::class_<l01ModController, boost::python::bases<controller>, boost::noncopyable>
+    class_<l01ModController, bases<controller>, boost::noncopyable>
         ("l01ModController","l01ModController Doc String",boost::python::no_init  )
-
         .def("getObjConstRef",&l01ModController::getObjConstRef,return_value_policy<reference_existing_object>(),
              "Return L01 Modulator Object Reference")
         .def("reset",             &l01ModController::reset,"")
         ;
 
+<<<<<<< HEAD
+    class_<gunModController, bases<controller>, boost::noncopyable>
+        ("gunModController","gunModController Doc String",boost::python::no_init  )
+        .def("getGunObjConstRef",&gunModController::getGunObjConstRef,return_value_policy<reference_existing_object>(),
+             "Return Gun Modulator Object Reference")
+        ;
+
+    enum_<rfModStructs::GUN_MOD_STATE>("GUN_MOD_STATE","GUN_MOD_STATE: a named integer giving the state of the GUN Modulator")
+        .value("ERROR1",  rfModStructs::GUN_MOD_STATE::ERROR1)
+        .value("UNKNOWN1",       rfModStructs::GUN_MOD_STATE::UNKNOWN1)
+        .value("OFF",       rfModStructs::GUN_MOD_STATE::OFF)
+        .value("HV_Intrlock",       rfModStructs::GUN_MOD_STATE::HV_Intrlock)
+        .value("Standby_Request",       rfModStructs::GUN_MOD_STATE::Standby_Request)
+        .value("Standby",       rfModStructs::GUN_MOD_STATE::Standby)
+        .value("HV_Off_Requ",       rfModStructs::GUN_MOD_STATE::HV_Off_Requ)
+        .value("Trigger_Interl",       rfModStructs::GUN_MOD_STATE::Trigger_Interl)
+        .value("HV_Request",       rfModStructs::GUN_MOD_STATE::HV_Request)
+        .value("HV_On",       rfModStructs::GUN_MOD_STATE::HV_On)
+        .value("Trig_Off_Req",       rfModStructs::GUN_MOD_STATE::Trig_Off_Req)
+        .value("Trig_Request",       rfModStructs::GUN_MOD_STATE::Trig_Request)
+        .value("Trig",       rfModStructs::GUN_MOD_STATE::Trig)
+        ;
+
+
+=======
     boost::python::class_<gunModController, boost::python::bases<controller>, boost::noncopyable>
         ("gunModController","gunModController Doc String",boost::python::no_init  )
 
@@ -112,6 +136,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
              "Return L01 Modulator Object Reference")
         //.def("reset",             &gunModController::reset,"")
         ;
+>>>>>>> origin/master
     /// https://stackoverflow.com/questions/19597087/c-listt-to-python-list
     boost::python::class_<rfModStructs::gunModObject,boost::noncopyable>
         ("gunModObject","gunModObject Doc String", boost::python::no_init)
@@ -132,6 +157,13 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("PlswthRead",    &rfModStructs::gunModObject::PlswthRead,"")
         .def_readonly("PlswthFwhmRead",&rfModStructs::gunModObject::PlswthFwhmRead,"")
         .def_readonly("ionp",          &rfModStructs::gunModObject::ionp,"")
+        .def_readonly("state",         &rfModStructs::gunModObject::state,"")
+        .def_readonly("ilock1",         &rfModStructs::gunModObject::ilock1,"")
+        .def_readonly("ilock2",         &rfModStructs::gunModObject::ilock2,"")
+        .def_readonly("ilock3",         &rfModStructs::gunModObject::ilock3,"")
+        .def_readonly("ilock4",         &rfModStructs::gunModObject::ilock4,"")
+        .def_readonly("ilock5",         &rfModStructs::gunModObject::ilock5,"")
+        .def_readonly("error_read",         &rfModStructs::gunModObject::error_read,"")
         ;
 
     boost::python::class_<rfModStructs::l01ModObject,boost::noncopyable>

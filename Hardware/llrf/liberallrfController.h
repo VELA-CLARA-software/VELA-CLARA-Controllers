@@ -58,19 +58,49 @@ class liberaLLRFController : public controller
         double getPhiCalibration();
         double getAmpCalibration();
         double getCrestPhiLLRF();
-        bool   isLocked();
+
+        void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
+        std::vector<std::string> getTracesToSaveOnBreakDown();
+
+        size_t getShotCount(const std::string& name);
+
+        size_t getNumOutsideMaskTraces();
+        std::vector<llrfStructs::outside_mask_trace>   getOutsideMaskData();
+
+        bool isFFLocked();
+        bool isFFNotLocked();
+        bool RFOutput();
+        bool interlockActive();
+        bool interlockNotActive();
+
+
+        //bool   isLocked();
+
         llrfStructs::LLRF_TYPE getType();
         size_t getTraceLength();
 
         std::vector<std::string> getChannelNames();
+        std::vector<std::string> getTraceNames();
+
         std::vector<double> getTraceValues(const std::string& name);
+        std::vector<double> getAverageTraceData(const std::string& name);
+
+
         llrfStructs::rf_trace getTraceData(const std::string& name);
         std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
+        std::vector<double> getHighMask(const std::string& name);
+        std::vector<double> getLowMask(const std::string& name);
 #ifdef BUILD_DLL
         boost::python::list getChannelNames_Py();
+        boost::python::list getTraceNames_Py();
         boost::python::list getTraceValues_Py(const std::string& name);
         boost::python::list getTraceBuffer_Py(const std::string& name);
+        boost::python::list getHighMask_Py(const std::string& name);
+        boost::python::list getLowMask_Py(const std::string& name);
+        //boost::python::list getOutsideMaskData_Py();
+        boost::python::dict getOutsideMaskData_Py();
+        boost::python::list getAverageTraceData_Py(const std::string& name);
 #endif
         std::vector<double> getChannelTrace();
         std::vector<double> getCavRevPower();
@@ -81,6 +111,22 @@ class liberaLLRFController : public controller
         std::vector<double> getCavFwdPhase();
         std::vector<double> getKlyRevPhase();
         std::vector<double> getKlyFwdPhase();
+
+        std::vector<double> getProbePower();
+        std::vector<double> getProbePhase();
+
+        std::vector<double> getCavRevPowerAv();
+        std::vector<double> getCavFwdPowerAv();
+        std::vector<double> getKlyRevPowerAv();
+        std::vector<double> getKlyFwdPowerAv();
+        std::vector<double> getCavRevPhaseAv();
+        std::vector<double> getCavFwdPhaseAv();
+        std::vector<double> getKlyRevPhaseAv();
+        std::vector<double> getKlyFwdPhaseAv();
+
+        std::vector<double> getProbePowerAv();
+        std::vector<double> getProbePhaseAv();
+
 #ifdef BUILD_DLL
         boost::python::list getCavRevPower_Py();
         boost::python::list getCavFwdPower_Py();
@@ -90,6 +136,24 @@ class liberaLLRFController : public controller
         boost::python::list getCavFwdPhase_Py();
         boost::python::list getKlyRevPhase_Py();
         boost::python::list getKlyFwdPhase_Py();
+
+        boost::python::list getProbePower_Py();
+        boost::python::list getProbePhase_Py();
+
+        boost::python::list  getCavRevPowerAv_Py();
+        boost::python::list  getCavFwdPowerAv_Py();
+        boost::python::list  getKlyRevPowerAv_Py();
+        boost::python::list  getKlyFwdPowerAv_Py();
+        boost::python::list  getCavRevPhaseAv_Py();
+        boost::python::list  getCavFwdPhaseAv_Py();
+        boost::python::list  getKlyRevPhaseAv_Py();
+        boost::python::list  getKlyFwdPhaseAv_Py();
+
+        boost::python::list getProbePowerAv_Py();
+        boost::python::list getProbePhaseAv_Py();
+
+
+        boost::python::list getTracesToSaveOnBreakDown_Py();
 #endif
         llrfStructs::rf_trace getCavRevPowerData();
         llrfStructs::rf_trace getCavFwdPowerData();
@@ -140,22 +204,36 @@ class liberaLLRFController : public controller
         bool setShouldCheckMask(const std::string&name);
         bool setShouldNotCheckMask(const std::string&name);
 
+        bool setMeanStartIndex(const std::string&name, size_t  value);
+        bool setMeanStopIndex(const std::string&name, size_t  value);
 
-        bool setHighMask(const std::string& name, std::vector<double>& value);
-        bool setLowMask(const std::string& name, std::vector<double>& value);
+        bool setHighMask(const std::string& name, const std::vector<double>& value);
+        bool setLowMask(const std::string& name, const std::vector<double>& value);
+
+        bool setCavRevPwrHiMask(const std::vector<double>& value);
+        bool setCavRevPwrLoMask(const std::vector<double>& value);
 
         bool clearMask(const std::string&name);
 
 #ifdef BUILD_DLL
-        bool setHighMask_Py(const std::string& name, boost::python::list& value);
-        bool setLowMask_Py(const std::string& name, boost::python::list& value);
+        bool setHighMask(const std::string& name,const  boost::python::list& value);
+        bool setLowMask(const std::string& name,const  boost::python::list& value);
+        bool setCavRevPwrHiMask_Py(const boost::python::list& value);
+        bool setCavRevPwrLoMask_Py(const boost::python::list& value);
 #endif
 
 
-        bool setNumBufferTraces(const std::string&name, size_t value);
+        bool setNumBufferTraces(const std::string&name, const size_t value);
+        void setNumBufferTraces(const size_t value);
         bool setCheckMask(const std::string&name, bool value);
         bool setKeepRollingAverage(const std::string&name, bool value);
-        bool setNumRollingAverageTraces(const std::string&name, size_t value );
+        bool setNumRollingAverageTraces(const std::string&name,const size_t value );
+        void setNumRollingAverageTraces(const size_t value );
+
+        void resetAverageTraces();
+        void setShouldKeepRollingAverage();
+        void setShouldNotKeepRollingAverage();
+
         size_t getNumRollingAverageTraces(const std::string&name);
         bool clearRollingAverage(const std::string&name);
         // Qantifiers

@@ -62,11 +62,22 @@ class liberallrfInterface : public interface
         double getCrestPhiLLRF();
         llrfStructs::LLRF_TYPE getType();
         size_t getTraceLength();
+        size_t getNumOutsideMaskTraces();
+
+        size_t getShotCount(const std::string& name);
+
+        std::vector<llrfStructs::outside_mask_trace>  getOutsideMaskData();
 
         std::vector<std::string> getChannelNames();
+        std::vector<std::string> getTraceNames();
+
         std::vector<double> getTraceValues(const std::string& name);
+        std::vector<double> getAverageTraceData(const std::string& name);
         llrfStructs::rf_trace getTraceData(const std::string& name);
         std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
+
+        void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
+        std::vector<std::string> getTracesToSaveOnBreakDown();
 
         std::vector<double> getCavRevPower();
         std::vector<double> getCavFwdPower();
@@ -76,6 +87,23 @@ class liberallrfInterface : public interface
         std::vector<double> getCavFwdPhase();
         std::vector<double> getKlyRevPhase();
         std::vector<double> getKlyFwdPhase();
+
+        std::vector<double> getProbePower();
+        std::vector<double> getProbePhase();
+
+
+        std::vector<double> getCavRevPowerAv();
+        std::vector<double> getCavFwdPowerAv();
+        std::vector<double> getKlyRevPowerAv();
+        std::vector<double> getKlyFwdPowerAv();
+        std::vector<double> getCavRevPhaseAv();
+        std::vector<double> getCavFwdPhaseAv();
+        std::vector<double> getKlyRevPhaseAv();
+        std::vector<double> getKlyFwdPhaseAv();
+
+        std::vector<double> getProbePowerAv();
+        std::vector<double> getProbePhaseAv();
+
 
         llrfStructs::rf_trace getCavRevPowerData();
         llrfStructs::rf_trace getCavFwdPowerData();
@@ -97,6 +125,9 @@ class liberallrfInterface : public interface
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
         llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name);
+
+        llrfStructs::LLRF_PV_TYPE getEVID_pv(llrfStructs::LLRF_PV_TYPE pv);
+
         std::string getLLRFChannelName(const llrfStructs::LLRF_PV_TYPE pv);
         std::vector<double> getLowMask(const std::string&name);
         std::vector<double> getHighMask(const std::string&name);
@@ -117,29 +148,41 @@ class liberallrfInterface : public interface
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
+        bool setCavRevPwrHiMask(const std::vector<double>& value);
+        bool setCavRevPwrLoMask(const std::vector<double>& value);
 
-        bool setHighMask(const std::string&name, std::vector<double>& value);
-        bool setLowMask(const std::string&name, std::vector<double>& value);
+        bool setHighMask(const std::string&name,const std::vector<double>& value);
+        bool setLowMask(const std::string&name,const std::vector<double>& value);
 
         bool clearMask(const std::string&name);
         bool clearRollingAverage(const std::string&name);
 
+        bool setMeanStartIndex(const std::string&name, size_t  value);
+        bool setMeanStopIndex(const std::string&name, size_t  value);
 
-        bool setNumBufferTraces(const std::string&name, size_t value);
+        bool setNumBufferTraces(const std::string&name,const size_t value);
+        void setNumBufferTraces(const size_t value);
         bool setCheckMask(const std::string&name, bool value);
         bool setShouldCheckMask(const std::string&name);
         bool setShouldNotCheckMask(const std::string&name);
+
+        void resetAverageTraces();
+        void setShouldKeepRollingAverage();
+        void setShouldNotKeepRollingAverage();
+
 
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setShouldKeepRollingAverage(const std::string&name);
         bool setShouldNotKeepRollingAverage(const std::string&name);
 
-        bool setNumRollingAverageTraces(const std::string&name, size_t value );
+        bool setNumRollingAverageTraces(const std::string&name,const  size_t value );
+        void setNumRollingAverageTraces(const size_t value);
         size_t getNumRollingAverageTraces(const std::string&name);
 
         //  quantification
         bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
         bool Is_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool IsNot_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool Is_Time_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
 
@@ -153,7 +196,12 @@ class liberallrfInterface : public interface
         bool isNotCheckingMask(const std::string& name);
         bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
-        bool isLocked();
+
+        bool isFFLocked();
+        bool isFFNotLocked();
+        bool RFOutput();
+        bool interlockActive();
+        bool interlockNotActive();
 
         // start trace monitoring (not automatic as mostly not needed)
         void startTraceMonitoring();
@@ -209,15 +257,20 @@ class liberallrfInterface : public interface
         void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
         //void updateTimeVector(const event_handler_args& args);
 
-        void updateTraceIndex(size_t& index,size_t trace_size);
+        void updateTraceIndex(size_t& index,const size_t trace_size);
+        void updateTraceIndex(int& index,const size_t trace_size);
+        void updateTraceCutMean(llrfStructs::rf_trace& trace);
 
         bool isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
         void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
-        bool shoudlSubtractTraceFromRollingAverage(llrfStructs::rf_trace_data& trace);
+        bool shouldSubtractTraceFromRollingAverage(llrfStructs::rf_trace_data& trace);
         void calcRollingAverage(llrfStructs::rf_trace_data& trace);
         void updateRollingSum(llrfStructs::rf_trace_data& trace);
         void resetAverageTraces(llrfStructs::rf_trace_data& trace);
+
+
+
 
         llrfStructs::liberallrfObject llrf;
         llrfStructs::LLRF_TYPE myLLRFType;

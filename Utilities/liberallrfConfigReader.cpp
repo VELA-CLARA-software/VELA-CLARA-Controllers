@@ -129,7 +129,7 @@ bool liberallrfConfigReader::readConfig()
         success = true;
     }
     else{
-        message("!!!! Error Can't Open Shutter Config File after searching in:  ", configFile1, " !!!!" );
+        message("!!!! Error Can't Open Config File after searching in:  ", configFile1, " !!!!" );
     }
     return success;
     return false;
@@ -183,6 +183,16 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM,keyVal[1]);
         else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH8_PHASE_REM)
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM,keyVal[1]);
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH1_PWR_REM)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM,keyVal[1]);
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_ILOCK_STATE)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_ILOCK_STATE,keyVal[1]);
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_SP_LOCK_STATE)
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_SP_LOCK_STATE,keyVal[1]);
+
 
         else if(keyVal[0] == UTL::PV_SUFFIX_LIB_CH1_PWR_REM)
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM,keyVal[1]);
@@ -252,9 +262,9 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR,keyVal[1]);
         }
-        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_LOCK)
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_RF_OUTPUT)
         {
-            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_LOCK,keyVal[1]);
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_RF_OUTPUT,keyVal[1]);
         }
         else if(keyVal[0] == UTL::PV_SUFFIX_LIB_PULSE_LENGTH)
         {
@@ -322,9 +332,16 @@ void liberallrfConfigReader::addToliberallrfObjectsV1(const std::vector<std::str
     {
         llrfObj.crestPhi = getNumL(keyVal[ 1 ]);
     }
+    else if(keyVal[0] == UTL::LLRF_PULSE_LATENCY)
+    {
+        llrfObj.pulse_latency = getSize(keyVal[1]);
+    }
     // potentially we hardcode this value into the binary, and have it *NOT* configurable
     else if(keyVal[0] == UTL::LLRF_MAX_AMPLITUDE)
+    {
         llrfObj.maxAmp = getNumL(keyVal[ 1 ]);
+
+    }
 }
 //______________________________________________________________________________
 bool liberallrfConfigReader::getliberallrfObject(llrfStructs::liberallrfObject& obj)
