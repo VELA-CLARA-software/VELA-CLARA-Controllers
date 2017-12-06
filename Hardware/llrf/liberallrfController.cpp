@@ -167,6 +167,16 @@ std::vector<std::string> liberaLLRFController::getChannelNames()
     return localInterface.getChannelNames();
 }
 //______________________________________________________________________________
+bool liberaLLRFController::setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value)
+{
+    return localInterface.setTraceSCAN(trace, value);
+}
+//______________________________________________________________________________
+bool  liberaLLRFController::setAllTraceSCAN(const llrfStructs::LLRF_SCAN value)
+{
+    return localInterface.setAllTraceSCAN(value);
+}
+//______________________________________________________________________________
 std::vector<std::string> liberaLLRFController::getTraceNames()
 {
     return localInterface.getTraceNames();
@@ -177,9 +187,9 @@ std::vector<double> liberaLLRFController::getTraceValues(const std::string& name
     return localInterface.getTraceValues(name);
 }
 //______________________________________________________________________________
-std::vector<double> liberaLLRFController::getHighMask(const std::string& name)
+std::vector<double> liberaLLRFController::getHiMask(const std::string& name)
 {
-    return localInterface.getHighMask(name);
+    return localInterface.getHiMask(name);
 }
 //______________________________________________________________________________
 void liberaLLRFController::setTracesToSaveOnBreakDown(const std::vector<std::string>& name)
@@ -192,9 +202,9 @@ std::vector<std::string> liberaLLRFController::getTracesToSaveOnBreakDown()
     return localInterface.getTracesToSaveOnBreakDown();
 }
 //______________________________________________________________________________
-std::vector<double> liberaLLRFController::getLowMask(const std::string& name)
+std::vector<double> liberaLLRFController::getLoMask(const std::string& name)
 {
-    return localInterface.getLowMask(name);
+    return localInterface.getLoMask(name);
 }
 //______________________________________________________________________________
 llrfStructs::rf_trace liberaLLRFController::getTraceData(const std::string& name)
@@ -218,6 +228,11 @@ boost::python::list liberaLLRFController::getAverageTraceData_Py(const std::stri
     return toPythonList(getAverageTraceData(name));
 }
 //______________________________________________________________________________
+void liberaLLRFController::setTracesToSaveOnBreakDown_Py(const boost::python::list& name)
+{
+    setTracesToSaveOnBreakDown( to_std_vector<std::string>(name));
+}
+//______________________________________________________________________________
 boost::python::list liberaLLRFController::getTracesToSaveOnBreakDown_Py()
 {
     return toPythonList(getTracesToSaveOnBreakDown());
@@ -228,14 +243,14 @@ boost::python::list liberaLLRFController::getChannelNames_Py()
     return toPythonList(getChannelNames());
 }
 //______________________________________________________________________________
-boost::python::list liberaLLRFController::getHighMask_Py(const std::string& name)
+boost::python::list liberaLLRFController::getHiMask_Py(const std::string& name)
 {
-    return toPythonList(getHighMask(name));
+    return toPythonList(getHiMask(name));
 }
 //______________________________________________________________________________
-boost::python::list liberaLLRFController::getLowMask_Py(const std::string& name)
+boost::python::list liberaLLRFController::getLoMask_Py(const std::string& name)
 {
-    return toPythonList(getLowMask(name));
+    return toPythonList(getLoMask(name));
 }
 //______________________________________________________________________________
 boost::python::list liberaLLRFController::getTraceNames_Py()
@@ -266,6 +281,8 @@ boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
     std::string value;
     std::string name;
 
+    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
+
     int i = -2;
     size_t j = 0;
     for(auto it: data)
@@ -274,22 +291,33 @@ boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
         dictionary[ std::string("lo_mask") ] = toPythonList(it.low_mask);
         dictionary[ std::string("trace_name") ] = boost::python::object(it.trace_name);
         //message(it.trace_name);
-        i = -2;
-        for(auto&& it2: it.traces)
-        {
-            EVID = "EVID_";
-            time = "time_";
-            value= "value_";
-            name = "name_";
-            dictionary[ EVID  += std::to_string(i) ] = it2.EVID;
 
-            //message("it2.EVID = ", it2.EVID);
-            dictionary[ time  += std::to_string(i) ] = it2.time;
-            dictionary[ value += std::to_string(i) ] = toPythonList(it2.value);
-            dictionary[ name  += std::to_string(i) ] = it2.name;
-            ++i;
+        for(auto&& t_name: traces_to_save_on_break_down)
+        {
+            message(t_name);
+            i = -2;
+
+            for(auto&& it2: it.traces)
+            {
+                message(it2.name);
+                if( it2.name  == t_name )
+                {
+
+                EVID = "EVID_"+it2.name+"_";
+                time = "time_"+it2.name+"_";
+                value= "value_"+it2.name+"_";
+                name = "name_"+it2.name+"_";
+                dictionary[ EVID  += std::to_string(i) ] = it2.EVID;
+
+                //message("it2.EVID = ", it2.EVID);
+                dictionary[ time  += std::to_string(i) ] = it2.time;
+                dictionary[ value += std::to_string(i) ] = toPythonList(it2.value);
+                dictionary[ name  += std::to_string(i) ] = it2.name;
+                ++i;
+                }
+            }
         }
-        /// !!!!!!!!!!!!! FOR SOME REASON THIS IS THE ONLY WAY IO COULD PROPERLY COPY THE DICTIONNARY TO EXPORT
+        /// !!!!!!!!!!!!! FOR SOME REASON THIS IS THE ONLY WAY I COULD PROPERLY COPY THE DICTIONARY TO EXPORT
         dictionary2[std::to_string(j)] = dictionary.copy();
         ++j;
         //dictionary.clear();
@@ -738,6 +766,26 @@ bool liberaLLRFController::setHighMask(const std::string&name,const  std::vector
 bool liberaLLRFController::setLowMask(const std::string&name,const std::vector<double>& value)
 {
     return localInterface.setLowMask(name, value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value)
+{
+    return localInterface.setCavRevPwrMaskPercent(s1,s2,s3,s4,value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value)
+{
+    return localInterface.setCavRevPwrMaskAbsolute(s1,s2,s3,s4,value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value)
+{
+    return localInterface.setCavFwdPwrMaskPercent(s1,s2,s3,s4,value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value)
+{
+    return localInterface.setCavFwdPwrMaskAbsolute(s1,s2,s3,s4,value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::clearMask(const std::string&name)

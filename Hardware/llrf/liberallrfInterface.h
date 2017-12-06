@@ -127,10 +127,11 @@ class liberallrfInterface : public interface
         llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name);
 
         llrfStructs::LLRF_PV_TYPE getEVID_pv(llrfStructs::LLRF_PV_TYPE pv);
+        llrfStructs::LLRF_PV_TYPE getSCAN_pv(llrfStructs::LLRF_PV_TYPE pv);
 
         std::string getLLRFChannelName(const llrfStructs::LLRF_PV_TYPE pv);
-        std::vector<double> getLowMask(const std::string&name);
-        std::vector<double> getHighMask(const std::string&name);
+        std::vector<double> getLoMask(const std::string&name);
+        std::vector<double> getHiMask(const std::string&name);
         size_t getNumBufferTraces(const std::string&name);
 
         // SETTERS
@@ -148,11 +149,24 @@ class liberallrfInterface : public interface
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
+        bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
+        bool setAllTraceSCAN( const llrfStructs::LLRF_SCAN value);
+
         bool setCavRevPwrHiMask(const std::vector<double>& value);
         bool setCavRevPwrLoMask(const std::vector<double>& value);
-
         bool setHighMask(const std::string&name,const std::vector<double>& value);
         bool setLowMask(const std::string&name,const std::vector<double>& value);
+
+
+        bool setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+
+        bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+        bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+
+
 
         bool clearMask(const std::string&name);
         bool clearRollingAverage(const std::string&name);
@@ -181,10 +195,13 @@ class liberallrfInterface : public interface
 
         //  quantification
         bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
         bool Is_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool Is_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv);
+        bool IsNot_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv);
         bool Is_Time_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
-        bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
+
 
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
@@ -252,6 +269,7 @@ class liberallrfInterface : public interface
         void startMonitors();
 
         void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
+        void updateSCAN(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
 //        void updateTraceValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
         void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
@@ -270,7 +288,7 @@ class liberallrfInterface : public interface
         void resetAverageTraces(llrfStructs::rf_trace_data& trace);
 
 
-
+        std::string fullCavityTraceName(const std::string& name);
 
         llrfStructs::liberallrfObject llrf;
         llrfStructs::LLRF_TYPE myLLRFType;

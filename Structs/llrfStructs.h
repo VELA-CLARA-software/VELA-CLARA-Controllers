@@ -28,6 +28,7 @@ namespace llrfStructs
                                                      (LIB_AMP_SP)
                                                      (LIB_PHI_FF)
                                                      (LIB_PHI_SP)
+                                                     (LIB_PWR_REM)
                                                      (LIB_CH1_PWR_REM)
                                                      (LIB_CH2_PWR_REM)
                                                      (LIB_CH3_PWR_REM)
@@ -36,6 +37,7 @@ namespace llrfStructs
                                                      (LIB_CH6_PWR_REM)
                                                      (LIB_CH7_PWR_REM)
                                                      (LIB_CH8_PWR_REM)
+                                                     (LIB_PHASE_REM)
                                                      (LIB_CH1_PHASE_REM)
                                                      (LIB_CH2_PHASE_REM)
                                                      (LIB_CH3_PHASE_REM)
@@ -44,6 +46,7 @@ namespace llrfStructs
                                                      (LIB_CH6_PHASE_REM)
                                                      (LIB_CH7_PHASE_REM)
                                                      (LIB_CH8_PHASE_REM)
+                                                     (LIB_PWR_REM_EVID)
                                                      (LIB_CH1_PWR_REM_EVID)
                                                      (LIB_CH2_PWR_REM_EVID)
                                                      (LIB_CH3_PWR_REM_EVID)
@@ -52,6 +55,7 @@ namespace llrfStructs
                                                      (LIB_CH6_PWR_REM_EVID)
                                                      (LIB_CH7_PWR_REM_EVID)
                                                      (LIB_CH8_PWR_REM_EVID)
+                                                     (LIB_PHASE_REM_EVID)
                                                      (LIB_CH1_PHASE_REM_EVID)
                                                      (LIB_CH2_PHASE_REM_EVID)
                                                      (LIB_CH3_PHASE_REM_EVID)
@@ -60,6 +64,24 @@ namespace llrfStructs
                                                      (LIB_CH6_PHASE_REM_EVID)
                                                      (LIB_CH7_PHASE_REM_EVID)
                                                      (LIB_CH8_PHASE_REM_EVID)
+                                                     (LIB_PWR_REM_SCAN)
+                                                     (LIB_CH1_PWR_REM_SCAN)
+                                                     (LIB_CH2_PWR_REM_SCAN)
+                                                     (LIB_CH3_PWR_REM_SCAN)
+                                                     (LIB_CH4_PWR_REM_SCAN)
+                                                     (LIB_CH5_PWR_REM_SCAN)
+                                                     (LIB_CH6_PWR_REM_SCAN)
+                                                     (LIB_CH7_PWR_REM_SCAN)
+                                                     (LIB_CH8_PWR_REM_SCAN)
+                                                     (LIB_PHASE_REM_SCAN)
+                                                     (LIB_CH1_PHASE_REM_SCAN)
+                                                     (LIB_CH2_PHASE_REM_SCAN)
+                                                     (LIB_CH3_PHASE_REM_SCAN)
+                                                     (LIB_CH4_PHASE_REM_SCAN)
+                                                     (LIB_CH5_PHASE_REM_SCAN)
+                                                     (LIB_CH6_PHASE_REM_SCAN)
+                                                     (LIB_CH7_PHASE_REM_SCAN)
+                                                     (LIB_CH8_PHASE_REM_SCAN)
                                                      (LIB_TIME_VECTOR)
                                                      (LIB_PULSE_LENGTH)
                                                      (LIB_PULSE_OFFSET)
@@ -69,6 +91,17 @@ namespace llrfStructs
                                                    )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)(CLARA_LRRG)(VELA_HRRG)(VELA_LRRG)
                                                   (L01)(UNKNOWN_TYPE))
+
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_SCAN,(PASSIVE)
+                                                  (EVENT)
+                                                  (IO_INTR)
+                                                  (TEN)
+                                                  (FIVE)(TWO)(ONE)(ZERO_POINT_FIVE)
+                                                  (ZERO_POINT_TWO)
+                                                  (ZERO_POINT_ONE)
+                                                  (UNKNOWN_SCAN))
+
     // monType is to switch in the staticCallbackFunction
     struct monitorStruct
     {
@@ -108,7 +141,11 @@ namespace llrfStructs
             mean_start_index(UTL::ZERO_SIZET),
             mean_stop_index(UTL::ZERO_SIZET),
             mean(UTL::ZERO_DOUBLE),
-            timeStr("")
+            timeStr("unknown"),
+            name("unknown"),
+            EVID_timeStr("unknown"),
+            EVID("unknown"),
+            EVID_time(UTL::ZERO_DOUBLE)
             {}
         size_t mean_start_index,mean_stop_index;
         bool   in_mask;
@@ -133,6 +170,8 @@ namespace llrfStructs
     struct rf_trace_data
     {
         rf_trace_data():
+            name("UNKNOWN"),
+            scan(LLRF_SCAN::UNKNOWN_SCAN),
             shot(UTL::ZERO_SIZET),
             buffersize(UTL::TEN_SIZET),
             check_mask(false), //inside the mask or not
@@ -170,15 +209,17 @@ namespace llrfStructs
         // this means these two can go out of synch
         // traces has a length, buffersize
         std::string    EVID;
+        std::string    name;
         std::vector<rf_trace> traces;
         // rolling sum is the sum of the traces to be averaged,
         // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
         // rolling_average is then calculated by dividing rolling_sum by average_size
-        std::vector<double> high_mask, low_mask, rolling_average,rolling_sum;
+        std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to
         bool add_next_trace_to_outside_mask_trace;
         size_t outside_mask_trace_part;
+        LLRF_SCAN scan;
     };
 
     struct outside_mask_trace

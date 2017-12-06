@@ -197,9 +197,14 @@ namespace UTL
 /// LIBERA LLRF
     const std::string CLARA_LRRG_LLRF_CONFIG    = "CLARA_LRRG_LLRF.config";
     const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
+    // llrf traces
+    const std::string GUN_LLRF_TRACES = "gun_LLRF_TRACES.config";
+    const std::string L01_LLRF_TRACES = "L01_LLRF_TRACES.config";
+
     // Faked the VM versions atm until (probably not needed now 14/7/2017
     const std::string VM_CLARA_LRRG_LLRF_CONFIG = "vmCLARA_LRRG_LLRF.config";
     const std::string VM_CLARA_L01_LLRF_CONFIG = "vmCLARA_L01_LLRF.config";
+
     // Not sure about this yet at all,
     // hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG
     // (its the same physical LLRF equipment)
@@ -241,7 +246,16 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_CH6_PWR_REM    = "PV_SUFFIX_LIB_CH6_PWR_REM";
     const std::string PV_SUFFIX_LIB_CH7_PWR_REM    = "PV_SUFFIX_LIB_CH7_PWR_REM";
     const std::string PV_SUFFIX_LIB_CH8_PWR_REM    = "PV_SUFFIX_LIB_CH8_PWR_REM";
+    const std::string LLRF_CHANNEL    = "LLRF_CHANNEL";
 
+
+    const std::string PV_SUFFIX_PWR_REM_EVID = "PV_SUFFIX_PWR_REM_EVID";
+    const std::string PV_SUFFIX_PWR_REM_SCAN = "PV_SUFFIX_PWR_REM_SCAN";
+    const std::string PV_SUFFIX_PWR_REM      = "PV_SUFFIX_PWR_REM";
+
+    const std::string PV_SUFFIX_PHASE_REM_EVID = "PV_SUFFIX_PHASE_REM_EVID";
+    const std::string PV_SUFFIX_PHASE_REM_SCAN = "PV_SUFFIX_PHASE_REM_SCAN";
+    const std::string PV_SUFFIX_PHASE_REM      = "PV_SUFFIX_PHASE_REM";
 
     const std::string PV_SUFFIX_LIB_CH1_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH1_PHASE_REM_EVID";
     const std::string PV_SUFFIX_LIB_CH2_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH2_PHASE_REM_EVID";
@@ -262,10 +276,22 @@ namespace UTL
 //    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
 //    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
     // specific names for common channels that have named functions to start/stop them in the llrfinterface/controller
-    const std::string CAVITY_REVERSE_PHASE   = "CAVITY_REVERSE_PHASE";
-    const std::string CAVITY_REVERSE_POWER   = "CAVITY_REVERSE_POWER";
-    const std::string CAVITY_FORWARD_PHASE   = "CAVITY_FORWARD_PHASE";
-    const std::string CAVITY_FORWARD_POWER   = "CAVITY_FORWARD_POWER";
+    const std::string LRRG_CAVITY_REVERSE_PHASE   = "LRRG_CAVITY_REVERSE_PHASE";
+    const std::string HRRG_CAVITY_REVERSE_PHASE   = "HRRG_CAVITY_REVERSE_PHASE";
+    const std::string CAVITY_REVERSE_PHASE        = "CAVITY_REVERSE_PHASE";
+
+    const std::string LRRG_CAVITY_FORWARD_PHASE   = "LRRG_CAVITY_FORWARD_PHASE";
+    const std::string HRRG_CAVITY_FORWARD_PHASE   = "HRRG_CAVITY_FORWARD_PHASE";
+    const std::string CAVITY_FORWARD_PHASE        = "CAVITY_FORWARD_PHASE";
+
+    const std::string LRRG_CAVITY_REVERSE_POWER   = "LRRG_CAVITY_REVERSE_POWER";
+    const std::string HRRG_CAVITY_REVERSE_POWER   = "HRRG_CAVITY_REVERSE_POWER";
+    const std::string CAVITY_REVERSE_POWER        = "CAVITY_REVERSE_POWER";
+
+    const std::string LRRG_CAVITY_FORWARD_POWER   = "LRRG_CAVITY_FORWARD_POWER";
+    const std::string HRRG_CAVITY_FORWARD_POWER   = "HRRG_CAVITY_FORWARD_POWER";
+    const std::string CAVITY_FORWARD_POWER        = "CAVITY_FORWARD_POWER";
+
     const std::string KLYSTRON_REVERSE_PHASE = "KLYSTRON_REVERSE_PHASE";
     const std::string KLYSTRON_REVERSE_POWER = "KLYSTRON_REVERSE_POWER";
     const std::string KLYSTRON_FORWARD_PHASE = "KLYSTRON_FORWARD_PHASE";

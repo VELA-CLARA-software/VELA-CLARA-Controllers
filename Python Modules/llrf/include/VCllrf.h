@@ -196,6 +196,18 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("UNKNOWN_TYPE", LLRF_TYPE::UNKNOWN_TYPE)
         ;
 
+    enum_<llrfStructs::LLRF_SCAN>("LLRF_SCAN")
+        .value("PASSIVE",LLRF_SCAN::PASSIVE )
+        .value("EVENT",LLRF_SCAN::EVENT )
+        .value("IO_INTR", LLRF_SCAN::IO_INTR)
+        .value("TEN", LLRF_SCAN::TEN)
+        .value("FIVE", LLRF_SCAN::FIVE)
+        .value("TWO", LLRF_SCAN::TWO)
+        .value("ZERO_POINT_TWO", LLRF_SCAN::ZERO_POINT_TWO)
+        .value("ZERO_POINT_FIVE", LLRF_SCAN::ZERO_POINT_FIVE)
+        .value("ZERO_POINT_ONE", LLRF_SCAN::ZERO_POINT_ONE)
+        .value("UNKNOWN_SCAN", LLRF_SCAN::UNKNOWN_SCAN)
+        ;
     class_<llrfStructs::rf_trace,boost::noncopyable>
         ("rf_trace","rf_trace Doc String", no_init)
         .def_readonly("value",    &rf_trace::value  ,"trace values")
@@ -225,15 +237,15 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("low_mask",        &rf_trace_data::low_mask,"low mask values")
         .def_readonly("rolling_average", &rf_trace_data::rolling_average,"rolling average values")
         .def_readonly("rolling_sum",     &rf_trace_data::rolling_sum,"rolling sum values")
+        .def_readonly("rolling_min",     &rf_trace_data::rolling_max,"rolling max values")
+        .def_readonly("rolling_max",     &rf_trace_data::rolling_min,"rolling min values")
+        .def_readonly("rolling_sd",     &rf_trace_data::rolling_sd,"rolling standard deviation values")
         .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
         .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
         .def_readonly("mean_stop_index", &rf_trace_data::mean_stop_index,"stop index for mean trace calculation.")
         .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
-
         .def_readonly("shot",     &rf_trace_data::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)")
-
         //maybe have a ferernce to the latest trace??
-
         .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"Latest EVID for this trace.")
         ;
 
@@ -288,6 +300,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("outside_mask_traces", &liberallrfObject::outside_mask_traces,"The saved outside_mask_traces, stored in a vector of outside_mask_trace objects.")
         .def_readonly("num_outside_mask_traces", &liberallrfObject::num_outside_mask_traces,"The number of outside_mask_traces.")
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
+        .def_readonly("pulse_latency", &liberallrfObject::pulse_latency,"The number of elements in a pulse trace before the RF pulse is active (approx.).")
         ;
 
 
@@ -304,6 +317,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPhiSP",   &liberaLLRFController::getPhiSP,"Return the Phase(SP) in LLRF Units")
         .def("getPhiLLRF", &liberaLLRFController::getPhiLLRF,"Return the Phase in LLRF Units")
         .def("getNumOutsideMaskTraces", &liberaLLRFController::getNumOutsideMaskTraces,"Return the Number of elements in outside_mask_traces")
+
+
 
         .def("getPhiCalibration", &liberaLLRFController::getPhiCalibration,"Return Linear Conversion of Phase from LLRF units to degrees")
         .def("getAmpCalibration", &liberaLLRFController::getAmpCalibration,"Return Linear Conversion of Amplitude from LLRF units to MV/m")
@@ -374,7 +389,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getProbePowerAv",  &liberaLLRFController::getProbePowerAv_Py,"Return cavity probe power average ")
         .def("getProbePhaseAv",  &liberaLLRFController::getProbePhaseAv_Py,"Return cavity probe phase average ")
 
-        .def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown,"Set the Names of Traces to Save when a break down occurs")
+        //.def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown,"Set the Names of Traces to Save when a break down occurs")
+        .def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown_Py,"Set the Names of Traces to Save when a break down occurs")
         .def("getTracesToSaveOnBreakDown",  &liberaLLRFController::getTracesToSaveOnBreakDown_Py,"Get the Names of Traces to Save when a break down occurs")
 
         .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(arg("value")),"Set Phase in LLRF Units")
@@ -389,8 +405,11 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(arg("name"),arg("value")),"Set trace 'name' start index for mean calculation")
         .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(arg("name"),arg("value")),"Set trace 'name' stop index for mean calculation")
 
-        .def("getHighMask",  &liberaLLRFController::getHighMask_Py,(arg("name")),"Get High mask for trace 'name'")
-        .def("getLowMask",  &liberaLLRFController::getLowMask_Py,(arg("name")),"Get Low mask for trace 'name'")
+
+        .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(arg("name"),arg("value")),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
+        .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(arg("value")),"Set all monitoring traces SCAN rate to 'value'")
+        .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(arg("name")),"Get High mask for trace 'name'")
+        .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(arg("name")),"Get Low mask for trace 'name'")
 
 
         .def("resetAverageTraces",  &liberaLLRFController::resetAverageTraces,"Reset All Rolling Averages")
@@ -402,13 +421,46 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(arg("value")),"Set linear calibration of phase from LLRF units to degrees")
         .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(arg("value")),"Set linear calibration of amplitude from LLRF units to MV/m")
         .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(arg("value")),"Set the Crest Phi value in LLRF Units")
+
         .def("setHighMask",  setHighMask_1,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
         .def("setHighMask",  setHighMask_2,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
         .def("setLowMask",  setLowMask_1,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
         .def("setLowMask",  setLowMask_2,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
-
         .def("setCavRevPwrHiMask",  &liberaLLRFController::setCavRevPwrHiMask_Py,(arg("value")),"Set the Hi mask for cavity reverse power (channel defined in config file)")
         .def("setCavRevPwrLoMask",  &liberaLLRFController::setCavRevPwrLoMask_Py,(arg("value")),"Set the Lo mask for cavity reverse power (channel defined in config file)")
+
+
+        .def("setCavRevPwrMaskPercent",  &liberaLLRFController::setCavRevPwrMaskPercent,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+            "set the Cavity Reverse Power Mask based on the rolling_average for cavity_rev_power trace/n"
+            "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
+            "between element s1+1 and s2 will be set by rolling_average +/- value percent of rolling_average/n"
+            "between elemnent s2+1 and s3 will be set very default hi/lo (+/-infinity)/n"
+            "between element s3+1 and s4 will be set by rolling_average +/- value percent of rolling_average/n"
+            "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
+
+        .def("setCavRevPwrMaskAbsolute",  &liberaLLRFController::setCavRevPwrMaskAbsolute,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+            "set the Cavity Reverse Power Mask based on the rolling_average for cavity_rev_power trace/n"
+            "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
+            "between element s1+1 and s2 will be set by rolling_average +/- value/n"
+            "between element s2+1 and s3 will be set very default hi/lo (+/-infinity)/n"
+            "between element s3+1 and s4 will be set by rolling_average +/- value/n"
+            "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
+
+        .def("setCavFwdPwrMaskPercent",  &liberaLLRFController::setCavFwdPwrMaskPercent,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+            "set the Cavity Forward Power Mask based on the rolling_average for cavity_rev_power trace/n"
+            "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
+            "between element s1+1 and s2 will be set by rolling_average +/- value percent of rolling_average/n"
+            "between elemnent s2+1 and s3 will be set very default hi/lo (+/-infinity)/n"
+            "between element s3+1 and s4 will be set by rolling_average +/- value percent of rolling_average/n"
+            "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
+
+        .def("setCavFwdPwrMaskAbsolute",  &liberaLLRFController::setCavFwdPwrMaskAbsolute,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+            "set the Cavity Forward Power Mask based on the rolling_average for cavity_rev_power trace/n"
+            "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
+            "between element s1+1 and s2 will be set by rolling_average +/- value/n"
+            "between element s2+1 and s3 will be set very default hi/lo (+/-infinity)/n"
+            "between element s3+1 and s4 will be set by rolling_average +/- value/n"
+            "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
 
         .def("setNumBufferTraces",  setNumBufferTraces_1,(arg("name"),arg("value")),"Set the number of buffer traces to keep for trace 'name' to 'value'")
         .def("setNumBufferTraces",  setNumBufferTraces_2,(arg("value")),"Set the number of buffer traces for all traces to 'value'")
@@ -427,11 +479,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("setShouldNotKeepRollingAverage",setShouldNotKeepRollingAverage_1,(arg("name")),"Set keep rolling average to false for trace 'name'")
         .def("setShouldNotKeepRollingAverage",setShouldNotKeepRollingAverage_2,"Set keep rolling average to false for all traces")
-
-
-
-
-
 
         .def("getNumRollingAverageTraces",  &liberaLLRFController::getNumRollingAverageTraces,(arg("name")),"Get the number of traces to average for trace 'name'")
         .def("clearRollingAverage",  &liberaLLRFController::clearRollingAverage,(arg("name")),"Clear the Rolling Average data for trace 'name' This also rests other counters to zero, meaning any/all current data in the rolling averages will be lost. ")

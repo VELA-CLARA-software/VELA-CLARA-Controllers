@@ -59,6 +59,10 @@ class liberaLLRFController : public controller
         double getAmpCalibration();
         double getCrestPhiLLRF();
 
+
+        bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
+        bool setAllTraceSCAN( const llrfStructs::LLRF_SCAN value);
+
         void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
         std::vector<std::string> getTracesToSaveOnBreakDown();
 
@@ -89,15 +93,15 @@ class liberaLLRFController : public controller
         llrfStructs::rf_trace getTraceData(const std::string& name);
         std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
-        std::vector<double> getHighMask(const std::string& name);
-        std::vector<double> getLowMask(const std::string& name);
+        std::vector<double> getHiMask(const std::string& name);
+        std::vector<double> getLoMask(const std::string& name);
 #ifdef BUILD_DLL
         boost::python::list getChannelNames_Py();
         boost::python::list getTraceNames_Py();
         boost::python::list getTraceValues_Py(const std::string& name);
         boost::python::list getTraceBuffer_Py(const std::string& name);
-        boost::python::list getHighMask_Py(const std::string& name);
-        boost::python::list getLowMask_Py(const std::string& name);
+        boost::python::list getHiMask_Py(const std::string& name);
+        boost::python::list getLoMask_Py(const std::string& name);
         //boost::python::list getOutsideMaskData_Py();
         boost::python::dict getOutsideMaskData_Py();
         boost::python::list getAverageTraceData_Py(const std::string& name);
@@ -152,7 +156,7 @@ class liberaLLRFController : public controller
         boost::python::list getProbePowerAv_Py();
         boost::python::list getProbePhaseAv_Py();
 
-
+        void setTracesToSaveOnBreakDown_Py(const boost::python::list& name);
         boost::python::list getTracesToSaveOnBreakDown_Py();
 #endif
         llrfStructs::rf_trace getCavRevPowerData();
@@ -212,6 +216,11 @@ class liberaLLRFController : public controller
 
         bool setCavRevPwrHiMask(const std::vector<double>& value);
         bool setCavRevPwrLoMask(const std::vector<double>& value);
+        bool setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+
 
         bool clearMask(const std::string&name);
 
