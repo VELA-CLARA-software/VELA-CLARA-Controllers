@@ -70,6 +70,7 @@ class liberaLLRFController : public controller
 
         size_t getNumOutsideMaskTraces();
         std::vector<llrfStructs::outside_mask_trace>   getOutsideMaskData();
+        llrfStructs::outside_mask_trace getOutsideMaskData(const size_t part);
 
         bool isFFLocked();
         bool isFFNotLocked();
@@ -104,6 +105,7 @@ class liberaLLRFController : public controller
         boost::python::list getLoMask_Py(const std::string& name);
         //boost::python::list getOutsideMaskData_Py();
         boost::python::dict getOutsideMaskData_Py();
+        boost::python::dict getOutsideMaskData2_Py(const size_t part);
         boost::python::list getAverageTraceData_Py(const std::string& name);
 #endif
         std::vector<double> getChannelTrace();
@@ -295,5 +297,6 @@ class liberaLLRFController : public controller
         void initialise();
         const bool shouldStartEPICs;
         liberallrfInterface localInterface;
+        boost::python::dict getOMT_Dict(const llrfStructs::outside_mask_trace& omt);
 };
 #endif // VELA_MAG_CONTROLLER_H_

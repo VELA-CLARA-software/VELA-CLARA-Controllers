@@ -57,6 +57,11 @@ std::vector<llrfStructs::outside_mask_trace> liberaLLRFController::getOutsideMas
     return localInterface.getOutsideMaskData();
 }
 //______________________________________________________________________________
+llrfStructs::outside_mask_trace liberaLLRFController::getOutsideMaskData(const size_t part)
+{
+    return localInterface.getOutsideMaskData(part);
+}
+//______________________________________________________________________________
 llrfStructs::LLRF_TYPE liberaLLRFController::getType()
 {
     return localInterface.getType();
@@ -268,6 +273,11 @@ boost::python::list liberaLLRFController::getTraceBuffer_Py(const std::string& n
     return toPythonList(getTraceBuffer(name));
 }
 //______________________________________________________________________________
+boost::python::dict liberaLLRFController::getOutsideMaskData2_Py(const size_t part)
+{
+    return getOMT_Dict(getOutsideMaskData(part));
+}
+//______________________________________________________________________________
 //boost::python::list liberaLLRFController::getOutsideMaskData_Py()
 boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
 {
@@ -280,50 +290,85 @@ boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
     std::string time;
     std::string value;
     std::string name;
+//    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
 
-    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
-
-    int i = -2;
+//    int i = -2;
     size_t j = 0;
     for(auto it: data)
     {
-        dictionary[ std::string("hi_mask") ] = toPythonList(it.high_mask);
-        dictionary[ std::string("lo_mask") ] = toPythonList(it.low_mask);
-        dictionary[ std::string("trace_name") ] = boost::python::object(it.trace_name);
-        //message(it.trace_name);
-
-        for(auto&& t_name: traces_to_save_on_break_down)
-        {
-            message(t_name);
-            i = -2;
-
-            for(auto&& it2: it.traces)
-            {
-                message(it2.name);
-                if( it2.name  == t_name )
-                {
-
-                EVID = "EVID_"+it2.name+"_";
-                time = "time_"+it2.name+"_";
-                value= "value_"+it2.name+"_";
-                name = "name_"+it2.name+"_";
-                dictionary[ EVID  += std::to_string(i) ] = it2.EVID;
-
-                //message("it2.EVID = ", it2.EVID);
-                dictionary[ time  += std::to_string(i) ] = it2.time;
-                dictionary[ value += std::to_string(i) ] = toPythonList(it2.value);
-                dictionary[ name  += std::to_string(i) ] = it2.name;
-                ++i;
-                }
-            }
-        }
+//        dictionary[ std::string("hi_mask") ] = toPythonList(it.high_mask);
+//        dictionary[ std::string("lo_mask") ] = toPythonList(it.low_mask);
+//        dictionary[ std::string("trace_name") ] = boost::python::object(it.trace_name);
+//        //message(it.trace_name);
+//        for(auto&& t_name: traces_to_save_on_break_down)
+//        {
+//            message(t_name);
+//            i = -2;
+//            for(auto&& it2: it.traces)
+//            {
+//                message(it2.name);
+//                if( it2.name  == t_name )
+//                {
+//                    EVID = "EVID_"+it2.name+"_";
+//                    time = "time_"+it2.name+"_";
+//                    value= "value_"+it2.name+"_";
+//                    name = "name_"+it2.name+"_";
+//                    dictionary[ EVID  += std::to_string(i) ] = it2.EVID;
+//                    //message("it2.EVID = ", it2.EVID);
+//                    dictionary[ time  += std::to_string(i) ] = it2.time;
+//                    dictionary[ value += std::to_string(i) ] = toPythonList(it2.value);
+//                    dictionary[ name  += std::to_string(i) ] = it2.name;
+//                    ++i;
+//                }
+//            }
+//        }
         /// !!!!!!!!!!!!! FOR SOME REASON THIS IS THE ONLY WAY I COULD PROPERLY COPY THE DICTIONARY TO EXPORT
-        dictionary2[std::to_string(j)] = dictionary.copy();
+        //dictionary2[std::to_string(j)] = dictionary.copy();
+        dictionary2[std::to_string(j)] = getOMT_Dict(it);
         ++j;
         //dictionary.clear();
     }
     message("getOutsideMaskData_Py Returning a dictionary ");
     return dictionary2;
+}
+//______________________________________________________________________________
+boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside_mask_trace& omt)
+{
+    boost::python::dict dictionary;
+    int i = -2;
+    std::string EVID;
+    std::string time;
+    std::string value;
+    std::string name;
+    dictionary[ std::string("hi_mask") ] = toPythonList(omt.high_mask);
+    dictionary[ std::string("lo_mask") ] = toPythonList(omt.low_mask);
+    dictionary[ std::string("trace_name") ] = boost::python::object(omt.trace_name);
+        //message(it.trace_name);
+    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
+
+    for(auto&& t_name: traces_to_save_on_break_down)
+    {
+        //message(t_name," ",i);
+        i = -2;
+        for(auto&& it2: omt.traces)
+        {
+            //message(it2.name," ",i);
+            if(it2.name == t_name)
+            {
+                EVID = "EVID_"  + it2.name + "_";
+                time = "time_"  + it2.name + "_";
+                value= "value_" + it2.name + "_";
+                name = "name_"  + it2.name + "_";
+                dictionary[EVID  += std::to_string(i)] = it2.EVID;
+                dictionary[time  += std::to_string(i)] = it2.time;
+                dictionary[value += std::to_string(i)] = toPythonList(it2.value);
+                dictionary[name  += std::to_string(i)] = it2.name;
+                ++i;
+            }
+            //message("here");
+        }
+    }
+    return dictionary;
 }
 #endif
 //______________________________________________________________________________

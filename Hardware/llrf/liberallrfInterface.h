@@ -67,6 +67,7 @@ class liberallrfInterface : public interface
         size_t getShotCount(const std::string& name);
 
         std::vector<llrfStructs::outside_mask_trace>  getOutsideMaskData();
+        llrfStructs::outside_mask_trace getOutsideMaskData(const size_t part);
 
         std::vector<std::string> getChannelNames();
         std::vector<std::string> getTraceNames();

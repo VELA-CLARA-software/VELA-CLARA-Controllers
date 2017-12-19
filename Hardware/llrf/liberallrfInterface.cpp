@@ -1144,6 +1144,20 @@ std::vector<llrfStructs::outside_mask_trace> liberallrfInterface::getOutsideMask
     return llrf.outside_mask_traces;
 }
 //____________________________________________________________________________________________
+llrfStructs::outside_mask_trace liberallrfInterface::getOutsideMaskData(const size_t part)
+{
+    if(llrf.outside_mask_traces.size() - 1 <= part)
+    {
+        return llrf.outside_mask_traces[part];
+    }
+    else
+    {
+        message("ERROR!!! outside_mask_traces.size() = ",
+                llrf.outside_mask_traces.size()," asked for part = ",part," dummy returned");
+        return llrfStructs::outside_mask_trace();
+    }
+}
+//____________________________________________________________________________________________
 std::vector<double> liberallrfInterface::getTraceValues(const std::string& name)
 {
     if(entryExists(llrf.trace_data,name))

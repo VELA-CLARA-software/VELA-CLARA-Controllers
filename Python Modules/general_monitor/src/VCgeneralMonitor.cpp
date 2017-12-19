@@ -628,9 +628,9 @@ std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
     {
         //removeChanel();
     }
-    else if( status == ECA_NORMAL)
+    else if(status == ECA_NORMAL)
     {
-        status = ca_field_type( CHID);
+        status = ca_field_type(CHID);
         int COUNT = ca_element_count(CHID);
             switch( status)
             {

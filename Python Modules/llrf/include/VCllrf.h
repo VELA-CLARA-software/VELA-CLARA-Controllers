@@ -318,8 +318,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPhiLLRF", &liberaLLRFController::getPhiLLRF,"Return the Phase in LLRF Units")
         .def("getNumOutsideMaskTraces", &liberaLLRFController::getNumOutsideMaskTraces,"Return the Number of elements in outside_mask_traces")
 
-
-
         .def("getPhiCalibration", &liberaLLRFController::getPhiCalibration,"Return Linear Conversion of Phase from LLRF units to degrees")
         .def("getAmpCalibration", &liberaLLRFController::getAmpCalibration,"Return Linear Conversion of Amplitude from LLRF units to MV/m")
         .def("getCrestPhiLLRF",   &liberaLLRFController::getCrestPhiLLRF,"Return the Crest Phase in LLRF Units")
@@ -341,6 +339,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)" )
 
         .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks" )
+        .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData2_Py,(arg("parte")),"Return index [part] from saved data of traces outside masks" )
 
         .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")
         .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(arg("name")),"Return latest average trace data for Channel 'name'")
