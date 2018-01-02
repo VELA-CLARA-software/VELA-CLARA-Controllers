@@ -73,6 +73,7 @@ class gunProtInterface : public interface
         std::string gunProtInterface::getEnableProtName();
         std::string gunProtInterface::getCurrentModeProtName();
 
+        const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name);
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
         IlockMap1 getILockStates(const std::string& name   );

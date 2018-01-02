@@ -68,6 +68,8 @@ class gunProtController : public controller
         std::string getEnableProtName();
         std::string getCurrentModeProtName();
 
+        const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name);
+
 
     protected:
     private:

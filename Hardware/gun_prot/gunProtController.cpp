@@ -51,6 +51,11 @@ bool gunProtController::isNotGood(const std::string & name)
     return localInterface.isNotGood(name);
 }
 //______________________________________________________________________________
+const rfProtStructs::rfGunProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)
+{
+    return localInterface.getRFProtObjConstRef(name);
+}
+//______________________________________________________________________________
 bool gunProtController::isBad(const std::string & name)
 {
     return localInterface.isBad(name);

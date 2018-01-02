@@ -56,7 +56,7 @@ namespace gmStructs
         std::string                id;
         bool                       fully_connected;
     };
-    // this gets sent t to the callback functionk, adn from the ID and interfcace everything can be
+    // this gets sent t to the callback function, and from the ID and interfcace everything can be
     // updated
     struct monitorStruct
     {

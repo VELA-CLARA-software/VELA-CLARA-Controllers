@@ -173,7 +173,7 @@ void gunProtInterface::startMonitors()
 }
 ////____________________________________________________________________________________________
 void gunProtInterface::staticEntryMonitor(const event_handler_args args)
-{   std::cout << "staticEntryMonitor() called" << std::endl;
+{   //std::cout << "staticEntryMonitor() called" << std::endl;
     rfProtStructs::monitorStruct*ms = static_cast<rfProtStructs::monitorStruct*>(args.usr);
     switch(ms -> monType)
     {
@@ -623,6 +623,16 @@ bool gunProtInterface::isBad(const std::string& name)
         if(allGunProts[name].status  == rfProtStructs::RF_GUN_PROT_STATUS::BAD)
             ans = true;
     return ans;
+}
+//____________________________________________________________________________________________
+const rfProtStructs::rfGunProtObject& gunProtInterface::getRFProtObjConstRef(const std::string& name)
+{
+    if(entryExists(allGunProts, name))
+    {
+        return allGunProts[name];
+    }
+    rfProtStructs::rfGunProtObject r = rfProtStructs::rfGunProtObject();
+    return r;
 }
 //____________________________________________________________________________________________
 gunProtInterface::IlockMap1 gunProtInterface::getILockStates(const std::string& name)
