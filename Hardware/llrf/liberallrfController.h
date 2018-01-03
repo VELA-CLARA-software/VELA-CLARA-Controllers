@@ -218,6 +218,7 @@ class liberaLLRFController : public controller
 
         void startTimer();
         long long elapsedTime();
+        double getBreakDownRate();
 
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);

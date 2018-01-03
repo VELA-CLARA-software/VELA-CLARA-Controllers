@@ -170,6 +170,8 @@ class liberallrfInterface : public interface
         void startTimer();
         long long elapsedTime();
 
+        double getBreakDownRate();
+
 
         bool clearMask(const std::string&name);
         bool clearRollingAverage(const std::string&name);

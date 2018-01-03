@@ -822,16 +822,15 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
 //____________________________________________________________________________________________
 void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name)
 {
-
     // add new outside_mask_trace struct to outside_mask_traces
     llrf.outside_mask_traces.push_back( llrfStructs::outside_mask_trace() );
+    // time of breakdown
+    llrf.outside_mask_traces.back().time = elapsedTime();
     // fill in data from where the trace that flagged a break down
     llrf.outside_mask_traces.back().trace_name = name;
     llrf.outside_mask_traces.back().high_mask  = trace.high_mask;
     llrf.outside_mask_traces.back().low_mask   = trace.low_mask;
 
-
-    llrf.outside_mask_traces.back().time = elapsedTime();
 
 
     // save all the required traces (current, plus previous 2)
@@ -868,6 +867,7 @@ void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& tra
             message(it, " IS NOT MONITORING So not Saving Data  (addToOutsideMaskTraces)");
     }
     llrf.num_outside_mask_traces += 1;
+    llrf.breakdown_rate = (double)llrf.num_outside_mask_traces / (double)llrf.outside_mask_traces.back().time / 1000.;//MAGIC_NUMBER
     //debugMessage("Added trace to outside_mask_traces");
 }
 //____________________________________________________________________________________________
@@ -2332,6 +2332,11 @@ bool liberallrfInterface::isFFLocked()
 bool liberallrfInterface::RFOutput()
 {
     return llrf.rf_output;
+}
+//____________________________________________________________________________________________
+double liberallrfInterface::getBreakDownRate()
+{
+    return llrf.breakdown_rate;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::interlockActive()

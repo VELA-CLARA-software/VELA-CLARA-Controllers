@@ -878,6 +878,11 @@ void liberaLLRFController::setGlobalShouldNotCheckMask()
     localInterface.setGlobalShouldNotCheckMask();
 }
 //______________________________________________________________________________
+double liberaLLRFController::getBreakDownRate()
+{
+    return localInterface.getBreakDownRate();
+}
+//______________________________________________________________________________
 void liberaLLRFController::startTimer()
 {
     localInterface.startTimer();
