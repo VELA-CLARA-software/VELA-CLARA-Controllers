@@ -863,6 +863,31 @@ bool liberaLLRFController::setShouldNotCheckMask(const std::string&name)
     return localInterface.setShouldNotCheckMask(name);
 }
 //______________________________________________________________________________
+void liberaLLRFController::setGlobalCheckMask(bool value)
+{
+    localInterface.setGlobalCheckMask(value);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setGlobalShouldCheckMask()
+{
+    localInterface.setGlobalShouldCheckMask();
+}
+//______________________________________________________________________________
+void liberaLLRFController::setGlobalShouldNotCheckMask()
+{
+    localInterface.setGlobalShouldNotCheckMask();
+}
+//______________________________________________________________________________
+void liberaLLRFController::startTimer()
+{
+    localInterface.startTimer();
+}
+//______________________________________________________________________________
+long long liberaLLRFController::elapsedTime()
+{
+    return localInterface.elapsedTime();
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setKeepRollingAverage(const std::string&name, bool value)
 {
     return localInterface.setKeepRollingAverage(name, value);

@@ -207,8 +207,17 @@ class liberaLLRFController : public controller
 
         bool setShouldKeepRollingAverage(const std::string&name);
         bool setShouldNotKeepRollingAverage(const std::string&name);
+
+
+        bool setCheckMask(const std::string&name, bool value);
         bool setShouldCheckMask(const std::string&name);
         bool setShouldNotCheckMask(const std::string&name);
+        void setGlobalCheckMask(bool value);
+        void setGlobalShouldCheckMask();
+        void setGlobalShouldNotCheckMask();
+
+        void startTimer();
+        long long elapsedTime();
 
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
@@ -236,7 +245,7 @@ class liberaLLRFController : public controller
 
         bool setNumBufferTraces(const std::string&name, const size_t value);
         void setNumBufferTraces(const size_t value);
-        bool setCheckMask(const std::string&name, bool value);
+
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setNumRollingAverageTraces(const std::string&name,const size_t value );
         void setNumRollingAverageTraces(const size_t value );

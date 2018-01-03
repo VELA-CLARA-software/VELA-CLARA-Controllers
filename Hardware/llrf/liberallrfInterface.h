@@ -167,6 +167,8 @@ class liberallrfInterface : public interface
         bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
         bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
 
+        void startTimer();
+        long long elapsedTime();
 
 
         bool clearMask(const std::string&name);
@@ -177,9 +179,16 @@ class liberallrfInterface : public interface
 
         bool setNumBufferTraces(const std::string&name,const size_t value);
         void setNumBufferTraces(const size_t value);
+
+
         bool setCheckMask(const std::string&name, bool value);
+        void setGlobalCheckMask(bool value);
+
         bool setShouldCheckMask(const std::string&name);
+        void setGlobalShouldCheckMask();
+
         bool setShouldNotCheckMask(const std::string&name);
+        void setGlobalShouldNotCheckMask();
 
         void resetAverageTraces();
         void setShouldKeepRollingAverage();
@@ -288,6 +297,8 @@ class liberallrfInterface : public interface
         void updateRollingSum(llrfStructs::rf_trace_data& trace);
         void resetAverageTraces(llrfStructs::rf_trace_data& trace);
 
+
+        // breakdown timer duration
 
         std::string fullCavityTraceName(const std::string& name);
 

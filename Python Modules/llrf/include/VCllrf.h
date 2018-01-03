@@ -269,6 +269,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("trace_name", &outside_mask_trace::trace_name,"Channel name trace came from")
         .def_readonly("high_mask",  &outside_mask_trace::high_mask, "High mask values")
         .def_readonly("low_mask",   &outside_mask_trace::low_mask,  "Low mask values")
+        .def_readonly("time",       &outside_mask_trace::low_mask,  "ms (approx) between timner start and trace flagged")
         ;
 
     class_<std::vector<outside_mask_trace>,boost::noncopyable>("std_vector_outside_mask_trace", no_init)
@@ -303,6 +304,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("num_outside_mask_traces", &liberallrfObject::num_outside_mask_traces,"The number of outside_mask_traces.")
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
         .def_readonly("pulse_latency", &liberallrfObject::pulse_latency,"The number of elements in a pulse trace before the RF pulse is active (approx.).")
+        .def_readonly("timer_start", &liberallrfObject::timer_start,"ms since epoch since timer was started.")
         ;
 
 
@@ -466,10 +468,17 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setNumBufferTraces",  setNumBufferTraces_1,(arg("name"),arg("value")),"Set the number of buffer traces to keep for trace 'name' to 'value'")
         .def("setNumBufferTraces",  setNumBufferTraces_2,(arg("value")),"Set the number of buffer traces for all traces to 'value'")
 
+        .def("startTimer", &liberaLLRFController::startTimer,"Starts (or resets) a local timer")
+        .def("elapsedTime",&liberaLLRFController::elapsedTime,"ms since the last startTimer call, (if negative then no call to startTimerhas been made)")
+
+
         .def("setCheckMask",  &liberaLLRFController::setCheckMask,(arg("name"),arg("value")),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")
         .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(arg("name")),"Set check mask to true for trace 'name'")
         .def("setShouldNotCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(arg("name")),"Set check mask to false for trace 'name'")
 
+        .def("setGlobalCheckMask",  &liberaLLRFController::setGlobalCheckMask,(arg("value")),"Set Global check mask flag to  'value'")
+        .def("setGlobalShouldCheckMask",  &liberaLLRFController::setGlobalShouldCheckMask,"Set Global check mask flag to True")
+        .def("setGlobalShouldNotCheckMask",  &liberaLLRFController::setGlobalShouldNotCheckMask,"Set Global check mask flag to False")
         .def("setKeepRollingAverage",  &liberaLLRFController::setKeepRollingAverage,(arg("name"),arg("value")),"Set whetrher to keep a rolling average of previous traces (pass 'name' and true or false)")
         .def("setNumRollingAverageTraces",  setNumRollingAverageTraces_1,(arg("name"),arg("value")),"Set the number of traces used for the rolling average")
         .def("setNumRollingAverageTraces",  setNumRollingAverageTraces_2,(arg("name")),"Set the number of traces used for the rolling average")

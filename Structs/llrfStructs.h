@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <chrono>
 //epics
 #include <cadef.h>
 
@@ -225,10 +226,12 @@ namespace llrfStructs
     struct outside_mask_trace
     {
         outside_mask_trace():
-            trace_name(UTL::UNKNOWN_NAME)
+            trace_name(UTL::UNKNOWN_NAME),
+            time(UTL::ZERO_SIZET)
             {}
         std::vector<rf_trace>  traces;
         std::string trace_name;
+        long long time;
         std::vector<double> high_mask,low_mask;
         // when exposing a vector of outside_mask_trace to python I ran into trouble...
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
@@ -265,7 +268,8 @@ namespace llrfStructs
             ff_lock_state(false),
             interlock_state(false),
             num_outside_mask_traces(UTL::ZERO_SIZET),
-            pulse_latency(UTL::ZERO_SIZET)
+            pulse_latency(UTL::ZERO_SIZET),
+            timer_start(UTL::ZERO_SIZET)
                      {}
         std::vector<std::string> tracesToSaveOnBreakDown;
         std::string name, pvRoot, EVIDStr;
@@ -279,9 +283,10 @@ namespace llrfStructs
         int numIlocks;
         LLRF_TYPE type;
         size_t traceLength,event_count,num_outside_mask_traces,
-        // the llrf doesn't fire immediatly after recieving a trigger
+           // the llrf doesn't fire immediatly after recieving a trigger
         // this is the (approx) number of elements of noise in an rf trace
         pulse_latency;
+        long long timer_start;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
         // they name teh channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )
         std::map<std::string, rf_trace_data> trace_data;

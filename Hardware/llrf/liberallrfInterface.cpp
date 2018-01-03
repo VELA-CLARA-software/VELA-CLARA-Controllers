@@ -19,7 +19,6 @@
 // stl
 #include <iostream>
 #include <sstream>
-#include <chrono>
 #include <algorithm>
 #include <thread>
 #include <math.h>
@@ -631,7 +630,7 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
     }
 
     // check masks
-    if(shouldCheckMasks(trace))
+    if(shouldCheckMasks(trace))// checks against
     {
         //debugMessage("CHECKING MASKS ");
         bool trace_good = isTraceInMask(trace);
@@ -831,6 +830,10 @@ void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& tra
     llrf.outside_mask_traces.back().high_mask  = trace.high_mask;
     llrf.outside_mask_traces.back().low_mask   = trace.low_mask;
 
+
+    llrf.outside_mask_traces.back().time = elapsedTime();
+
+
     // save all the required traces (current, plus previous 2)
     // set the save next trace flag, adn the part of the
     for(auto && it: llrf.tracesToSaveOnBreakDown )
@@ -982,7 +985,7 @@ bool liberallrfInterface::shouldSubtractTraceFromRollingAverage(llrfStructs::rf_
 bool liberallrfInterface::shouldCheckMasks(llrfStructs::rf_trace_data& trace)
 {
     //debugMessage("shouldCheckMasks = ", trace.check_mask, trace.hi_mask_set, trace.low_mask_set);
-    return trace.check_mask && trace.hi_mask_set && trace.low_mask_set;
+    return llrf.check_mask && trace.check_mask && trace.hi_mask_set && trace.low_mask_set;
 }
 //____________________________________________________________________________________________
 void liberallrfInterface::resetAverageTraces()
@@ -1793,6 +1796,21 @@ bool liberallrfInterface::setCheckMask(const std::string&name, bool value)
     return false;
 }
 //____________________________________________________________________________________________
+void liberallrfInterface::setGlobalCheckMask(bool value)
+{
+    llrf.check_mask = value;
+}
+//____________________________________________________________________________________________
+void liberallrfInterface::setGlobalShouldCheckMask()
+{
+    setGlobalCheckMask(true);
+}
+//____________________________________________________________________________________________
+void liberallrfInterface::setGlobalShouldNotCheckMask()
+{
+    setGlobalCheckMask(false);
+}
+//____________________________________________________________________________________________
 void liberallrfInterface::setShouldKeepRollingAverage()
 {
     for( auto && it: llrf.trace_data )
@@ -2253,6 +2271,16 @@ llrfStructs::LLRF_PV_TYPE liberallrfInterface::getSCAN_pv(llrfStructs::LLRF_PV_T
              return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM_SCAN;
     }
     return llrfStructs::LLRF_PV_TYPE::UNKNOWN;
+}
+//____________________________________________________________________________________________
+void liberallrfInterface::startTimer()
+{
+    llrf.timer_start = msChronoTime();
+}
+//____________________________________________________________________________________________
+long long liberallrfInterface::elapsedTime()
+{
+    return msChronoTime() - llrf.timer_start;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::Is_Time_Vector_PV(llrfStructs::LLRF_PV_TYPE pv)
