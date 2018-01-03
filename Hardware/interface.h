@@ -100,6 +100,8 @@ class interface : public baseObject
         bool iLocksAreGood(std::map<VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE> & iLockStates);
 
 
+        long long msChronoTime();
+
         bool isTimeType(const long);
 
         void printStatusResult(const int status, const char * success, const char * timeout);

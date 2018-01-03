@@ -16,6 +16,7 @@
 // stl
 #include <iostream>
 #include <sstream>
+#include <chrono>
 //interface::interface():EPICS_ACTIVATE (1), EPICS_SEND(0), EPICS_RESET(1),DBL_ERR_NUM(-9999.9999){}
 
 interface::interface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr):
@@ -357,13 +358,14 @@ void interface::updateTime(const epicsTimeStamp & stamp, double & val, std::stri
     //std::cout <<std::setprecision(15) <<std::showpoint<<  val <<std::endl;
     str = timeString;
 }
-
-
-
-
-
-
-
-
-
+//______________________________________________________________________________
+long long interface::msChronoTime()
+{
+    //https://stackoverflow.com/questions/31255486/c-how-do-i-convert-a-stdchronotime-point-to-long-and-back
+    auto now = std::chrono::system_clock::now();
+    auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
+    auto value = now_ms.time_since_epoch();
+    long long duration = value.count();
+    return duration;
+}
 
