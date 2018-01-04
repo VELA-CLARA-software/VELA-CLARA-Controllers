@@ -29,7 +29,8 @@ localInterface(magConf,
                shouldStartEPICs,
                myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
-myMachineArea(myMachineArea)
+myMachineArea(myMachineArea),
+offlineIA(show_messages,show_debug_messages)
 {
 }
 cameraIAController::~cameraIAController(){}    //dtor
@@ -110,4 +111,7 @@ const cameraObject &cameraIAController::getVCIARef()
 {
     return localInterface.getVCIARef();
 }
-
+const offlineImageAnalyser& cameraIAController::getOfflineIARef()
+{
+    return offlineIA;
+}

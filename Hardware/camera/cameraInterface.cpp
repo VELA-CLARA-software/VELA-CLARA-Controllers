@@ -95,6 +95,14 @@ bool cameraInterface::setCamera(const std::string & cam)
     }
     return ans;
 }
+cameraInterface::vec_s cameraInterface::getCameraNames()
+{
+    vec_s r;
+    for(auto && it:allCamData)
+        r.push_back(it.first);
+    //r.erase(std::remove(r.begin(), r.end(), dummyName), r.end());
+    return r;
+}
 /// this could be neatend up - much code repetition
 bool cameraInterface::startAcquiring()
 {
@@ -102,7 +110,7 @@ bool cameraInterface::startAcquiring()
     unsigned short comm = 1;
     if( isNotAcquiring(selectedCamera()))
     {
-        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_START_ACQUIRE));
         ans=shortCaput(comm,S);
         message("Starting to Acquire images on ",
                 selectedCameraObj.name," camera.");
@@ -115,7 +123,7 @@ bool cameraInterface::stopAcquiring()
     unsigned short comm = 0;
     if( isAcquiring(selectedCamera()) && isCollecting(selectedCamera())==false)
     {
-        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_STOP_ACQUIRE));
         ans=shortCaput(comm,S);
         message("Stopping to Acquire images on ",
                 selectedCameraObj.name," camera.");
@@ -128,7 +136,7 @@ bool cameraInterface::startVCAcquiring()
     unsigned short comm = 1;
     if( isNotAcquiring("VC") )
     {
-        pvStruct S(vcCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(vcCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_START_ACQUIRE));
         ans=shortCaput(comm,S);
         message("Starting to Acquire images on ",vcCameraObj.name," camera.");
     }
@@ -140,7 +148,7 @@ bool cameraInterface::stopVCAcquiring()
     unsigned short comm = 0;
     if( isAcquiring("VC") && isCollecting("VC")==false )
     {
-        pvStruct S(vcCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_ACQUIRE));
+        pvStruct S(vcCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_STOP_ACQUIRE));
         ans=shortCaput(comm,S);
         message("Stopping to Acquire images on ",vcCameraObj.name," camera.");
     }

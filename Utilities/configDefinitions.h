@@ -615,11 +615,12 @@ namespace UTL
 
     //Cameras
     const std::string PV_DAQ_SUFFIX_CAM_STATE       ="PV_DAQ_SUFFIX_CAM_STATE";
-    const std::string PV_DAQ_SUFFIX_ACQUIRE          ="PV_DAQ_SUFFIX_ACQUIRE";
-    const std::string PV_IA_SUFFIX_CAM_STATE       ="PV_IA_SUFFIX_CAM_STATE";
+    const std::string PV_DAQ_SUFFIX_START_ACQUIRE   ="PV_DAQ_SUFFIX_START_ACQUIRE";
+    const std::string PV_DAQ_SUFFIX_STOP_ACQUIRE    ="PV_DAQ_SUFFIX_STOP_ACQUIRE";
+    const std::string PV_IA_SUFFIX_CAM_STATE        ="PV_IA_SUFFIX_CAM_STATE";
     const std::string PV_IA_SUFFIX_ACQUIRE          ="PV_IA_SUFFIX_ACQUIRE";
     const std::string PV_DAQ_SUFFIX_ACQUIRE_RBV     ="PV_DAQ_SUFFIX_ACQUIRE_RBV";
-    const std::string PV_IA_SUFFIX_ACQUIRE_RBV     ="PV_IA_SUFFIX_ACQUIRE_RBV";
+    const std::string PV_IA_SUFFIX_ACQUIRE_RBV      ="PV_IA_SUFFIX_ACQUIRE_RBV";
 
     const std::string PV_DAQ_SUFFIX_CAPTURE         ="PV_DAQ_SUFFIX_CAPTURE";
     const std::string PV_DAQ_SUFFIX_CAPTURE_RBV     ="PV_DAQ_SUFFIX_CAPTURE_RBV";
@@ -663,6 +664,7 @@ namespace UTL
     const std::string Y_MASK_CENTER             ="Y_MASK_CENTER";
     const std::string PIX_2_MM_RATIO            ="PIX_2_MM_RATIO";
     const std::string MAX_SHOTS_NUMBER          ="MAX_SHOTS_NUMBER";
+    const std::string IP_ADDRESS_STREAM         ="IP_ADDRESS_STREAM";
 
     /// SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
     const std::string VELA_PNEUMATIC_SCREEN  =  "VELA_PNEUMATIC_SCREEN";

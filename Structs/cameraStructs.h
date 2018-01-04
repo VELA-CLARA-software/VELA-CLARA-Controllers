@@ -31,13 +31,17 @@ class cameraDAQInterface;
 
 class cameraIAInterface;
 
+class editor;
+
+class offlineImageAnalyser;
+
 namespace cameraStructs
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE,
         (TEST)(CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
         (CAM_FILE_WRITE)(CAM_FILE_WRITE_RBV)(CAM_FILE_WRITE_CHECK)
-        (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_ACQUIRE)(CAM_CAPTURE)
-        (CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
+        (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_START_ACQUIRE)(CAM_STOP_ACQUIRE)
+        (CAM_CAPTURE)(CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
         (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)
         (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)
         (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
@@ -61,6 +65,8 @@ namespace cameraStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_CHECK,
         (WRITE_CHECK_OK) (WRITE_CHECK_ERROR))
 
+    enum EstMethod {FWHM,moments};
+    enum projAxis {x,y,maskX,maskY};
     // bit depth of the camera... could be dynamic (!)
     typedef long camDataType;
     struct pvStruct;
@@ -68,6 +74,7 @@ namespace cameraStructs
     struct cameraObject;
     struct cameraDAQObject;
     struct cameraIAObject;
+    struct cameraOfflineIAObject;
 
     struct pvStruct
     {
@@ -134,7 +141,7 @@ namespace cameraStructs
         cameraDAQObject() : name(UTL::UNKNOWN_NAME),
                             pvRoot(UTL::UNKNOWN_PVROOT),
                             screenName(UTL::UNKNOWN_STRING),
-//state(CAM_ERROR),
+                            //state(CAM_ERROR),
                             //acquireState(ACQUIRING_ERROR),
                             captureState(CAPTURING_ERROR),
                             writeState(WRITING_ERROR),
@@ -167,14 +174,123 @@ namespace cameraStructs
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
     };
+    struct cameraOfflineIAObject
+    {
+        cameraOfflineIAObject(): dataSize(0){}
+        //Images
+        std::vector<double> rawData;
+        std::vector<double> rawBackgroundData;
+        std::vector<double> mask;
+        std::vector<double> xPos;
+        std::vector<double> yPos;
+        //Projections of X and Y
+        std::vector<double> xProjection;
+        std::vector<double> yProjection;
+        std::vector<double> maskXProjection;
+        std::vector<double> maskYProjection;
+
+        //Metadata
+        int dataSize=0;
+        int imageHeight=0, imageWidth=0;
+        int rotation=0; // degrees
+        int x0=0,y0=0,xRad=0,yRad=0;
+        double pixToMM=1.0;
+
+        //Results
+        double xBVN=0,yBVN=0,sxBVN=0,syBVN=0,cxyBVN=0;
+        double xMLE=0,yMLE=0,sxMLE=0,syMLE=0,cxyMLE=0;
+        int totalPixelIntensity;
+
+        //Settings
+        bool useBkgrnd=false;
+        bool useManualCrop=false;
+        bool useBVN=false;
+
+        //Expert Settings (ES) Options
+        bool useMaskFromES=false;
+        int maskXES=0,maskYES=0,maskRXES=0,maskRYES=0;
+        bool usePixToMmFromES=false;
+        double pixToMmES=0.;
+        bool useRRThresholdFromES=false;
+        double RRThresholdES=0.;
+        bool useSigmaCutFromES=false;
+        double sigmaCutES=0.;
+        bool useFilterFromES=false;
+        int filterES=0;
+        bool useDirectCutLevelFromES=false;
+        double DirectCutLevelES=0.;
+        int manualCropX=0,manualCropY=0,manualCropW=0,manualCropH=0;
+        int savedCroppedX=0,savedCroppedY=0;
+
+        void clear(){
+            cameraOfflineIAObject wipedData;
+            (*this) = wipedData;
+        }
+        void operator=(const cameraOfflineIAObject& ID){
+            (*this).rawData=ID.rawData;
+            (*this).mask=ID.mask;
+            (*this).xPos=ID.xPos;
+            (*this).yPos=ID.yPos;
+            (*this).rawBackgroundData=ID.rawBackgroundData;
+            (*this).xProjection=ID.xProjection;
+            (*this).yProjection=ID.yProjection;
+            (*this).maskXProjection=ID.maskXProjection;
+            (*this).maskYProjection=ID.maskYProjection;
+
+            (*this).dataSize=ID.dataSize;
+            (*this).imageWidth=ID.imageWidth;
+            (*this).imageHeight=ID.imageHeight;
+            (*this).x0=ID.x0;
+            (*this).y0=ID.y0;
+            (*this).xRad=ID.xRad;
+            (*this).yRad=ID.yRad;
+            (*this).xBVN=ID.xBVN;
+            (*this).yBVN=ID.yBVN;
+            (*this).sxBVN=ID.sxBVN;
+            (*this).syBVN=ID.syBVN;
+            (*this).cxyBVN=ID.cxyBVN;
+            (*this).xMLE=ID.xMLE;
+            (*this).yMLE=ID.yMLE;
+            (*this).sxMLE=ID.sxMLE;
+            (*this).syMLE=ID.syMLE;
+            (*this).cxyMLE=ID.cxyMLE;
+            (*this).pixToMM=ID.pixToMM;
+            (*this).totalPixelIntensity=ID.totalPixelIntensity;
+            (*this).useBkgrnd=ID.useBkgrnd;
+            (*this).useManualCrop=ID.useManualCrop;
+            (*this).useBVN=ID.useBVN;
+            (*this).useMaskFromES=ID.useMaskFromES;
+            (*this).maskXES=ID.maskXES;
+            (*this).maskYES=ID.maskYES;
+            (*this).maskRXES=ID.maskRXES;
+            (*this).maskRYES=ID.maskRYES;
+            (*this).pixToMmES=ID.pixToMmES;
+            (*this).useRRThresholdFromES=ID.useRRThresholdFromES;
+            (*this).RRThresholdES=ID.RRThresholdES;
+            (*this).useSigmaCutFromES=ID.useSigmaCutFromES;
+            (*this).sigmaCutES=ID.sigmaCutES;
+            (*this).useFilterFromES=ID.useFilterFromES;
+            (*this).filterES=ID.filterES;
+            (*this).useDirectCutLevelFromES=ID.useDirectCutLevelFromES;
+            (*this).DirectCutLevelES=ID.DirectCutLevelES;
+            (*this).manualCropX=ID.manualCropX;
+            (*this).manualCropY=ID.manualCropY;
+            (*this).manualCropW=ID.manualCropW;
+            (*this).manualCropH=ID.manualCropH;
+            (*this).savedCroppedX=ID.savedCroppedX;
+            (*this).savedCroppedY=ID.savedCroppedY;
+            return;
+        }
+    };
     ///Not using this yet but will use it eventually for DAQ and IA
     struct cameraObject
     {
         cameraObject() : name(UTL::UNKNOWN_NAME),
                          pvRoot(UTL::UNKNOWN_PVROOT),
                          screenName(UTL::UNKNOWN_STRING),
+                         streamingIPAddress(UTL::UNKNOWN_STRING),
                          state(CAM_ERROR) {}
-        std::string name, pvRoot, screenName;
+        std::string name, pvRoot, screenName, streamingIPAddress;
         CAM_STATE state;
         // Rolling acquire
         ACQUIRE_STATE acquireState;

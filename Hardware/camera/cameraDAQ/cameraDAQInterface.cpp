@@ -532,15 +532,29 @@ bool cameraDAQInterface::makeANewDirectory()///YUCK (make it look nice)
     //tm local_tm = *localtime(&t);
     struct tm local_tm;
     localtime_s(&local_tm, &t);
-    char  newPath[256]="/home/controls/tim/flash/";
+    char  newPath[256]="/home/images/";
+
+    //char *newName = new char[256];
+    std::string strName = selectedCameraObj.name+
+                        "_"+std::to_string(local_tm.tm_year + 1900)+
+                        "-"+std::to_string(local_tm.tm_mon + 1)+
+                        "-"+std::to_string(local_tm.tm_mday)+
+                        "-"+std::to_string(local_tm.tm_hour)+
+                        std::to_string(local_tm.tm_min)+
+                        std::to_string(local_tm.tm_sec);
+    //strcpy(newName, strName.c_str());
     message("File Directory would be: ",
                         std::to_string(local_tm.tm_year + 1900)+
-                        "/"+std::to_string(local_tm.tm_mon + 1)+
-                        "/"+std::to_string(local_tm.tm_mday)+
-                        "/"+std::to_string(local_tm.tm_hour)+
-                        "_"+std::to_string(local_tm.tm_min)+
-                        "_"+std::to_string(local_tm.tm_sec));
+                        "-"+std::to_string(local_tm.tm_mon + 1)+
+                        "-"+std::to_string(local_tm.tm_mday)+
+                        "-"+std::to_string(local_tm.tm_hour)+
+                        std::to_string(local_tm.tm_min)+std::to_string(local_tm.tm_sec));
+    //message(newName);
 
+    //ca_array_put(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHTYPE,
+              //  selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).COUNT,
+             //   selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHID,
+            //    &newName);
     ca_array_put(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).CHTYPE,
                 selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).COUNT,
                 selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).CHID,

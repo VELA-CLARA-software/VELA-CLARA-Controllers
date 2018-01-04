@@ -19,7 +19,7 @@ camConfig(camConfig), configReader( show_messages_ptr, show_debug_messages_ptr )
 {
 }
 cameraIAConfigReader::~cameraIAConfigReader(){}
-bool cameraIAConfigReader::getCamData(  std::map< std::string, cameraStructs::cameraObject > & mapToFill )
+bool cameraIAConfigReader::getCamData(  std::map< std::string, cameraObject > & mapToFill )
 {
     bool success = true;
     mapToFill.clear();
@@ -152,44 +152,46 @@ bool cameraIAConfigReader::readConfig()
 
     return success;
 }
-void cameraIAConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal )
+void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal )
 {
     if( stringIsSubString( keyVal[0], "SUFFIX" ) && stringIsSubString( keyVal[0], "IA" ))
     {
-        pvStruct_v.push_back( cameraStructs::pvStruct() );
+        pvStruct_v.push_back( pvStruct() );
         pvStruct_v.back().pvSuffix = keyVal[1];
         if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_X  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::X;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::X;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_Y  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::Y;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::Y;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_SIGMA_X  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::SIGMA_X;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::SIGMA_X;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_SIGMA_Y  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::SIGMA_Y;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::SIGMA_Y;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_COV_XY  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::COV_XY;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::COV_XY;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_X_PIX  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::X_PIX;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::X_PIX;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_Y_PIX  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::Y_PIX;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::Y_PIX;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_SIGMA_X_PIX  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::SIGMA_X_PIX;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::SIGMA_X_PIX;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_SIGMA_Y_PIX  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::SIGMA_Y_PIX;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::SIGMA_Y_PIX;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_COV_XY_PIX  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::COV_XY_PIX;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::COV_XY_PIX;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_BIT_DEPTH  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::BIT_DEPTH;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::BIT_DEPTH;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_IMAGE_HEIGHT  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::IMAGE_HEIGHT;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::IMAGE_HEIGHT;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_IMAGE_WIDTH  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::IMAGE_WIDTH;
-        else if( keyVal[0] == UTL::PV_IA_SUFFIX_ACQUIRE  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::IMAGE_WIDTH;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_START_ACQUIRE  )
+            pvStruct_v.back().pvType = CAM_PV_TYPE::CAM_START_ACQUIRE;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_STOP_ACQUIRE  )
+            pvStruct_v.back().pvType = CAM_PV_TYPE::CAM_STOP_ACQUIRE;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_ACQUIRE_RBV  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE_RBV;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::CAM_ACQUIRE_RBV;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_STATE  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_STATUS;
+            pvStruct_v.back().pvType = CAM_PV_TYPE::CAM_STATUS;
         else
             message("The next line is false.");
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
@@ -202,7 +204,7 @@ void cameraIAConfigReader::addToCameraObjects(const std::vector<std::string> & k
     std::string value = keyVal[1];//MAGIC_NUMBER
     if( keyVal[0] == UTL::NAME )
     {
-        camObject.push_back(cameraStructs::cameraObject() );
+        camObject.push_back(cameraObject() );
         camObject.back().name      = value;
 
        // camDAQObject.back().numIlocks = (size_t)numIlocks;
@@ -251,7 +253,7 @@ void cameraIAConfigReader::addToCameraCommandStructs( const std::vector<std::str
 {
     addToPVStruct( pvCameraComStructs, keyVal);
 }
-void cameraIAConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< cameraStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal  )
+void cameraIAConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal  )
 {
     message("HI");
     if( keyVal[0] == UTL::PV_COUNT )

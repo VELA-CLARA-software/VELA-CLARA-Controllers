@@ -34,6 +34,7 @@ bool cameraDAQConfigReader::getCamDAQData(  std::map< std::string, cameraStructs
         mapToFill[ it.name ].name = it.name;
         mapToFill[ it.name ].screenName = it.screenName;
         mapToFill[ it.name ].pvRoot = it.pvRoot;
+        mapToFill[ it.name ].streamingIPAddress = it.streamingIPAddress;
         // setMon and Com pvStructs
         for( auto && it2 : pvCameraMonStructs )
             mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
@@ -158,8 +159,10 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
     {
         pvStruct_v.push_back( cameraStructs::pvStruct() );
         pvStruct_v.back().pvSuffix = keyVal[1];
-        if( keyVal[0] == UTL::PV_DAQ_SUFFIX_ACQUIRE  )
-            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE;
+        if( keyVal[0] == UTL::PV_DAQ_SUFFIX_START_ACQUIRE  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_START_ACQUIRE;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_STOP_ACQUIRE  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_STOP_ACQUIRE;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_ACQUIRE_RBV  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_ACQUIRE_RBV;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_DATA  )
@@ -232,9 +235,13 @@ void cameraDAQConfigReader::addToCameraObjects(const std::vector<std::string> & 
         else
             camObject.back().screenName = value;
     }
+    else if(keyVal[0] == UTL::IP_ADDRESS_STREAM)
+    {
+        camObject.back().streamingIPAddress = value;
+    }
     else if(keyVal[0] == UTL::MAX_SHOTS_NUMBER)
     {
-        camObject.back().DAQ.maxShots  = getNum(value);
+        camObject.back().DAQ.maxShots = getNum(value);
     }
 }
 void cameraDAQConfigReader::addToCameraMonitorStructs( const std::vector<std::string> &keyVal )

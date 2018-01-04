@@ -23,7 +23,7 @@
 #include "structs.h"
 #include "cameraStructs.h"
 #include "controller.h"
-
+#include "offlineImageAnalyser.h"
 
 using namespace cameraStructs;
 
@@ -67,6 +67,9 @@ class cameraIAController  : public controller
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();
 
+        //Offline image analysis class
+        offlineImageAnalyser offlineIA;
+        const offlineImageAnalyser &getOfflineIARef();
     protected:
     private:
         // The interface to EPICS

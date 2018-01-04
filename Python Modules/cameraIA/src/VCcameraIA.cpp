@@ -30,7 +30,7 @@ VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
 CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
 UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
 shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is show messages!!
+shouldShowMessage(false)//default is not show messages!!
 {
     std::cout << "Instantiated a VCcameraIA in Quiet Mode" << std::endl;
     //ctor

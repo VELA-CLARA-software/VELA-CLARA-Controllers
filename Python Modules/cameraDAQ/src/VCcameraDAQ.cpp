@@ -32,7 +32,7 @@ UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
 shouldShowDebugMessage(false),//default is quiet mode
 shouldShowMessage(false)//default is show messages!!
 {
-    std::cout << "Instantiated a VCcameraDAQ in Quiet Mode" << std::endl;
+    std::cout << "Instantiated a cameraDAQ in Quiet Mode" << std::endl;
     //ctor
 }
 VCcameraDAQ::~VCcameraDAQ()
@@ -40,25 +40,25 @@ VCcameraDAQ::~VCcameraDAQ()
 }
 void VCcameraDAQ::setQuiet()
 {
-    std::cout << "VCcameraDAQ Quiet Mode Set." << std::endl;
+    std::cout << "cameraDAQ Quiet Mode Set." << std::endl;
     shouldShowDebugMessage = false;
     shouldShowMessage = false;
 }
 void VCcameraDAQ::setVerbose()
 {
-    std::cout << "VCcameraDAQ Verbose Mode Set." << std::endl;
+    std::cout << "cameraDAQ Verbose Mode Set." << std::endl;
     shouldShowDebugMessage = true;
     shouldShowMessage = true;
 }
 void VCcameraDAQ::setMessage()
 {
-    std::cout << "VCcameraDAQ Message Mode Set." << std::endl;
+    std::cout << "cameraDAQ Message Mode Set." << std::endl;
     shouldShowDebugMessage = false;
     shouldShowMessage = true;
 }
 void VCcameraDAQ::setDebugMessage()
 {
-    std::cout << "VCcameraDAQ DebugMessage Mode Set." << std::endl;
+    std::cout << "cameraDAQ DebugMessage Mode Set." << std::endl;
     shouldShowDebugMessage = true;
     shouldShowMessage = false;
 }

@@ -126,3 +126,7 @@ std::string cameraDAQController::getlatestDirectory()
 {
     return localInterface.getlatestDirectory();
 }
+ std::vector<std::string> cameraDAQController::getCameraNames()
+{
+    return localInterface.getCameraNames();
+}

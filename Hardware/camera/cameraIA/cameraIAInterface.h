@@ -22,6 +22,7 @@
 
 #include "cameraStructs.h"
 #include "cameraInterface.h"
+
 #include "cameraIAConfigReader.h"
 
 using namespace cameraStructs;
@@ -43,6 +44,7 @@ class cameraIAInterface : public cameraInterface
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();
+
     protected:
 
     private:

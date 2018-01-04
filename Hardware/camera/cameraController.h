@@ -60,7 +60,7 @@ class cameraController  : public controller
         bool stop();
         bool collectAndSave (int & numbOfShots, const std::string & directory);
         ///Get Functions
-        std::vector< cameraStructs::camDataType > getRawData();
+        std::vector< ccameraStructs::camDataType > getRawData();
         std::vector< cameraStructs::camDataType > getBackgroundRawData();
         double getX();
         double getY();

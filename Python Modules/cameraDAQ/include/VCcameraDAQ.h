@@ -153,6 +153,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("acquireState",
                       &cameraStructs::cameraObject::acquireState,
                       "Horizontal position of beam's centroid in millemetres.")
+        .def_readonly("streamingIPAddress",
+                      &cameraStructs::cameraObject::streamingIPAddress,
+                      "IP address for the camera live stream.")
         .def_readonly("DAQ",
                       &cameraStructs::cameraObject::DAQ,
                       "Object (cameraDAQObject) containing all the DAQ data.")
@@ -171,9 +174,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("shotsTaken",
                       &cameraStructs::cameraDAQObject::shotsTaken,
                       "The number of shots taken and collected.")
+        .def_readonly("maxShots",
+                      &cameraStructs::cameraDAQObject::maxShots,
+                      "The maximum number of shots that can be taken in one burst.")
         .def_readonly("numberOfShots",
                       &cameraStructs::cameraDAQObject::numberOfShots,
-                      "The number of shots sett to collect.")
+                      "The number of shots set to collect.")
         .def_readonly("frequency",
                       &cameraStructs::cameraDAQObject::frequency,
                       "Frequency of Camera's image acquisiton.")
@@ -265,6 +271,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
          .def("getlatestDirectory",
              &cameraDAQController::getlatestDirectory,
              "Returns a string indicating directory selected camers last saved images to.")
+        .def("getCameraNames",
+             &cameraDAQController::getCameraNames,
+             "Returns a list of all the camera names.")
         ;
 
     class_<VCcameraDAQ,boost::noncopyable>("init")

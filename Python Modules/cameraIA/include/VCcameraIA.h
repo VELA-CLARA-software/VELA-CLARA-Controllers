@@ -15,6 +15,7 @@
 #define VC_CAMERAS_IA_H
 //tp
 #include "cameraIAController.h"
+#include "offlineImageAnalyser.h"
 //boost
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
@@ -92,7 +93,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def( vector_indexing_suite< std::vector<double>>())
         ;
 
-    ///Expose Enums
+ ///Expose Enums
     enum_<CAM_STATE>("CAM_STATE","Enum to interpet the power state of camera.")
         .value("CAM_ON",            CAM_STATE::CAM_ON)
         .value("CAM_OFF",           CAM_STATE::CAM_OFF)
@@ -103,8 +104,24 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .value("ACQUIRING",         ACQUIRE_STATE::ACQUIRING)
         .value("ACQUIRING_ERROR",   ACQUIRE_STATE::ACQUIRING_ERROR)
         ;
+    enum_<CAPTURE_STATE>("CAPTURE_STATE","Enum to interpet the capturing state of camera.")
+        .value("NOT_CAPTURING",     CAPTURE_STATE::NOT_CAPTURING)
+        .value("CAPTURING",         CAPTURE_STATE::CAPTURING)
+        .value("CAPTURING_ERROR",   CAPTURE_STATE::CAPTURING_ERROR)
+        ;
+    enum_<WRITE_STATE>("WRITE_STATE","Enum to interpet the saving state of camera.")
+        .value("NOT_WRITING",     WRITE_STATE::NOT_WRITING)
+        .value("WRITING",         WRITE_STATE::WRITING)
+        .value("WRITING_ERROR",   WRITE_STATE::WRITING_ERROR)
+        ;
+    enum_<WRITE_CHECK>("WRITE_CHECK","Enum to interpet the saving errors of camera.")
+        .value("WRITE_OK",          WRITE_CHECK::WRITE_CHECK_OK)
+        .value("WRITE_CHECK_ERROR", WRITE_CHECK::WRITE_CHECK_ERROR)
+        ;
+    ///Expose Classes
+    class_<baseObject, boost::noncopyable>("baseObject", no_init)
+        ;
 
-    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init);
     boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
         ("controller","controller Doc String", boost::python::no_init) /// forces Python to not be able to construct (init) this object
         .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
@@ -190,11 +207,247 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
                       &cameraStructs::cameraIAObject::pix2mm,
                       "Conversion factor for convert pixel value to mm. (mm = pix2mm*pix)")
         ;
+    boost::python::class_<cameraStructs::cameraOfflineIAObject,boost::noncopyable>
+        ("cameraOfflineIAObject","cameraOfflineIAObject Doc String", boost::python::no_init)
+        .def_readonly("rawData",
+        &cameraStructs::cameraOfflineIAObject::rawData,
+        "1")
+        .def_readonly("xProjection",
+        &cameraStructs::cameraOfflineIAObject::xProjection,
+        "1")
+        .def_readonly("yProjection",
+        &cameraStructs::cameraOfflineIAObject::yProjection,
+        "2")
+        .def_readonly("maskXProjection",
+        &cameraStructs::cameraOfflineIAObject::maskXProjection,
+        "3")
+        .def_readonly("maskYProjection",
+        &cameraStructs::cameraOfflineIAObject::maskYProjection,
+        "4")
+        .def_readonly("dataSize",
+        &cameraStructs::cameraOfflineIAObject::dataSize,
+        "5")
+        .def_readonly("imageHeight",
+        &cameraStructs::cameraOfflineIAObject::imageHeight,
+        "6")
+        .def_readonly("imageWidth",
+        &cameraStructs::cameraOfflineIAObject::imageWidth,
+        "7")
+        .def_readonly("rotation",
+        &cameraStructs::cameraOfflineIAObject::rotation,
+        "8")
+        .def_readonly("x0",
+        &cameraStructs::cameraOfflineIAObject::x0,
+        "9")
+        .def_readonly("y0",
+        &cameraStructs::cameraOfflineIAObject::y0,
+        "1")
+        .def_readonly("xRad",
+        &cameraStructs::cameraOfflineIAObject::xRad,
+        "2")
+        .def_readonly("yRad",
+        &cameraStructs::cameraOfflineIAObject::yRad,
+        "4")
+        .def_readonly("xBVN",
+        &cameraStructs::cameraOfflineIAObject::xBVN,
+        "5")
+        .def_readonly("yBVN",
+        &cameraStructs::cameraOfflineIAObject::yBVN,
+        "6")
+        .def_readonly("sxBVN",
+        &cameraStructs::cameraOfflineIAObject::sxBVN,
+        "7")
+        .def_readonly("syBVN",
+        &cameraStructs::cameraOfflineIAObject::syBVN,
+        "7")
+        .def_readonly("cxyBVN",
+        &cameraStructs::cameraOfflineIAObject::cxyBVN,
+        "8")
+        .def_readonly("xMLE",
+        &cameraStructs::cameraOfflineIAObject::xMLE,
+        "9")
+        .def_readonly("yMLE",
+        &cameraStructs::cameraOfflineIAObject::yMLE,
+        "2")
+        .def_readonly("sxMLE",
+        &cameraStructs::cameraOfflineIAObject::sxMLE,
+        "1")
+        .def_readonly("syMLE",
+        &cameraStructs::cameraOfflineIAObject::syMLE,
+        "1")
+        .def_readonly("cxyMLE",
+        &cameraStructs::cameraOfflineIAObject::cxyMLE,
+        "1")
+        .def_readonly("totalPixelIntensity",
+        &cameraStructs::cameraOfflineIAObject::totalPixelIntensity,
+        "1")
+        .def_readonly("useBkgrnd",
+        &cameraStructs::cameraOfflineIAObject::useBkgrnd,
+        "1")
+        .def_readonly("useManualCrop",
+        &cameraStructs::cameraOfflineIAObject::useManualCrop,
+        "1")
+        .def_readonly("useBVN",
+        &cameraStructs::cameraOfflineIAObject::useBVN,
+        "1")
+        .def_readonly("useMaskFromES",
+        &cameraStructs::cameraOfflineIAObject::useMaskFromES,
+        "1")
+        .def_readonly("maskXES",
+        &cameraStructs::cameraOfflineIAObject::maskXES,
+        "1")
+        .def_readonly("maskYES",
+        &cameraStructs::cameraOfflineIAObject::maskYES,
+        "1")
+        .def_readonly("maskRXES",
+        &cameraStructs::cameraOfflineIAObject::maskRXES,
+        "1")
+        .def_readonly("maskRYES",
+        &cameraStructs::cameraOfflineIAObject::maskRYES,
+        "1")
+        .def_readonly("usePixToMmFromES",
+        &cameraStructs::cameraOfflineIAObject::usePixToMmFromES,
+        "1")
+        .def_readonly("pixToMmES",
+        &cameraStructs::cameraOfflineIAObject::pixToMmES,
+        "1")
+        .def_readonly("useRRThresholdFromES",
+        &cameraStructs::cameraOfflineIAObject::useRRThresholdFromES,
+        "1")
+        .def_readonly("RRThresholdES",
+        &cameraStructs::cameraOfflineIAObject::RRThresholdES,
+        "1")
+        .def_readonly("useSigmaCutFromES",
+        &cameraStructs::cameraOfflineIAObject::useSigmaCutFromES,
+        "1")
+        .def_readonly("sigmaCutES",
+        &cameraStructs::cameraOfflineIAObject::sigmaCutES,
+        "1")
+        .def_readonly("useFilterFromES",
+        &cameraStructs::cameraOfflineIAObject::useFilterFromES,
+        "1")
+        .def_readonly("filterES",
+        &cameraStructs::cameraOfflineIAObject::filterES,
+        "1")
+        .def_readonly("useDirectCutLevelFromES",
+        &cameraStructs::cameraOfflineIAObject::useDirectCutLevelFromES,
+        "1")
+        .def_readonly("DirectCutLevelES",
+        &cameraStructs::cameraOfflineIAObject::DirectCutLevelES,
+        "1")
+        .def_readonly("useRRThresholdFromES",
+        &cameraStructs::cameraOfflineIAObject::useRRThresholdFromES,
+        "1")
+        .def_readonly("manualCropX",
+        &cameraStructs::cameraOfflineIAObject::manualCropX,
+        "1")
+        .def_readonly("manualCropY",
+        &cameraStructs::cameraOfflineIAObject::manualCropY,
+        "1")
+        .def_readonly("manualCropW",
+        &cameraStructs::cameraOfflineIAObject::manualCropW,
+        "1")
+        .def_readonly("manualCropH",
+        &cameraStructs::cameraOfflineIAObject::manualCropH,
+        "1")
+        .def_readonly("savedCroppedX",
+        &cameraStructs::cameraOfflineIAObject::savedCroppedX,
+        "1")
+        .def_readonly("savedCroppedY",
+        &cameraStructs::cameraOfflineIAObject::savedCroppedY,
+        "1")
+        ;
+      boost::python::class_<offlineImageAnalyser,boost::noncopyable>
+        ("offlineImageAnalyser","offlineImageAnalyser Doc String", boost::python::no_init)
+        .def("loadImage",
+                      &offlineImageAnalyser::loadImage,
+                      (arg("data"),arg("height"),arg("width")),
+                      "Takes in 1D array, raw image data.")
+        .def("loadBackgroundImage",
+                      &offlineImageAnalyser::loadBackgroundImage,
+                      (arg("data")),
+                      "Takes in 1D array, raw background image data.")
+        .def("analyse",
+                      &offlineImageAnalyser::analyse,
+                      "Based of your set up this will analyse your image and output the resulst to to object CoIA ")
+        .def("isAnalysing",
+                      &offlineImageAnalyser::isAnalysing,
+                      "return true if analysis if running in a thread. ")
+        .def_readonly("CoIA",
+                      &offlineImageAnalyser::CoIA,
+                      "Object (cameraOffline IMage Object) containing all the offline Image Anaylsis data.")
+        .def("useBackground",
+                      &offlineImageAnalyser::useBackground,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use background.")
+        .def("useManualCrop",
+                      &offlineImageAnalyser::useManualCrop,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use Manual Crop.")
+        .def("useESMask",
+                      &offlineImageAnalyser::useESMask,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use  Expert Setting Mask.")
+         .def("useESPixToMm",
+                      &offlineImageAnalyser::useESPixToMm,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use Expert Setting pixel to mm ratio.")
+        .def("useESRRThreshold",
+                      &offlineImageAnalyser::useESRRThreshold,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use Expert Setting R-squared threshold.")
+        .def("useESSigmaCut",
+                      &offlineImageAnalyser::useESSigmaCut,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use Expert Setting Sigma Cut.")
+        .def("useESFilter",
+                      &offlineImageAnalyser::useESFilter,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use Expert Setting Filter.")
+        .def("useESDirectCut",
+                      &offlineImageAnalyser::useESDirectCut,
+                      (arg("bool")),
+                      "Set a bool to determine whether or not to use Expert Setting Direct Cut.")
+
+        .def("setManualCrop",
+                      &offlineImageAnalyser::setManualCrop,
+                      (arg("x"),arg("y"),arg("w"),arg("h")),
+                      "Manual crop sett parameters")
+        .def("setESMask",
+                    &offlineImageAnalyser::setESMask,
+                    (arg("x"),arg("y"),arg("rx"),arg("ry")),
+                    "Set Mask parameterss")
+         .def("setESPixToMm",
+                      &offlineImageAnalyser::setESPixToMm,
+                      (arg("double")),
+                      "Set pixel to mm ratio")
+        .def("setESRRThreshold",
+                      &offlineImageAnalyser::setESRRThreshold,
+                      (arg("double")),
+                      "Set R-squared threshold.")
+        .def("setESSigmaCut",
+                      &offlineImageAnalyser::setESSigmaCut,
+                      (arg("double")),
+                      "Set Sigma Cut.")
+        .def("setESFilter",
+                      &offlineImageAnalyser::setESFilter,
+                      (arg("int")),
+                      "Set Filter.")
+        .def("setESDirectCut",
+                      &offlineImageAnalyser::setESDirectCut,
+                      (arg("double")),
+                      "Set Direct Cut.")
+        ;
    class_<cameraIAController, boost::python::bases<controller>, boost::noncopyable>
         ("cameraIAController","cameraIAController Doc String",no_init)
         .def("get_CA_PEND_IO_TIMEOUT",   &cameraIAController::get_CA_PEND_IO_TIMEOUT  )
         .def("set_CA_PEND_IO_TIMEOUT",   &cameraIAController::set_CA_PEND_IO_TIMEOUT  )
-
+        .def("getOfflineIARef",
+             &cameraIAController::getOfflineIARef,
+             return_value_policy<reference_existing_object>(),
+             "This is a ref to the class that holds the functions for offline image analysis.")
+       // .def_readwrite("hi",
+       //      &cameraIAController::offlineIA)
         .def("isON",
              &cameraIAController::isON,
             (arg("name")),
@@ -232,9 +485,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
              "Stops VC Camera acquiring and returns True if successful.")
 
         //Functions yet to make
-        .def("setBackground",
-             &cameraIAController::setBackground,
-             "Returns True if selected camera copied the current Array Data to the background PV array data in EPICS.")
+       // .def("setBackground",
+         //    &cameraIAController::setBackground,
+         //    "Returns True if selected camera copied the current Array Data to the background PV array data in EPICS.")
         .def("getCamIAObjConstRef",
              &cameraIAController::getCamIAObjConstRef,
              return_value_policy<reference_existing_object>(),

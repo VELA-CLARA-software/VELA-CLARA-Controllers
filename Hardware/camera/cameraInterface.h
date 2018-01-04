@@ -75,6 +75,7 @@ class cameraInterface : public interface
         bool stopAcquiring();
         bool startVCAcquiring();//VC independant of all other cameras
         bool stopVCAcquiring();
+        vec_s getCameraNames();
 
         ///Useful Functions for the Controller///
         bool isCollecting(const std::string&cameraName);
