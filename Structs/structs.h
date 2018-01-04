@@ -71,6 +71,7 @@ namespace VELA_ENUM/// this seems like a really out of date name now...
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(ILOCK_STATE, (ILOCK_BAD) (ILOCK_GOOD) (ILOCK_ERROR))
 
 
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(STATE, (BAD) (GOOD) (ERR) (UNKNOWN))
 
     /// PV stricts are used to set up the channels and subscriptions
     /// they should be held in a map keyed by an ILOCK_NUMBER

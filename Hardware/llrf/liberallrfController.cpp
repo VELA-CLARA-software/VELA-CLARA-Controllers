@@ -281,7 +281,7 @@ boost::python::dict liberaLLRFController::getOutsideMaskData2_Py(const size_t pa
 //boost::python::list liberaLLRFController::getOutsideMaskData_Py()
 boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
 {
-    std::vector<llrfStructs::outside_mask_trace>  data =  localInterface.getOutsideMaskData();
+    std::vector<llrfStructs::outside_mask_trace> data = localInterface.getOutsideMaskData();
     boost::python::dict dictionary;
     boost::python::dict dictionary2;
     boost::python::list list;
@@ -359,6 +359,7 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
                 time = "time_"  + it2.name + "_";
                 value= "value_" + it2.name + "_";
                 name = "name_"  + it2.name + "_";
+                time = "time_"  + it2.name + "_";
                 dictionary[EVID  += std::to_string(i)] = it2.EVID;
                 dictionary[time  += std::to_string(i)] = it2.time;
                 dictionary[value += std::to_string(i)] = toPythonList(it2.value);
@@ -886,6 +887,11 @@ double liberaLLRFController::getBreakDownRate()
 void liberaLLRFController::startTimer()
 {
     localInterface.startTimer();
+}
+//______________________________________________________________________________
+void liberaLLRFController::offsetTimer(long long value)
+{
+    localInterface.offsetTimer(value);
 }
 //______________________________________________________________________________
 long long liberaLLRFController::elapsedTime()

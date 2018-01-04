@@ -168,6 +168,7 @@ class liberallrfInterface : public interface
         bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
 
         void startTimer();
+        void offsetTimer(long long value);
         long long elapsedTime();
 
         double getBreakDownRate();

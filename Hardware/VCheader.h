@@ -129,6 +129,27 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
                 ;
         }
+
+        boost::python::type_info info6 = boost::python::type_id<VELA_ENUM::ILOCK_STATE>();
+        const boost::python::converter::registration* reg6 = boost::python::converter::registry::query(info6);
+        if (reg6 == nullptr)
+        {
+        enum_<VELA_ENUM::STATE>("STATE")
+            .value("BAD",   VELA_ENUM::STATE::BAD  )
+            .value("GOOD",  VELA_ENUM::STATE::GOOD )
+            .value("ERROR", VELA_ENUM::STATE::ERROR)
+            .value("UNKNOWN", VELA_ENUM::STATE::UNKNOWN)
+            ;
+        }
+        else if ((*reg6).m_to_python == nullptr)
+        {
+            enum_<VELA_ENUM::STATE>("STATE")
+                .value("BAD",   VELA_ENUM::STATE::BAD  )
+                .value("GOOD",  VELA_ENUM::STATE::GOOD )
+                .value("ERROR", VELA_ENUM::STATE::ERROR)
+                .value("UNKNOWN", VELA_ENUM::STATE::UNKNOWN)
+                ;
+        }
             // Expose base classes
         class_<baseObject, boost::noncopyable>("baseObject", no_init)
             ;
@@ -141,8 +162,6 @@ namespace BOOST_PYTHON_INCLUDE
             .def("getILockStates",         pure_virtual(&controller::getILockStates)        )
             ;
     }
-
-
 
 }
 #endif // VCHEADER_H_INCLUDED

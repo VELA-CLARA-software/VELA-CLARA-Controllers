@@ -47,32 +47,20 @@ void DLL_EXPORT SomeFunction(const LPCSTR sometext);
 
 using namespace boost::python;
 
-enum color { red = 1, green = 2, blue = 4 };
-
-color identity_(color x) { return x; }
-
 
 BOOST_PYTHON_MODULE(VELA_CLARA_enums)
 {
-//    enum_<color>("color")
-//        .value("red", red)
-//        .value("green", green)
-//        .value("blue", blue)
-//        ;
-//
-//    def("identity", identity_);
 
-
-        boost::python::type_info info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
+    boost::python::type_info info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
     const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+    if (reg == nullptr)  {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
         .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
         .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
         .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
         ;
-    } else if ((*reg).m_to_python == NULL) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+    } else if ((*reg).m_to_python == nullptr) {
+        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
         .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
         .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
         .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
@@ -82,7 +70,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_enums)
 
     info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
     reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
+    if (reg == nullptr)  {
     enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
         .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
         .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
@@ -96,7 +84,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_enums)
         .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
         .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
         ;
-    } else if ((*reg).m_to_python == NULL) {
+    } else if ((*reg).m_to_python == nullptr) {
     enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
         .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
         .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
@@ -112,11 +100,40 @@ BOOST_PYTHON_MODULE(VELA_CLARA_enums)
         ;
     }
 
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+    info = boost::python::type_id<VELA_ENUM::ILOCK_STATE>();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == nullptr)  {
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
             .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
             .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
             .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
             ;
+    } else if ((*reg).m_to_python == nullptr) {
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
+            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+            ;
+    }
 
+    info = boost::python::type_id<VELA_ENUM::STATE>();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == nullptr)  {
+    enum_<VELA_ENUM::STATE>
+    ("STATE","STATE Doc String")
+            .value("BAD",    VELA_ENUM::STATE::BAD  )
+            .value("GOOD",   VELA_ENUM::STATE::GOOD )
+            .value("ERR",    VELA_ENUM::STATE::ERR)
+            .value("UNKNOWN",VELA_ENUM::STATE::UNKNOWN)
+            ;
+    }
+    else if ((*reg).m_to_python == nullptr) {
+    enum_<VELA_ENUM::STATE>("STATE","STATE Doc String")
+            .value("BAD",    VELA_ENUM::STATE::BAD  )
+            .value("GOOD",   VELA_ENUM::STATE::GOOD )
+            .value("ERR",    VELA_ENUM::STATE::ERR)
+            .value("UNKNOWN",VELA_ENUM::STATE::UNKNOWN)
+            ;
+    }
 
 }

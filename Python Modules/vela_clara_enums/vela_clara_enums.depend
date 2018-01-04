@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1513718202 source:d:\vela\git projects\vela-clara-controllers\python modules\vela_clara_enums\main.cpp
+	"main.h"
+
+1515083552 d:\vela\git projects\vela-clara-controllers\python modules\vela_clara_enums\main.h
+	"structs.h"
+	<windows.h>
+	<boost/python.hpp>
+
+1515083515 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+

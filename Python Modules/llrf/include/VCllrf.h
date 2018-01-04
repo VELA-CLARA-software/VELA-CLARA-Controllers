@@ -305,7 +305,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
         .def_readonly("pulse_latency", &liberallrfObject::pulse_latency,"The number of elements in a pulse trace before the RF pulse is active (approx.).")
         .def_readonly("timer_start", &liberallrfObject::timer_start,"ms since epoch since timer was started.")
-        .def_readonly("breakdown_rate", &liberallrfObject::timer_start,"estimet of number breakdowns per second.")
+        .def_readonly("breakdown_rate", &liberallrfObject::breakdown_rate,"estimet of number breakdowns per second.")
         ;
 
 
@@ -472,6 +472,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("startTimer", &liberaLLRFController::startTimer,"Starts (or resets) a local timer")
         .def("elapsedTime",&liberaLLRFController::elapsedTime,"ms since the last startTimer call, (if negative then no call to startTimerhas been made)")
+        .def("offsetTimer",&liberaLLRFController::offsetTimer,"offeswt the timer by an integer amount")
 
 
         .def("setCheckMask",  &liberaLLRFController::setCheckMask,(arg("name"),arg("value")),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")

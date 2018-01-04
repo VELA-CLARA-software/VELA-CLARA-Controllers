@@ -2278,6 +2278,11 @@ void liberallrfInterface::startTimer()
     llrf.timer_start = msChronoTime();
 }
 //____________________________________________________________________________________________
+void liberallrfInterface::offsetTimer(long long value)
+{
+    llrf.timer_start += value;
+}
+//____________________________________________________________________________________________
 long long liberallrfInterface::elapsedTime()
 {
     return msChronoTime() - llrf.timer_start;
