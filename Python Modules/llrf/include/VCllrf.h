@@ -305,7 +305,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
         .def_readonly("pulse_latency", &liberallrfObject::pulse_latency,"The number of elements in a pulse trace before the RF pulse is active (approx.).")
         .def_readonly("timer_start", &liberallrfObject::timer_start,"ms since epoch since timer was started.")
-        .def_readonly("breakdown_rate", &liberallrfObject::breakdown_rate,"estimet of number breakdowns per second.")
+        .def_readonly("breakdown_rate", &liberallrfObject::breakdown_rate,"estimate of number breakdowns per second.")
+        .def_readonly("amp_drop_value", &liberallrfObject::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
+        .def_readonly("drop_amp_on_breakdown", &liberallrfObject::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         ;
 
 
@@ -352,6 +354,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(arg("name")),"Return latest Trace Values for channel 'name'")
         .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(arg("name")),"Return buffer of rf_trace objects for channel 'name'")
 
+        .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(arg("state"),arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask trace is detected")
+        .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace")
+
         .def("getCavRevPowerData",&liberaLLRFController::getCavRevPowerData,"Return latest cavity reverse power rf_trace object")
         .def("getCavFwdPowerData",&liberaLLRFController::getCavFwdPowerData,"Return latest cavity forward power rf_trace object")
         .def("getKlyRevPowerData",&liberaLLRFController::getKlyRevPowerData,"Return latest klystron reverse power rf_trace object")
@@ -369,7 +374,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getCavFwdPhaseBuffer",&liberaLLRFController::getCavFwdPhaseBuffer_Py,"Return buffer of cavity forward phase rf_trace objects")
         .def("getKlyRevPhaseBuffer",&liberaLLRFController::getKlyRevPhaseBuffer_Py,"Return buffer of klystron reverse phase rf_trace objects")
         .def("getKlyFwdPhaseBuffer",&liberaLLRFController::getKlyFwdPhaseBuffer_Py,"Return buffer of klystron forward phase rf_trace objects")
-
 
         .def("getCavRevPower",  &liberaLLRFController::getCavRevPower_Py,"Return latest cavity reverse power trace")
         .def("getCavFwdPower",  &liberaLLRFController::getCavFwdPower_Py,"Return latest cavity forward power trace")

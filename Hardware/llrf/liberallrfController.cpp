@@ -72,6 +72,16 @@ double liberaLLRFController::getAmpFF()
     return localInterface.getAmpFF();
 }
 //______________________________________________________________________________
+void liberaLLRFController::setDropAmpOnOutsideMaskDetection(bool state, double amp_val)
+{
+    localInterface.setDropAmpOnOutsideMaskDetection(state,amp_val);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setDropAmpValue(double amp_val)
+{
+    localInterface.setDropAmpValue(amp_val);
+}
+//______________________________________________________________________________
 size_t liberaLLRFController::getShotCount(const std::string& name)
 {
     return localInterface.getShotCount(name);

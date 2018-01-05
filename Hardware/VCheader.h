@@ -137,7 +137,7 @@ namespace BOOST_PYTHON_INCLUDE
         enum_<VELA_ENUM::STATE>("STATE")
             .value("BAD",   VELA_ENUM::STATE::BAD  )
             .value("GOOD",  VELA_ENUM::STATE::GOOD )
-            .value("ERROR", VELA_ENUM::STATE::ERROR)
+            .value("ERR", VELA_ENUM::STATE::ERR)
             .value("UNKNOWN", VELA_ENUM::STATE::UNKNOWN)
             ;
         }
@@ -146,7 +146,7 @@ namespace BOOST_PYTHON_INCLUDE
             enum_<VELA_ENUM::STATE>("STATE")
                 .value("BAD",   VELA_ENUM::STATE::BAD  )
                 .value("GOOD",  VELA_ENUM::STATE::GOOD )
-                .value("ERROR", VELA_ENUM::STATE::ERROR)
+                .value("ERR", VELA_ENUM::STATE::ERR)
                 .value("UNKNOWN", VELA_ENUM::STATE::UNKNOWN)
                 ;
         }

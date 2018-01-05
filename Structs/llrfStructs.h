@@ -270,7 +270,9 @@ namespace llrfStructs
             num_outside_mask_traces(UTL::ZERO_SIZET),
             pulse_latency(UTL::ZERO_SIZET),
             timer_start(UTL::ZERO_SIZET),
-            breakdown_rate(UTL::ZERO_DOUBLE)
+            breakdown_rate(UTL::ZERO_DOUBLE),
+            amp_drop_value(UTL::ZERO_DOUBLE),
+            drop_amp_on_breakdown(false)
                      {}
         std::vector<std::string> tracesToSaveOnBreakDown;
         std::string name, pvRoot, EVIDStr;
@@ -279,8 +281,8 @@ namespace llrfStructs
         double phi_sp, phi_ff, crestPhi;
         double amp_sp, amp_ff,maxAmp;
         double pulse_length,pulse_offset;
-        double breakdown_rate;
-        bool rf_output, check_mask, ff_lock_state,interlock_state;
+        double breakdown_rate, amp_drop_value;
+        bool rf_output, check_mask, ff_lock_state,interlock_state,drop_amp_on_breakdown;
         //long ampR,phiLLRF,ampW,crestPhi,maxAmp;
         int numIlocks;
         LLRF_TYPE type;

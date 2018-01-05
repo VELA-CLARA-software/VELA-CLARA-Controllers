@@ -79,6 +79,9 @@ class liberaLLRFController : public controller
         bool interlockNotActive();
 
 
+        void setDropAmpOnOutsideMaskDetection(bool state, double amp_val = 0.0);
+        void setDropAmpValue(double amp_val);
+
         //bool   isLocked();
 
         llrfStructs::LLRF_TYPE getType();

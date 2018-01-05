@@ -822,6 +822,11 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
 //____________________________________________________________________________________________
 void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name)
 {
+    if(llrf.drop_amp_on_breakdown)
+    {
+        setAmpFF(llrf.amp_drop_value);
+    }
+
     // add new outside_mask_trace struct to outside_mask_traces
     llrf.outside_mask_traces.push_back( llrfStructs::outside_mask_trace() );
     // time of breakdown
@@ -2381,6 +2386,17 @@ bool liberallrfInterface::isNotCheckingMask(const std::string& name)
 bool liberallrfInterface::isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return !isCheckingMask(pv);
+}
+//____________________________________________________________________________________________
+void liberallrfInterface::setDropAmpValue(double amp_val)
+{
+    llrf.amp_drop_value = amp_val;
+}
+//____________________________________________________________________________________________
+void liberallrfInterface::setDropAmpOnOutsideMaskDetection(bool state, double amp_val)
+{
+    llrf.amp_drop_value = amp_val;
+    llrf.drop_amp_on_breakdown = state;
 }
 //____________________________________________________________________________________________
 std::string liberallrfInterface::fullCavityTraceName(const std::string& name)

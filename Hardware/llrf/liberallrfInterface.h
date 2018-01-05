@@ -173,6 +173,10 @@ class liberallrfInterface : public interface
 
         double getBreakDownRate();
 
+        void setDropAmpOnOutsideMaskDetection(bool state, double amp_val = 0.0);
+        void setDropAmpValue(double amp_val);
+
+
 
         bool clearMask(const std::string&name);
         bool clearRollingAverage(const std::string&name);
