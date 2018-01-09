@@ -29,7 +29,19 @@ class screenController : public controller
         virtual double get_CA_PEND_IO_TIMEOUT();
         virtual void   set_CA_PEND_IO_TIMEOUT( double val );
 
-
+        bool isHOut(screenStructs::screenObject& scr);
+        bool isVOut(screenStructs::screenObject& scr);
+        bool is_HandV_OUT(screenStructs::screenObject& scr);
+        void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
+        bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
+        bool setScreenTrigger(const std::string & name, const screenStructs::SCREEN_STATE & state );
+        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
+        bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
+        bool isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta);
+        bool isScreenOUT(const std::string & name, const bool weKnowEntryExists = false );
+        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
+        bool is_H_Element(const std::string & name, const screenStructs::SCREEN_STATE e);
+        bool is_V_Element(const std::string & name, const screenStructs::SCREEN_STATE e);
 
   // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
         bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);
@@ -43,8 +55,6 @@ class screenController : public controller
         double get_H_ACTPOS( const std::string & name );
         double get_V_ACTPOS( const std::string & name );
 
-        bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
-
         // 'existential quantification' - ahem
         bool isMoving(const std::string& name);
         bool isNotMoving(const std::string& name);
@@ -53,8 +63,6 @@ class screenController : public controller
         bool is_VELA_HV_MOVER (const std::string & name);
         bool is_CLARA_HV_MOVER (const std::string & name);
         bool is_CLARA_V_MOVER (const std::string & name);
-        bool is_H_Element(screenStructs::SCREEN_STATE e);
-        bool is_V_Element(screenStructs::SCREEN_STATE e);
         bool isScreenOUT(const std::string & name);
         bool isScreenIN(const std::string & name);
         std::vector<bool> isScreenIN(const std::vector<std::string> & name );

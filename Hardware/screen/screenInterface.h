@@ -27,6 +27,20 @@ class screenInterface: public interface
                         const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~screenInterface();
 
+        bool isHOut(screenStructs::screenObject& scr);
+        bool isVOut(screenStructs::screenObject& scr);
+        bool is_HandV_OUT(screenStructs::screenObject& scr);
+        void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
+        bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
+        bool setScreenTrigger(const std::string & name, const screenStructs::SCREEN_STATE & state );
+        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
+        bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
+        bool isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta);
+        bool isScreenOUT(const std::string & name, const bool weKnowEntryExists = false );
+        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
+        bool is_H_Element(const std::string & name, const screenStructs::SCREEN_STATE e);
+        bool is_V_Element(const std::string & name, const screenStructs::SCREEN_STATE e);
+
         // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
         bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);
         bool screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states);
@@ -43,15 +57,12 @@ class screenInterface: public interface
         bool isHCassetteOUT(screenStructs::screenObject& scr);
         bool isVCassetteOUT(screenStructs::screenObject& scr);
         bool is_HandV_CassetteOUT(screenStructs::screenObject& scr);
+
         bool is_VELA_PNEUMATIC(const std::string & name);
         bool is_VELA_HV_MOVER (const std::string & name);
         bool is_CLARA_PNEUMATIC (const std::string & name);
         bool is_CLARA_HV_MOVER (const std::string & name);
         bool is_CLARA_V_MOVER (const std::string & name);
-        bool is_H_Element(screenStructs::SCREEN_STATE e);
-        bool is_V_Element(screenStructs::SCREEN_STATE e);
-        bool isScreenOUT(const std::string & name, const bool weKnowEntryExists = false );
-        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
         std::vector<bool> isScreenIN( const std::vector<std::string> & name );
         std::vector<bool> isScreenOUT( const std::vector<std::string> & name );
         std::vector<bool> exists_and_isLocked(const std::string& name);
@@ -66,10 +77,6 @@ class screenInterface: public interface
         const std::vector<std::string> get_CLARA_V_MOVER_Screens(   const std::vector< std::string > & names );
 
         // i want to make sure so python does not have access to the second arguemnt
-        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
-
-        bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
-
         void checkScreenCHIDStates();
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived interface...

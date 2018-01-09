@@ -203,10 +203,6 @@ class velaINJscreenInterface: public interface
 
         //void addToComplexMonitorStructs( std::vector<screenStructs::monitorStruct*>& cms, screenStructs::pvStruct& pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  );
         //void addToSimpleMonitorStructs ( std::vector<screenStructs::monitorStruct*>& cms, screenStructs::pvStruct& pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  );
-
-
-        screenStructs::velaINJscreenObject velaINJscreenObject;
-
         const VELA_ENUM::MACHINE_AREA myMachineArea;
         // MOVE TO BASE CLASS
         const bool shouldStartEPICs;

@@ -11,15 +11,6 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
 
-
-OK i should think about a compelte change in approach here
-
-maybe we should have a screenController base-class that is returned,
-
-but there are different falvours of it?
-
-
-
 class VCscreens
 {
         /// These VC classes could all be done more elegantly, with less copypasta

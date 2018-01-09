@@ -222,9 +222,10 @@ namespace screenStructs
         std::string name, pvRoot;
         SCREEN_TYPE       screenType;
         screenDriver      driver;
-        SCREEN_STATE      screenState, screenDevState;
-        std::map< SCREEN_STATE, bool >           elementExists;         // holds if an element exists on this cassette(from config)
-        std::map< SCREEN_STATE, unsigned short > elementPositions;      // position element on cassette (from config)
+        SCREEN_STATE      screenState, screenSetState;
+        std::map< SCREEN_STATE, bool >             elementExists;         // holds if an element exists on this cassette(from config)
+        std::map< SCREEN_STATE, DRIVER_DIRECTION > elementDirection;
+        std::map< SCREEN_STATE, unsigned short >   elementPositions;      // position element on cassette (from config)
         int numIlocks;
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__

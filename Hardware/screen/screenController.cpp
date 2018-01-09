@@ -58,9 +58,59 @@ bool screenController::screenOUT(const std::vector<std::string> & name )
     return localInterface.screenOUT( name );
 }
 //________________________________________________________________________________
-bool screenController::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE element )
+bool screenController::isHOut(screenStructs::screenObject& scr)
 {
-    return localInterface.isScreenInState( name, element );
+    return localInterface.isHOut(scr);
+}
+//________________________________________________________________________________
+bool screenController::isVOut(screenStructs::screenObject& scr)
+{
+    return localInterface.isVOut(scr);
+}
+//________________________________________________________________________________
+bool screenController::is_HandV_OUT(screenStructs::screenObject& scr)
+{
+    return localInterface.is_HandV_OUT(scr);
+}
+//________________________________________________________________________________
+void screenController::moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state )
+{
+    localInterface.moveScreenTo(name, state);
+}
+//________________________________________________________________________________
+bool screenController::setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state )
+{
+    return localInterface.setScreenSDEV(name, state);
+}
+//________________________________________________________________________________
+bool screenController::setScreenTrigger(const std::string & name, const screenStructs::SCREEN_STATE & state )
+{
+    return localInterface.setScreenTrigger(name, state);
+}
+//________________________________________________________________________________
+screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name, const bool weKnowEntryExists )
+{
+    return localInterface.getScreenState(name, weKnowEntryExists);
+}
+//________________________________________________________________________________
+bool screenController::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
+{
+    return localInterface.isScreenInState(name, sta);
+}
+//________________________________________________________________________________
+bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)
+{
+    return localInterface.isScreenInPosition(name, sta);
+}
+//________________________________________________________________________________
+bool screenController::isScreenOUT(const std::string & name, const bool weKnowEntryExists )
+{
+    return localInterface.isScreenOUT(name, weKnowEntryExists);
+}
+//________________________________________________________________________________
+bool screenController::isScreenIN(const std::string & name, const bool weKnowEntryExists )
+{
+    return localInterface.isScreenIN(name, weKnowEntryExists);
 }
 //________________________________________________________________________________
 const std::vector<std::string> screenController::get_VELA_PNEUMATIC_Screens(const std::vector<std::string>& names)
@@ -138,14 +188,14 @@ bool screenController::is_CLARA_V_MOVER(const std::string & name)
     return localInterface.is_CLARA_V_MOVER(name);
 }
 //________________________________________________________________________________
-bool screenController::is_H_Element(screenStructs::SCREEN_STATE e)
+bool screenController::is_H_Element(const std::string & name, const screenStructs::SCREEN_STATE e)
 {
-    return localInterface.is_H_Element(e);
+    return localInterface.is_H_Element(name, e);
 }
 //________________________________________________________________________________
-bool screenController::is_V_Element(screenStructs::SCREEN_STATE e)
+bool screenController::is_V_Element(const std::string & name, const screenStructs::SCREEN_STATE e)
 {
-    return localInterface.is_V_Element(e);
+    return localInterface.is_V_Element(name, e);
 }
 //________________________________________________________________________________
 double screenController::get_H_ACTPOS(const std::string & name)
@@ -208,53 +258,53 @@ boost::python::dict screenController::getILockStates_Py( std::string& name )
 boost::python::dict screenController::get_SCREEN_STATE_Definition()
 {
     std::map< screenStructs::SCREEN_STATE,  std::string  > m;
-    m[screenStructs::SCREEN_STATE::SCREEN_IN       ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_IN       );
-    m[screenStructs::SCREEN_STATE::SCREEN_OUT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_OUT      );
-    m[screenStructs::SCREEN_STATE::SCREEN_MOVING   ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_MOVING   );
-    m[screenStructs::SCREEN_STATE::SCREEN_ERROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_ERROR    );
-    m[screenStructs::SCREEN_STATE::SCREEN_UNKNOWN  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_UNKNOWN  );
-    m[screenStructs::SCREEN_STATE::H_MIRROR        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_MIRROR        );
-    m[screenStructs::SCREEN_STATE::V_MIRROR        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_MIRROR        );
-    m[screenStructs::SCREEN_STATE::H_50U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_50U_SLIT      );
-    m[screenStructs::SCREEN_STATE::V_50U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_50U_SLIT      );
-    m[screenStructs::SCREEN_STATE::H_25U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_25U_SLIT      );
-    m[screenStructs::SCREEN_STATE::V_25U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_25U_SLIT      );
-    m[screenStructs::SCREEN_STATE::H_6p3MM_HOLE    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_6p3MM_HOLE    );
-    m[screenStructs::SCREEN_STATE::V_6p3MM_HOLE    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_6p3MM_HOLE    );
-    m[screenStructs::SCREEN_STATE::H_10MM_HOLE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_10MM_HOLE     );
-    m[screenStructs::SCREEN_STATE::V_10MM_HOLE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_10MM_HOLE     );
-    m[screenStructs::SCREEN_STATE::H_YAG           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_YAG           );
-    m[screenStructs::SCREEN_STATE::V_YAG           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_YAG           );
-    m[screenStructs::SCREEN_STATE::H_SLIT          ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT          );
-    m[screenStructs::SCREEN_STATE::V_SLIT          ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_SLIT          );
-    m[screenStructs::SCREEN_STATE::H_RF            ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_RF            );
-    m[screenStructs::SCREEN_STATE::V_RF            ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_RF            );
-    m[screenStructs::SCREEN_STATE::H_OUT           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_OUT           );
-    m[screenStructs::SCREEN_STATE::V_OUT           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_OUT           );
-    m[screenStructs::SCREEN_STATE::H_4MM_APERTURE  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_4MM_APERTURE  );
-    m[screenStructs::SCREEN_STATE::H_6MM_APERTURE  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_6MM_APERTURE  );
-    m[screenStructs::SCREEN_STATE::H_9MM_APERTURE  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_9MM_APERTURE  );
-    m[screenStructs::SCREEN_STATE::H_SLIT_1        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT_1        );
-    m[screenStructs::SCREEN_STATE::H_SLIT_2        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT_2        );
-    m[screenStructs::SCREEN_STATE::H_SLIT_3        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT_3        );
-    m[screenStructs::SCREEN_STATE::H_YAG_MIRROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_YAG_MIRROR    );
-    m[screenStructs::SCREEN_STATE::V_YAG_MIRROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_YAG_MIRROR    );
-    m[screenStructs::SCREEN_STATE::V_SLIT_1        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_SLIT_1        );
-    m[screenStructs::SCREEN_STATE::V_GRATICULE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_GRATICULE     );
-    m[screenStructs::SCREEN_STATE::V_RF_CAGE       ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_RF_CAGE       );
-    m[screenStructs::SCREEN_STATE::V_COLLIMATOR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_COLLIMATOR    );
-    m[screenStructs::SCREEN_STATE::UNKNOWN_POSITION] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::UNKNOWN_POSITION);
+//    m[screenStructs::SCREEN_STATE::SCREEN_IN       ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_IN       );
+//    m[screenStructs::SCREEN_STATE::SCREEN_OUT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_OUT      );
+//    m[screenStructs::SCREEN_STATE::SCREEN_MOVING   ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_MOVING   );
+//    m[screenStructs::SCREEN_STATE::SCREEN_ERROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_ERROR    );
+//    m[screenStructs::SCREEN_STATE::SCREEN_UNKNOWN  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_UNKNOWN  );
+//    m[screenStructs::SCREEN_STATE::H_MIRROR        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_MIRROR        );
+//    m[screenStructs::SCREEN_STATE::V_MIRROR        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_MIRROR        );
+//    m[screenStructs::SCREEN_STATE::H_50U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_50U_SLIT      );
+//    m[screenStructs::SCREEN_STATE::V_50U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_50U_SLIT      );
+//    m[screenStructs::SCREEN_STATE::H_25U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_25U_SLIT      );
+//    m[screenStructs::SCREEN_STATE::V_25U_SLIT      ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_25U_SLIT      );
+//    m[screenStructs::SCREEN_STATE::H_6p3MM_HOLE    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_6p3MM_HOLE    );
+//    m[screenStructs::SCREEN_STATE::V_6p3MM_HOLE    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_6p3MM_HOLE    );
+//    m[screenStructs::SCREEN_STATE::H_10MM_HOLE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_10MM_HOLE     );
+//    m[screenStructs::SCREEN_STATE::V_10MM_HOLE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_10MM_HOLE     );
+//    m[screenStructs::SCREEN_STATE::H_YAG           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_YAG           );
+//    m[screenStructs::SCREEN_STATE::V_YAG           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_YAG           );
+//    m[screenStructs::SCREEN_STATE::H_SLIT          ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT          );
+//    m[screenStructs::SCREEN_STATE::V_SLIT          ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_SLIT          );
+//    m[screenStructs::SCREEN_STATE::H_RF            ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_RF            );
+//    m[screenStructs::SCREEN_STATE::V_RF            ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_RF            );
+//    m[screenStructs::SCREEN_STATE::H_OUT           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_OUT           );
+//    m[screenStructs::SCREEN_STATE::V_OUT           ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_OUT           );
+//    m[screenStructs::SCREEN_STATE::H_4MM_APERTURE  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_4MM_APERTURE  );
+//    m[screenStructs::SCREEN_STATE::H_6MM_APERTURE  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_6MM_APERTURE  );
+//    m[screenStructs::SCREEN_STATE::H_9MM_APERTURE  ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_9MM_APERTURE  );
+//    m[screenStructs::SCREEN_STATE::H_SLIT_1        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT_1        );
+//    m[screenStructs::SCREEN_STATE::H_SLIT_2        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT_2        );
+//    m[screenStructs::SCREEN_STATE::H_SLIT_3        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_SLIT_3        );
+//    m[screenStructs::SCREEN_STATE::H_YAG_MIRROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::H_YAG_MIRROR    );
+//    m[screenStructs::SCREEN_STATE::V_YAG_MIRROR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_YAG_MIRROR    );
+//    m[screenStructs::SCREEN_STATE::V_SLIT_1        ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_SLIT_1        );
+//    m[screenStructs::SCREEN_STATE::V_GRATICULE     ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_GRATICULE     );
+//    m[screenStructs::SCREEN_STATE::V_RF_CAGE       ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_RF_CAGE       );
+//    m[screenStructs::SCREEN_STATE::V_COLLIMATOR    ] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::V_COLLIMATOR    );
+//    m[screenStructs::SCREEN_STATE::UNKNOWN_POSITION] = ENUM_TO_STRING(screenStructs::SCREEN_STATE::UNKNOWN_POSITION);
     return enumStringMapToPythonDict( m );
 }
 //______________________________________________________________________________
 boost::python::dict screenController::get_DRIVER_STATE_Definition()
 {
     std::map< screenStructs::DRIVER_STATE,  std::string  > m;
-    m[screenStructs::DRIVER_STATE::DRIVER_MOVING    ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_MOVING    );
-    m[screenStructs::DRIVER_STATE::DRIVER_STATIONARY] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_STATIONARY);
-    m[screenStructs::DRIVER_STATE::DRIVER_DISABLED  ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_DISABLED  );
-    m[screenStructs::DRIVER_STATE::DRIVER_ENABLED   ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_ENABLED   );
-    m[screenStructs::DRIVER_STATE::DRIVER_ERROR     ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_ERROR     );
+//    m[screenStructs::DRIVER_STATE::DRIVER_MOVING    ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_MOVING    );
+//    m[screenStructs::DRIVER_STATE::DRIVER_STATIONARY] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_STATIONARY);
+//    m[screenStructs::DRIVER_STATE::DRIVER_DISABLED  ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_DISABLED  );
+//    m[screenStructs::DRIVER_STATE::DRIVER_ENABLED   ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_ENABLED   );
+//    m[screenStructs::DRIVER_STATE::DRIVER_ERROR     ] = ENUM_TO_STRING(screenStructs::DRIVER_STATE::DRIVER_ERROR     );
     return enumStringMapToPythonDict( m );
 }
 //______________________________________________________________________________
