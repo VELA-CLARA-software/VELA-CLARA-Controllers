@@ -40,6 +40,9 @@ private:
     std::vector< screenStructs::pvStruct > pvScrComStructs_CLARA_PNEUMATIC;
     std::vector< screenStructs::pvStruct > pvScrMonStructs_CLARA_PNEUMATIC;
 
+    std::vector< screenStructs::pvStruct > pvScrComStructs;
+    std::vector< screenStructs::pvStruct > pvScrMonStructs;
+
     /// all the objects have their own command and monitor structs, as defined in teh config file
     std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_HV_MOVER_H;
     std::vector< screenStructs::pvStruct > pvScrComStructs_VELA_HV_MOVER_V;
@@ -100,37 +103,6 @@ private:
 
     //void addCOUNT_MASK_OR_CHTYPE(std::vector<screenStructs::pvStruct>& pvStruct_v, const std::vector<std::string> &keyVal);
     void addCOUNT_MASK_OR_CHTYPE(const std::vector<std::string> &keyVal);
-
-    /// OLD
-
-
-
-//
-//    bool readConfig( screenConfigReader & obj, const std::string fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 );
-//
-//
-
-//
-//
-//    void addPVStruct( std::vector< screenStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal );
-//    void addCOUNT_MASK_OR_CHTYPE ( std::vector< screenStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal ) ;
-//
-//    ///COMPLEX YAGs
-//    std::vector< screenStructs::COMPLEX_YAG_Object > complexYAGObjects;
-//    std::vector< screenStructs::pvStruct > complexYAGMonStructs;
-//    std::vector< screenStructs::pvStruct > complexYAGComStructs;
-//    void addToComplexYAGObjectsV1 ( const std::vector<std::string> &keyVal );
-//    void addToComplexYAGMonStructsV1 ( const std::vector<std::string> &keyVal );
-//    void addToComplexYAGComStructsV1 (const std::vector<std::string> &keyVal );
-//
-//    ///SIMPLE YAGs
-//    std::vector< screenStructs::SIMPLE_YAG_Object > simpleYAGObjects;
-//    std::vector< screenStructs::pvStruct > simpleYAGMonStructs;
-//    std::vector< screenStructs::pvStruct > simpleYAGComStructs;
-//    void addToSimpleYAGObjectsV1 ( const std::vector<std::string> &keyVal );
-//    void addToSimpleYAGMonStructsV1 ( const std::vector<std::string> &keyVal );
-//    void addToSimpleYAGComStructsV1 ( const std::vector<std::string> &keyVal );
-
 
 };
 #endif // UTL_FILE_IO_SCREEN_H

@@ -673,13 +673,42 @@ namespace UTL
     const std::string CLARA_HV_MOVER_SCREEN  =  "CLARA_HV_MOVER_SCREEN";
     const std::string CLARA_V_MOVER_SCREEN   =  "CLARA_V_MOVER_SCREEN";
     const std::string SCREEN_TYPE            =  "SCREEN_TYPE";
+    /// SCREENS Update 8/1/18
+    const std::string PV_SUFFIX_H_MOVING    = "PV_SUFFIX_H_MOVING";
+    const std::string PV_SUFFIX_H_READY     = "PV_SUFFIX_H_READY";
+    const std::string PV_SUFFIX_H_GET_DEV   = "PV_SUFFIX_H_GET_DEV";
+    const std::string PV_SUFFIX_H_DEV_STATE = "PV_SUFFIX_H_DEV_STATE";
+    const std::string PV_SUFFIX_H_MAX_POS   = "PV_SUFFIX_H_H_MAX_POS";
+    const std::string PV_SUFFIX_H_DEV_CENT  = "PV_SUFFIX_H_DEV_CENT";
+    const std::string PV_SUFFIX_H_ACTPOS    = "PV_SUFFIX_H_ACTPOS";
+    const std::string PV_SUFFIX_H_EN        = "PV_SUFFIX_H_EN";
+    const std::string PV_SUFFIX_H_SDEV      = "PV_SUFFIX_H_SDEV";
+    const std::string PV_SUFFIX_H_TRIGGER   = "PV_SUFFIX_H_TRIGGER";
+    const std::string PV_SUFFIX_H_EX        = "PV_SUFFIX_H_EX";
+    const std::string PV_SUFFIX_H_TGTPOS    = "PV_SUFFIX_H_TGTPOS";
+    const std::string PV_SUFFIX_H_JOG       = "PV_SUFFIX_H_JOG";
+    const std::string PV_SUFFIX_H_JDIFF      = "PV_SUFFIX_H_JDIFF";
+    const std::string PV_SUFFIX_V_MOVING    = "PV_SUFFIX_V_MOVING";
+    const std::string PV_SUFFIX_V_READY     = "PV_SUFFIX_V_READY";
+    const std::string PV_SUFFIX_V_GET_DEV   = "PV_SUFFIX_V_GET_DEV";
+    const std::string PV_SUFFIX_V_DEV_STATE = "PV_SUFFIX_V_DEV_STATE";
+    const std::string PV_SUFFIX_V_MAX_POS   = "PV_SUFFIX_V_H_MAX_POS";
+    const std::string PV_SUFFIX_V_DEV_CENT  = "PV_SUFFIX_V_DEV_CENT";
+    const std::string PV_SUFFIX_V_ACTPOS    = "PV_SUFFIX_V_ACTPOS";
+    const std::string PV_SUFFIX_V_EN        = "PV_SUFFIX_V_EN";
+    const std::string PV_SUFFIX_V_SDEV      = "PV_SUFFIX_V_SDEV";
+    const std::string PV_SUFFIX_V_TRIGGER   = "PV_SUFFIX_V_TRIGGER";
+    const std::string PV_SUFFIX_V_EX        = "PV_SUFFIX_V_EX";
+    const std::string PV_SUFFIX_V_TGTPOS    = "PV_SUFFIX_V_TGTPOS";
+    const std::string PV_SUFFIX_V_JOG       = "PV_SUFFIX_V_JOG";
+    const std::string PV_SUFFIX_V_JDIFF      = "PV_SUFFIX_V_JDIFF";
     /// SCREEN YAG 1/2/3 COMMAND PVs
     // SCREEN YAG 1/2/3 COMMAND PVs
     const std::string PV_SUFFIX_H_MABS = "PV_SUFFIX_H_MABS";
     const std::string PV_SUFFIX_V_MABS = "PV_SUFFIX_V_MABS";
     const std::string PV_SUFFIX_STOP   = "PV_SUFFIX_STOP";
-    const std::string PV_SUFFIX_H_ACTPOS   = "PV_SUFFIX_H_ACTPOS";
-    const std::string PV_SUFFIX_V_ACTPOS   = "PV_SUFFIX_V_ACTPOS";
+//    const std::string PV_SUFFIX_H_ACTPOS   = "PV_SUFFIX_H_ACTPOS";
+//    const std::string PV_SUFFIX_V_ACTPOS   = "PV_SUFFIX_V_ACTPOS";
     //SCREEN YAG 1/2/3 MONITOR PVs
     const std::string PV_SUFFIX_H_RPWRLOSS = "PV_SUFFIX_H_RPWRLOSS";
     const std::string PV_SUFFIX_V_RPWRLOSS = "PV_SUFFIX_V_RPWRLOSS";
@@ -693,20 +722,20 @@ namespace UTL
     const std::string PV_SUFFIX_V_STA      = "PV_SUFFIX_V_STA";
     const std::string PV_SUFFIX_H_POS      = "PV_SUFFIX_H_POS";
     const std::string PV_SUFFIX_V_POS      = "PV_SUFFIX_V_POS";
-    const std::string PV_SUFFIX_H_MOVING   = "PV_SUFFIX_H_MOVING";
-    const std::string PV_SUFFIX_V_MOVING   = "PV_SUFFIX_V_MOVING";
-    const std::string PV_SUFFIX_H_EN       = "PV_SUFFIX_H_EN";
-    const std::string PV_SUFFIX_V_EN       = "PV_SUFFIX_V_EN";
-    const std::string PV_SUFFIX_H_CAL      = "PV_SUFFIX_H_CAL";
-    const std::string PV_SUFFIX_V_CAL      = "PV_SUFFIX_V_CAL";
-    const std::string PV_SUFFIX_H_READY    = "PV_SUFFIX_H_READY";
-    const std::string PV_SUFFIX_V_READY    = "PV_SUFFIX_V_READY";
-    const std::string PV_SUFFIX_H_JOGDOWN  = "PV_SUFFIX_H_JOGDOWN";
-    const std::string PV_SUFFIX_H_JOGUP    = "PV_SUFFIX_H_JOGUP";
-    const std::string PV_SUFFIX_H_JOGINC   = "PV_SUFFIX_H_JOGINC";
-    const std::string PV_SUFFIX_V_JOGDOWN  = "PV_SUFFIX_V_JOGDOWN";
-    const std::string PV_SUFFIX_V_JOGUP    = "PV_SUFFIX_V_JOGUP";
-    const std::string PV_SUFFIX_V_JOGINC   = "PV_SUFFIX_V_JOGINC";
+//    const std::string PV_SUFFIX_H_MOVING   = "PV_SUFFIX_H_MOVING";
+//    const std::string PV_SUFFIX_V_MOVING   = "PV_SUFFIX_V_MOVING";
+//    const std::string PV_SUFFIX_H_EN       = "PV_SUFFIX_H_EN";
+//    const std::string PV_SUFFIX_V_EN       = "PV_SUFFIX_V_EN";
+//    const std::string PV_SUFFIX_H_CAL      = "PV_SUFFIX_H_CAL";
+//    const std::string PV_SUFFIX_V_CAL      = "PV_SUFFIX_V_CAL";
+//    const std::string PV_SUFFIX_H_READY    = "PV_SUFFIX_H_READY";
+//    const std::string PV_SUFFIX_V_READY    = "PV_SUFFIX_V_READY";
+//    const std::string PV_SUFFIX_H_JOGDOWN  = "PV_SUFFIX_H_JOGDOWN";
+//    const std::string PV_SUFFIX_H_JOGUP    = "PV_SUFFIX_H_JOGUP";
+//    const std::string PV_SUFFIX_H_JOGINC   = "PV_SUFFIX_H_JOGINC";
+//    const std::string PV_SUFFIX_V_JOGDOWN  = "PV_SUFFIX_V_JOGDOWN";
+//    const std::string PV_SUFFIX_V_JOGUP    = "PV_SUFFIX_V_JOGUP";
+//    const std::string PV_SUFFIX_V_JOGINC   = "PV_SUFFIX_V_JOGINC";
     /// SCREEN YAG 1/2/3 elements, ++ there are H and V versions, so we can H and V cassette objects, see screenStructs
     /// and the screenConfigReader
     const std::string H_HOLE_6p3_MM_POS  = "H_HOLE_6p3_MM_POS";

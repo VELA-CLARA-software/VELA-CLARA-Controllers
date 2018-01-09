@@ -107,33 +107,38 @@ void screenInterface::initScreenChids()
 
         // iterate over all screen pvCom / pvMon structs,
         for( auto && it2 : scr_IT.second.pvComStructs )
+        {
             addChannel( scr_IT.second.pvRoot, it2.second );
+        }
+
         for( auto && it2 : scr_IT.second.pvMonStructs  )
+        {
             addChannel( scr_IT.second.pvRoot, it2.second );
+        }
 
-        // iterate over all screen pvCom / pvMon structs,
-        for( auto && it2 : scr_IT.second.driver.pvComStructs )
-            addChannel( scr_IT.second.pvRoot, it2.second );
-        for( auto && it2 : scr_IT.second.driver.pvMonStructs  )
-            addChannel( scr_IT.second.pvRoot, it2.second );
-
-        // iterate over all screenDriverStatus,
-        for( auto && it2 : scr_IT.second.driver.hDriverSTA.pvComStructs )
-        {
-            addChannel( scr_IT.second.pvRoot, it2.second );
-        }
-        for( auto && it2 : scr_IT.second.driver.hDriverSTA.pvMonStructs )
-        {
-            addChannel( scr_IT.second.pvRoot, it2.second );
-        }
-        for( auto && it2 : scr_IT.second.driver.vDriverSTA.pvComStructs )
-        {
-            addChannel( scr_IT.second.pvRoot, it2.second );
-        }
-        for( auto && it2 : scr_IT.second.driver.vDriverSTA.pvMonStructs )
-        {
-            addChannel( scr_IT.second.pvRoot, it2.second );
-        }
+//        // iterate over all screen pvCom / pvMon structs,
+//        for( auto && it2 : scr_IT.second.driver.pvComStructs )
+//            addChannel( scr_IT.second.pvRoot, it2.second );
+//        for( auto && it2 : scr_IT.second.driver.pvMonStructs  )
+//            addChannel( scr_IT.second.pvRoot, it2.second );
+//
+//        // iterate over all screenDriverStatus,
+//        for( auto && it2 : scr_IT.second.driver.hDriverSTA.pvComStructs )
+//        {
+//            addChannel( scr_IT.second.pvRoot, it2.second );
+//        }
+//        for( auto && it2 : scr_IT.second.driver.hDriverSTA.pvMonStructs )
+//        {
+//            addChannel( scr_IT.second.pvRoot, it2.second );
+//        }
+//        for( auto && it2 : scr_IT.second.driver.vDriverSTA.pvComStructs )
+//        {
+//            addChannel( scr_IT.second.pvRoot, it2.second );
+//        }
+//        for( auto && it2 : scr_IT.second.driver.vDriverSTA.pvMonStructs )
+//        {
+//            addChannel( scr_IT.second.pvRoot, it2.second );
+//        }
 
     }
     ///SENDING TO EPICS
@@ -149,7 +154,8 @@ void screenInterface::initScreenChids()
 //________________________________________________________________________________________________________________
 void screenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )
 {
-    std::string s1 = pvRoot + pv.pvSuffix;
+    std::string dir;
+    std::string s1 = pvRoot + dir + pv.pvSuffix;
     ca_create_channel( s1.c_str(),0,0,0, &pv.CHID );//MAGIC_NUMBER see epics CA manual, we're a 'casual user'
     debugMessage( "Create channel to ", s1 );
 }
@@ -167,7 +173,7 @@ void screenInterface::monitorScreens()
         {
             std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
 
-            addScreenObjectMonitors( it2.second,  it1.second  );
+            addScreenObjectMonitors( it2.second,  it1.second );
 
             ca_create_subscription( it2.second.CHTYPE,
                                     it2.second.COUNT,
@@ -178,64 +184,74 @@ void screenInterface::monitorScreens()
                                     &continuousMonitorStructsDEV.back()->EVID );
         }
         // iterate over the acreenDriver PvMon
-        for( auto && it2 : it1.second.driver.pvMonStructs )
-        {
-            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
-
-            addScreenDriverMonitors( it2.second,  it1.second.driver  );
-
-            ca_create_subscription( it2.second.CHTYPE,
-                                    it2.second.COUNT,
-                                    it2.second.CHID,
-                                    it2.second.MASK,
-                                    screenInterface::staticEntryScreenMonitor,
-                                    (void*)continuousMonitorStructsDEV.back(),
-                                    &continuousMonitorStructsDEV.back()->EVID );
-        }
-        // iterate over the hDriverSTA screenDriverStatus PvMon
-        for( auto && it2 : it1.second.driver.hDriverSTA.pvMonStructs )
-        {
-            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
-
-            addScreenDriverStatusMonitors( it2.second,  it1.second.driver.hDriverSTA  );
-
-            ca_create_subscription( it2.second.CHTYPE,
-                                    it2.second.COUNT,
-                                    it2.second.CHID,
-                                    it2.second.MASK,
-                                    screenInterface::staticEntryScreenMonitor,
-                                    (void*)continuousMonitorStructsDEV.back(),
-                                    &continuousMonitorStructsDEV.back()->EVID );
-        }
-        // iterate over the vDriverSTA screenDriverStatus PvMon
-        for( auto && it2 : it1.second.driver.vDriverSTA.pvMonStructs )
-        {
-            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
-
-            addScreenDriverStatusMonitors( it2.second,  it1.second.driver.vDriverSTA  );
-
-            ca_create_subscription( it2.second.CHTYPE,
-                                    it2.second.COUNT,
-                                    it2.second.CHID,
-                                    it2.second.MASK,
-                                    screenInterface::staticEntryScreenMonitor,
-                                    (void*)continuousMonitorStructsDEV.back(),
-                                    &continuousMonitorStructsDEV.back()->EVID );
-        }
+//        for( auto && it2 : it1.second.driver.pvMonStructs )
+//        {
+//            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
+//
+//            addScreenDriverMonitors( it2.second,  it1.second.driver  );
+//
+//            ca_create_subscription( it2.second.CHTYPE,
+//                                    it2.second.COUNT,
+//                                    it2.second.CHID,
+//                                    it2.second.MASK,
+//                                    screenInterface::staticEntryScreenMonitor,
+//                                    (void*)continuousMonitorStructsDEV.back(),
+//                                    &continuousMonitorStructsDEV.back()->EVID );
+//        }
+//        // iterate over the hDriverSTA screenDriverStatus PvMon
+//        for( auto && it2 : it1.second.driver.hDriverSTA.pvMonStructs )
+//        {
+//            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
+//
+//            addScreenDriverStatusMonitors( it2.second,  it1.second.driver.hDriverSTA  );
+//
+//            ca_create_subscription( it2.second.CHTYPE,
+//                                    it2.second.COUNT,
+//                                    it2.second.CHID,
+//                                    it2.second.MASK,
+//                                    screenInterface::staticEntryScreenMonitor,
+//                                    (void*)continuousMonitorStructsDEV.back(),
+//                                    &continuousMonitorStructsDEV.back()->EVID );
+//        }
+//        // iterate over the vDriverSTA screenDriverStatus PvMon
+//        for( auto && it2 : it1.second.driver.vDriverSTA.pvMonStructs )
+//        {
+//            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
+//
+//            addScreenDriverStatusMonitors( it2.second,  it1.second.driver.vDriverSTA  );
+//
+//            ca_create_subscription( it2.second.CHTYPE,
+//                                    it2.second.COUNT,
+//                                    it2.second.CHID,
+//                                    it2.second.MASK,
+//                                    screenInterface::staticEntryScreenMonitor,
+//                                    (void*)continuousMonitorStructsDEV.back(),
+//                                    &continuousMonitorStructsDEV.back()->EVID );
+//        }
     }
     int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to Screen Monitors", "!!TIMEOUT!! Subscription to Screen monitors failed" );
     if ( status == ECA_NORMAL )
         allMonitorsStarted = true; /// interface base class member, not actually used but good to know
 }
 //_______________________________________________________________________________________________________________
-void screenInterface::addScreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObject & obj  )
+void screenInterface::addScreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObject & obj )
 {
     continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
     continuousMonitorStructsDEV.back() -> interface = this;
     continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
     continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
+    continuousMonitorStructsDEV.back() -> dir       = pvs.dir;
     continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
 }
+////_______________________________________________________________________________________________________________
+//void screenInterface::addScreenObjectMonitors( screenStructs::pvStruct & pvs,  screenStructs::screenObject & obj  )
+//{
+//    continuousMonitorStructsDEV.push_back( new screenStructs::monitorStruct() );
+//    continuousMonitorStructsDEV.back() -> interface = this;
+//    continuousMonitorStructsDEV.back() -> monType   = pvs.pvType;
+//    continuousMonitorStructsDEV.back() -> CHTYPE    = pvs.CHTYPE;
+//    continuousMonitorStructsDEV.back() -> obj       = (void*)&obj;
+//}
 //_______________________________________________________________________________________________________________
 void screenInterface::addScreenDriverMonitors( screenStructs::pvStruct & pvs, screenStructs::screenDriver & obj )// see screenstructs for a screenDriverStatus
 {
@@ -271,33 +287,195 @@ void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
     //std::cout << "staticEntryScreenMonitor " << std::endl;
     switch ( ms -> monType )// based on which monitor we call a differnwet update function
     {
-        case  screenStructs::SCREEN_PV_TYPE::Sta:
-            ms->interface->updateSta( ms, *(unsigned short*)args.dbr);
+        case screenStructs::SCREEN_PV_TYPE::H_GET_DEV:
+            ms->interface->updateGetDev( ms, *(unsigned short*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::STA:
-            ms->interface->update_STA_Bit_map( ms, *(int*) args.dbr );
+        case screenStructs::SCREEN_PV_TYPE::V_GET_DEV:
+            ms->interface->updateGetDev( ms, *(unsigned short*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::RPOS:
-             ms->interface->updateRPOS( ms, *(double*)args.dbr   );
+        case screenStructs::SCREEN_PV_TYPE::H_DEV_STATE:
+            ms->interface->updateDevState( ms, *(unsigned short*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::PROT01:
-             ms->interface->updatePROT01( ms, *(double*)args.dbr );
+        case screenStructs::SCREEN_PV_TYPE::V_DEV_STATE:
+            ms->interface->updateDevState( ms, *(unsigned short*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::PROT03:
-             ms->interface->updatePROT03( ms, *(double*)args.dbr );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::PROT05:
-             ms->interface->updatePROT05( ms, *(double*)args.dbr );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::ACTPOS:
-             ms->interface->updateACTPOS( ms, *(double*)args.dbr );
-            break;
-        case  screenStructs::SCREEN_PV_TYPE::EN:
-             ms->interface->updateEN( ms, *(unsigned short*)args.dbr );
-            break;
+//        case  screenStructs::SCREEN_PV_TYPE::Sta:
+//            ms->interface->updateSta( ms, *(unsigned short*)args.dbr);
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::STA:
+//            ms->interface->update_STA_Bit_map( ms, *(int*) args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::RPOS:
+//             ms->interface->updateRPOS( ms, *(double*)args.dbr   );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT01:
+//             ms->interface->updatePROT01( ms, *(double*)args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT03:
+//             ms->interface->updatePROT03( ms, *(double*)args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::PROT05:
+//             ms->interface->updatePROT05( ms, *(double*)args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::ACTPOS:
+//             ms->interface->updateACTPOS( ms, *(double*)args.dbr );
+//            break;
+//        case  screenStructs::SCREEN_PV_TYPE::EN:
+//             ms->interface->updateEN( ms, *(unsigned short*)args.dbr );
+//            break;
     }
 }
-////_________________________________________________________________________________________________________________
+//_________________________________________________________________________________________________________________
+void screenInterface::updateGetDev( screenStructs::monitorStruct * ms, const unsigned short args )
+{
+    screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
+    //unsigned short value = *(unsigned short*)args.dbr;
+    const std::string screenName = obj -> name;
+    if( entryExists(allScreentData, screenName ) )
+    {
+        if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+        {
+            switch( args )
+            {
+                case 0:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_RETRACTED;
+                    break;
+                case 1:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_MAX;
+                    break;
+                case 7:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_SLIT_1;
+                    break;
+                case 8:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_SLIT_2;
+                    break;
+                case 9:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_SLIT_3;
+                    break;
+                case 10:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_APT_1;
+                    break;
+                case 11:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_2;
+                    break;
+                case 12:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_APT_3;
+                    break;
+                default:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+            }
+        }
+        else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
+        {
+            switch( args )
+            {
+                case 0:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_RETRACTED;
+                    break;
+                case 1:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_MAX;
+                    break;
+                case 2:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_RF;
+                    break;
+                case 3:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_MIRROR;
+                    break;
+                case 4:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_YAG;
+                    break;
+                case 5:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_GRAT;
+                    break;
+                case 6:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_COL;
+                    break;
+                default:
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+            }
+        }
+        // this is also copying the pvstructs maps that we know
+        //will never be used (IS THIS A PROBLEM?)
+        message(screenName,": Set state is ",
+                ENUM_TO_STRING(allScreentData.at(screenName).screenSetState));
+    }
+}
+//_________________________________________________________________________________________________________________
+void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const unsigned short args )
+{
+    screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
+    //unsigned short value = *(unsigned short*)args.dbr;
+    const std::string screenName = obj -> name;
+    if( entryExists(allScreentData, screenName ) )
+    {
+        if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+        {
+            switch( args )
+            {
+                case 0:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_RETRACTED;
+                    break;
+                case 1:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_MAX;
+                    break;
+                case 7:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_SLIT_1;
+                    break;
+                case 8:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_SLIT_2;
+                    break;
+                case 9:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_SLIT_3;
+                    break;
+                case 10:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_1;
+                    break;
+                case 11:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_2;
+                    break;
+                case 12:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_3;
+                    break;
+                default:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+            }
+        }
+        else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
+        {
+            switch( args )
+            {
+                case 0:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_RETRACTED;
+                    break;
+                case 1:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_MAX;
+                    break;
+                case 2:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_RF;
+                    break;
+                case 3:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_MIRROR;
+                    break;
+                case 4:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_YAG;
+                    break;
+                case 5:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_GRAT;
+                    break;
+                case 6:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_COL;
+                    break;
+                default:
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+            }
+        }
+        // this is also copying the pvstructs maps that we know
+        //will never be used (IS THIS A PROBLEM?)
+        message(screenName,": Current state is ",
+                ENUM_TO_STRING(allScreentData.at(screenName).screenState));
+    }
+}
+//_________________________________________________________________________________________________________________
 void screenInterface::updatePROT03( screenStructs::monitorStruct * ms, const double args )
 {
     screenStructs::screenDriver * obj = reinterpret_cast<screenStructs::screenDriver *> (ms->obj);

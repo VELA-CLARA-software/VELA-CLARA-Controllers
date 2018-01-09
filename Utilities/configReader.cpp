@@ -85,6 +85,11 @@ double configReader::getNumD(const  std::string & str)
     return atof(str.c_str());
 }
 //______________________________________________________________________________
+unsigned short configReader::getNumUS(const  std::string & str)
+{
+    return (unsigned short)atof(str.c_str());
+}
+//______________________________________________________________________________
 long configReader::getNumL(const  std::string & str)
 {
     return (long)atof(str.c_str());

@@ -112,6 +112,8 @@ class screenInterface: public interface
         void updatePROT05(screenStructs::monitorStruct* ms,const double args);
         void updateACTPOS(screenStructs::monitorStruct* ms,const double args);
         void updateEN(screenStructs::monitorStruct* ms,const unsigned short args);
+        void updateGetDev( screenStructs::monitorStruct * ms, const unsigned short args );
+        void updateDevState( screenStructs::monitorStruct * ms, const unsigned short args );
         //void updateMABS(screenStructs::monitorStruct* ms,const double args);
 
         // version to use when we already know the answer
