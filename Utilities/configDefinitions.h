@@ -667,12 +667,12 @@ namespace UTL
     const std::string IP_ADDRESS_STREAM         ="IP_ADDRESS_STREAM";
 
     /// SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
-    const std::string VELA_PNEUMATIC_SCREEN  =  "VELA_PNEUMATIC_SCREEN";
-    const std::string CLARA_PNEUMATIC_SCREEN =  "CLARA_PNEUMATIC_SCREEN";
-    const std::string VELA_HV_MOVER_SCREEN   =  "VELA_HV_MOVER_SCREEN";
-    const std::string CLARA_HV_MOVER_SCREEN  =  "CLARA_HV_MOVER_SCREEN";
-    const std::string CLARA_V_MOVER_SCREEN   =  "CLARA_V_MOVER_SCREEN";
-    const std::string SCREEN_TYPE            =  "SCREEN_TYPE";
+    const std::string VELA_PNEUMATIC  =  "VELA_PNEUMATIC";
+    const std::string CLARA_PNEUMATIC =  "CLARA_PNEUMATIC";
+    const std::string VELA_HV_MOVER   =  "VELA_HV_MOVER";
+    const std::string CLARA_HV_MOVER  =  "CLARA_HV_MOVER";
+    const std::string CLARA_V_MOVER   =  "CLARA_V_MOVER";
+    const std::string SCREEN_TYPE     =  "SCREEN_TYPE";
     /// SCREENS Update 8/1/18
     const std::string PV_SUFFIX_H_MOVING    = "PV_SUFFIX_H_MOVING";
     const std::string PV_SUFFIX_H_READY     = "PV_SUFFIX_H_READY";
@@ -687,7 +687,7 @@ namespace UTL
     const std::string PV_SUFFIX_H_EX        = "PV_SUFFIX_H_EX";
     const std::string PV_SUFFIX_H_TGTPOS    = "PV_SUFFIX_H_TGTPOS";
     const std::string PV_SUFFIX_H_JOG       = "PV_SUFFIX_H_JOG";
-    const std::string PV_SUFFIX_H_JDIFF      = "PV_SUFFIX_H_JDIFF";
+    const std::string PV_SUFFIX_H_JDIFF     = "PV_SUFFIX_H_JDIFF";
     const std::string PV_SUFFIX_V_MOVING    = "PV_SUFFIX_V_MOVING";
     const std::string PV_SUFFIX_V_READY     = "PV_SUFFIX_V_READY";
     const std::string PV_SUFFIX_V_GET_DEV   = "PV_SUFFIX_V_GET_DEV";
@@ -703,7 +703,7 @@ namespace UTL
     const std::string PV_SUFFIX_V_JOG       = "PV_SUFFIX_V_JOG";
     const std::string PV_SUFFIX_V_JDIFF     = "PV_SUFFIX_V_JDIFF";
     /// SCREEN YAG 1/2/3 COMMAND PVs
-    const std::string PV_SUFFIX_H_RETRACTED = "PV_SUFFIX_H_MABS";
+    const std::string PV_SUFFIX_H_RETRACTED = "PV_SUFFIX_H_RETRACTED";
     const std::string PV_SUFFIX_H_SLIT_1    = "PV_SUFFIX_H_SLIT_1";
     const std::string PV_SUFFIX_H_SLIT_2    = "PV_SUFFIX_H_SLIT_2";
     const std::string PV_SUFFIX_H_SLIT_3    = "PV_SUFFIX_H_SLIT_3";

@@ -272,7 +272,7 @@
 	<string>
 	<vector>
 
-1515497696 d:\vela-clara_software\vela-clara-controllers\structs\screenstructs.h
+1515761975 d:\vela-clara_software\vela-clara-controllers\structs\screenstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -280,7 +280,7 @@
 	<thread>
 	<cadef.h>
 
-1515499699 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
+1515601489 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -293,7 +293,7 @@
 	<string>
 	<atomic>
 
-1515488843 d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.h
+1515601083 d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -361,14 +361,14 @@
 
 1506581256 source:d:\vela-clara_software\vela-clara-controllers\python modules\screens\main.cpp
 
-1515498905 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.cpp
+1515772793 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.cpp
 	"screenController.h"
 	<iostream>
 	<time.h>
 	"screenInterface.h"
 	"structs.h"
 
-1515498697 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.h
+1515772677 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.h
 	"screenStructs.h"
 	"screenInterface.h"
 	"controller.h"
@@ -376,7 +376,7 @@
 	<string>
 	<vector>
 
-1515498330 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.h
+1515772665 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.h
 	"interface.h"
 	"screenStructs.h"
 	"screenConfigReader.h"
@@ -384,7 +384,7 @@
 	<string>
 	<atomic>
 
-1515499070 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.cpp
+1515772907 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.cpp
 	"screenInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -392,7 +392,7 @@
 	<chrono>
 	<thread>
 
-1515499306 source:d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.cpp
+1515761796 source:d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.cpp
 	"screenConfigReader.h"
 	"screenStructs.h"
 	<iostream>
@@ -403,4 +403,22 @@
 	<time.h>
 	<algorithm>
 	<ctype.h>
+
+1506581257 source:d:\vela-clara_software\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
+	"VCscreens.h"
+	<iostream>
+
+1515772701 d:\vela-clara_software\vela-clara-controllers\python modules\screens\include\vcscreens.h
+	<string>
+	"screenController.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/config.hpp>
+	<boost/python.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/object/function.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/docstring_options.hpp>
 
