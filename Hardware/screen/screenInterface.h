@@ -27,31 +27,58 @@ class screenInterface: public interface
                         const VELA_ENUM::MACHINE_AREA myMachineArea );
         ~screenInterface();
 
+        bool isHOut(screenStructs::screenObject& scr);
+        bool isVOut(screenStructs::screenObject& scr);
+        bool is_HandV_OUT(screenStructs::screenObject& scr);
+        bool isHOut(const std::string & name);
+        bool isVOut(const std::string & name);
+        bool is_HandV_OUT(const std::string & name);
+        bool isHIn(screenStructs::screenObject& scr);
+        bool isVIn(screenStructs::screenObject& scr);
+        bool isScreenIn(screenStructs::screenObject& scr);
+        bool isHIn(const std::string & name);
+        bool isVIn(const std::string & name);
+        bool isScreenIn(const std::string & name);
+        void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
+        void resetPosition( const std::string & name );
+        void jogScreen( const std::string & name, const double jog );
+        bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
+        bool setScreenTrigger(const std::string & name );
+//        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
+        const std::string getScreenState(const std::string & name);
+        bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
+        bool isYAGIn(const std::string & name);
+//        bool isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta);
+//        bool isScreenOUT(const std::string & name, const bool weKnowEntryExists = false );
+        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
+        bool isHElement(const std::string & name, const screenStructs::SCREEN_STATE e);
+        bool isVElement(const std::string & name, const screenStructs::SCREEN_STATE e);
+        bool isHEnabled(const std::string & name);
+        bool isVEnabled(const std::string & name);
+        double getACTPOS(const std::string & name);
+
         // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
-        bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);
-        bool screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states);
-        bool screenIN ( const std::string & name );
-        bool screenOUT( const std::string & name );
-        bool screenOUT( const std::vector< std::string > & names );
-        bool screenIN ( const std::vector< std::string > & names );
-        bool setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value );
+//        bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);
+//        bool screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states);
+//        bool screenIN ( const std::string & name );
+//        bool screenOUT( const std::string & name );
+//        bool screenOUT( const std::vector< std::string > & names );
+//        bool screenIN ( const std::vector< std::string > & names );
+//        bool setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value );
 
 
         // 'existential quantification' - ahem
-        bool isMoving(const std::string& name,const bool weKnowEntryExists = false );
-        bool isNotMoving(const std::string& name,const bool weKnowEntryExists = false );
-        bool isHCassetteOUT(screenStructs::screenObject& scr);
-        bool isVCassetteOUT(screenStructs::screenObject& scr);
-        bool is_HandV_CassetteOUT(screenStructs::screenObject& scr);
+//        bool isMoving(const std::string& name,const bool weKnowEntryExists = false );
+//        bool isNotMoving(const std::string& name,const bool weKnowEntryExists = false );
+//        bool isHCassetteOUT(screenStructs::screenObject& scr);
+//        bool isVCassetteOUT(screenStructs::screenObject& scr);
+//        bool is_HandV_CassetteOUT(screenStructs::screenObject& scr);
+
         bool is_VELA_PNEUMATIC(const std::string & name);
         bool is_VELA_HV_MOVER (const std::string & name);
         bool is_CLARA_PNEUMATIC (const std::string & name);
         bool is_CLARA_HV_MOVER (const std::string & name);
         bool is_CLARA_V_MOVER (const std::string & name);
-        bool is_H_Element(screenStructs::SCREEN_STATE e);
-        bool is_V_Element(screenStructs::SCREEN_STATE e);
-        bool isScreenOUT(const std::string & name, const bool weKnowEntryExists = false );
-        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
         std::vector<bool> isScreenIN( const std::vector<std::string> & name );
         std::vector<bool> isScreenOUT( const std::vector<std::string> & name );
         std::vector<bool> exists_and_isLocked(const std::string& name);
@@ -66,10 +93,6 @@ class screenInterface: public interface
         const std::vector<std::string> get_CLARA_V_MOVER_Screens(   const std::vector< std::string > & names );
 
         // i want to make sure so python does not have access to the second arguemnt
-        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
-
-        bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
-
         void checkScreenCHIDStates();
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived interface...
@@ -91,7 +114,7 @@ class screenInterface: public interface
         void monitorScreens();// calls the below functions to add to continuousMonitorStructsDEV
         void addScreenObjectMonitors(screenStructs::pvStruct& pvs, screenStructs::screenObject& obj);
         void addScreenDriverMonitors(screenStructs::pvStruct& pvs, screenStructs::screenDriver& obj);// see screenstructs for a screenDriver
-        void addScreenDriverStatusMonitors(screenStructs::pvStruct& pvs,screenStructs::screenDriverStatus& obj);// see screenstructs for a screenDriver
+//        void addScreenDriverStatusMonitors(screenStructs::pvStruct& pvs,screenStructs::screenDriverStatus& obj);// see screenstructs for a screenDriver
 
         // this map conatins all the screen objects, which combine online and offline data
         std::map<std::string,screenStructs::screenObject>allScreentData;
@@ -105,13 +128,13 @@ class screenInterface: public interface
 
         void updateRPOS(screenStructs::monitorStruct* ms, const double args);
         // update RPOS updates the screen state, if there is a match
-        void updateCassettePosition(screenStructs::screenCassette& cas, const double pos  );
+//        void updateCassettePosition(screenStructs::screenCassette& cas, const double pos  );
 
-        void updatePROT01(screenStructs::monitorStruct* ms,const double args);
-        void updatePROT03(screenStructs::monitorStruct* ms,const double args);
-        void updatePROT05(screenStructs::monitorStruct* ms,const double args);
         void updateACTPOS(screenStructs::monitorStruct* ms,const double args);
-        void updateEN(screenStructs::monitorStruct* ms,const unsigned short args);
+        void updateEN(screenStructs::monitorStruct* ms, const unsigned short args);
+        void updateGetDev( screenStructs::monitorStruct * ms, const unsigned short args );
+        void updateDevState( screenStructs::monitorStruct * ms, const unsigned short args );
+        void updateDevCent( screenStructs::monitorStruct * ms, const double args );
         //void updateMABS(screenStructs::monitorStruct* ms,const double args);
 
         // version to use when we already know the answer
@@ -151,22 +174,22 @@ class screenInterface: public interface
         bool move_CLARA_HV_MOVER_Screens  (const std::vector<std::string>& names,const std::vector< screenStructs::SCREEN_STATE > & states  );
         bool move_CLARA_V_MOVER_Screens  (const std::vector<std::string>& names,const std::vector< screenStructs::SCREEN_STATE > & states  );
         bool set_VELA_HV_MOVER_Position(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta );
-        bool set_VELA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driverS, const double value);
-        bool set_VELA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta );
-        bool set_CLARA_HV_MOVER_Position(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta );
-        bool set_CLARA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driverS, const double value);
-        bool set_CLARA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta );
+//        bool set_VELA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driverS, const double value);
+//        bool set_VELA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta );
+//        bool set_CLARA_HV_MOVER_Position(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta );
+//        bool set_CLARA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driverS, const double value);
+//        bool set_CLARA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta );
 
         // complex screen movements are handled in different threads,
         // HV_dualMoveStruct contains the info to run that thread
-        std::map<size_t,screenStructs::HV_dualMoveStruct> screenDualMoveStructsMap;
+//        std::map<size_t,screenStructs::HV_dualMoveStruct> screenDualMoveStructsMap;
 
         // screens are locked if this prgoramme is moving them, but...
         // they also have a trajectory bool, that locks them when moved external to this controller (i.e. by controls synoptic)
 
         std::map<std::string,std::atomic<bool> > isLockedMap; /// std::atomic< bool > are not CopyConstructible, so this is held locally
 
-        static void staticEntryDualMove(screenStructs::HV_dualMoveStruct & ms );
+//        static void staticEntryDualMove(screenStructs::HV_dualMoveStruct & ms );
         size_t dualMoveNum;
 
         void killFinishedMoveThreads();
@@ -174,11 +197,11 @@ class screenInterface: public interface
         //static function that can be called back from epics to update values
         static void staticEntryScreenMonitor( const event_handler_args args );
 
-        bool yagOnV(const screenStructs::screenDriver& scrdr );
-        bool isVDriveEnabled (const screenStructs::screenDriver& scrdr);
-        bool isHDriveEnabled (const screenStructs::screenDriver& scrdr);
-        bool isHDriveDisabled(const screenStructs::screenDriver& scrdr);
-        bool isVDriveDisabled(const screenStructs::screenDriver& scrdr);
+//        bool yagOnV(const screenStructs::screenDriver& scrdr );
+//        bool isVDriveEnabled (const screenStructs::screenDriver& scrdr);
+//        bool isHDriveEnabled (const screenStructs::screenDriver& scrdr);
+//        bool isHDriveDisabled(const screenStructs::screenDriver& scrdr);
+//        bool isVDriveDisabled(const screenStructs::screenDriver& scrdr);
         bool is_H_element_AND_HDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver & scrdr);
         bool is_V_element_AND_VDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver & scrdr);
         bool is_OUT_AND_VDriveEnabled(const std::string & name);
@@ -187,8 +210,8 @@ class screenInterface: public interface
         bool screen_is_in_AND_sta_is_out(const std::string & name, const screenStructs::SCREEN_STATE sta );
 
         // return the psoition of teh element in the map
-        double getElementPosition(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e );
-        double getElementPos(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e );
+//        double getElementPosition(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e );
+//        double getElementPos(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e );
 
 
         //std::map<std::string,  std::atomic< bool > > dualMoveNum; /// std::atomic< bool > are not CopyConstructible, so this is held locally
