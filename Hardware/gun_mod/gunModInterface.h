@@ -76,5 +76,8 @@ class gunModInterface : public interface
 //
         gunModConfigReader configReader; /// class member so we can pass in file path in ctor
 //        ///message
+        void setStateRead(const void* argsdbr);
+
+
 };
 #endif // VELA_MAG_INTERFACE_H

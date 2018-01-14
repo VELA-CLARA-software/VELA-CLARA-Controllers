@@ -175,7 +175,8 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
     switch(ms -> monType)
     {
         case rfModStructs::GUN_MOD_PV_TYPE::STATE_READ:
-            ms->interface->debugMessage("GUN_MOD_PV_TYPE::STATE_READ = ", *(double*)args.dbr);
+            ms->interface->debugMessage("GUN_MOD_PV_TYPE::STATE_READ = ", *(int*)args.dbr);
+            ms->interface->setStateRead(args.dbr);
             //ms->rfModStructs->vPos =  *(double*)args.dbr;
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ:
@@ -247,7 +248,55 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
     }
 }
 //____________________________________________________________________________________________
-
+void gunModInterface::setStateRead( const void * argsdbr )
+{
+    switch( *(unsigned short*)argsdbr )
+    {
+        case 1:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::ERROR1;
+            break;
+        case 2:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::OFF;
+            break;
+        case 3:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::off_Request;
+            break;
+        case 4:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_Intrlock;
+            break;
+        case 5:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::Standby_Request;
+            break;
+        case 6:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::Standby;
+            break;
+        case 7:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_Off_Requ;
+            break;
+        case 8:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::Trigger_Interl;
+            break;
+        case 9:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_Request;
+            break;
+        case 10:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_On;
+            break;
+        case 11:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::Trig_Off_Req;
+            break;
+        case 12:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::Trig_Request;
+            break;
+        case 13:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::Trig;
+            break;
+        default:
+            gunMod.state = rfModStructs::GUN_MOD_STATE::ERROR1;
+            break;
+    }
+    message( gunMod.name," ",gunMod.name," state changed to ",ENUM_TO_STRING(gunMod.state) );
+}
 
 
 

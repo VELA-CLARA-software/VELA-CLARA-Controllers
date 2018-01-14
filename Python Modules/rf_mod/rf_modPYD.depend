@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1503044142 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1511440978 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1503048297 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1511440978 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -12,14 +12,14 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1499099270 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1514982241 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
 	"baseObject.h"
 	"structs.h"
 
-1503323828 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1515170735 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -38,17 +38,18 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
 
-1499161166 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1515083515 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	<vector>
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1500030100 source:d:\vela\git projects\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.cpp
+1511440978 source:d:\vela\git projects\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.cpp
 	"gunModController.h"
 
-1500030100 d:\vela\git projects\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.h
+1511440978 d:\vela\git projects\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -65,7 +66,7 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 
-1506678471 d:\vela\git projects\vela-clara-controllers\hardware\gun_mod\gunmodinterface.h
+1515592335 d:\vela\git projects\vela-clara-controllers\hardware\gun_mod\gunmodinterface.h
 	"interface.h"
 	"rfModStructs.h"
 	"structs.h"
@@ -82,7 +83,7 @@
 	<map>
 	<cadef.h>
 
-1506677834 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1515160516 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -94,14 +95,14 @@
 	"configReader.h"
 	"pilaserStructs.h"
 
-1498745008 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+1515170738 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
 	<vector>
 	<cadef.h>
 
-1506679930 d:\vela\git projects\vela-clara-controllers\structs\rfmodstructs.h
+1511438727 d:\vela\git projects\vela-clara-controllers\structs\rfmodstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -119,7 +120,7 @@
 	<algorithm>
 	<thread>
 
-1498745008 d:\vela\git projects\vela-clara-controllers\utilities\dburt.h
+1511440987 d:\vela\git projects\vela-clara-controllers\utilities\dburt.h
 	<string>
 	<vector>
 	<map>
@@ -129,10 +130,10 @@
 	"magnetStructs.h"
 	"magnetInterface.h"
 
-1493198639 d:\vela\git projects\vela-clara-controllers\utilities\dburtdefinitions.h
+1511440987 d:\vela\git projects\vela-clara-controllers\utilities\dburtdefinitions.h
 	<string>
 
-1498745095 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
+1511440987 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -141,7 +142,7 @@
 	<thread>
 	<cadef.h>
 
-1498745095 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
+1511440978 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
 	"interface.h"
 	"magnetStructs.h"
 	"structs.h"
@@ -151,7 +152,7 @@
 	<atomic>
 	<map>
 
-1498745095 d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.h
+1511440987 d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -178,7 +179,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1506680137 source:d:\vela\git projects\vela-clara-controllers\utilities\gunmodconfigreader.cpp
+1511440987 source:d:\vela\git projects\vela-clara-controllers\utilities\gunmodconfigreader.cpp
 	"gunModConfigReader.h"
 	"configDefinitions.h"
 	"rfModStructs.h"
@@ -191,7 +192,7 @@
 	<algorithm>
 	<ctype.h>
 
-1493198639 d:\vela\git projects\vela-clara-controllers\utilities\gunmodconfigreader.h
+1511440987 d:\vela\git projects\vela-clara-controllers\utilities\gunmodconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -206,17 +207,17 @@
 	<map>
 	<cadef.h>
 
-1493198637 source:d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\main.cpp
+1493195037 source:d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\main.cpp
 	"main.h"
 
-1493198637 d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\main.h
+1493195037 d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\main.h
 	<windows.h>
 
-1506677602 source:d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\src\vcrfmod.cpp
+1511438727 source:d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\src\vcrfmod.cpp
 	"VCrfmod.h"
 	<iostream>
 
-1506677606 d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\include\vcrfmod.h
+1513957290 d:\vela\git projects\vela-clara-controllers\python modules\rf_mod\include\vcrfmod.h
 	<string>
 	"gunModController.h"
 	"l01ModController.h"
@@ -224,14 +225,14 @@
 	"rfModStructs.h"
 	"VCheader.h"
 
-1500030100 source:d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modcontroller.cpp
+1511440978 source:d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modcontroller.cpp
 	"l01ModController.h"
 
-1500030100 d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modcontroller.h
+1511440978 d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modcontroller.h
 	"controller.h"
 	"l01ModInterface.h"
 
-1500030100 source:d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modinterface.cpp
+1511440978 source:d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modinterface.cpp
 	"l01ModInterface.h"
 	"l01ModInterface.h"
 	"dburt.h"
@@ -242,14 +243,14 @@
 	<algorithm>
 	<thread>
 
-1500030100 d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modinterface.h
+1511440978 d:\vela\git projects\vela-clara-controllers\hardware\l01_mod\l01modinterface.h
 	"interface.h"
 	"rfModStructs.h"
 	"structs.h"
 	"l01ModConfigReader.h"
 	<string>
 
-1500030101 d:\vela\git projects\vela-clara-controllers\utilities\l01modconfigreader.h
+1511440987 d:\vela\git projects\vela-clara-controllers\utilities\l01modconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -257,7 +258,7 @@
 	"configReader.h"
 	"rfModStructs.h"
 
-1506670287 source:d:\vela\git projects\vela-clara-controllers\utilities\l01modconfigreader.cpp
+1511440987 source:d:\vela\git projects\vela-clara-controllers\utilities\l01modconfigreader.cpp
 	"l01ModConfigReader.h"
 	"configDefinitions.h"
 	"rfModStructs.h"
@@ -270,7 +271,7 @@
 	<algorithm>
 	<ctype.h>
 
-1504093066 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1515160518 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>

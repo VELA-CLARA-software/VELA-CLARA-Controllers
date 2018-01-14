@@ -23,7 +23,8 @@ namespace llrfStructs
     // the LIB_ prefix is for libera LLRF controls, maybe in teh fuitre we get different ones?
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_PV_TYPE,
                                                      (LIB_ILOCK_STATE)
-                                                     (LIB_SP_LOCK_STATE)
+                                                     (LIB_FF_AMP_LOCK_STATE)
+                                                     (LIB_FF_PHASE_LOCK_STATE)
                                                      (LIB_RF_OUTPUT)
                                                      (LIB_AMP_FF)
                                                      (LIB_AMP_SP)
@@ -141,7 +142,7 @@ namespace llrfStructs
             time(UTL::ZERO_DOUBLE),
             mean_start_index(UTL::ZERO_SIZET),
             mean_stop_index(UTL::ZERO_SIZET),
-            mean(UTL::ZERO_DOUBLE),
+            mean(UTL::DUMMY_DOUBLE),
             timeStr("unknown"),
             name("unknown"),
             EVID_timeStr("unknown"),
@@ -195,9 +196,13 @@ namespace llrfStructs
             previous_previous_trace(UTL::MINUS_TWO_INT),
             add_next_trace_to_outside_mask_trace(false),
             outside_mask_trace_part(UTL::ZERO_SIZET),
+            amp_drop_value(UTL::ZERO_DOUBLE),
+            drop_amp_on_breakdown(false),
+            num_continuous_outside_mask_count(UTL::ONE_SIZET),
+            mask_floor(UTL::ZERO_INT),
             EVID("NONE")//MAGIC_STRING
             {}
-        size_t shot;
+        size_t shot,num_continuous_outside_mask_count;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
         size_t  buffersize, trace_size, average_size,rolling_sum_counter,mean_start_index,mean_stop_index;
         // Counter allowing you to access/update the correct part of  traces
@@ -216,10 +221,12 @@ namespace llrfStructs
         // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
         // rolling_average is then calculated by dividing rolling_sum by average_size
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
+        int mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to
-        bool add_next_trace_to_outside_mask_trace;
+        bool add_next_trace_to_outside_mask_trace, drop_amp_on_breakdown;
         size_t outside_mask_trace_part;
+        double amp_drop_value;
         LLRF_SCAN scan;
     };
 
@@ -265,14 +272,17 @@ namespace llrfStructs
             pulse_offset(UTL::DUMMY_DOUBLE),
             event_count(UTL::ZERO_SIZET),
             check_mask(false),
-            ff_lock_state(false),
+            ff_amp_lock_state(false),
+            ff_ph_lock_state(false),
             interlock_state(false),
             num_outside_mask_traces(UTL::ZERO_SIZET),
             pulse_latency(UTL::ZERO_SIZET),
             timer_start(UTL::ZERO_SIZET),
             breakdown_rate(UTL::ZERO_DOUBLE),
             amp_drop_value(UTL::ZERO_DOUBLE),
-            drop_amp_on_breakdown(false)
+            drop_amp_on_breakdown(false),
+            activePulseCount(UTL::ZERO_SIZET),
+            previous_pulseCount(UTL::ZERO_SIZET)
                      {}
         std::vector<std::string> tracesToSaveOnBreakDown;
         std::string name, pvRoot, EVIDStr;
@@ -282,19 +292,20 @@ namespace llrfStructs
         double amp_sp, amp_ff,maxAmp;
         double pulse_length,pulse_offset;
         double breakdown_rate, amp_drop_value;
-        bool rf_output, check_mask, ff_lock_state,interlock_state,drop_amp_on_breakdown;
+        bool rf_output, check_mask, ff_amp_lock_state,ff_ph_lock_state,interlock_state,drop_amp_on_breakdown;
         //long ampR,phiLLRF,ampW,crestPhi,maxAmp;
         int numIlocks;
         LLRF_TYPE type;
         size_t traceLength,event_count,num_outside_mask_traces,
            // the llrf doesn't fire immediatly after recieving a trigger
         // this is the (approx) number of elements of noise in an rf trace
-        pulse_latency;
+        pulse_latency, activePulseCount, previous_pulseCount;
         long long timer_start;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
-        // they name teh channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )
+        // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )
         std::map<std::string, rf_trace_data> trace_data;
         std::vector<outside_mask_trace> outside_mask_traces;
+        std::vector<std::string> outside_mask_trace_name;
         rf_trace time_vector;
         std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::iLockPVStruct> iLockPVStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvMonStructs;

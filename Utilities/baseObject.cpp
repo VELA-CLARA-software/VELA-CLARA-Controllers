@@ -38,3 +38,24 @@ std::string baseObject::currentDateTime()
     strftime(buf, sizeof(buf), "%Y-%m-%d-%H%M", &tstruct);
     return buf;
 }
+//______________________________________________________________________________
+int baseObject::getNum(const std::string & str)
+{
+    //std::string num = getAfterEqualsSign(str);
+    return atoi(str.c_str());
+}
+//______________________________________________________________________________
+size_t baseObject::getSize(const std::string & str)
+{
+    return (size_t)getNum(str);
+}
+//______________________________________________________________________________
+double baseObject::getNumD(const  std::string & str)
+{
+    return atof(str.c_str());
+}
+//______________________________________________________________________________
+long baseObject::getNumL(const  std::string & str)
+{
+    return (long)atof(str.c_str());
+}

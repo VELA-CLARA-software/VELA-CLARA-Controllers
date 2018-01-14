@@ -25,6 +25,7 @@
 #include <atomic>
 #include <map>
 #include <vector>
+#include <thread>
 
 class liberallrfInterface : public interface
 {
@@ -46,6 +47,7 @@ class liberallrfInterface : public interface
 
         ~liberallrfInterface();
 
+
         // GETTERS
         double getAmpFF();
         double getAmpSP();
@@ -63,6 +65,7 @@ class liberallrfInterface : public interface
         llrfStructs::LLRF_TYPE getType();
         size_t getTraceLength();
         size_t getNumOutsideMaskTraces();
+        size_t getActivePulseCount();
 
         size_t getShotCount(const std::string& name);
 
@@ -164,8 +167,8 @@ class liberallrfInterface : public interface
         bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
 
-        bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
-        bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+        bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string& name);
+        bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string& name);
 
         void startTimer();
         void offsetTimer(long long value);
@@ -173,13 +176,15 @@ class liberallrfInterface : public interface
 
         double getBreakDownRate();
 
-        void setDropAmpOnOutsideMaskDetection(bool state, double amp_val = 0.0);
-        void setDropAmpValue(double amp_val);
+        bool setDropAmpOnOutsideMaskDetection(const std::string& name, bool state, double amp_val = 0.0);
+        bool setDropAmpValue(const std::string& name, double amp_val);
 
+        bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
 
 
         bool clearMask(const std::string&name);
         bool clearRollingAverage(const std::string&name);
+        //bool clearRollingAverage();
 
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
@@ -219,6 +224,10 @@ class liberallrfInterface : public interface
         bool IsNot_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv);
         bool Is_Time_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
 
+        bool setMaskFloor(const std::string& name, double value);
+
+        bool shouldCheckMasks(const std::string& name);
+
 
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
@@ -257,6 +266,8 @@ class liberallrfInterface : public interface
         bool stopKlyFwdTraceMonitor();
         bool stopKlyRevTraceMonitor();
 
+        std::string fullCavityTraceName(const std::string& name);
+
         /// These are pure virtual methods, so need to have some implmentation in derived classes
         // ********this will likely need updating*******
         IlockMap1 getILockStates(const std::string& name   ){IlockMap1 r;return r;}
@@ -265,6 +276,8 @@ class liberallrfInterface : public interface
     private:
         // MOVE TO BASE CLASS
         const bool shouldStartEPICs,usingVirtualMachine;
+        bool first_pulse;
+        size_t initial_pulsecount;
 
         void killMonitor(llrfStructs::monitorStruct* ms);
 
@@ -305,14 +318,20 @@ class liberallrfInterface : public interface
         void resetAverageTraces(llrfStructs::rf_trace_data& trace);
 
 
-        // breakdown timer duration
+        void updateActivePulseCount(const std::string& evid);
 
-        std::string fullCavityTraceName(const std::string& name);
+        // breakdown timer duration
 
         llrfStructs::liberallrfObject llrf;
         llrfStructs::LLRF_TYPE myLLRFType;
 
         std::vector< llrfStructs::monitorStruct * > continuousMonitorStructs;
+
+        std::thread* newthread;
+        void setAmpFFCallback();
+        int next_amp_drop;
+        static void staticEntrySetAmp(liberallrfInterface* interface);
+
 
         liberallrfConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message

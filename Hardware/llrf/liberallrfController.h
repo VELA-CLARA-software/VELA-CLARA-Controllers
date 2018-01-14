@@ -58,6 +58,12 @@ class liberaLLRFController : public controller
         double getPhiCalibration();
         double getAmpCalibration();
         double getCrestPhiLLRF();
+        size_t getActivePulseCount();
+
+//        const size_t& geetActivePulseCountRef()
+//        {
+//            return localInterface.geetActivePulseCountRef();
+//        }
 
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
@@ -77,10 +83,8 @@ class liberaLLRFController : public controller
         bool RFOutput();
         bool interlockActive();
         bool interlockNotActive();
-
-
-        void setDropAmpOnOutsideMaskDetection(bool state, double amp_val = 0.0);
-        void setDropAmpValue(double amp_val);
+        bool setDropAmpOnOutsideMaskDetection(const std::string& name, bool state, double amp_val = 0.0);
+        bool setDropAmpValue(const std::string& name, double amp_val);
 
         //bool   isLocked();
 
@@ -237,7 +241,9 @@ class liberaLLRFController : public controller
         bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
 
-
+        bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+        bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+        bool setMaskFloor(const std::string& name, double value);
         bool clearMask(const std::string&name);
 
 #ifdef BUILD_DLL
@@ -247,6 +253,7 @@ class liberaLLRFController : public controller
         bool setCavRevPwrLoMask_Py(const boost::python::list& value);
 #endif
 
+        bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
 
         bool setNumBufferTraces(const std::string&name, const size_t value);
         void setNumBufferTraces(const size_t value);
@@ -254,6 +261,9 @@ class liberaLLRFController : public controller
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setNumRollingAverageTraces(const std::string&name,const size_t value );
         void setNumRollingAverageTraces(const size_t value );
+
+        bool shouldCheckMasks(const std::string& name);
+        std::string fullCavityTraceName(const std::string& name);
 
         void resetAverageTraces();
         void setShouldKeepRollingAverage();

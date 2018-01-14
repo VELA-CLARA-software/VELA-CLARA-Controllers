@@ -43,7 +43,7 @@ interface::~interface()
 {
     for(auto && it : continuousILockMonitorStructs)
     {
-        debugMessage("delete interface continuousILockMonitorStructs entry.");
+       debugMessage("delete interface continuousILockMonitorStructs entry.");
         delete it;
     }
     debugMessage("interface DESTRUCTOR COMPLETE ");

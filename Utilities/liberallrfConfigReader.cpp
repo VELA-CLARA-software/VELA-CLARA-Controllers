@@ -195,13 +195,21 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_ILOCK_STATE,keyVal[1]);
         }
-        else if(keyVal[0] == UTL::PV_SUFFIX_SP_LOCK_STATE)
+        else if(keyVal[0] == UTL::PV_SUFFIX_FF_AMP_LOCK_STATE)
         {
-            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_SP_LOCK_STATE,keyVal[1]);
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_FF_AMP_LOCK_STATE,keyVal[1]);
+        }
+        else if(keyVal[0] == UTL::PV_SUFFIX_FF_PHASE_LOCK_STATE)
+        {
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_FF_PHASE_LOCK_STATE,keyVal[1]);
         }
         else if(keyVal[0] == UTL::PV_SUFFIX_LIB_TIME_VECTOR)
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR,keyVal[1]);
+        }
+        else if(keyVal[0] == UTL::PV_SUFFIX_LIB_RF_OUTPUT)
+        {
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_RF_OUTPUT,keyVal[1]);
         }
     }
     else

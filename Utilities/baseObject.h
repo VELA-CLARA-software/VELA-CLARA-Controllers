@@ -64,7 +64,10 @@ class baseObject
         template<typename T = std::string, typename U = std::string,
                  typename V = std::string, typename W = std::string,
                  typename X = std::string, typename Y = std::string,
-                 typename Z = std::string, typename A = std::string>
+                 typename Z = std::string, typename A = std::string,
+                 typename B = std::string, typename C = std::string,
+                 typename D = std::string, typename E = std::string
+                 >
         void debugMessage(const T p1,
                           const U p2 = "",
                           const V p3 = "",
@@ -72,10 +75,15 @@ class baseObject
                           const X p5 = "",
                           const Y p6 = "",
                           const Z p7 = "",
-                          const A p8 = "")
+                          const A p8 = "",
+                          const B p9 = "",
+                          const C p10 = "",
+                          const D p11 = "",
+                          const E p12 = ""
+                          )
         {
             if(*SHOW_DEBUG_MESSAGES_PTR)
-                printMessage(p1, p2, p3, p4, p5, p6, p7, p8);
+                printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12);
         }
 
         template<typename T = std::string,
@@ -85,18 +93,27 @@ class baseObject
                  typename X = std::string,
                  typename Y = std::string,
                  typename Z = std::string,
-                 typename A = std::string>
+                 typename A = std::string,
+                 typename B = std::string,
+                 typename C = std::string,
+                 typename D = std::string,
+                 typename E = std::string>
         void message(const T p1,
-                     const U p2 = "" ,
+                     const U p2 = "",
                      const V p3 = "",
                      const W p4 = "",
                      const X p5 = "",
                      const Y p6 = "",
                      const Z p7 = "",
-                     const A p8 = "")
+                     const A p8 = "",
+                     const B p9 = "",
+                     const C p10 = "",
+                     const D p11 = "",
+                     const E p12 = ""
+                     )
         {
             if(*SHOW_MESSAGES_PTR)
-                printMessage(p1, p2, p3, p4, p5, p6, p7, p8);
+                printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12);
         }
 
         template<typename T = std::string,
@@ -106,20 +123,29 @@ class baseObject
                  typename X = std::string,
                  typename Y = std::string,
                  typename Z = std::string,
-                 typename A = std::string>
+                 typename A = std::string,
+                 typename B = std::string,
+                 typename C = std::string,
+                 typename D = std::string,
+                 typename E = std::string
+                 >
         void printMessage(const T p1,
-                          const U p2 = "" ,
+                          const U p2 = "",
                           const V p3 = "",
                           const W p4 = "",
                           const X p5 = "",
                           const Y p6 = "",
                           const Z p7 = "",
-                          const A p8 = "")
+                          const A p8 = "",
+                          const B p9 = "",
+                          const C p10 = "",
+                          const D p11 = "",
+                          const E p12 = "")
         {
             std::stringstream ss;
             //ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 <<"\n";
             //printf(ss.str().c_str());
-            ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8;
+            ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 << p9 << p10 << p11 << p12;
             std::cout << ss.str() << std::endl;
         }
 
@@ -163,6 +189,12 @@ class baseObject
             c.resize(it - c.begin());
         }
         std::string currentDateTime();
+
+
+        int    getNum (const std::string & str);
+        double getNumD(const std::string & str);
+        size_t getSize(const std::string & str);
+        long   getNumL(const std::string & str);
 
 #ifdef BUILD_DLL
         template<typename T>

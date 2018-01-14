@@ -232,14 +232,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("buffersize",      &rf_trace_data::buffersize,"number of traces in buffer")
         .def_readonly("trace_size",      &rf_trace_data::trace_size,"number of elements in a trace")
         .def_readonly("average_size",    &rf_trace_data::average_size,"number of traces to average")
-        .def_readonly("rolling_sum_counter",    &rf_trace_data::rolling_sum_counter,"Total number of traces that have been added to the rolling sum (NOT the number of traces IN the rolling sum)")
+        .def_readonly("rolling_sum_counter", &rf_trace_data::rolling_sum_counter,"Total number of traces that have been added to the rolling sum (NOT the number of traces IN the rolling sum)")
         .def_readonly("high_mask",       &rf_trace_data::high_mask,"high mask values")
         .def_readonly("low_mask",        &rf_trace_data::low_mask,"low mask values")
         .def_readonly("rolling_average", &rf_trace_data::rolling_average,"rolling average values")
         .def_readonly("rolling_sum",     &rf_trace_data::rolling_sum,"rolling sum values")
         .def_readonly("rolling_min",     &rf_trace_data::rolling_max,"rolling max values")
         .def_readonly("rolling_max",     &rf_trace_data::rolling_min,"rolling min values")
-        .def_readonly("rolling_sd",     &rf_trace_data::rolling_sd,"rolling standard deviation values")
+        .def_readonly("rolling_sd",      &rf_trace_data::rolling_sd,"rolling standard deviation values")
         .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
         .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
         .def_readonly("mean_stop_index", &rf_trace_data::mean_stop_index,"stop index for mean trace calculation.")
@@ -247,6 +247,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("shot",     &rf_trace_data::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)")
         //maybe have a ferernce to the latest trace??
         .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"Latest EVID for this trace.")
+        .def_readonly("amp_drop_value", &rf_trace_data::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
+        .def_readonly("drop_amp_on_breakdown", &rf_trace_data::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
+        .def_readonly("mask_floor", &rf_trace_data::mask_floor,"Mask floor level.")
+        .def_readonly("num_continuous_outside_mask_count", &rf_trace_data::num_continuous_outside_mask_count,"number of continuous outside mask.")
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
@@ -295,7 +299,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("rf_output",&liberallrfObject::rf_output,"LLRF RF Output Status")
         .def_readonly("pulse_length",&liberallrfObject::pulse_length,"LLRF RF pulse length")
         .def_readonly("pulse_offset",&liberallrfObject::pulse_offset,"LLRF RF pulse offset")
-        .def_readonly("ff_lock_state",  &liberallrfObject::ff_lock_state,"status of the the FF check box.")
+        .def_readonly("ff_amp_lock_state",  &liberallrfObject::ff_amp_lock_state,"status of the the amplitide FF check box.")
+        .def_readonly("ff_ph_lock_state",  &liberallrfObject::ff_ph_lock_state,"status of the the phase FF check box.")
         .def_readonly("interlock_state",&liberallrfObject::interlock_state,"Libera interlock  state.")
         .def_readonly("traceLength", &liberallrfObject::traceLength,"Number of elements in a trace.")
         .def_readonly("trace_data",  &liberallrfObject::trace_data,"Map of rf_trace_data objects, keyed by the Trace Name (defined in config file).")
@@ -308,8 +313,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("breakdown_rate", &liberallrfObject::breakdown_rate,"estimate of number breakdowns per second.")
         .def_readonly("amp_drop_value", &liberallrfObject::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
         .def_readonly("drop_amp_on_breakdown", &liberallrfObject::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
+        .def_readonly("activePulseCount", &liberallrfObject::activePulseCount,"(Total) Number of pulses with amp > 0 since connection.")
+        .def_readonly("pulseCount", &liberallrfObject::previous_pulseCount,"EVID as number.")
         ;
-
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
         ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init  )
@@ -329,10 +335,19 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPhiCalibration", &liberaLLRFController::getPhiCalibration,"Return Linear Conversion of Phase from LLRF units to degrees")
         .def("getAmpCalibration", &liberaLLRFController::getAmpCalibration,"Return Linear Conversion of Amplitude from LLRF units to MV/m")
         .def("getCrestPhiLLRF",   &liberaLLRFController::getCrestPhiLLRF,"Return the Crest Phase in LLRF Units")
+
+
         .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return LLRF Object Reference")
+
+
+//        .def("geetActivePulseCountRef",&liberaLLRFController::geetActivePulseCountRef,return_value_policy<reference_existing_object>(),"Return  Object Reference")
+
+
+
         .def("getPhiDEG",  &liberaLLRFController::getPhiDEG,"Get Current Phase relative to Crest [degrees] +ve sense?")
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-s]")
         .def("getPulseOffset",  &liberaLLRFController::getPulseOffset,"Return RF Pulse Offset [micro-s]")
+        .def("getActivePulseCount",  &liberaLLRFController::getActivePulseCount,"Return number of pulses with amplitude > 0 sinze connection")
 
         .def("isFFLocked",  &liberaLLRFController::isFFLocked,"Return true if FF check box is checked.")
         .def("isFFNotLocked",  &liberaLLRFController::isFFNotLocked,"Return true if FF check box is not checked.")
@@ -354,8 +369,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(arg("name")),"Return latest Trace Values for channel 'name'")
         .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(arg("name")),"Return buffer of rf_trace objects for channel 'name'")
 
-        .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(arg("state"),arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask trace is detected")
-        .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace")
+        .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(arg("name"),arg("state"),arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask is detected for trace 'name', returns true on success")
+        .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(arg("name"),arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace for trace 'name' returns true on success")
 
         .def("getCavRevPowerData",&liberaLLRFController::getCavRevPowerData,"Return latest cavity reverse power rf_trace object")
         .def("getCavFwdPowerData",&liberaLLRFController::getCavFwdPowerData,"Return latest cavity forward power rf_trace object")
@@ -414,16 +429,16 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(arg("name"),arg("value")),"Set trace 'name' start index for mean calculation")
         .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(arg("name"),arg("value")),"Set trace 'name' stop index for mean calculation")
 
-
         .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(arg("name"),arg("value")),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
         .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(arg("value")),"Set all monitoring traces SCAN rate to 'value'")
         .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(arg("name")),"Get High mask for trace 'name'")
         .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(arg("name")),"Get Low mask for trace 'name'")
 
-
         .def("resetAverageTraces",  &liberaLLRFController::resetAverageTraces,"Reset All Rolling Averages")
 
-        .def("clearMask",  &liberaLLRFController::clearMask,(arg("name")),"Cleark the masks for trace 'name'")
+        .def("clearMask",  &liberaLLRFController::clearMask,(arg("name")),"Clear the masks for trace 'name'")
+
+        .def("fullCavityTraceName",  &liberaLLRFController::fullCavityTraceName,(arg("name")),"Returns trace name being used")
 
         .def("setPulseLength",  &liberaLLRFController::setPulseLength,(arg("value")),"Set RF pulse length [micro-s]")
         .def("setPulseOffset",  &liberaLLRFController::setPulseOffset,(arg("value")),"Set RF pulse offset [micro-sec]")
@@ -437,6 +452,19 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setLowMask",  setLowMask_2,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
         .def("setCavRevPwrHiMask",  &liberaLLRFController::setCavRevPwrHiMask_Py,(arg("value")),"Set the Hi mask for cavity reverse power (channel defined in config file)")
         .def("setCavRevPwrLoMask",  &liberaLLRFController::setCavRevPwrLoMask_Py,(arg("value")),"Set the Lo mask for cavity reverse power (channel defined in config file)")
+
+
+        .def("setPercentMask",  &liberaLLRFController::setPercentMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name'")
+        .def("setAbsoluteMask",  &liberaLLRFController::setAbsoluteMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name'")
+
+        .def("setMaskFloor",  &liberaLLRFController::setMaskFloor,(arg("name"),arg("value")),"Set the mask floor for trace 'name'")
+
+
+        .def("setNumContinuousOutsideMaskCount",  &liberaLLRFController::setNumContinuousOutsideMaskCount,(arg("name"),arg("value")),"Set the number of continuous outside mask hits to trigger event, for trace 'name'")
+
+
+                //bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+        //bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
 
 
         .def("setCavRevPwrMaskPercent",  &liberaLLRFController::setCavRevPwrMaskPercent,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
@@ -481,6 +509,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("setCheckMask",  &liberaLLRFController::setCheckMask,(arg("name"),arg("value")),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")
         .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(arg("name")),"Set check mask to true for trace 'name'")
+
+        .def("shouldCheckMasks",  &liberaLLRFController::shouldCheckMasks,(arg("name")),"return true if checking masks for trace 'name'")
+
         .def("setShouldNotCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(arg("name")),"Set check mask to false for trace 'name'")
 
         .def("setGlobalCheckMask",  &liberaLLRFController::setGlobalCheckMask,(arg("value")),"Set Global check mask flag to  'value'")

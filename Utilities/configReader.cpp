@@ -69,27 +69,6 @@ void configReader::getNumIlocks(const std::string & str)
     numIlocks = atoi(num.c_str());
 }
 //______________________________________________________________________________
-int configReader::getNum(const std::string & str)
-{
-    std::string num = getAfterEqualsSign(str);
-    return atoi(num.c_str());
-}
-//______________________________________________________________________________
-size_t configReader::getSize(const std::string & str)
-{
-    return (size_t)getNum(str);
-}
-//______________________________________________________________________________
-double configReader::getNumD(const  std::string & str)
-{
-    return atof(str.c_str());
-}
-//______________________________________________________________________________
-long configReader::getNumL(const  std::string & str)
-{
-    return (long)atof(str.c_str());
-}
-//______________________________________________________________________________
 std::string configReader::trimToDelimiter(std::string const & str, const std::string & STOPDELIMITER)
 {
     size_t last = str.find_first_of(STOPDELIMITER);
