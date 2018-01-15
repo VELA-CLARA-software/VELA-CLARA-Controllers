@@ -25,9 +25,10 @@ class offlineImageAnalyser{
         cameraOfflineIAObject CoIA;
 
         ///Functions
-        void loadImage(const std::vector<double> &originalImage,
+        void loadImage(const std::vector<double> &originalImage, const std::string &name,
                        int hieght, int width);
-        void loadBackgroundImage(const std::vector<double> &originalBkgrndImage);
+        void loadBackgroundImage(const std::vector<double> &originalBkgrndImage, const std::string &name);
+        void writeData(const std::string &fileName);
         void analyse();
         bool staticAnalyse();
         ///Function to be sent up access data in python

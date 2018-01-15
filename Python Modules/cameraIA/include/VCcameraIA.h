@@ -207,6 +207,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
                       &cameraStructs::cameraIAObject::pix2mm,
                       "Conversion factor for convert pixel value to mm. (mm = pix2mm*pix)")
         ;
+
     boost::python::class_<cameraStructs::cameraOfflineIAObject,boost::noncopyable>
         ("cameraOfflineIAObject","cameraOfflineIAObject Doc String", boost::python::no_init)
         .def_readonly("rawData",
@@ -214,6 +215,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         "1")
         .def_readonly("xProjection",
         &cameraStructs::cameraOfflineIAObject::xProjection,
+        "1")
+        .def_readonly("imageName",
+        &cameraStructs::cameraOfflineIAObject::imageName,
+        "1")
+        .def_readonly("bkgrndName",
+        &cameraStructs::cameraOfflineIAObject::bkgrndName,
         "1")
         .def_readonly("yProjection",
         &cameraStructs::cameraOfflineIAObject::yProjection,
@@ -373,6 +380,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def("isAnalysing",
                       &offlineImageAnalyser::isAnalysing,
                       "return true if analysis if running in a thread. ")
+        .def("writeData",
+                      &offlineImageAnalyser::writeData,
+                      "Writes data into a csv file.")
         .def_readonly("CoIA",
                       &offlineImageAnalyser::CoIA,
                       "Object (cameraOffline IMage Object) containing all the offline Image Anaylsis data.")

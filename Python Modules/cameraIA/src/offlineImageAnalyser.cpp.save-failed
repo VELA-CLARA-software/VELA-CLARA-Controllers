@@ -7,10 +7,11 @@
 #include <algorithm>
 #include <cmath>
 #include <chrono>
-
+#include <thread>
+#include<mutex>
 #include"cameraStructs.h"
 #include"offlineImageAnalyser.h"
-
+std::mutex mu;
 ///--------------------------------IMAGE ANAYLSER FUNCTIONS------------------------------------///
 //CONSTRUCTOR
 offlineImageAnalyser::offlineImageAnalyser(const bool show_messages,
@@ -54,7 +55,42 @@ void offlineImageAnalyser::loadBackgroundImage(const std::vector<double> &origin
         CoIA.rawBackgroundData.push_back(originalBkgrndImage[i]);
     }
 }
+//WRITE DATA TO CSV
+void offlineImageAnalyser::writeData(const std::string &fileName){
+      std::cout<< "GO AWAY"<< std::endl;
+      std::fstream myfile(fileName,std::ios::in|std::ios::out);
+      myfile.seekg(0, std::ios::end); // put the "cursor" at the end of the file
+      int length = myfile.tellg();
+      if ( length == 0 || myfile.bad() ){
+            //myfile.close();
+            std::ofstream myfile(fileName);
+            myfile.open();
+            std::cout<< "HEY"<< std::endl;
+            myfile << "Analysis Data\n";
+            myfile<< "BVN, , , , ,MLE, , , , \n";
+            myfile<< "X,Y,Sigma X, Sigma Y,Covariance XY,X,Y,Sigma X, Sigma Y,Covariance XY\n";
+      }
+      else {
+          std::cout<< "HEY"<< std::endl;
+
+      }
+      std::cout<< "HIHI"<< std::endl;
+      myfile << CoIA.xBVN <<",";
+      myfile << CoIA.yBVN <<",";
+      myfile << CoIA.sxBVN <<",";
+      myfile << CoIA.syBVN <<",";
+      myfile << CoIA.cxyBVN <<",";
+      myfile << CoIA.xMLE <<",";
+      myfile << CoIA.yMLE <<",";
+      myfile << CoIA.sxMLE <<",";
+      myfile << CoIA.syMLE <<",";
+      myfile << CoIA.cxyMLE <<"\n";
+      std::cout<< "HIHI"<< std::endl;
+      myfile.close();
+}
+
 //BEAM ANALYSIS
+/*
 void offlineImageAnalyser::analyse(){
 
     //REMOVE BACKGROUND DATA
@@ -68,17 +104,21 @@ void offlineImageAnalyser::analyse(){
     else{std::cout<< "No background was removed"<< std::endl;}
 
     //MAKE THE MASK
+    int x,y,xR,yR;
     auto start = std::chrono::steady_clock::now();
     if(CoIA.useMaskFromES == true){
-        CoIA.mask = edit.makeMask(CoIA,
-                                  CoIA.maskXES,CoIA.maskYES,
-                                  CoIA.maskRXES,CoIA.maskRYES);
+        x = CoIA.maskXES;
+        y = CoIA.maskYES;
+        xR = CoIA.maskRXES;
+        yR = CoIA.maskRYES;
     }
     else{
-        CoIA.mask = edit.makeMask(CoIA,
-                                  CoIA.x0,CoIA.y0,
-                                  CoIA.xRad,CoIA.yRad);
+        x = CoIA.x0;
+        y = CoIA.y0;
+        xR = CoIA.xRad;
+        yR = CoIA.yRad;
     }
+    CoIA.mask = edit.makeMask(CoIA,x,y,xR,yR);
     auto finish = std::chrono::steady_clock::now();
     auto diff  = finish - start;
     std::cout<<"Finished making mask in "<<(double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000<<std::endl;
@@ -92,15 +132,7 @@ void offlineImageAnalyser::analyse(){
 
     //CROP IMAGE
     start = std::chrono::steady_clock::now();
-    if(CoIA.useManualCrop==true){
-        CoIA = edit.crop(CoIA,CoIA.manualCropX,CoIA.manualCropY,
-                         CoIA.manualCropW+CoIA.manualCropX,
-                         CoIA.manualCropH+CoIA.manualCropY);
-    }
-    else{
-        CoIA = edit.crop(CoIA,(CoIA.x0-CoIA.xRad),(CoIA.y0-CoIA.yRad),
-                         (CoIA.x0+CoIA.xRad),(CoIA.y0+CoIA.yRad));
-    }
+    CoIA = edit.crop(CoIA,(x-xR),(y-yR), (x+xR), (y+yR));
     finish = std::chrono::steady_clock::now();
     diff  = finish - start;
     std::cout<<"Finished cropping in "<<(double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000<<std::endl;
@@ -120,12 +152,12 @@ void offlineImageAnalyser::analyse(){
     CoIA.rawData = edit.nPointScaling(CoIA);
     std::cout<< "image after  N point scalling: " <<CoIA.rawData.size()<<std::endl;
     //have to update projections
-    //CoIA.xProjection = edit.getProjection(CoIA,projAxis::x);
-    //CoIA.yProjection = edit.getProjection(CoIA,projAxis::y);
+    CoIA.xProjection = edit.getProjection(CoIA,projAxis::x);
+    CoIA.yProjection = edit.getProjection(CoIA,projAxis::y);
     finish = std::chrono::steady_clock::now();
     diff  = finish - start;
     std::cout<<"Finished N point scaling in "<<(double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000<<std::endl;
-/*
+
 
     //GENERATE ESTIMATES FOR 1D PROJECTIONS
     start = std::chrono::steady_clock::now();
@@ -190,13 +222,12 @@ void offlineImageAnalyser::analyse(){
     }
 
     //CROP IMAGE DOWN FURTHER
-    if(CoIA.useManualCrop==false){
-        start = std::chrono::steady_clock::now();
-        CoIA = edit.crop(CoIA,xC,yC,wC,hC);
-        finish = std::chrono::steady_clock::now();
-        diff  = finish - start;
-        std::cout<<"Finished crop from fit estimates in "<< (double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000<< std::endl;
-    }
+
+    start = std::chrono::steady_clock::now();
+    CoIA = edit.crop(CoIA,xC,yC,wC,hC);
+    finish = std::chrono::steady_clock::now();
+    diff  = finish - start;
+    std::cout<<"Finished crop from fit estimates in "<< (double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000<< std::endl;
 
     //UPDATE PROJECTIONS
     CoIA.xProjection = edit.getProjection(CoIA,projAxis::x);
@@ -225,7 +256,7 @@ void offlineImageAnalyser::analyse(){
     start = std::chrono::steady_clock::now();
     ///Curently not using this so just outputs 1s
     std::vector<double> fitImageBVN = {1,1,1,1,1,1,1};
-    //fitImageBVN = fit.fitBVN(CoIA,refitX,refitY);
+    fitImageBVN = fit.fitBVN(CoIA,refitX,refitY);
     finish = std::chrono::steady_clock::now();
     diff  = finish - start;
     std::cout<<"Finished BVN fit in "<<(double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000<<std::endl;
@@ -251,33 +282,201 @@ void offlineImageAnalyser::analyse(){
     fitImageCov[1] = correctionsCov[1];
     std::cout<<"Finished corrections"<< std::endl;
     //clear up loose ends
-
-    //CoIA.clear();
-
-
-
-    //OUTPUT IMAGE PARAMETERS in one string (BVN FIT,COVARIANCE FIT, 1D ESTIMATES FOR X, 1D ESTIMATES FOR Y)
-    //std::vector<double> output; //
-
-    //output.insert(output.end(),fitImageBVN.begin()+2,fitImageBVN.end());
-   // output.insert(output.end(),fitImageCov.begin(),fitImageCov.end());
-    //output.insert(output.end(),refitX.begin()+2,refitX.end());
-    //output.insert(output.end(),refitY.begin()+2,refitY.end());
-  //  CoIA.xBVN = fitImageBVN[2];
-   // CoIA.yBVN = fitImageBVN[3];
-   // CoIA.sxBVN = fitImageBVN[4];
-    //CoIA.syBVN = fitImageBVN[5];
-    //CoIA.cxyBVN = fitImageBVN[6];
-    CoIA.xMLE = fitImageCov[2];
-    CoIA.yMLE = fitImageCov[3];
-    CoIA.sxMLE = fitImageCov[4];
-    CoIA.syMLE = fitImageCov[5];
-    CoIA.cxyMLE = fitImageCov[6];
-*/
     CoIA.savedCroppedX = edit.croppedX;
     CoIA.savedCroppedY = edit.croppedY;
     edit.croppedX=0;
     edit.croppedY=0;
+    //CoIA.clear();
+
+    //OUTPUT IMAGE PARAMETERS
+    CoIA.xBVN = fitImageBVN[2];
+    CoIA.yBVN = fitImageBVN[3];
+    CoIA.sxBVN = sqrt(fitImageBVN[4]);
+    CoIA.syBVN = sqrt(fitImageBVN[5]);
+    CoIA.cxyBVN = fitImageBVN[6];
+    CoIA.xMLE = fitImageCov[0];
+    CoIA.yMLE = fitImageCov[1];
+    CoIA.sxMLE = sqrt(fitImageCov[2]);
+    CoIA.syMLE = sqrt(fitImageCov[3]);
+    CoIA.cxyMLE = fitImageCov[4];
+
+
+
+}*/
+
+void offlineImageAnalyser::analyse(){
+    //need to make sure your python is running while this thread is active
+    new std::thread(&offlineImageAnalyser::staticAnalyse, this);
+}
+bool offlineImageAnalyser::staticAnalyse(){
+    this->analysing=true;
+
+    //REMOVE BACKGROUND DATA
+    if (this->CoIA.useBkgrnd == true){
+        this->CoIA.rawData = this->edit.subtractBackground(this->CoIA);
+    }
+    else{
+        std::cout<< "No background was removed"<< std::endl;
+    }
+
+    //MAKE THE MASK
+    int x,y,xR,yR;
+    if(this->CoIA.useMaskFromES == true){
+        x = this->CoIA.maskXES;
+        y = this->CoIA.maskYES;
+        xR = this->CoIA.maskRXES;
+        yR = this->CoIA.maskRYES;
+    }
+    else{
+        x = this->CoIA.x0;
+        y = this->CoIA.y0;
+        xR = this->CoIA.xRad;
+        yR = this->CoIA.yRad;
+    }
+    this->CoIA.mask = this->edit.makeMask(this->CoIA,x,y,xR,yR);
+
+    //APPLY THE MASK
+    this->CoIA.rawData = this->edit.applyMask(this->CoIA);
+
+    //CROP IMAGE
+    this->CoIA = this->edit.crop(this->CoIA,(x-xR),(y-yR), (x+xR), (y+yR));
+
+    //SET PROJECTIONS
+    this->CoIA.xProjection =this-> edit.getProjection(this->CoIA,projAxis::x);
+    this->CoIA.yProjection = this->edit.getProjection(this->CoIA,projAxis::y);
+    this->CoIA.maskXProjection = this->edit.getProjection(this->CoIA,projAxis::maskX);
+    this->CoIA.maskYProjection = this->edit.getProjection(this->CoIA,projAxis::maskY);
+
+    // IMPROVE IMAGE USING N POINT SCALING METHOD
+    this->CoIA.rawData = this->edit.nPointScaling(this->CoIA);
+    //have to update projections
+    this->CoIA.xProjection = this->edit.getProjection(this->CoIA,projAxis::x);
+    this->CoIA.yProjection = this->edit.getProjection(this->CoIA,projAxis::y);
+
+    //GENERATE ESTIMATES FOR 1D PROJECTIONS
+    std::vector<double>Estim;
+    if(this->CoIA.useFilterFromES==true){
+        Estim = this->get1DParmaetersForXAndY(this->CoIA.filterES);
+    }
+    else{
+        Estim = this->getBest1DParmaetersForXAndY();
+    }
+    std::vector<double> x_estimation = {Estim[0],Estim[1],Estim[2],Estim[3]};
+    std::vector<double> y_estimation = {Estim[4],Estim[5],Estim[6],Estim[7]};
+
+    //USE ESTIMATES TO RUN GAUSSIAN FITS TO THE PROJECTIONS
+    std::vector<double> fitY = this->fit.fit1DGaussianToProjection(this->CoIA,
+                                                             projAxis::y,
+                                                             y_estimation);
+    std::vector<double> fitX = this->fit.fit1DGaussianToProjection(this->CoIA,
+                                                             projAxis::x,
+                                                             x_estimation);
+
+    //FIND R^2 VALUES OF THE FITS (IF >0.4 USE PARAMETERS AS CUTTING VALUES)
+    double RRx = this->fit.rSquaredOf1DProjection(this->CoIA, fitX,projAxis::x);
+    double RRy = this->fit.rSquaredOf1DProjection(this->CoIA, fitY,projAxis::y);
+    std::cout<<"R squared values of x and y fits respectively:"<< std::endl;
+    std::cout<<RRx<<" "<<RRy<<std::endl;
+    double cMuX,cMuY,cSigmaX,cSigmaY;
+    // if fits are not good used FWHM estimates
+    if(this->CoIA.useRRThresholdFromES==true){
+        if(RRx<this->CoIA.RRThresholdES){cMuX=Estim[2];cSigmaX=Estim[3];}
+        else{cMuX=fitX[2];cSigmaX=fitX[3];}
+
+        if(RRy<this->CoIA.RRThresholdES){cMuY=Estim[6];cSigmaY=Estim[7];}
+        else{cMuY=fitY[2];cSigmaY=fitY[3];}
+    }
+    else{//default is 0.4
+        if(RRx<0.4){cMuX=Estim[2];cSigmaX=Estim[3];}
+        else{cMuX=fitX[2];cSigmaX=fitX[3];}
+
+        if(RRy<0.4){cMuY=Estim[6];cSigmaY=Estim[7];}
+        else{cMuY=fitY[2];cSigmaY=fitY[3];}
+    }
+
+    //CROP USING MU AND SIGMA
+    int xC,yC,wC,hC;
+    if(this->CoIA.useSigmaCutFromES==true){
+        xC = (int)round(cMuX-(this->CoIA.sigmaCutES*cSigmaX));
+        yC = (int)round(cMuY-(this->CoIA.sigmaCutES*cSigmaY));
+        wC = (int)round(cMuX+(this->CoIA.sigmaCutES*cSigmaX));
+        hC = (int)round(cMuY+(this->CoIA.sigmaCutES*cSigmaY));
+    }
+    else{//default is three sigma
+        xC = (int)round(cMuX-(3*cSigmaX));
+        yC = (int)round(cMuY-(3*cSigmaY));
+        wC = (int)round(cMuX+(3*cSigmaX));
+        hC = (int)round(cMuY+(3*cSigmaY));
+    }
+
+    //CROP IMAGE DOWN FURTHER
+
+    this->CoIA = this->edit.crop(this->CoIA,xC,yC,wC,hC);
+
+    //UPDATE PROJECTIONS
+    this->CoIA.xProjection = this->edit.getProjection(this->CoIA,projAxis::x);
+    this->CoIA.yProjection = this->edit.getProjection(this->CoIA,projAxis::y);
+
+    //RECALCULATE ESTIMATES AND THEN FITS
+    std::vector<double> Estim_ReCalc;
+    if(this->CoIA.useFilterFromES==true){
+        Estim_ReCalc = this->get1DParmaetersForXAndY(this->CoIA.filterES);
+    }
+    else{
+
+        Estim_ReCalc = this->getBest1DParmaetersForXAndY();
+    }
+    std::vector<double> x_estimation_ReCalc = {Estim_ReCalc[0],Estim_ReCalc[1],Estim_ReCalc[2],Estim_ReCalc[3]};
+    std::vector<double> y_estimation_ReCalc = {Estim_ReCalc[4],Estim_ReCalc[5],Estim_ReCalc[6],Estim_ReCalc[7]};
+
+    //OVERIDING OLD FIT PARAMETERS
+    std::vector<double> refitY = this->fit.fit1DGaussianToProjection(this->CoIA, projAxis::y, y_estimation_ReCalc);
+    std::vector<double> refitX = this->fit.fit1DGaussianToProjection(this->CoIA, projAxis::x, x_estimation_ReCalc);
+    std::cout<<"Finished re-calc of estimates and 1D re-fits"<< std::endl;
+
+
+    //USING 1D FIT PARAMATERS FIT BVN TO IMAGE
+    ///Curently not using this so just outputs 1s
+    std::vector<double> fitImageBVN = {1,1,1,1,1,1,1};
+    fitImageBVN = this->fit.fitBVN(this->CoIA,refitX,refitY);
+
+    //CORRECT CENTROID POSITION (from the cropping)
+    std::vector<double> corrections = this->edit.correctBeamPosition(fitImageBVN[2],fitImageBVN[3]);
+    fitImageBVN[2] = corrections[0];
+    fitImageBVN[3] = corrections[1];
+    std::cout<<"Finished BVN corrections"<< std::endl;
+
+
+    //DIRECTY FIT TO DATA WITHOUT ESTIMATES
+    std::vector<double> fitImageCov= {1,1,1,1,1};
+    if(this->CoIA.useDirectCutLevelFromES==true){ fitImageCov = this->fit.covarianceValues(this->CoIA,this->CoIA.DirectCutLevelES);}
+    else{ fitImageCov = this->fit.covarianceValues(this->CoIA,0);}
+
+    std::vector<double> correctionsCov = this->edit.correctBeamPosition(fitImageCov[0],fitImageCov[1]);
+    fitImageCov[0] = correctionsCov[0];
+    fitImageCov[1] = correctionsCov[1];
+    std::cout<<"Finished corrections"<< std::endl;
+    //clear up loose ends
+    this->CoIA.savedCroppedX = this->edit.croppedX;
+    this->CoIA.savedCroppedY = this->edit.croppedY;
+    this->edit.croppedX=0;
+    this->edit.croppedY=0;
+    //CoIA.clear();
+
+    //OUTPUT IMAGE PARAMETERS
+    this->CoIA.xBVN = fitImageBVN[2];
+    this->CoIA.yBVN = fitImageBVN[3];
+    this->CoIA.sxBVN = sqrt(fitImageBVN[4]);
+    this->CoIA.syBVN = sqrt(fitImageBVN[5]);
+    this->CoIA.cxyBVN = fitImageBVN[6];
+    this->CoIA.xMLE = fitImageCov[0];
+    this->CoIA.yMLE = fitImageCov[1];
+    this->CoIA.sxMLE = sqrt(fitImageCov[2]);
+    this->CoIA.syMLE = sqrt(fitImageCov[3]);
+    this->CoIA.cxyMLE = fitImageCov[4];
+    this->analysing=false;
+
+    return true;
 
 }
 //GET THE BEST 1D PARAMETERS BY APPLYING DIFFERENT FILTERS (RETURNS FWHM ESTIMATES)
@@ -428,4 +627,6 @@ void offlineImageAnalyser::setESDirectCut(const double& dc){
 double offlineImageAnalyser::getPTMRatio(){
     return CoIA.pixToMM;
 }
-
+bool offlineImageAnalyser::isAnalysing(){
+    return analysing;
+}

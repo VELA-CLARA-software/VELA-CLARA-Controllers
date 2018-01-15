@@ -26,12 +26,13 @@ offlineImageAnalyser::~offlineImageAnalyser(){}
 
 
 //read data from file and load into image analyser class in 'imageData'
-void offlineImageAnalyser::loadImage(const std::vector<double> &originalImage,
+void offlineImageAnalyser::loadImage(const std::vector<double> &originalImage, const std::string &name,
                                      int hieght, int width){
     CoIA.clear();
     CoIA.imageHeight = hieght;
     CoIA.imageWidth = width;
     CoIA.dataSize = hieght*width;
+    CoIA.imageName = name;
 //#std::vector<double> dummy(CoIA.dataSize);
  //   CoIA.mask = dummy;
     CoIA.mask.clear();
@@ -49,12 +50,59 @@ void offlineImageAnalyser::loadImage(const std::vector<double> &originalImage,
     }
 }
 //LOAD BACKGROUND IMAGE
-void offlineImageAnalyser::loadBackgroundImage(const std::vector<double> &originalBkgrndImage){
+void offlineImageAnalyser::loadBackgroundImage(const std::vector<double> &originalBkgrndImage, const std::string &name){
     CoIA.rawBackgroundData.clear();
+    CoIA.bkgrndName = name;
     for(auto i=0;i!=originalBkgrndImage.size();++i){
         CoIA.rawBackgroundData.push_back(originalBkgrndImage[i]);
     }
 }
+//WRITE DATA TO CSV
+void offlineImageAnalyser::writeData(const std::string &fileName){
+      std::ifstream checkFile(fileName);
+      if(checkFile.good()){
+        std::cout<< "File already exits."<< std::endl;
+      }
+      else{
+         std::cout<< "Creating a new file."<< std::endl;
+         std::ofstream createFile(fileName);
+         createFile.close();
+      }
+      std::fstream myfile(fileName,std::ios::in|std::ios::out);
+      myfile.seekg(0, std::ios::end); // put the "cursor" at the end of the file
+      int length = myfile.tellg();
+      if ( length == 0){
+            std::cout<< "Writing data to new file..."<< std::endl;
+            myfile << "ANALYSIS DATA\n";
+            myfile << "Expert Settings:\n";
+            myfile << "Mask,,,,R^2 Threshold,Rolling Average,Pecentage Cut of Lowest Pixels\n";
+            myfile << "X,Y,X Radius,Y Radius\n";
+            myfile << CoIA.maskXES <<","<<CoIA.maskYES <<","<< CoIA.maskRXES <<","<< CoIA.maskRYES <<","<< CoIA.RRThresholdES <<","<< CoIA.filterES <<","<< CoIA.DirectCutLevelES <<"\n";
+            myfile<< "BVN, , , , ,MLE, , , , \n";
+            myfile<< "X,Y,Sigma X, Sigma Y,Covariance XY,X,Y,Sigma X, Sigma Y,Covariance XY,";
+            myfile<< " ,Image Name,Background Image Name\n";
+      }
+      else {
+          std::cout<< "Writing data to a file that already exits..."<< std::endl;
+      }
+      myfile << CoIA.xBVN <<",";
+      myfile << CoIA.yBVN <<",";
+      myfile << CoIA.sxBVN <<",";
+      myfile << CoIA.syBVN <<",";
+      myfile << CoIA.cxyBVN <<",";
+      myfile << CoIA.xMLE <<",";
+      myfile << CoIA.yMLE <<",";
+      myfile << CoIA.sxMLE <<",";
+      myfile << CoIA.syMLE <<",";
+      myfile << CoIA.cxyMLE <<",";
+      myfile << ",";
+      myfile << CoIA.imageName <<",";
+      myfile << CoIA.bkgrndName <<"\n";
+
+      myfile.close();
+      std::cout<< "Done."<< std::endl;
+}
+
 //BEAM ANALYSIS
 /*
 void offlineImageAnalyser::analyse(){
@@ -273,11 +321,9 @@ void offlineImageAnalyser::analyse(){
 void offlineImageAnalyser::analyse(){
     //need to make sure your python is running while this thread is active
     new std::thread(&offlineImageAnalyser::staticAnalyse, this);
-    //t1->join();
 }
 bool offlineImageAnalyser::staticAnalyse(){
     this->analysing=true;
-    std::this_thread::sleep_for(std::chrono::milliseconds( 10000 )); //MAGIC_NUMBER
 
     //REMOVE BACKGROUND DATA
     if (this->CoIA.useBkgrnd == true){
