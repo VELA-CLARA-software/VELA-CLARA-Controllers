@@ -29,26 +29,20 @@ class screenController : public controller
         virtual double get_CA_PEND_IO_TIMEOUT();
         virtual void   set_CA_PEND_IO_TIMEOUT( double val );
 
-//        bool isHOut(screenStructs::screenObject& scr);
-//        bool isVOut(screenStructs::screenObject& scr);
-//        bool is_HandV_OUT(screenStructs::screenObject& scr);
+        /// GETTERS
         bool isHOut(const std::string & name);
         bool isVOut(const std::string & name);
         bool is_HandV_OUT(const std::string & name);
         bool isHIn(const std::string & name);
         bool isVIn(const std::string & name);
         bool isScreenIn(const std::string & name);
-        void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
-        void resetPosition( const std::string & name );
-        void jogScreen( const std::string & name, const double jog );
         bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
         bool setScreenTrigger(const std::string & name );
 //        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
         const std::string getScreenState( const std::string & name );
+        const screenStructs::screenObject & getScreenObject(const std::string & name);
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
-//        bool isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta);
-//        bool isScreenOUT(const std::string & name, const bool weKnowEntryExists = false );
         bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
         bool isHElement(const std::string & name, const screenStructs::SCREEN_STATE e);
         bool isVElement(const std::string & name, const screenStructs::SCREEN_STATE e);
@@ -56,6 +50,12 @@ class screenController : public controller
         bool isVEnabled(const std::string & name);
         double getACTPOS(const std::string & name);
         double getDevCent(const std::string & name);
+        /// SETTERS
+        void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
+        void resetPosition( const std::string & name );
+        void jogScreen( const std::string & name, const double jog );
+        void setPosition( const std::string & name, const double setPos );
+        bool setEX( const std::string & name );
 
 //  // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
 //        bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);

@@ -629,6 +629,14 @@ const std::string screenInterface::getScreenState(const std::string & name)
     }
 }
 //___________________________________________________________________________________________________________
+const screenStructs::screenObject & screenInterface::getScreenObject(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name);
+    }
+}
+//___________________________________________________________________________________________________________
 bool screenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;
@@ -832,6 +840,39 @@ bool screenInterface::setScreenTrigger( const std::string & name )
         message("setScreenTrigger recieved an unexpected error status from EPICS");
     return ret;
 }
+//______________________________________________________________________________
+bool screenInterface::setEX( const std::string & name )
+{
+    unsigned short send = 1;
+    if( isVEnabled(name) )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_EX).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_EX).CHID,
+               &send );
+    }
+    else if( isHEnabled(name) )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_EX).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_EX).CHID,
+               &send );
+    }
+    else
+    {
+        message("ERROR! DRIVER DIRECTION UNKNOWN");
+    }
+    std::string m1;
+    debugMessage("we here now");
+    m1 = "Timeout sending position in setScreenTrigger";
+    int status = sendToEpics("ca_put", "", m1.c_str() );
+    bool ret = false;
+    if (status == ECA_NORMAL)
+    {
+        ret = true;
+    }
+    else
+        message("setScreenTrigger recieved an unexpected error status from EPICS");
+    return ret;
+}
 //___________________________________________________________________________________________________________
 void screenInterface::jogScreen( const std::string & name, const double jog )
 {
@@ -848,6 +889,28 @@ void screenInterface::jogScreen( const std::string & name, const double jog )
                allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_JOG).CHID,
                &jog );
         setScreenTrigger( name );
+    }
+    else
+    {
+        message("ERROR! DRIVER DIRECTION UNKNOWN");
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::setPosition( const std::string & name, const double setPos )
+{
+    if( isVEnabled(name) )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TGTPOS).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TGTPOS).CHID,
+               &setPos );
+        setEX( name );
+    }
+    else if( isHEnabled(name) )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TGTPOS).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TGTPOS).CHID,
+               &setPos );
+        setEX( name );
     }
     else
     {

@@ -103,6 +103,11 @@ void screenController::jogScreen( const std::string & name, const double jog )
     localInterface.jogScreen(name, jog);
 }
 //________________________________________________________________________________
+void screenController::setPosition( const std::string & name, const double setPos )
+{
+    localInterface.setPosition(name, setPos);
+}
+//________________________________________________________________________________
 bool screenController::setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
     return localInterface.setScreenSDEV(name, state);
@@ -111,6 +116,11 @@ bool screenController::setScreenSDEV(const std::string & name, const screenStruc
 bool screenController::setScreenTrigger(const std::string & name )
 {
     return localInterface.setScreenTrigger(name);
+}
+//________________________________________________________________________________
+bool screenController::setEX(const std::string & name )
+{
+    return localInterface.setEX(name);
 }
 ////________________________________________________________________________________
 //screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name, const bool weKnowEntryExists )
@@ -121,6 +131,11 @@ bool screenController::setScreenTrigger(const std::string & name )
 const std::string screenController::getScreenState( const std::string & name )
 {
     return localInterface.getScreenState(name);
+}
+//________________________________________________________________________________
+const screenStructs::screenObject & screenController::getScreenObject( const std::string & name )
+{
+    return localInterface.getScreenObject(name);
 }
 //________________________________________________________________________________
 bool screenController::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)

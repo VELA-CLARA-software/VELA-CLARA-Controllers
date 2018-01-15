@@ -119,6 +119,9 @@ typedef std::vector<bool> vecb;
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
 {
+
+    docstring_options local_docstring_options(true, true, false);
+    local_docstring_options.disable_cpp_signatures();
     /// Things that you want to use in python muct be exposed:
     /// containers
     class_<std::vector< std::string > >("std_vector_string")
@@ -209,13 +212,25 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     class_<std::map<std::string,bool>>("std_map_string_bool")
         .def(map_indexing_suite< std::map<std::string, bool> >())
         ;
-
+    char const* screenObjectString = "This struct contains the screen object - inc. type of screen (HV mover, pneumatic etc.), and horizontal and vertical state.\n"
+                                     "It also gives the names of all the devices (positions) for a given screen.";
     boost::python::class_<screenStructs::screenObject,boost::noncopyable>
-        ("screenObject", boost::python::no_init)
-        .def_readonly("screenType",   &screenStructs::screenObject::screenType)
-        .def_readonly("screenHState", &screenStructs::screenObject::screenHState)
-        .def_readonly("screenVState", &screenStructs::screenObject::screenVState)
-        .def_readonly("numIlocks",    &screenStructs::screenObject::numIlocks)
+        ("screenObject",screenObjectString, boost::python::no_init)
+        .def_readonly("screenType",       &screenStructs::screenObject::screenType      )
+        .def_readonly("screenHState",     &screenStructs::screenObject::screenHState    )
+        .def_readonly("screenVState",     &screenStructs::screenObject::screenVState    )
+        .def_readonly("screenSetHState",  &screenStructs::screenObject::screenSetHState )
+        .def_readonly("screenSetVState",  &screenStructs::screenObject::screenSetVState )
+        .def_readonly("devCentH",         &screenStructs::screenObject::devCentH        )
+        .def_readonly("devCentV",         &screenStructs::screenObject::devCentV        )
+        .def_readonly("actPOSH",          &screenStructs::screenObject::actPOSH         )
+        .def_readonly("actPOSV",          &screenStructs::screenObject::actPOSV         )
+        .def_readonly("hDriverState",     &screenStructs::screenObject::hDriverState    )
+        .def_readonly("vDriverState",     &screenStructs::screenObject::vDriverState    )
+        .def_readonly("elementExists",    &screenStructs::screenObject::elementExists   )
+        .def_readonly("elementPositions", &screenStructs::screenObject::elementPositions)
+        .def_readonly("elementDirection", &screenStructs::screenObject::elementDirection)
+        .def_readonly("numIlocks",        &screenStructs::screenObject::numIlocks       )
         ;
 
 
@@ -231,61 +246,60 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
         ;
 
+    char const* getScreenObjectString = "Returns the screen object (name).";
+    char const* isHOutString = "Returns true if the horizontal stage is out.";
+    char const* isHInString = "Returns true if the horizontal stage is in.";
+    char const* isVOutString = "Returns true if the vertical stage is out.";
+    char const* isVInString = "Returns true if the vertical stage is in.";
+    char const* isHandVOutString = "Returns true if both stages are out.";
+    char const* isScreenInString = "Returns true if any of the screen devices are inserted.";
+    char const* moveScreenToString = "Will move the screen (name) to SCREEN_STATE state if it exists (as defined in the config file).";
+    char const* setScreenSDEVString = "Set screen device - the first part of moving a screen. Set the device to SCREEN_STATE state.";
+    char const* setScreenTriggerString = "Set screen trigger == 1 - the second part of moving a screen. This will set the stage in motion.";
+    char const* getScreenStateString = "Returns the current SCREEN_STATE.";
+    char const* isScreenInStateString = "Returns true if screen is currently in SCREEN_STATE state.";
+    char const* isYAGInString = "Returns true if the YAG screen is in.";
+    char const* isHEnabledString = "Returns true if the horizontal stage is enabled.";
+    char const* isVEnabledString = "Returns true if the vertical stage is enabled.";
+    char const* isHElementString = "Returns true if the element SCREEN_STATE state is a horizontal device.";
+    char const* isVElementString = "Returns true if the element SCREEN_STATE state is a vertical device.";
+    char const* getACTPOSString = "Returns the current actuator position.";
+    char const* jogScreenString = "Jogs the screen from its current position by jog (mm) - for expert use and calibration.";
+    char const* resetPositionString = "Resets the device to the position defined by SDEV.";
+    char const* setEXString = "Sets the screen in motion after setPosition is called.";
+    char const* setPositionString = "Sets the target position of the screen (mm) - for expert use and calibration.";
     boost::python::class_<screenController, boost::python::bases<controller>, boost::noncopyable>
         ("screenController","screenController Doc String",boost::python::no_init)
-        .def("getILockStates",           &screenController::getILockStates        )
-        .def("isHOut",                          &screenController::isHOut   )
-        .def("isVOut",                          &screenController::isVOut   )
-        .def("is_HandV_OUT",                    &screenController::is_HandV_OUT   )
-        .def("isHIn",                           &screenController::isHIn   )
-        .def("isVIn",                           &screenController::isVIn   )
-        .def("isScreenIn",                      &screenController::isScreenIn   )
-        .def("moveScreenTo",                    &screenController::moveScreenTo   )
-        .def("setScreenSDEV",                   &screenController::setScreenSDEV   )
-        .def("setScreenTrigger",                &screenController::setScreenTrigger   )
-        .def("getScreenState",                  &screenController::getScreenState   )
-        .def("isScreenInState",                 &screenController::isScreenInState   )
-        .def("isYAGIn",                         &screenController::isYAGIn   )
-        .def("isHEnabled",                      &screenController::isHEnabled   )
-        .def("isVEnabled",                      &screenController::isVEnabled   )
-        .def("isHElement",                      &screenController::isHElement   )
-        .def("isVElement",                      &screenController::isVElement   )
-        .def("getACTPOS",                       &screenController::getACTPOS   )
-        .def("jogScreen",                       &screenController::jogScreen  )
-        .def("resetPosition",                   &screenController::resetPosition   )
-//        .def("isScreenInPosition",              &screenController::isScreenInPosition   )
-//        .def("isScreenOUT",                     &screenController::isScreenOUT   )
-//        .def("isScreenIN",                      &screenController::isScreenIN   )
-//        .def("is_H_Element",                    &screenController::is_H_Element   )
-//        .def("is_V_Element",                    &screenController::is_V_Element   )
-//        .def("screenIN",                screenIN_1  )
-//        .def("screenIN",                screenIN_2  )
-//        .def("screenOUT",               screenOUT_1 )
-//        .def("screenOUT",               screenOUT_2 )
-//        .def("is_VELA_PNEUMATIC",       &screenController::is_VELA_PNEUMATIC )
-//        .def("is_VELA_HV_MOVER",        &screenController::is_VELA_HV_MOVER  )
-//        .def("get_VELA_PNEUMATIC_Screens", &screenController::get_VELA_PNEUMATIC_Screens )
-//        .def("get_VELA_HV_MOVER_Screens",  &screenController::get_VELA_HV_MOVER_Screens )
-//        .def("screenMoveTo",               screenMoveTo_1 )
-//        .def("screenMoveTo",               screenMoveTo_2 )
-//        .def("setPosition",                &screenController::setPosition )
-//        .def("isMoving",                   &screenController::isMoving )
-//        .def("isNotMoving",                &screenController::isNotMoving )
-//        .def("is_VELA_PNEUMATIC",          &screenController::is_VELA_PNEUMATIC )
-//        .def("is_VELA_HV_MOVER",           &screenController::is_VELA_HV_MOVER )
-//        .def("isScreenOUT",                isScreenOUT_1 )
-//        .def("isScreenOUT",                isScreenOUT_2 )
-//        .def("isScreenIN",                 isScreenIN_1  )
-//        .def("isScreenIN",                 isScreenIN_2  )
-//        .def("exists_and_isLocked",        &screenController::exists_and_isLocked        )
-//        .def("exists_and_isNotLocked",     &screenController::exists_and_isNotLocked     )
-//        .def("get_VELA_PNEUMATIC_Screens", &screenController::get_VELA_PNEUMATIC_Screens )
-//        .def("get_VELA_HV_MOVER_Screens",  &screenController::get_VELA_HV_MOVER_Screens  )
-//        .def("getScreenState",             &screenController::getScreenState             )
-//        .def("isScreenInState",            &screenController::isScreenInState            )
-//        .def("get_SCREEN_STATE_Definition",&screenController::get_SCREEN_STATE_Definition )
-//        .def("get_DRIVER_STATE_Definition",&screenController::get_DRIVER_STATE_Definition )
-        ;
+        .def("getScreenObject",                 &screenController::getScreenObject, getScreenObjectString, return_value_policy<reference_existing_object>() )
+        .def("getILockStates",                  &screenController::getILockStates                           )
+        .def("isHOut",                          &screenController::isHOut, isHOutString                     )
+        .def("isVOut",                          &screenController::isVOut, isVOutString                     )
+        .def("is_HandV_OUT",                    &screenController::is_HandV_OUT, isHandVOutString           )
+        .def("isHIn",                           &screenController::isHIn, isHOutString                      )
+        .def("isVIn",                           &screenController::isVIn, isVInString                       )
+        .def("isScreenIn",                      &screenController::isScreenIn, isScreenInString             )
+        .def("moveScreenTo",                    &screenController::moveScreenTo, moveScreenToString         )
+        .def("setScreenSDEV",                   &screenController::setScreenSDEV, setScreenSDEVString       )
+        .def("setScreenTrigger",                &screenController::setScreenTrigger, setScreenTriggerString )
+        .def("getScreenState",                  &screenController::getScreenState, getScreenStateString     )
+        .def("isScreenInState",                 &screenController::isScreenInState, isScreenInStateString   )
+        .def("isYAGIn",                         &screenController::isYAGIn, isYAGInString                   )
+        .def("isHEnabled",                      &screenController::isHEnabled, isHEnabledString             )
+        .def("isVEnabled",                      &screenController::isVEnabled, isVEnabledString             )
+        .def("isHElement",                      &screenController::isHElement, isHElementString             )
+        .def("isVElement",                      &screenController::isVElement, isVElementString             )
+        .def("getACTPOS",                       &screenController::getACTPOS, getACTPOSString               )
+        .def("jogScreen",                       &screenController::jogScreen, jogScreenString               )
+        .def("resetPosition",                   &screenController::resetPosition, resetPositionString       )
+        .def("setEX",                           &screenController::setEX, setEXString                       )
+        .def("setPosition",                     &screenController::setPosition, setPositionString           )
+        .def("debugMessagesOff",                &screenController::debugMessagesOff                         )
+        .def("debugMessagesOn",                 &screenController::debugMessagesOn                          )
+        .def("messagesOff",                     &screenController::messagesOff                              )
+        .def("messagesOn",                      &screenController::messagesOn                               )
+        .def("silence",                         &screenController::silence                                  )
+        .def("verbose",                         &screenController::verbose                                  )
+    ;
 
     /// The main class that creates all the controller obejcts
         boost::python::class_<VCscreens,boost::noncopyable> ("init")
