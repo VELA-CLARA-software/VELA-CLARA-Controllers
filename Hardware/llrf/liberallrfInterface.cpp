@@ -674,7 +674,7 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
     // check masks
     if(shouldCheckMasks(trace))// checks against
     {
-        //debugMessage("CHECKING MASKS ");
+        //debugMessage("CHECKING MASKS ",trace.name);
         bool trace_good = isTraceInMask(trace);
         if( trace_good )
         {
@@ -801,12 +801,10 @@ void liberallrfInterface::updateEVID(const event_handler_args& args,llrfStructs:
     // in EPICS 4
     updateTraceIndex(trace.evid_current_trace , trace.traces.size() );
 
-    if(llrf.trace_data.begin()->first == trace.name )
+    if(UTL::KLYSTRON_FORWARD_POWER == trace.name )
     {
-        updateActivePulseCount( t.EVID );
+        updateActivePulseCount(t.EVID);
     }
-
-
     // debugMessage("NEW trace.evid_current_trace  = ", trace.evid_current_trace, " ", t.EVID );
     // debugMessage("updateEVID FIN ");
 }
@@ -820,7 +818,6 @@ void liberallrfInterface::updateActivePulseCount(const std::string& evid)
         initial_pulsecount = count;
         first_pulse = false;
     }
-
     if(llrf.amp_ff > 0.0)//
     {
         if(count < llrf.previous_pulseCount)
@@ -846,15 +843,16 @@ void liberallrfInterface::updateActivePulseCount(const std::string& evid)
             std::cout << "!DO SOME MATH!" <<  std::endl;
             std::cout << "!DO SOME MATH!" <<  std::endl;
             std::cout << "!DO SOME MATH!" <<  std::endl;
-            llrf.activePulseCount += count - initial_pulsecount;
+            llrf.activePulseCount = count - initial_pulsecount;
         }
         else
         {
-            llrf.activePulseCount += count - initial_pulsecount;
+            llrf.activePulseCount = count - initial_pulsecount;
         }
     }
+    //message("initial_pulse = ",initial_pulsecount,", previous count = ",llrf.previous_pulseCount,", active pulse count = ", llrf.activePulseCount,"  count ",count,"  evid", evid );
+
     llrf.previous_pulseCount = count;
-    //message("updateActivePulseCount ",llrf.activePulseCount,"  ",count,"  ", evid,"  ",llrf.previous_pulseCount );
 }
 //____________________________________________________________________________________________
 size_t liberallrfInterface::getActivePulseCount()
@@ -919,7 +917,18 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
                 reset = false;
                 if(breakdown_count == trace.num_continuous_outside_mask_count)
                 {
-                    message(trace.rolling_average[i]," gave ",to_check[i], " > ", hi[i]," at i = ",i," us = ", llrf.time_vector.value[i]," ",trace.mask_floor);
+                    message(trace.name," gave: ",trace.rolling_average[i]," ",to_check[i], " > ", hi[i]," at i = ",i," us = ", llrf.time_vector.value[i]);
+                    if(trace.drop_amp_on_breakdown)
+                    {
+                        // stop checking masks
+                        message("setGlobalCheckMask(false);");
+                        setGlobalCheckMask(false);
+                        // set amp to drop_value
+                        next_amp_drop = trace.amp_drop_value;
+                        setAmpFFCallback();
+                    }
+                    else
+                        message("trace.drop_amp_on_breakdown is False");
                     return false;
                 }
             }
@@ -933,7 +942,19 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
                 reset = false;
                 if(breakdown_count == trace.num_continuous_outside_mask_count)
                 {
-                    message(trace.rolling_average[i]," gave ",to_check[i], " > ", hi[i]," at i = ",i," us = ", llrf.time_vector.value[i]," ",trace.mask_floor);
+                    message(trace.name," gave: ",trace.rolling_average[i]," ",to_check[i], " > ", hi[i]," at i = ",i," us = ", llrf.time_vector.value[i]);
+                    if(trace.drop_amp_on_breakdown)
+                    {
+                        // stop checking masks
+                        message("setGlobalCheckMask(false);");
+                        setGlobalCheckMask(false);
+                        // set amp to drop_value
+                        next_amp_drop = trace.amp_drop_value;
+                        setAmpFFCallback();
+                    }
+                    else
+                        message("trace.drop_amp_on_breakdown is False");
+
                     return false;
                 }
             }
@@ -972,14 +993,15 @@ void liberallrfInterface::staticEntrySetAmp(liberallrfInterface* interface)
 //____________________________________________________________________________________________
 void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name)
 {
-    if(trace.drop_amp_on_breakdown)
-    {
-        // stop checking masks
-        setGlobalCheckMask(false);
-        // set amp to drop_value
-        next_amp_drop = trace.amp_drop_value;
-        setAmpFFCallback();
-    }
+//    if(trace.drop_amp_on_breakdown)
+//    {
+//        // stop checking masks
+//        message("setGlobalCheckMask(false);");
+//        setGlobalCheckMask(false);
+//        // set amp to drop_value
+//        next_amp_drop = trace.amp_drop_value;
+//        setAmpFFCallback();
+//    }
 
     // add new outside_mask_trace struct to outside_mask_traces
     llrf.outside_mask_traces.push_back( llrfStructs::outside_mask_trace() );
