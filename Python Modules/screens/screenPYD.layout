@@ -2,29 +2,49 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="..\..\Hardware\screen\screenController.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5250" topLine="101" />
+			<Cursor1 position="2299" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\screen\screenController.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1967" topLine="25" />
+			<Cursor1 position="2789" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\screen\screenInterface.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="29377" topLine="612" />
+			<Cursor1 position="10597" topLine="213" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\screen\screenInterface.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1462" topLine="21" />
+			<Cursor1 position="2835" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenController.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3352" topLine="63" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenController.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1649" topLine="10" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenInterface.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="30698" topLine="639" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenInterface.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1651" topLine="21" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\screenStructs.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1967" topLine="105" />
+			<Cursor1 position="7577" topLine="101" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -57,19 +77,9 @@
 			<Cursor1 position="2258" topLine="36" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2299" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="..\..\Utilities\screenConfigReader.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="12241" topLine="230" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2835" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\screenConfigReader.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -77,19 +87,9 @@
 			<Cursor1 position="838" topLine="17" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="include\VCscreens.h" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="10597" topLine="213" />
-		</Cursor>
-	</File>
-	<File name="include\VCscreens.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="18853" topLine="291" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2789" topLine="0" />
+			<Cursor1 position="18204" topLine="261" />
 		</Cursor>
 	</File>
 	<File name="src\VCscreens.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -97,5 +97,5 @@
 			<Cursor1 position="1035" topLine="0" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="09b10b685a561119054eaaab00000002=*0;screenPYD:..\..\Hardware\screen\screenInterface.cpp,1;screenPYD:..\..\Structs\screenStructs.h,2;screenPYD:include\VCscreens.h,3;scopes:include\VCscopes.h,4;screenPYD:..\..\Hardware\screen\screenController.cpp,5;scopes:..\..\Hardware\scope\scopeInterface.cpp,6;screenPYD:..\..\Hardware\screen\screenInterface.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09b10b685a561119054eaaab00000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<EditorTabsLayout layout="09b188785a5c94df000068d200000002=0;screenPYD:..\..\Hardware\screen\screenInterface.cpp,1;screenPYD:..\..\Structs\screenStructs.h,*2;screenPYD:include\VCscreens.h,3;screenPYD:..\..\Hardware\screen\screenController.cpp,4;screenPYD:..\..\Hardware\screen\screenInterface.h,5;screenPYD:..\..\Hardware\screen\screenController.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09b188785a5c94df000068d200000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

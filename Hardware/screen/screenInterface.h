@@ -29,16 +29,22 @@ class screenInterface: public interface
         /// GETTERS
         bool isHOut(screenStructs::screenObject& scr);
         bool isVOut(screenStructs::screenObject& scr);
-        bool is_HandV_OUT(screenStructs::screenObject& scr);
-        bool isHOut(const std::string & name);
-        bool isVOut(const std::string & name);
-        bool is_HandV_OUT(const std::string & name);
         bool isHIn(screenStructs::screenObject& scr);
         bool isVIn(screenStructs::screenObject& scr);
+        bool is_HandV_OUT(screenStructs::screenObject& scr);
         bool isScreenIn(screenStructs::screenObject& scr);
+        bool isHMoving(screenStructs::screenObject& scr);
+        bool isVMoving(screenStructs::screenObject& scr);
+        bool isScreenMoving(screenStructs::screenObject& scr);
+        bool isHOut(const std::string & name);
+        bool isVOut(const std::string & name);
         bool isHIn(const std::string & name);
         bool isVIn(const std::string & name);
+        bool is_HandV_OUT(const std::string & name);
         bool isScreenIn(const std::string & name);
+        bool isHMoving(const std::string & name);
+        bool isVMoving(const std::string & name);
+        bool isScreenMoving(const std::string & name);
         const std::string getScreenState(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
@@ -49,6 +55,8 @@ class screenInterface: public interface
         bool isHEnabled(const std::string & name);
         bool isVEnabled(const std::string & name);
         double getACTPOS(const std::string & name);
+        double getJDiff(const std::string & name);
+        double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void resetPosition( const std::string & name );
@@ -57,25 +65,8 @@ class screenInterface: public interface
         bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
         bool setScreenTrigger(const std::string & name );
         bool setEX(const std::string & name );
-//        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
 
-        // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
-//        bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);
-//        bool screenMoveTo( const std::string & name, const screenStructs::SCREEN_STATE & states);
-//        bool screenIN ( const std::string & name );
-//        bool screenOUT( const std::string & name );
-//        bool screenOUT( const std::vector< std::string > & names );
-//        bool screenIN ( const std::vector< std::string > & names );
-//        bool setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value );
-
-
-        // 'existential quantification' - ahem
-//        bool isMoving(const std::string& name,const bool weKnowEntryExists = false );
-//        bool isNotMoving(const std::string& name,const bool weKnowEntryExists = false );
-//        bool isHCassetteOUT(screenStructs::screenObject& scr);
-//        bool isVCassetteOUT(screenStructs::screenObject& scr);
-//        bool is_HandV_CassetteOUT(screenStructs::screenObject& scr);
-
+        /// OLD FUNCTIONS
         bool is_VELA_PNEUMATIC(const std::string & name);
         bool is_VELA_HV_MOVER (const std::string & name);
         bool is_CLARA_PNEUMATIC (const std::string & name);
@@ -115,7 +106,6 @@ class screenInterface: public interface
 
         void monitorScreens();// calls the below functions to add to continuousMonitorStructsDEV
         void addScreenObjectMonitors(screenStructs::pvStruct& pvs, screenStructs::screenObject& obj);
-        void addScreenDriverMonitors(screenStructs::pvStruct& pvs, screenStructs::screenDriver& obj);// see screenstructs for a screenDriver
 //        void addScreenDriverStatusMonitors(screenStructs::pvStruct& pvs,screenStructs::screenDriverStatus& obj);// see screenstructs for a screenDriver
 
         // this map conatins all the screen objects, which combine online and offline data
@@ -137,6 +127,8 @@ class screenInterface: public interface
         void updateGetDev( screenStructs::monitorStruct * ms, const unsigned short args );
         void updateDevState( screenStructs::monitorStruct * ms, const unsigned short args );
         void updateDevCent( screenStructs::monitorStruct * ms, const double args );
+        void updateJDiff( screenStructs::monitorStruct * ms, const double args );
+        void updateMoving( screenStructs::monitorStruct * ms, const unsigned short args );
         //void updateMABS(screenStructs::monitorStruct* ms,const double args);
 
         // version to use when we already know the answer
@@ -204,8 +196,6 @@ class screenInterface: public interface
 //        bool isHDriveEnabled (const screenStructs::screenDriver& scrdr);
 //        bool isHDriveDisabled(const screenStructs::screenDriver& scrdr);
 //        bool isVDriveDisabled(const screenStructs::screenDriver& scrdr);
-        bool is_H_element_AND_HDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver & scrdr);
-        bool is_V_element_AND_VDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver & scrdr);
         bool is_OUT_AND_VDriveEnabled(const std::string & name);
         bool is_IN_OR_OUT(const screenStructs::SCREEN_STATE sta );
         bool screen_is_out_AND_sta_is_in(const std::string & name, const screenStructs::SCREEN_STATE sta );

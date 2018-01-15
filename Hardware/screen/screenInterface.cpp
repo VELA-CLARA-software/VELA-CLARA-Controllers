@@ -200,30 +200,36 @@ void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
         case screenStructs::SCREEN_PV_TYPE::V_DEV_STATE:
             ms->interface->updateDevState( ms, *(unsigned short*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::H_DEV_CENT:
+        case screenStructs::SCREEN_PV_TYPE::H_DEV_CENT:
             ms->interface->updateDevCent( ms, *(double*)args.dbr);
             break;
-        case  screenStructs::SCREEN_PV_TYPE::V_DEV_CENT:
+        case screenStructs::SCREEN_PV_TYPE::V_DEV_CENT:
             ms->interface->updateDevCent( ms, *(double*) args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::H_ACTPOS:
+        case screenStructs::SCREEN_PV_TYPE::H_ACTPOS:
              ms->interface->updateACTPOS( ms, *(double*)args.dbr   );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::V_ACTPOS:
+        case screenStructs::SCREEN_PV_TYPE::V_ACTPOS:
              ms->interface->updateACTPOS( ms, *(double*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::H_EN:
+        case screenStructs::SCREEN_PV_TYPE::H_EN:
              ms->interface->updateEN( ms, *(unsigned short*)args.dbr );
             break;
-        case  screenStructs::SCREEN_PV_TYPE::V_EN:
+        case screenStructs::SCREEN_PV_TYPE::V_EN:
              ms->interface->updateEN( ms, *(unsigned short*)args.dbr );
             break;
-//        case  screenStructs::SCREEN_PV_TYPE::ACTPOS:
-//             ms->interface->updateACTPOS( ms, *(double*)args.dbr );
-//            break;
-//        case  screenStructs::SCREEN_PV_TYPE::EN:
-//             ms->interface->updateEN( ms, *(unsigned short*)args.dbr );
-//            break;
+        case screenStructs::SCREEN_PV_TYPE::H_JDIFF:
+             ms->interface->updateJDiff( ms, *(double*)args.dbr );
+            break;
+        case screenStructs::SCREEN_PV_TYPE::V_JDIFF:
+             ms->interface->updateJDiff( ms, *(double*)args.dbr );
+            break;
+        case screenStructs::SCREEN_PV_TYPE::H_MOVING:
+             ms->interface->updateMoving( ms, *(unsigned short*)args.dbr );
+            break;
+        case screenStructs::SCREEN_PV_TYPE::V_MOVING:
+             ms->interface->updateMoving( ms, *(unsigned short*)args.dbr );
+            break;
     }
 }
 //_________________________________________________________________________________________________________________
@@ -438,13 +444,47 @@ void screenInterface::updateACTPOS( screenStructs::monitorStruct * ms, const dou
     }
 }
 //_________________________________________________________________________________________________________________
+void screenInterface::updateJDiff( screenStructs::monitorStruct * ms, const double args )
+{
+    screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
+    //unsigned short value = *(unsigned short*)args.dbr;
+    const std::string screenName = obj -> name;
+    if( entryExists(allScreentData, screenName ) )
+    {
+        if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+        {
+            allScreentData.at(screenName).jDiffH = args;
+        }
+        else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
+        {
+            allScreentData.at(screenName).jDiffV = args;
+        }
+        // this is also copying the pvstructs maps that we know
+        //will never be used (IS THIS A PROBLEM?)
+        if( allScreentData.at(screenName).screenHState == allScreentData.at(screenName).screenSetHState && allScreentData.at(screenName).screenVState == allScreentData.at(screenName).screenSetVState )
+        {
+            switch( ms->dir )
+            {
+                case screenStructs::DRIVER_DIRECTION::VERTICAL:
+                {
+                    message(screenName,": Difference from device centre (mm) is ", allScreentData.at(screenName).jDiffV,
+                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
+                }
+                case screenStructs::DRIVER_DIRECTION::HORIZONTAL:
+                {
+                    message(screenName,": Difference from device centre (mm) is ", allScreentData.at(screenName).jDiffH,
+                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction,");
+                }
+            }
+        }
+    }
+}
+//_________________________________________________________________________________________________________________
 void screenInterface::updateEN( screenStructs::monitorStruct * ms, const unsigned short args )
 {
     screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
     //unsigned short value = *(unsigned short*)args.dbr;
     const std::string screenName = obj -> name;
-    message(args);
-    message("!!!!!!!!!!!!!!!!!!!");
     if( entryExists(allScreentData, screenName ) )
     {
         if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
@@ -480,6 +520,46 @@ void screenInterface::updateEN( screenStructs::monitorStruct * ms, const unsigne
         message(screenName,": Driver state is ", ENUM_TO_STRING(allScreentData.at(screenName).vDriverState),
                 " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
         message("and ", ENUM_TO_STRING(allScreentData.at(screenName).hDriverState),
+                " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction");
+    }
+}
+//_________________________________________________________________________________________________________________
+void screenInterface::updateMoving( screenStructs::monitorStruct * ms, const unsigned short args )
+{
+    screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
+    //unsigned short value = *(unsigned short*)args.dbr;
+    const std::string screenName = obj -> name;
+    if( entryExists(allScreentData, screenName ) )
+    {
+        if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+        {
+            switch( args )
+            {
+                case 0:
+                    allScreentData.at(screenName).hMoving = false;
+                    break;
+                case 1:
+                    allScreentData.at(screenName).hMoving = true;
+                    break;
+            }
+        }
+        else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
+        {
+            switch( args )
+            {
+                case 0:
+                    allScreentData.at(screenName).vMoving = false;
+                    break;
+                case 1:
+                    allScreentData.at(screenName).vMoving = true;
+                    break;
+            }
+        }
+        // this is also copying the pvstructs maps that we know
+        //will never be used (IS THIS A PROBLEM?)
+        message(screenName,": Screen moving == ", allScreentData.at(screenName).vMoving,
+                " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
+        message("and ", allScreentData.at(screenName).hMoving,
                 " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction");
     }
 }
@@ -543,6 +623,52 @@ bool screenInterface::isHIn(screenStructs::screenObject & scr)
 bool screenInterface::isVIn(screenStructs::screenObject & scr)
 {
     return !isVOut(scr);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isHMoving(screenStructs::screenObject & scr)
+{
+    return scr.hMoving == true;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isVMoving(screenStructs::screenObject & scr)
+{
+    return scr.vMoving == true;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isScreenMoving(screenStructs::screenObject & scr)
+{
+    return scr.vMoving == true || scr.hMoving == true;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isHMoving(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name).hMoving == true;
+    }
+    else
+    {
+        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+        return false;
+    }
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isVMoving(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name).vMoving == true;
+    }
+    else
+    {
+        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+        return false;
+    }
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isScreenMoving(const std::string & name)
+{
+    return isHMoving(name) || isVMoving(name);
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isScreenIn(const std::string & name)
@@ -722,6 +848,36 @@ double screenInterface::getACTPOS(const std::string & name)
         }
     }
     return r;
+}
+//___________________________________________________________________________________________________________
+double screenInterface::getJDiff(const std::string & name)
+{
+    bool r = false;
+    if( entryExists( allScreentData, name ) )
+    {
+        if( isVEnabled(name) )
+        {
+            return allScreentData.at(name).jDiffV;
+        }
+        else if( isHEnabled(name) )
+        {
+            return allScreentData.at(name).jDiffH;
+        }
+    }
+    return r;
+}
+//___________________________________________________________________________________________________________
+double screenInterface::getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state)
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name).devicePositions.at(state);
+    }
+    else
+    {
+        message("ERROR!!!! Screen not defined in config file!!!");
+        return 0.0;
+    }
 }
 ////___________________________________________________________________________________________________________
 //bool screenInterface::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)

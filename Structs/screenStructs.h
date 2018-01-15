@@ -22,12 +22,8 @@ class screenInterface;
 namespace screenStructs
 {   //Forward declare structs, gcc seems to like this
     struct pvStruct;
-    struct velaINJscreenObject;
     struct screenObject;
     struct monitorStruct;
-    struct screenDriver;
-    struct COMPLEX_YAG_Object;
-    struct SIMPLE_YAG_Object;
 
     //Use this MACRO to define enums. oOnsider putting ENUMS that are more 'global' in structs.h
     // screen types
@@ -121,10 +117,13 @@ namespace screenStructs
         SCREEN_STATE      screenHState, screenSetHState, screenVState, screenSetVState;
         double            devCentH, devCentV;
         double            actPOSH, actPOSV;
+        double            jDiffH, jDiffV;
+        bool              hMoving, vMoving;
         DRIVER_STATE      hDriverState, vDriverState;
         std::map< SCREEN_STATE, bool >             elementExists;         // holds if an element exists on this cassette(from config)
         std::map< SCREEN_STATE, DRIVER_DIRECTION > elementDirection;
         std::map< SCREEN_STATE, unsigned short >   elementPositions;      // position element on cassette (from config)
+        std::map< SCREEN_STATE, double >           devicePositions;      // position element on cassette (from config)
         int numIlocks;
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__

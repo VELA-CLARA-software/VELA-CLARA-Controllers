@@ -88,6 +88,21 @@ bool screenController::isScreenIn(const std::string & name)
     return localInterface.isScreenIn(name);
 }
 //________________________________________________________________________________
+bool screenController::isHMoving(const std::string & name)
+{
+    return localInterface.isHMoving(name);
+}
+//________________________________________________________________________________
+bool screenController::isVMoving(const std::string & name)
+{
+    return localInterface.isVMoving(name);
+}
+//________________________________________________________________________________
+bool screenController::isScreenMoving(const std::string & name)
+{
+    return localInterface.isScreenMoving(name);
+}
+//________________________________________________________________________________
 void screenController::moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
     localInterface.moveScreenTo(name, state);
@@ -171,6 +186,16 @@ bool screenController::isVElement(const std::string & name, const screenStructs:
 double screenController::getACTPOS(const std::string & name)
 {
     return localInterface.getACTPOS(name);
+}
+//________________________________________________________________________________
+double screenController::getJDiff(const std::string & name)
+{
+    return localInterface.getJDiff(name);
+}
+//________________________________________________________________________________
+double screenController::getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state)
+{
+    return localInterface.getDevicePosition(name, state);
 }
 ////________________________________________________________________________________
 //bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)

@@ -36,6 +36,9 @@ class screenController : public controller
         bool isHIn(const std::string & name);
         bool isVIn(const std::string & name);
         bool isScreenIn(const std::string & name);
+        bool isHMoving(const std::string & name);
+        bool isVMoving(const std::string & name);
+        bool isScreenMoving(const std::string & name);
         bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
         bool setScreenTrigger(const std::string & name );
 //        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
@@ -50,6 +53,8 @@ class screenController : public controller
         bool isVEnabled(const std::string & name);
         double getACTPOS(const std::string & name);
         double getDevCent(const std::string & name);
+        double getJDiff(const std::string & name);
+        double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void resetPosition( const std::string & name );

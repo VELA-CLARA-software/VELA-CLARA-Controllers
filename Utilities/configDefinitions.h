@@ -728,11 +728,27 @@ namespace UTL
     const std::string H_APT_3     = "H_APT_3";
     const std::string V_RETRACTED = "V_RETRACTED";
     const std::string V_MAX       = "V_MAX";
+    const std::string V_SLIT_1    = "V_SLIT_1";
     const std::string V_RF        = "V_RF";
     const std::string V_MIRROR    = "V_MIRROR";
     const std::string V_YAG       = "V_YAG";
     const std::string V_GRAT      = "V_GRAT";
     const std::string V_COL       = "V_COL";
+    const std::string H_RETRACTED_POS = "H_RETRACTED_POS";
+    const std::string H_SLIT_1_POS    = "H_SLIT_1_POS";
+    const std::string H_SLIT_2_POS    = "H_SLIT_2_POS";
+    const std::string H_SLIT_3_POS    = "H_SLIT_3_POS";
+    const std::string H_APT_1_POS     = "H_APT_1_POS";
+    const std::string H_APT_2_POS     = "H_APT_2_POS";
+    const std::string H_APT_3_POS     = "H_APT_3_POS";
+    const std::string V_RETRACTED_POS = "V_RETRACTED_POS";
+    const std::string V_MAX_POS       = "V_MAX_POS";
+    const std::string V_SLIT_1_POS    = "V_SLIT_1_POS";
+    const std::string V_RF_POS        = "V_RF_POS";
+    const std::string V_MIRROR_POS    = "V_MIRROR_POS";
+    const std::string V_YAG_POS       = "V_YAG_POS";
+    const std::string V_GRAT_POS      = "V_GRAT_POS";
+    const std::string V_COL_POS       = "V_COL_POS";
     // SCREEN YAG 1/2/3 COMMAND PVs
     const std::string PV_SUFFIX_H_MABS = "PV_SUFFIX_H_MABS";
     const std::string PV_SUFFIX_V_MABS = "PV_SUFFIX_V_MABS";
@@ -752,90 +768,6 @@ namespace UTL
     const std::string PV_SUFFIX_V_STA      = "PV_SUFFIX_V_STA";
     const std::string PV_SUFFIX_H_POS      = "PV_SUFFIX_H_POS";
     const std::string PV_SUFFIX_V_POS      = "PV_SUFFIX_V_POS";
-//    const std::string PV_SUFFIX_H_MOVING   = "PV_SUFFIX_H_MOVING";
-//    const std::string PV_SUFFIX_V_MOVING   = "PV_SUFFIX_V_MOVING";
-//    const std::string PV_SUFFIX_H_EN       = "PV_SUFFIX_H_EN";
-//    const std::string PV_SUFFIX_V_EN       = "PV_SUFFIX_V_EN";
-//    const std::string PV_SUFFIX_H_CAL      = "PV_SUFFIX_H_CAL";
-//    const std::string PV_SUFFIX_V_CAL      = "PV_SUFFIX_V_CAL";
-//    const std::string PV_SUFFIX_H_READY    = "PV_SUFFIX_H_READY";
-//    const std::string PV_SUFFIX_V_READY    = "PV_SUFFIX_V_READY";
-//    const std::string PV_SUFFIX_H_JOGDOWN  = "PV_SUFFIX_H_JOGDOWN";
-//    const std::string PV_SUFFIX_H_JOGUP    = "PV_SUFFIX_H_JOGUP";
-//    const std::string PV_SUFFIX_H_JOGINC   = "PV_SUFFIX_H_JOGINC";
-//    const std::string PV_SUFFIX_V_JOGDOWN  = "PV_SUFFIX_V_JOGDOWN";
-//    const std::string PV_SUFFIX_V_JOGUP    = "PV_SUFFIX_V_JOGUP";
-//    const std::string PV_SUFFIX_V_JOGINC   = "PV_SUFFIX_V_JOGINC";
-    /// SCREEN YAG 1/2/3 elements, ++ there are H and V versions, so we can H and V cassette objects, see screenStructs
-    /// and the screenConfigReader
-    const std::string H_HOLE_6p3_MM_POS  = "H_HOLE_6p3_MM_POS";
-    const std::string V_HOLE_6p3_MM_POS  = "V_HOLE_6p3_MM_POS";
-    const std::string V_SLIT_50_UM_POS   = "V_SLIT_50_UM_POS";
-    const std::string H_SLIT_50_UM_POS   = "H_SLIT_50_UM_POS";
-    const std::string H_SLIT_25_UM_POS   = "H_SLIT_25_UM_POS";
-    const std::string V_SLIT_25_UM_POS   = "V_SLIT_25_UM_POS";
-    const std::string H_HOLE_10_MM_POS   = "H_HOLE_10_MM_POS";
-    const std::string V_HOLE_10_MM_POS   = "V_HOLE_10_MM_POS";
-    const std::string HOLE_6p3_MM_POS    = "HOLE_6p3_MM_POS";
-    const std::string SLIT_50_UM_POS     = "SLIT_50_UM_POS";
-    const std::string SLIT_25_UM_POS     = "SLIT_25_UM_POS";
-    const std::string HOLE_10_MM_POS     = "HOLE_10_MM_POS";
-    const std::string H_MIRROR_POS       = "H_MIRROR_POS";
-    const std::string V_MIRROR_POS       = "V_MIRROR_POS";
-    const std::string MIRROR_POS         = "MIRROR_POS";
-    const std::string V_SLIT_POS         = "V_SLIT_POS";
-    const std::string H_SLIT_POS         = "H_SLIT_POS";
-    const std::string SLIT_POS           = "SLIT_POS";
-    const std::string H_YAG_POS          = "H_YAG_POS";
-    const std::string V_YAG_POS          = "V_YAG_POS";
-    const std::string YAG_POS            = "YAG_POS";
-    const std::string H_OUT_POS          = "H_OUT_POS";
-    const std::string V_OUT_POS          = "V_OUT_POS";
-    const std::string H_RF_POS           = "H_RF_POS";
-    const std::string OUT_POS            = "OUT_POS";
-    const std::string V_RF_POS           = "V_RF_POS";
-    const std::string RF_POS             = "RF_POS";
-    const std::string H_4MM_APERTURE_POS = "H_4MM_APERTURE_POS";
-    const std::string H_6MM_APERTURE_POS = "H_6MM_APERTURE_POS";
-    const std::string H_9MM_APERTURE_POS = "H_9MM_APERTURE_POS";
-    const std::string H_SLIT_1_POS       = "H_SLIT_1_POS";
-    const std::string H_SLIT_2_POS       = "H_SLIT_2_POS";
-    const std::string H_SLIT_3_POS       = "H_SLIT_3_POS";
-    const std::string H_YAG_MIRROR_POS   = "H_YAG_MIRROR_POS";
-    const std::string V_YAG_MIRROR_POS   = "V_YAG_MIRROR_POS";
-    const std::string V_GRATICULE_POS    = "V_GRATICULE_POS";
-    const std::string V_RF_CAGE_POS      = "V_RF_CAGE_POS";
-    const std::string V_SLIT_1_POS       = "V_SLIT_1_POS";
-    const std::string V_COLLIMATOR_POS   = "V_COLLIMATOR_POS";
-    /// long values for setting screen elements
-    const std::string H_HOLE_6p3_MM  = "H_HOLE_6p3_MM";
-    const std::string V_HOLE_6p3_MM  = "V_HOLE_6p3_MM";
-    const std::string V_SLIT_50_UM   = "V_SLIT_50_UM";
-    const std::string H_SLIT_50_UM   = "H_SLIT_50_UM";
-    const std::string H_SLIT_25_UM   = "H_SLIT_25_UM";
-    const std::string V_SLIT_25_UM   = "V_SLIT_25_UM";
-    const std::string H_HOLE_10_MM   = "H_HOLE_10_MM";
-    const std::string V_HOLE_10_MM   = "V_HOLE_10_MM";
-    const std::string HOLE_6p3_MM    = "HOLE_6p3_MM";
-    const std::string SLIT_50_UM     = "SLIT_50_UM";
-    const std::string SLIT_25_UM     = "SLIT_25_UM";
-    const std::string HOLE_10_MM     = "HOLE_10_MM";
-    const std::string MIRROR         = "MIRROR";
-    const std::string V_SLIT         = "V_SLIT";
-    const std::string H_SLIT         = "H_SLIT";
-    const std::string SLIT           = "SLIT";
-    const std::string YAG            = "YAG";
-    const std::string OUT            = "OUT";
-    const std::string RF             = "RF";
-    const std::string H_4MM_APERTURE = "H_4MM_APERTURE";
-    const std::string H_6MM_APERTURE = "H_6MM_APERTURE";
-    const std::string H_9MM_APERTURE = "H_9MM_APERTURE";
-    const std::string H_YAG_MIRROR   = "H_YAG_MIRROR";
-    const std::string V_YAG_MIRROR   = "V_YAG_MIRROR";
-    const std::string V_GRATICULE    = "V_GRATICULE";
-    const std::string V_RF_CAGE      = "V_RF_CAGE";
-    const std::string V_SLIT_1       = "V_SLIT_1";
-    const std::string V_COLLIMATOR   = "V_COLLIMATOR";
     // other screen config file parameters
     // defintiions of each bit for the STA int
     const std::string SCREEN_DRIVER_POS_TOLERANCE = "SCREEN_DRIVER_POS_TOLERANCE";
@@ -859,9 +791,9 @@ namespace UTL
     const std::string STA_BIT                     = "STA_BIT";
     // master list of everything that can go on a screen driver cassette
     // probably should try and  get rid of this
-    const std::vector<std::string> allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
-                                                                   HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
-                                                                   SLIT_POS, OUT_POS };
+//    const std::vector<std::string> allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
+//                                                                   HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
+//                                                                   SLIT_POS, OUT_POS };
 
 }
 #endif //CONFIG_DEFINITIONS_H
