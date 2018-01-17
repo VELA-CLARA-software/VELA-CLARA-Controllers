@@ -66,6 +66,7 @@ class liberallrfInterface : public interface
         size_t getTraceLength();
         size_t getNumOutsideMaskTraces();
         size_t getActivePulseCount();
+        void setPulseCountOffset(size_t val);
 
         size_t getShotCount(const std::string& name);
 

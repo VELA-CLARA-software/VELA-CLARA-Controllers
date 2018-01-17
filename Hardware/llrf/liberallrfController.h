@@ -59,11 +59,7 @@ class liberaLLRFController : public controller
         double getAmpCalibration();
         double getCrestPhiLLRF();
         size_t getActivePulseCount();
-
-//        const size_t& geetActivePulseCountRef()
-//        {
-//            return localInterface.geetActivePulseCountRef();
-//        }
+        void setPulseCountOffset(size_t val);
 
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);

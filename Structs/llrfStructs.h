@@ -147,7 +147,9 @@ namespace llrfStructs
             name("unknown"),
             EVID_timeStr("unknown"),
             EVID("unknown"),
-            EVID_time(UTL::ZERO_DOUBLE)
+            EVID_time(UTL::ZERO_DOUBLE),
+            procStart(0),
+            procEnd(0)
             {}
         size_t mean_start_index,mean_stop_index;
         bool   in_mask;
@@ -162,6 +164,7 @@ namespace llrfStructs
         std::string    EVID_timeStr;    // LLRF EVID string
         epicsTimeStamp EVID_etime;   // epics timestamp for value
         // when exposing a vector of rf_trace to python I ran into trouble...
+        long long procStart,procEnd;
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
         bool operator==(const rf_trace& rhs)
         {
@@ -194,8 +197,8 @@ namespace llrfStructs
             mean_stop_index(UTL::ZERO_SIZET),
             previous_trace(UTL::MINUS_ONE_INT),
             previous_previous_trace(UTL::MINUS_TWO_INT),
-            add_next_trace_to_outside_mask_trace(false),
-            outside_mask_trace_part(UTL::ZERO_SIZET),
+            //add_next_trace_to_outside_mask_trace(false),
+            //outside_mask_trace_part(UTL::ZERO_SIZET),
             amp_drop_value(UTL::ZERO_DOUBLE),
             drop_amp_on_breakdown(false),
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
@@ -224,8 +227,10 @@ namespace llrfStructs
         int mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to
-        bool add_next_trace_to_outside_mask_trace, drop_amp_on_breakdown;
-        size_t outside_mask_trace_part;
+        bool drop_amp_on_breakdown;
+        //std::map<size_t,std::vector<bool>> add_next_trace_to_outside_mask_trace;
+        std::vector<size_t> add_next_trace_to_outside_mask_trace;
+        //size_t outside_mask_trace_part;
         double amp_drop_value;
         LLRF_SCAN scan;
     };
@@ -282,6 +287,7 @@ namespace llrfStructs
             amp_drop_value(UTL::ZERO_DOUBLE),
             drop_amp_on_breakdown(false),
             activePulseCount(UTL::ZERO_SIZET),
+            pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET)
                      {}
         std::vector<std::string> tracesToSaveOnBreakDown;
@@ -299,7 +305,7 @@ namespace llrfStructs
         size_t traceLength,event_count,num_outside_mask_traces,
            // the llrf doesn't fire immediatly after recieving a trigger
         // this is the (approx) number of elements of noise in an rf trace
-        pulse_latency, activePulseCount, previous_pulseCount;
+        pulse_latency, activePulseCount, previous_pulseCount, pulseCountOffset;
         long long timer_start;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
         // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )

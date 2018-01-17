@@ -51,6 +51,11 @@ size_t liberaLLRFController::getActivePulseCount()
 {
         return localInterface.getActivePulseCount();
 }
+//____________________________________________________________________________________________
+void liberaLLRFController::setPulseCountOffset(size_t val)
+{
+    localInterface.setPulseCountOffset(val);
+}
 //______________________________________________________________________________
 size_t liberaLLRFController::getNumOutsideMaskTraces()
 {
@@ -349,6 +354,7 @@ boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
 //______________________________________________________________________________
 boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside_mask_trace& omt)
 {
+    //message("getOMT_Dict called ");
     boost::python::dict dictionary;
     int i = -2;
     std::string EVID;
@@ -380,6 +386,7 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
                 dictionary[value += std::to_string(i)] = toPythonList(it2.value);
                 dictionary[name  += std::to_string(i)] = it2.name;
                 ++i;
+                //message(omt.trace_name," adding: ",it2.name," ",it2.EVID," ",it2.time);
             }
             //message("here");
         }

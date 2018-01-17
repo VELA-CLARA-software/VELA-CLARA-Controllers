@@ -315,6 +315,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("drop_amp_on_breakdown", &liberallrfObject::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         .def_readonly("activePulseCount", &liberallrfObject::activePulseCount,"(Total) Number of pulses with amp > 0 since connection.")
         .def_readonly("pulseCount", &liberallrfObject::previous_pulseCount,"EVID as number.")
+        .def_readonly("pulseCountOffset", &liberallrfObject::pulseCountOffset,"offset to the pulseCountOffset.")
         ;
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
@@ -348,6 +349,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-s]")
         .def("getPulseOffset",  &liberaLLRFController::getPulseOffset,"Return RF Pulse Offset [micro-s]")
         .def("getActivePulseCount",  &liberaLLRFController::getActivePulseCount,"Return number of pulses with amplitude > 0 sinze connection")
+        .def("setPulseCountOffset",  &liberaLLRFController::setPulseCountOffset,(arg("value")),"set an offset to the pulse counter (must be postive")
 
         .def("isFFLocked",  &liberaLLRFController::isFFLocked,"Return true if FF check box is checked.")
         .def("isFFNotLocked",  &liberaLLRFController::isFFNotLocked,"Return true if FF check box is not checked.")
@@ -362,7 +364,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)" )
 
         .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks" )
-        .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData2_Py,(arg("parte")),"Return index [part] from saved data of traces outside masks" )
+        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks" )
 
         .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")
         .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(arg("name")),"Return latest average trace data for Channel 'name'")
