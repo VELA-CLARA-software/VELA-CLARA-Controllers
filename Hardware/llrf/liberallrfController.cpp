@@ -762,9 +762,29 @@ const llrfStructs::liberallrfObject& liberaLLRFController::getLLRFObjConstRef()
     return localInterface.getLLRFObjConstRef();
 }
 //______________________________________________________________________________
+llrfStructs::TRIG liberaLLRFController::getTrigSource()
+{
+    return localInterface.getTrigSource();
+}
+//______________________________________________________________________________
 //  __   ___ ___ ___  ___  __   __
 // /__` |__   |   |  |__  |__) /__`
 // .__/ |___  |   |  |___ |  \ .__/
+//______________________________________________________________________________
+bool liberaLLRFController::trigOff()
+{
+    return localInterface.trigOff();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::trigExt()
+{
+    return localInterface.trigExt();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::trigInt()
+{
+    return localInterface.trigInt();
+}
 //______________________________________________________________________________
 bool liberaLLRFController::setPhiSP(double value)
 {
@@ -779,6 +799,11 @@ bool liberaLLRFController::setPhiFF(double value)
 bool liberaLLRFController::setAmpSP(double value)
 {
     return localInterface.setAmpSP(value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setAmpHP(double value)
+{
+    return localInterface.setAmpHP(value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setAmpFF(double value)
@@ -894,6 +919,16 @@ bool liberaLLRFController::setNumBufferTraces(const std::string&name,const size_
 void liberaLLRFController::setNumBufferTraces(const size_t value)
 {
     localInterface.setNumBufferTraces(value);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setNumExtraTraces(size_t value)
+{
+    localInterface.setNumExtraTraces(value);
+}
+//____________________________________________________________________________________________
+size_t liberaLLRFController::getNumExtraTraces()
+{
+    return localInterface.getNumExtraTraces();
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setCheckMask(const std::string&name, bool value)

@@ -182,7 +182,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("LIB_TIME_VECTOR",  LLRF_PV_TYPE::LIB_TIME_VECTOR)
         .value("LIB_PULSE_LENGTH", LLRF_PV_TYPE::LIB_PULSE_LENGTH)
         .value("LIB_PULSE_OFFSET", LLRF_PV_TYPE::LIB_PULSE_OFFSET)
-        .value("LIB_PULSE_OFFSET", LLRF_PV_TYPE::LIB_PULSE_OFFSET)
+        .value("TRIG_SOURCE", LLRF_PV_TYPE::TRIG_SOURCE)
         .value("AMP_MVM", LLRF_PV_TYPE::AMP_MVM)
         .value("PHI_DEG", LLRF_PV_TYPE::PHI_DEG)
         .value("UNKNOWN", LLRF_PV_TYPE::UNKNOWN)
@@ -194,6 +194,12 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("VELA_LRRG", LLRF_TYPE::VELA_LRRG)
         .value("L01", LLRF_TYPE::L01)
         .value("UNKNOWN_TYPE", LLRF_TYPE::UNKNOWN_TYPE)
+        ;
+    enum_<llrfStructs::TRIG>("TRIG")
+        .value("OFF",TRIG::OFF )
+        .value("EXTERNAL",TRIG::EXTERNAL)
+        .value("INTERNAL", TRIG::INTERNAL)
+        .value("UNKNOWN_TRIG", TRIG::UNKNOWN_TRIG)
         ;
 
     enum_<llrfStructs::LLRF_SCAN>("LLRF_SCAN")
@@ -251,6 +257,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("drop_amp_on_breakdown", &rf_trace_data::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         .def_readonly("mask_floor", &rf_trace_data::mask_floor,"Mask floor level.")
         .def_readonly("num_continuous_outside_mask_count", &rf_trace_data::num_continuous_outside_mask_count,"number of continuous outside mask.")
+        .def_readonly("add_next_trace", &rf_trace_data::add_next_trace,"number of traces still to add to outside mask traces.")
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
@@ -316,6 +323,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("activePulseCount", &liberallrfObject::activePulseCount,"(Total) Number of pulses with amp > 0 since connection.")
         .def_readonly("pulseCount", &liberallrfObject::previous_pulseCount,"EVID as number.")
         .def_readonly("pulseCountOffset", &liberallrfObject::pulseCountOffset,"offset to the pulseCountOffset.")
+        .def_readonly("trig_source", &liberallrfObject::trig_source,"the trigger source.")
+        .def_readonly("num_extra_traces", &liberallrfObject::num_extra_traces,"number of extra traces to save after outside mask event.")
         ;
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
@@ -426,7 +435,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setPhiSP",  &liberaLLRFController::setPhiSP,(arg("value")),"Set Phase(SP) in LLRF Units")
         .def("setPhiFF",  &liberaLLRFController::setPhiFF,(arg("value")),"Set Phase(FF) in LLRF Units")
         .def("setAmpSP",  &liberaLLRFController::setAmpSP,(arg("value")),"Set Amplitude(SP) in LLRF Units")
+        .def("setAmpHP",  &liberaLLRFController::setAmpHP,(arg("value")),"Set Amplitude(HP) in LLRF Units")
         .def("setAmpFF",  &liberaLLRFController::setAmpFF,(arg("value")),"Set Amplitude(FF) in LLRF Units")
+
+        .def("trigOff",  &liberaLLRFController::trigOff,"Set the LLRF trigger to off.")
+        .def("trigExt",  &liberaLLRFController::trigExt,"Set the LLRF trigger to external.")
+        .def("trigInt",  &liberaLLRFController::trigInt,"Set the LLRF trigger to internal.")
+
+        .def("getTrigSource",  &liberaLLRFController::getTrigSource,"Return current trigger source.")
 
         .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(arg("name"),arg("value")),"Set trace 'name' start index for mean calculation")
         .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(arg("name"),arg("value")),"Set trace 'name' stop index for mean calculation")
@@ -461,6 +477,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("setMaskFloor",  &liberaLLRFController::setMaskFloor,(arg("name"),arg("value")),"Set the mask floor for trace 'name'")
 
+        .def("setNumExtraTraces",  &liberaLLRFController::setNumExtraTraces,(arg("value")),"Set the number of extra traces after out_side mask event")
+        .def("getNumExtraTraces",  &liberaLLRFController::getNumExtraTraces,"Get the number of extra traces after out_side mask event")
 
         .def("setNumContinuousOutsideMaskCount",  &liberaLLRFController::setNumContinuousOutsideMaskCount,(arg("name"),arg("value")),"Set the number of continuous outside mask hits to trigger event, for trace 'name'")
 

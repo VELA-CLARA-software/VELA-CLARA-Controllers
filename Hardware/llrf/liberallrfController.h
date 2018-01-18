@@ -61,6 +61,11 @@ class liberaLLRFController : public controller
         size_t getActivePulseCount();
         void setPulseCountOffset(size_t val);
 
+        bool trigOff();
+        bool trigExt();
+        bool trigInt();
+
+        llrfStructs::TRIG getTrigSource();
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
         bool setAllTraceSCAN( const llrfStructs::LLRF_SCAN value);
@@ -197,6 +202,7 @@ class liberaLLRFController : public controller
         bool setPhiSP(double value);
         bool setPhiFF(double value);
         bool setAmpSP(double value);
+        bool setAmpHP(double value);
         bool setAmpFF(double value);
         bool setAmpLLRF(double value);
         bool setPhiLLRF(double value);
@@ -210,6 +216,9 @@ class liberaLLRFController : public controller
 
         bool setShouldKeepRollingAverage(const std::string&name);
         bool setShouldNotKeepRollingAverage(const std::string&name);
+
+        void setNumExtraTraces(size_t value);
+        size_t getNumExtraTraces();
 
 
         bool setCheckMask(const std::string&name, bool value);

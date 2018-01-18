@@ -88,6 +88,7 @@ namespace llrfStructs
                                                      (LIB_PULSE_LENGTH)
                                                      (LIB_PULSE_OFFSET)
                                                      (AMP_MVM)
+                                                     (TRIG_SOURCE)
                                                      (PHI_DEG)
                                                      (UNKNOWN)
                                                    )
@@ -103,6 +104,12 @@ namespace llrfStructs
                                                   (ZERO_POINT_TWO)
                                                   (ZERO_POINT_ONE)
                                                   (UNKNOWN_SCAN))
+
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(TRIG,(OFF)
+                                                  (EXTERNAL)
+                                                  (INTERNAL)
+                                                  (UNKNOWN_TRIG))
 
     // monType is to switch in the staticCallbackFunction
     struct monitorStruct
@@ -192,6 +199,7 @@ namespace llrfStructs
             latest_trace_index(UTL::ZERO_SIZET),
             current_trace(UTL::ZERO_SIZET),
             evid_current_trace(UTL::ZERO_SIZET),
+            previous_evid_trace(UTL::MINUS_ONE_INT),
             sub_trace(UTL::ZERO_SIZET),
             mean_start_index(UTL::ZERO_SIZET),
             mean_stop_index(UTL::ZERO_SIZET),
@@ -203,14 +211,15 @@ namespace llrfStructs
             drop_amp_on_breakdown(false),
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
             mask_floor(UTL::ZERO_INT),
-            EVID("NONE")//MAGIC_STRING
+            EVID("NONE"),//MAGIC_STRING
+            add_next_trace(0)
             {}
         size_t shot,num_continuous_outside_mask_count;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
         size_t  buffersize, trace_size, average_size,rolling_sum_counter,mean_start_index,mean_stop_index;
         // Counter allowing you to access/update the correct part of  traces
-        size_t  latest_trace_index,current_trace,evid_current_trace;
-        int previous_previous_trace,previous_trace;
+        size_t  latest_trace_index,current_trace,evid_current_trace,add_next_trace;
+        int previous_previous_trace,previous_trace,previous_evid_trace;
         // Counter allowing you to access the correct traces to delete off the rolling average
         size_t  sub_trace;
         // EVID are always monitored and updated to the traces[evid_current_trace]
@@ -288,8 +297,11 @@ namespace llrfStructs
             drop_amp_on_breakdown(false),
             activePulseCount(UTL::ZERO_SIZET),
             pulseCountOffset(UTL::ZERO_SIZET),
-            previous_pulseCount(UTL::ZERO_SIZET)
+            previous_pulseCount(UTL::ZERO_SIZET),
+            trig_source(UNKNOWN_TRIG),
+            num_extra_traces(0)
                      {}
+        TRIG trig_source;
         std::vector<std::string> tracesToSaveOnBreakDown;
         std::string name, pvRoot, EVIDStr;
         double phiCalibration,ampCalibration,phi_DEG,amp_MVM;
@@ -305,7 +317,7 @@ namespace llrfStructs
         size_t traceLength,event_count,num_outside_mask_traces,
            // the llrf doesn't fire immediatly after recieving a trigger
         // this is the (approx) number of elements of noise in an rf trace
-        pulse_latency, activePulseCount, previous_pulseCount, pulseCountOffset;
+        pulse_latency, activePulseCount, previous_pulseCount, pulseCountOffset, num_extra_traces;
         long long timer_start;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
         // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )
