@@ -59,7 +59,7 @@ class liberaLLRFController : public controller
         double getAmpCalibration();
         double getCrestPhiLLRF();
         size_t getActivePulseCount();
-        void setPulseCountOffset(size_t val);
+        void addPulseCountOffset(size_t val);
 
         bool trigOff();
         bool trigExt();

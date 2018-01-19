@@ -358,7 +358,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-s]")
         .def("getPulseOffset",  &liberaLLRFController::getPulseOffset,"Return RF Pulse Offset [micro-s]")
         .def("getActivePulseCount",  &liberaLLRFController::getActivePulseCount,"Return number of pulses with amplitude > 0 sinze connection")
-        .def("setPulseCountOffset",  &liberaLLRFController::setPulseCountOffset,(arg("value")),"set an offset to the pulse counter (must be postive")
+        .def("addPulseCountOffset",  &liberaLLRFController::addPulseCountOffset,(arg("value")),"set an offset to the pulse counter (must be postive")
 
         .def("isFFLocked",  &liberaLLRFController::isFFLocked,"Return true if FF check box is checked.")
         .def("isFFNotLocked",  &liberaLLRFController::isFFNotLocked,"Return true if FF check box is not checked.")

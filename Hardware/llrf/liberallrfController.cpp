@@ -52,9 +52,9 @@ size_t liberaLLRFController::getActivePulseCount()
         return localInterface.getActivePulseCount();
 }
 //____________________________________________________________________________________________
-void liberaLLRFController::setPulseCountOffset(size_t val)
+void liberaLLRFController::addPulseCountOffset(size_t val)
 {
-    localInterface.setPulseCountOffset(val);
+    localInterface.addPulseCountOffset(val);
 }
 //______________________________________________________________________________
 size_t liberaLLRFController::getNumOutsideMaskTraces()

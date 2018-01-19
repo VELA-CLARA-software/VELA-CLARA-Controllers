@@ -299,8 +299,13 @@ namespace llrfStructs
             pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET),
             trig_source(UNKNOWN_TRIG),
-            num_extra_traces(0)
+            num_extra_traces(0),
+            kly_fwd_power_max(0.0),
+            can_increase_active_pulses(false),
+            active_pulse_kly_power_limit(1000.0)
                      {}
+        double kly_fwd_power_max,active_pulse_kly_power_limit;
+        bool can_increase_active_pulses;
         TRIG trig_source;
         std::vector<std::string> tracesToSaveOnBreakDown;
         std::string name, pvRoot, EVIDStr;

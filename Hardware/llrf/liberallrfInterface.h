@@ -66,7 +66,7 @@ class liberallrfInterface : public interface
         size_t getTraceLength();
         size_t getNumOutsideMaskTraces();
         size_t getActivePulseCount();
-        void setPulseCountOffset(size_t val);
+        void addPulseCountOffset(size_t val);
 
         size_t getShotCount(const std::string& name);
 
@@ -291,7 +291,7 @@ class liberallrfInterface : public interface
 
 
         bool first_pulse,can_start_new_thread,evid_ID_SET;
-        size_t initial_pulsecount;
+        size_t initial_pulsecount,last_pulse_count;
 
         void killMonitor(llrfStructs::monitorStruct* ms);
 
