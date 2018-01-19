@@ -176,8 +176,10 @@ namespace cameraStructs
     };
     struct cameraOfflineIAObject
     {
-        cameraOfflineIAObject(): dataSize(0){}
+        cameraOfflineIAObject(): dataSize(0), imageName("None"), bkgrndName("None"){}
         //Images
+        std::string imageName;
+        std::string bkgrndName;
         std::vector<double> rawData;
         std::vector<double> rawBackgroundData;
         std::vector<double> mask;
