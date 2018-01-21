@@ -739,7 +739,7 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
     {
         double max = *std::max_element(trace.traces[trace.current_trace].value.begin(), trace.traces[trace.current_trace].value.end());
         message("max === ", max);
-
+        // if we get exactly the same max as previosu pulse we assume its a repeat and don't increase pulse count
         if(max == llrf.kly_fwd_power_max) // a repeat, ignore
         {
             llrf.can_increase_active_pulses = false;
@@ -1934,6 +1934,15 @@ bool liberallrfInterface::setCavFwdPwrMaskAbsolute(const size_t s1,const size_t 
     return setAbsoluteMask(s1,s2,s3,s4,value,fullCavityTraceName(UTL::CAVITY_FORWARD_POWER));
 }
 //____________________________________________________________________________________________
+void liberallrfInterface::setActivePulsePowerLimit(const double& val)
+{
+    llrf.active_pulse_kly_power_limit = val;
+}
+//____________________________________________________________________________________________
+double liberallrfInterface::getActivePulsePowerLimit()
+{
+    return llrf.active_pulse_kly_power_limit;
+}
 //____________________________________________________________________________________________
 /// THE NEXT TWO FUNCTIONS COULD BE COMBINED AND NEATENED UP
 //____________________________________________________________________________________________

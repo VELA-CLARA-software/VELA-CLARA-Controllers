@@ -325,6 +325,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("pulseCountOffset", &liberallrfObject::pulseCountOffset,"offset to the pulseCountOffset.")
         .def_readonly("trig_source", &liberallrfObject::trig_source,"the trigger source.")
         .def_readonly("num_extra_traces", &liberallrfObject::num_extra_traces,"number of extra traces to save after outside mask event.")
+        .def_readonly("active_pulse_kly_power_limit", &liberallrfObject::active_pulse_kly_power_limit,"Power limit above which active pulser counter is increased.")
+        .def_readonly("kly_fwd_power_max", &liberallrfObject::kly_fwd_power_max,"Max value from latest Klystron Forward Power trace. (If monitored).")
         ;
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
@@ -346,6 +348,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getAmpCalibration", &liberaLLRFController::getAmpCalibration,"Return Linear Conversion of Amplitude from LLRF units to MV/m")
         .def("getCrestPhiLLRF",   &liberaLLRFController::getCrestPhiLLRF,"Return the Crest Phase in LLRF Units")
 
+        .def("setActivePulsePowerLimit",   &liberaLLRFController::setActivePulsePowerLimit,(arg("value")),"Set minimum Klystron Forward Power to enable active pulse increasing (below this value active pulses won't increment.).")
+        .def("getActivePulsePowerLimit",   &liberaLLRFController::getActivePulsePowerLimit,"Get minimum Klystron Forward Power to enable active pulse increasing.")
 
         .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return LLRF Object Reference")
 

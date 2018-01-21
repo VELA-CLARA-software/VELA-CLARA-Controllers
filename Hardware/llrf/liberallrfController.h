@@ -65,6 +65,9 @@ class liberaLLRFController : public controller
         bool trigExt();
         bool trigInt();
 
+        void setActivePulsePowerLimit(const double& val);
+        double getActivePulsePowerLimit();
+
         llrfStructs::TRIG getTrigSource();
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);

@@ -68,6 +68,10 @@ class liberallrfInterface : public interface
         size_t getActivePulseCount();
         void addPulseCountOffset(size_t val);
 
+        void setActivePulsePowerLimit(const double& val);
+        double getActivePulsePowerLimit();
+
+
         size_t getShotCount(const std::string& name);
 
         std::vector<llrfStructs::outside_mask_trace>  getOutsideMaskData();

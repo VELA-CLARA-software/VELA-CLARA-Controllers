@@ -931,6 +931,16 @@ size_t liberaLLRFController::getNumExtraTraces()
     return localInterface.getNumExtraTraces();
 }
 //______________________________________________________________________________
+void liberaLLRFController::setActivePulsePowerLimit(const double& val)
+{
+    localInterface.setActivePulsePowerLimit(val);
+}
+//____________________________________________________________________________________________
+double liberaLLRFController::getActivePulsePowerLimit()
+{
+    return localInterface.getActivePulsePowerLimit();
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setCheckMask(const std::string&name, bool value)
 {
     return localInterface.setCheckMask(name, value);
