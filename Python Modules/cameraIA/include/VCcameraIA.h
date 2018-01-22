@@ -515,13 +515,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
    class_<VCcameraIA,boost::noncopyable>("init")
         .def("virtual_VELA_Camera_IA_Controller",
              &VCcameraIA::virtual_VELA_Camera_IA_Controller,
-             return_value_policy<reference_existing_object>())
+             return_value_policy<reference_existing_object>(),
+             "Function that returns a controller connected to a virtual EPICS system")
         .def("offline_VELA_Camera_IA_Controller",
              &VCcameraIA::offline_VELA_Camera_IA_Controller,
-             return_value_policy<reference_existing_object>())
+             return_value_policy<reference_existing_object>(),
+             "Function that returns a controller connected to no EPICS system")
         .def("physical_VELA_Camera_IA_Controller",
              &VCcameraIA::physical_VELA_Camera_IA_Controller,
-             return_value_policy<reference_existing_object>())
+             return_value_policy<reference_existing_object>(),
+             "Function that returns a controller connected to REAL EPICS system")
         .def("virtual_CLARA_Camera_IA_Controller",
              &VCcameraIA::virtual_CLARA_Camera_IA_Controller,
              return_value_policy<reference_existing_object>())
@@ -531,10 +534,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def("physical_CLARA_Camera_IA_Controller",
              &VCcameraIA::physical_CLARA_Camera_IA_Controller,
              return_value_policy<reference_existing_object>())
-        .def("setQuiet",              &VCcameraIA::setQuiet   )
-        .def("setVerbose",            &VCcameraIA::setVerbose )
-        .def("setMessage",            &VCcameraIA::setMessage )
-        .def("setDebugMessage",  &VCcameraIA::setDebugMessage )
+        .def("setQuiet",              &VCcameraIA::setQuiet,
+            "This is the setQuiet function that sops the controller displaying all messages")
+        .def("setVerbose",            &VCcameraIA::setVerbose,
+             "This is the setVerbose function that sets the controller to display all messages")
+        .def("setMessage",            &VCcameraIA::setMessage,
+            "This is the setMessage function that sets the controller to only display messages")
+        .def("setDebugMessage",  &VCcameraIA::setDebugMessage,
+            "This is the setDebugMessage function that sets the controller to only display debug messages")
         ;
 }
 

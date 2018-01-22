@@ -13,8 +13,6 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
 #include "l01ModInterface.h"
-
-#include "l01ModInterface.h"
 //djs
 #include "dburt.h"
 #include "configDefinitions.h"
@@ -27,8 +25,10 @@
 
 l01ModInterface::l01ModInterface(const std::string &l01ModConf,
                                 const bool startVirtualMachine,
-                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs ):
+                                const bool* show_messages_ptr,
+                                const bool* show_debug_messages_ptr,
+                                const bool shouldStartEPICs
+                            ):
 configReader(l01ModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr),
 shouldStartEPICs(shouldStartEPICs)

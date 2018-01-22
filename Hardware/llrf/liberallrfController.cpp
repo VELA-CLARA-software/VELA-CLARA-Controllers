@@ -51,6 +51,11 @@ size_t liberaLLRFController::getActivePulseCount()
 {
         return localInterface.getActivePulseCount();
 }
+//____________________________________________________________________________________________
+void liberaLLRFController::addPulseCountOffset(size_t val)
+{
+    localInterface.addPulseCountOffset(val);
+}
 //______________________________________________________________________________
 size_t liberaLLRFController::getNumOutsideMaskTraces()
 {
@@ -349,6 +354,7 @@ boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
 //______________________________________________________________________________
 boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside_mask_trace& omt)
 {
+    //message("getOMT_Dict called ");
     boost::python::dict dictionary;
     int i = -2;
     std::string EVID;
@@ -380,6 +386,7 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
                 dictionary[value += std::to_string(i)] = toPythonList(it2.value);
                 dictionary[name  += std::to_string(i)] = it2.name;
                 ++i;
+                //message(omt.trace_name," adding: ",it2.name," ",it2.EVID," ",it2.time);
             }
             //message("here");
         }
@@ -755,9 +762,29 @@ const llrfStructs::liberallrfObject& liberaLLRFController::getLLRFObjConstRef()
     return localInterface.getLLRFObjConstRef();
 }
 //______________________________________________________________________________
+llrfStructs::TRIG liberaLLRFController::getTrigSource()
+{
+    return localInterface.getTrigSource();
+}
+//______________________________________________________________________________
 //  __   ___ ___ ___  ___  __   __
 // /__` |__   |   |  |__  |__) /__`
 // .__/ |___  |   |  |___ |  \ .__/
+//______________________________________________________________________________
+bool liberaLLRFController::trigOff()
+{
+    return localInterface.trigOff();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::trigExt()
+{
+    return localInterface.trigExt();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::trigInt()
+{
+    return localInterface.trigInt();
+}
 //______________________________________________________________________________
 bool liberaLLRFController::setPhiSP(double value)
 {
@@ -772,6 +799,11 @@ bool liberaLLRFController::setPhiFF(double value)
 bool liberaLLRFController::setAmpSP(double value)
 {
     return localInterface.setAmpSP(value);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setAmpHP(double value)
+{
+    return localInterface.setAmpHP(value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setAmpFF(double value)
@@ -887,6 +919,26 @@ bool liberaLLRFController::setNumBufferTraces(const std::string&name,const size_
 void liberaLLRFController::setNumBufferTraces(const size_t value)
 {
     localInterface.setNumBufferTraces(value);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setNumExtraTraces(size_t value)
+{
+    localInterface.setNumExtraTraces(value);
+}
+//____________________________________________________________________________________________
+size_t liberaLLRFController::getNumExtraTraces()
+{
+    return localInterface.getNumExtraTraces();
+}
+//______________________________________________________________________________
+void liberaLLRFController::setActivePulsePowerLimit(const double& val)
+{
+    localInterface.setActivePulsePowerLimit(val);
+}
+//____________________________________________________________________________________________
+double liberaLLRFController::getActivePulsePowerLimit()
+{
+    return localInterface.getActivePulsePowerLimit();
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setCheckMask(const std::string&name, bool value)

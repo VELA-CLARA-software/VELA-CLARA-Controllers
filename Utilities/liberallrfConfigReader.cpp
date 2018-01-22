@@ -211,6 +211,11 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_RF_OUTPUT,keyVal[1]);
         }
+        else if(keyVal[0] == UTL::PV_SUFFIX_TRIG_SOURCE )
+        {
+            addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::TRIG_SOURCE,keyVal[1]);
+        }
+
     }
     else
     {   // we assume the order in the config file is correct
@@ -532,6 +537,8 @@ void liberallrfConfigReader::addToTraceObjectsV1(const std::vector<std::string> 
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM);
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH8_PWR_REM)
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM);
+
+
     }
 }
 //______________________________________________________________________________

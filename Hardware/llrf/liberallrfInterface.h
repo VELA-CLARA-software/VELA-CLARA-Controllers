@@ -66,6 +66,11 @@ class liberallrfInterface : public interface
         size_t getTraceLength();
         size_t getNumOutsideMaskTraces();
         size_t getActivePulseCount();
+        void addPulseCountOffset(size_t val);
+
+        void setActivePulsePowerLimit(const double& val);
+        double getActivePulsePowerLimit();
+
 
         size_t getShotCount(const std::string& name);
 
@@ -142,6 +147,7 @@ class liberallrfInterface : public interface
         bool setPhiSP(double value);
         bool setPhiFF(double value);
         bool setAmpSP(double value);
+        bool setAmpHP(double value);
         bool setAmpFF(double value);
         bool setAmpLLRF(double value);
         bool setPhiLLRF(double value);
@@ -180,6 +186,12 @@ class liberallrfInterface : public interface
         bool setDropAmpValue(const std::string& name, double amp_val);
 
         bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
+
+
+        bool trigOff();
+        bool trigExt();
+        bool trigInt();
+        llrfStructs::TRIG getTrigSource();
 
 
         bool clearMask(const std::string&name);
@@ -227,6 +239,8 @@ class liberallrfInterface : public interface
         bool setMaskFloor(const std::string& name, double value);
 
         bool shouldCheckMasks(const std::string& name);
+        void setNumExtraTraces(size_t value);
+        size_t getNumExtraTraces();
 
 
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
@@ -276,8 +290,12 @@ class liberallrfInterface : public interface
     private:
         // MOVE TO BASE CLASS
         const bool shouldStartEPICs,usingVirtualMachine;
-        bool first_pulse;
-        size_t initial_pulsecount;
+
+        size_t evid_id;
+
+
+        bool first_pulse,can_start_new_thread,evid_ID_SET;
+        size_t initial_pulsecount,last_pulse_count;
 
         void killMonitor(llrfStructs::monitorStruct* ms);
 
@@ -331,6 +349,8 @@ class liberallrfInterface : public interface
         void setAmpFFCallback();
         int next_amp_drop;
         static void staticEntrySetAmp(liberallrfInterface* interface);
+
+        void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);
 
 
         liberallrfConfigReader configReader; /// class member so we can pass in file path in ctor
