@@ -33,7 +33,11 @@ private:
     std::vector< screenStructs::screenObject > scrObjects;
 
     std::vector< screenStructs::pvStruct > pvScrComStructs;
+    std::vector< screenStructs::pvStruct > pvScrComHStructs;
+    std::vector< screenStructs::pvStruct > pvScrComVStructs;
     std::vector< screenStructs::pvStruct > pvScrMonStructs;
+    std::vector< screenStructs::pvStruct > pvScrMonHStructs;
+    std::vector< screenStructs::pvStruct > pvScrMonVStructs;
 
     // we keep a record of the last pcstruct type added, so we know where to put PV_CHTYPE etc.
     std::vector< screenStructs::pvStruct > * lastPVStruct;

@@ -59,12 +59,16 @@ class screenInterface: public interface
         double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
+        void insertYAG( const std::string & name );
+        void moveScreenOut( const std::string & name );
         void resetPosition( const std::string & name );
         void jogScreen( const std::string & name, const double jog );
         void setPosition( const std::string & name, const double setPos );
         bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
         bool setScreenTrigger(const std::string & name );
+        bool setScreenTrigger(const std::string & name, const screenStructs::SCREEN_STATE & state );
         bool setEX(const std::string & name );
+        bool setEN( const std::string & name, const screenStructs::DRIVER_DIRECTION direction );
 
         /// OLD FUNCTIONS
         bool is_VELA_PNEUMATIC(const std::string & name);

@@ -108,6 +108,16 @@ void screenController::moveScreenTo( const std::string & name, const screenStruc
     localInterface.moveScreenTo(name, state);
 }
 //________________________________________________________________________________
+void screenController::insertYAG( const std::string & name )
+{
+    localInterface.insertYAG(name);
+}
+//________________________________________________________________________________
+void screenController::moveScreenOut( const std::string & name )
+{
+    localInterface.moveScreenOut(name);
+}
+//________________________________________________________________________________
 void screenController::resetPosition( const std::string & name )
 {
     localInterface.resetPosition(name);
@@ -212,136 +222,6 @@ bool screenController::isScreenIN(const std::string & name, const bool weKnowEnt
 {
     return localInterface.isScreenIN(name, weKnowEntryExists);
 }
-////________________________________________________________________________________
-//const std::vector<std::string> screenController::get_VELA_PNEUMATIC_Screens(const std::vector<std::string>& names)
-//{
-//    return localInterface.get_VELA_PNEUMATIC_Screens(names);
-//}
-////________________________________________________________________________________
-//const std::vector<std::string> screenController::get_VELA_HV_MOVER_Screens(const std::vector<std::string>& names)
-//{
-//    return localInterface.get_VELA_HV_MOVER_Screens(names);
-//}
-////________________________________________________________________________________
-//const std::vector<std::string> screenController::get_CLARA_PNEUMATIC_Screens(const std::vector<std::string>& names)
-//{
-//    return localInterface.get_CLARA_PNEUMATIC_Screens(names);
-//}
-////________________________________________________________________________________
-//const std::vector<std::string> screenController::get_CLARA_HV_MOVER_Screens(const std::vector<std::string>& names)
-//{
-//    return localInterface.get_CLARA_HV_MOVER_Screens(names);
-//}
-////________________________________________________________________________________
-//const std::vector<std::string> screenController::get_CLARA_V_MOVER_Screens(const std::vector<std::string>& names)
-//{
-//    return localInterface.get_CLARA_V_MOVER_Screens(names);
-//}
-////________________________________________________________________________________
-//bool screenController::screenMoveTo(const std::vector<std::string>& names,const std::vector<screenStructs::SCREEN_STATE>& states)
-//{
-//    return localInterface.screenMoveTo(names,states);
-//}
-////________________________________________________________________________________
-//bool screenController::screenMoveTo(const std::string & name, const screenStructs::SCREEN_STATE & states)
-//{
-//    return localInterface.screenMoveTo(name,states);
-//}
-////________________________________________________________________________________
-//bool screenController::setPosition(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const double value )
-//{
-//    return localInterface.setPosition(name, dir, value);
-//}
-////________________________________________________________________________________
-//bool screenController::isMoving(const std::string& name)
-//{
-//    return localInterface.isMoving(name,false);
-//}
-////________________________________________________________________________________
-//bool screenController::isNotMoving(const std::string& name)
-//{
-//    return localInterface.isMoving(name,false);
-//}
-////________________________________________________________________________________
-//bool screenController::is_VELA_PNEUMATIC(const std::string & name)
-//{
-//    return localInterface.is_VELA_PNEUMATIC(name);
-//}
-////________________________________________________________________________________
-//bool screenController::is_VELA_HV_MOVER(const std::string & name)
-//{
-//    return localInterface.is_VELA_HV_MOVER(name);
-//}
-////________________________________________________________________________________
-//bool screenController::is_CLARA_PNEUMATIC(const std::string & name)
-//{
-//    return localInterface.is_CLARA_PNEUMATIC(name);
-//}
-////________________________________________________________________________________
-//bool screenController::is_CLARA_HV_MOVER(const std::string & name)
-//{
-//    return localInterface.is_CLARA_HV_MOVER(name);
-//}
-////________________________________________________________________________________
-//bool screenController::is_CLARA_V_MOVER(const std::string & name)
-//{
-//    return localInterface.is_CLARA_V_MOVER(name);
-//}
-////________________________________________________________________________________
-//bool screenController::is_H_Element(const std::string & name, const screenStructs::SCREEN_STATE e)
-//{
-//    return localInterface.is_H_Element(name, e);
-//}
-////________________________________________________________________________________
-//bool screenController::is_V_Element(const std::string & name, const screenStructs::SCREEN_STATE e)
-//{
-//    return localInterface.is_V_Element(name, e);
-//}
-////________________________________________________________________________________
-//double screenController::get_H_ACTPOS(const std::string & name)
-//{
-//    return localInterface.get_H_ACTPOS(name);
-//}
-////________________________________________________________________________________
-//double screenController::get_V_ACTPOS(const std::string & name)
-//{
-//    return localInterface.get_V_ACTPOS(name);
-//}
-////________________________________________________________________________________
-//bool screenController::isScreenOUT(const std::string & name )
-//{
-//    return localInterface.isScreenOUT(name, false);
-//}
-////________________________________________________________________________________
-//bool screenController::isScreenIN(const std::string & name)
-//{
-//    return localInterface.isScreenIN(name, false);
-//}
-////________________________________________________________________________________
-//std::vector<bool> screenController::isScreenIN( const std::vector<std::string> & name )
-//{
-//    return localInterface.isScreenIN(name);
-//}
-////________________________________________________________________________________
-//std::vector<bool> screenController::isScreenOUT( const std::vector<std::string> & name )
-//{
-//    return localInterface.isScreenOUT(name);
-//}
-////________________________________________________________________________________
-//std::vector<bool> screenController::exists_and_isLocked(const std::string& name)
-//{
-//    return localInterface.exists_and_isLocked(name);
-//}
-////________________________________________________________________________________
-//std::vector<bool> screenController::exists_and_isNotLocked(const std::string& name)
-//{
-//    return localInterface.exists_and_isNotLocked(name);
-//}
-////________________________________________________________________________________nt
-//screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name )
-//{
-//    return localInterface.getScreenState(name);
-//}
 //________________________________________________________________________________
 #ifdef BUILD_DLL
 //______________________________________________________________________________

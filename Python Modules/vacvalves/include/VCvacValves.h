@@ -222,13 +222,21 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .value("VALVE_TIMING", VELA_ENUM::VALVE_STATE::VALVE_TIMING )
             .value("VALVE_ERROR",  VELA_ENUM::VALVE_STATE::VALVE_ERROR  )
             ;
-
+    info = boost::python::type_id<VELA_ENUM::ILOCK_STATE>();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
     enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
             .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
             .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
             .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
             ;
-
+    } else if ((*reg).m_to_python == NULL) {
+    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+            ;
+    }
 //    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
 //            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
 //            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
@@ -285,10 +293,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
 	boost::python::class_<vacuumValveController, boost::python::bases<controller>, boost::noncopyable>
             ("vacuumValveController","This class contains all the functions in the vacuum valve controller for monitoring and controlling PVs",boost::python::no_init)
 //            .def("getVacValveStateDefinition",      &vacuumValveController::getVacValveStateDefinition  )
-            .def("getILockStatesDefinition",        &vacuumValveController::getILockStatesDefinition    )
-            .def("getVacValveObjConstRef",        &vacuumValveController::getVacValveObjConstRef,return_value_policy<reference_existing_object>() )
-            .def("get_CA_PEND_IO_TIMEOUT",          &vacuumValveController::get_CA_PEND_IO_TIMEOUT      )
-            .def("set_CA_PEND_IO_TIMEOUT",          &vacuumValveController::set_CA_PEND_IO_TIMEOUT      )
+            .def("getILockStatesDefinition",        &vacuumValveController::getILockStatesDefinition                            )
+            .def("getVacValveObjConstRef",          &vacuumValveController::getVacValveObjConstRef,return_value_policy<reference_existing_object>() )
+            .def("get_CA_PEND_IO_TIMEOUT",          &vacuumValveController::get_CA_PEND_IO_TIMEOUT                              )
+            .def("set_CA_PEND_IO_TIMEOUT",          &vacuumValveController::set_CA_PEND_IO_TIMEOUT                              )
             .def("getVacValveState",                &vacuumValveController::getVacValveState, getVacValveStateString            )
             .def("getVacValveStateStr",             &vacuumValveController::getVacValveStateStr, getVacValveStateString            )
             .def("getILockStates",                  &vacuumValveController::getILockStates, getILockStates              )

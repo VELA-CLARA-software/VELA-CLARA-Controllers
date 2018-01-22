@@ -242,6 +242,8 @@ void screenInterface::updateGetDev( screenStructs::monitorStruct * ms, const uns
     {
         if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
         {
+            message("horiz");
+            message(args);
             switch( args )
             {
                 case 0:
@@ -274,6 +276,8 @@ void screenInterface::updateGetDev( screenStructs::monitorStruct * ms, const uns
         }
         else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
         {
+            message("vert");
+            message(args);
             switch( args )
             {
                 case 0:
@@ -296,6 +300,9 @@ void screenInterface::updateGetDev( screenStructs::monitorStruct * ms, const uns
                     break;
                 case 6:
                     allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_COL;
+                    break;
+                case 7:
+                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_SLIT_1;
                     break;
                 default:
                     allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
@@ -360,16 +367,22 @@ void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const u
                     allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_MAX;
                     break;
                 case 2:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_SLIT_1;
+                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_RF;
                     break;
                 case 3:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_GRAT;
+                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_MIRROR;
                     break;
                 case 4:
                     allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_YAG;
                     break;
                 case 5:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_RF;
+                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_GRAT;
+                    break;
+                case 6:
+                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_COL;
+                    break;
+                case 7:
+                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_SLIT_1;
                     break;
                 default:
                     allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
@@ -422,24 +435,6 @@ void screenInterface::updateACTPOS( screenStructs::monitorStruct * ms, const dou
         else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
         {
             allScreentData.at(screenName).actPOSV = args;
-        }
-        // this is also copying the pvstructs maps that we know
-        //will never be used (IS THIS A PROBLEM?)
-        if( allScreentData.at(screenName).screenHState == allScreentData.at(screenName).screenSetHState && allScreentData.at(screenName).screenVState == allScreentData.at(screenName).screenSetVState )
-        {
-            switch( ms->dir )
-            {
-                case screenStructs::DRIVER_DIRECTION::VERTICAL:
-                {
-                    message(screenName,": Actuator position (mm) is ", allScreentData.at(screenName).devCentV,
-                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
-                }
-                case screenStructs::DRIVER_DIRECTION::HORIZONTAL:
-                {
-                    message(screenName,": Actuator position (mm) is ", allScreentData.at(screenName).devCentH,
-                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction,");
-                }
-            }
         }
     }
 }
@@ -891,31 +886,6 @@ double screenInterface::getDevicePosition(const std::string & name, const screen
 
 /// COMMMANDS
 
-////___________________________________________________________________________________________________________
-//bool screenInterface::screenIN( const std::string & name  )
-//{   message("screenInterface::screenIN(const std::string & name ) called");
-//    const  std::vector< std::string > names = { name };
-//    return screenIN( names );
-//}
-////___________________________________________________________________________________________________________
-//bool screenInterface::screenOUT( const std::string & name  )
-//{   message("screenInterface::screenOUT(const std::string & name ) called");
-//    const  std::vector< std::string > names = { name };
-//    return screenOUT( names );
-//}
-////___________________________________________________________________________________________________________
-//bool screenInterface::screenIN( const std::vector< std::string > & names  )
-//{
-//    std::vector< screenStructs::SCREEN_STATE > v( names.size(), screenStructs::SCREEN_STATE::SCREEN_IN );
-//    return screenMoveTo( names, v);
-//}
-////___________________________________________________________________________________________________________
-//bool screenInterface::screenOUT( const std::vector< std::string > & names  )
-//{
-//    std::vector< screenStructs::SCREEN_STATE > v( names.size(), screenStructs::SCREEN_STATE::SCREEN_OUT );
-//    bool r = screenMoveTo( names, v);
-//    return r;
-//}
 //___________________________________________________________________________________________________________
 //___________________________________________________________________________________________________________
 //   CREATE ONE HIGH LEVEL SCREEN MOVER FUNCTION THAT IS CALLED BY ALL THE HIGHER LEVEL VERSIONS OF screenIN,
@@ -924,7 +894,28 @@ double screenInterface::getDevicePosition(const std::string & name, const screen
 void screenInterface::moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
     setScreenSDEV( name, state );
+    setScreenTrigger( name, state );
+}
+//___________________________________________________________________________________________________________
+void screenInterface::insertYAG( const std::string & name )
+{
+    setScreenSDEV( name, screenStructs::SCREEN_STATE::V_YAG );
     setScreenTrigger( name );
+}
+//___________________________________________________________________________________________________________
+void screenInterface::moveScreenOut( const std::string & name )
+{
+    if( allScreentData.at(name).screenHState != screenStructs::SCREEN_STATE::H_RETRACTED )
+    {
+        setScreenSDEV( name, screenStructs::SCREEN_STATE::H_RETRACTED );
+        setScreenTrigger( name, screenStructs::SCREEN_STATE::H_RETRACTED );
+    }
+    else if( allScreentData.at(name).screenVState != screenStructs::SCREEN_STATE::V_RETRACTED )
+    {
+        setScreenSDEV( name, screenStructs::SCREEN_STATE::V_RETRACTED );
+        setScreenTrigger( name, screenStructs::SCREEN_STATE::V_RETRACTED );
+    }
+
 }
 //___________________________________________________________________________________________________________
 void screenInterface::resetPosition( const std::string & name )
@@ -951,7 +942,6 @@ bool screenInterface::setScreenSDEV(const std::string & name, const screenStruct
         message("ERROR! DRIVER DIRECTION UNKNOWN");
     }
     std::string m1;
-    debugMessage("we here now");
     m1 = "Timeout sending position in setScreenSDEV";
     int status = sendToEpics("ca_put", "", m1.c_str() );
     bool ret = false;
@@ -967,13 +957,13 @@ bool screenInterface::setScreenSDEV(const std::string & name, const screenStruct
 bool screenInterface::setScreenTrigger( const std::string & name )
 {
     unsigned short send = 1;
-    if( isVEnabled(name) )
+    if( allScreentData.at(name).screenSetVState != screenStructs::SCREEN_STATE::V_RETRACTED )
     {
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
                allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
                &send );
     }
-    else if( isHEnabled(name) )
+    else if( allScreentData.at(name).screenSetHState != screenStructs::SCREEN_STATE::H_RETRACTED )
     {
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
                allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,
@@ -984,7 +974,38 @@ bool screenInterface::setScreenTrigger( const std::string & name )
         message("ERROR! DRIVER DIRECTION UNKNOWN");
     }
     std::string m1;
-    debugMessage("we here now");
+    m1 = "Timeout sending position in setScreenTrigger";
+    int status = sendToEpics("ca_put", "", m1.c_str() );
+    bool ret = false;
+    if (status == ECA_NORMAL)
+    {
+        ret = true;
+    }
+    else
+        message("setScreenTrigger recieved an unexpected error status from EPICS");
+    return ret;
+}
+//______________________________________________________________________________
+bool screenInterface::setScreenTrigger( const std::string & name, const screenStructs::SCREEN_STATE & state )
+{
+    unsigned short send = 1;
+    if( allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::VERTICAL  )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
+               &send );
+    }
+    else if( allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::HORIZONTAL  )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,
+               &send );
+    }
+    else
+    {
+        message("ERROR! DRIVER DIRECTION UNKNOWN");
+    }
+    std::string m1;
     m1 = "Timeout sending position in setScreenTrigger";
     int status = sendToEpics("ca_put", "", m1.c_str() );
     bool ret = false;
@@ -1026,7 +1047,39 @@ bool screenInterface::setEX( const std::string & name )
         ret = true;
     }
     else
-        message("setScreenTrigger recieved an unexpected error status from EPICS");
+        message("setEX recieved an unexpected error status from EPICS");
+    return ret;
+}
+//______________________________________________________________________________
+bool screenInterface::setEN( const std::string & name, const screenStructs::DRIVER_DIRECTION direction )
+{
+    unsigned short send = 1;
+    if( direction == screenStructs::DRIVER_DIRECTION::VERTICAL )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_EN).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_EN).CHID,
+               &send );
+    }
+    else if( direction == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_EN).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_EN).CHID,
+               &send );
+    }
+    else
+    {
+        message("ERROR! DRIVER DIRECTION UNKNOWN");
+    }
+    std::string m1;
+    m1 = "Timeout sending enable to driver";
+    int status = sendToEpics("ca_put", "", m1.c_str() );
+    bool ret = false;
+    if (status == ECA_NORMAL)
+    {
+        ret = true;
+    }
+    else
+        message("setEN recieved an unexpected error status from EPICS");
     return ret;
 }
 //___________________________________________________________________________________________________________
