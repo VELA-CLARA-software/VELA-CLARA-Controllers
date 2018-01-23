@@ -192,16 +192,16 @@ void invertedMagnetronGaugeInterface::updateSta( invertedMagnetronGaugeStructs::
         switch( args )
         {
             case 0:
-                allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_BAD;
-                break;
-            case 1:
                 allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_GOOD;
                 break;
-            case 2:
-                allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_ERROR;
-                break;
+//            case 1:
+//                allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_BAD;
+//                break;
+//            case 2:
+//                allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_ERROR;
+//                break;
             default:
-                allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::UNKNOWN_IMG_STATE;
+                allVacImgData.at(imgName).vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_BAD;
         }
     }
     message(imgName,": IMG state is ", ENUM_TO_STRING(allVacImgData.at(imgName).vacImgState));
