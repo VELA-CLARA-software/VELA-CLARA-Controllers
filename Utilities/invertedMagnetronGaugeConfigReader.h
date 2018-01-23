@@ -19,7 +19,7 @@ class invertedMagnetronGaugeConfigReader : public configReader
 {
     public:
         invertedMagnetronGaugeConfigReader();
-        invertedMagnetronGaugeConfigReader( const std::string & imgconf1,
+        invertedMagnetronGaugeConfigReader( const std::string & configFile1,
                                             const bool * showMessages,
                                             const bool * showDebugMessages,
                                             const bool startVirtualMachine );
@@ -30,7 +30,7 @@ class invertedMagnetronGaugeConfigReader : public configReader
 
     private:
 
-        const std::string & imgconf1;
+        const std::string & configFile1;
         const bool usingVirtualMachine;
 
         std::vector< invertedMagnetronGaugeStructs::vacImgObject > vacImgObjects;

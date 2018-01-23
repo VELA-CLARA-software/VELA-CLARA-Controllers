@@ -47,7 +47,7 @@ class invertedMagnetronGaugeInterface : public interface
 
         invertedMagnetronGaugeStructs::vacImgObject getVacImgObject( const std::string & vacImgName );
 
-        VELA_ENUM::IMG_STATE getImgState( const std::string & vacImgName );
+        invertedMagnetronGaugeStructs::IMG_STATE getImgState( const std::string & vacImgName );
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
 
@@ -74,6 +74,9 @@ class invertedMagnetronGaugeInterface : public interface
         void initVacImgChids();
         //void addChannel( std::map< std::string, invertedMagnetronGaugeStructs::vacImgObject >::iterator & it1, std::map< invertedMagnetronGaugeStructs::IMG_PV_TYPE, std::string >::const_iterator & it2 );
         void addChannel( const std::string & pvRoot, invertedMagnetronGaugeStructs::pvStruct & pv );
+        void addIMGObjectMonitors( invertedMagnetronGaugeStructs::pvStruct & pvs,  invertedMagnetronGaugeStructs::vacImgObject & obj );
+        void updateSta( invertedMagnetronGaugeStructs::monitorStruct * ms, const unsigned short args );
+        void updateP( invertedMagnetronGaugeStructs::monitorStruct * ms, const double args );
 
         void monitorVacImgs();
         ACQUIRE_RESULT lastResult;
