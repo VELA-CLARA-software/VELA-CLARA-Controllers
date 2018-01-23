@@ -738,7 +738,7 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
     if(UTL::KLYSTRON_FORWARD_POWER == trace.name )
     {
         double max = *std::max_element(trace.traces[trace.current_trace].value.begin(), trace.traces[trace.current_trace].value.end());
-        message("max === ", max);
+        //message("max === ", max);
         // if we get exactly the same max as previosu pulse we assume its a repeat and don't increase pulse count
         if(max == llrf.kly_fwd_power_max) // a repeat, ignore
         {
@@ -1717,6 +1717,7 @@ llrfStructs::TRIG liberallrfInterface::getTrigSource()
 //____________________________________________________________________________________________
 bool liberallrfInterface::trigOff()
 {
+    //message("tripg off");
     return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::TRIG_SOURCE),llrfStructs::TRIG::OFF);
 }
 //____________________________________________________________________________________________
@@ -1727,6 +1728,7 @@ bool liberallrfInterface::trigInt()
 //____________________________________________________________________________________________
 bool liberallrfInterface::trigExt()
 {
+    //message("tripg extoff");
     return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::TRIG_SOURCE),llrfStructs::TRIG::EXTERNAL);
 }
 //____________________________________________________________________________________________
@@ -1765,7 +1767,7 @@ bool liberallrfInterface::setAmpHP(double value)
     trigOff();
     bool r = setAmpSP(value);
     //std::cout<< "new thread fin" <<std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(2)); // MAGIC_NUMBER
+    std::this_thread::sleep_for(std::chrono::milliseconds(10)); // MAGIC_NUMBER
     trigExt();
     return r;
 }

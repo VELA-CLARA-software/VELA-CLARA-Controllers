@@ -195,7 +195,8 @@ namespace UTL
     const std::string CLARA_S02_VALVE_CONFIG           = "claraS02VacuumValve.config";
     const std::string CLARA_PH1_VALVE_CONFIG           = "claraPH1VacuumValve.config";
 /// LIBERA LLRF
-    const std::string CLARA_LRRG_LLRF_CONFIG    = "CLARA_LRRG_LLRF.config";
+    const std::string CLARA_LRRG_LLRF_CONFIG = "CLARA_LRRG_LLRF.config";
+    const std::string CLARA_HRRG_LLRF_CONFIG = "CLARA_HRRG_LLRF.config";
     const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
     // llrf traces
     const std::string GUN_LLRF_TRACES = "gun_LLRF_TRACES.config";

@@ -74,7 +74,7 @@ class VCllrf
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
-        const std::string CLARA_LRRG_LLRF_CONFIG,CLARA_L01_LLRF_CONFIG,VELA_HRRG_LLRF_CONFIG;
+        const std::string CLARA_LRRG_LLRF_CONFIG,CLARA_L01_LLRF_CONFIG,VELA_HRRG_LLRF_CONFIG,CLARA_HRRG_LLRF_CONFIG;
 
 };
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
