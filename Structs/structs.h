@@ -61,8 +61,6 @@ namespace VELA_ENUM/// this seems like a really out of date name now...
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(VALVE_STATE, (VALVE_CLOSED) (VALVE_OPEN) (VALVE_TIMING) (VALVE_ERROR))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(IMG_STATE, (IMG_BAD) (IMG_GOOD) (IMG_ERROR))
-
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(ILOCK_NUMBER, (ILOCK_1) (ILOCK_2) (ILOCK_3) (ILOCK_4) (ILOCK_5) (ILOCK_6) (ILOCK_7)
                                                        (ILOCK_8) (ILOCK_9) (ILOCK_10) (ILOCK_11) (ILOCK_12) (ILOCK_13) (ILOCK_14)
                                                        (ILOCK_15) (ILOCK_16) (ILOCK_17) (ILOCK_18) (ILOCK_19) (ILOCK_20) (ILOCK_21)

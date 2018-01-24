@@ -257,6 +257,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* isVMovingString = "Returns true if the vertical stage is moving.";
     char const* isScreenMovingString = "Returns true if the screen stage is moving.";
     char const* moveScreenToString = "Will move the screen (name) to SCREEN_STATE state if it exists (as defined in the config file).";
+    char const* insertYAGString = "Inserts the YAG screen.";
+    char const* moveScreenOutString = "Will remove both horizontal and vertical devices.";
     char const* setScreenSDEVString = "Set screen device - the first part of moving a screen. Set the device to SCREEN_STATE state.";
     char const* setScreenTriggerString = "Set screen trigger == 1 - the second part of moving a screen. This will set the stage in motion.";
     char const* getScreenStateString = "Returns the current SCREEN_STATE.";
@@ -287,6 +289,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("isVMoving",             &screenController::isVMoving, isVMovingString               )
         .def("isScreenMoving",        &screenController::isScreenMoving, isScreenMovingString     )
         .def("moveScreenTo",          &screenController::moveScreenTo, moveScreenToString         )
+        .def("insertYAG",             &screenController::insertYAG, insertYAGString               )
+        .def("moveScreenOut",         &screenController::moveScreenOut, moveScreenOutString       )
         .def("setScreenSDEV",         &screenController::setScreenSDEV, setScreenSDEVString       )
         .def("setScreenTrigger",      &screenController::setScreenTrigger, setScreenTriggerString )
         .def("getScreenState",        &screenController::getScreenState, getScreenStateString     )

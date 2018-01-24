@@ -22,6 +22,7 @@ namespace invertedMagnetronGaugeStructs
     struct pvStruct;
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( IMG_PV_TYPE, (STA) (P) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( IMG_STATE, (IMG_BAD) (IMG_GOOD) (IMG_ERROR) (UNKNOWN_IMG_STATE) )
     enum dataCollectionResult {  waiting, collected, timeout };
 
     /// monType could be used to switch in the staticCallbackFunction
@@ -30,16 +31,13 @@ namespace invertedMagnetronGaugeStructs
 
     struct monitorStruct
     {
-        IMG_PV_TYPE monType;
-        pvStruct * pvStr;
-        dataCollectionResult *status;
-        size_t maxCounter;
-        double *pMon;
-        vacImgObject * vacImgObj;
+        IMG_PV_TYPE                       monType;
+        pvStruct *                        pvStr;
+        vacImgObject *                    vacImgObj;
+        void*                             obj;
         invertedMagnetronGaugeInterface * interface;
-#ifndef __CINT__
-        evid EventID;
-#endif
+        chtype                            CHTYPE;
+        evid                              EVID;
     };
 
     struct pvStruct
@@ -61,7 +59,7 @@ namespace invertedMagnetronGaugeStructs
         std::vector< double > pVec, timeStamps;
         std::vector< std::string > strTimeStamps;
         size_t pCounter;
-        VELA_ENUM::IMG_STATE vacImgState;
+        IMG_STATE vacImgState;
         int numIlocks;
         std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
 

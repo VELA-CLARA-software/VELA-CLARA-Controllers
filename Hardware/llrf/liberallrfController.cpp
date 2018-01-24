@@ -52,9 +52,9 @@ size_t liberaLLRFController::getActivePulseCount()
         return localInterface.getActivePulseCount();
 }
 //____________________________________________________________________________________________
-void liberaLLRFController::setPulseCountOffset(size_t val)
+void liberaLLRFController::addPulseCountOffset(size_t val)
 {
-    localInterface.setPulseCountOffset(val);
+    localInterface.addPulseCountOffset(val);
 }
 //______________________________________________________________________________
 size_t liberaLLRFController::getNumOutsideMaskTraces()
@@ -929,6 +929,16 @@ void liberaLLRFController::setNumExtraTraces(size_t value)
 size_t liberaLLRFController::getNumExtraTraces()
 {
     return localInterface.getNumExtraTraces();
+}
+//______________________________________________________________________________
+void liberaLLRFController::setActivePulsePowerLimit(const double& val)
+{
+    localInterface.setActivePulsePowerLimit(val);
+}
+//____________________________________________________________________________________________
+double liberaLLRFController::getActivePulsePowerLimit()
+{
+    return localInterface.getActivePulsePowerLimit();
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setCheckMask(const std::string&name, bool value)

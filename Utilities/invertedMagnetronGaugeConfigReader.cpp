@@ -11,11 +11,11 @@
 #include <algorithm>
 #include <ctype.h>
 //______________________________________________________________________________
-invertedMagnetronGaugeConfigReader::invertedMagnetronGaugeConfigReader( const std::string & imgconf1,
+invertedMagnetronGaugeConfigReader::invertedMagnetronGaugeConfigReader( const std::string & configFile1,
                                                                         const bool* show_messages_ptr,
                                                                         const bool * show_debug_messages_ptr,
                                                                         const bool startVirtualMachine  ):
-imgconf1( imgconf1 ),
+configFile1( configFile1 ),
 configReader( show_messages_ptr, show_debug_messages_ptr ),
 usingVirtualMachine(startVirtualMachine)
 {
@@ -153,14 +153,15 @@ void invertedMagnetronGaugeConfigReader::addToPVMonitorMapV1( std::vector<std::s
 //______________________________________________________________________________
 void invertedMagnetronGaugeConfigReader::addToPVCommandMapV1( std::vector<std::string> &keyVal  )
 {
-    if( keyVal[0] == UTL::PV_VAC_PRESSURE )
-        addPVStruct( pvComStructs, keyVal );
-    else if( keyVal[0] == UTL::PV_COUNT )
-        pvComStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
-    else if( keyVal[0] == UTL::PV_MASK )
-        pvComStructs.back().MASK = getMASK( keyVal[ 1 ] );
-    else if( keyVal[0] == UTL::PV_CHTYPE )
-        pvComStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
+    message("");
+//    if( keyVal[0] == UTL::PV_VAC_PRESSURE )
+//        addPVStruct( pvComStructs, keyVal );
+//    else if( keyVal[0] == UTL::PV_COUNT )
+//        pvComStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
+//    else if( keyVal[0] == UTL::PV_MASK )
+//        pvComStructs.back().MASK = getMASK( keyVal[ 1 ] );
+//    else if( keyVal[0] == UTL::PV_CHTYPE )
+//        pvComStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
 }
 //______________________________________________________________________________
 void invertedMagnetronGaugeConfigReader::addPVStruct( std::vector< invertedMagnetronGaugeStructs::pvStruct > & pvStruct_v, std::vector<std::string> &keyVal )
@@ -171,13 +172,17 @@ void invertedMagnetronGaugeConfigReader::addPVStruct( std::vector< invertedMagne
     pvStruct_v.back().pvSuffix = keyVal[1];
     if( keyVal[0] == UTL::PV_SUFFIX_STA  )
     {
+            message("here");
         pvStruct_v.back().pvType = invertedMagnetronGaugeStructs::IMG_PV_TYPE::STA;
-        debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix" );
+        message("here");
+        debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix" );
+        message("here");
     }
     else if( keyVal[0] == UTL::PV_VAC_PRESSURE  )
     {
+            message("here");
         pvStruct_v.back().pvType = invertedMagnetronGaugeStructs::IMG_PV_TYPE::P;
-        debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix" );
+        debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix" );
     }
 
 //    debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix" );
@@ -192,7 +197,7 @@ void invertedMagnetronGaugeConfigReader::addToVacImgObjectsV1( std::vector<std::
 
         invertedMagnetronGaugeStructs::vacImgObject imgob = invertedMagnetronGaugeStructs::vacImgObject();
         imgob.name = keyVal[ 1 ];
-        imgob.vacImgState = VELA_ENUM::IMG_STATE::IMG_ERROR;
+        imgob.vacImgState = invertedMagnetronGaugeStructs::IMG_STATE::IMG_ERROR;
         imgob.numIlocks = numIlocks;
 
         vacImgObjects.push_back( imgob );

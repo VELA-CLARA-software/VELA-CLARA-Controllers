@@ -43,12 +43,11 @@ class invertedMagnetronGaugeController : public controller
         void   set_CA_PEND_IO_TIMEOUT( double val );
 
         double getImgP( const std::string & vacImgName );
-        std::vector< std::vector< double > > monitorForNCounts( const std::string & vacImgName, int numcounts );
         const invertedMagnetronGaugeStructs::vacImgObject & getIMGObjConstRef(const std::string & imgName);
 
         /// write a method that returns string version of enums using ENUM_TO_STRING
 
-        VELA_ENUM::IMG_STATE getImgState( const std::string & vacImgName );
+        invertedMagnetronGaugeStructs::IMG_STATE getImgState( const std::string & vacImgName );
         std::string getImgStateStr( const std::string & name );
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...

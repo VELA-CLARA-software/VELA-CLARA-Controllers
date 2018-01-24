@@ -138,7 +138,7 @@ using namespace boost::python;
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
 
-BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
+BOOST_PYTHON_MODULE( VELA_CLARA_IMG_Control )
 {
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
@@ -182,7 +182,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         ;
     }
 
-
     info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
@@ -214,20 +213,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
         ;
     }
-
-
-    enum_<VELA_ENUM::VALVE_STATE>("VALVE_STATE")
-            .value("VALVE_CLOSED", VELA_ENUM::VALVE_STATE::VALVE_CLOSED )
-            .value("VALVE_OPEN",   VELA_ENUM::VALVE_STATE::VALVE_OPEN   )
-            .value("VALVE_TIMING", VELA_ENUM::VALVE_STATE::VALVE_TIMING )
-            .value("VALVE_ERROR",  VELA_ENUM::VALVE_STATE::VALVE_ERROR  )
-            ;
-
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-            ;
 
 //    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
 //            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
@@ -277,7 +262,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
 //            .def("getVacValveStateDefinition",      &invertedMagnetronGaugeController::getVacValveStateDefinition  )
             .def("getILockStatesDefinition",        &invertedMagnetronGaugeController::getILockStatesDefinition    )
             .def("getIMGObjConstRef",               &invertedMagnetronGaugeController::getIMGObjConstRef,return_value_policy<reference_existing_object>() )
-            .def("monitorForNCounts",               &invertedMagnetronGaugeController::monitorForNCounts            )
             .def("getImgP",                         &invertedMagnetronGaugeController::getImgP            )
             .def("getImgState",                     &invertedMagnetronGaugeController::getImgState)
             .def("getImgStateStr",                  &invertedMagnetronGaugeController::getImgStateStr)
@@ -311,7 +295,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .def("setMessage",       &VCimg::setMessage )
         .def("setDebugMessage",  &VCimg::setDebugMessage )
         ;
-};
+}
 
 //#endif // BUILD_DLL
 

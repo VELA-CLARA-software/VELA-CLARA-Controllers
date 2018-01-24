@@ -56,7 +56,6 @@ const vacuumValveStructs::vacValveObject& vacuumValveInterface::getVacValveObjCo
         return allVacValveData.at(vacValveName);
 
     }
-    return allVacValveData.at(dummyname);
 }
 //______________________________________________________________________________
 void vacuumValveInterface::initialise( )
@@ -111,9 +110,6 @@ bool vacuumValveInterface::initVacValveObjects()
     {
         allVacValveData[ it.name ] = it;
     }
-
-    allVacValveData[ dummyname].name = dummyname;
-
     return true;
 }
 //______________________________________________________________________________

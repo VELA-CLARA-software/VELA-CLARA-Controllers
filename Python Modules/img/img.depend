@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1503089840 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
+1506581234 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1503089840 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
+1506581234 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -12,38 +12,39 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1504000547 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
+1516020112 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
+	<chrono>
 
-1499162578 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
+1515488401 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
 	"baseObject.h"
 	"structs.h"
 
-1504077108 source:d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugecontroller.cpp
+1516701125 source:d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugecontroller.cpp
 	"invertedMagnetronGaugeController.h"
 	<iostream>
 	"invertedMagnetronGaugeInterface.h"
 
-1504077048 d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugecontroller.h
+1516701174 d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugecontroller.h
 	"invertedMagnetronGaugeStructs.h"
 	"invertedMagnetronGaugeInterface.h"
 	"controller.h"
 	<string>
 	<vector>
 
-1504023018 d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugeinterface.h
+1516701072 d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugeinterface.h
 	"interface.h"
 	"invertedMagnetronGaugeStructs.h"
 	"invertedMagnetronGaugeConfigReader.h"
 	<vector>
 	<string>
 
-1504077035 source:d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugeinterface.cpp
+1516636379 source:d:\vela-clara_software\vela-clara-controllers\hardware\invertedmagnetrongauge\invertedmagnetrongaugeinterface.cpp
 	"invertedMagnetronGaugeInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -52,11 +53,11 @@
 	<thread>
 	<ctime>
 
-1504000547 source:d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.cpp
+1516020114 source:d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	<time.h>
 
-1503089840 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
+1516020114 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -75,8 +76,9 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
 
-1502372943 source:d:\vela-clara_software\vela-clara-controllers\utilities\configreader.cpp
+1515488886 source:d:\vela-clara_software\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<sstream>
@@ -86,19 +88,19 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1499162584 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
+1515488908 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
 	<vector>
 	<cadef.h>
 
-1504077361 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
+1516637763 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
 
-1504021499 source:d:\vela-clara_software\vela-clara-controllers\utilities\invertedmagnetrongaugeconfigreader.cpp
+1516701224 source:d:\vela-clara_software\vela-clara-controllers\utilities\invertedmagnetrongaugeconfigreader.cpp
 	"invertedMagnetronGaugeConfigReader.h"
 	"invertedMagnetronGaugeStructs.h"
 	<iostream>
@@ -110,16 +112,49 @@
 	<algorithm>
 	<ctype.h>
 
-1504021282 d:\vela-clara_software\vela-clara-controllers\utilities\invertedmagnetrongaugeconfigreader.h
+1516639069 d:\vela-clara_software\vela-clara-controllers\utilities\invertedmagnetrongaugeconfigreader.h
 	<string>
 	<vector>
 	<map>
 	"configReader.h"
 	"invertedMagnetronGaugeStructs.h"
 
-1383690117 source:d:\vela-clara_software\vela-clara-controllers\python modules\img\main.cpp
+1506581239 source:d:\vela-clara_software\vela-clara-controllers\python modules\img\main.cpp
 	"main.h"
 
-1383690117 d:\vela-clara_software\vela-clara-controllers\python modules\img\main.h
+1506581239 d:\vela-clara_software\vela-clara-controllers\python modules\img\main.h
 	<windows.h>
+
+1516637812 source:d:\vela-clara_software\vela-clara-controllers\python modules\img\src\vcimg.cpp
+	"VCimg.h"
+	<iostream>
+
+1516700718 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1516700813 d:\vela-clara_software\vela-clara-controllers\structs\invertedmagnetrongaugestructs.h
+	"structs.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1516701183 d:\vela-clara_software\vela-clara-controllers\python modules\img\include\vcimg.h
+	"invertedMagnetronGaugeController.h"
+	<string>
+	<vector>
+	<map>
+	<list>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/config.hpp>
+	<boost/python.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/object/function.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/docstring_options.hpp>
 

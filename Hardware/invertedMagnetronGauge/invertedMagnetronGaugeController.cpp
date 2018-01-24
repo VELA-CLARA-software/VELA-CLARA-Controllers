@@ -51,17 +51,12 @@ void invertedMagnetronGaugeController::set_CA_PEND_IO_TIMEOUT( double val )
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
 //______________________________________________________________________________
-std::vector< std::vector< double > > invertedMagnetronGaugeController::monitorForNCounts( const std::string & vacImgName, int numcounts )
-{
-    return localInterface.monitorForNCounts( vacImgName, numcounts );
-}
-//______________________________________________________________________________
 double invertedMagnetronGaugeController::getImgP( const std::string & name )
 {
     return localInterface.getImgP( name );
 }
 //______________________________________________________________________________
-VELA_ENUM::IMG_STATE invertedMagnetronGaugeController::getImgState( const std::string & name )
+invertedMagnetronGaugeStructs::IMG_STATE invertedMagnetronGaugeController::getImgState( const std::string & name )
 {
     return localInterface.getImgState( name );
 }
