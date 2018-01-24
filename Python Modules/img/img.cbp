@@ -14,11 +14,11 @@
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="/W3" />
-					<Add option="/DBUILD_DLL" />
-					<Add option="/Zi" />
-					<Add option="/D_DEBUG" />
 					<Add option="/MDd" />
+					<Add option="/W3" />
+					<Add option="/Zi" />
+					<Add option="/DBUILD_DLL" />
+					<Add option="/D_DEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="/DEBUG" />
@@ -26,7 +26,7 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='mt.exe /nologo /manifest &quot;bin\Debug\img.dll.manifest&quot; /outputresource:&quot;bin\Debug\img.dll&quot;;2' />
+					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
@@ -40,6 +40,7 @@
 					<Add option="/MD" />
 					<Add option="/Ox" />
 					<Add option="/W3" />
+					<Add option="/EHsc" />
 					<Add option="/DBUILD_DLL" />
 					<Add option="/DNDEBUG" />
 					<Add directory="include" />
@@ -66,7 +67,7 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='mt.exe /nologo /manifest &quot;bin\Release\img.dll.manifest&quot; /outputresource:&quot;bin\Release\img.dll&quot;;2' />
+					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
 			</Target>
 		</Build>
