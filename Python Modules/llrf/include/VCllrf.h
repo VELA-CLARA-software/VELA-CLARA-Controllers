@@ -356,6 +356,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 //        .def("geetActivePulseCountRef",&liberaLLRFController::geetActivePulseCountRef,return_value_policy<reference_existing_object>(),"Return  Object Reference")
 
+        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
+        .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index" )
+        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
+
 
 
         .def("getPhiDEG",  &liberaLLRFController::getPhiDEG,"Get Current Phase relative to Crest [degrees] +ve sense?")
@@ -378,6 +382,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks" )
         .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks" )
+        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data" )
+
 
         .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")
         .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(arg("name")),"Return latest average trace data for Channel 'name'")
@@ -448,6 +454,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getTrigSource",  &liberaLLRFController::getTrigSource,"Return current trigger source.")
 
+        .def("setMeanStartEndTime",  &liberaLLRFController::setMeanStartEndTime,(arg("start"),arg("end"),arg("name")),"Set trace 'name' start and end times for mean")
         .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(arg("name"),arg("value")),"Set trace 'name' start index for mean calculation")
         .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(arg("name"),arg("value")),"Set trace 'name' stop index for mean calculation")
 
@@ -476,8 +483,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setCavRevPwrLoMask",  &liberaLLRFController::setCavRevPwrLoMask_Py,(arg("value")),"Set the Lo mask for cavity reverse power (channel defined in config file)")
 
 
-        .def("setPercentMask",  &liberaLLRFController::setPercentMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name'")
-        .def("setAbsoluteMask",  &liberaLLRFController::setAbsoluteMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name'")
+        .def("setPercentTimeMask",  &liberaLLRFController::setPercentTimeMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
+        .def("setAbsoluteTimeMask",  &liberaLLRFController::setAbsoluteTimeMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
+        .def("setPercentMask",  &liberaLLRFController::setPercentMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
+        .def("setAbsoluteMask",  &liberaLLRFController::setAbsoluteMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
 
         .def("setMaskFloor",  &liberaLLRFController::setMaskFloor,(arg("name"),arg("value")),"Set the mask floor for trace 'name'")
 

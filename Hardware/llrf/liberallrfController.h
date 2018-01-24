@@ -81,6 +81,8 @@ class liberaLLRFController : public controller
         size_t getNumOutsideMaskTraces();
         std::vector<llrfStructs::outside_mask_trace>   getOutsideMaskData();
         llrfStructs::outside_mask_trace getOutsideMaskData(const size_t part);
+        bool isOutsideMaskDataFinishedCollecting(size_t part);
+
 
         bool isFFLocked();
         bool isFFNotLocked();
@@ -236,6 +238,8 @@ class liberaLLRFController : public controller
         void offsetTimer(long long value);
         double getBreakDownRate();
 
+
+        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
 
@@ -248,6 +252,14 @@ class liberaLLRFController : public controller
         bool setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+
+
+        size_t getIndex(const double time);
+        double getTime(const size_t  time);
+        bool setAbsoluteTimeMask(const double s1,const double s2,const double s3,
+                                 const double s4,const double value2,const  std::string& name);
+        bool setPercentTimeMask(const double s1,const double s2,const double s3,
+                                const double s4,const double value2,const  std::string& name);
 
         bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
         bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
