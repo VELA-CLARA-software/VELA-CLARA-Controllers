@@ -36,7 +36,8 @@ class fitter: public baseObject{
                                    const std::vector<double>& yEstimates);
         //DIRECTLY CALCULATE THE MOMENT OF THE IMAGE DISTRIBUTION
         std::vector<double> covarianceValues(const cameraStructs::cameraOfflineIAObject& ID,
-                                             const double & cut);
+                                             const double & cut,
+                                             const double & pixelValueError);
         //CALC MU
         double calculateMu(const std::vector<double> &data,
                            const std::vector<double> &position);

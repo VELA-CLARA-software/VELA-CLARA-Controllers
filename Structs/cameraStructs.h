@@ -197,10 +197,13 @@ namespace cameraStructs
         int rotation=0; // degrees
         int x0=0,y0=0,xRad=0,yRad=0;
         double pixToMM=1.0;
+        double pixelValueError = 100.0;
 
         //Results
         double xBVN=0,yBVN=0,sxBVN=0,syBVN=0,cxyBVN=0;
         double xMLE=0,yMLE=0,sxMLE=0,syMLE=0,cxyMLE=0;
+        double xBVNerr=0,yBVNerr=0,sxBVNerr=0,syBVNerr=0,cxyBVNerr=0;
+        double xMLEerr=0,yMLEerr=0,sxMLEerr=0,syMLEerr=0,cxyMLEerr=0;
         int totalPixelIntensity;
 
         //Settings
@@ -256,6 +259,16 @@ namespace cameraStructs
             (*this).sxMLE=ID.sxMLE;
             (*this).syMLE=ID.syMLE;
             (*this).cxyMLE=ID.cxyMLE;
+            (*this).xBVNerr=ID.xBVNerr;
+            (*this).yBVNerr=ID.yBVNerr;
+            (*this).sxBVNerr=ID.sxBVNerr;
+            (*this).syBVNerr=ID.syBVNerr;
+            (*this).cxyBVNerr=ID.cxyBVNerr;
+            (*this).xMLEerr=ID.xMLEerr;
+            (*this).yMLEerr=ID.yMLEerr;
+            (*this).sxMLEerr=ID.sxMLEerr;
+            (*this).syMLEerr=ID.syMLEerr;
+            (*this).cxyMLEerr=ID.cxyMLEerr;
             (*this).pixToMM=ID.pixToMM;
             (*this).totalPixelIntensity=ID.totalPixelIntensity;
             (*this).useBkgrnd=ID.useBkgrnd;

@@ -285,6 +285,36 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("cxyMLE",
         &cameraStructs::cameraOfflineIAObject::cxyMLE,
         "1")
+        .def_readonly("xBVNerr",
+        &cameraStructs::cameraOfflineIAObject::xBVNerr,
+        "5")
+        .def_readonly("yBVNerr",
+        &cameraStructs::cameraOfflineIAObject::yBVNerr,
+        "6")
+        .def_readonly("sxBVNerr",
+        &cameraStructs::cameraOfflineIAObject::sxBVNerr,
+        "7")
+        .def_readonly("syBVNerr",
+        &cameraStructs::cameraOfflineIAObject::syBVNerr,
+        "7")
+        .def_readonly("cxyBVNerr",
+        &cameraStructs::cameraOfflineIAObject::cxyBVNerr,
+        "8")
+        .def_readonly("xMLEerr",
+        &cameraStructs::cameraOfflineIAObject::xMLEerr,
+        "9")
+        .def_readonly("yMLEerr",
+        &cameraStructs::cameraOfflineIAObject::yMLEerr,
+        "2")
+        .def_readonly("sxMLEerr",
+        &cameraStructs::cameraOfflineIAObject::sxMLEerr,
+        "1")
+        .def_readonly("syMLEerr",
+        &cameraStructs::cameraOfflineIAObject::syMLEerr,
+        "1")
+        .def_readonly("cxyMLEerr",
+        &cameraStructs::cameraOfflineIAObject::cxyMLEerr,
+        "1")
         .def_readonly("totalPixelIntensity",
         &cameraStructs::cameraOfflineIAObject::totalPixelIntensity,
         "1")

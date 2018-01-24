@@ -1,0 +1,677 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     19151,        669]
+NotebookOptionsPosition[     17990,        632]
+NotebookOutlinePosition[     18360,        648]
+CellTagsIndexPosition[     18317,        645]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[TextData[StyleBox["These equations will be used in the offline analysis \
+contained within the image analysis controller",
+ FontWeight->"Bold"]], "Text",
+ CellChangeTimes->{3.72578262432911*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["\[Mu]", "x"], " ", "=", " ", 
+  RowBox[{
+   FractionBox["1", 
+    RowBox[{"\[Sum]", 
+     SubscriptBox["v", "i"]}]], 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SubscriptBox["v", "i"], "*", 
+     SubscriptBox["x", "i"]}]}]}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["\[Mu]", "y"], " ", "=", " ", 
+  RowBox[{
+   FractionBox["1", 
+    RowBox[{"\[Sum]", 
+     SubscriptBox["v", "i"]}]], 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SubscriptBox["v", "i"], "*", 
+     SubscriptBox["y", "i"]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.725780322530944*^9, 3.7257803266193533`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", "x"], "2"], " ", "=", " ", 
+  RowBox[{
+   FractionBox["1", 
+    RowBox[{"\[Sum]", 
+     SubscriptBox["v", "i"]}]], 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SubscriptBox["v", "i"], "*", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       RowBox[{
+        SubscriptBox["x", "i"], "-", 
+        SubscriptBox["\[Mu]", "x"]}], ")"}], "2"]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.725780341378829*^9, 3.7257804146061506`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", "y"], "2"], " ", "=", " ", 
+  RowBox[{
+   FractionBox["1", 
+    RowBox[{"\[Sum]", 
+     SubscriptBox["v", "i"]}]], 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SubscriptBox["v", "i"], "*", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       RowBox[{
+        SubscriptBox["xy", "i"], "-", 
+        SubscriptBox["\[Mu]", "y"]}], ")"}], 
+      "2"]}]}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  SubscriptBox["Cov", "xy"], " ", "=", " ", 
+  RowBox[{
+   FractionBox["1", 
+    RowBox[{"\[Sum]", 
+     SubscriptBox["v", "i"]}]], 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SubscriptBox["v", "i"], "*", 
+     RowBox[{"(", 
+      RowBox[{
+       SubscriptBox["xy", "i"], "-", 
+       SubscriptBox["\[Mu]", "y"]}], ")"}], "*", 
+     RowBox[{"(", 
+      RowBox[{
+       SubscriptBox["x", "i"], "-", 
+       SubscriptBox["\[Mu]", "x"]}], ")"}]}]}]}]}]}], "Input",
+ CellChangeTimes->{{3.7257804203997297`*^9, 3.725780430438734*^9}, {
+  3.7257819879184756`*^9, 3.7257820413858223`*^9}}],
+
+Cell["\<\
+Error propagation uses the following equation (for a function f(a,b), where a \
+and b are independent of each other):\
+\>", "Text",
+ CellChangeTimes->{{3.7257805154522343`*^9, 3.7257805914608345`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", "f"], "2"], " ", "=", " ", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", "f"}], 
+       RowBox[{"\[PartialD]", "a"}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "a"], "2"]}], "+", " ", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", "f"}], 
+       RowBox[{"\[PartialD]", "b"}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "b"], "2"], "       ", 
+    RowBox[{"(", "1", ")"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7257804543961296`*^9, 3.725780507554445*^9}, {
+  3.7257805998576736`*^9, 3.7257806427859664`*^9}}],
+
+Cell[TextData[{
+ "Using the above equat the error for ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox["1", 
+    RowBox[{"\[Sum]", 
+     SubscriptBox["v", "i"]}]], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " is:"
+}], "Text",
+ CellChangeTimes->{{3.72578065251994*^9, 3.725780703782102*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"f", " ", "=", " ", 
+  FractionBox["1", 
+   RowBox[{"\[Sum]", 
+    SubscriptBox["v", "i"]}]]}], "\[IndentingNewLine]", 
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", "f"], "2"], "=", 
+  RowBox[{
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"\[PartialD]", "f"}], 
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["v", "i"]}]], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", "i"], "2"]}]}], "=", 
+   RowBox[{"\[Sum]", 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "i"], "2"]}]}]}]}], "Input",
+ CellChangeTimes->{{3.725780719693102*^9, 3.725780864469102*^9}, {
+  3.725781158166102*^9, 3.725781211547102*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["\[Sigma]", "f"], " ", "=", 
+  SqrtBox[
+   RowBox[{"\[Sum]", 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "i"], "2"]}]]}]], "Input",
+ CellChangeTimes->{{3.725781275651256*^9, 3.725781276552346*^9}}],
+
+Cell[TextData[{
+ "Error Propagation for ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["\[Mu]", "x"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.7257808869631023`*^9, 3.725780909770102*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   SuperscriptBox[
+    SubscriptBox["\[Sigma]", 
+     SubscriptBox["\[Mu]", "x"]], "2"], " ", "=", " ", 
+   RowBox[{
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["\[Mu]", "x"]}], 
+        RowBox[{"\[PartialD]", "f"}]], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", "f"], "2"]}], "+", " ", 
+    RowBox[{"\[Sum]", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        FractionBox[
+         RowBox[{"\[PartialD]", 
+          SubscriptBox["\[Mu]", "x"]}], 
+         RowBox[{"\[PartialD]", 
+          SubscriptBox["v", "i"]}]], ")"}], "2"], 
+      SuperscriptBox[
+       SubscriptBox["\[Sigma]", 
+        SubscriptBox["v", "i"]], "2"]}]}]}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{"=", " ", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"-", 
+        SubscriptBox["\[Mu]", "x"]}], "f"], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", " ", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        SubscriptBox["x", "i"], "f"], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"], " "}]}]}]}]}], "Input",
+ CellChangeTimes->{{3.725780921825102*^9, 3.7257810454851017`*^9}, 
+   3.7257815196196504`*^9}],
+
+Cell[TextData[{
+ "Error Propagation for ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["\[Mu]", "x"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.725781064979102*^9, 3.725781073969102*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   SuperscriptBox[
+    SubscriptBox["\[Sigma]", 
+     SubscriptBox["\[Mu]", "y"]], "2"], " ", "=", " ", 
+   RowBox[{
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["\[Mu]", "y"]}], 
+        RowBox[{"\[PartialD]", "f"}]], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", "f"], "2"]}], "+", " ", 
+    RowBox[{"\[Sum]", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        FractionBox[
+         RowBox[{"\[PartialD]", 
+          SubscriptBox["\[Mu]", "y"]}], 
+         RowBox[{"\[PartialD]", 
+          SubscriptBox["v", "i"]}]], ")"}], "2"], 
+      SuperscriptBox[
+       SubscriptBox["\[Sigma]", 
+        SubscriptBox["v", "i"]], "2"]}]}]}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{"=", " ", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"-", 
+        SubscriptBox["\[Mu]", "y"]}], "f"], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", " ", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        SubscriptBox["y", "i"], "f"], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"], " "}]}]}]}]}], "Input",
+ CellChangeTimes->{{3.725781080081102*^9, 3.725781095921102*^9}, 
+   3.7257815124589343`*^9}],
+
+Cell[TextData[{
+ "Error Propagation for ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["\[Sigma]", "x"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.7257813057792683`*^9, 3.7257813119068813`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "x"], "2"]], "2"], "=", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SuperscriptBox[
+         SubscriptBox["\[Sigma]", "x"], "2"]}], 
+       RowBox[{"\[PartialD]", "f"}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SuperscriptBox[
+         SubscriptBox["\[Sigma]", "x"], "2"]}], 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Mu]", "x"]}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "x"]], "2"]}], "+", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"\[PartialD]", 
+         SuperscriptBox[
+          SubscriptBox["\[Sigma]", "x"], "2"]}], 
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["v", "i"]}]], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.725781342750965*^9, 3.725781475800269*^9}, {
+  3.7257824114688263`*^9, 3.7257824170413837`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"=", " ", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"-", 
+        SuperscriptBox[
+         SubscriptBox["\[Sigma]", "x"], "2"]}], "f"], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"-", "2"}], "f"], 
+       RowBox[{"\[Sum]", 
+        RowBox[{
+         SubscriptBox["v", "i"], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["x", "i"], "-", 
+           SubscriptBox["\[Mu]", "x"]}], ")"}]}]}]}], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "x"]], "2"]}], "+", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        SuperscriptBox[
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["x", "i"], "-", 
+           SubscriptBox["\[Mu]", "x"]}], ")"}], "2"], "f"], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"], " "}]}]}]}]], "Input",
+ CellChangeTimes->{
+  3.7257815431500034`*^9, {3.725781616914379*^9, 3.72578164262595*^9}, {
+   3.7257818173154173`*^9, 3.7257818565253377`*^9}, {3.725781941828867*^9, 
+   3.7257819419408784`*^9}}],
+
+Cell[TextData[{
+ "Error Propagation for ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["\[Sigma]", "y"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.7257818782035055`*^9, 3.7257818829159765`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "y"], "2"]], "2"], "=", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SuperscriptBox[
+         SubscriptBox["\[Sigma]", "y"], "2"]}], 
+       RowBox[{"\[PartialD]", "f"}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SuperscriptBox[
+         SubscriptBox["\[Sigma]", "y"], "2"]}], 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Mu]", "y"]}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "y"]], "2"]}], "+", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"\[PartialD]", 
+         SuperscriptBox[
+          SubscriptBox["\[Sigma]", "y"], "2"]}], 
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["v", "i"]}]], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.725781901074792*^9, 3.7257819248211665`*^9}, {
+  3.7257823983105106`*^9, 3.72578240650533*^9}}],
+
+Cell[BoxData[
+ RowBox[{"=", " ", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"-", 
+        SuperscriptBox[
+         SubscriptBox["\[Sigma]", "y"], "2"]}], "f"], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"-", "2"}], "f"], 
+       RowBox[{"\[Sum]", 
+        RowBox[{
+         SubscriptBox["v", "i"], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["y", "i"], "-", 
+           SubscriptBox["\[Mu]", "y"]}], ")"}]}]}]}], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "y"]], "2"]}], "+", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        SuperscriptBox[
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["y", "i"], "-", 
+           SubscriptBox["\[Mu]", "y"]}], ")"}], "2"], "f"], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"], " "}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7257819288685713`*^9, 3.725781949695654*^9}, {
+  3.7257822534590273`*^9, 3.725782275636245*^9}}],
+
+Cell[TextData[{
+ "Error Propagation for ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["Cov", "xy"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.7257820660752907`*^9, 3.725782077180401*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox[
+   SubscriptBox["\[Sigma]", 
+    SubscriptBox["Cov", "xy"]], "2"], "=", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["Cov", "xy"]}], 
+       RowBox[{"\[PartialD]", "f"}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["Cov", "xy"]}], 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Mu]", "x"]}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "x"]], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["Cov", "xy"]}], 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Mu]", "y"]}]], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "y"]], "2"]}], "+", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["Cov", "xy"]}], 
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["v", "i"]}]], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7257820860682898`*^9, 3.725782181599842*^9}, {
+  3.7257824266833477`*^9, 3.725782444339113*^9}, {3.7257824913498135`*^9, 
+  3.725782506149294*^9}}],
+
+Cell[BoxData[
+ RowBox[{"=", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      FractionBox[
+       RowBox[{"-", 
+        SubscriptBox["Cov", "xy"]}], "f"], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", "f"], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"-", "1"}], "f"], 
+       RowBox[{"\[Sum]", 
+        RowBox[{
+         SubscriptBox["v", "i"], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["y", "i"], "-", 
+           SubscriptBox["\[Mu]", "y"]}], ")"}]}]}]}], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "x"]], "2"]}], "+", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"-", "1"}], "f"], 
+       RowBox[{"\[Sum]", 
+        RowBox[{
+         SubscriptBox["v", "i"], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["x", "i"], "-", 
+           SubscriptBox["\[Mu]", "x"]}], ")"}]}]}]}], ")"}], "2"], 
+    SuperscriptBox[
+     SubscriptBox["\[Sigma]", 
+      SubscriptBox["\[Mu]", "y"]], "2"]}], "+", 
+   RowBox[{"\[Sum]", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["y", "i"], "-", 
+           SubscriptBox["\[Mu]", "y"]}], ")"}], 
+         RowBox[{"(", 
+          RowBox[{
+           SubscriptBox["x", "i"], "-", 
+           SubscriptBox["\[Mu]", "x"]}], ")"}]}], "f"], ")"}], "2"], 
+     SuperscriptBox[
+      SubscriptBox["\[Sigma]", 
+       SubscriptBox["v", "i"]], "2"], " "}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7257822361412954`*^9, 3.7257822582915106`*^9}, {
+  3.7257822983455153`*^9, 3.7257823044961305`*^9}, {3.725782448776557*^9, 
+  3.725782516552334*^9}}],
+
+Cell["", "Text",
+ CellChangeTimes->{{3.7257825772163997`*^9, 3.725782613587036*^9}}]
+},
+WindowSize->{944, 992},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+Magnification:>1.5 Inherited,
+FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (July 28, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 199, 3, 46, "Text"],
+Cell[760, 25, 274, 10, 73, "Input"],
+Cell[1037, 37, 342, 11, 73, "Input"],
+Cell[1382, 50, 487, 16, 73, "Input"],
+Cell[1872, 68, 1032, 35, 135, "Input"],
+Cell[2907, 105, 211, 4, 44, "Text"],
+Cell[3121, 111, 743, 23, 70, "Input"],
+Cell[3867, 136, 296, 10, 61, "Text"],
+Cell[4166, 148, 735, 23, 136, "Input"],
+Cell[4904, 173, 243, 7, 83, "Input"],
+Cell[5150, 182, 237, 8, 44, "Text"],
+Cell[5390, 192, 1434, 48, 127, "Input"],
+Cell[6827, 242, 235, 8, 44, "Text"],
+Cell[7065, 252, 1432, 48, 120, "Input"],
+Cell[8500, 302, 242, 8, 45, "Text"],
+Cell[8745, 312, 1323, 43, 73, "Input"],
+Cell[10071, 357, 1340, 44, 71, "Input"],
+Cell[11414, 403, 242, 8, 48, "Text"],
+Cell[11659, 413, 1322, 43, 79, "Input"],
+Cell[12984, 458, 1261, 42, 81, "Input"],
+Cell[14248, 502, 236, 8, 48, "Text"],
+Cell[14487, 512, 1560, 51, 75, "Input"],
+Cell[16050, 565, 1849, 62, 138, "Input"],
+Cell[17902, 629, 84, 1, 45, "Text"]
+}
+]
+*)
+

@@ -20,7 +20,10 @@ namespace pilaserStructs
     struct pilaserObject;
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS) (V_POS) (INTENSITY)(UNKNOWN_PILASER_PV_TYPE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS) (V_POS) (INTENSITY)
+                                        (SHUTTER_1_OPEN) (SHUTTER_2_OPEN)
+                                        (SHUTTER_1_CLOSE) (SHUTTER_2_CLOSE)
+                                        (UNKNOWN_PILASER_PV_TYPE) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS, (ON)(OFF) (ERROR)(UNKNOWN) )
     // monType could be used to switch in the staticCallbackFunction
     // For the shutter this is basically redundant, there is only one monitor: "Sta"

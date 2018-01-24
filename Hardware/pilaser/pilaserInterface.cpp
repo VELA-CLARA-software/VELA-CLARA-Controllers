@@ -248,7 +248,17 @@ bool pilaserInterface::setValue( pilaserStructs::pvStruct& pvs, double value)
         ret=true;
     return ret;
 }
-
+//____________________________________________________________________________________________
+bool pilaserInterface::openShutter()
+{
+    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::ON),1);
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::closeShutter()
+{
+    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::OFF),1);
+}
+//____________________________________________________________________________________________
 
 
 

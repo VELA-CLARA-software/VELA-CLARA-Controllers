@@ -172,16 +172,16 @@ void pilaserConfigReader::addToPVStruct(std::vector< pilaserStructs::pvStruct > 
 //______________________________________________________________________________
 void pilaserConfigReader::addToPVCommandMapV1( const  std::vector<std::string> &keyVal  )
 {
-//    if( keyVal[0] == UTL::PV_SUFFIX_ON )
-//        addPVStruct( pvComStructs, keyVal );
-//    else if( keyVal[0] == UTL::PV_SUFFIX_OFF )
-//        addPVStruct( pvComStructs, keyVal );
-//    else if( keyVal[0] == UTL::PV_COUNT )
-//        pvComStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
-//    else if( keyVal[0] == UTL::PV_MASK )
-//        pvComStructs.back().MASK = getMASK( keyVal[ 1 ] );
-//    else if( keyVal[0] == UTL::PV_CHTYPE )
-//        pvComStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
+    if( keyVal[0] == UTL::PV_SUFFIX_ON )
+        addPVStruct( pvComStructs, keyVal );
+    else if( keyVal[0] == UTL::PV_SUFFIX_OFF )
+        addPVStruct( pvComStructs, keyVal );
+    else if( keyVal[0] == UTL::PV_COUNT )
+        pvComStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
+    else if( keyVal[0] == UTL::PV_MASK )
+        pvComStructs.back().MASK = getMASK( keyVal[ 1 ] );
+    else if( keyVal[0] == UTL::PV_CHTYPE )
+        pvComStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
 }
 //______________________________________________________________________________
 void pilaserConfigReader::addTopilaserObjectsV1( const std::vector<std::string> &keyVal   )

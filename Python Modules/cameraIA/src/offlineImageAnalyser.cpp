@@ -463,8 +463,8 @@ bool offlineImageAnalyser::staticAnalyse(){
 
     //DIRECTY FIT TO DATA WITHOUT ESTIMATES
     std::vector<double> fitImageCov= {1,1,1,1,1};
-    if(this->CoIA.useDirectCutLevelFromES==true){ fitImageCov = this->fit.covarianceValues(this->CoIA,this->CoIA.DirectCutLevelES);}
-    else{ fitImageCov = this->fit.covarianceValues(this->CoIA,0);}
+    if(this->CoIA.useDirectCutLevelFromES==true){ fitImageCov = this->fit.covarianceValues(this->CoIA,this->CoIA.DirectCutLevelES, this->CoIA.pixelValueError);}
+    else{ fitImageCov = this->fit.covarianceValues(this->CoIA,0, this->CoIA.pixelValueError);}
 
     std::vector<double> correctionsCov = this->edit.correctBeamPosition(fitImageCov[0],fitImageCov[1]);
     fitImageCov[0] = correctionsCov[0];
@@ -488,6 +488,17 @@ bool offlineImageAnalyser::staticAnalyse(){
     this->CoIA.sxMLE = sqrt(fitImageCov[2]);
     this->CoIA.syMLE = sqrt(fitImageCov[3]);
     this->CoIA.cxyMLE = fitImageCov[4];
+
+    this->CoIA.xBVNerr = fitImageBVN[9];
+    this->CoIA.yBVNerr = fitImageBVN[10];
+    this->CoIA.sxBVNerr = fitImageBVN[11]/(2*fitImageBVN[4]);//Error propagation calculation
+    this->CoIA.syBVNerr = fitImageBVN[12]/(2*fitImageBVN[5]);
+    this->CoIA.cxyBVNerr = fitImageBVN[13];
+    this->CoIA.xMLEerr = fitImageCov[5];
+    this->CoIA.yMLEerr = fitImageCov[6];
+    this->CoIA.sxMLEerr = fitImageCov[7]/(2*fitImageCov[2]);
+    this->CoIA.syMLEerr = fitImageCov[8]/(2*fitImageCov[3]);
+    this->CoIA.cxyMLEerr = fitImageCov[9];
     this->analysing=false;
 
     return true;

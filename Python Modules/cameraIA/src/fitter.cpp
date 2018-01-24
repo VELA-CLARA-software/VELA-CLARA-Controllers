@@ -187,18 +187,32 @@ std::vector<double> fitter::fitBVN(const cameraOfflineIAObject& ID,
     bvn.SetParameter(6, 0);
 
     gr.Fit("bvn","F");
-    std::vector<double> bvnParameters={(double)bvn.GetParameter(0),(double)bvn.GetParameter(1),(double)bvn.GetParameter(2),(double)bvn.GetParameter(3),
-                                        (double)bvn.GetParameter(4),(double)bvn.GetParameter(5),(double)bvn.GetParameter(6)};
+    std::vector<double> bvnParameters={(double)bvn.GetParameter(0),
+                                       (double)bvn.GetParameter(1),
+                                       (double)bvn.GetParameter(2),
+                                       (double)bvn.GetParameter(3),
+                                       (double)bvn.GetParameter(4),
+                                       (double)bvn.GetParameter(5),
+                                       (double)bvn.GetParameter(6),
+                                       (double)bvn.GetParError(0),
+                                       (double)bvn.GetParError(1),
+                                       (double)bvn.GetParError(2),
+                                       (double)bvn.GetParError(3),
+                                       (double)bvn.GetParError(4),
+                                       (double)bvn.GetParError(5),
+                                       (double)bvn.GetParError(6)};
 
     return bvnParameters;
 
 }
 //DIRECTLY CALCULATE THE MOMENT OF THE IMAGE DISTRIBUTION
 std::vector<double> fitter::covarianceValues(const cameraOfflineIAObject& ID,
-                                             const double & cut){
+                                             const double & cut,
+                                             const double & pixelValueError){
     int ylen = ID.yProjection.size();
     int xlen = ID.xProjection.size();
     int dataLength = ID.rawData.size();
+    double pixelError = pixelValueError;
     //Trial using Chris T method
     double sumPixIntensity=0;
     std::vector<double> dummyIntensity = ID.rawData;
@@ -207,11 +221,7 @@ std::vector<double> fitter::covarianceValues(const cameraOfflineIAObject& ID,
         if(dummyIntensity[i]<(cut/100)*(*M)){dummyIntensity[i]=0;}
         sumPixIntensity+=dummyIntensity[i];
     }
-//    //Normalise Matrix
-//    double sumPixIntensity=0;
-//    for(auto i=0; i<dataLength;++i){
-//        sumPixIntensity+=ID.rawData[i];
-//    }
+    double sumPixIntensityError = sqrt(dataLength*pixelError*pixelError);
 
     std::vector<double> dataV;
     for(auto i=0; i<dataLength;++i){
@@ -219,18 +229,62 @@ std::vector<double> fitter::covarianceValues(const cameraOfflineIAObject& ID,
     }
     //std::vector<double> xD = ID.X;
    // std::vector<double> yD = ID.Y;
-
+/// For error propaation see:
     //GET muX
     double muX=calculateMu(dataV,ID.xPos);
+    //GET muX error
+    double xPosSquared=0;
+    for(auto i=0; i<dataLength;++i){
+        xPosSquared+=pow(ID.xPos[i],2);
+    }
+    double muXError = sqrt(pow(muX/sumPixIntensity,2)*pow(sumPixIntensityError,2)+
+                            pow(pixelError/sumPixIntensity,2)*xPosSquared);
     //GET muY
     double muY=calculateMu(dataV,ID.yPos);
-    //GET sigma11
+    //GET muY error
+    double yPosSquared=0;
+    for(auto i=0; i<dataLength;++i){
+        xPosSquared+=pow(ID.yPos[i],2);
+    }
+    double muYError = sqrt(pow(muY/sumPixIntensity,2)*pow(sumPixIntensityError,2)+
+                            pow(pixelError/sumPixIntensity,2)*yPosSquared);
+    //GET sigmaXSquared
     double s11=calculateSigmaSquared(dataV,ID.xPos,muX);
-    //GET sigma22
+    //GET sigmaXSquared error
+    double sum1=0;
+    double sum2=0;
+    for(auto i=0; i<dataLength;++i){
+        sum1+=dummyIntensity[i]*(ID.xPos[i]-muX);
+        sum2+=pow((ID.xPos[i]-muX),2);
+    }
+    double s11Error = sqrt(pow(s11/sumPixIntensity,2)*pow(sumPixIntensityError,2)+
+                            pow((2*sum1)/sumPixIntensity,2)*pow(muXError,2)+
+                            pow(sum2/sumPixIntensity,2)*pow(pixelError,2));
+    //GET sigmaYSquared
     double s22=calculateSigmaSquared(dataV,ID.yPos,muY);
-    //GET sigma12
+    //GET sigmaYSquared error
+    double sum3=0;
+    double sum4=0;
+    for(auto i=0; i<dataLength;++i){
+        sum3+=dummyIntensity[i]*(ID.yPos[i]-muY);
+        sum4+=pow((ID.yPos[i]-muY),2);
+    }
+    double s22Error = sqrt(pow(s22/sumPixIntensity,2)*pow(sumPixIntensityError,2)+
+                            pow((2*sum3)/sumPixIntensity,2)*pow(muYError,2)+
+                            pow(sum4/sumPixIntensity,2)*pow(pixelError,2));
+    //GET CovXY
     double s12=calculateSigmaSquared(dataV,ID.xPos,ID.yPos,muX,muY);
-    std::vector<double> out = {muX,muY,s11,s22,s12};
+    //GET CovXY error
+    double sum5=0;
+    for(auto i=0; i<dataLength;++i){
+        sum5+=(ID.yPos[i]-muY)*(ID.xPos[i]-muX);
+    }
+    double s12Error = sqrt(pow(s12/sumPixIntensity,2)*pow(sumPixIntensityError,2)+
+                           pow(sum3/sumPixIntensity,2)*pow(muXError,2)+
+                           pow(sum1/sumPixIntensity,2)*pow(muYError,2)+
+                           pow(sum5/sumPixIntensity,2)*pow(pixelError,2));
+    std::vector<double> out = {muX,muY,s11,s22,s12,
+                               muXError,muYError,s11Error,s22Error,s12Error};
     return out;
 }
 //CALC MU
