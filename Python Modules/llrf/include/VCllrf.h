@@ -396,7 +396,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(arg("name")),"Return latest average trace data for Channel 'name'")
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(arg("name")),"Return latest Trace Values for channel 'name'")
         .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(arg("name")),"Return buffer of rf_trace objects for channel 'name'")
-
+        .def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
+        .def("setKeepRollingAverageNoReset", &liberaLLRFController::setKeepRollingAverageNoReset,"set tKeepRollingAverage flag, but don't chnage current average data")
         .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(arg("name"),arg("state"),arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask is detected for trace 'name', returns true on success")
         .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(arg("name"),arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace for trace 'name' returns true on success")
 

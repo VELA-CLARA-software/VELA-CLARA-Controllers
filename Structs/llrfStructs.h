@@ -227,9 +227,10 @@ namespace llrfStructs
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
             mask_floor(UTL::ZERO_DOUBLE),
             EVID("NONE"),//MAGIC_STRING
-            add_next_trace(0)
+            add_next_trace(UTL::ZERO_SIZET),
+            outside_mask_index(UTL::ZERO_SIZET)
             {}
-        size_t shot,num_continuous_outside_mask_count;
+        size_t shot,num_continuous_outside_mask_count,outside_mask_index;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
         size_t  buffersize, trace_size, average_size,rolling_sum_counter,mean_start_index,mean_stop_index;
         // Counter allowing you to access/update the correct part of  traces
@@ -266,7 +267,8 @@ namespace llrfStructs
             time(UTL::ZERO_SIZET),
             mask_floor(UTL::ZERO_DOUBLE),
             is_collecting(false),
-            num_traces_to_collect(UTL::ZERO_SIZET)
+            num_traces_to_collect(UTL::ZERO_SIZET),
+            outside_mask_index(UTL::ZERO_SIZET)
             {}
         std::vector<rf_trace>  traces;
         std::vector<double>  time_vector;
@@ -274,7 +276,7 @@ namespace llrfStructs
         bool is_collecting;
         long long time;
         double mask_floor;
-        size_t num_traces_to_collect;
+        size_t num_traces_to_collect,outside_mask_index;
         std::vector<double> high_mask,low_mask;
         // when exposing a vector of outside_mask_trace to python I ran into trouble...
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
@@ -320,7 +322,7 @@ namespace llrfStructs
             activePulseCount(UTL::ZERO_SIZET),
             pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET),
-            trig_source(UNKNOWN_TRIG),
+            trig_source(TRIG::UNKNOWN_TRIG),
             num_extra_traces(0),
             kly_fwd_power_max(0.0),
             can_increase_active_pulses(false),

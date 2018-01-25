@@ -170,7 +170,7 @@ class liberaLLRFController : public controller
 
         boost::python::list getProbePowerAv_Py();
         boost::python::list getProbePhaseAv_Py();
-
+        boost::python::dict dump_traces();
         void setTracesToSaveOnBreakDown_Py(const boost::python::list& name);
         boost::python::list getTracesToSaveOnBreakDown_Py();
 #endif
@@ -279,6 +279,9 @@ class liberaLLRFController : public controller
         void setNumBufferTraces(const size_t value);
 
         bool setKeepRollingAverage(const std::string&name, bool value);
+        void setKeepRollingAverageNoReset(const bool value);
+
+
         bool setNumRollingAverageTraces(const std::string&name,const size_t value );
         void setNumRollingAverageTraces(const size_t value );
 

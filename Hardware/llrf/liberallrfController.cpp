@@ -374,10 +374,11 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
     dictionary[ std::string("is_collecting") ] = boost::python::object(omt.is_collecting);
     dictionary[ std::string("num_traces_to_collect") ] = boost::python::object(omt.num_traces_to_collect);
     dictionary[ std::string("message") ] = boost::python::object(omt.message);
+    dictionary[ std::string("outside_mask_index") ] = boost::python::object(omt.outside_mask_index);
         //message(it.trace_name);
     std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
 
-    for(auto&& t_name: traces_to_save_on_break_down)
+    for(auto && t_name: traces_to_save_on_break_down)
     {
         //message(t_name," ",i);
         i = -2;
@@ -401,6 +402,48 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
             //message("here");
         }
     }
+    return dictionary;
+}
+//______________________________________________________________________________
+boost::python::dict liberaLLRFController::dump_traces()
+{
+    const llrfStructs::liberallrfObject& ref = localInterface.getLLRFObjConstRef();
+
+    boost::python::dict dictionary;
+
+    std::string EVID;
+    std::string time;
+    std::string value;
+    std::string name;
+
+    int i;
+    for( auto&& it: ref.tracesToSaveOnBreakDown)
+    {
+        if(ref.trace_data.at(it).hi_mask_set)
+        {
+            dictionary[ std::string(it + "_hi_mask") ] = toPythonList(ref.trace_data.at(it).high_mask);
+        }
+        if(ref.trace_data.at(it).low_mask_set)
+        {
+            dictionary[ std::string(it + "_lo_mask") ] = toPythonList(ref.trace_data.at(it).low_mask);
+            dictionary[ std::string(it + "_mask_floor") ] = ref.trace_data.at(it).mask_floor;
+        }
+        i = 0;
+        for(auto && it2: ref.trace_data.at(it).traces)
+        {
+                EVID = "EVID_"  + it2.name + "_";
+                time = "time_"  + it2.name + "_";
+                value= "value_" + it2.name + "_";
+                name = "name_"  + it2.name + "_";
+                time = "time_"  + it2.name + "_";
+                dictionary[EVID  += std::to_string(i)] = it2.EVID;
+                dictionary[time  += std::to_string(i)] = it2.time;
+                dictionary[value += std::to_string(i)] = toPythonList(it2.value);
+                dictionary[name  += std::to_string(i)] = it2.name;
+                ++i;
+        }
+    }
+
     return dictionary;
 }
 #endif
@@ -1024,6 +1067,11 @@ long long liberaLLRFController::elapsedTime()
 bool liberaLLRFController::setKeepRollingAverage(const std::string&name, bool value)
 {
     return localInterface.setKeepRollingAverage(name, value);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setKeepRollingAverageNoReset(const bool value)
+{
+    return localInterface.setKeepRollingAverageNoReset(value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setShouldKeepRollingAverage(const std::string&name)

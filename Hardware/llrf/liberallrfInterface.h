@@ -226,7 +226,7 @@ class liberallrfInterface : public interface
         void resetAverageTraces();
         void setShouldKeepRollingAverage();
         void setShouldNotKeepRollingAverage();
-
+        void setKeepRollingAverageNoReset(const bool value);
 
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setShouldKeepRollingAverage(const std::string&name);
