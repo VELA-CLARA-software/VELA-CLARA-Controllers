@@ -278,9 +278,15 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ("outside_mask_trace","outside_mask_trace Doc String", no_init)
         .def_readonly("rf_trace",   &outside_mask_trace::traces   ,  "rf_trace object")
         .def_readonly("trace_name", &outside_mask_trace::trace_name,"Channel name trace came from")
+        .def_readonly("message", &outside_mask_trace::message,"a useful message")
         .def_readonly("high_mask",  &outside_mask_trace::high_mask, "High mask values")
         .def_readonly("low_mask",   &outside_mask_trace::low_mask,  "Low mask values")
         .def_readonly("time",       &outside_mask_trace::low_mask,  "ms (approx) between timner start and trace flagged")
+
+        .def_readonly("num_traces_to_collect",       &outside_mask_trace::num_traces_to_collect,  "expeted number of traces")
+        .def_readonly("time_vector",       &outside_mask_trace::time_vector,  "time_vector (us)")
+        .def_readonly("mask_floor",       &outside_mask_trace::mask_floor,  "mask_floor (W)")
+        .def_readonly("is_collecting",       &outside_mask_trace::is_collecting,  "finished collecting traces")
         ;
 
     class_<std::vector<outside_mask_trace>,boost::noncopyable>("std_vector_outside_mask_trace", no_init)
@@ -327,6 +333,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("num_extra_traces", &liberallrfObject::num_extra_traces,"number of extra traces to save after outside mask event.")
         .def_readonly("active_pulse_kly_power_limit", &liberallrfObject::active_pulse_kly_power_limit,"Power limit above which active pulser counter is increased.")
         .def_readonly("kly_fwd_power_max", &liberallrfObject::kly_fwd_power_max,"Max value from latest Klystron Forward Power trace. (If monitored).")
+        .def_readonly("check_mask",      &liberallrfObject::check_mask,"should check mask")
         ;
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>

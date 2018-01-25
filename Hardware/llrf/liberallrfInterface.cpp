@@ -993,9 +993,10 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
                 reset = false;
                 if(breakdown_count == trace.num_continuous_outside_mask_count)
                 {
-                    message(trace.name," HI MASK FAIL: current average = ", trace.rolling_average[i],", ",to_check[i], " > ", hi[i]," at i = ",i," us = ", llrf.time_vector.value[i]);
-                    message(trace.name,": EVID ",trace.traces[trace.evid_current_trace].EVID,", previous EVID = ",trace.traces[trace.previous_evid_trace].EVID);
-                    //set_evid_ID_SET(trace);
+                    outside_mask_trace_message << trace.name << " HI MASK FAIL: current average = " << trace.rolling_average[i] << ", " << to_check[i] << " > "
+                    << hi[i] << " at i = " << i << " us = " << llrf.time_vector.value[i] << ", EVID " << trace.traces[trace.evid_current_trace].EVID << ", previous EVID = "
+                    <<trace.traces[trace.previous_evid_trace].EVID;
+                    message(outside_mask_trace_message.str());
                     return false;
                 }
             }
@@ -1009,9 +1010,11 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
                 reset = false;
                 if(breakdown_count == trace.num_continuous_outside_mask_count)
                 {
-                    message(trace.name," LOW MASK FAIL: current average =  ",trace.rolling_average[i]," ",to_check[i], " < ", lo[i]," at i = ",i," us = ", llrf.time_vector.value[i]);
-                    //set_evid_ID_SET(trace);
-                    message(trace.name,": EVID ",trace.traces[trace.evid_current_trace].EVID,", previous EVID = ",trace.traces[trace.previous_evid_trace].EVID, evid_id);
+                    outside_mask_trace_message << trace.name << " LO MASK FAIL: current average = " << trace.rolling_average[i] << ", " << to_check[i] << " < "
+                    << lo[i] << " at i = " << i << " us = " << llrf.time_vector.value[i] << ", EVID " << trace.traces[trace.evid_current_trace].EVID << ", previous EVID = "
+                    <<trace.traces[trace.previous_evid_trace].EVID;
+                    message(outside_mask_trace_message.str());
+
                     return false;
                 }
             }
@@ -1143,6 +1146,8 @@ void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& tra
     llrf.outside_mask_traces.back().mask_floor = trace.mask_floor;
     llrf.outside_mask_traces.back().time_vector = llrf.time_vector.value;
     llrf.outside_mask_traces.back().is_collecting = true;
+    llrf.outside_mask_traces.back().message = outside_mask_trace_message.str();
+    outside_mask_trace_message.clear();
     llrf.outside_mask_traces.back().num_traces_to_collect = llrf.tracesToSaveOnBreakDown.size() * ( 3 + llrf.num_extra_traces);// MAGIC_NUMBER
     message("llrf.outside_mask_traces.back().num_traces_to_collect = ", llrf.outside_mask_traces.back().num_traces_to_collect );
 

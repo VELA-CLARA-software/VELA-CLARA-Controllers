@@ -270,7 +270,7 @@ namespace llrfStructs
             {}
         std::vector<rf_trace>  traces;
         std::vector<double>  time_vector;
-        std::string trace_name;
+        std::string trace_name,message;
         bool is_collecting;
         long long time;
         double mask_floor;

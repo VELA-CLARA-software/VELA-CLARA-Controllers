@@ -362,6 +362,7 @@ class liberallrfInterface : public interface
 
         void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);
 
+        std::stringstream outside_mask_trace_message;
 
         liberallrfConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message

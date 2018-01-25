@@ -372,6 +372,8 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
     dictionary[ std::string("mask_floor") ] = boost::python::object(omt.mask_floor);
     dictionary[ std::string("time_vector") ] = toPythonList(omt.time_vector);
     dictionary[ std::string("is_collecting") ] = boost::python::object(omt.is_collecting);
+    dictionary[ std::string("num_traces_to_collect") ] = boost::python::object(omt.num_traces_to_collect);
+    dictionary[ std::string("message") ] = boost::python::object(omt.message);
         //message(it.trace_name);
     std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
 
