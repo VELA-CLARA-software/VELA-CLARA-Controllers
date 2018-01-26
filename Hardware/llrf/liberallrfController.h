@@ -280,6 +280,7 @@ class liberaLLRFController : public controller
 
         bool setKeepRollingAverage(const std::string&name, bool value);
         void setKeepRollingAverageNoReset(const bool value);
+        void setKeepRollingAverageNoReset(const std::string&name, const bool value);
 
 
         bool setNumRollingAverageTraces(const std::string&name,const size_t value );

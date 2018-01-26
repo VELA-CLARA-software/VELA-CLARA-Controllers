@@ -228,11 +228,13 @@ namespace llrfStructs
             mask_floor(UTL::ZERO_DOUBLE),
             EVID("NONE"),//MAGIC_STRING
             add_next_trace(UTL::ZERO_SIZET),
-            outside_mask_index(UTL::ZERO_SIZET)
+            outside_mask_index(UTL::ZERO_SIZET),
+            num_traces_at_this_power(UTL::ZERO_SIZET)
             {}
         size_t shot,num_continuous_outside_mask_count,outside_mask_index;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
         size_t  buffersize, trace_size, average_size,rolling_sum_counter,mean_start_index,mean_stop_index;
+        size_t num_traces_at_this_power;
         // Counter allowing you to access/update the correct part of  traces
         size_t  latest_trace_index,current_trace,evid_current_trace,add_next_trace;
         int previous_previous_trace,previous_trace,previous_evid_trace;
@@ -249,6 +251,7 @@ namespace llrfStructs
         // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
         // rolling_average is then calculated by dividing rolling_sum by average_size
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
+        std::vector<double> last_good_trace;
         double mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to

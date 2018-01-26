@@ -99,6 +99,7 @@ typedef const std::vector<std::string> cves;
 typedef std::vector<bool> vecb;
 typedef llrfStructs::LLRF_PV_TYPE rfpv;
 typedef const llrfStructs::LLRF_PV_TYPE crfpv;
+typedef const bool cbol;
 //
 
 
@@ -143,6 +144,12 @@ bool(liberaLLRFController::*setHighMask_2)(cstr& name, cved& value) = &liberaLLR
 
 bool(liberaLLRFController::*setLowMask_1)(cstr& name,const boost::python::list& value) = &liberaLLRFController::setLowMask;
 bool(liberaLLRFController::*setLowMask_2)(cstr& name, cved& value) = &liberaLLRFController::setLowMask;
+
+
+void(liberaLLRFController::*setKeepRollingAverageNoReset_1)(cstr& name, cbol value) = &liberaLLRFController::setKeepRollingAverageNoReset;
+void(liberaLLRFController::*setKeepRollingAverageNoReset_2)(cbol value) = &liberaLLRFController::setKeepRollingAverageNoReset;
+
+
 
 using namespace boost::python;
 using namespace llrfStructs; // !!!!
@@ -397,7 +404,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(arg("name")),"Return latest Trace Values for channel 'name'")
         .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(arg("name")),"Return buffer of rf_trace objects for channel 'name'")
         .def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
-        .def("setKeepRollingAverageNoReset", &liberaLLRFController::setKeepRollingAverageNoReset,"set tKeepRollingAverage flag, but don't chnage current average data")
+        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(arg("name"),arg("value")),"set tKeepRollingAverage flag, but don't chnage current average data")
+        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(arg("value")),"set tKeepRollingAverage flag, but don't chnage current average data")
+
         .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(arg("name"),arg("state"),arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask is detected for trace 'name', returns true on success")
         .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(arg("name"),arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace for trace 'name' returns true on success")
 

@@ -1074,6 +1074,11 @@ void liberaLLRFController::setKeepRollingAverageNoReset(const bool value)
     return localInterface.setKeepRollingAverageNoReset(value);
 }
 //______________________________________________________________________________
+void liberaLLRFController::setKeepRollingAverageNoReset(const std::string&name, const bool value)
+{
+    return localInterface.setKeepRollingAverageNoReset(name, value);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setShouldKeepRollingAverage(const std::string&name)
 {
     return localInterface.setShouldKeepRollingAverage(name);
