@@ -335,7 +335,8 @@ namespace UTL
     const std::string PV_QBOX_SETSTATE = "PV_QBOX_SETSTATE";
 
     // Vac
-    const std::string PV_VAC_PRESSURE = "PV_VAC_PRESSURE";
+    const std::string PV_VAC_PRESSURE      = "PV_VAC_PRESSURE";
+    const std::string PV_VAC_PRESSURE_PRES = "PV_VAC_PRESSURE_PRES";
 
     /// Scope
     // Scope PVs
