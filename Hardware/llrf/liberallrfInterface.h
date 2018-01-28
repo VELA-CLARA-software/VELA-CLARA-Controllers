@@ -78,6 +78,7 @@ class liberallrfInterface : public interface
         bool setPercentTimeMask(const double s1,const double s2,const double s3,
                                 const double s4,const double value2,const  std::string& name);
 
+        bool setInfiniteMasks(const std::string& name);
 
         size_t getShotCount(const std::string& name);
 

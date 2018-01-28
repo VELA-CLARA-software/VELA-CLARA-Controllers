@@ -267,6 +267,7 @@ class liberaLLRFController : public controller
         bool clearMask(const std::string&name);
 
 #ifdef BUILD_DLL
+        bool setInfiniteMasks(const std::string& name);
         bool setHighMask(const std::string& name,const  boost::python::list& value);
         bool setLowMask(const std::string& name,const  boost::python::list& value);
         bool setCavRevPwrHiMask_Py(const boost::python::list& value);

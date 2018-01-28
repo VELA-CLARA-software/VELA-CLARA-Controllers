@@ -492,6 +492,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(arg("value")),"Set linear calibration of amplitude from LLRF units to MV/m")
         .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(arg("value")),"Set the Crest Phi value in LLRF Units")
 
+
+        .def("setInfiniteMasks",  &liberaLLRFController::setInfiniteMasks,(arg("name")),"Set infitine hi/lo masks for for trace 'name'")
         .def("setHighMask",  setHighMask_1,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
         .def("setHighMask",  setHighMask_2,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
         .def("setLowMask",  setLowMask_1,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")

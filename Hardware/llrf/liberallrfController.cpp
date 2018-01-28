@@ -939,6 +939,11 @@ bool liberaLLRFController::setCavFwdPwrMaskAbsolute(const size_t s1,const size_t
     return localInterface.setCavFwdPwrMaskAbsolute(s1,s2,s3,s4,value);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::setInfiniteMasks(const std::string& name)
+{
+    return localInterface.setInfiniteMasks(name);
+}
+//______________________________________________________________________________
 size_t liberaLLRFController::getIndex(const double time)
 {
     return localInterface.getIndex(time);

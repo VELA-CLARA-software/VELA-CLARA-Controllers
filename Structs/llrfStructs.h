@@ -251,7 +251,8 @@ namespace llrfStructs
         // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
         // rolling_average is then calculated by dividing rolling_sum by average_size
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
-        std::vector<double> last_good_trace;
+        //std::vector<double> last_good_trace;
+        std::vector<std::vector<double>> average_trace_values;
         double mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to
