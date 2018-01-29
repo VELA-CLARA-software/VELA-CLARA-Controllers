@@ -338,7 +338,7 @@ class liberallrfInterface : public interface
         void updateTraceIndex(int& index,const size_t trace_size);
         void updateTraceCutMean(llrfStructs::rf_trace& trace);
 
-        bool isTraceInMask(llrfStructs::rf_trace_data& trace);
+        int isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
         void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
         bool shouldSubtractTraceFromRollingAverage(llrfStructs::rf_trace_data& trace);

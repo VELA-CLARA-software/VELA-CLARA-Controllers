@@ -674,25 +674,30 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
     if(shouldCheckMasks(trace))// checks against
     {
         //debugMessage("CHECKING MASKS ",trace.name);
-        bool trace_good = isTraceInMask(trace);
-        if( trace_good )
+        int trace_good = isTraceInMask(trace);
+        switch( trace_good )
         {
             //trace.last_good_trace = trace.traces[trace.current_trace].value;
             //debugMessage("Trace was good");
             // update rolling average
-            if(trace.keep_rolling_average)
-            {
+            case 1:
+                if(trace.keep_rolling_average)
+                {
                 //debugMessage("Calculating Rolling Average");
-                calcRollingAverage(trace);
-            }
-        }
-        else
-        {
-            //debugMessage("Trace was bad");
-            // if the trace is "bad" add it to outside_mask_traces
-            llrfStructs::monitorStruct*ms = static_cast< llrfStructs::monitorStruct *>(args.usr);
-            addToOutsideMaskTraces(trace,  ms->name);
-            //message(" trace.outside_mask_trace_part, ",  trace.outside_mask_trace_part);
+                    calcRollingAverage(trace);
+                }
+                break;
+            case 0:
+                {
+                    //debugMessage("Trace was bad");
+                    // if the trace is "bad" add it to outside_mask_traces
+                    llrfStructs::monitorStruct*ms = static_cast< llrfStructs::monitorStruct *>(args.usr);
+                    addToOutsideMaskTraces(trace,  ms->name);
+                    //message(" trace.outside_mask_trace_part, ",  trace.outside_mask_trace_part);
+                }
+                break;
+            case -1:
+                break;
         }
     }
     else
@@ -941,7 +946,7 @@ void liberallrfInterface::updateSCAN(const event_handler_args& args,llrfStructs:
     //message("New SCAN for trace ", trace.name, " = ", ENUM_TO_STRING(trace.scan));
 }
 //____________________________________________________________________________________________
-bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
+int liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
 {
     // is trace in masks is only checked if we are increasing the active pulses!!!
     size_t hi_breakdown_count = 0;
@@ -950,9 +955,9 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
     std::vector<double>& to_check = trace.traces[trace.current_trace].value;
     std::vector<double>& hi = trace.high_mask;
     std::vector<double>& lo = trace.low_mask;
-//
-//    if(llrf.can_increase_active_pulses)// only check active pulses
-//    {
+
+    if(llrf.can_increase_active_pulses)// only check active pulses
+    {
         for(auto i = 0; i < to_check.size(); ++i)
         {
             if(to_check[i] > trace.mask_floor)
@@ -970,7 +975,7 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
                         <<trace.traces[trace.previous_evid_trace].EVID;
                         message(outside_mask_trace_message.str());
                         trace.outside_mask_index = i;
-                        return false;
+                        return 0;
                     }
                 }
                 else
@@ -989,21 +994,18 @@ bool liberallrfInterface::isTraceInMask(llrfStructs::rf_trace_data& trace)
                         <<trace.traces[trace.previous_evid_trace].EVID;
                         message(outside_mask_trace_message.str());
                         trace.outside_mask_index = i;
-                        return false;
+                        return 0;
                     }
                 }
                 else
                 {
                     lo_breakdown_count = 0;
                 }
-//                else
-//                {
-//                    reset = true;
-//                }
             }
         }
-//    }
-    return true;
+        return 1;
+    }
+    return -1;
 }
 //____________________________________________________________________________________________
 void liberallrfInterface::set_evid_ID_SET(llrfStructs::rf_trace_data& trace)
