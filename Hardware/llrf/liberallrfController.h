@@ -81,6 +81,8 @@ class liberaLLRFController : public controller
         size_t getNumOutsideMaskTraces();
         std::vector<llrfStructs::outside_mask_trace>   getOutsideMaskData();
         llrfStructs::outside_mask_trace getOutsideMaskData(const size_t part);
+        bool isOutsideMaskDataFinishedCollecting(size_t part);
+
 
         bool isFFLocked();
         bool isFFNotLocked();
@@ -168,7 +170,7 @@ class liberaLLRFController : public controller
 
         boost::python::list getProbePowerAv_Py();
         boost::python::list getProbePhaseAv_Py();
-
+        boost::python::dict dump_traces();
         void setTracesToSaveOnBreakDown_Py(const boost::python::list& name);
         boost::python::list getTracesToSaveOnBreakDown_Py();
 #endif
@@ -236,6 +238,8 @@ class liberaLLRFController : public controller
         void offsetTimer(long long value);
         double getBreakDownRate();
 
+
+        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
 
@@ -249,12 +253,21 @@ class liberaLLRFController : public controller
         bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
 
+
+        size_t getIndex(const double time);
+        double getTime(const size_t  time);
+        bool setAbsoluteTimeMask(const double s1,const double s2,const double s3,
+                                 const double s4,const double value2,const  std::string& name);
+        bool setPercentTimeMask(const double s1,const double s2,const double s3,
+                                const double s4,const double value2,const  std::string& name);
+
         bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
         bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
         bool setMaskFloor(const std::string& name, double value);
         bool clearMask(const std::string&name);
 
 #ifdef BUILD_DLL
+        bool setInfiniteMasks(const std::string& name);
         bool setHighMask(const std::string& name,const  boost::python::list& value);
         bool setLowMask(const std::string& name,const  boost::python::list& value);
         bool setCavRevPwrHiMask_Py(const boost::python::list& value);
@@ -267,6 +280,10 @@ class liberaLLRFController : public controller
         void setNumBufferTraces(const size_t value);
 
         bool setKeepRollingAverage(const std::string&name, bool value);
+        void setKeepRollingAverageNoReset(const bool value);
+        void setKeepRollingAverageNoReset(const std::string&name, const bool value);
+
+
         bool setNumRollingAverageTraces(const std::string&name,const size_t value );
         void setNumRollingAverageTraces(const size_t value );
 

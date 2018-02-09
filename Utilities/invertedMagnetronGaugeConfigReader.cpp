@@ -142,6 +142,8 @@ void invertedMagnetronGaugeConfigReader::addToPVMonitorMapV1( std::vector<std::s
         addPVStruct( pvMonStructs, keyVal );
     else if( keyVal[0] == UTL::PV_VAC_PRESSURE )
         addPVStruct( pvMonStructs, keyVal );
+    else if( keyVal[0] == UTL::PV_VAC_PRESSURE_PRES )
+        addPVStruct( pvMonStructs, keyVal );
     else if( keyVal[0] == UTL::PV_COUNT )
         pvMonStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_MASK )
@@ -170,17 +172,19 @@ void invertedMagnetronGaugeConfigReader::addPVStruct( std::vector< invertedMagne
     /// init structs 'correctly'
     pvStruct_v.push_back( invertedMagnetronGaugeStructs::pvStruct() );
     pvStruct_v.back().pvSuffix = keyVal[1];
-    if( keyVal[0] == UTL::PV_SUFFIX_STA  )
+    if( keyVal[0] == UTL::PV_SUFFIX_STA )
     {
-            message("here");
         pvStruct_v.back().pvType = invertedMagnetronGaugeStructs::IMG_PV_TYPE::STA;
-        message("here");
         debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix" );
-        message("here");
     }
-    else if( keyVal[0] == UTL::PV_VAC_PRESSURE  )
+    else if( keyVal[0] == UTL::PV_VAC_PRESSURE )
     {
-            message("here");
+        pvStruct_v.back().pvType = invertedMagnetronGaugeStructs::IMG_PV_TYPE::P;
+        debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix" );
+    }
+    else if( keyVal[0] == UTL::PV_VAC_PRESSURE_PRES )
+    {
+        message("here");
         pvStruct_v.back().pvType = invertedMagnetronGaugeStructs::IMG_PV_TYPE::P;
         debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix" );
     }

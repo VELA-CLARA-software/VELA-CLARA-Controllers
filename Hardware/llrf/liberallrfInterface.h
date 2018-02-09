@@ -71,11 +71,20 @@ class liberallrfInterface : public interface
         void setActivePulsePowerLimit(const double& val);
         double getActivePulsePowerLimit();
 
+        size_t getIndex(const double time);
+        double getTime(const size_t  time);
+        bool setAbsoluteTimeMask(const double s1,const double s2,const double s3,
+                                 const double s4,const double value2,const  std::string& name);
+        bool setPercentTimeMask(const double s1,const double s2,const double s3,
+                                const double s4,const double value2,const  std::string& name);
+
+        bool setInfiniteMasks(const std::string& name);
 
         size_t getShotCount(const std::string& name);
 
         std::vector<llrfStructs::outside_mask_trace>  getOutsideMaskData();
         llrfStructs::outside_mask_trace getOutsideMaskData(const size_t part);
+        bool isOutsideMaskDataFinishedCollecting(size_t part);
 
         std::vector<std::string> getChannelNames();
         std::vector<std::string> getTraceNames();
@@ -197,6 +206,7 @@ class liberallrfInterface : public interface
         bool clearMask(const std::string&name);
         bool clearRollingAverage(const std::string&name);
         //bool clearRollingAverage();
+        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
 
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
@@ -217,7 +227,8 @@ class liberallrfInterface : public interface
         void resetAverageTraces();
         void setShouldKeepRollingAverage();
         void setShouldNotKeepRollingAverage();
-
+        void setKeepRollingAverageNoReset(const bool value);
+        void setKeepRollingAverageNoReset(const std::string&name, const bool value);
 
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setShouldKeepRollingAverage(const std::string&name);
@@ -327,7 +338,7 @@ class liberallrfInterface : public interface
         void updateTraceIndex(int& index,const size_t trace_size);
         void updateTraceCutMean(llrfStructs::rf_trace& trace);
 
-        bool isTraceInMask(llrfStructs::rf_trace_data& trace);
+        int isTraceInMask(llrfStructs::rf_trace_data& trace);
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
         void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
         bool shouldSubtractTraceFromRollingAverage(llrfStructs::rf_trace_data& trace);
@@ -345,13 +356,15 @@ class liberallrfInterface : public interface
 
         std::vector< llrfStructs::monitorStruct * > continuousMonitorStructs;
 
-        std::thread* newthread;
-        void setAmpFFCallback();
-        int next_amp_drop;
-        static void staticEntrySetAmp(liberallrfInterface* interface);
+        std::vector<llrfStructs::setAmpHP_Struct>  setAmpHP_Threads;
+        void setAmpSPCallback(const double value);
+        //static void staticEntrySetAmp(liberallrfInterface* interface, const double value);
+        static void staticEntrySetAmp(llrfStructs::setAmpHP_Struct & );
+        void kill_finished_setAmpHP_threads();
 
         void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);
 
+        std::stringstream outside_mask_trace_message;
 
         liberallrfConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message

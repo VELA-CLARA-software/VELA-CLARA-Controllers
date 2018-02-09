@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <chrono>
+#include <thread>
 //epics
 #include <cadef.h>
 
@@ -142,6 +143,20 @@ namespace llrfStructs
         evid          EVID;
     };
 
+    struct setAmpHP_Struct
+    {
+        setAmpHP_Struct():
+            can_kill(false),
+            interface(nullptr),
+            thread(nullptr),
+            value(UTL::ZERO_DOUBLE)
+            {}
+        liberallrfInterface *interface;
+        std::thread *thread;
+        bool         can_kill;
+        double       value;
+    };
+
     //a custom struct will always stand up better under maintenance.
     struct rf_trace
     {
@@ -210,13 +225,16 @@ namespace llrfStructs
             amp_drop_value(UTL::ZERO_DOUBLE),
             drop_amp_on_breakdown(false),
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
-            mask_floor(UTL::ZERO_INT),
+            mask_floor(UTL::ZERO_DOUBLE),
             EVID("NONE"),//MAGIC_STRING
-            add_next_trace(0)
+            add_next_trace(UTL::ZERO_SIZET),
+            outside_mask_index(UTL::ZERO_SIZET),
+            num_traces_at_this_power(UTL::ZERO_SIZET)
             {}
-        size_t shot,num_continuous_outside_mask_count;
+        size_t shot,num_continuous_outside_mask_count,outside_mask_index;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
         size_t  buffersize, trace_size, average_size,rolling_sum_counter,mean_start_index,mean_stop_index;
+        size_t num_traces_at_this_power;
         // Counter allowing you to access/update the correct part of  traces
         size_t  latest_trace_index,current_trace,evid_current_trace,add_next_trace;
         int previous_previous_trace,previous_trace,previous_evid_trace;
@@ -233,7 +251,9 @@ namespace llrfStructs
         // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
         // rolling_average is then calculated by dividing rolling_sum by average_size
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
-        int mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
+        //std::vector<double> last_good_trace;
+        std::vector<std::vector<double>> average_trace_values;
+        double mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to
         bool drop_amp_on_breakdown;
@@ -248,11 +268,19 @@ namespace llrfStructs
     {
         outside_mask_trace():
             trace_name(UTL::UNKNOWN_NAME),
-            time(UTL::ZERO_SIZET)
+            time(UTL::ZERO_SIZET),
+            mask_floor(UTL::ZERO_DOUBLE),
+            is_collecting(false),
+            num_traces_to_collect(UTL::ZERO_SIZET),
+            outside_mask_index(UTL::ZERO_SIZET)
             {}
         std::vector<rf_trace>  traces;
-        std::string trace_name;
+        std::vector<double>  time_vector;
+        std::string trace_name,message;
+        bool is_collecting;
         long long time;
+        double mask_floor;
+        size_t num_traces_to_collect,outside_mask_index;
         std::vector<double> high_mask,low_mask;
         // when exposing a vector of outside_mask_trace to python I ran into trouble...
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
@@ -298,7 +326,7 @@ namespace llrfStructs
             activePulseCount(UTL::ZERO_SIZET),
             pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET),
-            trig_source(UNKNOWN_TRIG),
+            trig_source(TRIG::UNKNOWN_TRIG),
             num_extra_traces(0),
             kly_fwd_power_max(0.0),
             can_increase_active_pulses(false),
