@@ -43,6 +43,8 @@ typedef std::vector<std::string> vecs;
 typedef const std::vector<std::string> cves;
 typedef boost::python::list & cbpl;
 
+
+
 using namespace cameraStructs;
 
 class VCcameraIA
@@ -76,7 +78,6 @@ class VCcameraIA
         const VELA_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
 };
 
-
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
 {
@@ -92,7 +93,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
     class_<std::vector<double>>("std_vector_double")
         .def( vector_indexing_suite< std::vector<double>>())
         ;
-
+    //class_<std::vector<cameraObject>>("std_vector_cameraObject")
+     //   .def( vector_indexing_suite< std::vector<cameraObject>>())
+      //  ;
  ///Expose Enums
     enum_<CAM_STATE>("CAM_STATE","Enum to interpet the power state of camera.")
         .value("CAM_ON",            CAM_STATE::CAM_ON)
@@ -393,11 +396,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("savedCroppedY",
         &cameraStructs::cameraOfflineIAObject::savedCroppedY,
         "1")
+        .def_readonly("pixToMM",
+        &cameraStructs::cameraOfflineIAObject::pixToMM,
+        "1")
         ;
       boost::python::class_<offlineImageAnalyser,boost::noncopyable>
         ("offlineImageAnalyser","offlineImageAnalyser Doc String", boost::python::no_init)
         .def("loadImage",
-                      &offlineImageAnalyser::loadImage,
+                       &offlineImageAnalyser::loadImage,
                       (arg("data"),arg("height"),arg("width")),
                       "Takes in 1D array, raw image data.")
         .def("loadBackgroundImage",

@@ -197,7 +197,7 @@ namespace cameraStructs
         int rotation=0; // degrees
         int x0=0,y0=0,xRad=0,yRad=0;
         double pixToMM=1.0;
-        double pixelValueError = 100.0;
+        double pixelValueError = 3.07;//MAGIC NUMBER got from finding the sigma on the pixel image on a black image from clara (tested cameras S01-CAM-01 and S02-CAM-02)
 
         //Results
         double xBVN=0,yBVN=0,sxBVN=0,syBVN=0,cxyBVN=0;

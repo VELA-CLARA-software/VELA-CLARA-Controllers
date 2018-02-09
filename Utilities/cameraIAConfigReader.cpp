@@ -255,7 +255,6 @@ void cameraIAConfigReader::addToCameraCommandStructs( const std::vector<std::str
 }
 void cameraIAConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal  )
 {
-    message("HI");
     if( keyVal[0] == UTL::PV_COUNT )
         pvStruct_v.back().COUNT = getCOUNT( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_MASK )

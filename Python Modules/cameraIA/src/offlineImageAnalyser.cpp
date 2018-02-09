@@ -11,28 +11,52 @@
 #include<mutex>
 #include"cameraStructs.h"
 #include"offlineImageAnalyser.h"
+
+
 std::mutex mu;
 ///--------------------------------IMAGE ANAYLSER FUNCTIONS------------------------------------///
 //CONSTRUCTOR
 offlineImageAnalyser::offlineImageAnalyser(const bool show_messages,
-                                           const bool show_debug_messages)
+                                           const bool show_debug_messages,
+                                           cameraIAInterface* CI)
 : //baseObject( &show_messages, &show_debug_messages ),
 fit( &show_messages, &show_debug_messages ),
 edit( &show_messages, &show_debug_messages )//,
 //CoIA()
-{}
+{
+cameraInterface=CI;
+}
 //DESTRUCTOR
 offlineImageAnalyser::~offlineImageAnalyser(){}
 
 
 //read data from file and load into image analyser class in 'imageData'
-void offlineImageAnalyser::loadImage(const std::vector<double> &originalImage, const std::string &name,
+void offlineImageAnalyser::loadImage(const std::vector<double> &originalImage,
+                                     const std::string &name,
                                      int hieght, int width){
     CoIA.clear();
     CoIA.imageHeight = hieght;
     CoIA.imageWidth = width;
     CoIA.dataSize = hieght*width;
     CoIA.imageName = name;
+    CoIA.x0 = width/2;
+    CoIA.y0 = hieght/2;
+    CoIA.xRad = width/2;
+    CoIA.yRad = hieght/2;
+    for(auto && it : (*cameraInterface).allCamData)
+    {
+        if (name.find(it.second.name) != std::string::npos)
+        {
+            std::cout << "Found  and using config parameters for camera " << it.second.name <<std::endl;
+
+            CoIA.pixToMM = it.second.IA.pix2mm;
+            //overwrite default values
+            CoIA.x0 = it.second.IA.xCenterPix;
+            CoIA.y0 = it.second.IA.yCenterPix;
+            CoIA.xRad = it.second.IA.xRad;
+            CoIA.yRad = it.second.IA.yRad;
+        }
+    }
 //#std::vector<double> dummy(CoIA.dataSize);
  //   CoIA.mask = dummy;
     CoIA.mask.clear();
@@ -78,24 +102,34 @@ void offlineImageAnalyser::writeData(const std::string &fileName){
             myfile << "Mask,,,,R^2 Threshold,Rolling Average,Pecentage Cut of Lowest Pixels\n";
             myfile << "X,Y,X Radius,Y Radius\n";
             myfile << CoIA.maskXES <<","<<CoIA.maskYES <<","<< CoIA.maskRXES <<","<< CoIA.maskRYES <<","<< CoIA.RRThresholdES <<","<< CoIA.filterES <<","<< CoIA.DirectCutLevelES <<"\n";
-            myfile<< "BVN, , , , ,MLE, , , , \n";
-            myfile<< "X,Y,Sigma X, Sigma Y,Covariance XY,X,Y,Sigma X, Sigma Y,Covariance XY,";
-            myfile<< " ,Image Name,Background Image Name\n";
+            myfile<< "BVN, , , , , , , , , ,MLE, , , , , , , , , , \n";
+            myfile<< "X,err,Y,err,Sigma X,err, Sigma Y,err,Covariance XY,err,X,err,Y,err,Sigma X,err, Sigma Y,err,Covariance XY,err,";
+            myfile<< " ,pix2MM,,Image Name,Background Image Name\n";
       }
       else {
           std::cout<< "Writing data to a file that already exits..."<< std::endl;
       }
       myfile << CoIA.xBVN <<",";
+      myfile << CoIA.xBVNerr <<",";
       myfile << CoIA.yBVN <<",";
+      myfile << CoIA.yBVNerr <<",";
       myfile << CoIA.sxBVN <<",";
+      myfile << CoIA.sxBVNerr <<",";
       myfile << CoIA.syBVN <<",";
+      myfile << CoIA.syBVNerr <<",";
       myfile << CoIA.cxyBVN <<",";
+      myfile << CoIA.cxyBVNerr <<",";
       myfile << CoIA.xMLE <<",";
+      myfile << CoIA.xMLEerr <<",";
       myfile << CoIA.yMLE <<",";
+      myfile << CoIA.yMLEerr<<",";
       myfile << CoIA.sxMLE <<",";
+      myfile << CoIA.sxMLEerr <<",";
       myfile << CoIA.syMLE <<",";
+      myfile << CoIA.syMLEerr <<",";
       myfile << CoIA.cxyMLE <<",";
-      myfile << ",";
+      myfile << CoIA.cxyMLEerr <<",,";
+      myfile << CoIA.pixToMM << ",,";
       myfile << CoIA.imageName <<",";
       myfile << CoIA.bkgrndName <<"\n";
 
@@ -317,10 +351,26 @@ void offlineImageAnalyser::analyse(){
 
 
 }*/
-
+bool offlineImageAnalyser::killLongRunningThread(const double& timeOut){
+    bool ans =false;
+    stopTime = std::chrono::steady_clock::now();
+    auto diff  = stopTime - startTime;
+    double diffD = (double)std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()/1000000000;
+    if(diffD>timeOut)
+    {
+        std::cout<<"This has gone on too long!!"<< std::endl;
+        delete threadedAnalysis;///THIS TERMINATES THE WHOLE CODE!!!!!!!!!!!!
+        ans=true;
+    }
+    return ans;
+}
 void offlineImageAnalyser::analyse(){
     //need to make sure your python is running while this thread is active
-    new std::thread(&offlineImageAnalyser::staticAnalyse, this);
+    startTime = std::chrono::steady_clock::now();
+   threadedAnalysis = new std::thread (&offlineImageAnalyser::staticAnalyse,
+                                                      this);
+    stopTime = std::chrono::steady_clock::now();
+
 }
 bool offlineImageAnalyser::staticAnalyse(){
     this->analysing=true;
@@ -450,7 +500,6 @@ bool offlineImageAnalyser::staticAnalyse(){
 
 
     //USING 1D FIT PARAMATERS FIT BVN TO IMAGE
-    ///Curently not using this so just outputs 1s
     std::vector<double> fitImageBVN = {1,1,1,1,1,1,1};
     fitImageBVN = this->fit.fitBVN(this->CoIA,refitX,refitY);
 

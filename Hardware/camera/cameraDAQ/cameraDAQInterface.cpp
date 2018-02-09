@@ -456,7 +456,7 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & n
     return success;
 
 }
-bool cameraDAQInterface::killCollectAndSave()///can only kill while saving.
+bool cameraDAQInterface::killCollectAndSave()///can only kill while collecting.
 {
     bool killed = false;
     unsigned short c(0);

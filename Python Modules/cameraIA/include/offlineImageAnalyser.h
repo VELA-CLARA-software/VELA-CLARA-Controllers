@@ -5,12 +5,15 @@
 
 #include<string>
 #include<vector>
-
+#include <chrono>
 
 #include"cameraStructs.h"
 #include"editor.h"
 #include"fitter.h"
 #include "baseObject.h"
+
+#include "cameraIAInterface.h"
+
 using namespace cameraStructs;
 ///---------------------------CLASS TO ANALYSE IMAGES------------------------------///
 ///------------Holds data of image high level imageAnalysis functions-------------///
@@ -18,15 +21,18 @@ class offlineImageAnalyser{
     public:
         //Constructor
         offlineImageAnalyser(const bool show_messages = true,
-                             const  bool show_debug_messages = true);
+                             const  bool show_debug_messages = true,
+                             cameraIAInterface* CI = &cameraIAInterface());
         //Destructor
         ~offlineImageAnalyser();
 
         cameraOfflineIAObject CoIA;
 
         ///Functions
-        void loadImage(const std::vector<double> &originalImage, const std::string &name,
+        void loadImage(const std::vector<double> &originalImage,
+                       const std::string &name,
                        int hieght, int width);
+
         void loadBackgroundImage(const std::vector<double> &originalBkgrndImage, const std::string &name);
         void writeData(const std::string &fileName);
         void analyse();
@@ -49,11 +55,15 @@ class offlineImageAnalyser{
         void useESDirectCut(const bool& tf);
         void setESDirectCut(const double& dc);
         bool isAnalysing();
+        bool killLongRunningThread(const double& timeOut);
 
 
     protected:
 
     private:
+        cameraIAInterface* cameraInterface;
+        std::chrono::steady_clock::time_point startTime,stopTime;
+        std::thread *threadedAnalysis;
         bool analysing=false;
         std::vector<double> getBest1DParmaetersForXAndY();
         //for use with a specific filter

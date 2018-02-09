@@ -13,6 +13,7 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
 #include "cameraIAController.h"
+
 // stl
 cameraIAController::cameraIAController(
     const bool show_messages,
@@ -30,7 +31,7 @@ localInterface(magConf,
                myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea),
-offlineIA(show_messages,show_debug_messages)
+offlineIA(show_messages,show_debug_messages,&localInterface)
 {
 }
 cameraIAController::~cameraIAController(){}    //dtor
