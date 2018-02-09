@@ -1,5 +1,5 @@
 # VELA-CLARA-Controllers
-This contains the C++ code and Python PYDs to control VELA/CLARA.
+This contains the C++ code and Python PYDs to control VELA-CLARA.
 # Project Title
 
 One Paragraph of project description goes here
