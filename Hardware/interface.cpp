@@ -368,4 +368,17 @@ long long interface::msChronoTime()
     long long duration = value.count();
     return duration;
 }
-
+//____________________________________________________________________________________________
+void interface::updateBoolState(const event_handler_args& args, bool& parameter)
+{   /* some simple states don't have an enum, they are either true or false
+       This can probably be used by many hardware controllers
+    */
+    if(*(int*)args.dbr == 1)
+    {
+        parameter= true;
+    }
+    else
+    {
+        parameter= false;
+    }
+}

@@ -58,7 +58,7 @@ namespace UTL
     // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
     // config file names
-    const std::string NO_CONFIG_FILE                   = "NO_CONFIG_FILE";
+    const std::string NO_CONFIG_FILE = "NO_CONFIG_FILE";
 
     /// General Keywords
     /// These are the keywords used in hardware config files

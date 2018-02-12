@@ -221,6 +221,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("ZERO_POINT_ONE", LLRF_SCAN::ZERO_POINT_ONE)
         .value("UNKNOWN_SCAN", LLRF_SCAN::UNKNOWN_SCAN)
         ;
+
+
+
+
     class_<llrfStructs::rf_trace,boost::noncopyable>
         ("rf_trace","rf_trace Doc String", no_init)
         .def_readonly("value",    &rf_trace::value  ,"trace values")
@@ -234,13 +238,17 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("mean", &rf_trace::mean,"mean pwoer between mean_start_index and mean_stop_index.")
         ;
 
+
+
     // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
     class_<llrfStructs::rf_trace_data,boost::noncopyable>
         ("rf_trace_data","rf_trace_data object Doc-String", no_init)
+        .def_readonly("name",      &rf_trace_data::name,"tarce name")
         .def_readonly("check_mask",      &rf_trace_data::check_mask,"should check mask")
         .def_readonly("hi_mask_set",     &rf_trace_data::hi_mask_set,"is hi mask set")
         .def_readonly("low_mask_set",    &rf_trace_data::low_mask_set,"is low mask set")
         .def_readonly("keep_rolling_average",&rf_trace_data::keep_rolling_average,"should keep rolling average")
+        .def_readonly("keep_next_trace",&rf_trace_data::keep_next_trace,"should keep next trace")
         .def_readonly("has_average",     &rf_trace_data::has_average,"has the trace calcualted an an average yet?")
         .def_readonly("buffersize",      &rf_trace_data::buffersize,"number of traces in buffer")
         .def_readonly("trace_size",      &rf_trace_data::trace_size,"number of elements in a trace")
@@ -259,12 +267,17 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
         .def_readonly("shot",     &rf_trace_data::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)")
         //maybe have a ferernce to the latest trace??
-        .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"Latest EVID for this trace.")
+        .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"index for trace last updated.")
+        .def_readonly("current_trace",&rf_trace_data::current_trace,"index for current trace.")
+
         .def_readonly("amp_drop_value", &rf_trace_data::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
         .def_readonly("drop_amp_on_breakdown", &rf_trace_data::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         .def_readonly("mask_floor", &rf_trace_data::mask_floor,"Mask floor level.")
         .def_readonly("num_continuous_outside_mask_count", &rf_trace_data::num_continuous_outside_mask_count,"number of continuous outside mask.")
         .def_readonly("add_next_trace", &rf_trace_data::add_next_trace,"number of traces still to add to outside mask traces.")
+        .def_readonly("outside_mask_index", &rf_trace_data::outside_mask_index,"index of elmenet that caused outside mask event.")
+        .def_readonly("latest_max", &rf_trace_data::latest_max,"maximum value of latest trace.")
+        .def_readonly("scan", &rf_trace_data::scan,"SCAN value.")
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
@@ -278,8 +291,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def(vector_indexing_suite< std::vector<llrfStructs::rf_trace> >())
         ;
 
-    //typedef &llrfStructs::rf_trace rtr;
-    //using namespace llrfStructs;
     // outside_mask_trace is a sturct that holds flagged traces...
     class_<outside_mask_trace>
         ("outside_mask_trace","outside_mask_trace Doc String", no_init)
@@ -289,7 +300,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("high_mask",  &outside_mask_trace::high_mask, "High mask values")
         .def_readonly("low_mask",   &outside_mask_trace::low_mask,  "Low mask values")
         .def_readonly("time",       &outside_mask_trace::low_mask,  "ms (approx) between timner start and trace flagged")
-
         .def_readonly("num_traces_to_collect",       &outside_mask_trace::num_traces_to_collect,  "expeted number of traces")
         .def_readonly("time_vector",       &outside_mask_trace::time_vector,  "time_vector (us)")
         .def_readonly("mask_floor",       &outside_mask_trace::mask_floor,  "mask_floor (W)")
@@ -365,10 +375,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setActivePulsePowerLimit",   &liberaLLRFController::setActivePulsePowerLimit,(arg("value")),"Set minimum Klystron Forward Power to enable active pulse increasing (below this value active pulses won't increment.).")
         .def("getActivePulsePowerLimit",   &liberaLLRFController::getActivePulsePowerLimit,"Get minimum Klystron Forward Power to enable active pulse increasing.")
 
-        .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return LLRF Object Reference")
-
-
-//        .def("geetActivePulseCountRef",&liberaLLRFController::geetActivePulseCountRef,return_value_policy<reference_existing_object>(),"Return  Object Reference")
+        .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),"Return LLRF Object Reference")
+        .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return reference to LLRF Trace Object 'name'")
 
         .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
         .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index" )
@@ -477,6 +485,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(arg("name"),arg("value")),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
         .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(arg("value")),"Set all monitoring traces SCAN rate to 'value'")
+        .def("setAllSCANToPassive",  &liberaLLRFController::setAllSCANToPassive,"Set all SCAN to Passive")
         .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(arg("name")),"Get High mask for trace 'name'")
         .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(arg("name")),"Get Low mask for trace 'name'")
 

@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1518457460 source:d:\vela\git projects\vela-clara-controllers\python modules\members_as_pyobjects_test\main.cpp
+	<vector>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+

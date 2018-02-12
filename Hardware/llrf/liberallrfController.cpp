@@ -207,6 +207,11 @@ bool  liberaLLRFController::setAllTraceSCAN(const llrfStructs::LLRF_SCAN value)
     return localInterface.setAllTraceSCAN(value);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::setAllSCANToPassive()
+{
+    return localInterface.setAllSCANToPassive();
+}
+//______________________________________________________________________________
 std::vector<std::string> liberaLLRFController::getTraceNames()
 {
     return localInterface.getTraceNames();
@@ -807,12 +812,14 @@ std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPhaseBuffer()
     return localInterface.getKlyFwdPhaseBuffer();
 }
 //______________________________________________________________________________
-//______________________________________________________________________________
-
-//______________________________________________________________________________
 const llrfStructs::liberallrfObject& liberaLLRFController::getLLRFObjConstRef()
 {
     return localInterface.getLLRFObjConstRef();
+}
+//______________________________________________________________________________
+const llrfStructs::rf_trace_data& liberaLLRFController::getTraceDataConstRef(const std::string& name)
+{
+    return localInterface.getTraceDataConstRef(name);
 }
 //______________________________________________________________________________
 llrfStructs::TRIG liberaLLRFController::getTrigSource()

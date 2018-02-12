@@ -99,6 +99,7 @@ class interface : public baseObject
 
         bool iLocksAreGood(std::map<VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE> & iLockStates);
 
+        void updateBoolState(const event_handler_args& args, bool& parameter);
 
         long long msChronoTime();
 

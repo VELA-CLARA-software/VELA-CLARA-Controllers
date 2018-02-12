@@ -197,7 +197,7 @@ namespace llrfStructs
     struct rf_trace_data
     {
         rf_trace_data():
-            name("UNKNOWN"),
+            name(UTL::UNKNOWN_NAME),
             scan(LLRF_SCAN::UNKNOWN_SCAN),
             shot(UTL::ZERO_SIZET),
             buffersize(UTL::TEN_SIZET),
@@ -229,7 +229,8 @@ namespace llrfStructs
             EVID("NONE"),//MAGIC_STRING
             add_next_trace(UTL::ZERO_SIZET),
             outside_mask_index(UTL::ZERO_SIZET),
-            num_traces_at_this_power(UTL::ZERO_SIZET)
+            num_traces_at_this_power(UTL::ZERO_SIZET),
+            latest_max(UTL::ZERO_DOUBLE)
             {}
         size_t shot,num_continuous_outside_mask_count,outside_mask_index;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
@@ -260,7 +261,7 @@ namespace llrfStructs
         //std::map<size_t,std::vector<bool>> add_next_trace_to_outside_mask_trace;
         std::vector<size_t> add_next_trace_to_outside_mask_trace;
         //size_t outside_mask_trace_part;
-        double amp_drop_value;
+        double amp_drop_value,latest_max;
         LLRF_SCAN scan;
     };
 
@@ -327,10 +328,10 @@ namespace llrfStructs
             pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET),
             trig_source(TRIG::UNKNOWN_TRIG),
-            num_extra_traces(0),
-            kly_fwd_power_max(0.0),
+            num_extra_traces(UTL::ZERO_SIZET),
+            kly_fwd_power_max(UTL::ZERO_DOUBLE),
             can_increase_active_pulses(false),
-            active_pulse_kly_power_limit(1000.0)
+            active_pulse_kly_power_limit(UTL::ZERO_DOUBLE)
                      {}
         double kly_fwd_power_max,active_pulse_kly_power_limit;
         bool can_increase_active_pulses;

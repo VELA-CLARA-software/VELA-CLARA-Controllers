@@ -105,7 +105,6 @@ class liberallrfInterface : public interface
         std::vector<double> getCavFwdPhase();
         std::vector<double> getKlyRevPhase();
         std::vector<double> getKlyFwdPhase();
-
         std::vector<double> getProbePower();
         std::vector<double> getProbePhase();
 
@@ -118,7 +117,6 @@ class liberallrfInterface : public interface
         std::vector<double> getCavFwdPhaseAv();
         std::vector<double> getKlyRevPhaseAv();
         std::vector<double> getKlyFwdPhaseAv();
-
         std::vector<double> getProbePowerAv();
         std::vector<double> getProbePhaseAv();
 
@@ -142,6 +140,9 @@ class liberallrfInterface : public interface
         std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
+        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
+
+
         llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name);
 
         llrfStructs::LLRF_PV_TYPE getEVID_pv(llrfStructs::LLRF_PV_TYPE pv);
@@ -169,7 +170,8 @@ class liberallrfInterface : public interface
         void setCrestPhiLLRF(double value); // in LLRF units
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
-        bool setAllTraceSCAN( const llrfStructs::LLRF_SCAN value);
+        bool setAllSCANToPassive();
+        bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
 
         bool setCavRevPwrHiMask(const std::vector<double>& value);
         bool setCavRevPwrLoMask(const std::vector<double>& value);
@@ -316,10 +318,9 @@ class liberallrfInterface : public interface
         bool setValue2(llrfStructs::pvStruct& pvs,T value);
 
         // These are private version that do the converstion to LLRF units
-        bool setPHIDEG();
-        bool setAMPMVM();
+        bool updatePHIDEG();
+        bool updateAMPMVM();
 
-        static void staticEntryLLRFMonitor(const event_handler_args args);
 
         void initialise();
         bool initObjects();
@@ -327,29 +328,32 @@ class liberallrfInterface : public interface
         void addChannel(const std::string& pvRoot, llrfStructs::pvStruct & pv );
         void startMonitors();
 
+        /* EPICS Callbacks - paramters are updated form here */
+        static void staticEntryLLRFMonitor(const event_handler_args args);
         void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateSCAN(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
-//        void updateTraceValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
+        void updateTrigState(const event_handler_args& args);
+
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
         void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
-        //void updateTimeVector(const event_handler_args& args);
+
+        int updateIsTraceInMask(llrfStructs::rf_trace_data& trace);
+        void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
 
         void updateTraceIndex(size_t& index,const size_t trace_size);
         void updateTraceIndex(int& index,const size_t trace_size);
-        void updateTraceCutMean(llrfStructs::rf_trace& trace);
+        void updateTraceCutMean(llrfStructs::rf_trace_data& tracedata,llrfStructs::rf_trace& trace);
 
-        int isTraceInMask(llrfStructs::rf_trace_data& trace);
-        bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
-        void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
-        bool shouldSubtractTraceFromRollingAverage(llrfStructs::rf_trace_data& trace);
+        void updateCanIncreaseActivePulses(const double max);
+        void updateActivePulseCount(const std::string& evid);
         void calcRollingAverage(llrfStructs::rf_trace_data& trace);
         void updateRollingSum(llrfStructs::rf_trace_data& trace);
         void resetAverageTraces(llrfStructs::rf_trace_data& trace);
 
 
-        void updateActivePulseCount(const std::string& evid);
+        bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
+        void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
 
-        // breakdown timer duration
 
         llrfStructs::liberallrfObject llrf;
         llrfStructs::LLRF_TYPE myLLRFType;
@@ -365,6 +369,8 @@ class liberallrfInterface : public interface
         void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);
 
         std::stringstream outside_mask_trace_message;
+
+        const llrfStructs::rf_trace_data dummy_trace_data;
 
         liberallrfConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message

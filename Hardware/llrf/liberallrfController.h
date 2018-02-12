@@ -72,6 +72,8 @@ class liberaLLRFController : public controller
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
         bool setAllTraceSCAN( const llrfStructs::LLRF_SCAN value);
+        bool setAllSCANToPassive();
+
 
         void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
         std::vector<std::string> getTracesToSaveOnBreakDown();
@@ -203,6 +205,8 @@ class liberaLLRFController : public controller
 #endif
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
+        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
+
         // SETTERS
         bool setPhiSP(double value);
         bool setPhiFF(double value);
