@@ -210,37 +210,37 @@ namespace llrfStructs
             trace_size(UTL::ZERO_SIZET),
             average_size(UTL::ONE_SIZET),
             // how many traces have been added to rolling sums
-            rolling_sum_counter(UTL::ZERO_SIZET),
+//            rolling_sum_counter(UTL::ZERO_SIZET),
             latest_trace_index(UTL::ZERO_SIZET),
             current_trace(UTL::ZERO_SIZET),
             evid_current_trace(UTL::ZERO_SIZET),
             previous_evid_trace(UTL::MINUS_ONE_INT),
-            sub_trace(UTL::ZERO_SIZET),
+            //sub_trace(UTL::ZERO_SIZET),
             mean_start_index(UTL::ZERO_SIZET),
             mean_stop_index(UTL::ZERO_SIZET),
             previous_trace(UTL::MINUS_ONE_INT),
             previous_previous_trace(UTL::MINUS_TWO_INT),
-            //add_next_trace_to_outside_mask_trace(false),
+            //outside_mask_data_index_to_add_future_traces_to(false),
             //outside_mask_trace_part(UTL::ZERO_SIZET),
             amp_drop_value(UTL::ZERO_DOUBLE),
             drop_amp_on_breakdown(false),
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
             mask_floor(UTL::ZERO_DOUBLE),
             EVID("NONE"),//MAGIC_STRING
-            add_next_trace(UTL::ZERO_SIZET),
+            //add_next_trace(UTL::ZERO_SIZET),
             outside_mask_index(UTL::ZERO_SIZET),
             num_traces_at_this_power(UTL::ZERO_SIZET),
             latest_max(UTL::ZERO_DOUBLE)
             {}
         size_t shot,num_continuous_outside_mask_count,outside_mask_index;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
-        size_t  buffersize, trace_size, average_size,rolling_sum_counter,mean_start_index,mean_stop_index;
+        size_t  buffersize, trace_size, average_size,mean_start_index,mean_stop_index;//rolling_sum_counter
         size_t num_traces_at_this_power;
         // Counter allowing you to access/update the correct part of  traces
-        size_t  latest_trace_index,current_trace,evid_current_trace,add_next_trace;
+        size_t  latest_trace_index,current_trace,evid_current_trace;//,add_next_trace;
         int previous_previous_trace,previous_trace,previous_evid_trace;
         // Counter allowing you to access the correct traces to delete off the rolling average
-        size_t  sub_trace;
+        //size_t  sub_trace;
         // EVID are always monitored and updated to the traces[evid_current_trace]
         // when monitoring traces is enabled, new trace data is updated to traces[current_trace]
         // this means these two can go out of synch
@@ -258,8 +258,9 @@ namespace llrfStructs
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to
         bool drop_amp_on_breakdown;
-        //std::map<size_t,std::vector<bool>> add_next_trace_to_outside_mask_trace;
-        std::vector<size_t> add_next_trace_to_outside_mask_trace;
+        //std::map<size_t,std::vector<bool>> outside_mask_data_index_to_add_future_traces_to;
+        //std::vector<size_t> outside_mask_data_index_to_add_future_traces_to;
+        std::vector<std::pair<size_t,size_t>> outside_mask_data_index_to_add_future_traces_to;
         //size_t outside_mask_trace_part;
         double amp_drop_value,latest_max;
         LLRF_SCAN scan;

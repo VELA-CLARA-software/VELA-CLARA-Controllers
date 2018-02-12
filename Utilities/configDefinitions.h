@@ -38,6 +38,7 @@ namespace UTL
     const size_t TEN_SIZET    = 10;
     const size_t BUFFER_TEN   = 10;
     const int    ZERO_INT     = 0;
+    const int    ONE_INT      = 1;
     const int    MINUS_ONE_INT= -1;
     const int    MINUS_TWO_INT= -2;
     const std::string  UNKNOWN_STRING = "UNKNOWN";
