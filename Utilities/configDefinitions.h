@@ -261,6 +261,16 @@ namespace UTL
     const std::string PV_SUFFIX_PHASE_REM_SCAN = "PV_SUFFIX_PHASE_REM_SCAN";
     const std::string PV_SUFFIX_PHASE_REM      = "PV_SUFFIX_PHASE_REM";
 
+    const std::string PV_SUFFIX_AMP_DER_DERIVATIVE      = "PV_SUFFIX_AMP_DER_DERIVATIVE";
+    const std::string PV_SUFFIX_AMP_DER_EVID            = "PV_SUFFIX_AMP_DER_EVID";
+    const std::string PV_SUFFIX_AMP_DER_SCAN            = "PV_SUFFIX_AMP_DER_SCAN";
+    const std::string PV_SUFFIX_PHASE_DER_SCAN          = "PV_SUFFIX_PHASE_DER_SCAN";
+    const std::string PV_SUFFIX_PHASE_DER_EVID          = "PV_SUFFIX_PHASE_DER_EVID";
+    const std::string PV_SUFFIX_PHASE_DER_DERIVATIVE    = "PV_SUFFIX_PHASE_DER_DERIVATIVE";
+    const std::string PV_SUFFIX_PWR_LOC_EVID            = "PV_SUFFIX_PWR_LOC_EVID";
+    const std::string PV_SUFFIX_PWR_LOC_SCAN            = "PV_SUFFIX_PWR_LOC_SCAN";
+    const std::string PV_SUFFIX_PWR_LOC_POWER           = "PV_SUFFIX_PWR_LOC_POWER";
+
     const std::string PV_SUFFIX_LIB_CH1_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH1_PHASE_REM_EVID";
     const std::string PV_SUFFIX_LIB_CH2_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH2_PHASE_REM_EVID";
     const std::string PV_SUFFIX_LIB_CH3_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH3_PHASE_REM_EVID";

@@ -472,6 +472,22 @@ void liberallrfConfigReader::addToTracePVMap(const std::vector<std::string>& key
         {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_PHASE_REM,keyVal[1]);
         }
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_AMP_DER_SCAN)
+        {
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN,keyVal[1]);
+        }
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_PHASE_DER_SCAN)
+        {
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN, keyVal[1]);
+        }
+
+        else if(keyVal[0] == UTL::PV_SUFFIX_PWR_LOC_SCAN)
+        {
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN,keyVal[1]);
+        }
+
     }
     else
     {   // we assume the order in the config file is correct
@@ -504,41 +520,87 @@ void liberallrfConfigReader::addToTraceObjectsV1(const std::vector<std::string> 
     }
     else if(keyVal[0] == UTL::LLRF_CHANNEL)
     {
-             if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH1_PHASE_REM)
+         if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH1_PHASE_REM)
+         {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM);
+         }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH2_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH3_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH4_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH5_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH6_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM);
+
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH7_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM);
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH8_PHASE_REM)
+        {
             addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM);
-
+            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH1_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH2_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH3_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH4_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH5_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH6_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH7_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM);
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM);
+        }
         else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH8_PWR_REM)
+        {
             addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM);
-
-
+            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM);
+        }
     }
 }
 //______________________________________________________________________________
@@ -579,7 +641,6 @@ llrfStructs::LLRF_PV_TYPE liberallrfConfigReader::getPVType( const llrfStructs::
         return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM_SCAN;
     if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_REM_SCAN)
         return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM_SCAN;
-
 
     if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_REM_EVID)
         return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM_EVID;
@@ -632,4 +693,56 @@ llrfStructs::LLRF_PV_TYPE liberallrfConfigReader::getPVType( const llrfStructs::
         return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM_EVID;
     if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM_EVID)
         return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM_EVID;
+    // these next ones are JUST for SCAN parameters
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_LOCAL_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_LOCAL_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_LOCAL_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_LOCAL_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_LOCAL_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_LOCAL_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_LOCAL_SCAN;
+
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH1_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH2_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH3_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH4_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH5_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH6_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH7_AMP_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH8_AMP_DER_SCAN;
+
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_DER_SCAN;
+    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_DER_SCAN;
+
 }

@@ -146,7 +146,7 @@ bool liberallrfInterface::initObjects()
         {
             if( Is_TracePV(it.first) )
             {
-                debugMessage("creating trace_data for, ", it.second.name);
+                debugMessage("liberallrfInterface, creating trace_data for, ", it.second.name);
                 if(entryExists(llrf.trace_data,it.second.name))
                 {
                     message("!!!!ERROR IN TRACES CONFIG FILE DETECTED!!!!!");
@@ -159,7 +159,7 @@ bool liberallrfInterface::initObjects()
                 success = setNumBufferTraces(it.second.name, llrf.trace_data.at(it.second.name).buffersize);
                 if( !success )
                 {
-                    message("!!!!ERROR IN setNumBufferTraces DETECTED!!!!!");
+                    message("!!!!ERROR In setNumBufferTraces DETECTED!!!!! liberallrfInterface");
                     return false;
                 }
                 llrf.traceLength = it.second.COUNT;
@@ -176,7 +176,7 @@ bool liberallrfInterface::initObjects()
 //______________________________________________________________________________
 void liberallrfInterface::initChids()
 {
-    message("\n", "Searching for LLRF chids...");
+    message("\n", "liberallrfInterface is searching for LLRF ChIds...");
     for(auto && it : llrf.pvMonStructs )
     {
         addChannel(llrf.pvRoot, it.second );
@@ -187,13 +187,13 @@ void liberallrfInterface::initChids()
         addChannel(llrf.pvRoot, it.second );
     }
     addILockChannels(llrf.numIlocks, llrf.pvRoot, llrf.name, llrf.iLockPVStructs );
-    int status=sendToEpics("ca_create_channel","Found LLRF ChIds.",
-                           "!!TIMEOUT!! Not all LLRF ChIds found." );
+    int status=sendToEpics("ca_create_channel","liberallrfInterface found LLRF ChIds.",
+                           "!!TIMEOUT!! Not all LLRF ChIds found, liberallrfInterface." );
     /* if timeout try investigating */
     if(status==ECA_TIMEOUT)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));//MAGIC_NUMBER
-        message("\n","Checking LLRF ChIds ");
+        message("\n","liberallrfInterface will check the  LLRF ChIds ");
         for(auto && it : llrf.pvMonStructs )
         {
             checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first) );
@@ -256,8 +256,8 @@ void liberallrfInterface::startMonitors()
         }
     }
     int status = sendToEpics("ca_create_subscription",
-                             "Succesfully Subscribed to LLRF Monitors",
-                             "!!TIMEOUT!! Subscription to LLRF monitors failed" );
+                             "liberallrfInterface succesfully subscribed to LLRF monitors.",
+                             "!!TIMEOUT!! Subscription to LLRF monitors failed, liberallrfInterface" );
     if (status == ECA_NORMAL )
     {
         allMonitorsStarted = true; // interface base class member
@@ -303,7 +303,7 @@ bool liberallrfInterface::startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv)
                                (void*)continuousMonitorStructs.back(),
                                &continuousMonitorStructs.back() -> EVID);
             std::stringstream ss;
-            ss <<"Succesfully Subscribed to LLRF Trace Monitor " << ENUM_TO_STRING(pv);
+            ss <<"liberallrfInterface succesfully subscribed to LLRF trace monitor: " << ENUM_TO_STRING(pv);
             std::string s1 = ss.str();
             ss.str(std::string());
             ss <<"!!TIMEOUT!! Subscription to LLRF Trace monitor " << ENUM_TO_STRING(pv) << " failed";
@@ -1306,6 +1306,107 @@ bool liberallrfInterface::Is_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv)
     {
         r = true;
     }
+
+
+
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_LOCAL_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH1_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH2_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH3_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH4_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH5_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH6_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH7_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH8_AMP_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+    else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_DER_SCAN)
+    {
+        r = true;
+    }
+
+
     return r;
 }
 void liberallrfInterface::startTimer()
@@ -2418,45 +2519,45 @@ llrfStructs::LLRF_PV_TYPE liberallrfInterface::getEVID_pv(llrfStructs::LLRF_PV_T
     return llrfStructs::LLRF_PV_TYPE::UNKNOWN;
 }
 //____________________________________________________________________________________________
-llrfStructs::LLRF_PV_TYPE liberallrfInterface::getSCAN_pv(llrfStructs::LLRF_PV_TYPE pv)
-{
-    switch(pv)
-    {
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM_SCAN;
-         case llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM:
-             return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM_SCAN;
-    }
-    return llrfStructs::LLRF_PV_TYPE::UNKNOWN;
-}
+//llrfStructs::LLRF_PV_TYPE liberallrfInterface::getSCAN_pv(llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    switch(pv)
+//    {
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM_SCAN;
+//         case llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM:
+//             return llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM_SCAN;
+//    }
+//    return llrfStructs::LLRF_PV_TYPE::UNKNOWN;
+//}
 //____________________________________________________________________________________________
 //
 //

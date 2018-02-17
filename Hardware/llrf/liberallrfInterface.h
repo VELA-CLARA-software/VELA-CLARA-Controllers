@@ -146,7 +146,7 @@ class liberallrfInterface : public interface
         llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name);
 
         llrfStructs::LLRF_PV_TYPE getEVID_pv(llrfStructs::LLRF_PV_TYPE pv);
-        llrfStructs::LLRF_PV_TYPE getSCAN_pv(llrfStructs::LLRF_PV_TYPE pv);
+//        llrfStructs::LLRF_PV_TYPE getSCAN_pv(llrfStructs::LLRF_PV_TYPE pv);
 
         std::string getLLRFChannelName(const llrfStructs::LLRF_PV_TYPE pv);
         std::vector<double> getLoMask(const std::string&name);

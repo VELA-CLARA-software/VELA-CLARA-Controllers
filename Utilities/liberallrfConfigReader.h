@@ -38,8 +38,12 @@ class liberallrfConfigReader:public configReader
         std::string temp_name, temp_pvroot;
 
         llrfStructs::liberallrfObject llrfObj;
+        // these structs are temporary, they are combined into pvMonStructs, pvComStructs after reading all files
         std::vector<llrfStructs::pvStruct> pvPowerTraceStructs;
         std::vector<llrfStructs::pvStruct> pvPhaseTraceStructs;
+
+        std::vector<llrfStructs::pvStruct> pvLocalDerStructs;
+
         std::vector<llrfStructs::pvStruct> pvMonStructs;
         std::vector<llrfStructs::pvStruct> pvComStructs;
 
