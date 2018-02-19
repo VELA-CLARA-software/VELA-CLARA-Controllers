@@ -66,7 +66,10 @@ class baseObject
                  typename X = std::string, typename Y = std::string,
                  typename Z = std::string, typename A = std::string,
                  typename B = std::string, typename C = std::string,
-                 typename D = std::string, typename E = std::string
+                 typename D = std::string, typename E = std::string,
+                 typename F = std::string,
+                 typename G = std::string,
+                 typename H = std::string
                  >
         void debugMessage(const T p1,
                           const U p2 = "",
@@ -79,11 +82,14 @@ class baseObject
                           const B p9 = "",
                           const C p10 = "",
                           const D p11 = "",
-                          const E p12 = ""
+                          const E p12 = "",
+                          const F p13 = "",
+                          const G p14 = "",
+                          const H p15 = ""
                           )
         {
             if(*SHOW_DEBUG_MESSAGES_PTR)
-                printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12);
+                printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12,p13,p14,p15);
         }
 
         template<typename T = std::string,
@@ -97,7 +103,11 @@ class baseObject
                  typename B = std::string,
                  typename C = std::string,
                  typename D = std::string,
-                 typename E = std::string>
+                 typename E = std::string,
+                 typename F = std::string,
+                 typename G = std::string,
+                 typename H = std::string
+                 >
         void message(const T p1,
                      const U p2 = "",
                      const V p3 = "",
@@ -109,11 +119,14 @@ class baseObject
                      const B p9 = "",
                      const C p10 = "",
                      const D p11 = "",
-                     const E p12 = ""
+                     const E p12 = "",
+                     const F p13 = "",
+                     const G p14 = "",
+                     const H p15 = ""
                      )
         {
             if(*SHOW_MESSAGES_PTR)
-                printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12);
+                printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12,p13,p14,p15);
         }
 
         template<typename T = std::string,
@@ -127,7 +140,10 @@ class baseObject
                  typename B = std::string,
                  typename C = std::string,
                  typename D = std::string,
-                 typename E = std::string
+                 typename E = std::string,
+                 typename F = std::string,
+                 typename G = std::string,
+                 typename H = std::string
                  >
         void printMessage(const T p1,
                           const U p2 = "",
@@ -140,12 +156,16 @@ class baseObject
                           const B p9 = "",
                           const C p10 = "",
                           const D p11 = "",
-                          const E p12 = "")
+                          const E p12 = "",
+                          const F p13 = "",
+                          const G p14 = "",
+                          const H p15 = ""
+                          )
         {
             std::stringstream ss;
             //ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 <<"\n";
             //printf(ss.str().c_str());
-            ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 << p9 << p10 << p11 << p12;
+            ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 << p9 << p10 << p11 << p12 << p13 << p14 << p15;
             std::cout << ss.str() << std::endl;
         }
 
