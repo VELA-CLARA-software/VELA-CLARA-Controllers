@@ -95,6 +95,7 @@ class liberallrfInterface : public interface
         std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
         void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
+        void setTracesToSaveOnBreakDown(const std::string& name);
         std::vector<std::string> getTracesToSaveOnBreakDown();
 
         std::vector<double> getCavRevPower();
@@ -183,6 +184,8 @@ class liberallrfInterface : public interface
         bool setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
         bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+
+
 
         bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string& name);
         bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string& name);

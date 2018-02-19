@@ -76,6 +76,7 @@ class liberaLLRFController : public controller
 
 
         void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
+        void setTracesToSaveOnBreakDown_2(const std::string& name);
         std::vector<std::string> getTracesToSaveOnBreakDown();
 
         size_t getShotCount(const std::string& name);

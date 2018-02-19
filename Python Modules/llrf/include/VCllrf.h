@@ -258,8 +258,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("low_mask",        &rf_trace_data::low_mask,"low mask values")
         .def_readonly("rolling_average", &rf_trace_data::rolling_average,"rolling average values")
         .def_readonly("rolling_sum",     &rf_trace_data::rolling_sum,"rolling sum values")
-        .def_readonly("rolling_min",     &rf_trace_data::rolling_max,"rolling max values")
-        .def_readonly("rolling_max",     &rf_trace_data::rolling_min,"rolling min values")
+        .def_readonly("rolling_min",     &rf_trace_data::rolling_min,"rolling max values")
+        .def_readonly("rolling_max",     &rf_trace_data::rolling_max,"rolling min values")
         .def_readonly("rolling_sd",      &rf_trace_data::rolling_sd,"rolling standard deviation values")
         .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
         .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
@@ -351,6 +351,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("active_pulse_kly_power_limit", &liberallrfObject::active_pulse_kly_power_limit,"Power limit above which active pulser counter is increased.")
         .def_readonly("kly_fwd_power_max", &liberallrfObject::kly_fwd_power_max,"Max value from latest Klystron Forward Power trace. (If monitored).")
         .def_readonly("check_mask",      &liberallrfObject::check_mask,"should check mask")
+        .def_readonly("can_increase_active_pulses",      &liberallrfObject::can_increase_active_pulses,"can_increase_active_pulses value")
         ;
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
@@ -461,6 +462,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         //.def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown,"Set the Names of Traces to Save when a break down occurs")
         .def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown_Py,"Set the Names of Traces to Save when a break down occurs")
+        .def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown_2,"Set the Names of Traces to Save when a break down occurs")
         .def("getTracesToSaveOnBreakDown",  &liberaLLRFController::getTracesToSaveOnBreakDown_Py,"Get the Names of Traces to Save when a break down occurs")
 
         .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(arg("value")),"Set Phase in LLRF Units")

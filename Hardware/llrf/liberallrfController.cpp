@@ -232,6 +232,11 @@ void liberaLLRFController::setTracesToSaveOnBreakDown(const std::vector<std::str
     localInterface.setTracesToSaveOnBreakDown(name);
 }
 //______________________________________________________________________________
+void liberaLLRFController::setTracesToSaveOnBreakDown_2(const std::string& name)
+{
+    localInterface.setTracesToSaveOnBreakDown(name);
+}
+//______________________________________________________________________________
 std::vector<std::string> liberaLLRFController::getTracesToSaveOnBreakDown()
 {
     return localInterface.getTracesToSaveOnBreakDown();
