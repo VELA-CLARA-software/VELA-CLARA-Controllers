@@ -466,7 +466,8 @@ void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStruct
         it->second -= UTL::ONE_SIZET;
         if(it->second == UTL::ZERO_SIZET)
         {
-            trace.outside_mask_data_index_to_add_future_traces_to.erase(it++);
+            //message("DELETEING ENTRY");
+            trace.outside_mask_data_index_to_add_future_traces_to.erase(it);
         }
         else
         {
@@ -519,6 +520,26 @@ void liberallrfInterface::updateValues(const event_handler_args& args, llrfStruc
     }
     /* copy array to trace, assumes array is of correct size! */
     std::copy(pValue, pValue+trace.value.size(), trace.value.begin());
+
+    if(isPhaseTrace(trace.name))
+    {
+        //https://stackoverflow.com/questions/21452217/increment-all-c-stdvector-values-by-a-constant-value
+        //message(trace.name," is a phase trace");
+        std::transform(std::begin(trace.value),std::end(trace.value),std::begin(trace.value),[](double x){return x+180.0;});//MAGIC_NUMBER
+    }
+    else
+    {
+        //message(trace.name," is not a phase trace");
+    }
+
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::isPhaseTrace(const std::string& name)
+{
+    if(name.find("PHASE") != std::string::npos)//MAGIC_STRING
+        return true;
+    else
+        return false;
 }
 //____________________________________________________________________________________________
 int liberallrfInterface::updateIsTraceInMask(llrfStructs::rf_trace_data& trace)
@@ -1296,9 +1317,6 @@ bool liberallrfInterface::Is_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv)
     {
         r = true;
     }
-
-
-
     else if(pv == llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_LOCAL_SCAN)
     {
         r = true;
@@ -2085,7 +2103,30 @@ bool liberallrfInterface::setPercentTimeMask(const double s1,const double s2,con
 /// THE NEXT TWO FUNCTIONS COULD BE COMBINED AND NEATENED UP
 //____________________________________________________________________________________________
 bool liberallrfInterface::setPercentMask(const size_t s1,const size_t s2,const size_t s3,
-                                         const size_t s4,const double value2,const  std::string& name)
+                                         const size_t s4,const double value,const  std::string& name)
+{
+    return set_mask(s1,s2,s3,s4,value/100.0,name,true);
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::setAbsoluteTimeMask(const double s1,const double s2,const double s3,
+                                         const double s4,const double value,const  std::string& name)
+{
+    // The mask is defined in terms of time, using the time_vector to find the indece
+    return setAbsoluteMask(getIndex(s1),getIndex(s2),getIndex(s3),getIndex(s4),value,name);
+}
+
+//____________________________________________________________________________________________
+bool liberallrfInterface::setAbsoluteMask(const size_t s1,const size_t s2,
+                                          const size_t s3,const size_t s4,
+                                          const double value,const  std::string& name)
+{
+    return set_mask(s1,s2,s3,s4,value,name,false);
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::set_mask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,
+                                   const double value, const std::string& name,
+                                   const bool isPercent
+                                   )
 {
     // automatically set the mask based on the rolling_average for cavity_rev_power trace
     // between element 0    and s1 will be set to default hi/lo (+/-infinity)
@@ -2093,8 +2134,16 @@ bool liberallrfInterface::setPercentMask(const size_t s1,const size_t s2,const s
     // between element s2+1 and s3 will be set very default hi/lo (+/-infinity)
     // between element s3+1 and s4 will be set by rolling_average +/- value percent of rolling_average
     // between element s3+1 and s4 will be set very default hi/lo (+/-infinity)
-
-    const double value = value2 / 100.0;//MAGIC_NUMBER
+    double temp = 0.0;
+    std::string mask_type;
+    if(isPercent)
+    {
+        mask_type = "setPercentMask";
+    }
+    else
+    {
+        mask_type = "setAbsoluteMask";
+    }
     const std::string n = fullCavityTraceName(name);
     if(entryExists(llrf.trace_data, n))
     {
@@ -2118,8 +2167,16 @@ bool liberallrfInterface::setPercentMask(const size_t s1,const size_t s2,const s
                     }
                     for(auto i = s1; i <= s2; ++i)
                     {
-                        hi_mask[i] = ra[i] + ra[i] * value;
-                        lo_mask[i] = ra[i] - ra[i] * value;
+                        if(isPercent)
+                        {
+                            temp = ra[i] * value;
+                        }
+                        else
+                        {
+                            temp = value;
+                        }
+                        hi_mask[i] = ra[i] + temp;
+                        lo_mask[i] = ra[i] - temp;
                     }
                     for(auto i = s2+1; i <= s3; ++i)
                     {
@@ -2128,8 +2185,16 @@ bool liberallrfInterface::setPercentMask(const size_t s1,const size_t s2,const s
                     }
                     for(auto i = s3+1; i <= s4; ++i)
                     {
-                        hi_mask[i] = ra[i] + ra[i] * value;
-                        lo_mask[i] = ra[i] - ra[i] * value;
+                        if(isPercent)
+                        {
+                            temp = ra[i] * value;
+                        }
+                        else
+                        {
+                            temp = value;
+                        }
+                        hi_mask[i] = ra[i] + temp;
+                        lo_mask[i] = ra[i] - temp;
                     }
                     for(auto i = s4+1; i < ra.size(); ++i)
                     {
@@ -2145,139 +2210,37 @@ bool liberallrfInterface::setPercentMask(const size_t s1,const size_t s2,const s
                         }
                         else
                         {
-                            message(n," setLowMask failed,  setPercentMask fail");
+                            message(n," setLowMask failed,  ",mask_type," fail");
                         }
                     }
                     else
                     {
-                        message(n," setHighMask failed,  setPercentMask fail");
+                        message(n," setHighMask failed,,  ",mask_type," fail");
                     }
                 }
                 else
                 {
-                    message(n,s1," <= ",s2," && ",s2," <= ",s3," && ",s3," <= ",s4," failed,  setPercentMask fail");
+                    message(n,s1," <= ",s2," && ",s2," <= ",s3," && ",s3," <= ",s4," failed,  ",mask_type," fail");
                 }
             }
             else
             {
-                message(n," 0 <= ",s1," && ",s4," <= ",ra.size() - 1," failed,  setPercentMask fail");
+                message(n," 0 <= ",s1," && ",s4," <= ",ra.size() - 1," failed, ",mask_type," fail");
             }
         }
         else
         {
-            message(n," does not exist, setPercentMask fail");
+            message(n," does not exist,  ",mask_type," fail");
         }
     }
     else
     {
-        message(n," does not exist, setPercentMask fail");
+        message(n," does not exist,  ",mask_type," fail");
     }
     return false;
-}
-//____________________________________________________________________________________________
-bool liberallrfInterface::setAbsoluteTimeMask(const double s1,const double s2,const double s3,
-                                         const double s4,const double value2,const  std::string& name)
-{
-    // The mask is defined in terms of time, using the time_vector to find the indece
-    return setAbsoluteMask(getIndex(s1),getIndex(s2),getIndex(s3),getIndex(s4),value2,name);
+
 }
 
-//____________________________________________________________________________________________
-bool liberallrfInterface::setAbsoluteMask(const size_t s1,const size_t s2,
-                                          const size_t s3,const size_t s4,
-                                          const double value2,const  std::string& name)
-{
-    // automaticall set the mask based on the rolling_average for cavity_rev_power trace
-    // between element 0    and s1 will be set to default hi/lo (+/-infinity)
-    // between element s1+1 and s2 will be set by rolling_average +/- value
-    // between element s2+1 and s3 will be set very default hi/lo (+/-infinity)
-    // between element s3+1 and s4 will be set by rolling_average +/- value
-    // between element s3+1 and -1 will be set very default hi/lo (+/-infinity
-
-    const double value = value2 / 100.0;
-    const std::string n = fullCavityTraceName(name);
-    if(entryExists(llrf.trace_data, n))
-    {
-        // if we're keeping an average pulse
-        if(llrf.trace_data.at(n).has_average)
-        {
-            std::vector<double> & ra = llrf.trace_data.at(n).rolling_average;
-
-            // sanity check on s1,s2,s3,s4
-            if(0 <= s1 && s4 <= ra.size() - 1)
-            {
-                if( s1 <= s2 && s2 <= s3 && s3 <= s4)
-                {
-                    std::vector<double> hi_mask(ra.size(), 0.0);
-                    std::vector<double> lo_mask(ra.size(), 0.0);
-
-                    for(auto i = 0; i <= s1; ++i)
-                    {
-                        hi_mask[i] =   std::numeric_limits<double>::infinity();
-                        lo_mask[i] = - std::numeric_limits<double>::infinity();
-                        //message(i, ra[i]);
-                    }
-                    for(auto i = s1+1; i <= s2; ++i)
-                    {
-                        hi_mask[i] = ra[i] + value;
-                        lo_mask[i] = ra[i] - value;
-                        //message(i, ra[i]);
-                    }
-                    for(auto i = s2+1; i <= s3; ++i)
-                    {
-                        hi_mask[i] =   std::numeric_limits<double>::infinity();
-                        lo_mask[i] = - std::numeric_limits<double>::infinity();
-                        //message(i,ra[i]);
-                    }
-                    for(auto i = s3+1; i <= s4; ++i)
-                    {
-                        hi_mask[i] = ra[i] + value;
-                        lo_mask[i] = ra[i] - value;
-                    }
-                    for(auto i = s4+1; i < ra.size(); ++i)
-                    {
-                        hi_mask[i] =   std::numeric_limits<double>::infinity();
-                        lo_mask[i] = - std::numeric_limits<double>::infinity();
-                    }
-                    // apply mask values
-                    if(setHighMask(n,hi_mask))
-                    {
-                        if(setLowMask(n,lo_mask))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            message(n," setLowMask failed,  setAbsoluteMask fail");
-                        }
-                    }
-                    else
-                    {
-                        message(n," setHighMask failed,  setAbsoluteMask fail");
-                    }
-                }
-                else
-                {
-                    message(n,s1," <= ",s2," && ",s2," <= ",s3," && ",s3," <= ",s4," failed,  setAbsoluteMask fail");
-                }
-            }
-            else
-            {
-                message(n," 0 <= ",s1," && ",s4," <= ",ra.size() - 1," failed,  setAbsoluteMask fail");
-            }
-
-        }
-        else
-        {
-            message(n," has no average, setAbsoluteMask fail");
-        }
-    }
-    else
-    {
-        message(n," does not exist, setAbsoluteMask fail");
-    }
-    return false;
-}
 //____________________________________________________________________________________________
 bool liberallrfInterface::clearMask(const std::string&name)
 {
