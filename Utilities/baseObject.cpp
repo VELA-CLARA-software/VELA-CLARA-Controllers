@@ -59,3 +59,13 @@ long baseObject::getNumL(const  std::string & str)
 {
     return (long)atof(str.c_str());
 }
+//______________________________________________________________________________
+unsigned short baseObject::getNumUS(const  std::string & str)
+{
+    return (unsigned short)atof(str.c_str());
+}
+//______________________________________________________________________________
+bool baseObject::stringIsSubString(const std::string & stringToCheck, const std::string & stringToLookFor)
+{
+    return stringToCheck.find(stringToLookFor) != std::string::npos;
+}

@@ -215,6 +215,9 @@ class baseObject
         double getNumD(const std::string & str);
         size_t getSize(const std::string & str);
         long   getNumL(const std::string & str);
+        unsigned short getNumUS(const std::string & str);
+
+        bool   stringIsSubString(const std::string & stringToCheck, const std::string & stringToLookFor);
 
 #ifdef BUILD_DLL
         template<typename T>

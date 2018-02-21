@@ -54,11 +54,11 @@ class configReader : public baseObject
 
         std::string  getAfterEqualsSign(const std::string & str);
 
-        int            getNum (const std::string & str);
-        double         getNumD(const std::string & str);
+        //int            getNum (const std::string & str);
+        //double         getNumD(const std::string & str);
         unsigned short getNumUS(const std::string & str);
-        size_t         getSize(const std::string & str);
-        long           getNumL(const std::string & str);
+        //size_t         getSize(const std::string & str);
+        //long           getNumL(const std::string & str);
 
         std::vector<double> getDoubleVector(const std::string & str);
         std::vector<int>    getIntVector(const std::string & str);
