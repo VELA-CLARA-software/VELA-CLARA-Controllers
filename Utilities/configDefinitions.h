@@ -29,6 +29,7 @@ namespace UTL
 {
     /// numerical and string constants
     const double DUMMY_DOUBLE = -999.999;
+    const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
     const double ZERO_DOUBLE  = 0.0;
     const size_t ZERO_SIZET   = 0;
     const size_t ONE_SIZET    = 1;
@@ -60,6 +61,9 @@ namespace UTL
     const std::string VM_PREFIX   = "VM-";
     // config file names
     const std::string NO_CONFIG_FILE = "NO_CONFIG_FILE";
+
+    const std::string PHASE = "PHASE";
+    const std::string POWER = "POWER";
 
     /// General Keywords
     /// These are the keywords used in hardware config files

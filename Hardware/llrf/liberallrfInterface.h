@@ -164,6 +164,7 @@ class liberallrfInterface : public interface
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
         bool setAllSCANToPassive();
         bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
+        bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
 
 
         /* Masks */
@@ -257,7 +258,7 @@ class liberallrfInterface : public interface
         bool Is_Time_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
 
 
-        bool isPhaseTrace(const std::string& name);
+        //bool isPhaseTrace(const std::string& name);
 
         bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
@@ -339,6 +340,8 @@ class liberallrfInterface : public interface
 
         int updateIsTraceInMask(llrfStructs::rf_trace_data& trace);
         void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
+        void handlePassedMask(llrfStructs::rf_trace_data& trace);
+        void handleFailedMask(llrfStructs::rf_trace_data& trace);
 
         void updateTraceIndex(size_t& index,const size_t trace_size);
         void updateTraceIndex(int& index,const size_t trace_size);
@@ -353,6 +356,7 @@ class liberallrfInterface : public interface
 
         bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
         void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
+        bool setMaskInfiniteEnd(const std::string& trace_name, size_t index);
 
 
         llrfStructs::liberallrfObject llrf;

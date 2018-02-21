@@ -9,6 +9,7 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <queue>
 //epics
 #include <cadef.h>
 
@@ -322,7 +323,9 @@ namespace llrfStructs
             //add_next_trace(UTL::ZERO_SIZET),
             outside_mask_index(UTL::ZERO_SIZET),
             num_traces_at_this_power(UTL::ZERO_SIZET),
-            latest_max(UTL::ZERO_DOUBLE)
+            latest_max(UTL::ZERO_DOUBLE),
+            endMaskTrace_Bound({UTL::UNKNOWN_STRING, UTL::ZERO_DOUBLE}),
+            endInfiniteMask_Trace_Set(false)
             {}
         size_t shot,num_continuous_outside_mask_count,outside_mask_index;
         bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
@@ -337,15 +340,17 @@ namespace llrfStructs
         // when monitoring traces is enabled, new trace data is updated to traces[current_trace]
         // this means these two can go out of synch
         // traces has a length, buffersize
-        std::string    EVID;
-        std::string    name;
+        std::string EVID;
+        std::string name;
+        bool endInfiniteMask_Trace_Set;
+        std::pair<std::string, double> endMaskTrace_Bound;
         std::vector<rf_trace> traces;
         // rolling sum is the sum of the traces to be averaged,
         // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
         // rolling_average is then calculated by dividing rolling_sum by average_size
         std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
         //std::vector<double> last_good_trace;
-        std::vector<std::vector<double>> average_trace_values;
+        std::queue<std::vector<double>> average_trace_values;
         double mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         // whether to add the next trace to outside_mask_trace
         // and the position in outside_mask_trace to add to

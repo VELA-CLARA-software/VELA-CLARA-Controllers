@@ -966,6 +966,11 @@ double liberaLLRFController::getTime(const size_t  time)
     return localInterface.getTime(time);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level)
+{
+    return localInterface.setInfiniteMaskEndByPower(power_trace,phase_trace,level);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setAbsoluteTimeMask(const double s1,const double s2,const double s3,const double s4,const double value2,const  std::string& name)
 {
     return localInterface.setAbsoluteTimeMask(s1,s2,s3,s4,value2,name);

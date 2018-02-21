@@ -230,6 +230,8 @@ class liberaLLRFController : public controller
         void setNumExtraTraces(size_t value);
         size_t getNumExtraTraces();
 
+        bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
+
 
         bool setCheckMask(const std::string&name, bool value);
         bool setShouldCheckMask(const std::string&name);

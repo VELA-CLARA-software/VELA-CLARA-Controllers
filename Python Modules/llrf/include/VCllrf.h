@@ -475,6 +475,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setAmpHP",  &liberaLLRFController::setAmpHP,(arg("value")),"Set Amplitude(HP) in LLRF Units")
         .def("setAmpFF",  &liberaLLRFController::setAmpFF,(arg("value")),"Set Amplitude(FF) in LLRF Units")
 
+        .def("setInfiniteMaskEndByPower",&liberaLLRFController::setInfiniteMaskEndByPower,(arg("power_trace"),arg("phase_trace"),arg("level")),
+             "Automatically set mask end oh phase_trace by index of power 'level' in power_trace")
+
         .def("trigOff",  &liberaLLRFController::trigOff,"Set the LLRF trigger to off.")
         .def("trigExt",  &liberaLLRFController::trigExt,"Set the LLRF trigger to external.")
         .def("trigInt",  &liberaLLRFController::trigInt,"Set the LLRF trigger to internal.")
