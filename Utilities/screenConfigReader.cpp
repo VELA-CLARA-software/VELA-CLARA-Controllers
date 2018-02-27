@@ -274,7 +274,7 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     else if( keyVal[0] == UTL::V_RETRACTED )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_RETRACTED ] = true;
-//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_RETRACTED ] = getNumUS(keyVal[1]);
+        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_RETRACTED ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_RETRACTED ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_MAX )
