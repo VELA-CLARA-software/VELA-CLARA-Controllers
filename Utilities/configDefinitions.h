@@ -721,6 +721,16 @@ namespace UTL
     const std::string PV_SUFFIX_V_TGTPOS    = "PV_SUFFIX_V_TGTPOS";
     const std::string PV_SUFFIX_V_JOG       = "PV_SUFFIX_V_JOG";
     const std::string PV_SUFFIX_V_JDIFF     = "PV_SUFFIX_V_JDIFF";
+    const std::string PV_SUFFIX_SDEV        = "PV_SUFFIX_SDEV";
+    const std::string PV_SUFFIX_MOVING      = "PV_SUFFIX_MOVING";
+    const std::string PV_SUFFIX_READY       = "PV_SUFFIX_READY";
+    const std::string PV_SUFFIX_DEV_STATE   = "PV_SUFFIX_DEV_STATE";
+    const std::string PV_SUFFIX_GET_DEV     = "PV_SUFFIX_GET_DEV";
+    const std::string PV_SUFFIX_DEV_CENT    = "PV_SUFFIX_DEV_CENT";
+    const std::string PV_SUFFIX_TRIGGER     = "PV_SUFFIX_TRIGGER";
+    const std::string PV_SUFFIX_MAX_POS     = "PV_SUFFIX_MAX_POS";
+    const std::string PV_SUFFIX_ACTPOS      = "PV_SUFFIX_ACTPOS";
+    const std::string PV_SUFFIX_EN          = "PV_SUFFIX_EN";
     /// SCREEN YAG 1/2/3 COMMAND PVs
     const std::string PV_SUFFIX_H_RETRACTED = "PV_SUFFIX_H_RETRACTED";
     const std::string PV_SUFFIX_H_SLIT_1    = "PV_SUFFIX_H_SLIT_1";
@@ -767,6 +777,8 @@ namespace UTL
     const std::string V_YAG_POS       = "V_YAG_POS";
     const std::string V_GRAT_POS      = "V_GRAT_POS";
     const std::string V_COL_POS       = "V_COL_POS";
+    const std::string YAG             = "YAG";
+    const std::string RETRACTED       = "RETRACTED";
     // SCREEN YAG 1/2/3 COMMAND PVs
     const std::string PV_SUFFIX_H_MABS = "PV_SUFFIX_H_MABS";
     const std::string PV_SUFFIX_V_MABS = "PV_SUFFIX_V_MABS";

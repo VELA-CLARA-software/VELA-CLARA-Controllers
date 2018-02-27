@@ -36,9 +36,11 @@ bool screenConfigReader::readConfig()
     // clear local copies of structs
     scrObjects.clear();
     pvScrComStructs.clear();
+    pvScrComPneumaticStructs.clear();
     pvScrComHStructs.clear();
     pvScrComVStructs.clear();
     pvScrMonStructs.clear();
+    pvScrMonPneumaticStructs.clear();
     pvScrMonHStructs.clear();
     pvScrMonVStructs.clear();
     // call the main read config funciton, pass in function pointers to the funcs
@@ -86,7 +88,7 @@ void screenConfigReader::addToPVStructMain( const std::vector<std::string> &keyV
         {
             addToPVStruct( pvScrMonHStructs, screenStructs::SCREEN_PV_TYPE::H_EN, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
         }
-        if( keyVal[0] == UTL::PV_SUFFIX_V_MOVING )
+        else if( keyVal[0] == UTL::PV_SUFFIX_V_MOVING )
         {
             addToPVStruct( pvScrMonVStructs, screenStructs::SCREEN_PV_TYPE::V_MOVING, keyVal[1], screenStructs::DRIVER_DIRECTION::VERTICAL );
         }
@@ -167,6 +169,47 @@ void screenConfigReader::addToPVStructMain( const std::vector<std::string> &keyV
         {
             addToPVStruct( pvScrComVStructs, screenStructs::SCREEN_PV_TYPE::V_JDIFF, keyVal[1], screenStructs::DRIVER_DIRECTION::VERTICAL );
         }
+        /// PNEUMATIC
+        if( keyVal[0] == UTL::PV_SUFFIX_MOVING )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::MOVING, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_READY )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::READY, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_GET_DEV )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::GET_DEV, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_DEV_STATE )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::DEV_STATE, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_MAX_POS )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::MAX_POS, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_DEV_CENT )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::DEV_CENT, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_ACTPOS )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::ACTPOS, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_EN )
+        {
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::EN, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_SDEV )
+        {
+            addToPVStruct( pvScrComPneumaticStructs, screenStructs::SCREEN_PV_TYPE::SDEV, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
+        else if( keyVal[0] == UTL::PV_SUFFIX_TRIGGER )
+        {
+            addToPVStruct( pvScrComPneumaticStructs, screenStructs::SCREEN_PV_TYPE::TRIGGER, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+        }
     }
     else // must be a mask, chtype config entry, if the config file follows the rules
     {
@@ -231,86 +274,98 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     else if( keyVal[0] == UTL::V_RETRACTED )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_RETRACTED ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_RETRACTED ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_RETRACTED ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_RETRACTED ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_MAX )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_MAX ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_MAX ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_MAX ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_MAX ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_SLIT_1 )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_SLIT_1 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_SLIT_1 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_SLIT_1 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_SLIT_1 ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_RF )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_RF ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_RF ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_RF ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_RF ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_MIRROR )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_MIRROR ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_MIRROR ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_MIRROR ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_MIRROR ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_YAG )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_YAG ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_YAG ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_YAG ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_YAG ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::V_GRAT )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_GRAT ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_GRAT ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_GRAT ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_GRAT ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
     else if( keyVal[0] == UTL::H_RETRACTED )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_RETRACTED ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_RETRACTED ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_RETRACTED ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_RETRACTED ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
     else if( keyVal[0] == UTL::H_SLIT_1 )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_SLIT_1 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_SLIT_1 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_SLIT_1 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_SLIT_1 ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
     else if( keyVal[0] == UTL::H_SLIT_2 )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_SLIT_2 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_SLIT_2 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_SLIT_2 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_SLIT_2 ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
     else if( keyVal[0] == UTL::H_SLIT_3)
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_SLIT_3 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_SLIT_3 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_SLIT_3 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_SLIT_3 ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
     else if( keyVal[0] == UTL::H_APT_1 )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_APT_1 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_APT_1 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_APT_1 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_APT_1 ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
     else if( keyVal[0] == UTL::H_APT_2 )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_APT_2 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_APT_2 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_APT_2 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_APT_2 ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
     else if( keyVal[0] == UTL::H_APT_3 )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_APT_3 ] = true;
-        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_APT_3 ] = getNumUS(keyVal[1]);
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::H_APT_3 ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::H_APT_3 ] = screenStructs::DRIVER_DIRECTION::HORIZONTAL;
+    }
+    else if( keyVal[0] == UTL::YAG )
+    {
+        scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::YAG ] = true;
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::YAG ] = getNumUS(keyVal[1]);
+        scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::YAG ] = screenStructs::DRIVER_DIRECTION::PNEUMATIC;
+    }
+    else if( keyVal[0] == UTL::RETRACTED )
+    {
+        scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::RETRACTED ] = true;
+//        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::RETRACTED ] = getNumUS(keyVal[1]);
+        scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::RETRACTED ] = screenStructs::DRIVER_DIRECTION::PNEUMATIC;
     }
     else if( keyVal[0] == UTL::V_RETRACTED_POS )
     {
@@ -522,11 +577,11 @@ bool screenConfigReader::getScreenObjects( std::map< std::string, screenStructs:
         {
             case screenStructs::SCREEN_TYPE::VELA_PNEUMATIC:
                 message( it.name, " is a VELA_PNEUMATIC screen");
-                for( auto && it2 : pvScrMonStructs )
+                for( auto && it2 : pvScrMonPneumaticStructs )
                 {
                     mapToFill[ it.name ].pvMonStructs[ it2.pvType ] = it2;
                 }
-                for( auto && it2 : pvScrComStructs )
+                for( auto && it2 : pvScrComPneumaticStructs )
                 {
                     mapToFill[ it.name ].pvComStructs[ it2.pvType ] = it2;
                 }

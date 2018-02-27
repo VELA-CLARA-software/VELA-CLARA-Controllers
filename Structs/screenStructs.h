@@ -44,21 +44,23 @@ namespace screenStructs
                                         (H_APT_1)         (V_GRAT)
                                         (H_APT_2)         (V_SLIT_1)
                                         (H_APT_3)         (V_COL)
-                                        (H_RF)
-                                        (H_OUT)
+                                        (H_RF)            (YAG)
+                                        (H_OUT)           (RETRACTED)
                                         (UNKNOWN_POSITION) (UNKNOWN_POS) ) // if the mover is not in a predifend position
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(SCREEN_PV_TYPE, (H_SDEV) (H_GET_DEV) (H_DEV_STATE) (H_MAX_POS) (H_DEV_CENT) (H_MOVING) (H_JOG) (H_JDIFF) (H_ACTPOS)
                                                         (H_TRIGGER) (H_TGTPOS) (H_EX) (H_EN) (H_READY) (H_CAL) (H_JOGDOWN) (H_JOGUP) (H_JOGINC)
                                                         (V_SDEV) (V_GET_DEV) (V_DEV_STATE) (V_MAX_POS) (V_DEV_CENT) (V_MOVING) (V_JOG) (V_JDIFF) (V_ACTPOS)
                                                         (V_TRIGGER) (V_TGTPOS) (V_EX) (V_EN) (V_READY) (V_CAL) (V_JOGDOWN) (V_JOGUP) (V_JOGINC)
+                                                        (SDEV) (GET_DEV) (DEV_STATE) (MAX_POS) (DEV_CENT) (MOVING) (ACTPOS) (TRIGGER) (EN) (READY)
                                                         (UNKNOWN_SCREEN_PV_TYPE) )
     // the screen driver status, moving, disabled etc...
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_STATE, (H_DRIVER_MOVING)(H_DRIVER_STATIONARY)(H_DRIVER_DISABLED)(H_DRIVER_ENABLED)
                                                       (V_DRIVER_MOVING)(V_DRIVER_STATIONARY)(V_DRIVER_DISABLED)(V_DRIVER_ENABLED)
+                                                      (P_MOVING) (P_STATIONARY) (P_DRIVER_DISABLED) (P_DRIVER_ENABLED)
                                                       (H_DRIVER_ERROR) (V_DRIVER_ERROR) (UNKNOWN_DRIVER_STATE) )
     // screen drivers come in two types
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_DIRECTION, (HORIZONTAL) (VERTICAL) (NONE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_DIRECTION, (HORIZONTAL) (VERTICAL) (PNEUMATIC) (NONE) )
     // turns out this is really useful, but itlooks like cancer
     // it is used by the conifg reader and the interface, so although not a struct it's going to live here
     // ***** ADD TO THIS IF CLARA HAS MORE ELEMENTS *****    const std::string PV_SUFFIX_H_MOVING    = "PV_SUFFIX_H_MOVING";
