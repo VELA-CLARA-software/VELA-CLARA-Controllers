@@ -35,6 +35,7 @@ class cameraIAController  : public controller
         /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         cameraIAController(const bool show_messages,
                             const bool show_debug_messagese,
+                            const VELA_ENUM::CONTROLLER_TYPE type,
                             const std::string &camConf,
                             const bool startVirtualMachine,
                             const bool shouldStartEPICs,

@@ -144,6 +144,7 @@ cameraIAController& VCcameraIA::getController(cameraIAController *cont,
         std::cout << "Creating " << name << " object" << std::endl;
         cont = new cameraIAController(shouldShowMessage,
                                        shouldShowDebugMessage,
+                                       VELA_ENUM::CONTROLLER_TYPE::CAMERA_IA,
                                        conf,
                                        shouldVM,
                                        shouldEPICS,

@@ -44,7 +44,8 @@ class controller : public baseObject
     public:
 
         //controller();
-        controller(bool show_messages, bool show_debug_messages);
+        controller(bool show_messages, bool show_debug_messages,const VELA_ENUM::CONTROLLER_TYPE type);
+        controller::controller(bool show_messages, bool show_debug_messages);
         ~controller();
 
         /// Turn on and off debug messages and general messages
@@ -77,6 +78,7 @@ class controller : public baseObject
     protected:
 
         bool SHOW_DEBUG_MESSAGES, SHOW_MESSAGES;
+        const VELA_ENUM::CONTROLLER_TYPE controllerType;
 
 
 

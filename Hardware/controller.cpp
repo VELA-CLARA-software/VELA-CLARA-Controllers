@@ -20,6 +20,31 @@
 controller::controller(bool show_messages, bool show_debug_messages):
 SHOW_DEBUG_MESSAGES(show_debug_messages),
 SHOW_MESSAGES(show_messages),
+controllerType(VELA_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE),
+baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES)
+{
+    if(show_messages)
+    {
+        messagesOn();
+    }
+    else
+    {
+        messagesOff();
+    }
+    if(show_debug_messages)
+    {
+        debugMessagesOn();
+    }
+    else
+    {
+        debugMessagesOff();
+    }
+}
+//___________________________________________________________
+controller::controller(bool show_messages, bool show_debug_messages, const VELA_ENUM::CONTROLLER_TYPE type):
+SHOW_DEBUG_MESSAGES(show_debug_messages),
+SHOW_MESSAGES(show_messages),
+controllerType(type),
 baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES)
 {
     if(show_messages)

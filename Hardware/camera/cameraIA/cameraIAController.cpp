@@ -18,11 +18,12 @@
 cameraIAController::cameraIAController(
     const bool show_messages,
     const bool show_debug_messages,
+    const VELA_ENUM::CONTROLLER_TYPE type,
     const std::string & magConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
     const VELA_ENUM::MACHINE_AREA myMachineArea):
-controller( show_messages, show_debug_messages ),
+controller( show_messages, show_debug_messages, type),
 localInterface(magConf,
                startVirtualMachine,
                &SHOW_MESSAGES,
