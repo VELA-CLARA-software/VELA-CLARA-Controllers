@@ -547,6 +547,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
              &cameraIAController::getVCIARef,
              return_value_policy<reference_existing_object>(),
              "Returns a reference to VC camera.")
+
+        .def_readonly("controllerType",
+            &cameraIAController::controllerType,
+            "This is an enum that returns the controller type")
         ;
    class_<VCcameraIA,boost::noncopyable>("init")
         .def("virtual_VELA_Camera_IA_Controller",
