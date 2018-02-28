@@ -192,26 +192,29 @@ void cameraIAInterface::staticEntryIAMonitor(const event_handler_args args)
         case CAM_PV_TYPE::COV_XY_PIX:
             ms->interface->updateCovXYPix( *(unsigned short*)args.dbr, ms->objName );
             break;
-        case CAM_PV_TYPE::X_RAD:
+        case CAM_PV_TYPE::MASK_X_RAD:
             ms->interface->updateXRad( *(unsigned short*)args.dbr, ms->objName );
             break;
-        case CAM_PV_TYPE::Y_RAD:
+        case CAM_PV_TYPE::MASK_Y_RAD:
             ms->interface->updateYRad( *(unsigned short*)args.dbr, ms->objName );
             break;
-        case CAM_PV_TYPE::X_CENTER_PIX:
+        case CAM_PV_TYPE::MASK_X:
+            ms->interface->updateXMask( *(unsigned short*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::MASK_Y:
+            ms->interface->updateYMask( *(unsigned short*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::X_CENTER:
             ms->interface->updateXCenterPix( *(unsigned short*)args.dbr, ms->objName );
             break;
-        case CAM_PV_TYPE::Y_CENTER_PIX:
+        case CAM_PV_TYPE::Y_CENTER:
             ms->interface->updateYCenterPix( *(unsigned short*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::BIT_DEPTH:
             ms->interface->updateBitDepth( *(unsigned short*)args.dbr, ms->objName );
             break;
-        case CAM_PV_TYPE::IMAGE_HEIGHT:
-            ms->interface->updateImageHeight( *(unsigned short*)args.dbr, ms->objName );
-            break;
-        case CAM_PV_TYPE::IMAGE_WIDTH:
-            ms->interface->updateImageWidth( *(unsigned short*)args.dbr, ms->objName );
+        case CAM_PV_TYPE::SUMMED_PIX_INETSITY:
+            ms->interface->updateSummedIntensity( *(unsigned short*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::CAM_ACQUIRE_RBV:
             ms->interface->updateAcquiring( *(unsigned short*)args.dbr, ms->objName );
@@ -318,12 +321,12 @@ void cameraIAInterface::updateCovXYPix(const unsigned long value,const std::stri
 }
 void cameraIAInterface::updateXRad(const unsigned long value,const std::string&cameraName)
 {
-    allCamData.at(cameraName).IA.xRad = value;
+    allCamData.at(cameraName).IA.maskXRad = value;
     updateSelectedOrVC(cameraName);
 }
 void cameraIAInterface::updateYRad(const unsigned long value,const std::string&cameraName)
 {
-    allCamData.at(cameraName).IA.yRad = value;
+    allCamData.at(cameraName).IA.maskYRad = value;
     updateSelectedOrVC(cameraName);
 }
 void cameraIAInterface::updateXCenterPix(const unsigned long value,const std::string&cameraName)
@@ -336,12 +339,28 @@ void cameraIAInterface::updateYCenterPix(const unsigned long value,const std::st
     allCamData.at(cameraName).IA.yCenterPix = value;
     updateSelectedOrVC(cameraName);
 }
+void cameraIAInterface::updateXMask(const unsigned long value,const std::string&cameraName)
+{
+    allCamData.at(cameraName).IA.maskX = value;
+    updateSelectedOrVC(cameraName);
+}
+void cameraIAInterface::updateYMask(const unsigned long value,const std::string&cameraName)
+{
+    allCamData.at(cameraName).IA.maskY = value;
+    updateSelectedOrVC(cameraName);
+}
 void cameraIAInterface::updateBitDepth(const unsigned long value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.bitDepth = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateImageHeight(const unsigned long value,const std::string&cameraName)
+
+void cameraIAInterface::updateSummedIntensity(const unsigned long value,const std::string&cameraName)
+{
+    allCamData.at(cameraName).IA.summedIntensity = value;
+    updateSelectedOrVC(cameraName);
+}
+/*void cameraIAInterface::updateImageHeight(const unsigned long value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.imageHeight = value;
     updateSelectedOrVC(cameraName);
@@ -351,10 +370,67 @@ void cameraIAInterface::updateImageWidth(const unsigned long value,const std::st
     allCamData.at(cameraName).IA.imageWidth = value;
     updateSelectedOrVC(cameraName);
 }
+*/
 ///Functions Accessible to Python Controller///
 bool cameraIAInterface::setBackground()
 {
-    return false;
+    bool ans=false;
+    unsigned short comm = 1;
+    if( isAcquiring(selectedCamera()))
+    {
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::SET_BKGRND));
+        ans=shortCaput(comm,S);
+        message("Setting background with next live image on ",
+                selectedCameraObj.name," camera.");
+    }
+    return ans;
+}
+
+bool cameraIAInterface::useBackground(const bool run)
+{
+    bool ans=false;
+    unsigned short comm = 1;
+    if (run==true){
+        comm=1;
+    }
+    else{
+        comm=0;
+    }
+
+    if( isAcquiring(selectedCamera()))
+    {
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::USE_BKGRND));
+        ans=shortCaput(comm,S);
+        message("Using background in online Image Analysis on  ",
+                selectedCameraObj.name," camera.");
+    }
+    return ans;
+}
+bool cameraIAInterface::startAnalysis()
+{
+    bool ans=false;
+    unsigned short comm = 1;
+    if( isAcquiring(selectedCamera()))
+    {
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::START_IA));
+        ans=shortCaput(comm,S);
+        message("Starting online Image Analysis on ",
+                selectedCameraObj.name," camera.");
+    }
+    return ans;
+}
+bool cameraIAInterface::stopAnalysis()
+{
+    bool ans=false;
+    unsigned short comm = 0;
+    if( isAcquiring(selectedCamera()))
+    {
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::START_IA));
+        ans=shortCaput(comm,S);
+        message("Stopping online Image Analysis on ",
+                selectedCameraObj.name," camera.");
+    }
+    return ans;
 }
 const cameraObject &cameraIAInterface::getCamIAObjConstRef(const std::string &cam)///THIS NEEDS FIXING  at "NOPE"
 {

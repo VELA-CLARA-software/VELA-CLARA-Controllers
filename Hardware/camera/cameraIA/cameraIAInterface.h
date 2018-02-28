@@ -41,6 +41,9 @@ class cameraIAInterface : public cameraInterface
 
         ///Functions Accessible to Python Controller///
         bool setBackground();
+        bool useBackground(const bool run);
+        bool startAnalysis();
+        bool stopAnalysis();
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();
@@ -76,7 +79,10 @@ class cameraIAInterface : public cameraInterface
         void updateXCenterPix(const unsigned long value,const std::string&cameraName);
         void updateYCenterPix(const unsigned long value,const std::string&cameraName);
         void updateBitDepth(const unsigned long value,const std::string&cameraName);
-        void updateImageWidth(const unsigned long value,const std::string&cameraName);
-        void updateImageHeight(const unsigned long value,const std::string&cameraName);
+        //void updateImageWidth(const unsigned long value,const std::string&cameraName);
+        //void updateImageHeight(const unsigned long value,const std::string&cameraName);
+        void updateXMask(const unsigned long value,const std::string&cameraName);
+        void updateYMask(const unsigned long value,const std::string&cameraName);
+        void updateSummedIntensity(const unsigned long value,const std::string&cameraName);
 };
 #endif // CAM_IA_INTERFACE_H

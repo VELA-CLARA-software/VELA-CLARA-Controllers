@@ -64,6 +64,9 @@ class cameraIAController  : public controller
         bool stopVCAcquiring();
         //IA Specific Functions
         bool setBackground();
+        bool useBackground(const bool run);
+        bool startAnalysis();
+        bool stopAnalysis();
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();

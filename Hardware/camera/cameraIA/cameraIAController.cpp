@@ -101,6 +101,18 @@ bool cameraIAController::setBackground()
 {
     return localInterface.setBackground();
 }
+bool cameraIAController::useBackground(const bool run)
+{
+    return localInterface.useBackground(run);
+}
+bool cameraIAController::startAnalysis()
+{
+    return localInterface.startAnalysis();
+}
+bool cameraIAController::stopAnalysis()
+{
+    return localInterface.stopAnalysis();
+}
 const cameraObject &cameraIAController::getCamIAObjConstRef(const std::string &camName)
 {
     return localInterface.getCamIAObjConstRef(camName);

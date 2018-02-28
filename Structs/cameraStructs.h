@@ -43,11 +43,16 @@ namespace cameraStructs
         (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_START_ACQUIRE)(CAM_STOP_ACQUIRE)
         (CAM_CAPTURE)(CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
         (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)
-        (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)
+        (JPG_FILE_NAME) (JPG_FILE_PATH) (JPG_FILE_NUMBER)
+        (JPG_FILE_WRITE)(JPG_FILE_WRITE_RBV)(JPG_FILE_WRITE_CHECK)
+        (JPG_FILE_WRITE_MESSAGE)
+        (JPG_CAPTURE)(JPG_CAPTURE_RBV)(JPG_NUM_CAPTURE)
+        (JPG_NUM_CAPTURE_RBV)(JPG_NUM_CAPTURED)
+        (START_IA)(PIX_MM)(STEP_SIZE)(SET_BKGRND)(USE_BKGRND)
+        (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(SUMMED_PIX_INETSITY)
         (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
-        (X_RAD)(Y_RAD)(X_CENTER_PIX)(Y_CENTER_PIX)
-        (BIT_DEPTH)(IMAGE_HEIGHT)(IMAGE_WIDTH)
-        (UNKNOWN_CAM_PV_TYPE)
+        (MASK_X)(MASK_Y)(MASK_X_RAD)(MASK_Y_RAD)(X_CENTER)(Y_CENTER)
+        (BIT_DEPTH)(UNKNOWN_CAM_PV_TYPE)
         (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ) (CAM_SENSOR_TEMP))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
@@ -120,16 +125,20 @@ namespace cameraStructs
                            covXYPix(UTL::DUMMY_INT),
                            xCenterPix(UTL::DUMMY_INT),
                            yCenterPix(UTL::DUMMY_INT),
-                           xRad(UTL::DUMMY_INT),
-                           yRad(UTL::DUMMY_INT),
+                           maskX(UTL::DUMMY_INT),
+                           maskY(UTL::DUMMY_INT),
+                           maskXRad(UTL::DUMMY_INT),
+                           maskYRad(UTL::DUMMY_INT),
                            bitDepth(UTL::DUMMY_INT),
-                           imageHeight(UTL::DUMMY_INT),
-                           imageWidth(UTL::DUMMY_INT){}
+                           summedIntensity(UTL::DUMMY_INT){}
+                           //imageHeight(UTL::DUMMY_INT),
+                           //imageWidth(UTL::DUMMY_INT){}
 
         double x,y,sigmaX,sigmaY,covXY,pix2mm;
         size_t xPix, yPix,sigmaXPix,sigmaYPix,covXYPix,
-               xCenterPix,yCenterPix,xRad,yRad,
-               bitDepth,imageHeight,imageWidth;
+               xCenterPix,yCenterPix,maskXRad,maskYRad,maskX,maskY,
+               bitDepth,summedIntensity;
+               //imageHeight,imageWidth;
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
 
@@ -146,6 +155,9 @@ namespace cameraStructs
                             captureState(CAPTURING_ERROR),
                             writeState(WRITING_ERROR),
                             writeCheck(WRITE_CHECK_ERROR),
+                            captureStateJPG(CAPTURING_ERROR),
+                            writeStateJPG(WRITING_ERROR),
+                            writeCheckJPG(WRITE_CHECK_ERROR),
                             shotsTaken(UTL::DUMMY_INT),
                             numberOfShots(UTL::DUMMY_INT),
                             frequency(UTL::DUMMY_DOUBLE),
@@ -173,6 +185,14 @@ namespace cameraStructs
         //VELA_ENUM::MACHINE_AREA  machineArea;
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+
+        CAPTURE_STATE captureStateJPG;
+        // write state indicates if saving to disc / or
+        WRITE_STATE writeStateJPG;
+        // write check is whether the last write was succesful
+        WRITE_CHECK writeCheckJPG;
+        // If error this string will get updated
+        std::string writeErrorMessageJPG;
     };
     struct cameraOfflineIAObject
     {
