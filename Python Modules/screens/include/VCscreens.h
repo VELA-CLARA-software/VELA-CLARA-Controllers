@@ -4,6 +4,7 @@
 #include <string>
 //
 #include "screenController.h"
+#include "VCheader.h"
 
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
@@ -122,32 +123,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
 
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
+
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
     /// Things that you want to use in python muct be exposed:
     /// containers
-    class_<std::vector< std::string > >("std_vector_string")
-            .def( vector_indexing_suite< std::vector< std::string >>() )
-            ;
-    class_<std::vector< double> >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< double>>() )
-            ;
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-        .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-        .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-        .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-        ;
-    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE  )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL )
-        ;
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ )
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1 )
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2 )
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
     // screen structs
     enum_<screenStructs::SCREEN_STATE>("SCREEN_STATE")
         .value("SCREEN_IN",       screenStructs::SCREEN_STATE::SCREEN_IN  )
@@ -170,6 +149,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .value("V_YAG",           screenStructs::SCREEN_STATE::V_YAG)
         .value("V_GRAT",          screenStructs::SCREEN_STATE::V_GRAT )
         .value("V_COL",           screenStructs::SCREEN_STATE::V_COL )
+        .value("RETRACTED",       screenStructs::SCREEN_STATE::YAG )
+        .value("YAG",             screenStructs::SCREEN_STATE::RETRACTED )
         .value("UNKNOWN_POSITION",screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
         ;
     enum_<screenStructs::SCREEN_TYPE>("SCREEN_TYPE")
@@ -191,12 +172,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .value("V_DRIVER_DISABLED",    screenStructs::DRIVER_STATE::V_DRIVER_DISABLED    )
         .value("V_DRIVER_ENABLED",     screenStructs::DRIVER_STATE::V_DRIVER_ENABLED     )
         .value("V_DRIVER_ERROR",       screenStructs::DRIVER_STATE::V_DRIVER_ERROR       )
+        .value("P_DRIVER_MOVING",      screenStructs::DRIVER_STATE::P_DRIVER_MOVING      )
+        .value("P_DRIVER_STATIONARY",  screenStructs::DRIVER_STATE::P_DRIVER_STATIONARY  )
+        .value("P_DRIVER_DISABLED",    screenStructs::DRIVER_STATE::P_DRIVER_DISABLED    )
+        .value("P_DRIVER_ENABLED",     screenStructs::DRIVER_STATE::P_DRIVER_ENABLED     )
+        .value("P_DRIVER_ERROR",       screenStructs::DRIVER_STATE::P_DRIVER_ERROR       )
         .value("UNKNOWN_DRIVER_STATE", screenStructs::DRIVER_STATE::UNKNOWN_DRIVER_STATE )
         ;
     enum_<screenStructs::DRIVER_DIRECTION>("DRIVER_DIRECTION")
         .value("HORIZONTAL",  screenStructs::DRIVER_DIRECTION::HORIZONTAL )
-        .value("VERTICAL",    screenStructs::DRIVER_DIRECTION::VERTICAL )
-        .value("NONE",        screenStructs::DRIVER_DIRECTION::NONE )
+        .value("VERTICAL",    screenStructs::DRIVER_DIRECTION::VERTICAL   )
+        .value("PNEUMATIC",   screenStructs::DRIVER_DIRECTION::PNEUMATIC  )
+        .value("NONE",        screenStructs::DRIVER_DIRECTION::NONE       )
         ;
     // maps foudn in objects
 
@@ -219,12 +206,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def_readonly("screenType",       &screenStructs::screenObject::screenType      )
         .def_readonly("screenHState",     &screenStructs::screenObject::screenHState    )
         .def_readonly("screenVState",     &screenStructs::screenObject::screenVState    )
+        .def_readonly("screenVState",     &screenStructs::screenObject::screenPState    )
         .def_readonly("screenSetHState",  &screenStructs::screenObject::screenSetHState )
         .def_readonly("screenSetVState",  &screenStructs::screenObject::screenSetVState )
+        .def_readonly("screenSetVState",  &screenStructs::screenObject::screenSetPState )
         .def_readonly("devCentH",         &screenStructs::screenObject::devCentH        )
         .def_readonly("devCentV",         &screenStructs::screenObject::devCentV        )
+        .def_readonly("devCentV",         &screenStructs::screenObject::devCentP        )
         .def_readonly("actPOSH",          &screenStructs::screenObject::actPOSH         )
         .def_readonly("actPOSV",          &screenStructs::screenObject::actPOSV         )
+        .def_readonly("actPOSV",          &screenStructs::screenObject::actPOSP         )
         .def_readonly("hDriverState",     &screenStructs::screenObject::hDriverState    )
         .def_readonly("vDriverState",     &screenStructs::screenObject::vDriverState    )
         .def_readonly("elementExists",    &screenStructs::screenObject::elementExists   )
@@ -295,6 +286,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("setScreenTrigger",      &screenController::setScreenTrigger, setScreenTriggerString )
         .def("getScreenState",        &screenController::getScreenState, getScreenStateString     )
         .def("isScreenInState",       &screenController::isScreenInState, isScreenInStateString   )
+        .def("isMover",               &screenController::isMover, isYAGInString                   )
+        .def("isPneumatic",           &screenController::isPneumatic, isYAGInString               )
         .def("isYAGIn",               &screenController::isYAGIn, isYAGInString                   )
         .def("isHEnabled",            &screenController::isHEnabled, isHEnabledString             )
         .def("isVEnabled",            &screenController::isVEnabled, isVEnabledString             )

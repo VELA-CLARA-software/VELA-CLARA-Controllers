@@ -88,6 +88,16 @@ bool screenController::isScreenIn(const std::string & name)
     return localInterface.isScreenIn(name);
 }
 //________________________________________________________________________________
+bool screenController::isMover(const std::string & name)
+{
+    return localInterface.isMover(name);
+}
+//________________________________________________________________________________
+bool screenController::isPneumatic(const std::string & name)
+{
+    return localInterface.isPneumatic(name);
+}
+//________________________________________________________________________________
 bool screenController::isHMoving(const std::string & name)
 {
     return localInterface.isHMoving(name);
@@ -156,6 +166,11 @@ bool screenController::setEX(const std::string & name )
 const std::string screenController::getScreenState( const std::string & name )
 {
     return localInterface.getScreenState(name);
+}
+//________________________________________________________________________________
+const std::string screenController::getScreenType( const std::string & name )
+{
+    return localInterface.getScreenTypeStr(name);
 }
 //________________________________________________________________________________
 const screenStructs::screenObject & screenController::getScreenObject( const std::string & name )

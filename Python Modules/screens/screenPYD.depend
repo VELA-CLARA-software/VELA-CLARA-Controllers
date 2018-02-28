@@ -205,12 +205,12 @@
 	<chrono>
 	<thread>
 
-1506581234 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
+1519750022 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1506581234 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
+1519750022 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -218,7 +218,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1519662114 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
+1519750023 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
 	<string>
 	<vector>
 	<cadef.h>
@@ -272,7 +272,7 @@
 	<string>
 	<vector>
 
-1519663187 d:\vela-clara_software\vela-clara-controllers\structs\screenstructs.h
+1519823606 d:\vela-clara_software\vela-clara-controllers\structs\screenstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -293,14 +293,15 @@
 	<string>
 	<atomic>
 
-1519662423 d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.h
+1519818684 d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.h
 	<string>
 	<vector>
 	<map>
 	"configReader.h"
+	"baseObject.h"
 	"screenStructs.h"
 
-1519662114 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
+1519818660 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -361,14 +362,14 @@
 
 1506581256 source:d:\vela-clara_software\vela-clara-controllers\python modules\screens\main.cpp
 
-1516636018 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.cpp
+1519823525 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.cpp
 	"screenController.h"
 	<iostream>
 	<time.h>
 	"screenInterface.h"
 	"structs.h"
 
-1516636018 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.h
+1519823418 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.h
 	"screenStructs.h"
 	"screenInterface.h"
 	"controller.h"
@@ -376,7 +377,7 @@
 	<string>
 	<vector>
 
-1516636018 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.h
+1519821505 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.h
 	"interface.h"
 	"screenStructs.h"
 	"screenConfigReader.h"
@@ -384,7 +385,7 @@
 	<string>
 	<atomic>
 
-1516636018 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.cpp
+1519821513 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.cpp
 	"screenInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -392,7 +393,7 @@
 	<chrono>
 	<thread>
 
-1516636019 source:d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.cpp
+1519818851 source:d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.cpp
 	"screenConfigReader.h"
 	"screenStructs.h"
 	<iostream>
@@ -408,9 +409,10 @@
 	"VCscreens.h"
 	<iostream>
 
-1516636018 d:\vela-clara_software\vela-clara-controllers\python modules\screens\include\vcscreens.h
+1519823544 d:\vela-clara_software\vela-clara-controllers\python modules\screens\include\vcscreens.h
 	<string>
 	"screenController.h"
+	"VCheader.h"
 	<boost/python/detail/wrap_python.hpp>
 	<boost/config.hpp>
 	<boost/python.hpp>
@@ -421,4 +423,18 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/docstring_options.hpp>
+
+1515488401 d:\vela-clara_software\vela-clara-controllers\hardware\vcheader.h
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
 

@@ -57,8 +57,8 @@ namespace screenStructs
     // the screen driver status, moving, disabled etc...
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_STATE, (H_DRIVER_MOVING)(H_DRIVER_STATIONARY)(H_DRIVER_DISABLED)(H_DRIVER_ENABLED)
                                                       (V_DRIVER_MOVING)(V_DRIVER_STATIONARY)(V_DRIVER_DISABLED)(V_DRIVER_ENABLED)
-                                                      (P_MOVING) (P_STATIONARY) (P_DRIVER_DISABLED) (P_DRIVER_ENABLED)
-                                                      (H_DRIVER_ERROR) (V_DRIVER_ERROR) (UNKNOWN_DRIVER_STATE) )
+                                                      (P_DRIVER_MOVING) (P_DRIVER_STATIONARY) (P_DRIVER_DISABLED) (P_DRIVER_ENABLED)
+                                                      (H_DRIVER_ERROR) (V_DRIVER_ERROR) (P_DRIVER_ERROR) (UNKNOWN_DRIVER_STATE) )
     // screen drivers come in two types
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_DIRECTION, (HORIZONTAL) (VERTICAL) (PNEUMATIC) (NONE) )
     // turns out this is really useful, but itlooks like cancer
@@ -112,15 +112,16 @@ namespace screenStructs
         screenObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE),
                        screenHState(UNKNOWN_POSITION),screenSetHState(UNKNOWN_POSITION),
                        screenVState(UNKNOWN_POSITION),screenSetVState(UNKNOWN_POSITION),
-                       devCentH(UTL::DUMMY_DOUBLE),devCentV(UTL::DUMMY_DOUBLE),
-                       actPOSH(UTL::DUMMY_DOUBLE),actPOSV(UTL::DUMMY_DOUBLE){}
+                       screenPState(UNKNOWN_POSITION),screenSetPState(UNKNOWN_POSITION),
+                       devCentH(UTL::DUMMY_DOUBLE),devCentV(UTL::DUMMY_DOUBLE), devCentP(UTL::DUMMY_DOUBLE),
+                       actPOSH(UTL::DUMMY_DOUBLE),actPOSV(UTL::DUMMY_DOUBLE), actPOSP(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
         SCREEN_TYPE       screenType;
-        SCREEN_STATE      screenHState, screenSetHState, screenVState, screenSetVState;
-        double            devCentH, devCentV;
-        double            actPOSH, actPOSV;
+        SCREEN_STATE      screenHState, screenSetHState, screenVState, screenSetVState, screenPState, screenSetPState;
+        double            devCentH, devCentV, devCentP;
+        double            actPOSH, actPOSV, actPOSP;
         double            jDiffH, jDiffV;
-        bool              hMoving, vMoving;
+        bool              hMoving, vMoving, pMoving;
         DRIVER_STATE      hDriverState, vDriverState;
         std::map< SCREEN_STATE, bool >             elementExists;         // holds if an element exists on this cassette(from config)
         std::map< SCREEN_STATE, DRIVER_DIRECTION > elementDirection;

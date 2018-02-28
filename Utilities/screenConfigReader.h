@@ -12,6 +12,7 @@
 #include <map>
 //me
 #include "configReader.h"
+#include "baseObject.h"
 #include "screenStructs.h"
 
 class screenConfigReader : public configReader
