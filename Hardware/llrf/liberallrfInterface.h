@@ -165,6 +165,9 @@ class liberallrfInterface : public interface
         bool setAllSCANToPassive();
         bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
         bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
+        bool disableInfiniteMaskEndByPower(const std::string& phase_trace);
+        size_t getMaskInfiniteEndByPowerIndex(const std::string& name);
+        double getMaskInfiniteEndByPowerTime(const std::string& name);
 
 
         /* Masks */

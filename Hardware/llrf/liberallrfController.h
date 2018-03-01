@@ -231,6 +231,9 @@ class liberaLLRFController : public controller
         size_t getNumExtraTraces();
 
         bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
+        bool disableInfiniteMaskEndByPower(const std::string& phase_trace);
+        size_t getMaskInfiniteEndByPowerIndex(const std::string& name);
+        double getMaskInfiniteEndByPowerTime(const std::string& name);
 
 
         bool setCheckMask(const std::string&name, bool value);

@@ -65,6 +65,7 @@
 		<Unit filename="../../Utilities/liberallrfConfigReader.cpp" />
 		<Unit filename="../../Utilities/liberallrfConfigReader.h" />
 		<Unit filename="include/VCllrf.h" />
+		<Unit filename="include/VCllrf_docstrings.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
 		<Unit filename="src/VCllrf.cpp" />

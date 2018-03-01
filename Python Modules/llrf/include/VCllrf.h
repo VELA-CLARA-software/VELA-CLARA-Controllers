@@ -222,7 +222,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("UNKNOWN_SCAN", LLRF_SCAN::UNKNOWN_SCAN)
         ;
 
-
+    class_<std::pair<std::string, double> >("string_double_pair")
+        .def_readonly("first",  &std::pair<std::string, double>::first)
+        .def_readonly("second", &std::pair<std::string, double>::second)
+        ;
 
 
     class_<llrfStructs::rf_trace,boost::noncopyable>
@@ -237,8 +240,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("mean_stop_index", &rf_trace::mean_stop_index,"stop index for mean trace calculation.")
         .def_readonly("mean", &rf_trace::mean,"mean pwoer between mean_start_index and mean_stop_index.")
         ;
-
-
 
     // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
     class_<llrfStructs::rf_trace_data,boost::noncopyable>
@@ -278,6 +279,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("outside_mask_index", &rf_trace_data::outside_mask_index,"index of elmenet that caused outside mask event.")
         .def_readonly("latest_max", &rf_trace_data::latest_max,"maximum value of latest trace.")
         .def_readonly("scan", &rf_trace_data::scan,"SCAN value.")
+        .def_readonly("endInfiniteMask_Trace_Set", &rf_trace_data::endInfiniteMask_Trace_Set,"is endInfiniteMask_Trace_Set?.")
+        .def_readonly("mask_end_by_power_index", &rf_trace_data::mask_end_by_power_index,"value mask_end_by_power_index.")
+        .def_readonly("endMaskTrace_Bound", &rf_trace_data::endMaskTrace_Bound,"value mask_end_by_power_index.")
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
@@ -379,9 +383,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),"Return LLRF Object Reference")
         .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return reference to LLRF Trace Object 'name'")
 
-        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
+        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at least this time?" )
         .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index" )
-        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
+        //.def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
 
 
 
@@ -476,7 +480,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setAmpFF",  &liberaLLRFController::setAmpFF,(arg("value")),"Set Amplitude(FF) in LLRF Units")
 
         .def("setInfiniteMaskEndByPower",&liberaLLRFController::setInfiniteMaskEndByPower,(arg("power_trace"),arg("phase_trace"),arg("level")),
-             "Automatically set mask end oh phase_trace by index of power 'level' in power_trace")
+             "Automatically set mask end of phase_trace by index of power 'level' in power_trace")
+
+        .def("disableInfiniteMaskEndByPower",  &liberaLLRFController::disableInfiniteMaskEndByPower,(arg("phase_trace")),"Disable automatic setting of mask infinte end.")
 
         .def("trigOff",  &liberaLLRFController::trigOff,"Set the LLRF trigger to off.")
         .def("trigExt",  &liberaLLRFController::trigExt,"Set the LLRF trigger to external.")
@@ -500,13 +506,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("fullCavityTraceName",  &liberaLLRFController::fullCavityTraceName,(arg("name")),"Returns trace name being used")
 
+        .def("getMaskInfiniteEndByPowerIndex",  &liberaLLRFController::getMaskInfiniteEndByPowerIndex,(arg("name")),"Returns end index of trace 'name' from auto-setting end by power.")
+        .def("getMaskInfiniteEndByPowerTime",  &liberaLLRFController::getMaskInfiniteEndByPowerTime,(arg("name")),"Returns end time of trace 'name' from auto-setting end by power.")
+
         .def("setPulseLength",  &liberaLLRFController::setPulseLength,(arg("value")),"Set RF pulse length [micro-s]")
         .def("setPulseOffset",  &liberaLLRFController::setPulseOffset,(arg("value")),"Set RF pulse offset [micro-sec]")
         .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(arg("value")),"Set linear calibration of phase from LLRF units to degrees")
         .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(arg("value")),"Set linear calibration of amplitude from LLRF units to MV/m")
         .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(arg("value")),"Set the Crest Phi value in LLRF Units")
-
-
         .def("setInfiniteMasks",  &liberaLLRFController::setInfiniteMasks,(arg("name")),"Set infitine hi/lo masks for for trace 'name'")
         .def("setHighMask",  setHighMask_1,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
         .def("setHighMask",  setHighMask_2,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
@@ -514,18 +521,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setLowMask",  setLowMask_2,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
         .def("setCavRevPwrHiMask",  &liberaLLRFController::setCavRevPwrHiMask_Py,(arg("value")),"Set the Hi mask for cavity reverse power (channel defined in config file)")
         .def("setCavRevPwrLoMask",  &liberaLLRFController::setCavRevPwrLoMask_Py,(arg("value")),"Set the Lo mask for cavity reverse power (channel defined in config file)")
-
-
         .def("setPercentTimeMask",  &liberaLLRFController::setPercentTimeMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
         .def("setAbsoluteTimeMask",  &liberaLLRFController::setAbsoluteTimeMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
         .def("setPercentMask",  &liberaLLRFController::setPercentMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
         .def("setAbsoluteMask",  &liberaLLRFController::setAbsoluteMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
 
         .def("setMaskFloor",  &liberaLLRFController::setMaskFloor,(arg("name"),arg("value")),"Set the mask floor for trace 'name'")
-
         .def("setNumExtraTraces",  &liberaLLRFController::setNumExtraTraces,(arg("value")),"Set the number of extra traces after out_side mask event")
         .def("getNumExtraTraces",  &liberaLLRFController::getNumExtraTraces,"Get the number of extra traces after out_side mask event")
-
         .def("setNumContinuousOutsideMaskCount",  &liberaLLRFController::setNumContinuousOutsideMaskCount,(arg("name"),arg("value")),"Set the number of continuous outside mask hits to trigger event, for trace 'name'")
 
 

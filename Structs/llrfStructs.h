@@ -343,6 +343,7 @@ namespace llrfStructs
         std::string EVID;
         std::string name;
         bool endInfiniteMask_Trace_Set;
+        size_t mask_end_by_power_index;
         std::pair<std::string, double> endMaskTrace_Bound;
         std::vector<rf_trace> traces;
         // rolling sum is the sum of the traces to be averaged,

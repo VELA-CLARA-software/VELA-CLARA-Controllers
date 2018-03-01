@@ -645,16 +645,16 @@ void liberallrfInterface::handlePassedMask(llrfStructs::rf_trace_data& trace)
     }
     if(trace.endInfiniteMask_Trace_Set)
     {
+        // this should NOT move the end past the set limit ???
+        // or have this as another option??
         auto& trace_bound   = trace.endMaskTrace_Bound;
-
         auto& power_trace_to_search = llrf.trace_data.at(trace_bound.first);
-
         auto& value_to_search  = power_trace_to_search.traces[power_trace_to_search.current_trace].value;
 
         //message(trace.name," looking for ", trace_bound.second, " in ", power_trace_to_search.name, " max = ",*std::max_element(value_to_search.begin(), value_to_search.end()));
 
         auto i = value_to_search.size()-1;
-        for( ; i>0;--i  )
+        for(; i>0 ;--i)
         {
             if( value_to_search[i] > trace_bound.second)
             {
@@ -664,10 +664,7 @@ void liberallrfInterface::handlePassedMask(llrfStructs::rf_trace_data& trace)
                 break;
             }
         }
-
 //        auto bound = std::lower_bound(current_trace.rbegin(), current_trace.rend(), trace_bound.second);
-//
-//
 //        if(bound != current_trace.rend())
 //        {
 //            auto idx = std::distance(begin(current_trace), bound.base()) - 1;
@@ -1585,6 +1582,17 @@ bool liberallrfInterface::shouldCheckMasks(const std::string& name)
 // i.e. to be exposed to python
 //____________________________________________________________________________________________
 //____________________________________________________________________________________________
+bool liberallrfInterface::disableInfiniteMaskEndByPower(const std::string& phase_trace)
+{
+    const std::string phase = fullCavityTraceName(phase_trace);
+    if(entryExists(llrf.trace_data,phase))
+    {
+        llrf.trace_data.at(phase).endInfiniteMask_Trace_Set = false;
+        return true;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
 bool liberallrfInterface::setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level)
 {
     if(stringIsSubString(power_trace,UTL::POWER))
@@ -2298,16 +2306,36 @@ bool liberallrfInterface::set_mask(const size_t s1,const size_t s2,const size_t 
 //____________________________________________________________________________________________
 bool liberallrfInterface::setMaskInfiniteEnd(const std::string& trace_name, size_t index)
 {
-    //assume entry eixtsts
-    auto lo_it = llrf.trace_data.at(trace_name).low_mask.begin();
-    std::advance(lo_it, index);
-    auto hi_it = llrf.trace_data.at(trace_name).high_mask.begin();
-    std::advance(hi_it, index);
-    for(;lo_it != llrf.trace_data.at(trace_name).low_mask.end() && hi_it != llrf.trace_data.at(trace_name).high_mask.end(); ++lo_it,++hi_it )
+    if(index + 1 < llrf.trace_data.at(trace_name).low_mask.size() )
     {
-        *lo_it = -std::numeric_limits<double>::infinity();
-        *hi_it =  std::numeric_limits<double>::infinity();
+        //assume entry eixtsts
+        llrf.trace_data.at(trace_name).mask_end_by_power_index = index;
+        auto lo_it = llrf.trace_data.at(trace_name).low_mask.begin();
+        std::advance(lo_it, index);
+        auto hi_it = llrf.trace_data.at(trace_name).high_mask.begin();
+        std::advance(hi_it, index);
+        for(;lo_it != llrf.trace_data.at(trace_name).low_mask.end() && hi_it != llrf.trace_data.at(trace_name).high_mask.end(); ++lo_it,++hi_it )
+        {
+            *lo_it = -std::numeric_limits<double>::infinity();
+            *hi_it =  std::numeric_limits<double>::infinity();
+        }
     }
+}
+//____________________________________________________________________________________________
+size_t liberallrfInterface::getMaskInfiniteEndByPowerIndex(const std::string& name)
+{
+    const std::string n = fullCavityTraceName(name);
+    if(entryExists(llrf.trace_data, n))
+    {
+        //assume entry eixtsts
+        return llrf.trace_data.at(n).mask_end_by_power_index;
+    }
+    return 0;
+}
+//____________________________________________________________________________________________
+double liberallrfInterface::getMaskInfiniteEndByPowerTime(const std::string& name)
+{
+    return getTime(getMaskInfiniteEndByPowerIndex(name));
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::clearMask(const std::string&name)
