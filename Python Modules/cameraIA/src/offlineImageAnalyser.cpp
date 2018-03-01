@@ -51,10 +51,10 @@ void offlineImageAnalyser::loadImage(const std::vector<double> &originalImage,
 
             CoIA.pixToMM = it.second.IA.pix2mm;
             //overwrite default values
-            CoIA.x0 = it.second.IA.xCenterPix;
-            CoIA.y0 = it.second.IA.yCenterPix;
-            CoIA.xRad = it.second.IA.xRad;
-            CoIA.yRad = it.second.IA.yRad;
+            CoIA.x0 = it.second.IA.maskX;
+            CoIA.y0 = it.second.IA.maskY;
+            CoIA.xRad = it.second.IA.maskXRad;
+            CoIA.yRad = it.second.IA.maskYRad;
         }
     }
 //#std::vector<double> dummy(CoIA.dataSize);

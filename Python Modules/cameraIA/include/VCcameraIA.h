@@ -191,21 +191,24 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("yCenterPix",
                       &cameraStructs::cameraIAObject::yCenterPix,
                       "Vertical calibrated center of pipe (0 of ideal trajectory) in pixels.")
-        .def_readonly("xRad",
-                      &cameraStructs::cameraIAObject::xRad,
+        .def_readonly("maskXRad",
+                      &cameraStructs::cameraIAObject::maskXRad,
                       "Horizontal radius of mask used in image analysis in pixels.")
-        .def_readonly("yRad",
-                      &cameraStructs::cameraIAObject::yRad,
+        .def_readonly("maskYRad",
+                      &cameraStructs::cameraIAObject::maskYRad,
                       "Vertical radius of mask used in image analysis in pixels.")
         .def_readonly("bitDepth",
                       &cameraStructs::cameraIAObject::bitDepth,
                       "Bit depth of image. ")
-        .def_readonly("imageHeight",
+        /*.def_readonly("imageHeight",
                       &cameraStructs::cameraIAObject::imageHeight,
                       "Vertical length of full image in pixels.")
         .def_readonly("imageWidth",
                       &cameraStructs::cameraIAObject::imageWidth,
-                      "Horizontal length of full image in pixels.")
+                      "Horizontal length of full image in pixels.")*/
+        .def_readonly("summedIntensity",
+                      &cameraStructs::cameraIAObject::summedIntensity,
+                      "Summed pixel values of image. ")
         .def_readonly("pix2mm",
                       &cameraStructs::cameraIAObject::pix2mm,
                       "Conversion factor for convert pixel value to mm. (mm = pix2mm*pix)")
@@ -529,11 +532,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def("stopVCAcquiring",
              &cameraIAController::stopVCAcquiring,
              "Stops VC Camera acquiring and returns True if successful.")
-
-        //Functions yet to make
-       // .def("setBackground",
-         //    &cameraIAController::setBackground,
-         //    "Returns True if selected camera copied the current Array Data to the background PV array data in EPICS.")
+        .def("startAnalysis",
+             &cameraIAController::startAnalysis,
+             "Starts analysis on selected camera.")
+        .def("stopAnalysis",
+             &cameraIAController::stopAnalysis,
+             "Stops analysis on selected camera.")
+        .def("setBackground",
+             &cameraIAController::setBackground,
+             "Returns True if selected camera copied the current Array Data to the background PV array data in EPICS.")
+        .def("useBackground",
+             &cameraIAController::useBackground,
+             (arg("True/False")),
+             "Returns True if using background that has been previous set using the function 'setBackground'.")
         .def("getCamIAObjConstRef",
              &cameraIAController::getCamIAObjConstRef,
              return_value_policy<reference_existing_object>(),
@@ -547,6 +558,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
              &cameraIAController::getVCIARef,
              return_value_policy<reference_existing_object>(),
              "Returns a reference to VC camera.")
+
+        .def_readonly("controllerType",
+            &cameraIAController::controllerType,
+            "This is an enum that returns the controller type")
         ;
    class_<VCcameraIA,boost::noncopyable>("init")
         .def("virtual_VELA_Camera_IA_Controller",

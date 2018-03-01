@@ -12,6 +12,7 @@
 #include <map>
 //me
 #include "configReader.h"
+#include "baseObject.h"
 #include "screenStructs.h"
 
 class screenConfigReader : public configReader
@@ -33,9 +34,11 @@ private:
     std::vector< screenStructs::screenObject > scrObjects;
 
     std::vector< screenStructs::pvStruct > pvScrComStructs;
+    std::vector< screenStructs::pvStruct > pvScrComPneumaticStructs;
     std::vector< screenStructs::pvStruct > pvScrComHStructs;
     std::vector< screenStructs::pvStruct > pvScrComVStructs;
     std::vector< screenStructs::pvStruct > pvScrMonStructs;
+    std::vector< screenStructs::pvStruct > pvScrMonPneumaticStructs;
     std::vector< screenStructs::pvStruct > pvScrMonHStructs;
     std::vector< screenStructs::pvStruct > pvScrMonVStructs;
 

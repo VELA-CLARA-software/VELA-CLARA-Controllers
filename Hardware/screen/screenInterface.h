@@ -40,12 +40,17 @@ class screenInterface: public interface
         bool isVOut(const std::string & name);
         bool isHIn(const std::string & name);
         bool isVIn(const std::string & name);
+        bool isMover(const std::string & name);
+        bool isPneumatic(const std::string & name);
         bool is_HandV_OUT(const std::string & name);
         bool isScreenIn(const std::string & name);
         bool isHMoving(const std::string & name);
         bool isVMoving(const std::string & name);
+        bool isPMoving(const std::string & name);
         bool isScreenMoving(const std::string & name);
         const std::string getScreenState(const std::string & name);
+        const screenStructs::SCREEN_TYPE getScreenType(const std::string & name);
+        const std::string getScreenTypeStr(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
