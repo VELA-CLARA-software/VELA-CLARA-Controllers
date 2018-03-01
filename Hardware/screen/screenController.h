@@ -41,12 +41,11 @@ class screenController : public controller
         bool isHMoving(const std::string & name);
         bool isVMoving(const std::string & name);
         bool isScreenMoving(const std::string & name);
-        bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
-        bool setScreenTrigger(const std::string & name );
 //        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
         const std::string getScreenState( const std::string & name );
         const std::string getScreenType(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
+        std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
         bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
@@ -66,6 +65,8 @@ class screenController : public controller
         void jogScreen( const std::string & name, const double jog );
         void setPosition( const std::string & name, const double setPos );
         bool setEX( const std::string & name );
+        bool setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state );
+        bool setScreenTrigger(const std::string & name );
 
 //  // this is the main move funciton, all higher level versions (i.e. screenIN) end up here, this does all the hard work / logic
 //        bool screenMoveTo( const std::vector< std::string > & names, const std::vector< screenStructs::SCREEN_STATE > & states);

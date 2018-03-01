@@ -119,7 +119,20 @@ void screenInterface::initScreenChids()
     int status = sendToEpics( "ca_create_channel", "Found Screen Chids.", "!!!TIMEOUT!!! Not All Screen Chids Found." );
 
     if( status == ECA_TIMEOUT )
+    {
         message("ERROR ECA_TIMEOUT");
+        for(auto && scr_IT : allScreentData ) // iterate over all screens
+        {
+            for(auto && it : scr_IT.second.pvComStructs )
+            {
+                checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first) );
+            }
+            for(auto && it : scr_IT.second.pvMonStructs )
+            {
+                checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first ) );
+            }
+        }
+    }
     else if( status == ECA_NORMAL )
     {
         allChidsInitialised = true; /// interface base class member  not actually used but good to know
@@ -1041,6 +1054,23 @@ double screenInterface::getDevicePosition(const std::string & name, const screen
         message("ERROR!!!! Screen not defined in config file!!!");
         return 0.0;
     }
+}
+//___________________________________________________________________________________________________________
+std::vector< screenStructs::SCREEN_STATE > screenInterface::getAvailableDevices(const std::string & name)
+{
+    std::vector< screenStructs::SCREEN_STATE > devices;
+    if( entryExists( allScreentData, name ) )
+    {
+        for( auto it : allScreentData.at(name).elementPositions )
+        {
+            devices.push_back( it.first );
+        }
+    }
+    else
+    {
+        message("ERROR!!!! Screen not defined in config file!!!");
+    }
+    return devices;
 }
 ////___________________________________________________________________________________________________________
 //bool screenInterface::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)

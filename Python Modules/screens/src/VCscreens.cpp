@@ -123,7 +123,7 @@ VCscreens::~VCscreens()
 //______________________________________________________________________________
 screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
 
     if( virtual_VELA_INJ_Screen_Controller_Obj )
     {
@@ -140,7 +140,7 @@ screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_VELA_INJ_Screen_Controller_Obj )
     {
         std::cout << "offline_VELA_INJ_Screen_Controller object already exists," << std::endl;
@@ -156,7 +156,7 @@ screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_VELA_INJ_Screen_Controller_Obj )
     {
         std::cout << "physical_VELA_INJ_Screen_Controller object already exists," << std::endl;
@@ -172,7 +172,7 @@ screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( virtual_VELA_BA1_Screen_Controller_Obj )
     {
         std::cout << "virtual_VELA_BA1_Screen_Controller object already exists," << std::endl;
@@ -188,7 +188,7 @@ screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_VELA_BA1_Screen_Controller_Obj )
     {
         std::cout << "offline_VELA_BA1_Screen_Controller object already exists," << std::endl;
@@ -204,7 +204,7 @@ screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_VELA_BA1_Screen_Controller_Obj )
     {
         std::cout << "physical_VELA_BA1_Screen_Controlle object already exists," << std::endl;
@@ -220,7 +220,7 @@ screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( virtual_VELA_BA2_Screen_Controller_Obj )
     {
         std::cout << "virtual_VELA_BA2_Screen_Controller object already exists," << std::endl;
@@ -236,7 +236,7 @@ screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( offline_VELA_BA2_Screen_Controller_Obj )
     {
         std::cout << "offline_VELA_BA2_Screen_Controller object already exists," << std::endl;
@@ -252,7 +252,7 @@ screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     if( physical_VELA_BA2_Screen_Controller_Obj )
     {
         std::cout << "physical_VELA_BA2_Screen_Controller object already exists," << std::endl;
@@ -268,7 +268,7 @@ screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::virtual_CLARA_PH1_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
     if( virtual_CLARA_PH1_Screen_Controller_Obj )
     {
         std::cout << "virtual_CLARA_PH1_Screen_Controller object already exists," << std::endl;
@@ -284,7 +284,7 @@ screenController& VCscreens::virtual_CLARA_PH1_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::offline_CLARA_PH1_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
     if( offline_CLARA_PH1_Screen_Controller_Obj )
     {
         std::cout << "offline_CLARA_PH1_Screen_Controller object already exists," << std::endl;
@@ -300,7 +300,7 @@ screenController& VCscreens::offline_CLARA_PH1_Screen_Controller()
 //______________________________________________________________________________
 screenController& VCscreens::physical_CLARA_PH1_Screen_Controller()
 {
-    std::string configfile  = UTL::CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
     if( physical_CLARA_PH1_Screen_Controller_Obj )
     {
         std::cout << "physical_CLARA_PH1_Screen_Controller object already exists," << std::endl;

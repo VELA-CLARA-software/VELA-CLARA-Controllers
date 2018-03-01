@@ -301,7 +301,7 @@
 	"baseObject.h"
 	"screenStructs.h"
 
-1519818660 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
+1519830067 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -362,14 +362,14 @@
 
 1506581256 source:d:\vela-clara_software\vela-clara-controllers\python modules\screens\main.cpp
 
-1519823525 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.cpp
+1519908430 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.cpp
 	"screenController.h"
 	<iostream>
 	<time.h>
 	"screenInterface.h"
 	"structs.h"
 
-1519823418 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.h
+1519908398 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screencontroller.h
 	"screenStructs.h"
 	"screenInterface.h"
 	"controller.h"
@@ -377,7 +377,7 @@
 	<string>
 	<vector>
 
-1519821505 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.h
+1519908024 d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.h
 	"interface.h"
 	"screenStructs.h"
 	"screenConfigReader.h"
@@ -385,7 +385,7 @@
 	<string>
 	<atomic>
 
-1519821513 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.cpp
+1519907955 source:d:\vela-clara_software\vela-clara-controllers\hardware\screen\screeninterface.cpp
 	"screenInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -393,7 +393,7 @@
 	<chrono>
 	<thread>
 
-1519818851 source:d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.cpp
+1519830669 source:d:\vela-clara_software\vela-clara-controllers\utilities\screenconfigreader.cpp
 	"screenConfigReader.h"
 	"screenStructs.h"
 	<iostream>
@@ -405,11 +405,11 @@
 	<algorithm>
 	<ctype.h>
 
-1506581257 source:d:\vela-clara_software\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
+1519906929 source:d:\vela-clara_software\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
 	"VCscreens.h"
 	<iostream>
 
-1519823544 d:\vela-clara_software\vela-clara-controllers\python modules\screens\include\vcscreens.h
+1519908534 d:\vela-clara_software\vela-clara-controllers\python modules\screens\include\vcscreens.h
 	<string>
 	"screenController.h"
 	"VCheader.h"
