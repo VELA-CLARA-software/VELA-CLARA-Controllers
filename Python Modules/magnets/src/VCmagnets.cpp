@@ -136,47 +136,45 @@ void VCmagnets::setDebugMessage()
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_CLARA_PH1_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
     std::string name  = "physical_CLARA_PH1_Magnet_Controller";
     return getController(physical_CLARA_PH1_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,CLARA_PH1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_CLARA_PH1_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
     std::string name  = "virtual_CLARA_PH1_Magnet_Controller";
     return getController(virtual_CLARA_PH1_Magnet_Controller_Obj,mconf,name,withVM,withEPICS,CLARA_PH1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_CLARA_PH1_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG;
     std::string name  = "offline_CLARA_PH1_Magnet_Controller";
     return getController(offline_CLARA_PH1_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,CLARA_PH1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string name  = "virtual_VELA_INJ_Magnet_Controller_Obj";
     return getController(virtual_VELA_INJ_Magnet_Controller_Obj,mconf,name,withVM,withEPICS,VELA_INJ);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_VELA_INJ_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string name  = "offline_VELA_INJ_Magnet_Controller_Obj";
     return getController(offline_VELA_INJ_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,VELA_INJ);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG;
     std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
     return getController(physical_VELA_INJ_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_INJ);
 }
-
-
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
 {
@@ -187,21 +185,21 @@ magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_VELA_BA1_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
     std::string name  = "offline_VELA_INJ_Magnet_Controller_Obj";
     return getController(offline_VELA_BA1_Magnet_Controller_Obj,mconf,name,withoutVM,withoutEPICS,VELA_BA1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG;
     std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
     return getController(physical_VELA_BA1_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_BA1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
     std::string name  = "virtual_VELA_INJ_Magnet_Controller_Obj";
     return getController(virtual_VELA_BA2_Magnet_Controller_Obj,mconf,name,withVM,withEPICS,VELA_BA2);
 }
@@ -215,11 +213,10 @@ magnetController& VCmagnets::offline_VELA_BA2_Magnet_Controller()
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG;
     std::string name  = "physical_VELA_INJ_Magnet_Controller_Obj";
     return getController(physical_VELA_BA2_Magnet_Controller_Obj,mconf,name,withoutVM,withEPICS,VELA_BA2);
 }
-
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_USER_Magnet_Controller(const std::string& config_path)
 {
