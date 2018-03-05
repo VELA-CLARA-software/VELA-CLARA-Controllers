@@ -212,6 +212,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("pix2mm",
                       &cameraStructs::cameraIAObject::pix2mm,
                       "Conversion factor for convert pixel value to mm. (mm = pix2mm*pix)")
+
+        .def_readonly("useBkgrnd",
+                      &cameraStructs::cameraIAObject::useBkgrnd,
+                      "Returns True if BKgrnd image is being subtracted in analysis.")
+        .def_readonly("analysisState",
+                      &cameraStructs::cameraIAObject::analysisState,
+                      "Returns True if analysis is running.")
+        .def_readonly("useNPoint",
+                      &cameraStructs::cameraIAObject::useNPoint,
+                      "Returns True is N-Point Scaling is being used in analysis.")
         ;
 
     boost::python::class_<cameraStructs::cameraOfflineIAObject,boost::noncopyable>
@@ -545,6 +555,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
              &cameraIAController::useBackground,
              (arg("True/False")),
              "Returns True if using background that has been previous set using the function 'setBackground'.")
+        .def("useNPoint",
+             &cameraIAController::useNPoint,
+             (arg("True/False")),
+             "Returns True if successful in setting the analysis to use Npoint scaling")
+        .def("useBackground",
+             &cameraIAController::setStepSize,
+             (arg("int")),
+             "Returns True if successful in setting the analysis to use a chosen step size in reading in image for analysis.")
         .def("getCamIAObjConstRef",
              &cameraIAController::getCamIAObjConstRef,
              return_value_policy<reference_existing_object>(),

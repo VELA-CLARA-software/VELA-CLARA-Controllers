@@ -222,6 +222,15 @@ void cameraIAInterface::staticEntryIAMonitor(const event_handler_args args)
         case CAM_PV_TYPE::CAM_STATUS:
             ms->interface->updateState( *(unsigned short*)args.dbr, ms->objName );
             break;
+        case CAM_PV_TYPE::START_IA_RBV:
+            ms->interface->updateAnalyseState( *(unsigned short*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::USE_BKGRND_RBV:
+            ms->interface->updateUseBkgrnd( *(unsigned short*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::USE_NPOINT_RBV:
+            ms->interface->updateUseNPoint( *(unsigned short*)args.dbr, ms->objName );
+            break;
         default:
             ms->interface->debugMessage("!!! ERROR !!! Unknown Monitor Type passed to cameraDAQInterface::staticEntryMonitor");
             break;
@@ -355,6 +364,52 @@ void cameraIAInterface::updateBitDepth(const unsigned long value,const std::stri
     updateSelectedOrVC(cameraName);
 }
 
+void cameraIAInterface::updateAnalyseState(const unsigned short value,const std::string&cameraName)
+{
+    switch(value)
+    {
+        case 0:
+            allCamData.at(cameraName).IA.analysisState = false;
+            break;
+        case 1:
+            allCamData.at(cameraName).IA.analysisState = true;
+            break;
+        default:
+            allCamData.at(cameraName).IA.analysisState = false;
+    }
+    updateSelectedOrVC(cameraName);
+}
+void cameraIAInterface::updateUseBkgrnd(const unsigned short value,const std::string&cameraName)
+{
+    switch(value)
+    {
+        case 0:
+            allCamData.at(cameraName).IA.useBkgrnd = false;
+            break;
+        case 1:
+            allCamData.at(cameraName).IA.useBkgrnd = true;
+            break;
+        default:
+            allCamData.at(cameraName).IA.useBkgrnd = false;
+    }
+    updateSelectedOrVC(cameraName);
+}
+void cameraIAInterface::updateUseNPoint(const unsigned short value,const std::string&cameraName)
+{
+    switch(value)
+    {
+        case 0:
+            allCamData.at(cameraName).IA.useNPoint = false;
+            break;
+        case 1:
+            allCamData.at(cameraName).IA.useNPoint = true;
+            break;
+        default:
+            allCamData.at(cameraName).IA.useNPoint = false;
+    }
+    updateSelectedOrVC(cameraName);
+}
+
 void cameraIAInterface::updateSummedIntensity(const unsigned long value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.summedIntensity = value;
@@ -372,6 +427,41 @@ void cameraIAInterface::updateImageWidth(const unsigned long value,const std::st
 }
 */
 ///Functions Accessible to Python Controller///
+bool cameraIAInterface::setStepSize(const int step)
+{
+    bool ans=false;
+    unsigned short comm = step;
+    if( isAcquiring(selectedCamera()))
+    {
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::STEP_SIZE));
+        ans=shortCaput(comm,S);
+        message("Setting Step Size over image on ", selectedCameraObj.name," camera to be ", step);
+    }
+    return ans;
+}
+
+bool cameraIAInterface::useNPoint(const bool run)
+{
+    bool ans=false;
+    unsigned short comm = 1;
+    if (run==true){
+        comm=1;
+    }
+    else{
+        comm=0;
+    }
+
+    if( isAcquiring(selectedCamera()))
+    {
+        pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::USE_NPOINT));
+        ans=shortCaput(comm,S);
+        message("Using N-Point scaling in online Image Analysis on  ",
+                selectedCameraObj.name," camera.");
+    }
+    return ans;
+}
+
+
 bool cameraIAInterface::setBackground()
 {
     bool ans=false;

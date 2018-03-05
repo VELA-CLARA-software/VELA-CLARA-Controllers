@@ -42,6 +42,8 @@ class cameraIAInterface : public cameraInterface
         ///Functions Accessible to Python Controller///
         bool setBackground();
         bool useBackground(const bool run);
+        bool setStepSize(const int step);
+        bool useNPoint(const bool run);
         bool startAnalysis();
         bool stopAnalysis();
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
@@ -84,5 +86,9 @@ class cameraIAInterface : public cameraInterface
         void updateXMask(const unsigned long value,const std::string&cameraName);
         void updateYMask(const unsigned long value,const std::string&cameraName);
         void updateSummedIntensity(const unsigned long value,const std::string&cameraName);
+        void updateAnalyseState(const unsigned short value,const std::string&cameraName);
+        void updateUseBkgrnd(const unsigned short value,const std::string&cameraName);
+        void updateUseNPoint(const unsigned short value,const std::string&cameraName);
+
 };
 #endif // CAM_IA_INTERFACE_H

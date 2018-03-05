@@ -67,6 +67,9 @@ class cameraIAController  : public controller
         bool useBackground(const bool run);
         bool startAnalysis();
         bool stopAnalysis();
+        bool setStepSize(const int step);
+        bool useNPoint(const bool run);
+
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();

@@ -97,6 +97,16 @@ bool cameraIAController::stopVCAcquiring()
 }
 
 //IA Specific Functions
+bool cameraIAController::setStepSize(const int step)
+{
+    return localInterface.setStepSize(step);
+}
+
+bool cameraIAController::useNPoint(const bool run)
+{
+    return localInterface.useNPoint(run);
+}
+
 bool cameraIAController::setBackground()
 {
     return localInterface.setBackground();

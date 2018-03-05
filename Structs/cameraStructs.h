@@ -48,12 +48,13 @@ namespace cameraStructs
         (JPG_FILE_WRITE_MESSAGE)
         (JPG_CAPTURE)(JPG_CAPTURE_RBV)(JPG_NUM_CAPTURE)
         (JPG_NUM_CAPTURE_RBV)(JPG_NUM_CAPTURED)
-        (START_IA)(PIX_MM)(STEP_SIZE)(SET_BKGRND)(USE_BKGRND)
+        (START_IA)(PIX_MM)(STEP_SIZE)(SET_BKGRND)(USE_BKGRND)(USE_NPOINT)
         (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(SUMMED_PIX_INETSITY)
         (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
         (MASK_X)(MASK_Y)(MASK_X_RAD)(MASK_Y_RAD)(X_CENTER)(Y_CENTER)
         (BIT_DEPTH)(UNKNOWN_CAM_PV_TYPE)
-        (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ) (CAM_SENSOR_TEMP))
+        (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ) (CAM_SENSOR_TEMP)
+        (START_IA_RBV) (USE_BKGRND_RBV) (USE_NPOINT_RBV))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
         (CAM_OFF) (CAM_ON) (CAM_ERROR))
@@ -138,6 +139,7 @@ namespace cameraStructs
         size_t xPix, yPix,sigmaXPix,sigmaYPix,covXYPix,
                xCenterPix,yCenterPix,maskXRad,maskYRad,maskX,maskY,
                bitDepth,summedIntensity;
+        bool useBkgrnd, analysisState, useNPoint;
                //imageHeight,imageWidth;
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;

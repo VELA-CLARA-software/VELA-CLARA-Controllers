@@ -687,6 +687,12 @@ namespace UTL
     const std::string PV_IA_SUFFIX_START_IA         ="PV_IA_SUFFIX_START_IA";
     const std::string PV_IA_SUFFIX_SET_B            ="PV_IA_SUFFIX_SET_B";
     const std::string PV_IA_SUFFIX_USE_B            ="PV_IA_SUFFIX_USE_B";
+    const std::string PV_IA_SUFFIX_USE_NPOINT       ="PV_IA_SUFFIX_USE_NPOINT";
+
+    const std::string PV_IA_SUFFIX_START_IA_RBV       ="PV_IA_SUFFIX_START_IA_RBV";
+    const std::string PV_IA_SUFFIX_USE_B_RBV       ="PV_IA_SUFFIX_USE_B_RBV";
+    const std::string PV_IA_SUFFIX_USE_NPOINT_RBV       ="PV_IA_SUFFIX_USE_NPOINT_RBV";
+
     const std::string PV_IA_SUFFIX_CENTER_X         ="PV_IA_SUFFIX_CENTER_X";
     const std::string PV_IA_SUFFIX_CENTER_Y         ="PV_IA_SUFFIX_CENTER_Y";
     const std::string PV_IA_SUFFIX_MASK_X           ="PV_IA_SUFFIX_MASK_X";
