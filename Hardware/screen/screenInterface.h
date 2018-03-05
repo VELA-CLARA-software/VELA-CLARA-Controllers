@@ -52,6 +52,7 @@ class screenInterface: public interface
         const screenStructs::SCREEN_TYPE getScreenType(const std::string & name);
         const std::string getScreenTypeStr(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
+        std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
         bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );

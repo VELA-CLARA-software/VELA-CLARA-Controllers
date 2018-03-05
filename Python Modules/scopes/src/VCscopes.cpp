@@ -102,8 +102,10 @@ VCscopes::~VCscopes()
 scopeController & VCscopes::virtual_VELA_INJ_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::
+        APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::
+        APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( virtual_VELA_INJ_Scope_Controller_Obj )
     {
@@ -119,8 +121,10 @@ scopeController & VCscopes::virtual_VELA_INJ_Scope_Controller()
 scopeController & VCscopes::offline_VELA_INJ_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::
+        APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::
+        APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( offline_VELA_INJ_Scope_Controller_Obj )
     {
@@ -136,8 +140,8 @@ scopeController & VCscopes::offline_VELA_INJ_Scope_Controller()
 scopeController & VCscopes::physical_VELA_INJ_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( physical_VELA_INJ_Scope_Controller_Obj )
     {
@@ -153,8 +157,8 @@ scopeController & VCscopes::physical_VELA_INJ_Scope_Controller()
 scopeController & VCscopes::virtual_VELA_BA1_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( virtual_VELA_BA1_Scope_Controller_Obj )
     {
@@ -170,8 +174,8 @@ scopeController & VCscopes::virtual_VELA_BA1_Scope_Controller()
 scopeController & VCscopes::offline_VELA_BA1_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( offline_VELA_BA1_Scope_Controller_Obj )
     {
@@ -187,8 +191,8 @@ scopeController & VCscopes::offline_VELA_BA1_Scope_Controller()
 scopeController & VCscopes::physical_VELA_BA1_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( physical_VELA_BA1_Scope_Controller_Obj )
     {
@@ -204,8 +208,8 @@ scopeController & VCscopes::physical_VELA_BA1_Scope_Controller()
 scopeController & VCscopes::virtual_VELA_BA2_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( virtual_VELA_BA2_Scope_Controller_Obj )
     {
@@ -221,8 +225,8 @@ scopeController & VCscopes::virtual_VELA_BA2_Scope_Controller()
 scopeController & VCscopes::offline_VELA_BA2_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( offline_VELA_BA2_Scope_Controller_Obj )
     {
@@ -238,8 +242,8 @@ scopeController & VCscopes::offline_VELA_BA2_Scope_Controller()
 scopeController & VCscopes::physical_VELA_BA2_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
 
     if( physical_VELA_BA2_Scope_Controller_Obj )
     {
@@ -255,8 +259,8 @@ scopeController & VCscopes::physical_VELA_BA2_Scope_Controller()
 scopeController & VCscopes::virtual_CLARA_S01_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
 
     if( virtual_CLARA_S01_Scope_Controller_Obj )
     {
@@ -272,8 +276,8 @@ scopeController & VCscopes::virtual_CLARA_S01_Scope_Controller()
 scopeController & VCscopes::offline_CLARA_S01_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
 
     if( offline_CLARA_S01_Scope_Controller_Obj )
     {
@@ -289,8 +293,8 @@ scopeController & VCscopes::offline_CLARA_S01_Scope_Controller()
 scopeController & VCscopes::physical_CLARA_S01_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
 
     if( physical_CLARA_S01_Scope_Controller_Obj )
     {
@@ -306,8 +310,8 @@ scopeController & VCscopes::physical_CLARA_S01_Scope_Controller()
 scopeController & VCscopes::virtual_CLARA_PH1_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
 
     if( virtual_CLARA_PH1_Scope_Controller_Obj )
     {
@@ -323,8 +327,8 @@ scopeController & VCscopes::virtual_CLARA_PH1_Scope_Controller()
 scopeController & VCscopes::offline_CLARA_PH1_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
 
     if( offline_CLARA_PH1_Scope_Controller_Obj )
     {
@@ -340,8 +344,8 @@ scopeController & VCscopes::offline_CLARA_PH1_Scope_Controller()
 scopeController & VCscopes::physical_CLARA_PH1_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
-    const std::string scopeconf1 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
 
     if( physical_CLARA_PH1_Scope_Controller_Obj )
     {

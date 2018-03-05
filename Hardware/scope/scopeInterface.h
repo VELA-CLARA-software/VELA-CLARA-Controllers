@@ -58,6 +58,11 @@ class scopeInterface : public interface
         void setNumBufferSize( size_t bufferSize );
         void setTraceBufferSize( size_t bufferSize );
         void restartContinuousMonitoring();
+        void setTimebase( const std::string & scopeName, const double timebase );
+        double getTimebase( const std::string & scopeName );
+        size_t getBufferSize( const std::string & scopeName );
+        const VELA_ENUM::DIAG_TYPE getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        const std::string getDiagTypeStr( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< std::vector< double > > getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getScopeNums( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         std::vector< double > getScopeP1Vec( const std::string & name );

@@ -71,6 +71,11 @@ class scopeController : public controller
         void setNumBufferSize( size_t bufferSize );
         void setTraceBufferSize( size_t bufferSize );
         void restartContinuousMonitoring();
+        void setTimebase( const std:: string & name, const double timebase );
+        double getTimebase( const std:: string & name );
+        size_t getBufferSize( const std:: string & name );
+        const VELA_ENUM::DIAG_TYPE getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        const std::string getDiagTypeStr( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
         void monitorTracesForNShots( size_t N );

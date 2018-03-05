@@ -56,7 +56,7 @@ class configReader : public baseObject
 
         //int            getNum (const std::string & str);
         //double         getNumD(const std::string & str);
-        unsigned short getNumUS(const std::string & str);
+//        unsigned short getNumUS(const std::string & str);
         //size_t         getSize(const std::string & str);
         //long           getNumL(const std::string & str);
 

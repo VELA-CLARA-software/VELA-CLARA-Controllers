@@ -971,6 +971,21 @@ bool liberaLLRFController::setInfiniteMaskEndByPower(const std::string& power_tr
     return localInterface.setInfiniteMaskEndByPower(power_trace,phase_trace,level);
 }
 //______________________________________________________________________________
+bool liberaLLRFController::disableInfiniteMaskEndByPower(const std::string& phase_trace)
+{
+    return localInterface.disableInfiniteMaskEndByPower(phase_trace);
+}
+//______________________________________________________________________________
+size_t liberaLLRFController::getMaskInfiniteEndByPowerIndex(const std::string& name)
+{
+    return localInterface.getMaskInfiniteEndByPowerIndex(name);
+}
+//______________________________________________________________________________
+double liberaLLRFController::getMaskInfiniteEndByPowerTime(const std::string& name)
+{
+    return localInterface.getMaskInfiniteEndByPowerTime(name);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setAbsoluteTimeMask(const double s1,const double s2,const double s3,const double s4,const double value2,const  std::string& name)
 {
     return localInterface.setAbsoluteTimeMask(s1,s2,s3,s4,value2,name);
