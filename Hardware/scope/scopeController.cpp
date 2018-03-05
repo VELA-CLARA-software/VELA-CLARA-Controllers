@@ -162,6 +162,26 @@ void scopeController::setTimebase( const std::string & name, const double timeba
     localInterface.setTimebase( name, timebase );
 }
 //______________________________________________________________________________
+double scopeController::getTimebase( const std::string & name )
+{
+    return localInterface.getTimebase( name );
+}
+//______________________________________________________________________________
+size_t scopeController::getBufferSize( const std::string & name )
+{
+    return localInterface.getBufferSize( name );
+}
+//______________________________________________________________________________
+const VELA_ENUM::DIAG_TYPE scopeController::getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return localInterface.getDiagType( scopeName, pvType );
+}
+//______________________________________________________________________________
+const std::string scopeController::getDiagTypeStr( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return localInterface.getDiagTypeStr( scopeName, pvType );
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > scopeController::getScopeP1Buffer( const std::string & name )
 {
     return localInterface.getScopeP1Buffer( name );

@@ -775,6 +775,54 @@ const scopeStructs::scopeNumObject & scopeInterface::getScopeNumDataStruct( cons
     }
 }
 //______________________________________________________________________________
+double scopeInterface::getTimebase( const std::string & scopeName )
+{
+    if( entryExists( scopeObj.traceObjects, scopeName ) )
+    {
+        return scopeObj.traceObjects.at( scopeName ).timebase;
+    }
+    else
+    {
+        message("ERROR!!!!! Scope not defined in config file!!!!");
+        return UTL::DUMMY_DOUBLE;
+    }
+}
+//______________________________________________________________________________
+size_t scopeInterface::getBufferSize( const std::string & scopeName )
+{
+    if( entryExists( scopeObj.traceObjects, scopeName ) )
+    {
+        return scopeObj.traceObjects.at( scopeName ).buffer;
+    }
+    else
+    {
+        message("ERROR!!!!! Scope not defined in config file!!!!");
+        return UTL::DUMMY_SIZET;
+    }
+}
+//______________________________________________________________________________
+const VELA_ENUM::DIAG_TYPE scopeInterface::getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    if( entryExists( scopeObj.traceObjects, scopeName ) && isATracePV( pvType ) )
+    {
+        return scopeObj.traceObjects.at( scopeName ).diagType;
+    }
+    else if( entryExists( scopeObj.numObjects, scopeName ) && isANumPV( pvType ) )
+    {
+        return scopeObj.numObjects.at( scopeName ).diagType;
+    }
+    else
+    {
+        message("ERROR!!!!! Scope not defined in config file!!!!");
+        return VELA_ENUM::DIAG_TYPE::UNKNOWN_DIAG_TYPE;
+    }
+}
+//______________________________________________________________________________
+const std::string scopeInterface::getDiagTypeStr( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return getDiagTypeStr( scopeName, pvType);
+}
+//______________________________________________________________________________
 std::vector< std::vector< double > > scopeInterface::getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
 {
 //    while( scopeObj.traceObjects.at( name ).isMonitoringMap.at( pvType ) )

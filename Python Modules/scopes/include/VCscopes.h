@@ -320,6 +320,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     char const* setTraceBufferSizeDocString = "Set size of buffer for continuous trace monitor.";
     char const* restartMonitoringDocString = "Restarts continuous monitoring of scope parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
     char const* setTimebaseDocString = "Sets the timebase (number of points in trace / time window of trace).";
+    char const* getTimebaseDocString = "Returns the timebase (number of points in trace / time window of trace).";
+    char const* getBufferSizeDocString = "Returns the size of the buffer.";
+    char const* getDiagTypeDocString = "Returns the diagnostic type for a given channel on the scope (Trace or number).";
+    char const* getDiagTypeStrDocString = "Returns the diagnostic type for a given channel on the scope (Trace or number).";
     char const* getScopeNumsDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), after using monitorNumsForNShots.";
     char const* getScopeP1VecDocString = "Returns a vector of doubles for str(scopeName), for channel P1, after using monitorNumsForNShots.";
     char const* getScopeP2VecDocString = "Returns a vector of doubles for str(scopeName), for channel P2, after using monitorNumsForNShots.";
@@ -390,6 +394,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .def("setTraceBufferSize",              &scopeController::setBufferSize, setTraceBufferSizeDocString                   )
             .def("restartContinuousMonitoring",     &scopeController::restartContinuousMonitoring, restartMonitoringDocString      )
             .def("setTimebase",                     &scopeController::setTimebase, setTimebaseDocString                            )
+            .def("getTimebase",                     &scopeController::getTimebase, getTimebaseDocString                            )
+            .def("getBufferSize",                   &scopeController::getBufferSize, getBufferSizeDocString                        )
+            .def("getDiagType",                     &scopeController::getDiagType, getDiagTypeDocString                            )
+            .def("getDiagTypeStr",                  &scopeController::getDiagTypeStr, getDiagTypeStrDocString                      )
             .def("getScopeNums",                    &scopeController::getScopeNums_Py, getScopeNumsDocString                       )
             .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec_Py, getScopeP1VecDocString                     )
             .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec_Py, getScopeP2VecDocString                     )

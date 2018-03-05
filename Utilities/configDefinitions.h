@@ -36,6 +36,7 @@ namespace UTL
     const size_t TWO_SIZET    = 2;
     const long   DUMMY_LONG   = -999;
     const int    DUMMY_INT    = -9999;
+    const size_t DUMMY_SIZET  = 999;
     const size_t TEN_SIZET    = 10;
     const size_t BUFFER_TEN   = 10;
     const int    ZERO_INT     = 0;
@@ -372,6 +373,7 @@ namespace UTL
     const std::string ICT2            = "ICT2";
     const std::string FCUP            = "FCUP";
     const std::string ED_FCUP         = "ED_FCUP";
+    const std::string SCOPE_PV_TYPE   = "SCOPE_PV_TYPE";
 
 
 
