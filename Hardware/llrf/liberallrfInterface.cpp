@@ -2221,6 +2221,9 @@ bool liberallrfInterface::set_mask(const size_t s1,const size_t s2,const size_t 
             {
                 if( s1 <= s2 && s2 <= s3 && s3 <= s4)
                 {
+                    double hi_max = -std::numeric_limits<double>::infinity();
+                    double lo_min =  std::numeric_limits<double>::infinity();
+
                     std::vector<double> hi_mask(ra.size(), 0.0);
                     std::vector<double> lo_mask(ra.size(), 0.0);
 
@@ -2241,6 +2244,14 @@ bool liberallrfInterface::set_mask(const size_t s1,const size_t s2,const size_t 
                         }
                         hi_mask[i] = ra[i] + temp;
                         lo_mask[i] = ra[i] - temp;
+                        if(hi_mask[i] > hi_max)
+                        {
+                           hi_max = hi_mask[i];
+                        }
+                        if(lo_mask[i] < lo_min)
+                        {
+                           lo_min = hi_mask[i];
+                        }
                     }
                     for(auto i = s2+1; i <= s3; ++i)
                     {
@@ -2259,6 +2270,14 @@ bool liberallrfInterface::set_mask(const size_t s1,const size_t s2,const size_t 
                         }
                         hi_mask[i] = ra[i] + temp;
                         lo_mask[i] = ra[i] - temp;
+                        if(hi_mask[i] > hi_max)
+                        {
+                           hi_max = hi_mask[i];
+                        }
+                        if(lo_mask[i] < lo_min)
+                        {
+                           lo_min = hi_mask[i];
+                        }
                     }
                     for(auto i = s4+1; i < ra.size(); ++i)
                     {
@@ -2268,8 +2287,10 @@ bool liberallrfInterface::set_mask(const size_t s1,const size_t s2,const size_t 
                     // apply mask values
                     if(setHighMask(n,hi_mask))
                     {
+                        message("hi_max = ",hi_max);
                         if(setLowMask(n,lo_mask))
                         {
+                            message("lo_min = ", lo_min);
                             return true;
                         }
                         else
@@ -2367,7 +2388,6 @@ bool liberallrfInterface::setInfiniteMasks(const std::string& name)
         return true;
     }
     return false;
-
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::setHighMask(const std::string&name,const std::vector<double>& value)
