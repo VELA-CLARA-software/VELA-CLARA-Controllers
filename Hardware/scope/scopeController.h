@@ -71,6 +71,7 @@ class scopeController : public controller
         void setNumBufferSize( size_t bufferSize );
         void setTraceBufferSize( size_t bufferSize );
         void restartContinuousMonitoring();
+        void setTimebase( const std:: string & name, const double timebase );
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
         void monitorTracesForNShots( size_t N );

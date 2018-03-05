@@ -319,6 +319,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     char const* setNumBufferSizeDocString = "Set size of buffer for continuous P values monitor.";
     char const* setTraceBufferSizeDocString = "Set size of buffer for continuous trace monitor.";
     char const* restartMonitoringDocString = "Restarts continuous monitoring of scope parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
+    char const* setTimebaseDocString = "Sets the timebase (number of points in trace / time window of trace).";
     char const* getScopeNumsDocString = "Returns a vector of doubles for str(scopeName), for the channel SCOPE_PV_TYPE(pvType), after using monitorNumsForNShots.";
     char const* getScopeP1VecDocString = "Returns a vector of doubles for str(scopeName), for channel P1, after using monitorNumsForNShots.";
     char const* getScopeP2VecDocString = "Returns a vector of doubles for str(scopeName), for channel P2, after using monitorNumsForNShots.";
@@ -388,6 +389,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .def("setNumBufferSize",                &scopeController::setBufferSize, setNumBufferSizeDocString                     )
             .def("setTraceBufferSize",              &scopeController::setBufferSize, setTraceBufferSizeDocString                   )
             .def("restartContinuousMonitoring",     &scopeController::restartContinuousMonitoring, restartMonitoringDocString      )
+            .def("setTimebase",                     &scopeController::setTimebase, setTimebaseDocString                            )
             .def("getScopeNums",                    &scopeController::getScopeNums_Py, getScopeNumsDocString                       )
             .def("getScopeP1Vec",                   &scopeController::getScopeP1Vec_Py, getScopeP1VecDocString                     )
             .def("getScopeP2Vec",                   &scopeController::getScopeP2Vec_Py, getScopeP2VecDocString                     )

@@ -157,6 +157,11 @@ void scopeController::restartContinuousMonitoring()
     localInterface.restartContinuousMonitoring();
 }
 //______________________________________________________________________________
+void scopeController::setTimebase( const std::string & name, const double timebase )
+{
+    localInterface.setTimebase( name, timebase );
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > scopeController::getScopeP1Buffer( const std::string & name )
 {
     return localInterface.getScopeP1Buffer( name );

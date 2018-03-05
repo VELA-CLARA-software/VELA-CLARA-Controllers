@@ -739,6 +739,21 @@ bool scopeInterface::isMonitoringScopeNum( const std::string & scopeName, scopeS
         return false;
 }
 //______________________________________________________________________________
+void scopeInterface::setTimebase( const std::string & scopeName, const double timebase )
+{
+    if( entryExists( scopeObj.traceObjects, scopeName ) )
+        {
+            for( auto && it : scopeObj.traceObjects )
+            {
+                it.second.timebase = timebase;
+            }
+        }
+    else
+    {
+        message("ERROR!!!!! Scope not defined in config file");
+    }
+}
+//______________________________________________________________________________
 bool scopeInterface::isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return !isMonitoringScopeNum( scopeName, pvType );
