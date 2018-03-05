@@ -103,7 +103,7 @@ void screenInterface::initScreenChids()
     for(auto && scr_IT : allScreentData ) // iterate over all screens
     {
         addILockChannels(scr_IT.second.numIlocks, scr_IT.second.pvRoot, scr_IT.first, scr_IT.second.iLockPVStructs);
-
+        message(scr_IT.second.pvRoot);
         // iterate over all screen pvCom / pvMon structs,
         for( auto && it2 : scr_IT.second.pvComStructs )
         {

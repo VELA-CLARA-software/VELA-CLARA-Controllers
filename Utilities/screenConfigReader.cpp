@@ -551,6 +551,8 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
         }
         inputFile.close( );
         debugMessage( "File Closed" );
+        message(numObjs);
+        message(scrObjects.size());
         if( numObjs == scrObjects.size() )
         {
             success = true;
