@@ -2,14 +2,14 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="330" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1853" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="330" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\scopeConfigReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -17,39 +17,14 @@
 			<Cursor1 position="6764" topLine="84" />
 		</Cursor>
 	</File>
-	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3436" topLine="39" />
-		</Cursor>
-	</File>
 	<File name="..\..\Utilities\scopeConfigReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1520" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Structs\scopeStructs.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3522" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\VCscopes.h" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="include\VCscopes.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="29257" topLine="375" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\scope\scopeInterface.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3560" topLine="38" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\scope\scopeInterface.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="34785" topLine="795" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\scope\scopeController.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3873" topLine="60" />
 		</Cursor>
 	</File>
 	<File name="src\VCscopes.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -57,15 +32,40 @@
 			<Cursor1 position="8288" topLine="174" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\scope\scopeController.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9298" topLine="147" />
-		</Cursor>
-	</File>
 	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1337" topLine="0" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="0ec5b3385a9d06212273589900000002=0;scopes:..\..\Hardware\scope\scopeInterface.cpp,1;scopes:..\..\Structs\scopeStructs.h,2;scopes:..\..\Hardware\scope\scopeInterface.h,3;scopes:..\..\Hardware\scope\scopeController.h,*4;scopes:include\VCscopes.h,5;scopes:..\..\Hardware\scope\scopeController.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0ec5b3385a9d06212273589900000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<File name="..\..\Hardware\scope\scopeController.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9298" topLine="147" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\scope\scopeController.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3873" topLine="60" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\scope\scopeInterface.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10454" topLine="218" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\scope\scopeInterface.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3560" topLine="38" />
+		</Cursor>
+	</File>
+	<File name="..\..\Structs\scopeStructs.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="441" topLine="94" />
+		</Cursor>
+	</File>
+	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3436" topLine="39" />
+		</Cursor>
+	</File>
+	<EditorTabsLayout layout="099f91805a9e70f10000896200000002=+4;bpms:..\..\Hardware\interface.cpp|099fa3205a9e7e110033ce6d00000003=2;bpms:..\..\Hardware\beamPositionMonitor\beamPositionMonitorInterface.cpp,0;scopes:..\..\Hardware\scope\scopeInterface.cpp,1;scopes:..\..\Structs\scopeStructs.h,*3;bpms:..\..\Structs\beamPositionMonitorStructs.h,5;bpms:include\VCBPMs.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=099f91805a9e70f10000896200000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=099fa3205a9e7e110033ce6d00000003;caption=;state=2098172;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(4,0,0)=202|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

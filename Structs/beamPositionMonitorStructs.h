@@ -2,6 +2,8 @@
 #define _VELA_BPM_STRUCTS_H_
 //
 #include "structs.h"
+#include "configDefinitions.h"
+#include <boost/circular_buffer.hpp>
 //stl
 #include <string>
 #include <map>
@@ -53,19 +55,23 @@ namespace beamPositionMonitorStructs
 
     struct rawDataStruct
     {
-        rawDataStruct() : shotCount( 0 ), numShots( 1 ) {}
+        rawDataStruct() : shotCount( 0 ), numShots( 1 ), buffer( UTL::BUFFER_TEN ) {}
         std::string name;
         int shotCount, numShots;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct, appendingData;
+        size_t buffer;
         std::vector< double > p1, p2, pu1, pu2, pu3, pu4, c1, c2, x, y, q;
+        boost::circular_buffer< double > xBuffer, yBuffer, qBuffer;
         std::vector< double > timeStamps;
+        boost::circular_buffer< double > timeStampsBuffer;
         std::vector< std::vector< double > > rawBPMData;
+        boost::circular_buffer< std::vector< double > > rawBPMDataBuffer;
         std::vector< std::string > strTimeStamps;
     };
 
     struct bpmDataObject
     {
-        bpmDataObject() : shotCount( 0 ), numShots( 1 ) {}
+        bpmDataObject() : shotCount( 0 ), numShots( 1 ), buffer( UTL::BUFFER_TEN ) {}
         std::string name, pvRoot;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct;
         bool appendingData;
@@ -73,7 +79,9 @@ namespace beamPositionMonitorStructs
         double xPV, yPV;
         double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn;
         double awak, rdy, q;
+        size_t buffer;
         long sa1, sa2, ra1, ra2, sd1, sd2, rd1, rd2;
+        boost::circular_buffer< double > xPVBuffer, yPVBuffer;
         rawDataStruct bpmRawData;
         std::vector< double > timeStamps;
         std::vector< std::string > strTimeStamps;
