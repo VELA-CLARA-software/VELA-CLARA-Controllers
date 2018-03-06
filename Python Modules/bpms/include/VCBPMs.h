@@ -37,9 +37,9 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController & virtual_VELA_BA2_BPM_Controller();
         beamPositionMonitorController & offline_VELA_BA2_BPM_Controller();
         beamPositionMonitorController & physical_VELA_BA2_BPM_Controller();
-        beamPositionMonitorController & virtual_CLARA_INJ_BPM_Controller();
-        beamPositionMonitorController & offline_CLARA_INJ_BPM_Controller();
-        beamPositionMonitorController & physical_CLARA_INJ_BPM_Controller();
+        beamPositionMonitorController & virtual_CLARA_PH1_BPM_Controller();
+        beamPositionMonitorController & offline_CLARA_PH1_BPM_Controller();
+        beamPositionMonitorController & physical_CLARA_PH1_BPM_Controller();
         beamPositionMonitorController & virtual_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & offline_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & physical_CLARA_2_VELA_BPM_Controller();
@@ -67,6 +67,7 @@ class VCBPMs// : public beamPositionMonitorController
         VELA_ENUM::MACHINE_AREA VELA_BA1;
         VELA_ENUM::MACHINE_AREA VELA_BA2;
         VELA_ENUM::MACHINE_AREA CLARA_INJ;
+        VELA_ENUM::MACHINE_AREA CLARA_PH1;
         VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
         VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
 
@@ -79,9 +80,9 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController * virtual_VELA_BA2_BPM_Controller_Obj;
         beamPositionMonitorController * offline_VELA_BA2_BPM_Controller_Obj;
         beamPositionMonitorController * physical_VELA_BA2_BPM_Controller_Obj;
-        beamPositionMonitorController * virtual_CLARA_INJ_BPM_Controller_Obj;
-        beamPositionMonitorController * offline_CLARA_INJ_BPM_Controller_Obj;
-        beamPositionMonitorController * physical_CLARA_INJ_BPM_Controller_Obj;
+        beamPositionMonitorController * virtual_CLARA_PH1_BPM_Controller_Obj;
+        beamPositionMonitorController * offline_CLARA_PH1_BPM_Controller_Obj;
+        beamPositionMonitorController * physical_CLARA_PH1_BPM_Controller_Obj;
         beamPositionMonitorController * virtual_CLARA_2_VELA_BPM_Controller_Obj;
         beamPositionMonitorController * offline_CLARA_2_VELA_BPM_Controller_Obj;
         beamPositionMonitorController * physical_CLARA_2_VELA_BPM_Controller_Obj;
@@ -378,19 +379,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     boost::python::class_<VCBPMs,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_BPM_Controller",  &VCBPMs::virtual_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_BPM_Controller",  &VCBPMs::offline_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_INJ_BPM_Controller", &VCBPMs::offline_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_BPM_Controller", &VCBPMs::physical_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("virtual_VELA_BA1_BPM_Controller",  &VCBPMs::virtual_VELA_BA1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_BA1_BPM_Controller",  &VCBPMs::offline_VELA_BA1_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_BA1_BPM_Controller", &VCBPMs::offline_VELA_BA1_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA1_BPM_Controller", &VCBPMs::physical_VELA_BA1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("virtual_VELA_BA2_BPM_Controller",  &VCBPMs::virtual_VELA_BA2_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_BA2_BPM_Controller",  &VCBPMs::offline_VELA_BA2_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_BA2_BPM_Controller", &VCBPMs::offline_VELA_BA2_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_INJ_BPM_Controller",  &VCBPMs::virtual_CLARA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_INJ_BPM_Controller",  &VCBPMs::offline_CLARA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_INJ_BPM_Controller", &VCBPMs::offline_CLARA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA2_BPM_Controller", &VCBPMs::physical_VELA_BA2_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_PH1_BPM_Controller",  &VCBPMs::virtual_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_PH1_BPM_Controller",  &VCBPMs::offline_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_PH1_BPM_Controller", &VCBPMs::physical_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("virtual_CLARA_2_VELA_BPM_Controller",  &VCBPMs::virtual_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_2_VELA_BPM_Controller",  &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_2_VELA_BPM_Controller", &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_2_VELA_BPM_Controller", &VCBPMs::physical_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("getBPMController", &VCBPMs::getBPMController, getControllerDocString, return_value_policy<reference_existing_object>())
         .def("setQuiet",         &VCBPMs::setQuiet )
         .def("setVerbose",       &VCBPMs::setVerbose )

@@ -38,7 +38,7 @@ namespace beamPositionMonitorStructs
         chtype             CHTYPE;
         void *             val;
         beamPositionMonitorInterface *interface;
-        evid               *EVID;
+        evid               EVID;
     };
 
     struct pvStruct

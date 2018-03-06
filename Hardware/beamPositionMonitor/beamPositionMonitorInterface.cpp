@@ -66,7 +66,7 @@ beamPositionMonitorInterface::~beamPositionMonitorInterface()
 //______________________________________________________________________________
 void beamPositionMonitorInterface::killMonitor( beamPositionMonitorStructs::monitorStruct * ms )
 {
-    int status = ca_clear_subscription( *ms -> EVID );
+    int status = ca_clear_subscription( ms -> EVID );
     if( status == ECA_NORMAL)
         debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
     else
@@ -186,7 +186,7 @@ void beamPositionMonitorInterface::monitorBPMs()
                                    it2.second.COUNT,
                                    it2.second.CHID,
                                    it2.second.MASK,
-                                   scopeInterface::staticEntryrMonitor,
+                                   beamPositionMonitorInterface::staticEntryrMonitor,
                                    (void*)continuousMonitorStructs.back(),
                                    &continuousMonitorStructs.back()->EVID);
             debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
@@ -211,7 +211,7 @@ void beamPositionMonitorInterface::addToMonitorStructs( std::vector< beamPositio
     msv.back() -> bpmObject  = &bpmObj;
     msv.back() -> interface  = this;
     msv.back() -> CHTYPE     = pv.CHTYPE;
-    msv.back() -> EVID       = &pv.EVID;
+//    msv.back() -> EVID       = &pv.EVID;
     switch( pv.pvType )
     {
         case beamPositionMonitorStructs::BPM_PV_TYPE::SA1:
@@ -285,7 +285,7 @@ void beamPositionMonitorInterface::addToMonitorStructs( std::vector< beamPositio
         default:
             message("addToMonitorStructs ERROR PV_Type unknown");
     }
-    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  beamPositionMonitorInterface::staticEntryrMonitor, (void*)msv.back(), &pv.EVID); // &continuousMonitorStructs.back().EventID );
+    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  beamPositionMonitorInterface::staticEntryrMonitor, (void*)msv.back(), &msv.back() -> EVID); // &continuousMonitorStructs.back().EventID );
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::staticEntryrMonitor( const event_handler_args args )
@@ -409,7 +409,7 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
 //______________________________________________________________________________
 void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
 {
-    int status = ca_clear_subscription( *ms -> EVID );
+    int status = ca_clear_subscription( ms -> EVID );
     if( status == ECA_NORMAL)
     {
 //        debugMessage( ms -> scopeObject, " monitoring = false ");
