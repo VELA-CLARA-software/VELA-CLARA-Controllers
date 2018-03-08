@@ -163,58 +163,58 @@ void cameraIAInterface::staticEntryIAMonitor(const event_handler_args args)
     switch(ms -> monType)
     {
         case CAM_PV_TYPE::X:
-            ms->interface->updateX( *(unsigned short*)args.dbr, ms->objName);
+            ms->interface->updateX( *(double*)args.dbr, ms->objName);
             break;
         case CAM_PV_TYPE::Y:
-            ms->interface->updateY( *(unsigned short*)args.dbr, ms->objName);
+            ms->interface->updateY( *(double*)args.dbr, ms->objName);
             break;
         case CAM_PV_TYPE::SIGMA_X:
-            ms->interface->updateSigmaX( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateSigmaX( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::SIGMA_Y:
-            ms->interface->updateSigmaY( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateSigmaY( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::COV_XY:
-            ms->interface->updateCovXY( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateCovXY( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::X_PIX:
-            ms->interface->updateXPix( *(unsigned short*)args.dbr, ms->objName);
+            ms->interface->updateXPix( *(unsigned long*)args.dbr, ms->objName);
             break;
         case CAM_PV_TYPE::Y_PIX:
-            ms->interface->updateYPix( *(unsigned short*)args.dbr, ms->objName);
+            ms->interface->updateYPix( *(unsigned long*)args.dbr, ms->objName);
             break;
         case CAM_PV_TYPE::SIGMA_X_PIX:
-            ms->interface->updateSigmaXPix( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateSigmaXPix( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::SIGMA_Y_PIX:
-            ms->interface->updateSigmaYPix( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateSigmaYPix( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::COV_XY_PIX:
-            ms->interface->updateCovXYPix( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateCovXYPix( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::MASK_X_RAD:
-            ms->interface->updateXRad( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateXRad( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::MASK_Y_RAD:
-            ms->interface->updateYRad( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateYRad( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::MASK_X:
-            ms->interface->updateXMask( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateXMask( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::MASK_Y:
-            ms->interface->updateYMask( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateYMask( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::X_CENTER:
-            ms->interface->updateXCenterPix( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateXCenterPix( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::Y_CENTER:
-            ms->interface->updateYCenterPix( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateYCenterPix( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::BIT_DEPTH:
-            ms->interface->updateBitDepth( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateBitDepth( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::SUMMED_PIX_INETSITY:
-            ms->interface->updateSummedIntensity( *(unsigned short*)args.dbr, ms->objName );
+            ms->interface->updateSummedIntensity( *(unsigned long*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::CAM_ACQUIRE_RBV:
             ms->interface->updateAcquiring( *(unsigned short*)args.dbr, ms->objName );
@@ -363,7 +363,6 @@ void cameraIAInterface::updateBitDepth(const unsigned long value,const std::stri
     allCamData.at(cameraName).IA.bitDepth = value;
     updateSelectedOrVC(cameraName);
 }
-
 void cameraIAInterface::updateAnalyseState(const unsigned short value,const std::string&cameraName)
 {
     switch(value)
@@ -409,7 +408,6 @@ void cameraIAInterface::updateUseNPoint(const unsigned short value,const std::st
     }
     updateSelectedOrVC(cameraName);
 }
-
 void cameraIAInterface::updateSummedIntensity(const unsigned long value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.summedIntensity = value;
@@ -439,7 +437,6 @@ bool cameraIAInterface::setStepSize(const int step)
     }
     return ans;
 }
-
 bool cameraIAInterface::useNPoint(const bool run)
 {
     bool ans=false;
@@ -460,8 +457,6 @@ bool cameraIAInterface::useNPoint(const bool run)
     }
     return ans;
 }
-
-
 bool cameraIAInterface::setBackground()
 {
     bool ans=false;

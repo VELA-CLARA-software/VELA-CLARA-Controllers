@@ -133,7 +133,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
         ;
     boost::python::class_<cameraStructs::cameraObject,boost::noncopyable>
-        ("cameraObject","cameraObject Doc String", boost::python::no_init)
+        ("cameraObject_from_IA","cameraObject Doc String", boost::python::no_init)/// The has been exposed under a differnt name to stop clashes!!!!!!
         .def_readonly("name",
                       &cameraStructs::cameraObject::name,
                       "Name of the camera (defined in the config file).")
@@ -152,6 +152,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("IA",
                       &cameraStructs::cameraObject::IA,
                       "Object (cameraIAObject) containing all the Image Anaylsis data.")
+        .def_readonly("DAQ",
+                      &cameraStructs::cameraObject::DAQ,
+                      "Object (cameraDAQObject) containing all the DAQ data.")
+
         ;
     boost::python::class_<cameraStructs::cameraIAObject,boost::noncopyable>
         ("cameraIAObject","cameraIAObject Doc String", boost::python::no_init)

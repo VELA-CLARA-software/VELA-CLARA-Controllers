@@ -115,19 +115,19 @@ bool cameraIAConfigReader::readConfig()
                     readingData = true;
                     debugMessage( "Found START_OF_DATA" );
                 }
-                if( stringIsSubString( line, UTL::PV_COMMANDS_START ) )
+                if( stringIsSubString( line, UTL::PV_IA_COMMANDS_START ) )
                 {
                     readingCommandPVs  = true;
                     readingObjs = false;
                     readingMonitorPVs = false;
-                    debugMessage( "Found PV_COMMANDS_START" );
+                    debugMessage( "Found PV_IA_COMMANDS_START" );
                 }
                 if( stringIsSubString( line, UTL::PV_IA_MONITORS_START ) )
                 {
                     readingCommandPVs = false;
                     readingObjs       = false;
                     readingMonitorPVs = true;
-                    debugMessage( "Found PV_MONITORS_START" );
+                    debugMessage( "Found PV_IA_MONITORS_START" );
                 }
                 if( stringIsSubString( line, UTL::OBJECTS_START ) )
                 {
@@ -154,7 +154,7 @@ bool cameraIAConfigReader::readConfig()
 }
 void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal )
 {
-    message(keyVal[0]," ",keyVal[1]);
+    //message(keyVal[0]," ",keyVal[1]);
     if( stringIsSubString( keyVal[0], "SUFFIX" ) && stringIsSubString( keyVal[0], "IA" ))
     {
         pvStruct_v.push_back( pvStruct() );
@@ -217,7 +217,7 @@ void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, 
             pvStruct_v.back().pvType = CAM_PV_TYPE::CAM_STATUS;
 
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_START_IA_RBV  ){
-            message("HELLO");
+            //message("HELLO");
             pvStruct_v.back().pvType = CAM_PV_TYPE::START_IA_RBV;
         }
 

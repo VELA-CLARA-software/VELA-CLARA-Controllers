@@ -339,5 +339,7 @@ namespace cameraStructs
         cameraDAQObject DAQ;
         cameraIAObject IA;
     };
+
+
 }
 #endif // CAM_STRUCTS_H_

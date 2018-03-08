@@ -137,7 +137,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
              pure_virtual(&controller::getILockStates)                  )
         ;
     boost::python::class_<cameraStructs::cameraObject,boost::noncopyable>
-        ("cameraObject","cameraObject Doc String", boost::python::no_init)
+        ("cameraObject_from_DAQ","cameraObject Doc String", boost::python::no_init)
         .def_readonly("name",
                       &cameraStructs::cameraObject::name,
                       "Name of the camera (defined in the config file).")
@@ -159,6 +159,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("DAQ",
                       &cameraStructs::cameraObject::DAQ,
                       "Object (cameraDAQObject) containing all the DAQ data.")
+        .def_readonly("IA",
+                      &cameraStructs::cameraObject::IA,
+                      "Object (cameraIAObject) containing all the Image Anaylsis data.")
         ;
     class_<cameraStructs::cameraDAQObject,boost::noncopyable>
         ("cameraDAQObject","cameraDAQObject (read only values)", no_init)
