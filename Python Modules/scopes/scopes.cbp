@@ -64,7 +64,7 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='cmd /c copy /y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
+					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
 			</Target>
 		</Build>

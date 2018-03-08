@@ -71,6 +71,7 @@ class beamPositionMonitorInterface : public interface
                                   beamPositionMonitorStructs::bpmDataObject * bpmObj );
         void monitorDataForNShots( size_t N, const std::vector< std::string > & bpmNames );
         void monitorDataForNShots( size_t N, const std::string & name );
+        void setBufferSize( size_t bufferSize );
         VELA_ENUM::MACHINE_AREA getMachineArea();
         VELA_ENUM::MACHINE_MODE getMachineMode();
 
