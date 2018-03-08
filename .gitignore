@@ -1,3 +1,16 @@
-Controllers/VELA/INJECTOR/velaINJMagnets/velaINJMagnets.layout
-*.layout
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 *.obj
+*.pdb
+*.lib
+*.pyd
+# stuff
+##########
+*.exp
+*.layout
