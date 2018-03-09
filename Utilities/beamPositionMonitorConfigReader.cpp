@@ -38,15 +38,21 @@ beamPositionMonitorStructs::bpmObject beamPositionMonitorConfigReader::getBPMObj
         obj.dataObjects[ it.name ] = it;
 
     /// Then we add in the monitor structs, for each bpm object ...
-
     for( auto && it : obj.dataObjects )
+    {
         for( auto it2 : bpmDataMonStructs )
+        {
             it.second.pvMonStructs[ it2.pvType ] = it2;
+        }
+    }
 
     for( auto && it : obj.dataObjects )
-        for( auto it2 : bpmDataMonStructs )
+    {
+        for( auto it2 : bpmDataComStructs )
+        {
             it.second.pvComStructs[ it2.pvType ] = it2;
-
+        }
+    }
 
     return obj;
 }
@@ -55,6 +61,7 @@ bool beamPositionMonitorConfigReader::readConfigFiles()
 {
     bool success = true;
     bpmDataMonStructs.clear();
+    bpmDataComStructs.clear();
     bpmDataObjects.clear();
     bool bpmSuccess = readConfig( *this, bpmConf, &beamPositionMonitorConfigReader::addToBPMDataObjectsV1, &beamPositionMonitorConfigReader::addToBPMPVComStructsV1, &beamPositionMonitorConfigReader::addToBPMPVMonStructsV1 );
     if( !bpmSuccess )
@@ -77,7 +84,7 @@ void beamPositionMonitorConfigReader::addToBPMPVMonStructsV1( const std::vector<
 //______________________________________________________________________________
 void beamPositionMonitorConfigReader::addToBPMPVComStructsV1( const std::vector<std::string> &keyVal )
 {
-    addToPVStruct( bpmDataMonStructs, keyVal );
+    addToPVStruct( bpmDataComStructs, keyVal );
 }
 //______________________________________________________________________________
 void beamPositionMonitorConfigReader::addToBPMDataObjectsV1( const std::vector<std::string> &keyVal )

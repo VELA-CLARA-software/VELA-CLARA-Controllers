@@ -400,7 +400,7 @@ void scopeInterface::updateValue( scopeStructs::monitorStruct * ms, const event_
 
     updateTime( p->stamp, scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ],
                scno->numStrTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ]  );
-     switch( ms -> monType )
+    switch( ms -> monType )
     {
         case scopeStructs::SCOPE_PV_TYPE::P1:
             {

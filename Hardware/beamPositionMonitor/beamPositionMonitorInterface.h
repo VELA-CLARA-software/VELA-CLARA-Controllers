@@ -76,18 +76,12 @@ class beamPositionMonitorInterface : public interface
         VELA_ENUM::MACHINE_MODE getMachineMode();
 
         std::vector< std::string > getBPMNames();
-
-        void updateData( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
-        void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         bool hasTrig( const std::string & bpm );
         bool hasNoTrig( const std::string & bpm );
         std::map< const std::string, bool > isMonitoring;
 
         beamPositionMonitorStructs::bpmObject bpmObj;
         beamPositionMonitorStructs::bpmObject getBPMObject( const std::string & bpmName );
-
-        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
-
         VELA_ENUM::TRIG_STATE getBPMState( const std::string & bpmName );
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
@@ -113,6 +107,9 @@ class beamPositionMonitorInterface : public interface
         void addChannel( const std::string & pvRoot, beamPositionMonitorStructs::pvStruct & pv );
 
         void monitorBPMs();
+        void updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateData( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close) the bpm is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
@@ -128,6 +125,8 @@ class beamPositionMonitorInterface : public interface
         bool isADataPV( beamPositionMonitorStructs::BPM_PV_TYPE pv );
 
         void killMonitor( beamPositionMonitorStructs::monitorStruct * ms );
+        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
+        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::bpmDataObject * bpmdo );///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
 
         void * addTemporaryMonitorStruct( beamPositionMonitorStructs::bpmObject * bpmObjp , beamPositionMonitorStructs::BPM_PV_TYPE monType, std::vector< std::vector< double > > & bpmData, beamPositionMonitorStructs::dataCollectionResult * stat);
 

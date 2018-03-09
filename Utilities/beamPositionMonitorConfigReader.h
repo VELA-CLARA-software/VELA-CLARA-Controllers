@@ -44,6 +44,7 @@ class beamPositionMonitorConfigReader : public configReader
         // Data objects
         std::vector< beamPositionMonitorStructs::bpmDataObject > bpmDataObjects;
         std::vector< beamPositionMonitorStructs::pvStruct > bpmDataMonStructs;
+        std::vector< beamPositionMonitorStructs::pvStruct > bpmDataComStructs;
         void addToBPMDataObjectsV1( const std::vector<std::string> &keyVal );
         void addToBPMPVMonStructsV1( const std::vector<std::string> &keyVal );
         void addToBPMPVComStructsV1( const std::vector<std::string> &keyVal );
@@ -54,6 +55,14 @@ class beamPositionMonitorConfigReader : public configReader
 
         void addToPVStruct( std::vector< beamPositionMonitorStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal );
         void addCOUNT_MASK_OR_CHTYPE(  std::vector< beamPositionMonitorStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
+
+        std::vector< double >                           tstamps;
+        std::vector< std::string >                      strtstamps;
+        std::vector< std::vector< double > >            traces;
+        std::vector< double >                           nums;
+        boost::circular_buffer< double >                xPVBuffer;
+        boost::circular_buffer< double >                yPVBuffer;
+        int                                             shotcounts;
 
 };
 #endif //beamPositionMonitorConfigReader2_H_

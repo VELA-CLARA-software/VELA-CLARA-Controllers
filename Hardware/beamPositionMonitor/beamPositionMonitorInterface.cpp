@@ -121,12 +121,16 @@ void beamPositionMonitorInterface::initBPMChids()
     message( "\n", "Searching for bpm chids..." );
     // monitor objects
     for( auto && it1 : bpmObj.dataObjects )
+    {
         for( auto && it2 : it1.second.pvMonStructs )
+        {
             addChannel( it1.second.pvRoot, it2.second );
-    // command objects
-    for( auto && it1 : bpmObj.dataObjects )
+        }
         for( auto && it2 : it1.second.pvComStructs )
+        {
             addChannel( it1.second.pvRoot, it2.second );
+        }
+    }
     // send
     int status = sendToEpics( "ca_create_channel", "Found bpm chids.", "!!TIMEOUT!! Not all bpm ChIds found." );
     if( status == ECA_TIMEOUT )
@@ -135,9 +139,13 @@ void beamPositionMonitorInterface::initBPMChids()
         for( auto && it1 : bpmObj.dataObjects )
         {
             for( auto && it2 : it1.second.pvMonStructs )
-                checkCHIDState( it2.second.CHID, it2.second.pvSuffix  );
+            {
+                checkCHIDState( it2.second.CHID, ENUM_TO_STRING(it2.first)  );
+            }
             for( auto && it2 : it1.second.pvComStructs )
-                checkCHIDState( it2.second.CHID, it2.second.pvSuffix  );
+            {
+                checkCHIDState( it2.second.CHID, ENUM_TO_STRING(it2.first)  );
+            }
         }
         message("");
     }
@@ -147,10 +155,11 @@ void beamPositionMonitorInterface::initBPMChids()
 //______________________________________________________________________________
 void beamPositionMonitorInterface::addChannel( const std::string & pvRoot, beamPositionMonitorStructs::pvStruct & pv )
 {
-    std::stringstream s1;
-    s1 << pvRoot << ":" << pv.pvSuffix;
-    ca_create_channel( s1.str().c_str(), 0, 0, 0, &pv.CHID );
-    debugMessage( "Create channel to ", s1.str() );
+    std::string s1;
+//    s1 << pvRoot << ":" << pv.pvSuffix;
+    s1 = pvRoot + pv.pvSuffix;
+    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
+    debugMessage( "Create channel to ", s1 );
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::monitorBPMs()
@@ -161,6 +170,8 @@ void beamPositionMonitorInterface::monitorBPMs()
     for( auto && it1 : bpmObj.dataObjects )
     {
         it1.second.machineArea = machineArea;
+        it1.second.xPVBuffer.resize(UTL::BUFFER_TEN);
+        it1.second.yPVBuffer.resize(UTL::BUFFER_TEN);
         for( auto && it2 : it1.second.pvMonStructs )
         {
 //            if( !isADataPV( it2.second.pvType ) )
@@ -295,22 +306,22 @@ void beamPositionMonitorInterface::staticEntryrMonitor( const event_handler_args
     {
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA1:
         {
-            ms->interface->updateValue( ms, args );
+            ms->interface->updateLong( ms, args );
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA2:
         {
-            ms->interface->updateValue( ms, args );
+            ms->interface->updateLong( ms, args );
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RD1:
         {
-            ms->interface->updateValue( ms, args );
+            ms->interface->updateLong( ms, args );
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RD2:
         {
-            ms->interface->updateValue( ms, args );
+            ms->interface->updateLong( ms, args );
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
@@ -346,11 +357,11 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             bpmdo->rawBPMDataBuffer.resize(bpmdo->buffer);
         }
     }
-//        for( auto && it1 : bpmObj.dataObjects )
-//        {
-//            it1.second.numShots = 1;
-//            it1.second.shotCount = 0;
-//        }
+        for( auto && it1 : bpmObj.dataObjects )
+        {
+            it1.second.numShots = 1;
+            it1.second.shotCount = 0;
+        }
 
     const dbr_double_t * value = &(p  -> value);
     size_t i = 0;
@@ -399,37 +410,94 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
 //______________________________________________________________________________
 void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
 {
-    switch( ms -> CHTYPE )
+    const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
+    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject* > (ms -> val);
+    message(ENUM_TO_STRING(ms->monType));
+    if( bpmdo->isAContinuousMonitorStruct )
     {
-        case DBR_DOUBLE:
+        bpmdo->shotCount = 0;
+        if( bpmdo->timeStamps.size() == 0 )
         {
-            *(double*)ms -> val = *(double*)args.dbr;
-            switch( ms -> monType )
-            {
-                message("TESTING OUT BUFFERS ----- CHECK updateValue IF CONTROLLER BREAKS HERE!!!!");
-                case beamPositionMonitorStructs::BPM_PV_TYPE::X:
-                {
-                    ms->bpmObject->dataObjects.at(ms->objName).xPVBuffer.push_back(*(double*)args.dbr);
-                }
-                case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
-                {
-                    ms->bpmObject->dataObjects.at(ms->objName).yPVBuffer.push_back(*(double*)args.dbr);
-                }
-            }
-            break;
+            bpmdo->timeStamps.push_back(1);
+            bpmdo->strTimeStamps.push_back(UTL::UNKNOWN_STRING);
+            bpmdo->xPVBuffer.push_back(UTL::DUMMY_DOUBLE);
+            bpmdo->xPVBuffer.resize(bpmdo->buffer);
+            bpmdo->yPVBuffer.push_back(UTL::DUMMY_DOUBLE);
+            bpmdo->yPVBuffer.resize(bpmdo->buffer);
         }
-        case DBR_LONG:
+    }
+    message("sssssssssss");
+    const dbr_double_t * val = &(p  -> value);
+    size_t i = 0;
+
+    updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ],
+               bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
+    message("sssssssssssdddddddddddd");
+    switch( ms -> monType )
+    {
+        case beamPositionMonitorStructs::BPM_PV_TYPE::X:
         {
-            *(long*)ms -> val = *(long*)args.dbr;
-            break;
+            bpmdo->xPV = *( &p -> value );
+            bpmdo->xPVBuffer.push_back( bpmdo->xPV );
         }
-        case DBR_TIME_DOUBLE:
+        case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
         {
-            ms->interface->debugMessage("beamPositionMonitorInterface::updateValue recieved unexpected chtype");
-            break;
+            bpmdo->yPV = *( &p -> value );
+            bpmdo->yPVBuffer.push_back( bpmdo->yPV );
         }
-        default:
-            ms->interface->debugMessage("beamPositionMonitorInterface::updateValue recieved unexpected chtype");
+    }
+    message("sssssssssssaaaaaaaaaaaaaa");
+
+    if( bpmdo -> isATemporaryMonitorStruct )
+    {
+        if( bpmdo -> numShots > -1 )
+        {
+            ++bpmdo -> shotCount;
+        }
+        if( bpmdo->shotCount == bpmdo->numShots )
+        {
+            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+            bpmdo->isMonitoring = false;
+            ms->interface->killCallBack( ms, bpmdo );
+        }
+    }
+//    *(double*)ms -> val = *(double*)args.dbr;
+//    switch( ms -> monType )
+//    {
+//        message("TESTING OUT BUFFERS ----- CHECK updateValue IF CONTROLLER BREAKS HERE!!!!");
+//        case beamPositionMonitorStructs::BPM_PV_TYPE::X:
+//        {
+//            message("X");
+////            message(ms->bpmObject->dataObjects.at(ms->objName).xPVBuffer.size());
+//            ms->bpmObject->dataObjects.at(ms->objName).xPVBuffer.push_back(*(double*)args.dbr);
+//        }
+//        case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
+//        {
+//            ms->bpmObject->dataObjects.at(ms->objName).yPVBuffer.push_back(*(double*)args.dbr);
+//        }
+//    }
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
+{
+    message("long");
+    *(long*)ms -> val = *(long*)args.dbr;
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::bpmDataObject * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
+{
+    int status = ca_clear_subscription( ms -> EVID );
+    if( status == ECA_NORMAL)
+    {
+//        debugMessage( ms -> scopeObject, " monitoring = false ");
+        bpmdo -> isMonitoring = false;
+
+        delete ms;
+        message( bpmdo->name, "callback deleted" );
+    }
+    else
+    {
+        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->bpmObject );
     }
 }
 //______________________________________________________________________________
@@ -510,8 +578,6 @@ void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::ve
             bpmObj.dataObjects.at( it ).bpmRawData.isAContinuousMonitorStruct=false;
             bpmObj.dataObjects.at( it ).bpmRawData.isATemporaryMonitorStruct=true;
             bpmObj.dataObjects.at( it ).bpmRawData.appendingData=true;
-
-
             addToMonitorStructs( dataMonitorStructs, bpmObj.dataObjects.at( it ).pvMonStructs.at( beamPositionMonitorStructs::BPM_PV_TYPE::DATA ) , &bpmObj.dataObjects.at( it )  );
     //            }
     //        }
