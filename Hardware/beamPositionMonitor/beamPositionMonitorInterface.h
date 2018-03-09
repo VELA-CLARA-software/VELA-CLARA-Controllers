@@ -39,16 +39,15 @@ class beamPositionMonitorInterface : public interface
         bool isMonitoringBPMData( const std::string & bpmName );
         bool isNotMonitoringBPMData( const std::string & bpmName );
 
-        double calcX( const std::string & bpm, double u11, double u12, double u13, double u14 );
-        double calcY( const std::string & bpm, double u21, double u22, double u23, double u24 );
-        double calcQ( const std::string & bpm, std::vector< double > rawData );
+        double calcX( const std::string & bpm, double u11, double u12, double u13, double u14, double mn, double xn );
+        double calcY( const std::string & bpm, double u21, double u22, double u23, double u24, double mn, double yn );
+        double calcQ( const std::string & bpm, std::vector< double > rawData, double att1cal, double att2cal, double v1cal, double v2cal, double qcal );
         double getBPMResolution( const std::string & bpm );
         double getX( const std::string & bpm );
         double getY( const std::string & bpm );
         double getQ( const std::string & bpm );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
-        const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
         const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );

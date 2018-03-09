@@ -93,7 +93,7 @@ void beamPositionMonitorConfigReader::addToBPMDataObjectsV1( const std::vector<s
     {
         beamPositionMonitorStructs::bpmDataObject bpmob = beamPositionMonitorStructs::bpmDataObject();
         bpmob.name = keyVal[ 1 ];
-        bpmob.bpmRawData.name = keyVal[ 1 ];
+//        bpmob.bpmRawData.name = keyVal[ 1 ];
         bpmDataObjects.push_back( bpmob );
         debugMessage("Added ", bpmDataObjects.back().name );
     }
