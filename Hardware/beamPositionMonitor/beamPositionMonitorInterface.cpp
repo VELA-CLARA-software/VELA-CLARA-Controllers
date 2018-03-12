@@ -766,7 +766,7 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
     else
     {
         message( "BPM resolution calculation didn't work" );
-        return res;
+        return UTL::DUMMY_DOUBLE;
     }
 }
 //______________________________________________________________________________
@@ -1066,6 +1066,8 @@ VELA_ENUM::MACHINE_MODE beamPositionMonitorInterface::getMachineMode()
         return VELA_ENUM::MACHINE_MODE::OFFLINE;
     else if (!startVM)
         return VELA_ENUM::MACHINE_MODE::PHYSICAL;
+    else
+        return VELA_ENUM::MACHINE_MODE::UNKNOWN_MACHINE_MODE;
 }
 ////______________________________________________________________________________
 //bool beamPositionMonitorInterface::hasTrig( const std::string & bpm )

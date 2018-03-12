@@ -3,6 +3,7 @@
 
 // project
 #include "beamPositionMonitorController.h"
+#include "VCheader.h"
 // stl
 #include <string>
 #include <vector>
@@ -138,6 +139,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
     /// Include ALL the enums you want to expose to Python
 
     boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
