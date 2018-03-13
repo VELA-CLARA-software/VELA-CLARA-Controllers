@@ -204,26 +204,26 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             ;
     }
 
-    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
-            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-            .value("PHYSICAL",  VELA_ENUM::MACHINE_MODE::PHYSICAL )
-            ;
-
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-            .value("VELA_INJ",  VELA_ENUM::MACHINE_AREA::VELA_INJ  )
-            .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
-            .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
-            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
-            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
-            .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
-            .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-            ;
-
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
+//    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
+//            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
+//            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
+//            .value("PHYSICAL",  VELA_ENUM::MACHINE_MODE::PHYSICAL )
+//            ;
+//
+//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
+//            .value("VELA_INJ",  VELA_ENUM::MACHINE_AREA::VELA_INJ  )
+//            .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
+//            .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
+//            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
+//            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
+//            .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
+//            .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
+//            ;
+//
+//    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
+//            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
+//            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
+//            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
             ;
 
     enum_<scopeStructs::SCOPE_PV_TYPE>("SCOPE_PV_TYPE")

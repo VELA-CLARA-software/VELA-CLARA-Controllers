@@ -1049,7 +1049,7 @@ boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR3Buffe
 //______________________________________________________________________________
 boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTR4Buffer( const std::string & name )
 {
-    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 ).size() != 0 )
+    if( entryExists( scopeObj.traceObjects, name ) && scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR4 ).size() != 0 )
     {
         return scopeObj.traceObjects.at( name ).traceDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::TR4 );
     }
