@@ -404,6 +404,7 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
             case llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP:
                 //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_AMP_SP = ",*(double*)args.dbr);
                 ms->llrfObj->amp_sp = *(double*)args.dbr;
+                //(ms->llrfObj->amp_sp)
                 ms->llrfObj->amp_MVM = (ms->llrfObj->amp_sp) * (ms->llrfObj->ampCalibration);
                 break;
             case llrfStructs::LLRF_PV_TYPE::LIB_PHI_FF:
@@ -414,6 +415,7 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
             case llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP:
                 //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_PHI_SP = ",*(double*)args.dbr);
                 ms->llrfObj->phi_sp = *(double*)args.dbr;
+                ms->llrfObj->phi_DEG = (ms->llrfObj->phi_sp) * (ms->llrfObj->phiCalibration);
                 break;
             case llrfStructs::LLRF_PV_TYPE::LIB_TIME_VECTOR:
                 /* the time_vector is simlar to a trace, but we can just update the values straight away */
