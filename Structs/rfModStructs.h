@@ -104,11 +104,14 @@ namespace rfModStructs
     struct gunModObject
     {
         gunModObject() :
-            main_state( GUN_MOD_STATE::UNKNOWN_STATE ),
+            main_state(GUN_MOD_STATE::UNKNOWN_STATE),
             hex_state_str(UTL::UNKNOWN_STRING),
-            error_state( GUN_MOD_ERR_STATE::UNKNOWN ),
+            hex_state_message(UTL::UNKNOWN_STRING),
+            error_state(GUN_MOD_ERR_STATE::UNKNOWN),
 
             safelyWarmedUP(false),
+            warmuptime(UTL::ZERO_LONG),
+
             MagPs1CurrRead(UTL::DUMMY_DOUBLE),
             MagPs2CurrRead(UTL::DUMMY_DOUBLE),
             MagPs3CurrRead(UTL::DUMMY_DOUBLE),
@@ -141,7 +144,7 @@ namespace rfModStructs
             ilock5(UTL::UNKNOWN_STRING)
 
             {}
-        std::string name, pvRoot, hex_state_str, ilock1,ilock2,ilock3,ilock4,ilock5;
+        std::string name, pvRoot, hex_state_str, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
         std::vector<std::vector<std::string>> interlock_history;
         GUN_MOD_STATE main_state;
         GUN_MOD_ERR_STATE error_state;
@@ -166,7 +169,7 @@ namespace rfModStructs
 
     // LINAC-01 MODULATOR (DTI)
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_PV_TYPE, (SYSTEM_MAIN_STATE_READ)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_PV_TYPE, (SYSTEM_STATE_READ)
                                                           (SYSTEM_STATE_PUT)
                                                           (HVPS_VOLTAGE_SET)
                                                           (HVPS_VOLTAGE_SET_READ)

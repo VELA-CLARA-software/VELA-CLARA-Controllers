@@ -28,7 +28,7 @@ bool baseObject::polaritiesMatch(const std::vector<double> & vals)
 //______________________________________________________________________________
 std::string baseObject::currentDateTime()
 {
-    time_t     now = time(0);
+    time_t     now = timeNow();
     struct tm  tstruct;
     char       buf[80];
     localtime_s(&tstruct, &now);

@@ -63,7 +63,7 @@ class interface : public baseObject
 
         /// USE THIS!!!
         template<class T>
-        bool entryExists(std::map<std::string, T> & m, const std::string & name)
+        bool entryExists(const std::map<std::string, T> & m, const std::string & name) const
         {
             bool ret = false;
             auto it = m.find(name);

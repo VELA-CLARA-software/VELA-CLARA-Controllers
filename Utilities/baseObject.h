@@ -209,7 +209,7 @@ class baseObject
             c.resize(it - c.begin());
         }
         std::string currentDateTime();
-
+        time_t timeNow(){return time(nullptr); }
 
         int    getNum (const std::string & str);
         double getNumD(const std::string & str);

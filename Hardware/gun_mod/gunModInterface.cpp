@@ -11,15 +11,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+// project include
 #include "gunModInterface.h"
-//djs
-#include "dburt.h"
+//#include "dburt.h"
 #include "configDefinitions.h"
 // stl
 #include <iostream>
 #include <sstream>
-#include <chrono>
 #include <algorithm>
 #include <thread>
 //  __  ___  __   __    /  __  ___  __   __
@@ -33,9 +32,10 @@ gunModInterface::gunModInterface( const std::string &gunModConf,
 configReader(gunModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface(show_messages_ptr,show_debug_messages_ptr),
 shouldStartEPICs( shouldStartEPICs ),
-allChidsInitialised(false)
+allChidsInitialised(false),
+gun_mod_hex_map(rfModStructs::gunModHexErrorCodes::create())
 {
-    if( shouldStartEPICs )
+    if(shouldStartEPICs)
         message("gunModInterface shouldStartEPICs is true");
     else
         message("gunModInterface shouldStartEPICs is false");
@@ -44,29 +44,13 @@ allChidsInitialised(false)
 //______________________________________________________________________________
 gunModInterface::~gunModInterface()
 {
-//    killILockMonitors();
-//    for( auto && it : continuousMonitorStructs )
-//    {
-//        killMonitor( it );
-//        delete it;
-//    }
-//    debugMessage( "gunModInterface DESTRUCTOR COMPLETE ");
 }
-//______________________________________________________________________________
-//void gunModInterface::killMonitor( pilaserStructs::monitorStruct * ms )
-//{
-//    int status = ca_clear_subscription( ms -> EVID );
-//    //if( status == ECA_NORMAL)
-//        //debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
-////    else
-//        //debugMessage("ERROR gunModInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
-//}
 //______________________________________________________________________________
 void gunModInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfig();
-    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+    std::this_thread::sleep_for(UTL::STANDARD_PAUSE);
     if( configFileRead )
     {
         message("The gunModInterface has read the config file, acquiring objects");
@@ -83,7 +67,7 @@ void gunModInterface::initialise()
                 /// start the monitors: set up the callback functions
                 startMonitors();
                 /// The pause allows EPICS to catch up.
-                std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+                std::this_thread::sleep_for(UTL::STANDARD_PAUSE); // MAGIC_NUMBER
             }
             else
              message("The gunModInterface has acquired objects, NOT connecting to EPICS");
@@ -301,69 +285,48 @@ void gunModInterface::updateMainState(const void * argsdbr)
 //______________________________________________________________________________
 void gunModInterface::updateHexString(const event_handler_args& args)
 {
-    rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
     std::stringstream ss;
     ss << *(char*)args.dbr;
-
     gunMod.hex_state_str = ss.str();
-
     convertHexStringToMessage();
-
+    updateErrorState();
 }
 //______________________________________________________________________________
-rfModStructs::GUN_GUN_MOD_ERR_STATE RFGunInterface::convertModErrorReadStr( const char * epicsModErrCodeString )
+bool gunModInterface::convertHexStringToMessage()
 {
-    std::stringstream ss;
-    ss << epicsModErrCodeString;
-
-    if( isAGoodModErrorReadStr( ss.str() ) )
-        return rfModStructs::GUN_MOD_ERR_STATE::GOOD;
-    else if( isABadModErrorReadStr( ss.str() ) )
-        return rfModStructs::GUN_MOD_ERR_STATE::BAD;
-    else
-        return rfModStructs::GUN_MOD_ERR_STATE::UNKNOWN;
-}
-//______________________________________________________________________________
-rfModStructs::GUN_GUN_MOD_ERR_STATE RFGunInterface::convertModErrorRead( const double v )
-{
-    switch( (int)v )
+    if( entryExists(gun_mod_hex_map,gunMod.hex_state_str))
     {
-        case 0:
-            return rfModStructs::GUN_GUN_MOD_ERR_STATE::GOOD;
-            break;
-        case 2000:
-            return rfModStructs::GUN_GUN_MOD_ERR_STATE::GOOD;
-            break;
-        default:
-            return rfModStructs::GUN_GUN_MOD_ERR_STATE::BAD;
-            break;
+        gunMod.hex_state_message = gun_mod_hex_map.at(gunMod.hex_state_str);
+        return true;
+    }
+    else
+    {
+        gunMod.hex_state_message = gunMod.hex_state_str + " is UNKNOWN HexCode";
+    }
+    return false;
+}
+//______________________________________________________________________________
+void gunModInterface::updateErrorState()
+{
+    /* based on the hexcode */
+    if(std::find(rfModStructs::good_gun_hex_codes.begin(),
+                 rfModStructs::good_gun_hex_codes.end(),
+                 gunMod.hex_state_str) != rfModStructs::good_gun_hex_codes.end())
+    {
+        gunMod.error_state = rfModStructs::GUN_MOD_ERR_STATE::GOOD;
+    }
+    else
+    {
+        if(entryExists(gun_mod_hex_map,gunMod.hex_state_str))
+        {
+            gunMod.error_state = rfModStructs::GUN_MOD_ERR_STATE::BAD;
+        }
+        else
+        {
+            gunMod.error_state = rfModStructs::GUN_MOD_ERR_STATE::UNKNOWN;
+        }
     }
 }
-//______________________________________________________________________________
-bool RFGunInterface::isAGoodModErrorReadStr( const std::string & s )
-{
-//    for( auto && it : RFObject.mod.goodModErrorReadStr )
-//        message( "RFObject.mod.goodModErrorReadStr = ", it);
-//
-//    message("Compare with ", s );
-//
-//    message(  s == RFObject.mod.goodModErrorReadStr[0] ) ;
-
-    if (std::find( RFObject.mod.goodModErrorReadStr.begin(), RFObject.mod.goodModErrorReadStr.end(), s ) != RFObject.mod.goodModErrorReadStr.end())
-        return true;
-    else
-        return false;
-}
-//______________________________________________________________________________
-bool RFGunInterface::isABadModErrorReadStr( const std::string & s )
-{
-    if (std::find( RFObject.mod.badModErrorReadStr.begin(), RFObject.mod.badModErrorReadStr.end(), s ) != RFObject.mod.badModErrorReadStr.end())
-        return true;
-    else
-        return false;
-}
-
-
 //____________________________________________________________________________________________
 void gunModInterface::updateWarmUpTime(const long val)
 {
@@ -379,111 +342,132 @@ void gunModInterface::updateWarmUpTime(const long val)
     }
 }
 //______________________________________________________________________________
-bool gunModInterface::isModWarmedUp()
+bool gunModInterface::isWarmedUp() const
 {
     return gunMod.safelyWarmedUP;
 }
 //______________________________________________________________________________
-bool gunModInterface::isModNotWarmedUp()
+bool gunModInterface::isNotWarmedUp() const
 {
-    return !isModWarmedUp();
+    return !isWarmedUp();
 }
 //______________________________________________________________________________
-bool gunModInterface::isModInTrig()
+bool gunModInterface::isInTrig() const
 {
-    if(gunMod.state == rfModStructs::MOD_STATE::TRIG)
+    if(gunMod.main_state == rfModStructs::GUN_MOD_STATE::TRIG)
     {
         return true;
     }
     return false;
 }
 //______________________________________________________________________________
-bool gunModInterface::isModInHVOn()
+bool gunModInterface::isInHVOn() const
 {
-    if(gunMod.state == rfModStructs::MOD_STATE::HV_OO)
+    if(gunMod.main_state == rfModStructs::GUN_MOD_STATE::HV_ON)
     {
         return true;
     }
     return false;
 }
 //______________________________________________________________________________
-bool gunModInterface::isModInStandby()
+bool gunModInterface::isInStandby() const
 {
-    if(gunMod.state  == rfModStructs::MOD_STATE::STANDBY)
+    if(gunMod.main_state  == rfModStructs::GUN_MOD_STATE::STANDBY)
     {
         return true;
     }
     return false;
 }
 //______________________________________________________________________________
-bool gunModInterface::isModInOff()
+bool gunModInterface::isInOff() const
 {
-    if(gunMod.state == rfModStructs::MOD_STATE::OFF)
+    if(gunMod.main_state == rfModStructs::GUN_MOD_STATE::OFF)
     {
         return true;
     }
     return false;
 }
 //______________________________________________________________________________
-void gunModInterface::modReset()
-{
-    caput( gunMod.pvComStructs[ rfModStructs::RF_PV_TYPE::MOD_RESET ].CHTYPE,
-           gunMod.pvComStructs[ rfModStructs::RF_PV_TYPE::MOD_RESET ].CHID,
-           EPICS_RESET, "" , "!!gunModInterface TIMEOUT!! In modReset() ");
-}
-//______________________________________________________________________________
-bool gunModInterface::modResetAndWait( const size_t waitTime )
-{
-    message("modreset");
-    modReset();
-    return waitFor( &gunModInterface::isModILockStateGood, *this, "Timeout waiting for Modulator to reset ",  waitTime ); // MAGIC_NUMBER
-}
-//______________________________________________________________________________
-rfModStructs::MOD_STATE gunModInterface::getModMainState() const
+rfModStructs::GUN_MOD_STATE gunModInterface::getMainState() const
 {
     return gunMod.main_state;
 }
 //______________________________________________________________________________
-rfModStructs::MOD_STATE gunModInterface::getModErrorState() const
+rfModStructs::GUN_MOD_ERR_STATE gunModInterface::getErrorState() const
 {
     return gunMod.error_state;
 }
 //______________________________________________________________________________
-rfModStructs::GUN_GUN_MOD_ERR_STATE gunModInterface::getModiLock() const
+bool gunModInterface::isErrorStateGood() const
 {
-    return gunMod.ilock_state;
+    if(gunMod.error_state == rfModStructs::GUN_MOD_ERR_STATE::GOOD)
+    {
+        return true;
+    }
+    return false;
 }
-
-
-
-
-
-
-bool convertHexStringToMessage()
+//______________________________________________________________________________
+void gunModInterface::reset()
 {
-    r = true;
-
-
-
-
+    caput( gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::RESET).CHTYPE,
+           gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::RESET).CHID,
+           EPICS_RESET, "" , "!!gunModInterface TIMEOUT!! In modReset() ");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//______________________________________________________________________________
+bool gunModInterface::resetAndWait( const size_t waitTime )
+{
+    message("modreset");
+    reset();
+    return waitFor( &gunModInterface::isErrorStateGood, *this, "Timeout waiting for Modulator to reset ",  waitTime ); // MAGIC_NUMBER
+}
+//______________________________________________________________________________
+bool gunModInterface::waitFor(ABoolMemFn f1,gunModInterface& obj, const std::string& m,
+                           const  time_t waitTime, const size_t pause)
+{
+    return waitFor(f1, obj, m.c_str(), waitTime);
+}
+//______________________________________________________________________________
+bool gunModInterface::waitFor(ABoolMemFn f1,gunModInterface& obj, const char * m,
+                             const time_t waitTime,const size_t pause )
+{
+    time_t t0 = timeNow();
+    bool notTimedOut = true;
+    while(true)
+    {
+        if(CALL_MEMBER_FN(obj, f1)())
+        {
+            break;
+        }
+        if(timeNow() > t0 + waitTime)
+        {
+            message(m);
+            notTimedOut = false;
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(pause));
+    }
+    return notTimedOut;
+}
+//______________________________________________________________________________
+bool gunModInterface::waitForModState(rfModStructs::GUN_MOD_STATE state, time_t waitTime )
+{
+    time_t t0 = timeNow();
+    bool notTimedOut = true;
+    while(true)
+    {
+        if(state == getMainState())
+        {
+            break;
+        }
+        else if( timeNow() > t0 + waitTime )
+        {
+            message("Timed Out While Waiting For Modulator to reach state = ", ENUM_TO_STRING(state));
+            notTimedOut = false;
+            break;
+        }
+    }
+    return notTimedOut;
+}
 
 
 

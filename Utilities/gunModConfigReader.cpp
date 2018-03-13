@@ -208,11 +208,11 @@ void gunModConfigReader::addToPVStruct( std::vector< rfModStructs::pvStruct >  &
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_STATEREAD  )
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ;
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_STATE  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_VALUE;
+//        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_STATE  )
+//            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_VALUE;
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_VAL )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_VALUE_HEX_STR;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_SVAL )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_WARMUPT )
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME;

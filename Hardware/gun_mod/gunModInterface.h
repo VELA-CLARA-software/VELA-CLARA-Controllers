@@ -45,25 +45,27 @@ class gunModInterface : public interface
 
         ~gunModInterface();
 
-
         const rfModStructs::gunModObject& getGunObjConstRef();
 
+        bool isErrorStateGood() const;
+        bool isWarmedUp() const;
+        bool isNotWarmedUp() const;
+        bool isInTrig() const;
+        bool isInHVOn() const;
+        bool isInStandby() const;
+        bool isInOff() const;
+        void reset();
+        bool resetAndWait(const size_t waitTime);
+        rfModStructs::GUN_MOD_STATE getMainState() const;
+        rfModStructs::GUN_MOD_ERR_STATE getErrorState() const;
 
-        // These are pure virtual methods, so need to have some implmentation in derived classes
-        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
-        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+        bool waitForModState(rfModStructs::GUN_MOD_STATE state, const time_t waitTime);
 
-        bool isModWarmedUp();
-        bool isModNotWarmedUp();
-        bool isModInTrig();
-        bool isModInHVOn();
-        bool isModInStandby();
-        bool isModInOff();
-        void modReset();
-        bool modResetAndWait(const size_t waitTime);
-        rfModStructs::GUN_MOD_STATE getModMainState() const;
-        rfModStructs::GUN_MOD_ERR_STATE getModErrorState() const;
 
+
+        // These are pure virtual methods, so need an implEmentation in derived classes
+        IlockMap1 getILockStates( const std::string & name   ){IlockMap1 r;return r;}
+        IlockMap2 getILockStatesStr( const std::string & name){IlockMap2 r;return r;}
 
     private:
         // MOVE TO BASE CLASS
@@ -75,31 +77,27 @@ class gunModInterface : public interface
         void updateMainState(const void * argsdbr);
         void updateWarmUpTime(const long val);
         void updateHexString(const event_handler_args& args);
+        void updateErrorState();
 
-        rfModStructs::GUN_MOD_ERR_STATE convertModErrorReadStr(const char * epicsModErrCodeString);
-        rfModStructs::GUN_MOD_ERR_STATE convertModErrorRead(const double v);
+        const std::map<std::string,std::string> gun_mod_hex_map;
+        bool convertHexStringToMessage();
 
-
-//
-//        void killMonitor( pilaserStructs::monitorStruct * ms );
-//
         void initialise();
-//        bool initObjects();
         void initChids();
         void addChannel(const std::string & pvRoot, rfModStructs::pvStruct & pv);
         void startMonitors();
-//        // all client set functions route to here
-//        bool setValue( pilaserStructs::pvStruct& pvs, double value);
-//
+
         rfModStructs::gunModObject gunMod;
-//
         std::vector<rfModStructs::monitorStruct*> continuousMonitorStructs;
-        // all EPICS callbacks route here
-//
         gunModConfigReader configReader; /// class member so we can pass in file path in ctor
-//        ///message
 
+        // const member function pointer typedef
+        typedef bool(gunModInterface::*ABoolMemFn)(void) const;
 
+        bool waitFor(ABoolMemFn f1,gunModInterface& obj,const std::string& message,
+                     const time_t waitTime,const size_t pause = 100);
+        bool waitFor(ABoolMemFn f1,gunModInterface& obj,const char * message,
+                     const time_t waitTime,const size_t pause = 100 );
 
 };
 #endif // VELA_MAG_INTERFACE_H

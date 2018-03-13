@@ -40,63 +40,65 @@ const rfModStructs::gunModObject& gunModController::getGunObjConstRef()
     return localInterface.getGunObjConstRef();
 }
 //______________________________________________________________________________
-//void gunModController::initialise()
-//{
-//    if( localInterface.interfaceInitReport(shouldStartEPICs) )
-//        message("gunModController instantiation success.");
-//}
-////______________________________________________________________________________
-//#ifdef BUILD_DLL
-////____________________________________________________________________________________________
-//double gunModController::getHpos()
-//{
-//    return localInterface.getHpos();
-//}
-////____________________________________________________________________________________________
-//double gunModController::getVpos()
-//{
-//    return localInterface.getVpos();
-//}
-////____________________________________________________________________________________________
-//double gunModController::getIntensity()
-//{
-//    return localInterface.getIntensity();
-//}
-////____________________________________________________________________________________________
-//bool gunModController::setHpos(double value)
-//{
-//    return localInterface.setHpos( value );
-//}
-////____________________________________________________________________________________________
-//bool gunModController::setHpos(int value)
-//{
-//    return localInterface.setHpos( value );
-//}
-////____________________________________________________________________________________________
-//bool gunModController::setVpos(double value)
-//{
-//    return localInterface.setVpos( value );
-//}
-////____________________________________________________________________________________________
-//bool gunModController::setVpos(int value)
-//{
-//    return localInterface.setVpos( value );
-//}
-////____________________________________________________________________________________________
-//bool gunModController::setIntensity(double value)
-//{
-//    return localInterface.setIntensity( value );
-//}
-////____________________________________________________________________________________________
-//bool gunModController::setIntensity(int value)
-//{
-//    return localInterface.setIntensity( value );
-//}
-////____________________________________________________________________________________________
-//const pilaserStructs::pilaserObject &gunModController::getPILObjConstRef()
-//{
-//    return localInterface.getPILObjConstRef();
-//}
+bool gunModController::isErrorStateGood() const
+{
+    return localInterface.isErrorStateGood();
+}
+//______________________________________________________________________________
+bool gunModController::isWarmedUp() const
+{
+    return localInterface.isWarmedUp();
+}
+//______________________________________________________________________________
+bool gunModController::isNotWarmedUp() const
+{
+    return localInterface.isNotWarmedUp();
+}
+//______________________________________________________________________________
+bool gunModController::isInTrig() const
+{
+    return localInterface.isInTrig();
+}
+//______________________________________________________________________________
+bool gunModController::isInHVOn() const
+{
+    return localInterface.isInHVOn();
+}
+//______________________________________________________________________________
+bool gunModController::isInStandby() const
+{
+    return localInterface.isInStandby();
+}
+//______________________________________________________________________________
+bool gunModController::isInOff() const
+{
+    return localInterface.isInOff();
+}
+//______________________________________________________________________________
+void gunModController::reset()
+{
+    return localInterface.reset();
+}
+//______________________________________________________________________________
+bool gunModController::resetAndWait(const size_t waitTime)
+{
+    return localInterface.resetAndWait(waitTime);
+}
+//______________________________________________________________________________
+rfModStructs::GUN_MOD_STATE gunModController::getMainState() const
+{
+    return localInterface.getMainState();
+}
+//______________________________________________________________________________
+rfModStructs::GUN_MOD_ERR_STATE gunModController::getErrorState() const
+{
+    return localInterface.getErrorState();
+}
+//______________________________________________________________________________
+bool gunModController::waitForModState(rfModStructs::GUN_MOD_STATE state, const time_t waitTime)
+{
+    return localInterface.waitForModState(state,waitTime);
+}
 //____________________________________________________________________________________________
 double gunModController::get_CA_PEND_IO_TIMEOUT()
 {
@@ -117,30 +119,4 @@ std::map<VELA_ENUM::ILOCK_NUMBER,std::string> gunModController::getILockStatesSt
 {
     return localInterface.getILockStatesStr(name);
 }
-////______________________________________________________________________________
-////boost::python::dict gunModController::getILockStatesStr_Py( std::string magName )
-////{
-////    return enumStringMapToPythonDict( getILockStatesStr( magName ) );
-////}
-//////______________________________________________________________________________
-////boost::python::dict gunModController::getILockStates_Py( std::string magName )
-////{
-////    return enumMapToPythonDict( getILockStates( magName ) );
-////}
-//////______________________________________________________________________________
-////boost::python::dict gunModController::getMagPSUStateDefinition()
-////{
-////    std::map< VELA_ENUM::MAG_PSU_STATE,  std::string  > m;
-////
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING( VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
-////
-////    return enumStringMapToPythonDict( m );
-////}
-////______________________________________________________________________________
-//#endif // BUILD_DLL
-
 

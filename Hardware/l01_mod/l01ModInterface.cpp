@@ -509,7 +509,7 @@ void l01ModInterface::updateL01_StateRead(const event_handler_args args)
             break;
         case 1:
             message("SYSTEM_STATE_READ = 1 = STANDBY ");
-            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::STANDBY;
+            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::L01_STANDBY;
             break;
         case 2:
             message("SYSTEM_STATE_READ = 2 = HV ?????");

@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <chrono>
 
 namespace UTL
 {
@@ -38,11 +39,15 @@ namespace UTL
     const int    DUMMY_INT    = -9999;
     const size_t DUMMY_SIZET  = 999;
     const size_t TEN_SIZET    = 10;
+    const size_t HUNDRED_SIZET= 100;
     const size_t BUFFER_TEN   = 10;
+    const long   ZERO_LONG    = 0;
     const int    ZERO_INT     = 0;
     const int    ONE_INT      = 1;
     const int    MINUS_ONE_INT= -1;
     const int    MINUS_TWO_INT= -2;
+    //
+    const std::chrono::milliseconds STANDARD_PAUSE(2000);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
@@ -164,9 +169,9 @@ namespace UTL
     const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
     const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
     const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
-    const std::string PV_SUFFIX_GUN_MOD_ERR_STATE  = "PV_SUFFIX_GUN_MOD_ERR_STATE";
+    //const std::string PV_SUFFIX_GUN_MOD_ERR_STATE  = "PV_SUFFIX_GUN_MOD_ERR_STATE";
     const std::string PV_SUFFIX_GUN_MOD_CVD_READ  = "PV_SUFFIX_GUN_MOD_CVD_READ";
-    const std::string PV_SUFFIX_GUN_MOD_ERR_VAL  = "PV_SUFFIX_GUN_MOD_ERR_VAL";
+    const std::string PV_SUFFIX_GUN_MOD_ERR_SVAL  = "PV_SUFFIX_GUN_MOD_ERR_SVAL";
     const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
     const std::string PV_SUFFIX_GUN_RESET         = "PV_SUFFIX_GUN_RESET";
@@ -495,10 +500,15 @@ namespace UTL
 
 
     // PV suffixes
-    const std::string PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ = "PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ";
-    const std::string PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ  = "PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ";
-    const std::string PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET      = "PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET";
-    const std::string PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET       = "PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET";
+    // clara L01
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ =
+                      "PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ  =
+                      "PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET      =
+                      "PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET";
+    const std::string PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET       =
+                      "PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET";
     const std::string PV_SUFFIX_BODY_RETURN_TEMPERATURE         = "PV_SUFFIX_BODY_RETURN_TEMPERATURE";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_SET_READ           = "PV_SUFFIX_HVPS_VOLTAGE_SET_READ";
     const std::string PV_SUFFIX_COLLECTOR_RETURN_RATE           = "PV_SUFFIX_COLLECTOR_RETURN_RATE";
@@ -512,7 +522,7 @@ namespace UTL
     const std::string PV_SUFFIX_SOLENOID_3_CURRENT              = "PV_SUFFIX_SOLENOID_3_CURRENT";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_READ               = "PV_SUFFIX_HVPS_VOLTAGE_READ" ;
     const std::string PV_SUFFIX_HVPS_CURRENT_READ               = "PV_SUFFIX_HVPS_CURRENT_READ" ;
-    const std::string PV_SUFFIX_SYSTEM_MAIN_STATE_READ               = "PV_SUFFIX_SYSTEM_MAIN_STATE_READ";
+    const std::string PV_SUFFIX_SYSTEM_STATE_READ               = "PV_SUFFIX_SYSTEM_MAIN_STATE_READ";
     const std::string PV_SUFFIX_SYSTEM_STATE_PUT                = "PV_SUFFIX_SYSTEM_STATE_PUT";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_SET                = "PV_SUFFIX_HVPS_VOLTAGE_SET";
     const std::string PV_SUFFIX_ION_PUMP_VOLTAGE                = "PV_SUFFIX_ION_PUMP_VOLTAGE";
