@@ -65,15 +65,15 @@ namespace beamPositionMonitorStructs
         std::vector< double > timeStamps;
         boost::circular_buffer< double > timeStampsBuffer;
         std::vector< std::vector< double > > rawBPMData;
-        boost::circular_buffer< std::vector< double > > rawBPMDataBuffer;
+        boost::circular_buffer< std::vector< std::vector< double > > > rawBPMDataBuffer;
         std::vector< std::string > strTimeStamps;
     };
 
     struct bpmDataObject
     {
-        bpmDataObject() : shotCount( 0 ), numShots( 1 ), buffer( UTL::BUFFER_TEN ) {}
+        bpmDataObject() : shotCount( 0 ), numShots( 1 ), buffer( UTL::BUFFER_TEN ), xPVBuffer( UTL::BUFFER_TEN ), yPVBuffer( UTL::BUFFER_TEN ) {}
         std::string name, pvRoot;
-        bool isAContinuousMonitorStruct, isATemporaryMonitorStruct;
+        bool isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
         bool appendingData;
         int shotCount, numShots; /// we allow -1 values here so NOT a size_t
         double xPV, yPV;
@@ -86,6 +86,12 @@ namespace beamPositionMonitorStructs
         std::vector< double > timeStamps;
         std::vector< std::string > strTimeStamps;
         std::vector< std::vector< double > > bpmData;
+        std::vector< double > p1, p2, pu1, pu2, pu3, pu4, c1, c2, xVec, yVec, qVec;
+        boost::circular_buffer< double > xBuffer, yBuffer, qBuffer;
+//        std::vector< double > timeStamps;
+        boost::circular_buffer< double > timeStampsBuffer;
+        std::vector< std::vector< double > > rawBPMData;
+        boost::circular_buffer< std::vector< double > > rawBPMDataBuffer;
         VELA_ENUM::TRIG_STATE bpmState;
         VELA_ENUM::MACHINE_AREA machineArea;
         VELA_ENUM::MACHINE_MODE machineMode;

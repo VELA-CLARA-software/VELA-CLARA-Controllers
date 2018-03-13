@@ -384,7 +384,6 @@ beamPositionMonitorController & VCBPMs::physical_CLARA_2_VELA_BPM_Controller()
 //______________________________________________________________________________
 beamPositionMonitorController & VCBPMs::getBPMController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
 {
-
     if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
         return offline_VELA_INJ_BPM_Controller();
     else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
@@ -415,7 +414,6 @@ beamPositionMonitorController & VCBPMs::getBPMController( VELA_ENUM::MACHINE_MOD
         return virtual_CLARA_2_VELA_BPM_Controller();
     else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_2_VELA )
         return physical_CLARA_2_VELA_BPM_Controller();
-
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL

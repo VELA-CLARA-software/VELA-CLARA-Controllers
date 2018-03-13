@@ -57,7 +57,7 @@ namespace UTL
     const char TAB_C              = '\t';
     // default config paths -
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
-    const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1\\ControlRoomApps\\Controllers\\Config\\";
+    const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1.dl.ac.uk\\ControlRoomApps\\Controllers\\Config\\";
     // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
     // config file names

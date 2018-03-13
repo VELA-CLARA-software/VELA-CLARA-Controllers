@@ -39,16 +39,15 @@ class beamPositionMonitorInterface : public interface
         bool isMonitoringBPMData( const std::string & bpmName );
         bool isNotMonitoringBPMData( const std::string & bpmName );
 
-        double calcX( const std::string & bpm, double u11, double u12, double u13, double u14 );
-        double calcY( const std::string & bpm, double u21, double u22, double u23, double u24 );
-        double calcQ( const std::string & bpm, std::vector< double > rawData );
+        double calcX( const std::string & bpm, double u11, double u12, double u13, double u14, double mn, double xn );
+        double calcY( const std::string & bpm, double u21, double u22, double u23, double u24, double mn, double yn );
+        double calcQ( const std::string & bpm, std::vector< double > rawData, double att1cal, double att2cal, double v1cal, double v2cal, double qcal );
         double getBPMResolution( const std::string & bpm );
         double getX( const std::string & bpm );
         double getY( const std::string & bpm );
         double getQ( const std::string & bpm );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
-        const beamPositionMonitorStructs::rawDataStruct & getAllBPMData( const std::string & name );
         const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
@@ -76,18 +75,12 @@ class beamPositionMonitorInterface : public interface
         VELA_ENUM::MACHINE_MODE getMachineMode();
 
         std::vector< std::string > getBPMNames();
-
-        void updateData( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
-        void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         bool hasTrig( const std::string & bpm );
         bool hasNoTrig( const std::string & bpm );
         std::map< const std::string, bool > isMonitoring;
 
         beamPositionMonitorStructs::bpmObject bpmObj;
         beamPositionMonitorStructs::bpmObject getBPMObject( const std::string & bpmName );
-
-        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
-
         VELA_ENUM::TRIG_STATE getBPMState( const std::string & bpmName );
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
@@ -113,6 +106,9 @@ class beamPositionMonitorInterface : public interface
         void addChannel( const std::string & pvRoot, beamPositionMonitorStructs::pvStruct & pv );
 
         void monitorBPMs();
+        void updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateData( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close) the bpm is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
@@ -128,6 +124,8 @@ class beamPositionMonitorInterface : public interface
         bool isADataPV( beamPositionMonitorStructs::BPM_PV_TYPE pv );
 
         void killMonitor( beamPositionMonitorStructs::monitorStruct * ms );
+        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo );///, beamPositionMonitorStructs::bpmDataObject *bpmdo );
+        void killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::bpmDataObject * bpmdo );///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
 
         void * addTemporaryMonitorStruct( beamPositionMonitorStructs::bpmObject * bpmObjp , beamPositionMonitorStructs::BPM_PV_TYPE monType, std::vector< std::vector< double > > & bpmData, beamPositionMonitorStructs::dataCollectionResult * stat);
 

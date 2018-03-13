@@ -43,12 +43,6 @@ void beamPositionMonitorController::initialise()
     if( localInterface.interfaceInitReport( shouldStartEPICS ) )
         message("beamPositionMonitorController instantiation success.");
 }
-
-//______________________________________________________________________________
-const beamPositionMonitorStructs::rawDataStruct & beamPositionMonitorController::getAllBPMData( const std::string & name )
-{
-    return localInterface.getAllBPMData( name );
-}
 //______________________________________________________________________________
 const beamPositionMonitorStructs::bpmDataObject & beamPositionMonitorController::getBPMDataObject( const std::string & name )
 {
