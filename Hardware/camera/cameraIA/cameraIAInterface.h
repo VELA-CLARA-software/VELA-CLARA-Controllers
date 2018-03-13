@@ -43,6 +43,13 @@ class cameraIAInterface : public cameraInterface
         bool setBackground();
         bool useBackground(const bool run);
         bool setStepSize(const int step);
+        bool setMaskX(const int x);
+        bool setMaskY(const int y);
+        bool setMaskXRad(const int xRad);
+        bool setMaskYRad(const int yRad);
+        bool setCenterXPixel(const int xC);
+        bool setCenterYPixel(const int yC);
+        bool setPixMM(const double pmm);
         bool useNPoint(const bool run);
         bool startAnalysis();
         bool stopAnalysis();

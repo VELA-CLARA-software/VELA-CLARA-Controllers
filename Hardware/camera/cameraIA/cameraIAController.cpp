@@ -77,7 +77,16 @@ std::string cameraIAController::selectedCamera()
 }
 bool cameraIAController::setCamera(const std::string &cam)
 {
-    return localInterface.setCamera(cam);
+    bool ans=false;
+    ans=localInterface.setCamera(cam);
+    //Set up mask ans center pisx and pixMM ratio
+    setMaskX(localInterface.selectedCameraObj.IA.maskX);
+    setMaskY(localInterface.selectedCameraObj.IA.maskY);
+    setMaskXRad(localInterface.selectedCameraObj.IA.maskXRad);
+    setMaskYRad(localInterface.selectedCameraObj.IA.maskYRad);
+    setCenterXPixel(localInterface.selectedCameraObj.IA.xCenterPix);
+    setCenterYPixel(localInterface.selectedCameraObj.IA.yCenterPix);
+    return ans;
 }
 bool cameraIAController::startAcquiring()
 {
@@ -97,16 +106,42 @@ bool cameraIAController::stopVCAcquiring()
 }
 
 //IA Specific Functions
+bool cameraIAController::setPixMM(const double pmm)
+{
+    return localInterface.setPixMM(pmm);
+}
+bool cameraIAController::setMaskX(const int x)
+{
+    return localInterface.setMaskX(x);
+}
+bool cameraIAController::setMaskY(const int y)
+{
+    return localInterface.setMaskY(y);
+}
+bool cameraIAController::setMaskXRad(const int xRad)
+{
+    return localInterface.setMaskXRad(xRad);
+}
+bool cameraIAController::setMaskYRad(const int yRad)
+{
+    return localInterface.setMaskYRad(yRad);
+}
+bool cameraIAController::setCenterXPixel(const int xC)
+{
+    return localInterface.setCenterXPixel(xC);
+}
+bool cameraIAController::setCenterYPixel(const int yC)
+{
+    return localInterface.setCenterYPixel(yC);
+}
 bool cameraIAController::setStepSize(const int step)
 {
     return localInterface.setStepSize(step);
 }
-
 bool cameraIAController::useNPoint(const bool run)
 {
     return localInterface.useNPoint(run);
 }
-
 bool cameraIAController::setBackground()
 {
     return localInterface.setBackground();

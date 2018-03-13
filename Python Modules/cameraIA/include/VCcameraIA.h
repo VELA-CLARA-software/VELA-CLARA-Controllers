@@ -563,6 +563,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
              &cameraIAController::useNPoint,
              (arg("True/False")),
              "Returns True if successful in setting the analysis to use Npoint scaling")
+
+        .def("useNPoint",
+             &cameraIAController::useNPoint,
+             (arg("int")),
+             "Returns True if successful in setting the analysis to use Npoint scaling")
+
         .def("useBackground",
              &cameraIAController::setStepSize,
              (arg("int")),

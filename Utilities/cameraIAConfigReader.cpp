@@ -225,7 +225,6 @@ void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, 
             pvStruct_v.back().pvType = CAM_PV_TYPE::USE_BKGRND_RBV;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_NPOINT_RBV  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::USE_NPOINT_RBV;
-
         else
             message("The next line is false.");
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;

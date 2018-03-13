@@ -63,6 +63,13 @@ class cameraIAController  : public controller
         bool startVCAcquiring();
         bool stopVCAcquiring();
         //IA Specific Functions
+        bool setMaskX(const int x);
+        bool setMaskY(const int y);
+        bool setMaskXRad(const int xRad);
+        bool setMaskYRad(const int yRad);
+        bool setCenterXPixel(const int xC);
+        bool setCenterYPixel(const int yC);
+        bool setPixMM(const double pmm);
         bool setBackground();
         bool useBackground(const bool run);
         bool startAnalysis();
