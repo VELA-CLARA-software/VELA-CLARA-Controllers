@@ -174,21 +174,19 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
     rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
     switch(ms -> monType)
     {
-        case rfModStructs::GUN_MOD_PV_TYPE::STATE_READ:
-            ms->interface->debugMessage("GUN_MOD_PV_TYPE::STATE_READ = ", *(int*)args.dbr);
-            ms->interface->setStateRead(args.dbr);
-            //ms->rfModStructs->vPos =  *(double*)args.dbr;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ:
+            ms->interface->updateMainState(args.dbr);
             break;
-        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ = ",*(double*)args.dbr);
-            //ms->rfModStructs->intensity =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_STR:
-            ms->interface->debugMessage("GUN_MOD_PV_TYPE::STATE_READ = ", *(double*)args.dbr);
+//        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ:
+//            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ = ",*(double*)args.dbr);
+//            ms->interface->updateModIlock(args);
+//            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR:
+            ms->interface->updateHexString(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME:
             ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",*(long*)args.dbr);
-            ms->interface->gunMod.warmuptime =  *(long*)args.dbr;
+            ms->interface->updateWarmUpTime(*(long*)args.dbr);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ:
             ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ = ",*(double*)args.dbr);
@@ -248,55 +246,248 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
     }
 }
 //____________________________________________________________________________________________
-void gunModInterface::setStateRead( const void * argsdbr )
+void gunModInterface::updateMainState(const void * argsdbr)
 {
     switch( *(unsigned short*)argsdbr )
     {
+        case 0:
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::NOT_CONNECTED;
+            break;
         case 1:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::ERROR1;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDYBY_INTERLOCK;
             break;
         case 2:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::OFF;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::OFF;
             break;
         case 3:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::off_Request;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::OFF_REQUEST;
             break;
         case 4:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_Intrlock;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_INTERLOCK;
             break;
         case 5:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::Standby_Request;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDBY_REQUEST;
             break;
         case 6:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::Standby;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDBY;
             break;
         case 7:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_Off_Requ;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_OFF_REQUEST;
             break;
         case 8:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::Trigger_Interl;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIGGER_INTERLOCK;
             break;
         case 9:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_Request;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_REQUEST;
             break;
         case 10:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::HV_On;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_ON;
             break;
         case 11:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::Trig_Off_Req;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIG_OFF_REQUEST;
             break;
         case 12:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::Trig_Request;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIG_REQUEST;
             break;
         case 13:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::Trig;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIG;
             break;
         default:
-            gunMod.state = rfModStructs::GUN_MOD_STATE::ERROR1;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::UNKNOWN_STATE;
             break;
     }
-    message( gunMod.name," ",gunMod.name," state changed to ",ENUM_TO_STRING(gunMod.state) );
+    message( gunMod.name," ",gunMod.name," state changed to ",ENUM_TO_STRING(gunMod.main_state) );
 }
+//______________________________________________________________________________
+void gunModInterface::updateHexString(const event_handler_args& args)
+{
+    rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
+    std::stringstream ss;
+    ss << *(char*)args.dbr;
+
+    gunMod.hex_state_str = ss.str();
+
+    convertHexStringToMessage();
+
+}
+//______________________________________________________________________________
+rfModStructs::GUN_GUN_MOD_ERR_STATE RFGunInterface::convertModErrorReadStr( const char * epicsModErrCodeString )
+{
+    std::stringstream ss;
+    ss << epicsModErrCodeString;
+
+    if( isAGoodModErrorReadStr( ss.str() ) )
+        return rfModStructs::GUN_MOD_ERR_STATE::GOOD;
+    else if( isABadModErrorReadStr( ss.str() ) )
+        return rfModStructs::GUN_MOD_ERR_STATE::BAD;
+    else
+        return rfModStructs::GUN_MOD_ERR_STATE::UNKNOWN;
+}
+//______________________________________________________________________________
+rfModStructs::GUN_GUN_MOD_ERR_STATE RFGunInterface::convertModErrorRead( const double v )
+{
+    switch( (int)v )
+    {
+        case 0:
+            return rfModStructs::GUN_GUN_MOD_ERR_STATE::GOOD;
+            break;
+        case 2000:
+            return rfModStructs::GUN_GUN_MOD_ERR_STATE::GOOD;
+            break;
+        default:
+            return rfModStructs::GUN_GUN_MOD_ERR_STATE::BAD;
+            break;
+    }
+}
+//______________________________________________________________________________
+bool RFGunInterface::isAGoodModErrorReadStr( const std::string & s )
+{
+//    for( auto && it : RFObject.mod.goodModErrorReadStr )
+//        message( "RFObject.mod.goodModErrorReadStr = ", it);
+//
+//    message("Compare with ", s );
+//
+//    message(  s == RFObject.mod.goodModErrorReadStr[0] ) ;
+
+    if (std::find( RFObject.mod.goodModErrorReadStr.begin(), RFObject.mod.goodModErrorReadStr.end(), s ) != RFObject.mod.goodModErrorReadStr.end())
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+bool RFGunInterface::isABadModErrorReadStr( const std::string & s )
+{
+    if (std::find( RFObject.mod.badModErrorReadStr.begin(), RFObject.mod.badModErrorReadStr.end(), s ) != RFObject.mod.badModErrorReadStr.end())
+        return true;
+    else
+        return false;
+}
+
+
+//____________________________________________________________________________________________
+void gunModInterface::updateWarmUpTime(const long val)
+{
+    gunMod.warmuptime =  val;
+    if( gunMod.warmuptime == 0 )
+    {
+        gunMod.safelyWarmedUP = true;
+        message( "Gun Modulator Safely Warmed Up:");
+    }
+    else
+    {
+        gunMod.safelyWarmedUP = false;
+    }
+}
+//______________________________________________________________________________
+bool gunModInterface::isModWarmedUp()
+{
+    return gunMod.safelyWarmedUP;
+}
+//______________________________________________________________________________
+bool gunModInterface::isModNotWarmedUp()
+{
+    return !isModWarmedUp();
+}
+//______________________________________________________________________________
+bool gunModInterface::isModInTrig()
+{
+    if(gunMod.state == rfModStructs::MOD_STATE::TRIG)
+    {
+        return true;
+    }
+    return false;
+}
+//______________________________________________________________________________
+bool gunModInterface::isModInHVOn()
+{
+    if(gunMod.state == rfModStructs::MOD_STATE::HV_OO)
+    {
+        return true;
+    }
+    return false;
+}
+//______________________________________________________________________________
+bool gunModInterface::isModInStandby()
+{
+    if(gunMod.state  == rfModStructs::MOD_STATE::STANDBY)
+    {
+        return true;
+    }
+    return false;
+}
+//______________________________________________________________________________
+bool gunModInterface::isModInOff()
+{
+    if(gunMod.state == rfModStructs::MOD_STATE::OFF)
+    {
+        return true;
+    }
+    return false;
+}
+//______________________________________________________________________________
+void gunModInterface::modReset()
+{
+    caput( gunMod.pvComStructs[ rfModStructs::RF_PV_TYPE::MOD_RESET ].CHTYPE,
+           gunMod.pvComStructs[ rfModStructs::RF_PV_TYPE::MOD_RESET ].CHID,
+           EPICS_RESET, "" , "!!gunModInterface TIMEOUT!! In modReset() ");
+}
+//______________________________________________________________________________
+bool gunModInterface::modResetAndWait( const size_t waitTime )
+{
+    message("modreset");
+    modReset();
+    return waitFor( &gunModInterface::isModILockStateGood, *this, "Timeout waiting for Modulator to reset ",  waitTime ); // MAGIC_NUMBER
+}
+//______________________________________________________________________________
+rfModStructs::MOD_STATE gunModInterface::getModMainState() const
+{
+    return gunMod.main_state;
+}
+//______________________________________________________________________________
+rfModStructs::MOD_STATE gunModInterface::getModErrorState() const
+{
+    return gunMod.error_state;
+}
+//______________________________________________________________________________
+rfModStructs::GUN_GUN_MOD_ERR_STATE gunModInterface::getModiLock() const
+{
+    return gunMod.ilock_state;
+}
+
+
+
+
+
+
+bool convertHexStringToMessage()
+{
+    r = true;
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

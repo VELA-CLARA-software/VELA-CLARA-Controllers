@@ -19,6 +19,7 @@
 #include "rfModStructs.h"
 #include "structs.h"
 #include "gunModConfigReader.h"
+#include "gunModHexStringMap.h"
 //stl
 #include <vector>
 #include <string>
@@ -52,11 +53,33 @@ class gunModInterface : public interface
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
 
+        bool isModWarmedUp();
+        bool isModNotWarmedUp();
+        bool isModInTrig();
+        bool isModInHVOn();
+        bool isModInStandby();
+        bool isModInOff();
+        void modReset();
+        bool modResetAndWait(const size_t waitTime);
+        rfModStructs::GUN_MOD_STATE getModMainState() const;
+        rfModStructs::GUN_MOD_ERR_STATE getModErrorState() const;
+
 
     private:
         // MOVE TO BASE CLASS
         const bool shouldStartEPICs;
         bool allChidsInitialised;
+
+        static void staticEntryGunModMonitor( const event_handler_args args);
+
+        void updateMainState(const void * argsdbr);
+        void updateWarmUpTime(const long val);
+        void updateHexString(const event_handler_args& args);
+
+        rfModStructs::GUN_MOD_ERR_STATE convertModErrorReadStr(const char * epicsModErrCodeString);
+        rfModStructs::GUN_MOD_ERR_STATE convertModErrorRead(const double v);
+
+
 //
 //        void killMonitor( pilaserStructs::monitorStruct * ms );
 //
@@ -72,11 +95,10 @@ class gunModInterface : public interface
 //
         std::vector<rfModStructs::monitorStruct*> continuousMonitorStructs;
         // all EPICS callbacks route here
-        static void staticEntryGunModMonitor( const event_handler_args args);
 //
         gunModConfigReader configReader; /// class member so we can pass in file path in ctor
 //        ///message
-        void setStateRead(const void* argsdbr);
+
 
 
 };

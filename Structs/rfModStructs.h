@@ -26,7 +26,7 @@ namespace rfModStructs
     struct rfObject;
 
     // GUNS MODULATOR (SCANDINOVA)
-
+    // enums for all the pvs we monitor/control
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_PV_TYPE, (IONP_PRESSURE_READ)
                                                          (PULSE_WIDTH_READ)
                                                          (MAGPS1_CURR_READ)
@@ -37,39 +37,63 @@ namespace rfModStructs
                                                          (MAGPS2_VOLT_READ)
                                                          (MAGPS3_VOLT_READ)
                                                          (MAGPS4_VOLT_READ)
-                                                         (ILOCK1)
-                                                         (ILOCK2)
-                                                         (ILOCK3)
-                                                         (ILOCK4)
-                                                         (ILOCK5)
-                                                         (ERROR_READ_STR)
+                                                         (HVPS1_CURR_READ)
+                                                         (HVPS2_CURR_READ)
+                                                         (HVPS3_CURR_READ)
+                                                         (HVPS1_VOLT_READ)
+                                                         (HVPS2_VOLT_READ)
+                                                         (HVPS3_VOLT_READ)
+                                                         (ILOCK1_STR)
+                                                         (ILOCK2_STR)
+                                                         (ILOCK3_STR)
+                                                         (ILOCK4_STR)
+                                                         (ILOCK5_STR)
+                                                         (ERROR_READ_HEX_STR)
                                                          (WARMUP_TIME)
-                                                         (STATE_READ)
-                                                         (ERROR_READ)
+                                                         (MAIN_STATE_READ)
+                                                         //(ERROR_READ)
                                                          (STATE_SET)
                                                          (CVD_READ)
                                                          (CT_READ)
                                                          (RESET)
                                                          (PULSE_WIDTH_FWHM_READ)
-                                        )
-
+                                        );
+    // a derived state based on if there is an error,
+    // the mod is either 'good' - i.e. you can change its main_state
+    // or bad - i.e. there is an interlock
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_ERR_STATE,(BAD)
+                                                           (GOOD)
+                                                           (UNKNOWN)
+                                        );
 //
-//    /// These are possible modulator states
+//    /// These are possible modulator main_states
 //    /// These come from CS3A_scandinova.db /home/controls/ioc/ebtf/CS3A/db
-//    /// We keep the same numbers as the control system, therefore UNKNOWN1                   //    (ERROR1)          = 0,
-//                                                                                             //    (UNKNOWN1         = 1 /// This is one i made up
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_STATE, (ERROR1)(UNKNOWN1)(OFF)(off_Request)   //    (OFF)             = 2,
-                                        (HV_Intrlock)(Standby_Request)(Standby)(HV_Off_Requ)   //    (off_Request)     = 3,
-                                        (Trigger_Interl)(HV_Request)(HV_On)(Trig_Off_Req)      //    (HV_Intrlock)     = 4,
-                                        (Trig_Request) (Trig)  );                              //    (Standby_Request) = 5,
-                                                                                               //    (Standby)         = 6,
-                                                                                               //    (HV_Off_Requ)     = 7,
-    /// These can't go in VELA_ENUM as they need a pvType.                                     //    (Trigger_Interl)  = 8,
-    struct pvStruct                                                                            //    (HV_Request)      = 9,
-    {                                                                                          //    (HV_On)           = 10,
-        pvStruct() : pvSuffix("UNKNOWN"), objName("UNKNOWN"),                                  //    (Trig_Off_Req)    = 11
-                     COUNT(0),MASK(0)                                                          //    (Trig_Request)    = 12
-                     {}                                                                        //    (Trig)            = 13
+//    /// We keep the same numbers as the control system, therefore UNKNOWN1
+//
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_STATE,
+                                        (NOT_CONNECTED)      // field(ZRST, "Init/not conne.")
+                                        (STANDYBY_INTERLOCK) // field(ONST, "Standby Interl.")
+                                        (OFF)                // field(TWST, "OFF")
+                                        (OFF_REQUEST)        // field(THST, "Off Request")
+                                        (HV_INTERLOCK)       // field(FRST, "HV Intrlock")
+                                        (STANDBY_REQUEST)    // field(FVST, "Standby Request")
+                                        (STANDBY)            // field(SXST, "Standby")
+                                        (HV_OFF_REQUEST)     // field(SVST, "HV Off Requ.")
+                                        (TRIGGER_INTERLOCK)  // field(EIST, "Trigger Interl.")
+                                        (HV_REQUEST)         // field(NIST, "HV Request")
+                                        (HV_ON)              // field(TEST, "HV On")
+                                        (TRIG_OFF_REQUEST)   // field(ELST, "Trig Off Req.")
+                                        (TRIG_REQUEST)       // field(TVST, "Trig Request")
+                                        (TRIG)               // field(TTST, "Trig")
+                                        (UNKNOWN_STATE)      // my default state on instantiation
+                                        );
+    struct pvStruct
+    {
+        pvStruct() : pvSuffix(UTL::UNKNOWN_STRING),
+                     objName(UTL::UNKNOWN_NAME),
+                     COUNT(0),//MAGIC_NUMBER
+                     MASK(0)//MAGIC_NUMBER
+                     {}
         GUN_MOD_PV_TYPE pvType;
         chid            CHID;
         std::string     pvSuffix, objName;
@@ -80,27 +104,53 @@ namespace rfModStructs
     struct gunModObject
     {
         gunModObject() :
-            state( GUN_MOD_STATE::ERROR1 ),
-            //ilck(UNKNOWN),
+            main_state( GUN_MOD_STATE::UNKNOWN_STATE ),
+            hex_state_str(UTL::UNKNOWN_STRING),
+            error_state( GUN_MOD_ERR_STATE::UNKNOWN ),
+
             safelyWarmedUP(false),
-            MagPs1CurrRead(UTL::DUMMY_DOUBLE),MagPs2CurrRead(UTL::DUMMY_DOUBLE),
-            MagPs3CurrRead(UTL::DUMMY_DOUBLE),MagPs4CurrRead(UTL::DUMMY_DOUBLE),
-            MagPs1VoltRead(UTL::DUMMY_DOUBLE),MagPs2VoltRead(UTL::DUMMY_DOUBLE),
-            MagPs3VoltRead(UTL::DUMMY_DOUBLE),MagPs4VoltRead(UTL::DUMMY_DOUBLE),
-            PrfSet(UTL::DUMMY_DOUBLE),PrfRead(UTL::DUMMY_DOUBLE),
-            CtRead(UTL::DUMMY_DOUBLE),CvdRead(UTL::DUMMY_DOUBLE),
-            PlswthRead(UTL::DUMMY_DOUBLE),PlswthFwhmRead(UTL::DUMMY_DOUBLE),
+            MagPs1CurrRead(UTL::DUMMY_DOUBLE),
+            MagPs2CurrRead(UTL::DUMMY_DOUBLE),
+            MagPs3CurrRead(UTL::DUMMY_DOUBLE),
+            MagPs4CurrRead(UTL::DUMMY_DOUBLE),
+            MagPs1VoltRead(UTL::DUMMY_DOUBLE),
+            MagPs2VoltRead(UTL::DUMMY_DOUBLE),
+            MagPs3VoltRead(UTL::DUMMY_DOUBLE),
+            MagPs4VoltRead(UTL::DUMMY_DOUBLE),
+
+            HvPs1CurrRead(UTL::DUMMY_DOUBLE),
+            HvPs2CurrRead(UTL::DUMMY_DOUBLE),
+            HvPs3CurrRead(UTL::DUMMY_DOUBLE),
+            HvPs1VoltRead(UTL::DUMMY_DOUBLE),
+            HvPs2VoltRead(UTL::DUMMY_DOUBLE),
+            HvPs3VoltRead(UTL::DUMMY_DOUBLE),
+
+            PrfSet(UTL::DUMMY_DOUBLE),
+            PrfRead(UTL::DUMMY_DOUBLE),
+            CtRead(UTL::DUMMY_DOUBLE),
+            CvdRead(UTL::DUMMY_DOUBLE),
+            PlswthRead(UTL::DUMMY_DOUBLE),
+            PlswthFwhmRead(UTL::DUMMY_DOUBLE),
             ionp(UTL::DUMMY_DOUBLE),
-            error_read("UNKNOWN")
+            //error_read(UTL::UNKNOWN_STRING),
+
+            ilock1(UTL::UNKNOWN_STRING),
+            ilock2(UTL::UNKNOWN_STRING),
+            ilock3(UTL::UNKNOWN_STRING),
+            ilock4(UTL::UNKNOWN_STRING),
+            ilock5(UTL::UNKNOWN_STRING)
+
             {}
-        std::string name, pvRoot, error_read, ilock1,ilock2,ilock3,ilock4,ilock5;
-        GUN_MOD_STATE state;
+        std::string name, pvRoot, hex_state_str, ilock1,ilock2,ilock3,ilock4,ilock5;
+        std::vector<std::vector<std::string>> interlock_history;
+        GUN_MOD_STATE main_state;
+        GUN_MOD_ERR_STATE error_state;
         long   warmuptime;
         bool   safelyWarmedUP;
         double MagPs1CurrRead,MagPs2CurrRead,MagPs3CurrRead,MagPs4CurrRead,
                MagPs1VoltRead,MagPs2VoltRead,MagPs3VoltRead,MagPs4VoltRead,
-               HvPs1CurrRead,HvPs2CurrRead,HvPs3CurrRead,HvPs4CurrRead,
-               HvPs1VoltRead,HvPs2VoltRead,HvPs3VoltRead,HvPs4VoltRead,
+               HvPs1CurrRead,HvPs2CurrRead,HvPs3CurrRead,
+               HvPs1VoltRead,HvPs2VoltRead,HvPs3VoltRead,
                PrfSet, PrfRead,
                CtRead, CvdRead,
                PlswthSet,PlswthRead,PlswthFwhmRead,
@@ -116,7 +166,7 @@ namespace rfModStructs
 
     // LINAC-01 MODULATOR (DTI)
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_PV_TYPE, (SYSTEM_STATE_READ)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_PV_TYPE, (SYSTEM_MAIN_STATE_READ)
                                                           (SYSTEM_STATE_PUT)
                                                           (HVPS_VOLTAGE_SET)
                                                           (HVPS_VOLTAGE_SET_READ)
@@ -173,7 +223,7 @@ namespace rfModStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_STATE, (STATE_UNKNOWN)
                                                        (STATE_OFF)
-                                                       (STANDBY)
+                                                       (L01_STANDBY)
                                                        (HV)
                                                        (TRANSMIT))
 

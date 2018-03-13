@@ -48,25 +48,6 @@ bool gunModConfigReader::getGunModObject(rfModStructs::gunModObject & obj )
         obj.pvComStructs[ it.pvType ] = it;
 
 
-
-//    obj.mod.badModErrorReadStr = RFModObject.badModErrorReadStr;
-//    obj.mod.goodModErrorReadStr = RFModObject.goodModErrorReadStr;
-
-    /// rfPowerObjects are in a map keyed by name ...
-
-//    for(auto && it : rfPowerObjects )
-//        obj.powerObjects[ it.name ] = it;
-
-//    /// Then we add in the monitor structs, for each power object ...
-//
-//    for(auto && it : obj.powerObjects )
-//        for( auto it2 : pvPWRMonStructs )
-//            it.second.pvMonStructs[ it2.pvType ] = it2;
-//    /// LLRF
-//    obj.llrf = RFLLRFObject;
-//    for(auto && it : pvLLRFMonStructs )
-//        obj.llrf.pvMonStructs[ it.pvType ] = it;
-
     return true;
 }
 ////______________________________________________________________________________
@@ -225,13 +206,13 @@ void gunModConfigReader::addToPVStruct( std::vector< rfModStructs::pvStruct >  &
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_SET;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_STATEREAD  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_READ;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ;
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_EXILOCK1  )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_STATE  )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_VALUE;
 
-        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_EXILOCK2 )
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_STR;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_VAL )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_VALUE_HEX_STR;
 
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_WARMUPT )
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME;
@@ -252,6 +233,23 @@ void gunModConfigReader::addToPVStruct( std::vector< rfModStructs::pvStruct >  &
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ;
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ )
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ;
+
+
+
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS1_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS1_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS2_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS2_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS3_CURR_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS3_CURR_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS1_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS1_VOLT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS2_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS2_VOLT_READ;
+        else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS3_VOLT_READ )
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS3_VOLT_READ;
+
+
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_CT_READ )
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::CT_READ;
         else if( keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_CVD_READ )

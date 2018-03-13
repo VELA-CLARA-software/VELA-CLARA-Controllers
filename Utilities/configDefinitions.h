@@ -144,6 +144,7 @@ namespace UTL
     // Gun Modulator PVs
     const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_FWHM_READ";
     const std::string PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ    = "PV_SUFFIX_GUN_MOD_IONP_PRESSURE_READ";
+
     const std::string PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS1_CURR_READ";
     const std::string PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS2_CURR_READ";
     const std::string PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ      = "PV_SUFFIX_GUN_MOD_MAGPS3_CURR_READ";
@@ -152,12 +153,20 @@ namespace UTL
     const std::string PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS2_VOLT_READ";
     const std::string PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS3_VOLT_READ";
     const std::string PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ      = "PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_HVPS1_CURR_READ      = "PV_SUFFIX_GUN_MOD_HVPS1_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_HVPS2_CURR_READ      = "PV_SUFFIX_GUN_MOD_HVPS2_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_HVPS3_CURR_READ      = "PV_SUFFIX_GUN_MOD_HVPS3_CURR_READ";
+    const std::string PV_SUFFIX_GUN_MOD_HVPS1_VOLT_READ      = "PV_SUFFIX_GUN_MOD_HVPS1_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_HVPS2_VOLT_READ      = "PV_SUFFIX_GUN_MOD_HVPS2_VOLT_READ";
+    const std::string PV_SUFFIX_GUN_MOD_HVPS3_VOLT_READ      = "PV_SUFFIX_GUN_MOD_HVPS3_VOLT_READ";
+
+
     const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
     const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
     const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
-    const std::string PV_SUFFIX_GUN_MOD_EXILOCK1  = "PV_SUFFIX_GUN_MOD_EXILOCK1";
+    const std::string PV_SUFFIX_GUN_MOD_ERR_STATE  = "PV_SUFFIX_GUN_MOD_ERR_STATE";
     const std::string PV_SUFFIX_GUN_MOD_CVD_READ  = "PV_SUFFIX_GUN_MOD_CVD_READ";
-    const std::string PV_SUFFIX_GUN_MOD_EXILOCK2  = "PV_SUFFIX_GUN_MOD_EXILOCK2";
+    const std::string PV_SUFFIX_GUN_MOD_ERR_VAL  = "PV_SUFFIX_GUN_MOD_ERR_VAL";
     const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
     const std::string PV_SUFFIX_GUN_RESET         = "PV_SUFFIX_GUN_RESET";
@@ -503,7 +512,7 @@ namespace UTL
     const std::string PV_SUFFIX_SOLENOID_3_CURRENT              = "PV_SUFFIX_SOLENOID_3_CURRENT";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_READ               = "PV_SUFFIX_HVPS_VOLTAGE_READ" ;
     const std::string PV_SUFFIX_HVPS_CURRENT_READ               = "PV_SUFFIX_HVPS_CURRENT_READ" ;
-    const std::string PV_SUFFIX_SYSTEM_STATE_READ               = "PV_SUFFIX_SYSTEM_STATE_READ";
+    const std::string PV_SUFFIX_SYSTEM_MAIN_STATE_READ               = "PV_SUFFIX_SYSTEM_MAIN_STATE_READ";
     const std::string PV_SUFFIX_SYSTEM_STATE_PUT                = "PV_SUFFIX_SYSTEM_STATE_PUT";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_SET                = "PV_SUFFIX_HVPS_VOLTAGE_SET";
     const std::string PV_SUFFIX_ION_PUMP_VOLTAGE                = "PV_SUFFIX_ION_PUMP_VOLTAGE";
@@ -585,7 +594,7 @@ namespace UTL
 //
 //    const std::string PV_RF_GUN_MOD_STATESET  = "PV_RF_GUN_MOD_STATESET";
 //    const std::string PV_RF_GUN_MOD_STATEREAD = "PV_RF_GUN_MOD_STATEREAD";
-//    const std::string PV_RF_GUN_MOD_EXILOCK1  = "PV_RF_GUN_MOD_EXILOCK1";
+//    const std::string PV_RF_GUN_MOD_ERR_STATE  = "PV_RF_GUN_MOD_ERR_STATE";
 //    const std::string PV_RF_GUN_MOD_WARMUPT   = "PV_RF_GUN_MOD_WARMUPT";
 //    const std::string PV_RF_GUN_RESET     = "PV_RF_GUN_RESET";
 //

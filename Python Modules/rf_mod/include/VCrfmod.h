@@ -12,8 +12,6 @@
 
 #include "VCheader.h"
 
-
-/// we just need to decide good names for these things...
 class VCrfmod : public baseObject
 {
     public:

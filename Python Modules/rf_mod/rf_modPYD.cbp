@@ -7,7 +7,7 @@
 		<Option compiler="ms_visual_c_2012" />
 		<Build>
 			<Target title="Debug">
-				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stagebug\VELA_CLARA_RF_Modulator_Control" prefix_auto="1" extension_auto="1" />
+				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_RF_Modulator_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -76,6 +76,7 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/gun_mod/gunModController.cpp" />
 		<Unit filename="../../Hardware/gun_mod/gunModController.h" />
+		<Unit filename="../../Hardware/gun_mod/gunModHexStringMap.h" />
 		<Unit filename="../../Hardware/gun_mod/gunModInterface.cpp" />
 		<Unit filename="../../Hardware/gun_mod/gunModInterface.h" />
 		<Unit filename="../../Hardware/interface.cpp" />

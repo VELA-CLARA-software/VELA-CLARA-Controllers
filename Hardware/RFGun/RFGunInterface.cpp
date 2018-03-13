@@ -726,6 +726,8 @@ std::vector< std::string > RFGunInterface::getRFPowerNames()
         r.push_back( it.first );
     return r;
 }
+
+
 //______________________________________________________________________________
 bool RFGunInterface::isModWarmedUp()
 {
