@@ -404,6 +404,7 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
             case llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP:
                 //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_AMP_SP = ",*(double*)args.dbr);
                 ms->llrfObj->amp_sp = *(double*)args.dbr;
+                ms->llrfObj->amp_MVM = (ms->llrfObj->amp_sp) * (ms->llrfObj->ampCalibration);
                 break;
             case llrfStructs::LLRF_PV_TYPE::LIB_PHI_FF:
                 //ms->interface->debugMessage("staticEntryLLRFMonitor LIB_PHI_FF = ",*(double*)args.dbr);
