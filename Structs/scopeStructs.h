@@ -27,6 +27,7 @@ namespace scopeStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_PV_TYPE, (P1) (P2) (P3) (P4) (TR1) (TR2) (TR3) (TR4) (UNKNOWN) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_TYPE, (NUM) (ARRAY) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_NAME, (CLARASCOPE01) (VELASCOPE02) (UNKNOWN_SCOPE_NAME) )
 
     /// monType could be used to switch in the staticCallbackFunction
     /// For the scope this is basically redundant, there is only one monitor: "Sta"
@@ -57,6 +58,7 @@ namespace scopeStructs
                            buffer( UTL::BUFFER_TEN ) {}
         std::string                name, pvRoot;
         VELA_ENUM::DIAG_TYPE       diagType;
+        SCOPE_NAME      scopeName;
         bool                       isAContinuousMonitorStruct, isATemporaryMonitorStruct;
         bool                       isMonitoring;
         double                     p1, p2, p3, p4;
@@ -88,6 +90,7 @@ namespace scopeStructs
                            buffer( UTL::BUFFER_TEN ) {}
         std::string                          name, pvRoot;
         VELA_ENUM::DIAG_TYPE                 diagType;
+        SCOPE_NAME                scopeName;
         bool                                 isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
         bool                                 isMonitoringTr1, isMonitoringTr2, isMonitoringTr3, isMonitoringTr4;
         double                               timebase, noiseFloor;

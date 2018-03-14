@@ -238,6 +238,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .value("UNKNOWN",  scopeStructs::SCOPE_PV_TYPE::UNKNOWN  )
             ;
 
+    enum_<scopeStructs::SCOPE_NAME>("SCOPE_NAME")
+            .value("CLARASCOPE01",       scopeStructs::SCOPE_NAME::CLARASCOPE01       )
+            .value("VELASCOPE02",        scopeStructs::SCOPE_NAME::VELASCOPE02        )
+            .value("UNKNOWN_SCOPE_NAME", scopeStructs::SCOPE_NAME::UNKNOWN_SCOPE_NAME )
+            ;
+
     enum_<VELA_ENUM::DIAG_TYPE>("DIAG_TYPE")
             .value("WCM",     VELA_ENUM::DIAG_TYPE::WCM       )
             .value("ICT1",    VELA_ENUM::DIAG_TYPE::ICT2      )

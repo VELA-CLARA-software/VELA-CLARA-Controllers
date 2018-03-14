@@ -144,11 +144,10 @@ void scopeConfigReader::addToScopeNumObjectsV1( const std::vector<std::string> &
         else
             scopeNumObjects.back().pvRoot = keyVal[ 1 ];
     }
-
-//    else if( keyVal[0] == UTL::TIMEBASE )
-//    {
-//        scopeNumObjects.back().timebase = getNumD( keyVal[ 1 ] );
-//    }
+    else if( keyVal[0] == UTL::SCOPE_NAME )
+    {
+        scopeNumObjects.back().scopeName = getScopeName( keyVal[ 1 ] );
+    }
 
 }
 //______________________________________________________________________________
@@ -168,7 +167,10 @@ void scopeConfigReader::addToScopeTraceDataObjectsV1( const std::vector<std::str
         else
             scopeTraceDataObjects.back().pvRoot = keyVal[ 1 ];
     }
-
+    else if( keyVal[0] == UTL::SCOPE_NAME )
+    {
+        scopeTraceDataObjects.back().scopeName = getScopeName( keyVal[ 1 ] );
+    }
     else if( keyVal[0] == UTL::TIMEBASE )
     {
         scopeTraceDataObjects.back().timebase = getNumD( keyVal[ 1 ] );
@@ -367,6 +369,20 @@ VELA_ENUM::DIAG_TYPE scopeConfigReader::getDiagType( const std::string & val )
         r = VELA_ENUM::ED_FCUP;
     else if( val == UTL::FCUP )
         r = VELA_ENUM::FCUP;
+
+    return r;
+}
+//______________________________________________________________________________
+scopeStructs::SCOPE_NAME scopeConfigReader::getScopeName( const std::string & val )
+{
+    scopeStructs::SCOPE_NAME r;
+
+    if( val == UTL::CLARASCOPE01 )
+        r = scopeStructs::CLARASCOPE01;
+    else if( val == UTL::VELASCOPE02 )
+        r = scopeStructs::VELASCOPE02;
+    else
+        r = scopeStructs::UNKNOWN_SCOPE_NAME;
 
     return r;
 }

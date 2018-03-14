@@ -63,6 +63,7 @@ class scopeConfigReader : public configReader
         void addCOUNT_MASK_OR_CHTYPE(  std::vector< scopeStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
 
         VELA_ENUM::DIAG_TYPE getDiagType( const std::string & val );
+        scopeStructs::SCOPE_NAME getScopeName( const std::string & val );
 
         std::vector< double >                           tstamps;
         std::vector< double >                           numtstamps;

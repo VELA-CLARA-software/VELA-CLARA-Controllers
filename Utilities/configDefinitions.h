@@ -388,6 +388,9 @@ namespace UTL
     const std::string FCUP            = "FCUP";
     const std::string ED_FCUP         = "ED_FCUP";
     const std::string SCOPE_PV_TYPE   = "SCOPE_PV_TYPE";
+    const std::string SCOPE_NAME      = "SCOPE_NAME";
+    const std::string CLARASCOPE01    = "CLARASCOPE01";
+    const std::string VELASCOPE02     = "VELASCOPE02";
 
 
 

@@ -224,7 +224,7 @@
 	<string>
 	<boost/circular_buffer.hpp>
 
-1506581258 d:\vela-clara_software\vela-clara-controllers\structs\scopestructs.h
+1521025575 d:\vela-clara_software\vela-clara-controllers\structs\scopestructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -232,7 +232,7 @@
 	<cadef.h>
 	<boost/circular_buffer.hpp>
 
-1506581258 d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.h
+1521025582 d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -248,12 +248,12 @@
 	<vector>
 	<cadef.h>
 
-1520527150 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
+1521025323 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
 
-1520941032 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
+1520956674 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
 	"scopeInterface.h"
 	<iostream>
 	<sstream>
@@ -282,7 +282,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1506581258 source:d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.cpp
+1521025840 source:d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.cpp
 	"scopeConfigReader.h"
 	"configDefinitions.h"
 	"scopeStructs.h"
