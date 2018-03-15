@@ -471,6 +471,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def("offline_CLARA_PH1_Scope_Controller",  &VCscopes::offline_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Scope_Controller", &VCscopes::physical_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("getScopeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
+        .def("setQuiet",         &VCscopes::setQuiet )
+        .def("setVerbose",       &VCscopes::setVerbose )
+        .def("setMessage",       &VCscopes::setMessage )
+        .def("setDebugMessage",  &VCscopes::setDebugMessage )
         ;
 
 };

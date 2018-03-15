@@ -99,6 +99,34 @@ VCscopes::~VCscopes()
 //    }
 }    //dtor
 //______________________________________________________________________________
+void VCscopes::setQuiet()
+{
+    std::cout << "VCscopes Quiet Mode Set." << std::endl;
+    shouldShowDebugMessage = false;
+    shouldShowMessage = false;
+}
+//______________________________________________________________________________
+void VCscopes::setVerbose()
+{
+    std::cout << "VCscopes Verbose Mode Set." << std::endl;
+    shouldShowDebugMessage = true;
+    shouldShowMessage = true;
+}
+//______________________________________________________________________________
+void VCscopes::setMessage()
+{
+    std::cout << "VCscopes Message Mode Set." << std::endl;
+    shouldShowDebugMessage = false;
+    shouldShowMessage = true;
+}
+//______________________________________________________________________________
+void VCscopes::setDebugMessage()
+{
+    std::cout << "VCscopes DebugMessage Mode Set." << std::endl;
+    shouldShowDebugMessage = true;
+    shouldShowMessage = false;
+}
+//______________________________________________________________________________
 scopeController & VCscopes::virtual_VELA_INJ_Scope_Controller()
 {
     std::cout << "creating object" << std::endl;
