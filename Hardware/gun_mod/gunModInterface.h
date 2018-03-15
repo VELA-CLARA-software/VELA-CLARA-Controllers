@@ -78,13 +78,20 @@ class gunModInterface : public interface
 
         static void staticEntryGunModMonitor(const event_handler_args args);
         void updateValue(const event_handler_args& args,const rfModStructs::GUN_MOD_PV_TYPE pv);
-        void updateMAGPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv);
-        void updateHVPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv);
-        void updateMainState(const void * argsdbr);
-        void updateWarmUpTime(const long val);
+        void updateMAGPS_PV(const event_handler_args& args,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv);
+        void updateHVPS_PV(const event_handler_args& args,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv);
+        void updateMainState(const event_handler_args& args);
+        void updateWarmUpTime(const event_handler_args& args);
         void updateHexString(const event_handler_args& args);
         void updateStateReadString(const event_handler_args& args);
         void updateErrorState();
+
+        void updateCtRead(const event_handler_args& args);
+        void updateCvdRead(const event_handler_args& args);
+        void updatePlswthRead(const event_handler_args& args);
+        void updatePlswthFwhmRead(const event_handler_args& args);
+        void updateIlock_string(const event_handler_args& args, size_t ilock_number);
+        void check_ilock_changed(const std::string& new_val,std::string& present_val,size_t num);
 
         size_t getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv);
 

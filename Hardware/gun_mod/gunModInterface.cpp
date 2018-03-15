@@ -167,16 +167,17 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
 {
     rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
     // do a test for a magnet or hv number or other PV_TYPEe
+
     switch(ms->interface->is_MAGPS_or_HVCPS_PV(ms -> monType))
     {
         case UTL::ZERO_INT:
             ms->interface->updateValue(args,ms->monType);
             break;
         case UTL::ONE_INT:
-            ms->interface->updateMAGPS_PV(*(double*)args.dbr, ms->interface->getPVNum(ms->monType),ms->monType);
+            ms->interface->updateMAGPS_PV(args, ms->interface->getPVNum(ms->monType),ms->monType);
             break;
         case UTL::TWO_INT:
-            ms->interface->updateHVPS_PV(*(double*)args.dbr, ms->interface->getPVNum(ms->monType),ms->monType);
+            ms->interface->updateHVPS_PV(args, ms->interface->getPVNum(ms->monType),ms->monType);
             break;
         default:
             ms->interface->message("ERROR in valu epassed to gunModInterface::staticEntryGunModMonitor");
@@ -188,7 +189,7 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
    switch(pv)
     {
         case rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ:
-            updateMainState(args.dbr);
+            updateMainState(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR:
             updateHexString(args);
@@ -197,48 +198,38 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
             updateStateReadString(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",*(long*)args.dbr);
-            updateWarmUpTime(*(long*)args.dbr);
+            updateWarmUpTime(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::CT_READ:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",*(double*)args.dbr);
-            gunMod.CtRead =  *(double*)args.dbr;
+            updateCtRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::CVD_READ:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",*(double*)args.dbr);
-            gunMod.CvdRead =  *(double*)args.dbr;
+            updateCvdRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ",*(double*)args.dbr);
-            gunMod.PlswthRead  =  *(double*)args.dbr;
+            updatePlswthRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ",*(double*)args.dbr);
-            gunMod.PlswthFwhmRead =  *(double*)args.dbr;
+            updatePlswthFwhmRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ:
             debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ",*(double*)args.dbr);
             gunMod.ionp =  *(double*)args.dbr;
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR:
-            gunMod.ilock1 =  getDBRString(args);
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR = ",gunMod.ilock1);
+            updateIlock_string(args, UTL::ONE_SIZET);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK2_STR:
-            gunMod.ilock2 =  getDBRString(args);
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK2_STR = ",gunMod.ilock2);
+            updateIlock_string(args, UTL::TWO_SIZET);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK3_STR:
-            gunMod.ilock3 =  getDBRString(args);
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK3_STR = ",gunMod.ilock3);
+            updateIlock_string(args, UTL::THREE_SIZET);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK4_STR:
-            gunMod.ilock4 =  getDBRString(args);
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK4_STR = ",gunMod.ilock4);
+            updateIlock_string(args, UTL::FOUR_SIZET);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK5_STR:
-            gunMod.ilock5 =  getDBRString(args);
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK5_STR = ",gunMod.ilock5);
+            updateIlock_string(args, UTL::FIVE_SIZET);
             break;
         default:
             message("!!! ERROR !!! Unknown Monitor Type", ENUM_TO_STRING(pv)," passed to gunModInterface::staticEntryGunModMonitor");
@@ -248,8 +239,9 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
 //____________________________________________________________________________________________
 // REALLY CANCEROUS BELOW :(
 //____________________________________________________________________________________________
-void gunModInterface::updateMAGPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv)
+void gunModInterface::updateMAGPS_PV(const event_handler_args& args,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv)
 {
+    double val = getDBRdouble(args);
     if(isCURR_PV(pv))
     {
         switch(num)
@@ -288,8 +280,9 @@ void gunModInterface::updateMAGPS_PV(const double val,const size_t num,const rfM
     }
 }
 //____________________________________________________________________________________________
-void gunModInterface::updateHVPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv)
+void gunModInterface::updateHVPS_PV(const event_handler_args& args,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv)
 {
+    double val = getDBRdouble(args);
     if(isCURR_PV(pv))
     {
         switch(num)
@@ -329,9 +322,9 @@ size_t gunModInterface::getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv)
     return n;
 }
 //____________________________________________________________________________________________
-void gunModInterface::updateMainState(const void * argsdbr)
+void gunModInterface::updateMainState(const event_handler_args& args)
 {
-    switch(*(unsigned short*)argsdbr)
+    switch( getDBRUnsignedShort(args))
     {
         case 0:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::NOT_CONNECTED;
@@ -384,7 +377,7 @@ void gunModInterface::updateMainState(const void * argsdbr)
 //______________________________________________________________________________
 void gunModInterface::updateHexString(const event_handler_args& args)
 {
-    gunMod.hex_state_str = getDBRString(args);
+    gunMod.hex_state_str = getDBRstring(args);
     convertHexStringToMessage();
     updateErrorState();
 }
@@ -405,7 +398,7 @@ bool gunModInterface::convertHexStringToMessage()
 //______________________________________________________________________________
 void gunModInterface::updateStateReadString(const event_handler_args& args)
 {
-    gunMod.state_read = getDBRString(args);
+    gunMod.state_read = getDBRstring(args);
 }
 //______________________________________________________________________________
 void gunModInterface::updateErrorState()
@@ -430,9 +423,10 @@ void gunModInterface::updateErrorState()
     }
 }
 //____________________________________________________________________________________________
-void gunModInterface::updateWarmUpTime(const long val)
+void gunModInterface::updateWarmUpTime(const event_handler_args& args)
 {
-    gunMod.warmuptime =  val;
+    gunMod.warmuptime =  getDBRlong(args);
+    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",gunMod.warmuptime);
     if(gunMod.warmuptime == 0)
     {
         gunMod.safelyWarmedUP = true;
@@ -443,6 +437,75 @@ void gunModInterface::updateWarmUpTime(const long val)
         gunMod.safelyWarmedUP = false;
     }
 }
+//____________________________________________________________________________________________
+void gunModInterface::updateCtRead(const event_handler_args& args)
+{
+    gunMod.CtRead = getDBRdouble(args);
+    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",gunMod.CtRead);
+}
+//____________________________________________________________________________________________
+void gunModInterface::updateCvdRead(const event_handler_args& args)
+{
+    gunMod.CvdRead = getDBRdouble(args);
+    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",gunMod.CvdRead);
+}
+//____________________________________________________________________________________________
+void gunModInterface::updatePlswthRead(const event_handler_args& args)
+{
+    gunMod.PlswthRead = getDBRdouble(args);
+    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ", gunMod.PlswthRead);
+}
+//____________________________________________________________________________________________
+void gunModInterface::updatePlswthFwhmRead(const event_handler_args& args)
+{
+    gunMod.PlswthFwhmRead = getDBRdouble(args);
+    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ", gunMod.PlswthFwhmRead);
+}
+//____________________________________________________________________________________________
+void gunModInterface::updateIlock_string(const event_handler_args& args, size_t ilock_number)
+{
+    const std::string new_val = getDBRstring(args);
+    switch(ilock_number)
+    {
+        case 1:
+            check_ilock_changed(new_val, gunMod.ilock1,ilock_number);
+            break;
+        case 2:
+            check_ilock_changed(new_val, gunMod.ilock2,ilock_number);
+            break;
+        case 3:
+            check_ilock_changed(new_val, gunMod.ilock3,ilock_number);
+            break;
+        case 4:
+            check_ilock_changed(new_val, gunMod.ilock4,ilock_number);
+            break;
+        case 5:
+            check_ilock_changed(new_val, gunMod.ilock5,ilock_number);
+            break;
+        default:
+            message("!!ERROR IN updateIlock_string!! ",ilock_number," is an unknown/unepected ilock to update with message= ",new_val);
+    }
+}
+//____________________________________________________________________________________________
+void gunModInterface::check_ilock_changed(const std::string& new_val,std::string& present_val,size_t num)
+{
+    if(new_val == present_val)
+    {
+    }
+    else
+    {
+        present_val = new_val;
+        debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK",num,"_STR = ",present_val);
+    }
+}
+
+
+
+
+
+
+
+
 //______________________________________________________________________________
 bool gunModInterface::isWarmedUp() const
 {

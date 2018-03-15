@@ -37,6 +37,7 @@ namespace UTL
     const size_t TWO_SIZET    = 2;
     const size_t THREE_SIZET  = 3;
     const size_t FOUR_SIZET   = 4;
+    const size_t FIVE_SIZET   = 5;
     const long   DUMMY_LONG   = -999;
     const int    DUMMY_INT    = -9999;
     const size_t DUMMY_SIZET  = 999;
