@@ -84,7 +84,13 @@ class interface : public baseObject
         static void staticEntryILockMonitor(event_handler_args args);
 
 
-        const std::string getDBRString(const event_handler_args& args);
+        std::string getDBRstring(const event_handler_args& args) const;
+        double getDBRdouble(const event_handler_args& args) const;
+        long getDBRlong(const event_handler_args& args) const;
+        int getDBRint(const event_handler_args& args) const;
+        unsigned short getDBRUnsignedShort(const event_handler_args& args) const;
+
+
 
         template<class T, class U>
         int caput(U TYPE, chid & CHID, T & com, const char * mess1, const char * mess2)
