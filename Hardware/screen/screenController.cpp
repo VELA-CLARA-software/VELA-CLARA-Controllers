@@ -232,6 +232,11 @@ std::vector< std::string > screenController::getScreenNames()
 {
     return localInterface.getScreenNames();
 }
+//______________________________________________________________________________
+boost::python::list screenController::getScreenNames_Py()
+{
+    return toPythonList(getScreenNames());
+}
 ////________________________________________________________________________________
 //bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)
 //{

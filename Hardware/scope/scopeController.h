@@ -89,10 +89,12 @@ class scopeController : public controller
         std::vector< double > getScopeP2Vec( const std::string & name );
         std::vector< double > getScopeP3Vec( const std::string & name );
         std::vector< double > getScopeP4Vec( const std::string & name );
+        boost::circular_buffer< double > getScopeNumBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         boost::circular_buffer< double > getScopeP1Buffer( const std::string & name );
         boost::circular_buffer< double > getScopeP2Buffer( const std::string & name );
         boost::circular_buffer< double > getScopeP3Buffer( const std::string & name );
         boost::circular_buffer< double > getScopeP4Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTraceBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         boost::circular_buffer< std::vector< double > > getScopeTR1Buffer( const std::string & name );
         boost::circular_buffer< std::vector< double > > getScopeTR2Buffer( const std::string & name );
         boost::circular_buffer< std::vector< double > > getScopeTR3Buffer( const std::string & name );
@@ -117,10 +119,12 @@ class scopeController : public controller
         boost::python::list getScopeP2Vec_Py( const std::string & name );
         boost::python::list getScopeP3Vec_Py( const std::string & name );
         boost::python::list getScopeP4Vec_Py( const std::string & name );
+        boost::python::list getScopeNumBuffer_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         boost::python::list getScopeP1Buffer_Py( const std::string & name );
         boost::python::list getScopeP2Buffer_Py( const std::string & name );
         boost::python::list getScopeP3Buffer_Py( const std::string & name );
         boost::python::list getScopeP4Buffer_Py( const std::string & name );
+        boost::python::list getScopeTraceBuffer_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         boost::python::list getScopeTR1Buffer_Py( const std::string & name );
         boost::python::list getScopeTR2Buffer_Py( const std::string & name );
         boost::python::list getScopeTR3Buffer_Py( const std::string & name );

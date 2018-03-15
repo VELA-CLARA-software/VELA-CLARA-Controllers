@@ -182,6 +182,11 @@ const std::string scopeController::getDiagTypeStr( const std::string & scopeName
     return localInterface.getDiagTypeStr( scopeName, pvType );
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > scopeController::getScopeNumBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return localInterface.getScopeNumBuffer( name, pvType );
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > scopeController::getScopeP1Buffer( const std::string & name )
 {
     return localInterface.getScopeP1Buffer( name );
@@ -200,6 +205,11 @@ boost::circular_buffer< double > scopeController::getScopeP3Buffer( const std::s
 boost::circular_buffer< double > scopeController::getScopeP4Buffer( const std::string & name )
 {
     return localInterface.getScopeP4Buffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > scopeController::getScopeTraceBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return localInterface.getScopeTraceBuffer( name, pvType );
 }
 //______________________________________________________________________________
 boost::circular_buffer< std::vector < double > > scopeController::getScopeTR1Buffer( const std::string & name )
@@ -368,6 +378,11 @@ boost::python::list scopeController::getAvgNoise_Py( const std::string & name, s
     return toPythonList(getAvgNoise( name, pvType, part1, part2 ));
 }
 //______________________________________________________________________________
+boost::python::list scopeController::getScopeNumBuffer_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getScopeNumBuffer( name, pvType ));
+}
+//______________________________________________________________________________
 boost::python::list scopeController::getScopeP1Buffer_Py( const std::string & name )
 {
     return toPythonList(getScopeP1Buffer( name ));
@@ -386,6 +401,11 @@ boost::python::list scopeController::getScopeP3Buffer_Py( const std::string & na
 boost::python::list scopeController::getScopeP4Buffer_Py( const std::string & name )
 {
     return toPythonList(getScopeP4Buffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list scopeController::getScopeTraceBuffer_Py( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    return toPythonList(getScopeTraceBuffer( name, pvType ));
 }
 //______________________________________________________________________________
 boost::python::list scopeController::getScopeTR1Buffer_Py( const std::string & name )

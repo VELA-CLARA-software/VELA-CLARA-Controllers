@@ -127,6 +127,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
     /// Things that you want to use in python muct be exposed:
     /// containers
+
+    boost::python::type_info info = boost::python::type_id< std::vector< std::string > > ();
+    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< std::string > >("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string > > ())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< std::string > >("std_vector_string")
+            .def(vector_indexing_suite< std::vector< std::string > > ())
+            ;
+    }
+
     // screen structs
     enum_<screenStructs::SCREEN_STATE>("SCREEN_STATE")
         .value("SCREEN_IN",       screenStructs::SCREEN_STATE::SCREEN_IN  )
@@ -303,7 +316,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("getACTPOS",             &screenController::getACTPOS, (arg("name")), getACTPOSString                          )
         .def("getJDiff",              &screenController::getJDiff, (arg("name")), getJDiffString                            )
         .def("getDevicePosition",     &screenController::getDevicePosition, (arg("name"),arg("state")), getDevicePosString  )
-        .def("getScreenNames",        &screenController::getScreenNames, getScreenNamesString                               )
+        .def("getScreenNames",        &screenController::getScreenNames_Py, getScreenNamesString                            )
         .def("getAvailableDevices",   &screenController::getAvailableDevices, (arg("name")), getAvailableDevicesString      )
         .def("jogScreen",             &screenController::jogScreen, (arg("name"),arg("jog (mm)")), jogScreenString          )
         .def("resetPosition",         &screenController::resetPosition, (arg("name")), resetPositionString                  )

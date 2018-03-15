@@ -69,10 +69,12 @@ class scopeInterface : public interface
         std::vector< double > getScopeP2Vec( const std::string & name );
         std::vector< double > getScopeP3Vec( const std::string & name );
         std::vector< double > getScopeP4Vec( const std::string & name );
+        boost::circular_buffer< double > getScopeNumBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         boost::circular_buffer< double > getScopeP1Buffer( const std::string & name );
         boost::circular_buffer< double > getScopeP2Buffer( const std::string & name );
         boost::circular_buffer< double > getScopeP3Buffer( const std::string & name );
         boost::circular_buffer< double > getScopeP4Buffer( const std::string & name );
+        boost::circular_buffer< std::vector< double > > getScopeTraceBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType );
         boost::circular_buffer< std::vector< double > > getScopeTR1Buffer( const std::string & name );
         boost::circular_buffer< std::vector< double > > getScopeTR2Buffer( const std::string & name );
         boost::circular_buffer< std::vector< double > > getScopeTR3Buffer( const std::string & name );

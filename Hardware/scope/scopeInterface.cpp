@@ -991,6 +991,14 @@ void scopeInterface::restartContinuousMonitoring()
     monitorScopes();
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > scopeInterface::getScopeNumBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    if( entryExists( scopeObj.numObjects, name ) )
+    {
+        return scopeObj.numObjects.at( name ).numDataBuffer.at( pvType );
+    }
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > scopeInterface::getScopeP1Buffer( const std::string & name )
 {
     if( entryExists( scopeObj.numObjects, name ) && scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P1 ).size() != 0 )
@@ -1020,6 +1028,14 @@ boost::circular_buffer< double > scopeInterface::getScopeP4Buffer( const std::st
     if( entryExists( scopeObj.numObjects, name ) && scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 ).size() != 0 )
     {
         return scopeObj.numObjects.at( name ).numDataBuffer.at( scopeStructs::SCOPE_PV_TYPE::P4 );
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > scopeInterface::getScopeTraceBuffer( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
+{
+    if( entryExists( scopeObj.traceObjects, name ) )
+    {
+        return scopeObj.traceObjects.at( name ).traceDataBuffer.at( pvType );
     }
 }
 //______________________________________________________________________________

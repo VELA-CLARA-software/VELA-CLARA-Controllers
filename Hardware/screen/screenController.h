@@ -58,6 +58,7 @@ class screenController : public controller
         double getDevCent(const std::string & name);
         double getJDiff(const std::string & name);
         double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
+        boost::python::list getScreenNames_Py();
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void insertYAG( const std::string & name );
