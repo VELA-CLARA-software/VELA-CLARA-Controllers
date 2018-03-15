@@ -37,7 +37,7 @@ class gunModInterface : public interface
         typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         gunModInterface::gunModInterface();
-        gunModInterface( const std::string &pilaserConf,
+        gunModInterface(const std::string &pilaserConf,
                          const bool startVirtualMachine,
                          const bool* show_messages_ptr,
                          const bool* show_debug_messages_ptr,
@@ -64,20 +64,36 @@ class gunModInterface : public interface
 
 
         // These are pure virtual methods, so need an implEmentation in derived classes
-        IlockMap1 getILockStates( const std::string & name   ){IlockMap1 r;return r;}
-        IlockMap2 getILockStatesStr( const std::string & name){IlockMap2 r;return r;}
+        IlockMap1 getILockStates(const std::string & name  ){IlockMap1 r;return r;}
+        IlockMap2 getILockStatesStr(const std::string & name){IlockMap2 r;return r;}
 
     private:
         // MOVE TO BASE CLASS
         const bool shouldStartEPICs;
         bool allChidsInitialised;
 
-        static void staticEntryGunModMonitor( const event_handler_args args);
+        const std::string CURR,VOLT;
 
+        void killMonitor(rfModStructs::monitorStruct* ms);
+
+        static void staticEntryGunModMonitor(const event_handler_args args);
+        void updateValue(const event_handler_args& args,const rfModStructs::GUN_MOD_PV_TYPE pv);
+        void updateMAGPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv);
+        void updateHVPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv);
         void updateMainState(const void * argsdbr);
         void updateWarmUpTime(const long val);
         void updateHexString(const event_handler_args& args);
+        void updateStateReadString(const event_handler_args& args);
         void updateErrorState();
+
+        size_t getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv);
+
+        int is_MAGPS_or_HVCPS_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
+        bool isMAGPS_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
+        bool isHVPS_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
+        bool isVOLT_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
+        bool isCURR_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
+
 
         const std::map<std::string,std::string> gun_mod_hex_map;
         bool convertHexStringToMessage();
@@ -97,7 +113,7 @@ class gunModInterface : public interface
         bool waitFor(ABoolMemFn f1,gunModInterface& obj,const std::string& message,
                      const time_t waitTime,const size_t pause = 100);
         bool waitFor(ABoolMemFn f1,gunModInterface& obj,const char * message,
-                     const time_t waitTime,const size_t pause = 100 );
+                     const time_t waitTime,const size_t pause = 100);
 
 };
 #endif // VELA_MAG_INTERFACE_H

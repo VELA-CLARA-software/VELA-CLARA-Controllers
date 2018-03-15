@@ -61,23 +61,23 @@
 
 //        ;                                                                 _docs = "";
 //    enum_<llrfStructs::LLRF_TYPE>("LLRF_TYPE")                            _docs = "";
-//        .value("CLARA_HRRG",LLRF_TYPE::CLARA_HRRG )                       _docs = "";
-//        .value("CLARA_LRRG",LLRF_TYPE::CLARA_LRRG )                       _docs = "";
+//        .value("CLARA_HRRG",LLRF_TYPE::CLARA_HRRG)                       _docs = "";
+//        .value("CLARA_LRRG",LLRF_TYPE::CLARA_LRRG)                       _docs = "";
 //        .value("VELA_HRRG", LLRF_TYPE::VELA_HRRG)                         _docs = "";
 //        .value("VELA_LRRG", LLRF_TYPE::VELA_LRRG)
 //        .value("L01", LLRF_TYPE::L01)
 //        .value("UNKNOWN_TYPE", LLRF_TYPE::UNKNOWN_TYPE)
 //        ;
 //    enum_<llrfStructs::TRIG>("TRIG")
-//        .value("OFF",TRIG::OFF )
+//        .value("OFF",TRIG::OFF)
 //        .value("EXTERNAL",TRIG::EXTERNAL)
 //        .value("INTERNAL", TRIG::INTERNAL)
 //        .value("UNKNOWN_TRIG", TRIG::UNKNOWN_TRIG)
 //        ;
 //
 //    enum_<llrfStructs::LLRF_SCAN>("LLRF_SCAN")
-//        .value("PASSIVE",LLRF_SCAN::PASSIVE )
-//        .value("EVENT",LLRF_SCAN::EVENT )
+//        .value("PASSIVE",LLRF_SCAN::PASSIVE)
+//        .value("EVENT",LLRF_SCAN::EVENT)
 //        .value("IO_INTR", LLRF_SCAN::IO_INTR)
 //        .value("TEN", LLRF_SCAN::TEN)
 //        .value("FIVE", LLRF_SCAN::FIVE)
@@ -127,7 +127,7 @@
 //        .def_readonly("rolling_min",     &rf_trace_data::rolling_min,"rolling max values")
 //        .def_readonly("rolling_max",     &rf_trace_data::rolling_max,"rolling min values")
 //        .def_readonly("rolling_sd",      &rf_trace_data::rolling_sd,"rolling standard deviation values")
-//        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
+//        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects (stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
 //        .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
 //        .def_readonly("mean_stop_index", &rf_trace_data::mean_stop_index,"stop index for mean trace calculation.")
 //        .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
@@ -221,7 +221,7 @@
 //        ;
 //
 //    class_<liberaLLRFController, bases<controller>, boost::noncopyable>
-//        ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init  )
+//        ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init )
 //        .def("getILockStates",    &liberaLLRFController::getILockStates)
 //
 //        .def("getType",    &liberaLLRFController::getType,"Return the Type of LLRF controller.")
@@ -245,9 +245,9 @@
 //        .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),"Return LLRF Object Reference")
 //        .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return reference to LLRF Trace Object 'name'")
 //
-//        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
-//        .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index" )
-//        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
+//        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
+//        .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index")
+//        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
 //
 //
 //
@@ -266,12 +266,12 @@
 //
 //        .def("getTraceLength",  &liberaLLRFController::getTraceLength,"Return Number of elements in a power trace")
 //
-//        .def("getChannelNames",&liberaLLRFController::getChannelNames_Py,"Return Channel names (defined in config file)" )
-//        .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)" )
+//        .def("getChannelNames",&liberaLLRFController::getChannelNames_Py,"Return Channel names (defined in config file)")
+//        .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)")
 //
-//        .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks" )
-//        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks" )
-//        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data" )
+//        .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks")
+//        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks")
+//        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data")
 //
 //
 //        .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")

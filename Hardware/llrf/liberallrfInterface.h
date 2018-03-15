@@ -239,7 +239,7 @@ class liberallrfInterface : public interface
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setShouldKeepRollingAverage(const std::string&name);
         bool setShouldNotKeepRollingAverage(const std::string&name);
-        bool setNumRollingAverageTraces(const std::string&name,const  size_t value );
+        bool setNumRollingAverageTraces(const std::string&name,const  size_t value);
         void setNumRollingAverageTraces(const size_t value);
         size_t getNumRollingAverageTraces(const std::string&name);
 
@@ -301,7 +301,7 @@ class liberallrfInterface : public interface
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
         // ********this will likely need updating*******
-        IlockMap1 getILockStates(const std::string& name   ){IlockMap1 r;return r;}
+        IlockMap1 getILockStates(const std::string& name  ){IlockMap1 r;return r;}
         IlockMap2 getILockStatesStr(const std::string& name){IlockMap2 r;return r;}
 
     private:
@@ -329,7 +329,7 @@ class liberallrfInterface : public interface
         void initialise();
         bool initObjects();
         void initChids();
-        void addChannel(const std::string& pvRoot, llrfStructs::pvStruct & pv );
+        void addChannel(const std::string& pvRoot, llrfStructs::pvStruct & pv);
         void startMonitors();
 
         /* EPICS Callbacks - paramters are updated form here */
@@ -370,7 +370,7 @@ class liberallrfInterface : public interface
         std::vector<llrfStructs::setAmpHP_Struct>  setAmpHP_Threads;
         void setAmpSPCallback(const double value);
         //static void staticEntrySetAmp(liberallrfInterface* interface, const double value);
-        static void staticEntrySetAmp(llrfStructs::setAmpHP_Struct & );
+        static void staticEntrySetAmp(llrfStructs::setAmpHP_Struct &);
         void kill_finished_setAmpHP_threads();
 
         void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);

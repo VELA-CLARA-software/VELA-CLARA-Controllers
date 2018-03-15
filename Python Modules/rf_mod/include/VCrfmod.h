@@ -86,24 +86,24 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
              return_value_policy<reference_existing_object>(),
              "returns a reference to the offline L01 modulator object.")
         .def("setQuiet",         &VCrfmod::setQuiet,
-             "set Quiet Mode (no messages, no debug messages) for all PI laser objects." )
+             "set Quiet Mode (no messages, no debug messages) for all PI laser objects.")
         .def("setVerbose",       &VCrfmod::setVerbose,
              "set Verbose Mode (all messages, all debug messages) for all PI laser objects.")
         .def("setMessage",       &VCrfmod::setMessage,
              "set Message Mode (all  messages, no debug messages) for all PI laser objects.")
         .def("setDebugMessage",  &VCrfmod::setDebugMessage,
-             "set Debug Mode (no messages, all debug messages) for all PI laser objects." )
+             "set Debug Mode (no messages, all debug messages) for all PI laser objects.")
         ;
 
     class_<l01ModController, bases<controller>, boost::noncopyable>
-        ("l01ModController","l01ModController Doc String",boost::python::no_init  )
+        ("l01ModController","l01ModController Doc String",boost::python::no_init )
         .def("getObjConstRef",&l01ModController::getObjConstRef,return_value_policy<reference_existing_object>(),
              "Return L01 Modulator Object Reference")
         .def("reset",             &l01ModController::reset,"")
         ;
 
     class_<gunModController, bases<controller>, boost::noncopyable>
-        ("gunModController","gunModController Doc String",boost::python::no_init  )
+        ("gunModController","gunModController Doc String",boost::python::no_init )
         .def("getGunObjConstRef",&gunModController::getGunObjConstRef,return_value_policy<reference_existing_object>(),
              "Return Gun Modulator Object Reference")
         .def("isErrorStateGood",&gunModController::isErrorStateGood,"Is the error state in GOOD")

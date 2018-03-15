@@ -62,15 +62,15 @@ namespace BOOST_PYTHON_INCLUDE
         if (reg3 == nullptr)
         {
             enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","an enum for different machien modes, virtual, physical or offline (no EPICS) ")
-            .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-            .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+            .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE)
+            .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL)
             .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
             ;
         }
         else if ((*reg3).m_to_python == nullptr) {
             enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-            .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-            .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
+            .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE)
+            .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL)
             .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
             ;
         }
@@ -116,16 +116,16 @@ namespace BOOST_PYTHON_INCLUDE
         if (reg5 == nullptr)
         {
         enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
+            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD)
+            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD)
             .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
             ;
         }
         else if ((*reg5).m_to_python == nullptr)
         {
             enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-                .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD  )
-                .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD )
+                .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD)
+                .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD)
                 .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR)
                 ;
         }
@@ -135,8 +135,8 @@ namespace BOOST_PYTHON_INCLUDE
         if (reg6 == nullptr)
         {
         enum_<VELA_ENUM::STATE>("STATE")
-            .value("BAD",   VELA_ENUM::STATE::BAD  )
-            .value("GOOD",  VELA_ENUM::STATE::GOOD )
+            .value("BAD",   VELA_ENUM::STATE::BAD)
+            .value("GOOD",  VELA_ENUM::STATE::GOOD)
             .value("ERR", VELA_ENUM::STATE::ERR)
             .value("UNKNOWN", VELA_ENUM::STATE::UNKNOWN)
             ;
@@ -144,8 +144,8 @@ namespace BOOST_PYTHON_INCLUDE
         else if ((*reg6).m_to_python == nullptr)
         {
             enum_<VELA_ENUM::STATE>("STATE")
-                .value("BAD",   VELA_ENUM::STATE::BAD  )
-                .value("GOOD",  VELA_ENUM::STATE::GOOD )
+                .value("BAD",   VELA_ENUM::STATE::BAD)
+                .value("GOOD",  VELA_ENUM::STATE::GOOD)
                 .value("ERR", VELA_ENUM::STATE::ERR)
                 .value("UNKNOWN", VELA_ENUM::STATE::UNKNOWN)
                 ;
@@ -158,8 +158,8 @@ namespace BOOST_PYTHON_INCLUDE
             ("controller", no_init) /// force Python to not construct (init) this object
             .def("get_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
             .def("set_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-            .def("getILockStatesStr",      pure_virtual(&controller::getILockStatesStr)     )
-            .def("getILockStates",         pure_virtual(&controller::getILockStates)        )
+            .def("getILockStatesStr",      pure_virtual(&controller::getILockStatesStr)   )
+            .def("getILockStates",         pure_virtual(&controller::getILockStates)      )
             ;
     }
 

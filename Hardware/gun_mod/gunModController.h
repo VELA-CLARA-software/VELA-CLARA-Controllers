@@ -42,11 +42,11 @@ class gunModController : public controller
         gunModController();
         gunModController(const bool show_messages, const bool show_debug_messagese,
                           const std::string & gunModConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs );
-        ~gunModController( );
+                          const bool shouldStartEPICs);
+        ~gunModController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
         virtual double get_CA_PEND_IO_TIMEOUT();
-        virtual void   set_CA_PEND_IO_TIMEOUT( double val );
+        virtual void   set_CA_PEND_IO_TIMEOUT(double val);
         std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
         std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
 

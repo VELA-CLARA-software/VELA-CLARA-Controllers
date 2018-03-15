@@ -71,7 +71,7 @@ class liberaLLRFController : public controller
         llrfStructs::TRIG getTrigSource();
 
         bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
-        bool setAllTraceSCAN( const llrfStructs::LLRF_SCAN value);
+        bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
         bool setAllSCANToPassive();
 
 
@@ -294,8 +294,8 @@ class liberaLLRFController : public controller
         void setKeepRollingAverageNoReset(const std::string&name, const bool value);
 
 
-        bool setNumRollingAverageTraces(const std::string&name,const size_t value );
-        void setNumRollingAverageTraces(const size_t value );
+        bool setNumRollingAverageTraces(const std::string&name,const size_t value);
+        void setNumRollingAverageTraces(const size_t value);
 
         bool shouldCheckMasks(const std::string& name);
         std::string fullCavityTraceName(const std::string& name);

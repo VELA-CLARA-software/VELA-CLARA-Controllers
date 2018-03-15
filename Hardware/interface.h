@@ -83,6 +83,9 @@ class interface : public baseObject
         void monitorIlocks(std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct>  & iLockPVStructs, std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> & iLockStates);
         static void staticEntryILockMonitor(event_handler_args args);
 
+
+        const std::string getDBRString(const event_handler_args& args);
+
         template<class T, class U>
         int caput(U TYPE, chid & CHID, T & com, const char * mess1, const char * mess2)
         {

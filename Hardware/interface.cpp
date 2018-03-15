@@ -382,3 +382,14 @@ void interface::updateBoolState(const event_handler_args& args, bool& parameter)
         parameter= false;
     }
 }
+//______________________________________________________________________________
+const std::string interface::getDBRString(const event_handler_args& args)
+{
+    //std::stringstream ss;
+    std::string s1;
+//    const char * char_array = (const char*)args.dbr;
+//    size_t Size = strlen(char_array );
+//    message("size = ", Size);
+    s1.assign((const char*)args.dbr);
+    return s1;
+}

@@ -48,29 +48,36 @@ namespace rfModStructs
                                                          (ILOCK3_STR)
                                                          (ILOCK4_STR)
                                                          (ILOCK5_STR)
-                                                         (ERROR_READ_HEX_STR)
                                                          (WARMUP_TIME)
-                                                         (MAIN_STATE_READ)
-                                                         //(ERROR_READ)
-                                                         (STATE_SET)
                                                          (CVD_READ)
                                                          (CT_READ)
                                                          (RESET)
                                                          (PULSE_WIDTH_FWHM_READ)
-                                        );
+
+                                                         // these are states you can request
+                                                         (MAIN_STATE_READ) // i.e. off, HV_ON,TRIG etc
+                                                         (MAIN_STATE_SET)  // i.e. off, HV_ON,TRIG etc
+
+                                                         // thi si sth ehex code Sys.ErrorRead
+                                                         (ERROR_READ_HEX_STR)//also gets converted to string in "gunModHexStringMap.h"
+
+                                                         // this is the Sys.StateRead above the hex string on the main modulato rsynoptic
+                                                         (STATE_READ_STRING)
+
+                                       );
     // a derived state based on if there is an error,
     // the mod is either 'good' - i.e. you can change its main_state
     // or bad - i.e. there is an interlock
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_ERR_STATE,(BAD)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_ERR_STATE,(BAD)
                                                            (GOOD)
                                                            (UNKNOWN)
-                                        );
+                                       );
 //
 //    /// These are possible modulator main_states
 //    /// These come from CS3A_scandinova.db /home/controls/ioc/ebtf/CS3A/db
 //    /// We keep the same numbers as the control system, therefore UNKNOWN1
 //
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( GUN_MOD_STATE,
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_STATE,
                                         (NOT_CONNECTED)      // field(ZRST, "Init/not conne.")
                                         (STANDYBY_INTERLOCK) // field(ONST, "Standby Interl.")
                                         (OFF)                // field(TWST, "OFF")
@@ -86,7 +93,7 @@ namespace rfModStructs
                                         (TRIG_REQUEST)       // field(TVST, "Trig Request")
                                         (TRIG)               // field(TTST, "Trig")
                                         (UNKNOWN_STATE)      // my default state on instantiation
-                                        );
+                                       );
     struct pvStruct
     {
         pvStruct() : pvSuffix(UTL::UNKNOWN_STRING),
@@ -107,6 +114,7 @@ namespace rfModStructs
             main_state(GUN_MOD_STATE::UNKNOWN_STATE),
             hex_state_str(UTL::UNKNOWN_STRING),
             hex_state_message(UTL::UNKNOWN_STRING),
+            state_read(UTL::UNKNOWN_STRING),
             error_state(GUN_MOD_ERR_STATE::UNKNOWN),
 
             safelyWarmedUP(false),
@@ -144,7 +152,7 @@ namespace rfModStructs
             ilock5(UTL::UNKNOWN_STRING)
 
             {}
-        std::string name, pvRoot, hex_state_str, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
+        std::string name, pvRoot, hex_state_str, state_read, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
         std::vector<std::vector<std::string>> interlock_history;
         GUN_MOD_STATE main_state;
         GUN_MOD_ERR_STATE error_state;
@@ -169,7 +177,7 @@ namespace rfModStructs
 
     // LINAC-01 MODULATOR (DTI)
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( L01_MOD_PV_TYPE, (SYSTEM_STATE_READ)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_PV_TYPE, (SYSTEM_STATE_READ)
                                                           (SYSTEM_STATE_PUT)
                                                           (HVPS_VOLTAGE_SET)
                                                           (HVPS_VOLTAGE_SET_READ)

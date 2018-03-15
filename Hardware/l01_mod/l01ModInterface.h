@@ -15,7 +15,7 @@ class l01ModInterface : public interface
         l01ModInterface(const std::string &l01ModConf,
                                 const bool startVirtualMachine,
                                 const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs );
+                                const bool shouldStartEPICs);
         virtual ~l01ModInterface();
 
         const rfModStructs::l01ModObject& getObjConstRef();
@@ -28,8 +28,8 @@ class l01ModInterface : public interface
         typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
         // These are pure virtual methods, so need to have some implmentation in derived classes
-        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
-        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+        IlockMap1 getILockStates(const std::string & name ){ IlockMap1 r;return r; }
+        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
     protected:
 
     private:

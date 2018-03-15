@@ -27,7 +27,7 @@ controller(show_messages,show_debug_messages),
 localInterface(laserConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs,type),
 shouldStartEPICs(shouldStartEPICs)
 {
-//    if(shouldStartEPICs )
+//    if(shouldStartEPICs)
 //    message("magnet controller shouldStartEPICs is true");
 //    else
 //    message("magnet controller shouldStartEPICs is false");
@@ -43,7 +43,7 @@ liberaLLRFController::~liberaLLRFController(){}    //dtor
 //______________________________________________________________________________
 void liberaLLRFController::initialise()
 {
-    if(localInterface.interfaceInitReport(shouldStartEPICs) )
+    if(localInterface.interfaceInitReport(shouldStartEPICs))
         message("liberaLLRFController instantiation success.");
 }
 //______________________________________________________________________________
@@ -270,7 +270,7 @@ boost::python::list liberaLLRFController::getAverageTraceData_Py(const std::stri
 //______________________________________________________________________________
 void liberaLLRFController::setTracesToSaveOnBreakDown_Py(const boost::python::list& name)
 {
-    setTracesToSaveOnBreakDown( to_std_vector<std::string>(name));
+    setTracesToSaveOnBreakDown(to_std_vector<std::string>(name));
 }
 //______________________________________________________________________________
 boost::python::list liberaLLRFController::getTracesToSaveOnBreakDown_Py()
@@ -342,7 +342,7 @@ boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
 //            for(auto&& it2: it.traces)
 //            {
 //                message(it2.name);
-//                if( it2.name  == t_name )
+//                if(it2.name  == t_name)
 //                {
 //                    EVID = "EVID_"+it2.name+"_";
 //                    time = "time_"+it2.name+"_";
@@ -427,7 +427,7 @@ boost::python::dict liberaLLRFController::dump_traces()
     std::string name;
 
     int i;
-    for( auto&& it: ref.tracesToSaveOnBreakDown)
+    for(auto&& it: ref.tracesToSaveOnBreakDown)
     {
         if(ref.trace_data.at(it).hi_mask_set)
         {
@@ -1126,12 +1126,12 @@ bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string&name
     return localInterface.setShouldNotKeepRollingAverage(name);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::setNumRollingAverageTraces(const std::string&name,const size_t value )
+bool liberaLLRFController::setNumRollingAverageTraces(const std::string&name,const size_t value)
 {
     return localInterface.setNumRollingAverageTraces(name, value);
 }
 //______________________________________________________________________________
-void liberaLLRFController::setNumRollingAverageTraces(const size_t value )
+void liberaLLRFController::setNumRollingAverageTraces(const size_t value)
 {
     localInterface.setNumRollingAverageTraces(value);
 }
@@ -1309,43 +1309,43 @@ double liberaLLRFController::get_CA_PEND_IO_TIMEOUT()
   return localInterface.get_CA_PEND_IO_TIMEOUT();
 }
 //_____________________________________________________________________________________________
-void liberaLLRFController::set_CA_PEND_IO_TIMEOUT(double val )
+void liberaLLRFController::set_CA_PEND_IO_TIMEOUT(double val)
 {
-    localInterface.set_CA_PEND_IO_TIMEOUT(val );
+    localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > liberaLLRFController::getILockStates( const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > liberaLLRFController::getILockStates(const std::string & name)
 {
-    return localInterface.getILockStates(name );
+    return localInterface.getILockStates(name);
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > liberaLLRFController::getILockStatesStr(const std::string & name )
+std::map< VELA_ENUM::ILOCK_NUMBER, std::string > liberaLLRFController::getILockStatesStr(const std::string & name)
 {
-    return localInterface.getILockStatesStr(name );
+    return localInterface.getILockStatesStr(name);
 }
 //______________________________________________________________________________
 //______________________________________________________________________________
-//boost::python::dict liberaLLRFController::getILockStatesStr_Py(std::string magName )
+//boost::python::dict liberaLLRFController::getILockStatesStr_Py(std::string magName)
 //{
-//    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
+//    return enumStringMapToPythonDict(getILockStatesStr(magName));
 //}
 ////______________________________________________________________________________
-//boost::python::dict liberaLLRFController::getILockStates_Py(std::string magName )
+//boost::python::dict liberaLLRFController::getILockStates_Py(std::string magName)
 //{
-//    return enumMapToPythonDict(getILockStates(magName ) );
+//    return enumMapToPythonDict(getILockStates(magName));
 //}
 ////______________________________________________________________________________
 //boost::python::dict liberaLLRFController::getMagPSUStateDefinition()
 //{
 //    std::map< VELA_ENUM::MAG_PSU_STATE,  std::string  > m;
 //
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE); // ENUM_TO_STRING MACRO in velaStructs.h
 //
-//    return enumStringMapToPythonDict(m );
+//    return enumStringMapToPythonDict(m);
 //}
 //______________________________________________________________________________
 #endif // BUILD_DLL

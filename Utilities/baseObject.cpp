@@ -65,7 +65,7 @@ unsigned short baseObject::getNumUS(const  std::string & str)
     return (unsigned short)atof(str.c_str());
 }
 //______________________________________________________________________________
-bool baseObject::stringIsSubString(const std::string & stringToCheck, const std::string & stringToLookFor)
+bool baseObject::stringIsSubString(const std::string & stringToCheck, const std::string & stringToLookFor) const
 {
     return stringToCheck.find(stringToLookFor) != std::string::npos;
 }

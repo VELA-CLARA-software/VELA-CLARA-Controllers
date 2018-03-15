@@ -26,7 +26,7 @@ controller(show_messages,show_debug_messages),
 localInterface(gunModConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs),
 shouldStartEPICs(shouldStartEPICs)
 {
-//    if( shouldStartEPICs )
+//    if(shouldStartEPICs)
 //    message("magnet controller shouldStartEPICs is true");
 //    else
 //    message("magnet controller shouldStartEPICs is false");

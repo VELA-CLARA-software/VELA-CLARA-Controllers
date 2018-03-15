@@ -35,6 +35,8 @@ namespace UTL
     const size_t ZERO_SIZET   = 0;
     const size_t ONE_SIZET    = 1;
     const size_t TWO_SIZET    = 2;
+    const size_t THREE_SIZET  = 3;
+    const size_t FOUR_SIZET   = 4;
     const long   DUMMY_LONG   = -999;
     const int    DUMMY_INT    = -9999;
     const size_t DUMMY_SIZET  = 999;
@@ -44,6 +46,7 @@ namespace UTL
     const long   ZERO_LONG    = 0;
     const int    ZERO_INT     = 0;
     const int    ONE_INT      = 1;
+    const int    TWO_INT      = 2;
     const int    MINUS_ONE_INT= -1;
     const int    MINUS_TWO_INT= -2;
     //
@@ -165,16 +168,23 @@ namespace UTL
     const std::string PV_SUFFIX_GUN_MOD_HVPS2_VOLT_READ      = "PV_SUFFIX_GUN_MOD_HVPS2_VOLT_READ";
     const std::string PV_SUFFIX_GUN_MOD_HVPS3_VOLT_READ      = "PV_SUFFIX_GUN_MOD_HVPS3_VOLT_READ";
 
+    const std::string PV_SUFFIX_GUN_MOD_ILOCK1 = "PV_SUFFIX_GUN_MOD_ILOCK1";
+    const std::string PV_SUFFIX_GUN_MOD_ILOCK2 = "PV_SUFFIX_GUN_MOD_ILOCK2";
+    const std::string PV_SUFFIX_GUN_MOD_ILOCK3 = "PV_SUFFIX_GUN_MOD_ILOCK3";
+    const std::string PV_SUFFIX_GUN_MOD_ILOCK4 = "PV_SUFFIX_GUN_MOD_ILOCK4";
+    const std::string PV_SUFFIX_GUN_MOD_ILOCK5 = "PV_SUFFIX_GUN_MOD_ILOCK5";
+
 
     const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
-    const std::string PV_SUFFIX_GUN_MOD_STATEREAD = "PV_SUFFIX_GUN_MOD_STATEREAD";
-    const std::string PV_SUFFIX_GUN_MOD_STATESET  = "PV_SUFFIX_GUN_MOD_STATESET";
+    const std::string PV_SUFFIX_GUN_MOD_STATE_READ_STRING = "PV_SUFFIX_GUN_MOD_STATE_READ_STRING";
+    const std::string PV_SUFFIX_GUN_MOD_MAIN_STATE_SET  = "PV_SUFFIX_GUN_MOD_MAIN_STATE_SET";
+    const std::string PV_SUFFIX_GUN_MOD_MAIN_STATE_READ  = "PV_SUFFIX_GUN_MOD_MAIN_STATE_READ";
     //const std::string PV_SUFFIX_GUN_MOD_ERR_STATE  = "PV_SUFFIX_GUN_MOD_ERR_STATE";
     const std::string PV_SUFFIX_GUN_MOD_CVD_READ  = "PV_SUFFIX_GUN_MOD_CVD_READ";
     const std::string PV_SUFFIX_GUN_MOD_ERR_SVAL  = "PV_SUFFIX_GUN_MOD_ERR_SVAL";
     const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
-    const std::string PV_SUFFIX_GUN_RESET         = "PV_SUFFIX_GUN_RESET";
+    const std::string PV_SUFFIX_GUN_MOD_RESET         = "PV_SUFFIX_GUN_MOD_RESET";
 
 /// Magnets
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";

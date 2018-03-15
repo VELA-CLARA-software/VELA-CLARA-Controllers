@@ -185,7 +185,7 @@ namespace llrfStructs
                                                      (TRIG_SOURCE)
                                                      (PHI_DEG)
                                                      (UNKNOWN)
-                                                   )
+                                                  )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)(CLARA_LRRG)(VELA_HRRG)(VELA_LRRG)
                                                   (L01)(UNKNOWN_TYPE))
 
@@ -453,7 +453,7 @@ namespace llrfStructs
         pulse_latency, activePulseCount, previous_pulseCount, pulseCountOffset, num_extra_traces;
         long long timer_start;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
-        // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER )
+        // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER)
         std::map<std::string, rf_trace_data> trace_data;
         std::vector<outside_mask_trace> outside_mask_traces;
         std::vector<std::string> outside_mask_trace_name;

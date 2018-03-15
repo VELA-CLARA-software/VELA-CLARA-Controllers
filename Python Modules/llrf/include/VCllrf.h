@@ -111,28 +111,28 @@ bool(liberaLLRFController::*stopTraceMonitoring_2)(crfpv pv) = &liberaLLRFContro
 bool(liberaLLRFController::*stopTraceMonitoring_3)(cstr& name) = &liberaLLRFController::stopTraceMonitoring;
 
 bool(liberaLLRFController::*isCheckingMask_1)(cstr& name) = &liberaLLRFController::isCheckingMask;
-bool(liberaLLRFController::*isCheckingMask_2)(crfpv pv ) = &liberaLLRFController::isCheckingMask;
+bool(liberaLLRFController::*isCheckingMask_2)(crfpv pv) = &liberaLLRFController::isCheckingMask;
 
 bool(liberaLLRFController::*isNotCheckingMask_1)(cstr& name) = &liberaLLRFController::isNotCheckingMask;
-bool(liberaLLRFController::*isNotCheckingMask_2)(crfpv pv  ) = &liberaLLRFController::isNotCheckingMask;
+bool(liberaLLRFController::*isNotCheckingMask_2)(crfpv pv ) = &liberaLLRFController::isNotCheckingMask;
 
 bool(liberaLLRFController::*isMonitoring_1)(cstr& name) = &liberaLLRFController::isMonitoring;
-bool(liberaLLRFController::*isMonitoring_2)(crfpv pv  ) = &liberaLLRFController::isNotCheckingMask;
+bool(liberaLLRFController::*isMonitoring_2)(crfpv pv ) = &liberaLLRFController::isNotCheckingMask;
 
 bool(liberaLLRFController::*isNotMonitoring_1)(cstr& name) = &liberaLLRFController::isNotMonitoring;
-bool(liberaLLRFController::*isNotMonitoring_2)(crfpv pv  ) = &liberaLLRFController::isNotMonitoring;
+bool(liberaLLRFController::*isNotMonitoring_2)(crfpv pv ) = &liberaLLRFController::isNotMonitoring;
 
 
 bool(liberaLLRFController::*setNumBufferTraces_1)(cstr& name, csiz value) = &liberaLLRFController::setNumBufferTraces;
-void(liberaLLRFController::*setNumBufferTraces_2)(csiz value ) = &liberaLLRFController::setNumBufferTraces;
+void(liberaLLRFController::*setNumBufferTraces_2)(csiz value) = &liberaLLRFController::setNumBufferTraces;
 
 
 bool(liberaLLRFController::*setNumRollingAverageTraces_1)(cstr& name, csiz value) = &liberaLLRFController::setNumRollingAverageTraces;
-void(liberaLLRFController::*setNumRollingAverageTraces_2)(csiz value ) = &liberaLLRFController::setNumRollingAverageTraces;
+void(liberaLLRFController::*setNumRollingAverageTraces_2)(csiz value) = &liberaLLRFController::setNumRollingAverageTraces;
 
 
 bool(liberaLLRFController::*setShouldKeepRollingAverage_1)(cstr& name) = &liberaLLRFController::setShouldKeepRollingAverage;
-void(liberaLLRFController::*setShouldKeepRollingAverage_2)( ) = &liberaLLRFController::setShouldKeepRollingAverage;
+void(liberaLLRFController::*setShouldKeepRollingAverage_2)() = &liberaLLRFController::setShouldKeepRollingAverage;
 
 
 bool(liberaLLRFController::*setShouldNotKeepRollingAverage_1)(cstr& name) = &liberaLLRFController::setShouldNotKeepRollingAverage;
@@ -165,8 +165,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
     enum_<llrfStructs::LLRF_PV_TYPE>("LLRF_PV_TYPE")
-        .value("LIB_LOCK",   LLRF_PV_TYPE::LIB_RF_OUTPUT )
-        .value("LIB_AMP_FF", LLRF_PV_TYPE::LIB_AMP_FF )
+        .value("LIB_LOCK",   LLRF_PV_TYPE::LIB_RF_OUTPUT)
+        .value("LIB_AMP_FF", LLRF_PV_TYPE::LIB_AMP_FF)
         .value("LIB_AMP_SP", LLRF_PV_TYPE::LIB_AMP_SP)
         .value("LIB_PHI_FF", LLRF_PV_TYPE::LIB_PHI_FF)
         .value("LIB_PHI_SP", LLRF_PV_TYPE::LIB_PHI_SP)
@@ -195,23 +195,23 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("UNKNOWN", LLRF_PV_TYPE::UNKNOWN)
         ;
     enum_<llrfStructs::LLRF_TYPE>("LLRF_TYPE")
-        .value("CLARA_HRRG",LLRF_TYPE::CLARA_HRRG )
-        .value("CLARA_LRRG",LLRF_TYPE::CLARA_LRRG )
+        .value("CLARA_HRRG",LLRF_TYPE::CLARA_HRRG)
+        .value("CLARA_LRRG",LLRF_TYPE::CLARA_LRRG)
         .value("VELA_HRRG", LLRF_TYPE::VELA_HRRG)
         .value("VELA_LRRG", LLRF_TYPE::VELA_LRRG)
         .value("L01", LLRF_TYPE::L01)
         .value("UNKNOWN_TYPE", LLRF_TYPE::UNKNOWN_TYPE)
         ;
     enum_<llrfStructs::TRIG>("TRIG")
-        .value("OFF",TRIG::OFF )
+        .value("OFF",TRIG::OFF)
         .value("EXTERNAL",TRIG::EXTERNAL)
         .value("INTERNAL", TRIG::INTERNAL)
         .value("UNKNOWN_TRIG", TRIG::UNKNOWN_TRIG)
         ;
 
     enum_<llrfStructs::LLRF_SCAN>("LLRF_SCAN")
-        .value("PASSIVE",LLRF_SCAN::PASSIVE )
-        .value("EVENT",LLRF_SCAN::EVENT )
+        .value("PASSIVE",LLRF_SCAN::PASSIVE)
+        .value("EVENT",LLRF_SCAN::EVENT)
         .value("IO_INTR", LLRF_SCAN::IO_INTR)
         .value("TEN", LLRF_SCAN::TEN)
         .value("FIVE", LLRF_SCAN::FIVE)
@@ -262,7 +262,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("rolling_min",     &rf_trace_data::rolling_min,"rolling max values")
         .def_readonly("rolling_max",     &rf_trace_data::rolling_max,"rolling min values")
         .def_readonly("rolling_sd",      &rf_trace_data::rolling_sd,"rolling standard deviation values")
-        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects ( stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
+        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects (stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
         .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
         .def_readonly("mean_stop_index", &rf_trace_data::mean_stop_index,"stop index for mean trace calculation.")
         .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
@@ -359,7 +359,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ;
 
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
-        ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init  )
+        ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init )
         .def("getILockStates",    &liberaLLRFController::getILockStates)
 
         .def("getType",    &liberaLLRFController::getType,"Return the Type of LLRF controller.")
@@ -383,9 +383,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),"Return LLRF Object Reference")
         .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return reference to LLRF Trace Object 'name'")
 
-        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at least this time?" )
-        .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index" )
-        //.def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?" )
+        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at least this time?")
+        .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index")
+        //.def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
 
 
 
@@ -404,12 +404,12 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getTraceLength",  &liberaLLRFController::getTraceLength,"Return Number of elements in a power trace")
 
-        .def("getChannelNames",&liberaLLRFController::getChannelNames_Py,"Return Channel names (defined in config file)" )
-        .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)" )
+        .def("getChannelNames",&liberaLLRFController::getChannelNames_Py,"Return Channel names (defined in config file)")
+        .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)")
 
-        .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks" )
-        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks" )
-        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data" )
+        .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks")
+        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks")
+        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data")
 
 
         .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")

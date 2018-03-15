@@ -19,12 +19,12 @@ class liberallrfConfigReader:public configReader
 {
     public:
         liberallrfConfigReader(const std::string & llrfFileLocation1,const bool startVirtualMachine,
-                               const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
+                               const bool* show_messages_ptr, const bool* show_debug_messages_ptr);
         ~liberallrfConfigReader();
 
         bool readConfig();
 
-        bool getliberallrfObject(llrfStructs::liberallrfObject& obj );
+        bool getliberallrfObject(llrfStructs::liberallrfObject& obj);
 
 
         void setType(const llrfStructs::LLRF_TYPE typein);
@@ -50,7 +50,7 @@ class liberallrfConfigReader:public configReader
         void addToPVStruct(std::vector<llrfStructs::pvStruct>& pvs,const llrfStructs::LLRF_PV_TYPE pvtype,const std::string& pvSuffix);
         void addToPVStruct(std::vector<llrfStructs::pvStruct>& pvs,const llrfStructs::LLRF_PV_TYPE pvtype);
 
-        llrfStructs::LLRF_PV_TYPE getPVType( const llrfStructs::LLRF_PV_TYPE main, const llrfStructs::LLRF_PV_TYPE sub);
+        llrfStructs::LLRF_PV_TYPE getPVType(const llrfStructs::LLRF_PV_TYPE main, const llrfStructs::LLRF_PV_TYPE sub);
 
         void addToliberallrfObjectsV1 (const std::vector<std::string> &keyVal);
         void addToTraceObjectsV1(const std::vector<std::string> &keyVal);
@@ -60,7 +60,7 @@ class liberallrfConfigReader:public configReader
         void addToPVMapV1       (const std::vector<std::string>& keyVal);
 
 
-        bool readConfig(const std::string & configFile1 );
+        bool readConfig(const std::string & configFile1);
 
         llrfStructs::pvStruct* lastPVstruct;
 

@@ -190,7 +190,7 @@ liberaLLRFController& VCllrf::getController(bool shouldVM, bool shouldEPICS,llrf
                 break;
             case llrfStructs::L01:
                 {/// YUCK
-                    if( L01_LLRF_Controller_Obj )
+                    if(L01_LLRF_Controller_Obj)
                     {
                         return *L01_LLRF_Controller_Obj;
                     }

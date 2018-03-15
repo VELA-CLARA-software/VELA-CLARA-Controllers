@@ -86,7 +86,7 @@ class baseObject
                           const F p13 = "",
                           const G p14 = "",
                           const H p15 = ""
-                          )
+                        )
         {
             if(*SHOW_DEBUG_MESSAGES_PTR)
                 printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12,p13,p14,p15);
@@ -123,7 +123,7 @@ class baseObject
                      const F p13 = "",
                      const G p14 = "",
                      const H p15 = ""
-                     )
+                   )
         {
             if(*SHOW_MESSAGES_PTR)
                 printMessage(p1, p2, p3, p4, p5, p6, p7, p8,p9,p10,p11,p12,p13,p14,p15);
@@ -160,7 +160,7 @@ class baseObject
                           const F p13 = "",
                           const G p14 = "",
                           const H p15 = ""
-                          )
+                        )
         {
             std::stringstream ss;
             //ss <<p1 <<p2 <<p3 <<p4 <<p5 <<p6 <<p7 <<p8 <<"\n";
@@ -217,7 +217,7 @@ class baseObject
         long   getNumL(const std::string & str);
         unsigned short getNumUS(const std::string & str);
 
-        bool   stringIsSubString(const std::string & stringToCheck, const std::string & stringToLookFor);
+        bool  stringIsSubString(const std::string& stringToCheck, const std::string& stringToLookFor) const;
 
 #ifdef BUILD_DLL
         template<typename T>

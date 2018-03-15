@@ -70,7 +70,7 @@ void VCrfmod::setDebugMessage()
 //______________________________________________________________________________
 gunModController& VCrfmod::virtual_GUN_MOD_Controller()
 {
-    if( virtual_GUN_MOD_Controller_Obj )
+    if(virtual_GUN_MOD_Controller_Obj)
     {
         std::cout << "virtual_GUN_MOD_Controller object already exists," << std::endl;
     }
@@ -85,7 +85,7 @@ gunModController& VCrfmod::virtual_GUN_MOD_Controller()
 //______________________________________________________________________________
 gunModController& VCrfmod::physical_GUN_MOD_Controller()
 {
-    if( physical_GUN_MOD_Controller_Obj )
+    if(physical_GUN_MOD_Controller_Obj)
     {
         std::cout << "physical_GUN_MOD_Controller object already exists," << std::endl;
     }
@@ -100,7 +100,7 @@ gunModController& VCrfmod::physical_GUN_MOD_Controller()
 //______________________________________________________________________________
 gunModController& VCrfmod::offline_GUN_MOD_Controller()
 {
-    if( offline_GUN_MOD_Controller_Obj )
+    if(offline_GUN_MOD_Controller_Obj)
     {
         std::cout << "offline_GUN_MOD_Controller object already exists," << std::endl;
     }
@@ -115,7 +115,7 @@ gunModController& VCrfmod::offline_GUN_MOD_Controller()
 //______________________________________________________________________________
 l01ModController& VCrfmod::virtual_L01_MOD_Controller()
 {
-    if( virtual_L01_MOD_Controller_Obj )
+    if(virtual_L01_MOD_Controller_Obj)
     {
         std::cout << "virtual_L01_MOD_Controller object already exists," << std::endl;
     }
@@ -145,7 +145,7 @@ l01ModController& VCrfmod::physical_L01_MOD_Controller()
 //______________________________________________________________________________
 l01ModController& VCrfmod::offline_L01_MOD_Controller()
 {
-    if( offline_L01_MOD_Controller_Obj )
+    if(offline_L01_MOD_Controller_Obj)
     {
         std::cout << "offline_L01_MOD_Controller_Obj object already exists," << std::endl;
     }

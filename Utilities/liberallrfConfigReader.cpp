@@ -18,7 +18,7 @@ liberallrfConfigReader::liberallrfConfigReader(const std::string & configFileLoc
 configReader(configFileLocation1, show_messages_ptr, show_debug_messages_ptr),
 usingVirtualMachine(startVirtualMachine),
 lastPVstruct(nullptr),
-type(llrfStructs::LLRF_TYPE::UNKNOWN_TYPE ),
+type(llrfStructs::LLRF_TYPE::UNKNOWN_TYPE),
 //channel(0),
 temp_name("temp_name"),
 temp_pvroot("temp_pvroot")
@@ -87,7 +87,7 @@ bool liberallrfConfigReader::readConfig()
                                     if(readingObjs)
                                         addToliberallrfObjectsV1(keyVal);
 
-                                    else if (readingCommandPVs )
+                                    else if (readingCommandPVs)
                                         addToPVCommandMapV1(keyVal);
 
                                     else if (readingMonitorPVs)
@@ -95,7 +95,7 @@ bool liberallrfConfigReader::readConfig()
                                 }
                                 break;
                             default:
-                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!" );
+                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!");
                         }
                     }
                 }
@@ -133,12 +133,12 @@ bool liberallrfConfigReader::readConfig()
 //        if(numObjs == laserObjects.size())
 //            debugMessage("*** Created ", numObjs, " Shutter Objects, As Expected ***");
 //        else
-//            debugMessage("*** Created ", laserObjects.size() ," Expected ", numObjs,  " ERROR ***" );
+//            debugMessage("*** Created ", laserObjects.size() ," Expected ", numObjs,  " ERROR ***");
 
         success = true;
     }
     else{
-        message("!!!! Error Can't Open Config File after searching in:  ", configFile1, " !!!!" );
+        message("!!!! Error Can't Open Config File after searching in:  ", configFile1, " !!!!");
     }
     if(success);
     {
@@ -156,7 +156,7 @@ void liberallrfConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&
     addToPVMapV1(keyVal);
 }
 //______________________________________________________________________________
-void liberallrfConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &keyVal )
+void liberallrfConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &keyVal)
 {
     addToPVMapV1(keyVal);
 }
@@ -211,7 +211,7 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::LIB_RF_OUTPUT,keyVal[1]);
         }
-        else if(keyVal[0] == UTL::PV_SUFFIX_TRIG_SOURCE )
+        else if(keyVal[0] == UTL::PV_SUFFIX_TRIG_SOURCE)
         {
             addToPVStruct(pvMonStructs, llrfStructs::LLRF_PV_TYPE::TRIG_SOURCE,keyVal[1]);
         }
@@ -229,7 +229,7 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
         else if(keyVal[0] == UTL::PV_NAME)
         {
             lastPVstruct->name = keyVal[ 1 ];
-            debugMessage("Added name =  ", lastPVstruct->name );
+            debugMessage("Added name =  ", lastPVstruct->name);
         }
     }
 }
@@ -243,7 +243,7 @@ void liberallrfConfigReader::addToPVStruct(std::vector<llrfStructs::pvStruct>& p
     lastPVstruct = &pvs.back();
 }
 //______________________________________________________________________________
-void liberallrfConfigReader::addToliberallrfObjectsV1(const std::vector<std::string> &keyVal  )
+void liberallrfConfigReader::addToliberallrfObjectsV1(const std::vector<std::string> &keyVal )
 {
     if(keyVal[0] == UTL::NAME)
     {
@@ -332,7 +332,7 @@ bool liberallrfConfigReader::readTraceConfig()
     return true;
 }
 //______________________________________________________________________________
-bool liberallrfConfigReader::readConfig(const std::string & configFile1 )
+bool liberallrfConfigReader::readConfig(const std::string & configFile1)
 {
     debugMessage("\n", "**** Attempting to Read The LLRF TRACES Config File ****");
 
@@ -386,7 +386,7 @@ bool liberallrfConfigReader::readConfig(const std::string & configFile1 )
                                     if(readingObjs)
                                         addToTraceObjectsV1(keyVal);
 
-                                    else if (readingCommandPVs )
+                                    else if (readingCommandPVs)
                                         addToPVCommandMapV1(keyVal);
 
                                     else if (readingMonitorPVs)
@@ -394,7 +394,7 @@ bool liberallrfConfigReader::readConfig(const std::string & configFile1 )
                                 }
                                 break;
                             default:
-                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!" );
+                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!");
                         }
                     }
                 }
@@ -432,12 +432,12 @@ bool liberallrfConfigReader::readConfig(const std::string & configFile1 )
 //        if(numObjs == laserObjects.size())
 //            debugMessage("*** Created ", numObjs, " Shutter Objects, As Expected ***");
 //        else
-//            debugMessage("*** Created ", laserObjects.size() ," Expected ", numObjs,  " ERROR ***" );
+//            debugMessage("*** Created ", laserObjects.size() ," Expected ", numObjs,  " ERROR ***");
 
         success = true;
     }
     else{
-        message("!!!! Error Can't Open Config File after searching in:  ", configFile1, " !!!!" );
+        message("!!!! Error Can't Open Config File after searching in:  ", configFile1, " !!!!");
     }
     return success;
     return false;
@@ -501,7 +501,7 @@ void liberallrfConfigReader::addToTracePVMap(const std::vector<std::string>& key
         else if(keyVal[0] == UTL::PV_NAME)
         {
             lastPVstruct->name = keyVal[ 1 ];
-            debugMessage("Added name =  ", lastPVstruct->name );
+            debugMessage("Added name =  ", lastPVstruct->name);
         }
     }
 }
@@ -511,12 +511,12 @@ void liberallrfConfigReader::addToTraceObjectsV1(const std::vector<std::string> 
     if(keyVal[0] == UTL::NAME)
     {
         temp_name = keyVal[1];
-        debugMessage("Added temp_name =  ", temp_name );
+        debugMessage("Added temp_name =  ", temp_name);
     }
     else if(keyVal[0] == UTL::PV_ROOT)
     {
             temp_pvroot = keyVal[1];
-            debugMessage("Added temp_pvroot =  ", temp_pvroot );
+            debugMessage("Added temp_pvroot =  ", temp_pvroot);
     }
     else if(keyVal[0] == UTL::LLRF_CHANNEL)
     {
@@ -619,9 +619,9 @@ void liberallrfConfigReader::addToPVStruct(std::vector<llrfStructs::pvStruct>& p
     }
 }
 //______________________________________________________________________________
-llrfStructs::LLRF_PV_TYPE liberallrfConfigReader::getPVType( const llrfStructs::LLRF_PV_TYPE main, const llrfStructs::LLRF_PV_TYPE sub)
+llrfStructs::LLRF_PV_TYPE liberallrfConfigReader::getPVType(const llrfStructs::LLRF_PV_TYPE main, const llrfStructs::LLRF_PV_TYPE sub)
 {
-    if( sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM)
+    if(sub == llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM)
         return main;
     else if(sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_REM)
         return main;

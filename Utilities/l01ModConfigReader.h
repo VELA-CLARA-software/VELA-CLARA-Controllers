@@ -19,12 +19,12 @@
 class l01ModConfigReader : public configReader
 {
     public:
-        l01ModConfigReader(const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        l01ModConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool * showMessages,const  bool * showDebugMessages );
+        l01ModConfigReader(const bool* show_messages_ptr, const bool * show_debug_messages_ptr);
+        l01ModConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool * showMessages,const  bool * showDebugMessages);
         ~l01ModConfigReader();
 
-        bool readConfig( );
-        bool getL01ModObject(rfModStructs::l01ModObject& obj );
+        bool readConfig();
+        bool getL01ModObject(rfModStructs::l01ModObject& obj);
 //
     private:
 
@@ -39,13 +39,13 @@ class l01ModConfigReader : public configReader
 
         rfModStructs::l01ModObject RFModObject;
 
-        void addToPVStruct(std::vector<rfModStructs::l01_pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
-        void addCOUNT_MASK_OR_CHTYPE(std::vector< rfModStructs::l01_pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
+        void addToPVStruct(std::vector<rfModStructs::l01_pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal);
+        void addCOUNT_MASK_OR_CHTYPE(std::vector< rfModStructs::l01_pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal);
 
 
-//        void addToObjectsV1( std::vector<std::string> &keyVal );
-//        void addPVCommandMapV1  ( std::vector<std::string> &keyVal );
-//        void addPVMonitorMapV1  ( std::vector<std::string> &keyVal );
+//        void addToObjectsV1(std::vector<std::string> &keyVal);
+//        void addPVCommandMapV1  (std::vector<std::string> &keyVal);
+//        void addPVMonitorMapV1  (std::vector<std::string> &keyVal);
 //
 
 };

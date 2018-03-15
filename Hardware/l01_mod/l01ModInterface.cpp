@@ -28,12 +28,12 @@ l01ModInterface::l01ModInterface(const std::string &l01ModConf,
                                 const bool* show_messages_ptr,
                                 const bool* show_debug_messages_ptr,
                                 const bool shouldStartEPICs
-                            ):
+                           ):
 configReader(l01ModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr),
 shouldStartEPICs(shouldStartEPICs)
 {
-    if( shouldStartEPICs )
+    if(shouldStartEPICs)
         message("l01ModInterface shouldStartEPICs is true");
     else
         message("l01ModInterface shouldStartEPICs is false");
@@ -60,7 +60,7 @@ void l01ModInterface::initialise()
     /// The config file reader
     configFileRead = configReader.readConfig();
     std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // MAGIC_NUMBER
-    if( configFileRead )
+    if(configFileRead)
     {
         message("The l01ModInterface has read the config file, acquiring objects");
         /// initialise the objects based on what is read from the config file
@@ -83,15 +83,15 @@ void l01ModInterface::initialise()
              message("The l01ModInterface has acquired objects, NOT connecting to EPICS");
         }
         else
-            message( "!!!The l01ModInterface received an Error while getting laser data!!!" );
+            message("!!!The l01ModInterface received an Error while getting laser data!!!");
     }
 }
 //______________________________________________________________________________
 void l01ModInterface::initChids()
 {
-    message( "\n", "Searching for l01Mod ChIds...");
+    message("\n", "Searching for l01Mod ChIds...");
 
-    for( auto && it : l01Mod.pvMonStructs)
+    for(auto && it : l01Mod.pvMonStructs)
     {
         addChannel(l01Mod.pvRoot, it.second);
     }
@@ -100,19 +100,19 @@ void l01ModInterface::initChids()
     {
         addChannel(l01Mod.pvRoot, it.second);
     }
-    //addILockChannels( l01Mod.numIlocks, l01Mod.pvRoot, l01Mod.name, l01Mod.iLockPVStructs );
+    //addILockChannels(l01Mod.numIlocks, l01Mod.pvRoot, l01Mod.name, l01Mod.iLockPVStructs);
     int status = sendToEpics("ca_create_channel", "Found l01Mod ChIds.", "!!TIMEOUT!! Not all l01Mod ChIds found.");
     if(status == ECA_TIMEOUT)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));//MAGIC_NUMBER
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));//MAGIC_NUMBER
         message("\n", "Checking l01Mod ChIds ");
         for(auto && it : l01Mod.pvMonStructs)
         {
-            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first));
+            checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
         }
         for(auto && it : l01Mod.pvComStructs)
         {
-            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first));
+            checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(5000)); // MAGIC_NUMBER
     }
@@ -132,7 +132,7 @@ void l01ModInterface::startMonitors()
     continuousMonitorStructs.clear();
     continuousILockMonitorStructs.clear();
 
-    for( auto && it : l01Mod.pvMonStructs )
+    for(auto && it : l01Mod.pvMonStructs)
     {
         continuousMonitorStructs.push_back(new rfModStructs::l01_monitorStruct());
         continuousMonitorStructs.back()->monType     = it.first;
@@ -148,7 +148,7 @@ void l01ModInterface::startMonitors()
     int status = sendToEpics("ca_create_subscription",
                              "Succesfully Subscribed to L01 modulator Monitors",
                               "!!TIMEOUT!! Subscription to L01 modulator monitors failed");
-    if ( status == ECA_NORMAL )
+    if (status == ECA_NORMAL)
         allMonitorsStarted = true; /// interface base class member
 }
 //______________________________________________________________________________
@@ -166,7 +166,7 @@ bool l01ModInterface::reset()
     ca_put(l01Mod.pvComStructs[rfModStructs::L01_MOD_PV_TYPE::L01_RESET].CHTYPE,
            l01Mod.pvComStructs[rfModStructs::L01_MOD_PV_TYPE::L01_RESET].CHID,
            &EPICS_ACTIVATE);
-    int status = sendToEpics( "ca_put", "", "TIMEOUT Activating L01 Modulator Reset");
+    int status = sendToEpics("ca_put", "", "TIMEOUT Activating L01 Modulator Reset");
     if(status == ECA_NORMAL)
     {
         ca_put(l01Mod.pvComStructs[rfModStructs::L01_MOD_PV_TYPE::L01_RESET].CHTYPE,

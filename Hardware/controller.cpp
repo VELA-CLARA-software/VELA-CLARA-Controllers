@@ -135,7 +135,7 @@ bool controller::isDebugMessageOn()
 boost::python::dict controller::getILockStatesDefinition()
 {
     std::map<VELA_ENUM::ILOCK_STATE,  std::string > m;
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_BAD   ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_BAD );
+    m[ VELA_ENUM::ILOCK_STATE::ILOCK_BAD   ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_BAD);
     m[ VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_GOOD);
     m[ VELA_ENUM::ILOCK_STATE::ILOCK_ERROR ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_ERROR);
     return enumStringMapToPythonDict(m);

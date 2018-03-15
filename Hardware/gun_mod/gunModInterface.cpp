@@ -25,15 +25,17 @@
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-gunModInterface::gunModInterface( const std::string &gunModConf,
+gunModInterface::gunModInterface(const std::string &gunModConf,
                                 const bool startVirtualMachine,
                                 const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs ):
-configReader(gunModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
+                                const bool shouldStartEPICs):
+configReader(gunModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr),
-shouldStartEPICs( shouldStartEPICs ),
+shouldStartEPICs(shouldStartEPICs),
 allChidsInitialised(false),
-gun_mod_hex_map(rfModStructs::gunModHexErrorCodes::create())
+gun_mod_hex_map(rfModStructs::gunModHexErrorCodes::create()),
+VOLT("VOLT"),
+CURR("CURR")
 {
     if(shouldStartEPICs)
         message("gunModInterface shouldStartEPICs is true");
@@ -44,6 +46,22 @@ gun_mod_hex_map(rfModStructs::gunModHexErrorCodes::create())
 //______________________________________________________________________________
 gunModInterface::~gunModInterface()
 {
+    killILockMonitors();
+    for(auto && it:continuousMonitorStructs)
+    {
+        killMonitor(it);
+        delete it;
+    }
+}
+//______________________________________________________________________________
+void gunModInterface::killMonitor(rfModStructs::monitorStruct* ms)
+{
+    int status = ca_clear_subscription(ms->EVID);
+    if(status == ECA_NORMAL)
+    {
+        message("delete ",ENUM_TO_STRING(ms->monType));
+        delete ms;
+    }
 }
 //______________________________________________________________________________
 void gunModInterface::initialise()
@@ -51,14 +69,14 @@ void gunModInterface::initialise()
     /// The config file reader
     configFileRead = configReader.readConfig();
     std::this_thread::sleep_for(UTL::STANDARD_PAUSE);
-    if( configFileRead )
+    if(configFileRead)
     {
         message("The gunModInterface has read the config file, acquiring objects");
         /// initialise the objects based on what is read from the config file
         bool getDataSuccess = configReader.getGunModObject(gunMod);
-        if( getDataSuccess )
+        if(getDataSuccess)
         {
-            if( shouldStartEPICs )
+            if(shouldStartEPICs)
             {
                 message("The gunModInterface has acquired objects, connecting to EPICS");
                 //std::cout << "WE ARE HERE" << std::endl;
@@ -73,56 +91,48 @@ void gunModInterface::initialise()
              message("The gunModInterface has acquired objects, NOT connecting to EPICS");
         }
         else
-            message( "!!!The gunModInterface received an Error while getting laser data!!!" );
+            message("!!!The gunModInterface received an Error while getting laser data!!!");
     }
 }
 //______________________________________________________________________________
-//bool gunModInterface::initObjects()
-//{
-//    bool ans = configReader.getpilaserObject(pilaser);
-//    debugMessage( "pilaser.pvComStructs.size() = ", pilaser.pvComStructs.size() );
-//    debugMessage( "pilaser.pvMonStructs.size() = ", pilaser.pvMonStructs.size() );
-//    return ans;
-//}
-////______________________________________________________________________________
 void gunModInterface::initChids()
 {
-    message( "\n", "Searching for gunMod ChIds...");
+    message("\n", "Searching for gunMod ChIds...");
 
-    for( auto && it : gunMod.pvMonStructs )
+    for(auto && it : gunMod.pvMonStructs)
     {
-        addChannel( gunMod.pvRoot, it.second );
+        addChannel(gunMod.pvRoot, it.second);
     }
     // currently there are no command only PVs for the PIL
-    for( auto && it : gunMod.pvComStructs )
+    for(auto && it : gunMod.pvComStructs)
     {
-        addChannel( gunMod.pvRoot, it.second );
+        addChannel(gunMod.pvRoot, it.second);
     }
-    //addILockChannels( gunMod.numIlocks, gunMod.pvRoot, gunMod.name, gunMod.iLockPVStructs );
-    int status = sendToEpics( "ca_create_channel", "Found gunMod ChIds.", "!!TIMEOUT!! Not all gunMod ChIds found." );
-    if( status == ECA_TIMEOUT )
+    //addILockChannels(gunMod.numIlocks, gunMod.pvRoot, gunMod.name, gunMod.iLockPVStructs);
+    int status = sendToEpics("ca_create_channel", "Found gunMod ChIds.", "!!TIMEOUT!! Not all gunMod ChIds found.");
+    if(status == ECA_TIMEOUT)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));//MAGIC_NUMBER
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));//MAGIC_NUMBER
         message("\n", "Checking gunMod ChIds ");
-        for( auto && it : gunMod.pvMonStructs )
+        for(auto && it : gunMod.pvMonStructs)
         {
-            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first ) );
+            checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
         }
-        for( auto && it : gunMod.pvComStructs)
+        for(auto && it : gunMod.pvComStructs)
         {
-            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first ) );
+            checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds( 5000 )); // MAGIC_NUMBER
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000)); // MAGIC_NUMBER
     }
-    else if ( status == ECA_NORMAL )
+    else if (status == ECA_NORMAL)
         allChidsInitialised = true;  /// interface base class member
 }
 ////______________________________________________________________________________
-void gunModInterface::addChannel( const std::string & pvRoot, rfModStructs::pvStruct & pv )
+void gunModInterface::addChannel(const std::string & pvRoot, rfModStructs::pvStruct & pv)
 {
     std::string s1 = pvRoot + pv.pvSuffix;
-    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
-    debugMessage( "Create channel to ", s1 );
+    ca_create_channel(s1.c_str(), 0, 0, 0, &pv.CHID);//MAGIC_NUMBER
+    debugMessage("Create channel to ", s1);
 }
 //______________________________________________________________________________
 void gunModInterface::startMonitors()
@@ -130,9 +140,9 @@ void gunModInterface::startMonitors()
     continuousMonitorStructs.clear();
     continuousILockMonitorStructs.clear();
 
-    for( auto && it : gunMod.pvMonStructs )
+    for(auto && it : gunMod.pvMonStructs)
     {
-        continuousMonitorStructs.push_back( new rfModStructs::monitorStruct() );
+        continuousMonitorStructs.push_back(new rfModStructs::monitorStruct());
         continuousMonitorStructs.back() -> monType     = it.first;
         continuousMonitorStructs.back() -> rfModObject = &gunMod;
         continuousMonitorStructs.back() -> interface  = this;
@@ -144,7 +154,7 @@ void gunModInterface::startMonitors()
     int status = sendToEpics("ca_create_subscription",
                              "Succesfully Subscribed to gun modulator Monitors",
                              "!!TIMEOUT!! Subscription to gun modulator monitors failed");
-    if ( status == ECA_NORMAL )
+    if (status == ECA_NORMAL)
         allMonitorsStarted = true; // interface base class member
 }
 //____________________________________________________________________________________________
@@ -156,83 +166,172 @@ const rfModStructs::gunModObject& gunModInterface::getGunObjConstRef()
 void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
 {
     rfModStructs::monitorStruct*ms = static_cast<rfModStructs::monitorStruct*>(args.usr);
-    switch(ms -> monType)
+    // do a test for a magnet or hv number or other PV_TYPEe
+    switch(ms->interface->is_MAGPS_or_HVCPS_PV(ms -> monType))
     {
-        case rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ:
-            ms->interface->updateMainState(args.dbr);
+        case UTL::ZERO_INT:
+            ms->interface->updateValue(args,ms->monType);
             break;
-//        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ:
-//            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ = ",*(double*)args.dbr);
-//            ms->interface->updateModIlock(args);
-//            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR:
-            ms->interface->updateHexString(args);
+        case UTL::ONE_INT:
+            ms->interface->updateMAGPS_PV(*(double*)args.dbr, ms->interface->getPVNum(ms->monType),ms->monType);
             break;
-        case rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",*(long*)args.dbr);
-            ms->interface->updateWarmUpTime(*(long*)args.dbr);
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs1CurrRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_CURR_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_CURR_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs2CurrRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_CURR_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_CURR_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs3CurrRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_CURR_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_CURR_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs4CurrRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_VOLT_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_VOLT_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs1VoltRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_VOLT_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_VOLT_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs2VoltRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs3VoltRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.MagPs4VoltRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::CT_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.CtRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::CVD_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.CvdRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.PlswthRead  =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.PlswthFwhmRead =  *(double*)args.dbr;
-            break;
-        case rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ:
-            ms->interface->debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ",*(double*)args.dbr);
-            ms->interface->gunMod.ionp =  *(double*)args.dbr;
+        case UTL::TWO_INT:
+            ms->interface->updateHVPS_PV(*(double*)args.dbr, ms->interface->getPVNum(ms->monType),ms->monType);
             break;
         default:
-            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to gunModInterface::staticEntryGunModMonitor");
+            ms->interface->message("ERROR in valu epassed to gunModInterface::staticEntryGunModMonitor");
+    }
+}
+//____________________________________________________________________________________________
+void gunModInterface::updateValue(const event_handler_args& args,const rfModStructs::GUN_MOD_PV_TYPE pv)
+{
+   switch(pv)
+    {
+        case rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ:
+            updateMainState(args.dbr);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR:
+            updateHexString(args);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::STATE_READ_STRING:
+            updateStateReadString(args);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME:
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",*(long*)args.dbr);
+            updateWarmUpTime(*(long*)args.dbr);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::CT_READ:
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",*(double*)args.dbr);
+            gunMod.CtRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::CVD_READ:
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",*(double*)args.dbr);
+            gunMod.CvdRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ:
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ",*(double*)args.dbr);
+            gunMod.PlswthRead  =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ:
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ",*(double*)args.dbr);
+            gunMod.PlswthFwhmRead =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ:
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ",*(double*)args.dbr);
+            gunMod.ionp =  *(double*)args.dbr;
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR:
+            gunMod.ilock1 =  getDBRString(args);
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR = ",gunMod.ilock1);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ILOCK2_STR:
+            gunMod.ilock2 =  getDBRString(args);
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK2_STR = ",gunMod.ilock2);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ILOCK3_STR:
+            gunMod.ilock3 =  getDBRString(args);
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK3_STR = ",gunMod.ilock3);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ILOCK4_STR:
+            gunMod.ilock4 =  getDBRString(args);
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK4_STR = ",gunMod.ilock4);
+            break;
+        case rfModStructs::GUN_MOD_PV_TYPE::ILOCK5_STR:
+            gunMod.ilock5 =  getDBRString(args);
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK5_STR = ",gunMod.ilock5);
+            break;
+        default:
+            message("!!! ERROR !!! Unknown Monitor Type", ENUM_TO_STRING(pv)," passed to gunModInterface::staticEntryGunModMonitor");
             break;
     }
 }
 //____________________________________________________________________________________________
+// REALLY CANCEROUS BELOW :(
+//____________________________________________________________________________________________
+void gunModInterface::updateMAGPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv)
+{
+    if(isCURR_PV(pv))
+    {
+        switch(num)
+        {
+            case UTL::ONE_SIZET:
+                gunMod.MagPs1CurrRead = val;
+                break;
+            case UTL::TWO_SIZET:
+                gunMod.MagPs2CurrRead = val;
+                break;
+            case UTL::THREE_SIZET:
+                gunMod.MagPs3CurrRead = val;
+                break;
+            case UTL::FOUR_SIZET:
+                gunMod.MagPs4CurrRead = val;
+                break;
+        }
+    }
+    else if(isVOLT_PV(pv))
+    {
+        switch(num)
+        {
+            case UTL::ONE_SIZET:
+                gunMod.MagPs1VoltRead = val;
+                break;
+            case UTL::TWO_SIZET:
+                gunMod.MagPs2VoltRead = val;
+                break;
+            case UTL::THREE_SIZET:
+                gunMod.MagPs3VoltRead = val;
+                break;
+            case UTL::FOUR_SIZET:
+                gunMod.MagPs4VoltRead = val;
+                break;
+        }
+    }
+}
+//____________________________________________________________________________________________
+void gunModInterface::updateHVPS_PV(const double val,const size_t num,const rfModStructs::GUN_MOD_PV_TYPE pv)
+{
+    if(isCURR_PV(pv))
+    {
+        switch(num)
+        {
+            case UTL::ONE_SIZET:
+                gunMod.HvPs1CurrRead = val;
+                break;
+            case UTL::TWO_SIZET:
+                gunMod.HvPs2CurrRead = val;
+                break;
+            case UTL::THREE_SIZET:
+                gunMod.HvPs3CurrRead = val;
+                break;
+        }
+    }
+    else if(isVOLT_PV(pv))
+    {
+        switch(num)
+        {
+            case UTL::ONE_SIZET:
+                gunMod.HvPs1VoltRead = val;
+                break;
+            case UTL::TWO_SIZET:
+                gunMod.HvPs2VoltRead = val;
+                break;
+            case UTL::THREE_SIZET:
+                gunMod.HvPs3VoltRead = val;
+                break;
+        }
+    }
+}
+//____________________________________________________________________________________________
+size_t gunModInterface::getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv)
+{
+    const std::string pv_string = ENUM_TO_STRING(pv);
+    std::size_t const n = pv_string.find_first_of("1234");
+    return n;
+}
+//____________________________________________________________________________________________
 void gunModInterface::updateMainState(const void * argsdbr)
 {
-    switch( *(unsigned short*)argsdbr )
+    switch(*(unsigned short*)argsdbr)
     {
         case 0:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::NOT_CONNECTED;
@@ -280,21 +379,19 @@ void gunModInterface::updateMainState(const void * argsdbr)
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::UNKNOWN_STATE;
             break;
     }
-    message( gunMod.name," ",gunMod.name," state changed to ",ENUM_TO_STRING(gunMod.main_state) );
+    message(gunMod.name," ",gunMod.name," state changed to ",ENUM_TO_STRING(gunMod.main_state));
 }
 //______________________________________________________________________________
 void gunModInterface::updateHexString(const event_handler_args& args)
 {
-    std::stringstream ss;
-    ss << *(char*)args.dbr;
-    gunMod.hex_state_str = ss.str();
+    gunMod.hex_state_str = getDBRString(args);
     convertHexStringToMessage();
     updateErrorState();
 }
 //______________________________________________________________________________
 bool gunModInterface::convertHexStringToMessage()
 {
-    if( entryExists(gun_mod_hex_map,gunMod.hex_state_str))
+    if(entryExists(gun_mod_hex_map,gunMod.hex_state_str))
     {
         gunMod.hex_state_message = gun_mod_hex_map.at(gunMod.hex_state_str);
         return true;
@@ -304,6 +401,11 @@ bool gunModInterface::convertHexStringToMessage()
         gunMod.hex_state_message = gunMod.hex_state_str + " is UNKNOWN HexCode";
     }
     return false;
+}
+//______________________________________________________________________________
+void gunModInterface::updateStateReadString(const event_handler_args& args)
+{
+    gunMod.state_read = getDBRString(args);
 }
 //______________________________________________________________________________
 void gunModInterface::updateErrorState()
@@ -331,10 +433,10 @@ void gunModInterface::updateErrorState()
 void gunModInterface::updateWarmUpTime(const long val)
 {
     gunMod.warmuptime =  val;
-    if( gunMod.warmuptime == 0 )
+    if(gunMod.warmuptime == 0)
     {
         gunMod.safelyWarmedUP = true;
-        message( "Gun Modulator Safely Warmed Up:");
+        message("Gun Modulator Safely Warmed Up:");
     }
     else
     {
@@ -409,16 +511,16 @@ bool gunModInterface::isErrorStateGood() const
 //______________________________________________________________________________
 void gunModInterface::reset()
 {
-    caput( gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::RESET).CHTYPE,
+    caput(gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::RESET).CHTYPE,
            gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::RESET).CHID,
            EPICS_RESET, "" , "!!gunModInterface TIMEOUT!! In modReset() ");
 }
 //______________________________________________________________________________
-bool gunModInterface::resetAndWait( const size_t waitTime )
+bool gunModInterface::resetAndWait(const size_t waitTime)
 {
     message("modreset");
     reset();
-    return waitFor( &gunModInterface::isErrorStateGood, *this, "Timeout waiting for Modulator to reset ",  waitTime ); // MAGIC_NUMBER
+    return waitFor(&gunModInterface::isErrorStateGood, *this, "Timeout waiting for Modulator to reset ",  waitTime); // MAGIC_NUMBER
 }
 //______________________________________________________________________________
 bool gunModInterface::waitFor(ABoolMemFn f1,gunModInterface& obj, const std::string& m,
@@ -428,7 +530,7 @@ bool gunModInterface::waitFor(ABoolMemFn f1,gunModInterface& obj, const std::str
 }
 //______________________________________________________________________________
 bool gunModInterface::waitFor(ABoolMemFn f1,gunModInterface& obj, const char * m,
-                             const time_t waitTime,const size_t pause )
+                             const time_t waitTime,const size_t pause)
 {
     time_t t0 = timeNow();
     bool notTimedOut = true;
@@ -449,7 +551,7 @@ bool gunModInterface::waitFor(ABoolMemFn f1,gunModInterface& obj, const char * m
     return notTimedOut;
 }
 //______________________________________________________________________________
-bool gunModInterface::waitForModState(rfModStructs::GUN_MOD_STATE state, time_t waitTime )
+bool gunModInterface::waitForModState(rfModStructs::GUN_MOD_STATE state, time_t waitTime)
 {
     time_t t0 = timeNow();
     bool notTimedOut = true;
@@ -459,7 +561,7 @@ bool gunModInterface::waitForModState(rfModStructs::GUN_MOD_STATE state, time_t 
         {
             break;
         }
-        else if( timeNow() > t0 + waitTime )
+        else if(timeNow() > t0 + waitTime)
         {
             message("Timed Out While Waiting For Modulator to reach state = ", ENUM_TO_STRING(state));
             notTimedOut = false;
@@ -468,11 +570,81 @@ bool gunModInterface::waitForModState(rfModStructs::GUN_MOD_STATE state, time_t 
     }
     return notTimedOut;
 }
-
-
-
-
-
-
-
+//______________________________________________________________________________
+int gunModInterface::is_MAGPS_or_HVCPS_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const
+{
+    if(isMAGPS_PV(pv))
+    {
+        return UTL::ONE_INT;
+    }
+    else if(isHVPS_PV(pv))
+    {
+        return UTL::TWO_INT;
+    }
+    return UTL::ZERO_INT;
+}
+//______________________________________________________________________________
+bool gunModInterface::isMAGPS_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const
+{
+    switch(pv)
+    {
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS1_VOLT_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS2_VOLT_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ:
+            return true;
+        default:
+            return false;
+    }
+}
+//______________________________________________________________________________
+bool gunModInterface::isHVPS_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const
+{
+    switch(pv)
+    {
+        case rfModStructs::GUN_MOD_PV_TYPE::HVPS1_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::HVPS2_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::HVPS3_CURR_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::HVPS1_VOLT_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::HVPS2_VOLT_READ:
+            return true;
+        case rfModStructs::GUN_MOD_PV_TYPE::HVPS3_VOLT_READ:
+            return true;
+        default:
+            return false;
+    }
+}
+//______________________________________________________________________________
+bool gunModInterface::isVOLT_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const
+{
+    if(stringIsSubString(ENUM_TO_STRING(pv),VOLT))
+    {
+        return true;
+    }
+    return false;
+}
+//______________________________________________________________________________
+bool gunModInterface::isCURR_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const
+{
+    if(stringIsSubString(ENUM_TO_STRING(pv),CURR))
+    {
+        return true;
+    }
+    return false;
+}
 

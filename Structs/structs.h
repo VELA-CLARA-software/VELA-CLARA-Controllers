@@ -24,11 +24,11 @@
     {                                                                         \
         switch(v)                                                             \
         {                                                                     \
-            BOOST_PP_SEQ_FOR_EACH(                                            \
+            BOOST_PP_SEQ_FOR_EACH(                                          \
                 X_DEFINE_ENUM_WITH_STRING_CONVERSIONS_TOSTRING_CASE,          \
                 name,                                                         \
                 enumerators                                                   \
-           )                                                                  \
+         )                                                                  \
             default: return "[Unknown " BOOST_PP_STRINGIZE(name) "]";         \
         }                                                                     \
     }                                                                         \
