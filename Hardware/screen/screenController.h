@@ -46,6 +46,7 @@ class screenController : public controller
         const std::string getScreenType(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
         std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
+        std::vector< std::string > getScreenNames();
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
         bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );

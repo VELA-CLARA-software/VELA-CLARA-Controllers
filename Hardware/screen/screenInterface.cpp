@@ -917,6 +917,16 @@ const std::string screenInterface::getScreenTypeStr(const std::string & name)
     }
 }
 //___________________________________________________________________________________________________________
+std::vector< std::string > screenInterface::getScreenNames()
+{
+    std::vector< std::string > names;
+    for ( auto it : allScreentData )
+    {
+        names.push_back( it.first );
+    }
+    return names;
+}
+//___________________________________________________________________________________________________________
 bool screenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;

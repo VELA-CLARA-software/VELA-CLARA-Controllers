@@ -227,6 +227,11 @@ std::vector< screenStructs::SCREEN_STATE > screenController::getAvailableDevices
 {
     return localInterface.getAvailableDevices(name);
 }
+//___________________________________________________________________________________________________________
+std::vector< std::string > screenController::getScreenNames()
+{
+    return localInterface.getScreenNames();
+}
 ////________________________________________________________________________________
 //bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)
 //{

@@ -203,6 +203,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
                                      "It also gives the names of all the devices (positions) for a given screen.";
     boost::python::class_<screenStructs::screenObject,boost::noncopyable>
         ("screenObject",screenObjectString, boost::python::no_init)
+        .def_readonly("name",             &screenStructs::screenObject::name            )
+        .def_readonly("pvRoot",           &screenStructs::screenObject::pvRoot          )
         .def_readonly("screenType",       &screenStructs::screenObject::screenType      )
         .def_readonly("screenHState",     &screenStructs::screenObject::screenHState    )
         .def_readonly("screenVState",     &screenStructs::screenObject::screenVState    )
@@ -223,7 +225,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def_readonly("elementDirection", &screenStructs::screenObject::elementDirection)
         .def_readonly("numIlocks",        &screenStructs::screenObject::numIlocks       )
         ;
-
 
     /// Expose base classes
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
@@ -256,6 +257,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* getScreenTypeString = "Returns the SCREEN_TYPE.";
     char const* getAvailableDevicesString = "Returns the devices available on the screen.";
     char const* isScreenInStateString = "Returns true if screen is currently in SCREEN_STATE state.";
+    char const* getScreenNamesString = "Returns all screen names defined in config file.";
     char const* isYAGInString = "Returns true if the YAG screen is in.";
     char const* isMoverString = "Returns true if the screen is an H and/or V mover.";
     char const* isPneumaticString = "Returns true if the screen is a pneumatic device.";
@@ -301,6 +303,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("getACTPOS",             &screenController::getACTPOS, (arg("name")), getACTPOSString                          )
         .def("getJDiff",              &screenController::getJDiff, (arg("name")), getJDiffString                            )
         .def("getDevicePosition",     &screenController::getDevicePosition, (arg("name"),arg("state")), getDevicePosString  )
+        .def("getScreenNames",        &screenController::getScreenNames, getScreenNamesString                               )
         .def("getAvailableDevices",   &screenController::getAvailableDevices, (arg("name")), getAvailableDevicesString      )
         .def("jogScreen",             &screenController::jogScreen, (arg("name"),arg("jog (mm)")), jogScreenString          )
         .def("resetPosition",         &screenController::resetPosition, (arg("name")), resetPositionString                  )
