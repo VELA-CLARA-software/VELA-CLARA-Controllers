@@ -21,6 +21,7 @@
 //stl
 #include <vector>
 #include <string>
+#include <boost/circular_buffer.hpp>
 
 class beamPositionMonitorInterface : public interface
 {
@@ -55,6 +56,12 @@ class beamPositionMonitorInterface : public interface
         std::vector< double > getBPMQVec( const std::string & bpmName );
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
+        boost::circular_buffer< std::vector< double > > getBPMRawDataBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMXBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMYBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMQBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getTimeStampsBuffer( const std::string & bpmName );
+        boost::circular_buffer< std::string > getStrTimeStampsBuffer( const std::string & bpmName );
         long getRA1( const std::string & bpm );
         long getRA2( const std::string & bpm );
         long getRD1( const std::string & bpm );

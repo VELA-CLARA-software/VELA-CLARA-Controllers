@@ -22,6 +22,20 @@
 // stl
 #include <string>
 #include <vector>
+// boost
+#ifdef BUILD_DLL
+#include <boost/python.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#include <boost/python.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/args.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/return_value_policy.hpp>
+#include <boost/python/overloads.hpp>
+#include <boost/circular_buffer.hpp>
+#endif
 
 class beamPositionMonitorController : public controller
 {
@@ -52,6 +66,12 @@ class beamPositionMonitorController : public controller
         std::vector< double > getBPMQVec( const std::string & bpmName );
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
+        boost::circular_buffer< std::vector< double > > getBPMRawDataBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMXBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMYBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMQBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getTimeStampsBuffer( const std::string & bpmName );
+        boost::circular_buffer< std::string > getStrTimeStampsBuffer( const std::string & bpmName );
         long getRA1( const std::string & bpmName );
         long getRA2( const std::string & bpmName );
         long getRD1( const std::string & bpmName );
@@ -69,6 +89,21 @@ class beamPositionMonitorController : public controller
         VELA_ENUM::MACHINE_MODE getMachineMode();
 
         std::vector< std::string > getBPMNames();
+
+        #ifdef BUILD_DLL
+        boost::python::list getBPMNames_Py();
+        boost::python::list getBPMRawData_Py( const std::string & bpmName );
+        boost::python::list getBPMXVec_Py( const std::string & bpmName );
+        boost::python::list getBPMYVec_Py( const std::string & bpmName );
+        boost::python::list getBPMQVec_Py( const std::string & bpmName );
+        boost::python::list getTimeStamps_Py( const std::string & bpmName );
+        boost::python::list getStrTimeStamps_Py( const std::string & bpmName );
+        boost::python::list getBPMRawDataBuffer_Py( const std::string & bpmName );
+        boost::python::list getBPMXBuffer_Py( const std::string & bpmName );
+        boost::python::list getBPMYBuffer_Py( const std::string & bpmName );
+        boost::python::list getBPMQBuffer_Py( const std::string & bpmName );
+        boost::python::list getTimeStampsBuffer_Py( const std::string & bpmName );
+        #endif
 
         bool hasTrig( const std::string & bpmName );
         bool hasNoTrig( const std::string & bpmName );

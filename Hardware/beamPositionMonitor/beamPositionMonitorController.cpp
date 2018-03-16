@@ -74,9 +74,39 @@ std::vector< double > beamPositionMonitorController::getTimeStamps( const std::s
     return localInterface.getTimeStamps( name );
 }
 //______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > beamPositionMonitorController::getBPMRawDataBuffer( const std::string & name )
+{
+    return localInterface.getBPMRawDataBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorController::getBPMXBuffer( const std::string & name )
+{
+    return localInterface.getBPMXBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorController::getBPMYBuffer( const std::string & name )
+{
+    return localInterface.getBPMYBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorController::getBPMQBuffer( const std::string & name )
+{
+    return localInterface.getBPMQBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorController::getTimeStampsBuffer( const std::string & name )
+{
+    return localInterface.getTimeStampsBuffer( name );
+}
+//______________________________________________________________________________
 std::vector< std::string > beamPositionMonitorController::getStrTimeStamps( const std::string & name )
 {
     return localInterface.getStrTimeStamps( name );
+}
+//______________________________________________________________________________
+std::vector< std::string > beamPositionMonitorController::getBPMNames()
+{
+    return localInterface.getBPMNames();
 }
 //______________________________________________________________________________
 bool beamPositionMonitorController::isMonitoringBPMData( const std::string & name )
@@ -184,10 +214,67 @@ void beamPositionMonitorController::setY( const std::string & bpmName, double va
     localInterface.setY( bpmName, val );
 }
 //______________________________________________________________________________
-std::vector< std::string > beamPositionMonitorController::getBPMNames()
+#ifdef BUILD_DLL
+boost::python::list beamPositionMonitorController::getBPMNames_Py()
 {
-    return localInterface.getBPMNames();
+    return toPythonList(getBPMNames());
 }
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMRawData_Py( const std::string & name )
+{
+    return toPythonList(getBPMRawData( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMXVec_Py( const std::string & name )
+{
+    return toPythonList(getBPMXVec( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMYVec_Py( const std::string & name )
+{
+    return toPythonList(getBPMYVec( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMQVec_Py( const std::string & name )
+{
+    return toPythonList(getBPMQVec( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getTimeStamps_Py( const std::string & name )
+{
+    return toPythonList(getTimeStamps( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getStrTimeStamps_Py( const std::string & name )
+{
+    return toPythonList(getStrTimeStamps( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMRawDataBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBPMRawDataBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMXBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBPMXBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMYBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBPMYBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMQBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBPMQBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getTimeStampsBuffer_Py( const std::string & name )
+{
+    return toPythonList(getTimeStampsBuffer( name ));
+}
+#endif
 ////______________________________________________________________________________
 //bool beamPositionMonitorController::hasTrig( const std::string & name )
 //{

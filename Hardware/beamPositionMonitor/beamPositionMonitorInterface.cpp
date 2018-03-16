@@ -905,6 +905,51 @@ std::vector< double > beamPositionMonitorInterface::getTimeStamps( const std::st
         return r;
 }
 //______________________________________________________________________________
+boost::circular_buffer< std::vector< double > > beamPositionMonitorInterface::getBPMRawDataBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< std::vector< double > > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).rawBPMDataBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).rawBPMDataBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorInterface::getBPMXBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< double > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).xBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).xBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorInterface::getBPMYBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< double > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).yBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).yBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorInterface::getBPMQBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< double > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).qBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).qBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorInterface::getTimeStampsBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< double > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).timeStampsBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).timeStampsBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
 std::vector< std::string > beamPositionMonitorInterface::getStrTimeStamps( const std::string & bpmName )
 {
     std::vector< std::string > r;
