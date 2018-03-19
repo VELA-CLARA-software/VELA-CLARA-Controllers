@@ -324,6 +324,26 @@ void beamPositionMonitorInterface::staticEntryrMonitor( const event_handler_args
             ms->interface->updateLong( ms, args );
             break;
         }
+        case beamPositionMonitorStructs::BPM_PV_TYPE::SA1:
+        {
+            ms->interface->updateLong( ms, args );
+            break;
+        }
+        case beamPositionMonitorStructs::BPM_PV_TYPE::SA2:
+        {
+            ms->interface->updateLong( ms, args );
+            break;
+        }
+        case beamPositionMonitorStructs::BPM_PV_TYPE::SD1:
+        {
+            ms->interface->updateLong( ms, args );
+            break;
+        }
+        case beamPositionMonitorStructs::BPM_PV_TYPE::SD2:
+        {
+            ms->interface->updateLong( ms, args );
+            break;
+        }
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
         {
             ms->interface->updateValue( ms, args );
@@ -992,6 +1012,42 @@ long beamPositionMonitorInterface::getRD2( const std::string & bpmName )
     long r = UTL::DUMMY_LONG;
     if( entryExists( bpmObj.dataObjects, bpmName ) )
         return bpmObj.dataObjects.at( bpmName ).rd2;
+    else
+        return r;
+}
+//______________________________________________________________________________
+long beamPositionMonitorInterface::getSA1( const std::string & bpmName )
+{
+    long r = UTL::DUMMY_LONG;
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
+        return bpmObj.dataObjects.at( bpmName ).sa1;
+    else
+        return r;
+}
+//______________________________________________________________________________
+long beamPositionMonitorInterface::getSA2( const std::string & bpmName )
+{
+    long r = UTL::DUMMY_LONG;
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
+        return bpmObj.dataObjects.at( bpmName ).sa2;
+    else
+        return r;
+}
+//______________________________________________________________________________
+long beamPositionMonitorInterface::getSD1( const std::string & bpmName )
+{
+    long r = UTL::DUMMY_LONG;
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
+        return bpmObj.dataObjects.at( bpmName ).sd1;
+    else
+        return r;
+}
+//______________________________________________________________________________
+long beamPositionMonitorInterface::getSD2( const std::string & bpmName )
+{
+    long r = UTL::DUMMY_LONG;
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
+        return bpmObj.dataObjects.at( bpmName ).sd2;
     else
         return r;
 }

@@ -184,6 +184,26 @@ long beamPositionMonitorController::getRD2( const std::string & name )
     return localInterface.getRD2( name );
 }
 //______________________________________________________________________________
+long beamPositionMonitorController::getSA1( const std::string & name )
+{
+    return localInterface.getSA1( name );
+}
+//______________________________________________________________________________
+long beamPositionMonitorController::getSA2( const std::string & name )
+{
+    return localInterface.getSA2( name );
+}
+//______________________________________________________________________________
+long beamPositionMonitorController::getSD1( const std::string & name )
+{
+    return localInterface.getSD1( name );
+}
+//______________________________________________________________________________
+long beamPositionMonitorController::getSD2( const std::string & name )
+{
+    return localInterface.getSD2( name );
+}
+//______________________________________________________________________________
 void beamPositionMonitorController::setSA1( const std::string & bpmName, long sa1 )
 {
     localInterface.setSA1( bpmName, sa1 );

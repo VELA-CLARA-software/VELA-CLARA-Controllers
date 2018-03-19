@@ -275,9 +275,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* getXPVDocString = "Returns (as a float) the current EPICS PV of X for str(bpmName) - these are defined in the config file.";
     char const* getYPVDocString = "Returns (as a float) the current EPICS PV of Y for str(bpmName) - these are defined in the config file.";
     char const* getRA1DocString = "Returns the current EPICS PV of RA1 for str(bpmName) - these are defined in the config file.";
+    char const* getSA1DocString = "Returns the current EPICS PV of SA1 for str(bpmName) - these are defined in the config file.";
     char const* getRA2DocString = "Returns the current EPICS PV of RA2 for str(bpmName) - these are defined in the config file.";
+    char const* getSA2DocString = "Returns the current EPICS PV of SA2 for str(bpmName) - these are defined in the config file.";
     char const* getRD1DocString = "Returns the current EPICS PV of RD1 for str(bpmName) - these are defined in the config file.";
+    char const* getSD1DocString = "Returns the current EPICS PV of SD1 for str(bpmName) - these are defined in the config file.";
     char const* getRD2DocString = "Returns the current EPICS PV of RD2 for str(bpmName) - these are defined in the config file.";
+    char const* getSD2DocString = "Returns the current EPICS PV of SD2 for str(bpmName) - these are defined in the config file.";
     char const* setSA1DocString = "Allows the user to set EPICS PV of SA1 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
     char const* setSA2DocString = "Allows the user to set EPICS PV of SA2 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
     char const* setSD1DocString = "Allows the user to set EPICS PV of SD1 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
@@ -356,6 +360,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("getRA2",                          &beamPositionMonitorController::getRA2, getRA2DocString                              )
             .def("getRD1",                          &beamPositionMonitorController::getRD1, getRD1DocString                              )
             .def("getRD2",                          &beamPositionMonitorController::getRD2, getRD2DocString                              )
+            .def("getSA1",                          &beamPositionMonitorController::getSA1, getSA1DocString                              )
+            .def("getSA2",                          &beamPositionMonitorController::getSA2, getSA2DocString                              )
+            .def("getSD1",                          &beamPositionMonitorController::getSD1, getSD1DocString                              )
+            .def("getSD2",                          &beamPositionMonitorController::getSD2, getSD2DocString                              )
             .def("setSA1",                          &beamPositionMonitorController::setSA1, setSA2DocString                              )
             .def("setSA2",                          &beamPositionMonitorController::setSA2, setSA2DocString                              )
             .def("setSD1",                          &beamPositionMonitorController::setSD1, setSD1DocString                              )

@@ -66,6 +66,10 @@ class beamPositionMonitorInterface : public interface
         long getRA2( const std::string & bpm );
         long getRD1( const std::string & bpm );
         long getRD2( const std::string & bpm );
+        long getSA1( const std::string & bpm );
+        long getSA2( const std::string & bpm );
+        long getSD1( const std::string & bpm );
+        long getSD2( const std::string & bpm );
         void setSA1( const std::string & bpmName, long sa1 );
         void setSA2( const std::string & bpmName, long sa1 );
         void setSD1( const std::string & bpmName, long sa1 );
