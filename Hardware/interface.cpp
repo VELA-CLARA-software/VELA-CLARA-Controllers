@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    interface.cpp
+//  Description:
+//
+//
+//*/
 #include "interface.h"
 // stl
 #include <iostream>
@@ -19,9 +27,34 @@
 #include <chrono>
 //interface::interface():EPICS_ACTIVATE (1), EPICS_SEND(0), EPICS_RESET(1),DBL_ERR_NUM(-9999.9999){}
 
-interface::interface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr):
+interface::interface(const bool* show_messages_ptr, const bool* show_debug_messages_ptr):
 thisCaContext(nullptr),
 configFileRead(false),
+shouldStartEPICs(false),
+CA_PEND_IO_TIMEOUT(5.0),  //MAGIC_NUMBER
+baseObject(show_messages_ptr, show_debug_messages_ptr),
+EPICS_ACTIVATE (1),         //MAGIC_NUMBER
+EPICS_SEND(0),              //MAGIC_NUMBER
+EPICS_RESET(1),           //MAGIC_NUMBER
+DBL_ERR_NUM(-9999.9999),   //MAGIC_NUMBER
+allChidsInitialised(false),
+allMonitorsStarted (false)
+{
+    /// This 'enables' callbacks, monitoring, etc
+    ca_context_create(ca_enable_preemptive_callback);
+    /// This is the current (AND ONLY) context,
+    /// use it to join from new threads with ca_attach_context
+    /// you need to attach to this context if multi-threading
+    thisCaContext = ca_current_context();
+}
+//______________________________________________________________________________
+interface::interface(const bool* show_messages_ptr,
+                     const bool* show_debug_messages_ptr,
+                     const bool  shouldStartEPICs
+                     ):
+thisCaContext(nullptr),
+configFileRead(false),
+shouldStartEPICs(shouldStartEPICs),
 CA_PEND_IO_TIMEOUT(5.0),  //MAGIC_NUMBER
 baseObject(show_messages_ptr, show_debug_messages_ptr),
 EPICS_ACTIVATE (1),         //MAGIC_NUMBER
@@ -91,59 +124,59 @@ void interface::printStatusResult(const int status, const char * success, const 
     }
 }
 //______________________________________________________________________________
-void interface::addILockChannels(const int numIlocks, const std::string & pvRoot,const std::string & objName, std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct> & iLockPVStructs)
+void interface::addILockChannels(const int numIlocks, const std::string & pvRoot,const std::string & objName, std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> & iLockPVStructs)
 {
   for(int  i = 1; i <numIlocks + 1 ; ++i)//MAGIC_NUMBER
     {
         switch(i)
         {
             case 1://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_1 ].pv = pvRoot + "Ilk1";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_1 ].pv = pvRoot + "Ilk1";
                 break;
             case 2://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_2 ].pv = pvRoot + "Ilk2";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_2 ].pv = pvRoot + "Ilk2";
                 break;
             case 3://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_3 ].pv = pvRoot + "Ilk3";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_3 ].pv = pvRoot + "Ilk3";
                 break;
             case 4://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_4 ].pv = pvRoot + "Ilk4";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_4 ].pv = pvRoot + "Ilk4";
                 break;
             case 5://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_5 ].pv = pvRoot + "Ilk5";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_5 ].pv = pvRoot + "Ilk5";
                 break;
             case 6://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_6 ].pv = pvRoot + "Ilk6";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_6 ].pv = pvRoot + "Ilk6";
                 break;
             case 7://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_7 ].pv = pvRoot + "Ilk7";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_7 ].pv = pvRoot + "Ilk7";
                 break;
             case 8://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_8 ].pv = pvRoot + "Ilk8";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_8 ].pv = pvRoot + "Ilk8";
                 break;
             case 9://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_9 ].pv = pvRoot + "Ilk9";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_9 ].pv = pvRoot + "Ilk9";
                 break;
             case 10://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_10 ].pv = pvRoot + "Ilk10";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_10 ].pv = pvRoot + "Ilk10";
                 break;
             case 11://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_11 ].pv = pvRoot + "Ilk11";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_11 ].pv = pvRoot + "Ilk11";
                 break;
             case 12://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_12 ].pv = pvRoot + "Ilk12";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_12 ].pv = pvRoot + "Ilk12";
                 break;
             case 13://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_13 ].pv = pvRoot + "Ilk13";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_13 ].pv = pvRoot + "Ilk13";
                 break;
             case 14://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_14 ].pv = pvRoot + "Ilk14";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_14 ].pv = pvRoot + "Ilk14";
                 break;
             case 15://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_15 ].pv = pvRoot + "Ilk15";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_15 ].pv = pvRoot + "Ilk15";
                 break;
             case 16://MAGIC_NUMBER
-                iLockPVStructs[ VELA_ENUM::ILOCK_NUMBER::ILOCK_16 ].pv = pvRoot + "Ilk16";
+                iLockPVStructs[ HWC_ENUM::ILOCK_NUMBER::ILOCK_16 ].pv = pvRoot + "Ilk16";
                 break;
         }
         //debugMessage("Added Ilock_", i , " chid to ilkChidMap.");
@@ -157,13 +190,13 @@ void interface::addILockChannels(const int numIlocks, const std::string & pvRoot
     }
 }
 //______________________________________________________________________________
-void interface::monitorIlocks(std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct> & iLockPVStructs, std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> & iLockStates)
+void interface::monitorIlocks(std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> & iLockPVStructs, std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> & iLockStates)
 {
     ///!continuousILockMonitorStructs.clear();  NO don't call clear here, call in dervied class before loops
     iLockStates.clear();
     for(auto && it : iLockPVStructs)
     {
-        continuousILockMonitorStructs.push_back(new VELA_ENUM::iLockMonitorStruct());
+        continuousILockMonitorStructs.push_back(new HWC_ENUM::iLockMonitorStruct());
         continuousILockMonitorStructs.back() -> iLockState   = &iLockStates[ it.first ];
         continuousILockMonitorStructs.back() -> interface    = this;
         continuousILockMonitorStructs.back() -> iLockNumber  = it.first;
@@ -185,7 +218,7 @@ void interface::staticEntryILockMonitor(event_handler_args args)
 {
     /// recast args.usr (a void *) to a monitor struct pointer, then dereference
 
-    VELA_ENUM::iLockMonitorStruct ms = * reinterpret_cast<VELA_ENUM::iLockMonitorStruct *> (args.usr);
+    HWC_ENUM::iLockMonitorStruct ms = * reinterpret_cast<HWC_ENUM::iLockMonitorStruct *> (args.usr);
 
     /// Not sure how to decode these apart from trial and error
     /// you can test with DBF_STRING as the callback type
@@ -200,13 +233,13 @@ void interface::staticEntryILockMonitor(event_handler_args args)
     switch(*(unsigned short*)args.dbr)
     {
         case 0://MAGIC_NUMBER
-            *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_BAD;
+            *ms.iLockState = HWC_ENUM::ILOCK_STATE::ILOCK_BAD;
             break;
         case 1://MAGIC_NUMBER
-            *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_GOOD;
+            *ms.iLockState = HWC_ENUM::ILOCK_STATE::ILOCK_GOOD;
             break;
         default:
-            *ms.iLockState = VELA_ENUM::ILOCK_STATE::ILOCK_ERROR;
+            *ms.iLockState = HWC_ENUM::ILOCK_STATE::ILOCK_ERROR;
     }
     /// make debug messages easier to understand by using ENUM_TO_STRING
     //ms.interface -> debugMessage(ms.objName, " new ILock_", ms.iLockNumber + 1 ,  " state = ", ENUM_TO_STRING(*ms.iLockState));
@@ -291,11 +324,11 @@ bool interface::interfaceInitReport(bool shouldStartEPICs)
     return ret;
 }
 //______________________________________________________________________________
-bool interface::iLocksAreGood(std::map<VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE> & iLockStates)
+bool interface::iLocksAreGood(std::map<HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE> & iLockStates)
 {
     bool ret = true;
     for(auto && it : iLockStates)
-        if(it.second != VELA_ENUM::ILOCK_STATE::ILOCK_GOOD)
+        if(it.second != HWC_ENUM::ILOCK_STATE::ILOCK_GOOD)
             ret = false;
 
     return ret;
@@ -368,28 +401,25 @@ long long interface::msChronoTime()
     long long duration = value.count();
     return duration;
 }
-//____________________________________________________________________________________________
+//______________________________________________________________________________
 void interface::updateBoolState(const event_handler_args& args, bool& parameter)
-{   /* some simple states don't have an enum, they are either true or false
+{   /*
+       some simple states don't have an enum, they are either true or false
        This can probably be used by many hardware controllers
     */
     if(*(int*)args.dbr == 1)
     {
-        parameter= true;
+        parameter = true;
     }
     else
     {
-        parameter= false;
+        parameter = false;
     }
 }
 //______________________________________________________________________________
 std::string interface::getDBRstring(const event_handler_args& args) const
 {
-    //std::stringstream ss;
     std::string s1;
-//    const char * char_array = (const char*)args.dbr;
-//    size_t Size = strlen(char_array );
-//    message("size = ", Size);
     s1.assign((const char*)args.dbr);
     return s1;
 }
@@ -409,9 +439,13 @@ int interface::getDBRint(const event_handler_args& args) const
     return *(int*)args.dbr;
 }
 //______________________________________________________________________________
-unsigned short interface::getDBRUnsignedShort(const event_handler_args& args) const
+unsigned short interface::getDBRunsignedShort(const event_handler_args& args) const
 {
     return *(unsigned short*)args.dbr;
 }
-
+//______________________________________________________________________________
+bool interface::getDBRbool(const event_handler_args& args) const
+{
+    return *(bool*)args.dbr;
+}
 

@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,37 +12,33 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    controller.cpp
+//  Description:
+//
+//
+//*/
+// project includes
 #include "controller.h"
-// stl
+// stl includes
 #include <iostream>
 #include <sstream>
-
+//  __  ___  __   __    /  __  ___  __   __
+// /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
+// \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
+//
+//______________________________________________________________________________
 controller::controller(bool show_messages, bool show_debug_messages):
-SHOW_DEBUG_MESSAGES(show_debug_messages),
-SHOW_MESSAGES(show_messages),
-controllerType(VELA_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE),
-baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES)
-{
-    if(show_messages)
-    {
-        messagesOn();
-    }
-    else
-    {
-        messagesOff();
-    }
-    if(show_debug_messages)
-    {
-        debugMessagesOn();
-    }
-    else
-    {
-        debugMessagesOff();
-    }
-}
+controller(show_messages,
+           show_debug_messages,
+           HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
+{}
 //___________________________________________________________
-controller::controller(bool show_messages, bool show_debug_messages, const VELA_ENUM::CONTROLLER_TYPE type):
+controller::controller(bool show_messages,
+                       bool show_debug_messages,
+                       const HWC_ENUM::CONTROLLER_TYPE type):
 SHOW_DEBUG_MESSAGES(show_debug_messages),
 SHOW_MESSAGES(show_messages),
 controllerType(type),
@@ -69,31 +66,31 @@ controller::~controller(){}
 //______________________________________________________________________________
 void controller::debugMessagesOn()
 {
-    std::cout <<"debugMessages On" <<std::endl;
+    std::cout << "debugMessages On" <<std::endl;
     SHOW_DEBUG_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::debugMessagesOff()
 {
-    std::cout <<"debugMessages Off" <<std::endl;
+    std::cout << "debugMessages Off" <<std::endl;
     SHOW_DEBUG_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::messagesOn()
 {
-    std::cout <<"messages On" <<std::endl;
+    std::cout << "messages On" <<std::endl;
     SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::messagesOff()
 {
-    std::cout <<"messages Off" <<std::endl;
+    std::cout << "messages Off" <<std::endl;
     SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::silence()
 {
-    std::cout <<"silence" <<std::endl;
+    std::cout << "silence" <<std::endl;
     SHOW_DEBUG_MESSAGES = false;
     SHOW_MESSAGES = false;
 }
@@ -104,26 +101,29 @@ void controller::verbose()
     SHOW_DEBUG_MESSAGES = true;
     SHOW_MESSAGES = true;
 }
-
-bool controller::isSilent()
+//______________________________________________________________________________
+bool controller::isSilent() const
 {
     if(!SHOW_DEBUG_MESSAGES && !SHOW_MESSAGES)
         return true;
     else
         return false;
 }
-bool controller::isVerbose()
+//______________________________________________________________________________
+bool controller::isVerbose() const
 {
     return !isSilent();
 }
-bool controller::isMessageOn()
+//______________________________________________________________________________
+bool controller::isMessageOn() const
 {
     if(SHOW_MESSAGES)
         return true;
     else
         return false;
 }
-bool controller::isDebugMessageOn()
+//______________________________________________________________________________
+bool controller::isDebugMessageOn() const
 {
     if(SHOW_DEBUG_MESSAGES)
         return true;
@@ -132,12 +132,13 @@ bool controller::isDebugMessageOn()
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
-boost::python::dict controller::getILockStatesDefinition()
+boost::python::dict controller::getILockStatesDefinition() const
 {
-    std::map<VELA_ENUM::ILOCK_STATE,  std::string > m;
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_BAD   ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_BAD);
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_GOOD);
-    m[ VELA_ENUM::ILOCK_STATE::ILOCK_ERROR ] = ENUM_TO_STRING(VELA_ENUM::ILOCK_STATE::ILOCK_ERROR);
+    std::map<HWC_ENUM::ILOCK_STATE, std::string> m;
+    using namespace HWC_ENUM;
+    m[ILOCK_STATE::ILOCK_GOOD ] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_GOOD);
+    m[ILOCK_STATE::ILOCK_BAD  ] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_BAD);
+    m[ILOCK_STATE::ILOCK_ERROR] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_ERROR);
     return enumStringMapToPythonDict(m);
 }
 #endif //BUILD_DLL

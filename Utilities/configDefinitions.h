@@ -1,5 +1,3 @@
-#ifndef CONFIG_DEFINITIONS_H
-#define CONFIG_DEFINITIONS_H
 /*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
@@ -15,23 +13,33 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
-//  DJS 14/7/2017
-//
-//  The UTL namespace is for all the Keyword arguemnts in config files
-//  It also holds config file,names, default location, and initialisation values
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    configDefinitions.h
+//  Description: Constant definitions for strings, numbers, etc. to be defined here
+//               Mostly used for configfile defintions,
+//               but also numerical constants that are used throughout
 //
 //*/
+#ifndef CONFIG_DEFINITIONS_H
+#define CONFIG_DEFINITIONS_H
+// stl includes
 #include <string>
 #include <vector>
 #include <map>
 #include <chrono>
-
+// boost.python includes
+#ifdef BUILD_DLL
+#include <boost/python/def.hpp>
+#endif // BUILD_DLL
+//______________________________________________________________________________
 namespace UTL
 {
     /// numerical and string constants
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
     const double ZERO_DOUBLE  = 0.0;
+    const double TEN_DOUBLE   = 10.0;
     const size_t ZERO_SIZET   = 0;
     const size_t ONE_SIZET    = 1;
     const size_t TWO_SIZET    = 2;
@@ -44,18 +52,19 @@ namespace UTL
     const size_t TEN_SIZET    = 10;
     const size_t HUNDRED_SIZET= 100;
     const size_t BUFFER_TEN   = 10;
+    const size_t BUFFER_EIGHTY= 80;
     const long   ZERO_LONG    = 0;
     const int    ZERO_INT     = 0;
     const int    ONE_INT      = 1;
     const int    TWO_INT      = 2;
     const int    MINUS_ONE_INT= -1;
     const int    MINUS_TWO_INT= -2;
-    //
+    const unsigned   ONE_UINT = 1;
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
-
+    const std::string EMPTY_STRING = "";
     const std::string END_OF_LINE = ";";
     const std::string SLASH_SLASH = "\\";
     const std::string EQUALS_SIGN = "=";
@@ -64,6 +73,7 @@ namespace UTL
     const char DOUBLE_QUOTE_C     = '"';
     const char SPACE_C            = ' ';
     const char TAB_C              = '\t';
+    const char COMMA_C            = ',';
     // default config paths -
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
     const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1.dl.ac.uk\\ControlRoomApps\\Controllers\\Config\\";
@@ -71,7 +81,6 @@ namespace UTL
     const std::string VM_PREFIX   = "VM-";
     // config file names
     const std::string NO_CONFIG_FILE = "NO_CONFIG_FILE";
-
     const std::string PHASE = "PHASE";
     const std::string POWER = "POWER";
 
@@ -100,10 +109,6 @@ namespace UTL
     const std::string PV_CHTYPE = "PV_CHTYPE";
     const std::string PV_MASK   = "PV_MASK"  ;
     const std::string PV_NAME   = "PV_NAME"  ;
-
-
-
-
 
 /// Laser shutters
     const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorpilaserShutter.config";
@@ -906,6 +911,14 @@ namespace UTL
 //    const std::vector<std::string> allScreenCassetteElements = { MIRROR_POS, SLIT_50_UM_POS, SLIT_25_UM_POS,
 //                                                                   HOLE_6p3_MM_POS, HOLE_10_MM_POS, YAG_POS, RF_POS,
 //                                                                   SLIT_POS, OUT_POS };
+
+#ifdef BUILD_DLL
+    const boost::python::arg NAME_ARG   = boost::python::arg("name");
+    const boost::python::arg NAMES_ARG  = boost::python::arg("names");
+    const boost::python::arg VALUE_ARG  = boost::python::arg("value");
+    const boost::python::arg VALUES_ARG = boost::python::arg("values");
+#endif //BUILD_DLL
+
 
 }
 #endif //CONFIG_DEFINITIONS_H

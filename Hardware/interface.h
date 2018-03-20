@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,49 +12,74 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
-#ifndef _VELA_INTERFACE_H
-#define _VELA_INTERFACE_H
-// epics
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    interface.h
+//  Description: The interface base class. Interface classes manage the connection
+//               to EPICS. The set up monitors, get and put data and often also do
+//               some data processing. They hold the virtual hardware objects that
+//               contain all relevant online/offline data. They hold the config
+//               readers for each hardware type.
+//               For more information you should try reading the documentation
+//
+//
+//*/
+#ifndef _INTERFACE_BASE_H
+#define _INTERFACE_BASE_H
+// epics includes
 #ifndef __CINT__
 #include <cadef.h>
 #endif
-//stl
+// stl includes
 #include <iostream>
 #include <map>
-/// project
+// project includes
 #include "baseObject.h"
 #include "structs.h"
-
+//______________________________________________________________________________
 class interface : public baseObject
 {
     public:
-        interface(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr);
+        interface(const bool* show_messages_ptr,
+                  const bool* show_debug_messages_ptr);
+        interface(const bool* show_messages_ptr,
+                  const bool* show_debug_messages_ptr,
+                  const bool  shouldStartEPICs);
         ~interface();
 
-        /// These pure virtual methods MUST be overwritten in the derived interface (making this an abstract base class)
-        /// This also means the destructor need not be protected
-
-        virtual std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE>  getILockStates(const std::string & name) = 0;
-        virtual std::map<VELA_ENUM::ILOCK_NUMBER, std::string >  getILockStatesStr(const std::string & name) = 0;
+        /* These pure virtual methods MUST be overwritten in the derived interface
+           (making this an abstract base class)
+           This also means the destructor need not be protected
+        */
+        virtual std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
+            getILockStates(const std::string & name) = 0;
+        virtual std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+            getILockStatesStr(const std::string & name) = 0;
 
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT(double val);
 
-        /// this reports back if the main init tasks: reading config, finding chids, setting up monitors (add your own if needed) has worked
+        /*  Reports back if the main init tasks:
+            reading config, finding chids, setting up monitors (add your own if needed)
+            has worked
+        */
         bool interfaceInitReport(bool shouldStartEPICs = true);
 
-
-
     protected:
+        // this should be called in the derived interface destructor
+        void killILockMonitors();
 
-        void killILockMonitors();// this should be called in the derived interfface destructor
-
-        /// send ...1 to enable open / close shutter, screen etc, there for these are available to all interface classes
-        /// send ...0 to send open / close shutter (???, i'm guessing here, but it seems to work)
-        /// i'm also not 100 % certain on the type, but unsigned short works so far
-        /// Other constant numbers could go here if needed
-
+        /* The below was written back in the days when i assumed operational consistency:
+            some EPICS contsants
+            send ...1 to enable open / close shutter, screen etc,
+                therefore these are available to all interface classes
+           send ...0 to send open / close shutter
+                (???, i'm guessing here, but it seems to work)
+           i'm also not 100 % certain on the type, but unsigned short works so far
+           Other constant numbers could go here if needed
+        */
+        const bool shouldStartEPICs;
         const unsigned short EPICS_ACTIVATE, EPICS_SEND, EPICS_RESET;
         const double DBL_ERR_NUM;
         bool configFileRead, allChidsInitialised, allMonitorsStarted;
@@ -61,7 +87,7 @@ class interface : public baseObject
 
         void updateTime(const epicsTimeStamp & stamp, double & val, std::string & str);
 
-        /// USE THIS!!!
+        /* We often check if entries exist in maps, use this function to do it safe */
         template<class T>
         bool entryExists(const std::map<std::string, T> & m, const std::string & name) const
         {
@@ -73,14 +99,16 @@ class interface : public baseObject
         }
 
 #ifndef __CINT__
-        /// This is the only ca_client_context attach and detach to this when multi-threading
+        /*  This is the 'only' ca_client_context
+            attach and detach to this when multi-threading
+        */
         ca_client_context * thisCaContext;
 
         void attachTo_thisCAContext();
         void detachFrom_thisCAContext();
 
-        void addILockChannels(const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct> & iLockPVStructs);
-        void monitorIlocks(std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct>  & iLockPVStructs, std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> & iLockStates);
+        void addILockChannels(const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> & iLockPVStructs);
+        void monitorIlocks(std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct>  & iLockPVStructs, std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> & iLockStates);
         static void staticEntryILockMonitor(event_handler_args args);
 
 
@@ -88,7 +116,8 @@ class interface : public baseObject
         double getDBRdouble(const event_handler_args& args) const;
         long getDBRlong(const event_handler_args& args) const;
         int getDBRint(const event_handler_args& args) const;
-        unsigned short getDBRUnsignedShort(const event_handler_args& args) const;
+        unsigned short getDBRunsignedShort(const event_handler_args& args) const;
+        bool getDBRbool(const event_handler_args& args) const;
 
 
 
@@ -106,7 +135,7 @@ class interface : public baseObject
         int sendToEpics2(const  std::string & ca,const  std::string & mess1,const  std::string & mess2);
 #endif
 
-        bool iLocksAreGood(std::map<VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE> & iLockStates);
+        bool iLocksAreGood(std::map<HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE> & iLockStates);
 
         void updateBoolState(const event_handler_args& args, bool& parameter);
 
@@ -120,9 +149,9 @@ class interface : public baseObject
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// though... maybe one day we re-factor, for now remember to delete in the destructor
 
-        std::vector<VELA_ENUM::iLockMonitorStruct *> continuousILockMonitorStructs;
+        std::vector<HWC_ENUM::iLockMonitorStruct *> continuousILockMonitorStructs;
     private:
 
 };
 
-#endif // _VELA_INTERFACE_H
+#endif // _INTERFACE_BASE_H
