@@ -1,3 +1,24 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  DJS 19-03-2018
+//
+//  Vrfprot.cpp
+//
+//
+//*/
 #include "VCrfprot.h"
 #include <iostream>
 
@@ -5,13 +26,7 @@ VCrfprot::VCrfprot():
 virtual_Gun_Protection_Controller_Obj(nullptr),
 physical_Gun_Protection_Controller_Obj(nullptr),
 offline_Gun_Protection_Controller_Obj(nullptr),
-allGunProtsConf(UTL::CONFIG_PATH + UTL::RF_GUN_PROTECTION_CONFIG),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is quiet mode
+allGunProtsConf(UTL::CONFIG_PATH + UTL::RF_GUN_PROTECTION_CONFIG)
 {
    std::cout << "Instantiated a VCrfprot " << std::endl;
     //ctor
@@ -35,34 +50,6 @@ VCrfprot::~VCrfprot()
         delete offline_Gun_Protection_Controller_Obj;
                offline_Gun_Protection_Controller_Obj = nullptr;
     }
-}
-//______________________________________________________________________________
-void VCrfprot::setQuiet()
-{
-    std::cout << "VCrfprot Quiet Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = false;
-}
-//______________________________________________________________________________
-void VCrfprot::setVerbose()
-{
-    std::cout << "VCrfprot Verbose Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCrfprot::setMessage()
-{
-    std::cout << "VCrfprot Message Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCrfprot::setDebugMessage()
-{
-    std::cout << "VCrfprot DebugMessage Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = false;
 }
 //______________________________________________________________________________
 gunProtController& VCrfprot::virtual_Gun_Protection_Controller()

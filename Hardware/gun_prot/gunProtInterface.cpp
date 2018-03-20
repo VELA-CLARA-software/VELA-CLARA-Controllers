@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,36 +12,38 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    gunProtInterface.cpp
+//  Description:
+//
+//
+//*/
 #include "gunProtInterface.h"
-//djs
-#include "dburt.h"
+// project includes
 #include "configDefinitions.h"
-// stl
+// stl includes
 #include <iostream>
 #include <sstream>
 #include <chrono>
 #include <algorithm>
 #include <thread>
 #include <stdlib.h>
-
 //  __  ___  __   __    /  __  ___  __   __
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-gunProtInterface::gunProtInterface(const std::string &allGunProtsConf,
-                                const bool startVirtualMachine,
-                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs ):
-configReader(allGunProtsConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface(show_messages_ptr,show_debug_messages_ptr),
-shouldStartEPICs(shouldStartEPICs ),
+//______________________________________________________________________________
+gunProtInterface::gunProtInterface(const std::string& config_file,
+                                   const bool  startVirtualMachine,
+                                   const bool* show_messages_ptr,
+                                   const bool* show_debug_messages_ptr,
+                                   const bool  shouldStartEPICs ):
+configReader(config_file, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
+interface(show_messages_ptr,show_debug_messages_ptr, shouldStartEPICs),
 currentMode(rfProtStructs::RF_GUN_PROT_TYPE::NOT_KNOWN)
 {
-    if(shouldStartEPICs )
-        message("gunProtInterface shouldStartEPICs is true");
-    else
-        message("gunProtInterface shouldStartEPICs is false");
     initialise();
 }
 //______________________________________________________________________________
@@ -52,17 +55,21 @@ gunProtInterface::~gunProtInterface()
         killMonitor(it );
         delete it;
     }
-    debugMessage("gunProtInterface DESTRUCTOR COMPLETE ");
+    debugMessage("gunProtInterface DESTRUCTOR COMPLETE");
 }
 //______________________________________________________________________________
-void gunProtInterface::killMonitor(rfProtStructs::monitorStruct * ms )
+void gunProtInterface::killMonitor(rfProtStructs::monitorStruct* ms)
 {
-    int status = ca_clear_subscription(ms -> EVID );
+    int status = ca_clear_subscription(ms->EVID);
     if(status == ECA_NORMAL)
         debugMessage(ms->rfProtObject->name, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
     else
         debugMessage("ERROR gunProtInterface: in killMonitor: ca_clear_subscription failed for ", ms->rfProtObject->name, " ", ENUM_TO_STRING(ms->monType) );
 }
+//          ___               __  ___
+// | |\ | |  |  |  /\  |    |  / |__
+// | | \| |  |  | /~~\ |___ | /_ |___
+//
 //______________________________________________________________________________
 void gunProtInterface::initialise()
 {

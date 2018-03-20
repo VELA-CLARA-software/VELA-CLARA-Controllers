@@ -429,8 +429,16 @@ void gunModInterface::updateWarmUpTime(const event_handler_args& args)
     debugMessage("rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME = ",gunMod.warmuptime);
     if(gunMod.warmuptime == 0)
     {
+        //if the mode is standby or better??
+
         gunMod.safelyWarmedUP = true;
         message("Gun Modulator Safely Warmed Up:");
+
+        //    !!!!!!!!!!!!!!this is not correct!!!!!!!!!!!!!!!!
+        //    !!!!!!!!!!!!!!this is not correct!!!!!!!!!!!!!!!!
+        //    !!!!!!!!!!!!!!this is not correct!!!!!!!!!!!!!!!!
+        //    !!!!!!!!!!!!!!this is not correct!!!!!!!!!!!!!!!!
+
     }
     else
     {
@@ -498,14 +506,6 @@ void gunModInterface::check_ilock_changed(const std::string& new_val,std::string
         debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK",num,"_STR = ",present_val);
     }
 }
-
-
-
-
-
-
-
-
 //______________________________________________________________________________
 bool gunModInterface::isWarmedUp() const
 {

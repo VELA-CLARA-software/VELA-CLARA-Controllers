@@ -1,3 +1,25 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    gunProtConfigReader.cpp
+//  Description:
+//
+//
+//*/
 //djs
 #include "gunProtConfigReader.h"
 #include "configDefinitions.h"
@@ -12,21 +34,20 @@
 #include <algorithm>
 #include <ctype.h>
 
-gunProtConfigReader::gunProtConfigReader(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  )
-: configReader(UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr )
-{
-}
+gunProtConfigReader::gunProtConfigReader(const bool* show_messages_ptr,
+                                         const bool* show_debug_messages_ptr):
+configReader(UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr)
+{}
 //______________________________________________________________________________
 gunProtConfigReader::gunProtConfigReader(const std::string& configFileLocation1,
-                                       const bool startVirtualMachine,
-                                       const bool* show_messages_ptr,
-                                       const bool * show_debug_messages_ptr  ):
-configReader(configFileLocation1, show_messages_ptr, show_debug_messages_ptr )
-{
-}
+                                         const bool startVirtualMachine,
+                                         const bool* show_messages_ptr,
+                                         const bool* show_debug_messages_ptr):
+configReader(configFileLocation1, show_messages_ptr, show_debug_messages_ptr)
+{}
 //______________________________________________________________________________
 gunProtConfigReader::~gunProtConfigReader(){}
-////______________________________________________________________________________
+//______________________________________________________________________________
 bool gunProtConfigReader::getrfGunProtObjects(std::map<std::string, rfProtStructs::rfGunProtObject>& mapToFill )
 {
     mapToFill.clear();
@@ -54,7 +75,7 @@ bool gunProtConfigReader::getrfGunProtObjects(std::map<std::string, rfProtStruct
     }
     return r;
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
 bool gunProtConfigReader::readConfig()
 {
     debugMessage("\n", "**** Attempting to Read Gun Modulator Config File ****" );

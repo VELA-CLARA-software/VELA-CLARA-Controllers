@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    gunProtController.h
+//  Description:
+//
+//
+//*/
 #ifndef allGunProts_CONTROLLER_H_
 #define allGunProts_CONTROLLER_H_
 // stl
@@ -23,16 +31,6 @@
 #include "controller.h"
 // boost.python
 #ifdef BUILD_DLL
-#include <boost/python.hpp>
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/def.hpp>
-#include <boost/python/args.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
-#include <boost/python/overloads.hpp>
 #endif
 
 class gunProtController : public controller
@@ -46,9 +44,9 @@ class gunProtController : public controller
         ~gunProtController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT(double val );
-        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
-        std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
+        void   set_CA_PEND_IO_TIMEOUT(double val);
+        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
+        std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
 
         bool isGood(const std::string & name);
         bool isNotGood(const std::string & name);
@@ -69,7 +67,6 @@ class gunProtController : public controller
         std::string getCurrentModeProtName();
 
         const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name);
-
 
     protected:
     private:

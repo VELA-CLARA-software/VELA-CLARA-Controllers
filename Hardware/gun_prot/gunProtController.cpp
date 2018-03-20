@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,11 +12,23 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    gunProtController.cpp
+//  Description:
+//
+//
+//*/
+// project includes
 #include "gunProtController.h"
-//#include <fstream>
-//#include <iostream>
-// stl
+using namespace HWC_ENUM;
+using namespace rfProtStructs;
+//  __  ___  __   __    /  __  ___  __   __
+// /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
+// \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
+//
+//______________________________________________________________________________
 gunProtController::gunProtController(
     const bool show_messages,
     const bool show_debug_messages,
@@ -23,22 +36,32 @@ gunProtController::gunProtController(
     const bool startVirtualMachine,
     const bool shouldStartEPICs):
 controller(show_messages,show_debug_messages),
-localInterface(allGunProtsConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs),
+localInterface(allGunProtsConf,
+               startVirtualMachine,
+               &SHOW_MESSAGES,
+               &SHOW_DEBUG_MESSAGES,
+               shouldStartEPICs),
 shouldStartEPICs(shouldStartEPICs)
 {
-    if(shouldStartEPICs )
+    if(shouldStartEPICs)
+    {
         message("gunProtController shouldStartEPICs is true");
+    }
     else
+    {
         message("gunProtController shouldStartEPICs is false");
+    }
     initialise();
 }
 //______________________________________________________________________________
-gunProtController::~gunProtController(){}    //dtor
+gunProtController::~gunProtController(){}
 //______________________________________________________________________________
 void gunProtController::initialise()
 {
-    if(localInterface.interfaceInitReport(shouldStartEPICs) )
+    if(localInterface.interfaceInitReport(shouldStartEPICs))
+    {
         message("gunProtController instantiation success.");
+    }
 }
 //______________________________________________________________________________
 bool gunProtController::isGood(const std::string & name)
@@ -51,7 +74,7 @@ bool gunProtController::isNotGood(const std::string & name)
     return localInterface.isNotGood(name);
 }
 //______________________________________________________________________________
-const rfProtStructs::rfGunProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)
+const rfGunProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)
 {
     return localInterface.getRFProtObjConstRef(name);
 }
@@ -71,12 +94,12 @@ void gunProtController::set_CA_PEND_IO_TIMEOUT(double val)
     localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > gunProtController::getILockStates(const std::string& name)
+std::map<ILOCK_NUMBER,ILOCK_STATE> gunProtController::getILockStates(const std::string& name)
 {
     return localInterface.getILockStates(name);
 }
 //______________________________________________________________________________________________
-std::map<VELA_ENUM::ILOCK_NUMBER,std::string> gunProtController::getILockStatesStr(const std::string& name)
+std::map<ILOCK_NUMBER,std::string> gunProtController::getILockStatesStr(const std::string& name)
 {
     return localInterface.getILockStatesStr(name);
 }

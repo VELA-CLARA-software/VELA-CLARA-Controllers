@@ -1,5 +1,27 @@
-#ifndef _RF_MOD_STRUCTS_H_
-#define _RF_MOD_STRUCTS_H_
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    rfProtStruts.h
+//  Description:
+//
+//
+//*/
+#ifndef _RF_PROT_STRUCTS_H_
+#define _RF_PROT_STRUCTS_H_
 //
 #include "structs.h"
 //stl
@@ -30,7 +52,7 @@ namespace rfProtStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)(BAD)(ERROR)(UNKNOWN))
 
-    /// These can't go in VELA_ENUM as they need a pvType.
+    /// These can't go in HWC_ENUM as they need a pvType.
     struct pvStruct
     {
         pvStruct() : pvSuffix("UNKNOWN" ), objName("UNKNOWN"),COUNT(0),MASK(0){}
@@ -51,10 +73,10 @@ namespace rfProtStructs
         std::vector<bool>   gunProtKeyBitValues;// calues of the key bits
         size_t              numIlocks;
         RF_GUN_PROT_TYPE        protType;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
         std::map< RF_GUN_PROT_PV_TYPE, pvStruct > pvMonStructs;
         std::map< RF_GUN_PROT_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
     };
 
     struct monitorStruct
@@ -68,4 +90,4 @@ namespace rfProtStructs
         evid              EVID;
     };
 }
-#endif//_RF_MOD_STRUCTS_H_
+#endif//_RF_PROT_STRUCTS_H_

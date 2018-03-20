@@ -1,53 +1,73 @@
-///
-/// Duncan Scott July 2015
-///
-/// For reading in parameters
-/// Input files will be plain text
-///
-#ifndef gunProtConfigReader_H_
-#define gunProtConfigReader_H_
-// stl
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    gunProtConfigReader.h
+//  Description:
+//
+//
+//*/
+#ifndef _GUN_PROT_CONFIG_READER_H_
+#define _GUN_PROT_CONFIG_READER_H_
+// stl includes
 #include <string>
 #include <vector>
 #include <map>
 #include <iostream>
-// me
+// project includes
 #include "configReader.h"
 #include "rfProtStructs.h"
-
-
+//______________________________________________________________________________
 class gunProtConfigReader : public configReader
 {
     public:
-        gunProtConfigReader(const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        gunProtConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool * showMessages,const  bool * showDebugMessages );
+        gunProtConfigReader(const bool* show_messages_ptr,
+                            const bool* show_debug_messages_ptr );
+        gunProtConfigReader(const std::string& configFileLocation1,
+                            const bool startVirtualMachine,
+                            const bool* showMessages,
+                            const  bool* showDebugMessages );
         ~gunProtConfigReader();
 
         bool readConfig();
-        bool getrfGunProtObjects(std::map<std::string, rfProtStructs::rfGunProtObject>& mapToFill);
-//
+        bool getrfGunProtObjects(std::map<std::string,
+                                 rfProtStructs::rfGunProtObject>& mapToFill);
     private:
-
-        // Gun Protection Objects
+        /* local virtual hardware object, copied to the interface in
+            getrfGunProtObjects()
+        */
+        rfProtStructs::rfGunProtObject localrfGunProtObject;
+        /*
+            pvMonStructs hold the data for PVs to be monitored
+            pvComStructs hold the data for PVs to be monitored and/or controlled
+        */
         std::vector< rfProtStructs::pvStruct > pvMonStructs;
         std::vector< rfProtStructs::pvStruct > pvComStructs;
-        rfProtStructs::rfGunProtObject localrfGunProtObject;
+
+        /* Functions to add the config file data to objects/pvStructs */
         void addToProtObjectsV1(const std::vector<std::string> &keyVal );
         void addToPVMonitorMapV1(const std::vector<std::string> &keyVal );
         void addToPVCommandMapV1(const std::vector<std::string> &keyVal );
 
-
         std::vector<rfProtStructs::rfGunProtObject> gunProtObjects;
 
+        void addToPVStruct(std::vector< rfProtStructs::pvStruct >& pvStruct_v,
+                           const  std::vector<std::string>& keyVal );
 
-        void addToPVStruct(std::vector< rfProtStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
-        void addCOUNT_MASK_OR_CHTYPE( std::vector< rfProtStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
-
-
-//        void addToObjectsV1(std::vector<std::string> &keyVal );
-//        void addPVCommandMapV1  (std::vector<std::string> &keyVal );
-//        void addPVMonitorMapV1  (std::vector<std::string> &keyVal );
-//
-
+        void addCOUNT_MASK_OR_CHTYPE(std::vector<rfProtStructs::pvStruct>& pvStruct_v,
+                                     const std::vector<std::string>& keyVal );
 };
-#endif //gunProtConfigReader_H_
+#endif //_GUN_PROT_CONFIG_READER_H_

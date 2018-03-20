@@ -104,7 +104,7 @@
 	<vector>
 	<cadef.h>
 
-1521114950 d:\vela\git projects\vela-clara-controllers\structs\rfmodstructs.h
+1521192343 d:\vela\git projects\vela-clara-controllers\structs\rfmodstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -160,7 +160,7 @@
 	"configReader.h"
 	"magnetStructs.h"
 
-1521046283 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1521136021 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>

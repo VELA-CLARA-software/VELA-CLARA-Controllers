@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,20 +12,27 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
-#ifndef VELA_MAG_INTERFACE_H
-#define VELA_MAG_INTERFACE_H
-// djs
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    gunProtInterface.h
+//  Description:
+//
+//
+//*/
+#ifndef GUN_PROT_INTERFACE_H
+#define GUN_PROT_INTERFACE_H
+// project includes
 #include "interface.h"
 #include "rfProtStructs.h"
 #include "structs.h"
 #include "gunProtConfigReader.h"
-//stl
+// stl inlcudes
 #include <vector>
 #include <string>
 #include <atomic>
 #include <map>
-
+//______________________________________________________________________________
 class gunProtInterface : public interface
 {
     public:
@@ -32,11 +40,11 @@ class gunProtInterface : public interface
         typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
         typedef std::vector<double> vec_d;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         gunProtInterface::gunProtInterface();
-        gunProtInterface(const std::string &pilaserConf,
+        gunProtInterface(const std::string &config_file,
                          const bool startVirtualMachine,
                          const bool* show_messages_ptr,
                          const bool* show_debug_messages_ptr,
@@ -47,14 +55,11 @@ class gunProtInterface : public interface
         bool isGood(const std::string& name);
         bool isNotGood(const std::string& name);
         bool isBad(const std::string& name);
-
-        bool isGeneralProt(const std::string& name);
         bool isNotGeneralProt(const std::string& name);
-        bool isEnableProt(const std::string& name);
+        bool isGeneralProt(const std::string& name);
         bool isNotEnableProt(const std::string& name);
-        //bool isEnableProt(const std::string& name);
-
-        bool isProtOfType(const std::string& name, const rfProtStructs::RF_GUN_PROT_TYPE type );
+        bool isEnableProt(const std::string& name);
+        bool isProtOfType(const std::string& name, const rfProtStructs::RF_GUN_PROT_TYPE type);
 
 
 
@@ -82,13 +87,9 @@ class gunProtInterface : public interface
         bool allkeybitsaregood(const std::string& name);
 
     private:
-        // MOVE TO BASE CLASS
-        const bool shouldStartEPICs;
-
         void killMonitor(rfProtStructs::monitorStruct* ms);
 
         void initialise();
-//        bool initObjects();
         void initChids();
         void addChannel(const std::string& pvRoot, rfProtStructs::pvStruct& pv);
         void startMonitors();
@@ -115,4 +116,5 @@ class gunProtInterface : public interface
 
         gunProtConfigReader configReader; /// class member so we can pass in file path in ctor
 };
-#endif // VELA_MAG_INTERFACE_H
+//______________________________________________________________________________
+#endif // GUN_PROT_INTERFACE_H
