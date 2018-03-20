@@ -31,7 +31,7 @@
 #include "VCHeader.h"
 #include "configdEfinitions.h"
 //______________________________________________________________________________
-class VCrfprot : VCbase
+class VCrfprot : public VCbase
 {
     public:
         VCrfprot();
@@ -130,8 +130,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         //.def_readonly("currentMode",               &gunProtController::currentMode,"Varibale defining the current mode of the gun system. Current mode depnds on which physical keys are active and could be, VELA line, LRRG, CLARA line HRRG, Test mode, etc.")
         ;
 
+        using namespace boost;
     /// The main class that creates all the controller obejcts
-        boost::python::class_<VCrfprot,boost::noncopyable> ("init")
+    class_<VCrfprot, bases<VCbase>, noncopyable>("init")
         .def("virtual_Gun_Protection_Controller",  &VCrfprot::virtual_Gun_Protection_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the virtual gun protection object.")

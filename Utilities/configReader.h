@@ -16,11 +16,11 @@
 //  Author:      DJS
 //  Last edit:   19-03-2018
 //  FileName:    configReader.h
-//  Description: The base class for all config readers, it know show to manipulate
-//               strings, and ha sthe memebr varibales used by derived classes
+//  Description: The base class for all config readers, it knows how to manipulate
+//               strings, and has the memebr variables used by derived classes
 //               currently, there is no general overview on how we read config files
 //               If you're interested, derived configReaders should have a readConfig()
-//               function that follow sth egeneral pattern
+//               function that follows the general pattern
 //*/
 #ifndef CONFIG_READER_H_
 #define CONFIG_READER_H_
@@ -89,15 +89,15 @@ class configReader : public baseObject
         std::vector<int>    getIntVector(const std::string& str) const;
 
         std::vector<std::string> getKeyVal(const std::string& trimmedLine,
-                                           const char delim = UTL::EQUALS_SIGN_C) const;
+                                           const char delim=UTL::EQUALS_SIGN_C)const;
         std::string& trimAllWhiteSpace(std::string& source);
         std::string& trimAllWhiteSpaceExceptBetweenDoubleQuotes(std::string& str);
-        std::string trimWhiteSpaces(const  std::string& str) const;
+        std::string  trimWhiteSpaces(const std::string& str) const;
 
         std::string configFile1, configFile2, configFile3, configFile4, configFile5;
 
-        unsigned long getMASK(const std::string& val) const;
-        unsigned long getCOUNT(const  std::string& val) const;
+        unsigned long getCOUNT(const std::string& val) const;
+        unsigned long getMASK (const std::string& val) const;
         chtype getCHTYPE(const  std::string& val) const;
 
         std::string getSubString(const std::string& str,

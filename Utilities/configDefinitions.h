@@ -28,6 +28,8 @@
 #include <vector>
 #include <map>
 #include <chrono>
+// epics includes
+#include <cadef.h>
 // boost.python includes
 #ifdef BUILD_DLL
 #include <boost/python/def.hpp>
@@ -38,8 +40,10 @@ namespace UTL
     /// numerical and string constants
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
+    const double TEN_POWER_MINUS_NINE  = 0.000000001;
     const double ZERO_DOUBLE  = 0.0;
     const double TEN_DOUBLE   = 10.0;
+    const double FIVE_DOUBLE  = 5.0;
     const size_t ZERO_SIZET   = 0;
     const size_t ONE_SIZET    = 1;
     const size_t TWO_SIZET    = 2;
@@ -53,14 +57,45 @@ namespace UTL
     const size_t HUNDRED_SIZET= 100;
     const size_t BUFFER_TEN   = 10;
     const size_t BUFFER_EIGHTY= 80;
+    const size_t BUFFER_36    = 36;
     const long   ZERO_LONG    = 0;
     const int    ZERO_INT     = 0;
     const int    ONE_INT      = 1;
     const int    TWO_INT      = 2;
+    const int    THREE_INT    = 3;
+    const int    FOUR_INT     = 4;
+    const int    FIVE_INT     = 5;
+    const int    SIX_INT      = 6;
+    const int    SEVEN_INT    = 7;
+    const int    EIGHT_INT    = 8;
+    const int    NINE_INT     = 9;
+    const int    TEN_INT      = 10;
+    const int    ELEVEN_INT   = 11;
+    const int    TWELVE_INT   = 12;
+    const int    THIRTEEN_INT = 13;
+    const int    FOURTEEN_INT = 14;
+    const int    FIFTEEN_INT  = 15;
+    const int    SIXTEEN_INT  = 16;
     const int    MINUS_ONE_INT= -1;
     const int    MINUS_TWO_INT= -2;
     const unsigned   ONE_UINT = 1;
+
+    const capri PRIORITY_0  = 0;
+    const capri PRIORITY_99 = 99;
+
+    const unsigned short ZERO_US  = 0;
+    const unsigned short ONE_US   = 1;
+    const unsigned short TWO_US   = 2;
+    const unsigned short THREE_US = 3;
+    const unsigned long  ZERO_UL  = 0;
+
+    const unsigned short EPICS_ACTIVATE = ONE_US;
+    const unsigned short EPICS_SEND     = ZERO_US;
+    const unsigned short EPICS_RESET    = ONE_US;
+    const double         DBL_ERR_NUM    =-9999.9999;
+
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
+    const std::chrono::milliseconds PAUSE_300(300);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";

@@ -40,8 +40,7 @@ class gunProtInterface : public interface
         typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
         typedef std::vector<double> vec_d;
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+
 
         gunProtInterface::gunProtInterface();
         gunProtInterface(const std::string &config_file,
@@ -52,39 +51,38 @@ class gunProtInterface : public interface
 
         ~gunProtInterface();
 
-        bool isGood(const std::string& name);
-        bool isNotGood(const std::string& name);
-        bool isBad(const std::string& name);
-        bool isNotGeneralProt(const std::string& name);
-        bool isGeneralProt(const std::string& name);
-        bool isNotEnableProt(const std::string& name);
-        bool isEnableProt(const std::string& name);
-        bool isProtOfType(const std::string& name, const rfProtStructs::RF_GUN_PROT_TYPE type);
+        bool isGood(const std::string& name) const;
+        bool isNotGood(const std::string& name) const;
+        bool isBad(const std::string& name) const;
+        bool isNotGeneralProt(const std::string& name) const;
+        bool isGeneralProt(const std::string& name) const;
+        bool isNotEnableProt(const std::string& name) const;
+        bool isEnableProt(const std::string& name) const;
+        bool isProtOfType(const std::string& name,
+                          const rfProtStructs::RF_GUN_PROT_TYPE type) const;
 
+        bool reset() const;
+        bool reset(const std::vector<std::string>& names) const;
+        bool reset(const std::string& name) const;
 
+        bool enable(const std::string& name) const;
+        bool enable(const std::vector<std::string>& names) const;
+        bool enable() const;
 
-        bool reset();
-        bool reset(const std::vector<std::string>& names);
-        bool reset(const std::string& name);
+        bool disable(const std::string& name) const;
+        bool disable(const std::vector<std::string>& names) const;
 
-        bool enable(const std::string& name);
-        bool enable(const std::vector<std::string>& names);
-        bool enable();
+        std::string gunProtInterface::getGeneralProtName() const;
+        std::string gunProtInterface::getEnableProtName() const;
+        std::string gunProtInterface::getCurrentModeProtName() const;
 
-        bool disable(const std::string& name);
-        bool disable(const std::vector<std::string>& names);
-
-        std::string gunProtInterface::getGeneralProtName();
-        std::string gunProtInterface::getEnableProtName();
-        std::string gunProtInterface::getCurrentModeProtName();
-
-        const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name);
+        const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name)const;
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
-        IlockMap1 getILockStates(const std::string& name   );
-        IlockMap2 getILockStatesStr(const std::string& name);
+        map_ilck_string getILockStatesStr(const std::string& name) const;
+        map_ilck_state  getILockStates(const std::string& name   ) const;
 
-        bool allkeybitsaregood(const std::string& name);
+        bool allkeybitsaregood(const std::string& name) const;
 
     private:
         void killMonitor(rfProtStructs::monitorStruct* ms);
@@ -94,21 +92,29 @@ class gunProtInterface : public interface
         void addChannel(const std::string& pvRoot, rfProtStructs::pvStruct& pv);
         void startMonitors();
 
+        const std::string EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL;
+
+        bool exists_in_allGunProts(const std::string& name,
+                                   rfProtStructs::RF_GUN_PROT_PV_TYPE pv) const;
 
         rfProtStructs::RF_GUN_PROT_TYPE currentMode;
 
+        bool allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj) const;
 
-        bool allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj);
-
-        bool sendCommand(const std::vector<chtype*>& CHTYPE,const std::vector<chid*>& CHID, const std::string& m1, const std::string& m2);
-        bool sendCommand(const chtype& CHTYPE, const chid& CHID, const std::string& m1, const std::string& m2);
+        bool sendCommand(const std::vector<std::string>& names,
+                                   rfProtStructs::RF_GUN_PROT_PV_TYPE pv
+                                   ) const;
+        bool sendCommand(const std::vector<const chtype*>& CHTYPE,
+                         const std::vector<const chid*>& CHID,
+                         const std::string& m1, const std::string& m2) const;
+//        bool sendCommand(const chtype& CHTYPE, const chid& CHID,
+//                         const std::string& m1, const std::string& m2) const;
 
         std::map<std::string, rfProtStructs::rfGunProtObject> allGunProts;
 
         std::vector<rfProtStructs::monitorStruct*> continuousMonitorStructs;
         // all EPICS callbacks route here
         static void staticEntryMonitor(const event_handler_args args);
-
         void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const unsigned short value);
         void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const event_handler_args args);
 

@@ -137,7 +137,7 @@ std::string& configReader::trimAllWhiteSpace(std::string & str)
 std::string& configReader::trimAllWhiteSpaceExceptBetweenDoubleQuotes(std::string& str)
 {   /*
         Does exactly what the function name says.
-        Used so that user strings with spaces is in can be passed
+        Used so that user strings with spaces in can be passed
         from the config files,
         This will have to change if we want to inlcude special characters
         in the config file strings
@@ -204,7 +204,7 @@ std::string configReader::getSubString(const std::string& str,
 {
     unsigned first = str.find(STARTDELIMITER);
     unsigned last  = str.find(STOPDELIMITER);
-    std::string temp = str.substr(first + 1, last - first - 1);
+    std::string temp = str.substr(first+UTL::ONE_UINT,last-first-UTL::ONE_UINT);
     return  trimWhiteSpaces(temp);
 }
 //______________________________________________________________________________
@@ -245,8 +245,6 @@ std::vector<int> configReader::getIntVector(const std::string& str) const
 {
     return getNumVector<int>(str);
 }
-//______________________________________________________________________________
-
 //______________________________________________________________________________
 unsigned long configReader::getMASK(const  std::string & val) const
 {
@@ -315,21 +313,4 @@ bool configReader::isnotNO_CONFIG_FILE(const std::string& str) const
 {
     return !isNO_CONFIG_FILE(str);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

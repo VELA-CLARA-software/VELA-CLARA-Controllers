@@ -16,7 +16,7 @@
 //  Author:      DJS
 //  Last edit:   19-03-2018
 //  FileName:    rfProtStruts.h
-//  Description:
+//  Description: enums and structs for rf protection
 //
 //
 //*/
@@ -34,60 +34,90 @@
 #endif
 
 class gunProtInterface;
-
+//______________________________________________________________________________
 namespace rfProtStructs
 {
-//    struct pvStruct;
-//    struct rfPowerObject;
-//    struct rfPowerMonitorStruct;
-//    struct monitorStuct;
-//    struct rfLLRFObject;
-//    struct rfModObject;
-//    struct rfObject;
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_PV_TYPE, (RESET)
+                                                             (STATUS)
+                                                             (ON)
+                                                             (OFF)
+                                                             (CMI)
+                                                             (UNKNOWN_PV)
+                                        )
 
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_TYPE, (CLARA_HRRG)
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_PV_TYPE, (RESET)(STATUS)(ON)(OFF)(CMI))
+                                                          (VELA_LRRG)
+                                                          (VELA_HRRG)
+                                                          (CLARA_LRRG)
+                                                          (TEST)
+                                                          (NOT_KNOWN)
+                                                          (GENERAL)
+                                                          (ENABLE)
+                                                          (NO_MODE)
+                                        )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_TYPE, (CLARA_HRRG)(VELA_LRRG)(VELA_HRRG)(CLARA_LRRG)(TEST)(NOT_KNOWN)(GENERAL)(ENABLE)(NO_MODE))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)
+                                                            (BAD)
+                                                            (ERROR)
+                                                            (UNKNOWN)
+                                        )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)(BAD)(ERROR)(UNKNOWN))
-
-    /// These can't go in HWC_ENUM as they need a pvType.
     struct pvStruct
     {
-        pvStruct() : pvSuffix("UNKNOWN" ), objName("UNKNOWN"),COUNT(0),MASK(0){}
-        RF_GUN_PROT_PV_TYPE pvType;
-        chid            CHID;
+        pvStruct() :
+            pvSuffix(UTL::UNKNOWN_STRING),
+            objName(UTL::UNKNOWN_NAME),
+            COUNT(UTL::ZERO_UL),
+            MASK(UTL::ZERO_UL)
+            {}
         std::string     pvSuffix, objName;
+        RF_GUN_PROT_PV_TYPE pvType;
         unsigned long   COUNT, MASK;
+        // defaults for chtype and chid ???
         chtype          CHTYPE;
+        chid            CHID;
     };
 
     struct rfGunProtObject
     {
-        rfGunProtObject() : status(UNKNOWN),protType(NOT_KNOWN),name("unknown"),numIlocks(0){}
+        rfGunProtObject():
+            status(UNKNOWN),
+            protType(NOT_KNOWN),
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            numIlocks(UTL::ZERO_SIZET),
+            cmi(UTL::ZERO_UL)
+            {}
         std::string         name,pvRoot;
         RF_GUN_PROT_STATUS  status;
         unsigned long       cmi;
-        std::vector<int>    gunProtKeyBits;// the bit position of the key bits in the prot cmi
-        std::vector<bool>   gunProtKeyBitValues;// calues of the key bits
+        // the bit position of the key bits in the prot cmi
+        std::vector<int>    gunProtKeyBits;
+        // values of the key bits
+        std::vector<bool>   gunProtKeyBitValues;
         size_t              numIlocks;
         RF_GUN_PROT_TYPE        protType;
-        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
-        std::map< RF_GUN_PROT_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< RF_GUN_PROT_PV_TYPE, pvStruct > pvComStructs;
-        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> iLockStates;
+        std::map<RF_GUN_PROT_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<RF_GUN_PROT_PV_TYPE, pvStruct> pvComStructs;
+        std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
     };
 
     struct monitorStruct
     {
-        monitorStruct() : rfProtObject(nullptr),interface(nullptr){}
-        RF_GUN_PROT_PV_TYPE   monType;
-        rfGunProtObject*  rfProtObject;
-        chtype            CHTYPE;
-        //void *           val; /// most of the rfObject Values appear to be doubles, which is handy... recast in staticEntry function...
-        gunProtInterface *interface;
-        evid              EVID;
+        monitorStruct():
+            rfProtObject(nullptr),
+            interface(nullptr),
+            monType(UNKNOWN_PV)
+            {}
+        RF_GUN_PROT_PV_TYPE monType;
+        rfGunProtObject*    rfProtObject;
+        gunProtInterface*   interface;
+        // default values for epics types??
+        chtype              CHTYPE;
+        evid                EVID;
     };
 }
+//______________________________________________________________________________
 #endif//_RF_PROT_STRUCTS_H_

@@ -195,10 +195,10 @@ namespace BOOST_PYTHON_INCLUDE
         // expose controller base,
         /* NB pure_virtual methods MUST be overloaded in derived classes
            document strings for VCbase functions */
-        const char * isDebugMessageOn_doc = "Returns TRUE if debug message are enabled.";
-        const char * isMessageOn_doc      = "Returns TRUE if message are enabled.";
-        const char * isVerbose_doc        = "Returns TRUE if verbose mode is enabled.";
-        const char * isSilent_doc         = "Returns TRUE if silent mode is enabled.";
+        const char* isDebugMessageOn_doc="Returns TRUE if debug message are enabled.";
+        const char* isMessageOn_doc     ="Returns TRUE if message are enabled.";
+        const char* isVerbose_doc       ="Returns TRUE if verbose mode is enabled.";
+        const char* isSilent_doc        ="Returns TRUE if silent mode is enabled.";
         class_<controller, bases<baseObject>, noncopyable>("controller", no_init)
             .def("get_CA_PEND_IO_TIMEOUT",
                  pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
@@ -216,14 +216,15 @@ namespace BOOST_PYTHON_INCLUDE
         //
         // expose VCbase
         /* document strings for VCbase functions */
-        const char * setQuiet_doc = "Set Quiet Mode: no messages or debug messages"
-                                    "for all controllers in this module.";
-        const char * setVerb__doc = "Set Verbose Mode: all messages and debug messages"
-                                    "for all controllers in this module.";
-        const char * setMess__doc =  "Set Message Mode: display only messages, no debug messages,"
-                                    "for all controllers in this module.";
-        const char * setDebug_doc = "Set Debug  Mode: display only debug messages, no messages,"
-                                    "for all controllers in this module.";
+        const char* setQuiet_doc = "Set Quiet Mode: no messages or debug "
+                                    "messages for all controllers in this "
+                                    "module.";
+        const char* setVerb__doc = "Set Verbose Mode: all messages and debug "
+                                "messages for all controllers in this module.";
+        const char* setMess__doc = "Set Message Mode: display only messages, no "
+                                "debug messages,for all controllers in this module.";
+        const char* setDebug_doc = "Set Debug  Mode: display only debug messages, "
+                                "no messages, for all controllers in this module.";
 
         class_<VCbase, noncopyable>("VCbase", no_init)
             .def("setDebugMessage", &VCbase::setDebugMessage, setDebug_doc)

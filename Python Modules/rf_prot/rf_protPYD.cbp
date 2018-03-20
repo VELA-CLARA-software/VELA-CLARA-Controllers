@@ -69,6 +69,8 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
 		<Unit filename="../../Hardware/VCheader.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
@@ -92,7 +94,6 @@
 		<Unit filename="../../Utilities/gunProtConfigReader.cpp" />
 		<Unit filename="../../Utilities/gunProtConfigReader.h" />
 		<Unit filename="include/VCrfprot.h" />
-		<Unit filename="main.h" />
 		<Unit filename="src/VCrfprot.cpp" />
 		<Extensions>
 			<code_completion />

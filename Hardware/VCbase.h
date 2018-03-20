@@ -20,8 +20,8 @@
 //
 //
 //*/
-#ifndef VCBASE_H
-#define VCBASE_H
+#ifndef _VCBASE_H_
+#define _VCBASE_H_
 // stl includes
 #include <iostream>
 #include <string>
@@ -31,7 +31,6 @@ class VCbase
     public:
         VCbase();
         VCbase(const std::string& name);
-        virtual ~VCbase();
 
         void setQuiet();
         void setVerbose();
@@ -39,6 +38,7 @@ class VCbase
         void setDebugMessage();
 
     protected:
+        ~VCbase();
 
         const std::string my_name;
         const bool withEPICS, withoutEPICS, withoutVM, withVM;

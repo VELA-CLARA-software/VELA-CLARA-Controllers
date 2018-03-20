@@ -48,21 +48,26 @@ class interface : public baseObject
                   const bool  shouldStartEPICs);
         ~interface();
 
-        /* These pure virtual methods MUST be overwritten in the derived interface
-           (making this an abstract base class)
+        /* typedefs for long type names */
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
+                    map_ilck_state;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+                    map_ilck_string;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct>
+                    map_ilck_pvstruct;
+        /* These pure virtual methods MUST be overwritten in the derived
+           interface (making this an abstract base class)
            This also means the destructor need not be protected
         */
-        virtual std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
-            getILockStates(const std::string & name) = 0;
-        virtual std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-            getILockStatesStr(const std::string & name) = 0;
+        virtual map_ilck_string getILockStatesStr(const std::string& name) const = 0;
+        virtual map_ilck_state  getILockStates   (const std::string& name) const = 0;
 
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT(double val);
 
         /*  Reports back if the main init tasks:
-            reading config, finding chids, setting up monitors (add your own if needed)
-            has worked
+            reading config, finding chids, setting up monitors
+            (add your own if needed)
         */
         bool interfaceInitReport(bool shouldStartEPICs = true);
 
@@ -70,13 +75,15 @@ class interface : public baseObject
         // this should be called in the derived interface destructor
         void killILockMonitors();
 
-        /* The below was written back in the days when i assumed operational consistency:
-            some EPICS contsants
+        /* The below was written back in the days when i assumed operational
+           consistency:
+            some EPICS constants
             send ...1 to enable open / close shutter, screen etc,
                 therefore these are available to all interface classes
-           send ...0 to send open / close shutter
+            send ...0 to send open / close shutter
                 (???, i'm guessing here, but it seems to work)
-           i'm also not 100 % certain on the type, but unsigned short works so far
+           I'm also not 100 % certain on the type,
+           but unsigned short works so far
            Other constant numbers could go here if needed
         */
         const bool shouldStartEPICs;
@@ -84,19 +91,9 @@ class interface : public baseObject
         const double DBL_ERR_NUM;
         bool configFileRead, allChidsInitialised, allMonitorsStarted;
         double CA_PEND_IO_TIMEOUT;
-
-        void updateTime(const epicsTimeStamp & stamp, double & val, std::string & str);
-
-        /* We often check if entries exist in maps, use this function to do it safe */
-        template<class T>
-        bool entryExists(const std::map<std::string, T> & m, const std::string & name) const
-        {
-            bool ret = false;
-            auto it = m.find(name);
-                if(it != m.end())
-                    ret = true;
-            return ret;
-        }
+        void updateTime(const epicsTimeStamp& stamp,
+                        double& val,
+                        std::string& str);
 
 #ifndef __CINT__
         /*  This is the 'only' ca_client_context
@@ -107,51 +104,84 @@ class interface : public baseObject
         void attachTo_thisCAContext();
         void detachFrom_thisCAContext();
 
-        void addILockChannels(const int numIlocks, const std::string & pvRoot, const std::string & objName,std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> & iLockPVStructs);
-        void monitorIlocks(std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct>  & iLockPVStructs, std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> & iLockStates);
+        void addILockChannels(const int numIlocks,
+                              const std::string& pvRoot,
+                              const std::string& objName,
+                              map_ilck_pvstruct& iLockPVStructs);
+        void monitorIlocks(map_ilck_pvstruct& iLockPVStructs,
+                           map_ilck_state&    iLockStates);
         static void staticEntryILockMonitor(event_handler_args args);
 
+        static unsigned short getDBRunsignedShort(const event_handler_args& args);
+        static std::string    getDBRstring       (const event_handler_args& args);
+        static double         getDBRdouble       (const event_handler_args& args);
+        static long           getDBRlong         (const event_handler_args& args);
+        static int            getDBRint          (const event_handler_args& args);
+        static bool           getDBRbool         (const event_handler_args& args);
+        void updateBoolState(const event_handler_args& args, bool& parameter);
 
-        std::string getDBRstring(const event_handler_args& args) const;
-        double getDBRdouble(const event_handler_args& args) const;
-        long getDBRlong(const event_handler_args& args) const;
-        int getDBRint(const event_handler_args& args) const;
-        unsigned short getDBRunsignedShort(const event_handler_args& args) const;
-        bool getDBRbool(const event_handler_args& args) const;
+        void checkCHIDState(const chid& CHID, const std::string& name);
+        int sendToEpics2(const char* ca,const char* mess1,const char* mess2) const;
+        int sendToEpics (const char* ca,const char* mess1,const char* mess2) const;
+        int sendToEpics2(const std::string& ca,
+                         const std::string& mess1,
+                         const std::string& mess2) const;
+        int sendToEpics (const std::string& ca,
+                         const std::string& mess1,
+                         const std::string& mess2) const;
+#endif
 
+        bool iLocksAreGood(const map_ilck_state& iLockStates) const;
+        long long msChronoTime()const;
 
+        bool isTimeType(const long type) const;
 
-        template<class T, class U>
-        int caput(U TYPE, chid & CHID, T & com, const char * mess1, const char * mess2)
+        void printStatusResult(const int   status,
+                               const char* success,
+                               const char* timeout) const;
+
+        /*  This is a vector of pointers...
+            "no!!" you say "let's follow Bjarne Stroustrup's advice and:
+            "Store many objects in a container by value."?"
+
+http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
+
+            ok... maybe one day we re-factor, for now:
+                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
+        */
+        std::vector<HWC_ENUM::iLockMonitorStruct*> continuousILockMonitorStructs;
+
+        /* We often check if entries exist in maps, use this function to do it safe */
+        template<class T>
+        bool entryExists(const std::map<std::string,T>& m,const std::string& name)const
         {
-            ca_put(TYPE, CHID, &com); /// TYPE is DBR_ENUM, etc.
+            bool ret = false;
+            auto it = m.find(name);
+                if(it != m.end())
+                    ret = true;
+            return ret;
+        }
+        template<class T, class U>
+        bool entryExists(const std::map<U,T>& m,U& name)const
+        {
+            bool ret = false;
+            auto it = m.find(name);
+                if(it != m.end())
+                    ret = true;
+            return ret;
+        }
+        template<class T, class U>
+        int caput(U TYPE, chid& CHID,T& com,const char* mess1,const char* mess2)
+        {
+            ca_put(TYPE, CHID,&com);
             return sendToEpics("ca_put", mess1, mess2);
         }
 
-        void checkCHIDState(const chid & CHID, const std::string & name);
-        int sendToEpics(const char * ca, const char * mess1, const char * mess2);
-        int sendToEpics2(const char * ca, const char * mess1, const char * mess2);
-        int sendToEpics(const  std::string & ca,const  std::string & mess1,const  std::string & mess2);
-        int sendToEpics2(const  std::string & ca,const  std::string & mess1,const  std::string & mess2);
-#endif
-
-        bool iLocksAreGood(std::map<HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE> & iLockStates);
-
-        void updateBoolState(const event_handler_args& args, bool& parameter);
-
-        long long msChronoTime();
-
-        bool isTimeType(const long);
-
-        void printStatusResult(const int status, const char * success, const char * timeout);
-
-        /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
-        /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
-        /// though... maybe one day we re-factor, for now remember to delete in the destructor
-
-        std::vector<HWC_ENUM::iLockMonitorStruct *> continuousILockMonitorStructs;
     private:
 
 };
-
+//______________________________________________________________________________
 #endif // _INTERFACE_BASE_H

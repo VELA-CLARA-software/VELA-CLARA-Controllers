@@ -13,16 +13,17 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
-//  DJS 19-03-2018
-//
-//  Vrfprot.cpp
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    VCrfprot.cpp
+//  Description:
 //
 //
 //*/
 #include "VCrfprot.h"
 #include <iostream>
-
 VCrfprot::VCrfprot():
+VCbase(),
 virtual_Gun_Protection_Controller_Obj(nullptr),
 physical_Gun_Protection_Controller_Obj(nullptr),
 offline_Gun_Protection_Controller_Obj(nullptr),

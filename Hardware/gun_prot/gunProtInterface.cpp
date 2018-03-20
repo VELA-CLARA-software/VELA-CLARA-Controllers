@@ -42,7 +42,9 @@ gunProtInterface::gunProtInterface(const std::string& config_file,
                                    const bool  shouldStartEPICs ):
 configReader(config_file, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface(show_messages_ptr,show_debug_messages_ptr, shouldStartEPICs),
-currentMode(rfProtStructs::RF_GUN_PROT_TYPE::NOT_KNOWN)
+currentMode(rfProtStructs::RF_GUN_PROT_TYPE::NOT_KNOWN),
+EPICS_ACTIVATE_FAIL("Failed to send EPICS_ACTIVATE"),
+EPICS_SEND_FAIL("Failed to send EPICS_SEND")
 {
     initialise();
 }
@@ -241,7 +243,7 @@ void gunProtInterface::updateCMIBits(rfProtStructs::rfGunProtObject& obj)
     }
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::allkeybitsaregood(const std::string & name)
+bool gunProtInterface::allkeybitsaregood(const std::string & name) const
 {
     bool r = false;
     if(entryExists(allGunProts, name ) )
@@ -251,7 +253,7 @@ bool gunProtInterface::allkeybitsaregood(const std::string & name)
     return r;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj)
+bool gunProtInterface::allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj) const
 {
     bool r = false;
 
@@ -303,7 +305,7 @@ void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,cons
      }
 }
 //____________________________________________________________________________________________
-std::string gunProtInterface::getGeneralProtName()
+std::string gunProtInterface::getGeneralProtName() const
 {
     for( auto && it : allGunProts )
     {
@@ -314,7 +316,7 @@ std::string gunProtInterface::getGeneralProtName()
     return r;
 }
 //____________________________________________________________________________________________
-std::string gunProtInterface::getEnableProtName()
+std::string gunProtInterface::getEnableProtName() const
 {
     for( auto && it : allGunProts )
     {
@@ -325,7 +327,7 @@ std::string gunProtInterface::getEnableProtName()
     return r;
 }
 //____________________________________________________________________________________________
-std::string gunProtInterface::getCurrentModeProtName()
+std::string gunProtInterface::getCurrentModeProtName() const
 {
     message("getCurrentModeProtName ", ENUM_TO_STRING(currentMode) );
     for( auto && it : allGunProts )
@@ -337,7 +339,8 @@ std::string gunProtInterface::getCurrentModeProtName()
     return r;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isProtOfType(const std::string& name, const rfProtStructs::RF_GUN_PROT_TYPE type )
+bool gunProtInterface::isProtOfType(const std::string& name,
+                                    const rfProtStructs::RF_GUN_PROT_TYPE type ) const
 {
     bool r = false;
     if(entryExists(allGunProts,name))
@@ -347,27 +350,27 @@ bool gunProtInterface::isProtOfType(const std::string& name, const rfProtStructs
     return r;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isGeneralProt(const std::string& name)
+bool gunProtInterface::isGeneralProt(const std::string& name) const
 {
     return isProtOfType(name, rfProtStructs::RF_GUN_PROT_TYPE::GENERAL);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isNotGeneralProt(const std::string& name)
+bool gunProtInterface::isNotGeneralProt(const std::string& name) const
 {
     return !isGeneralProt(name);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isEnableProt(const std::string& name)
+bool gunProtInterface::isEnableProt(const std::string& name) const
 {
     return isProtOfType(name, rfProtStructs::RF_GUN_PROT_TYPE::ENABLE);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isNotEnableProt(const std::string& name)
+bool gunProtInterface::isNotEnableProt(const std::string& name) const
 {
     return !isEnableProt(name);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::enable()
+bool gunProtInterface::enable()const
 {
     std::string genname = getGeneralProtName();
     std::string ennname = getEnableProtName();
@@ -389,7 +392,7 @@ bool gunProtInterface::enable()
 
     if( carryon )
     {
-        debugMessage("Resetting General Protection");
+        debugMessage("Resetting RFGUN General Protection");
         reset(genname);
         std::this_thread::sleep_for(std::chrono::milliseconds( 300 )); // MAGIC_NUMBER
         debugMessage("Enabling General Protection");
@@ -400,7 +403,7 @@ bool gunProtInterface::enable()
             std::this_thread::sleep_for(std::chrono::milliseconds( 300 )); // MAGIC_NUMBER
             if( isGood(genname) )
             {
-                debugMessage("Enabling General Protection Success");
+                debugMessage("Enabling RFGUN General Protection Success");
                 debugMessage("Resetting Curent Mode Protection");
                 reset(modname);
                 std::this_thread::sleep_for(std::chrono::milliseconds( 300 )); // MAGIC_NUMBER
@@ -409,8 +412,8 @@ bool gunProtInterface::enable()
                 std::this_thread::sleep_for(std::chrono::milliseconds( 300 )); // MAGIC_NUMBER
                 if( isGood(modname) )
                 {
-                    debugMessage("Enabling ", ENUM_TO_STRING(currentMode)," Protection Success");
-                    debugMessage("Resetting Enable Protection");
+                    debugMessage("Enabling ", ENUM_TO_STRING(currentMode)," RFGUN Protection Success");
+                    debugMessage("Resetting RFGUN Enable Protection");
 
                     reset(ennname);
                     std::this_thread::sleep_for(std::chrono::milliseconds( 300 )); // MAGIC_NUMBER
@@ -421,19 +424,19 @@ bool gunProtInterface::enable()
                     if( isGood(ennname) )
                     {
                         carryon = true;
-                        debugMessage("Enabling Enable Protection Success");
+                        debugMessage("Enabling RFGUN Enable Protection Success");
                     }
                     else
                     {
                         carryon = false;
-                        debugMessage("Enabling Enable Protection Failure");
+                        debugMessage("Enabling RFGUN Enable Protection Failure");
                     }
 
                 }
                 else
                 {
                     carryon = false;
-                     debugMessage("Enabling ", ENUM_TO_STRING(currentMode)," Protection Failure");;
+                     debugMessage("Enabling ", ENUM_TO_STRING(currentMode),"RFGUN Protection Failure");;
                 }
             }
             else
@@ -446,218 +449,299 @@ bool gunProtInterface::enable()
     return carryon;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::reset()
+bool gunProtInterface::reset() const
 {
     std::vector<std::string> names;
-    for(auto && it  : allGunProts)
+    for(auto&& it : allGunProts)
     {
         names.push_back( it.first );
     }
     return reset(names);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::reset(const std::vector<std::string>& names )
-{
-    bool r = false;
-    std::vector<chid*> CHIDS;
-    std::vector<chtype*> CHTYPES;
-    for( auto && name : names )
-    {
-        if(entryExists(allGunProts, name))
-        {
-            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET].CHID );
-            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET].CHTYPE );
-        }
-    }
-    if(CHIDS.size()>0)
-    {
-        std::string m1 = "Failed to send EPICS_ACTIVATE";
-        std::string m2 = "Failed to send EPICS_SEND";
-        r = sendCommand(CHTYPES,CHIDS,m1,m2);
-    }
-    return r;
-}
+//bool gunProtInterface::reset(const std::vector<std::string>& names )
+//{
+//    bool r = false;
+//    std::vector<chid*> CHIDS;
+//    std::vector<chtype*> CHTYPES;
+//    for( auto && name : names )
+//    {
+//        if(entryExists(allGunProts, name))
+//        {
+//            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET].CHID );
+//            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET].CHTYPE );
+//        }
+//    }
+//    if(CHIDS.size()>0)
+//    {
+//        r = sendCommand(CHTYPES, CHIDS, EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
+//    }
+//    return r;
+//}
 //____________________________________________________________________________________________
-bool gunProtInterface::reset(const std::string& name)
+bool gunProtInterface::exists_in_allGunProts(const std::string& name,
+                                             rfProtStructs::RF_GUN_PROT_PV_TYPE pv) const
 {
-    bool r = false;
     if(entryExists(allGunProts, name ) )
-    {
-        std::string m1 = "Failed to send EPICS_ACTIVATE";
-        std::string m2 = "Failed to send EPICS_SEND";
-        r = sendCommand(
-            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET].CHTYPE,
-            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET].CHID,m1,m2);
-    }
-    return r;
+        if(entryExists(allGunProts.at(name).pvComStructs, pv) )
+           return true;
+    return false;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::enable(const std::string& name)
+bool gunProtInterface::reset(const std::string& name) const
 {
-    bool r = false;
-    if(entryExists(allGunProts, name ) )
-    {
-        std::string m1 = "Failed to send EPICS_ACTIVATE";
-        std::string m2 = "Failed to send EPICS_SEND";
-        r = sendCommand(
-            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHTYPE,
-            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHID,m1,m2);
-    }
-    return r;
+    const std::vector<std::string> v{name};
+    return reset(v);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::enable(const std::vector<std::string>& names)
+bool gunProtInterface::reset(const std::vector<std::string>& names) const
+{
+    return sendCommand(names,rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET);
+}
+//____________________________________________________________________________________________
+bool gunProtInterface::enable(const std::string& name) const
+{
+    const std::vector<std::string> v{name};
+    return enable(v);
+}
+//____________________________________________________________________________________________
+bool gunProtInterface::enable(const std::vector<std::string>& names) const
+{
+    return sendCommand(names,rfProtStructs::RF_GUN_PROT_PV_TYPE::ON);
+}
+//____________________________________________________________________________________________
+bool gunProtInterface::disable(const std::string& name)const
+{
+    const std::vector<std::string> v{name};
+    return disable(v);
+}
+//____________________________________________________________________________________________
+bool gunProtInterface::disable(const std::vector<std::string>& names)const
+{
+    return sendCommand(names,rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF);
+}
+//____________________________________________________________________________________________
+bool gunProtInterface::sendCommand(const std::vector<std::string>& names,
+                                   rfProtStructs::RF_GUN_PROT_PV_TYPE pv
+                                   ) const
 {
     bool r = false;
-    std::vector<chid*> CHIDS;
-    std::vector<chtype*> CHTYPES;
+    std::vector<const chid*> CHIDS;
+    std::vector<const chtype*> CHTYPES;
     for( auto && name : names )
     {
-        if(entryExists(allGunProts, name))
+        if(exists_in_allGunProts(name,pv))
         {
-            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHID);
-            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHTYPE);
+            CHIDS.push_back( &allGunProts.at(name).pvComStructs.at(pv).CHID );
+            CHTYPES.push_back( &allGunProts.at(name).pvComStructs.at(pv).CHTYPE );
         }
     }
     if(CHIDS.size()>0)
     {
-        std::string m1 = "Failed to send EPICS_ACTIVATE";
-        std::string m2 = "Failed to send EPICS_SEND";
-        r = sendCommand(CHTYPES,CHIDS,m1,m2);
+        r = sendCommand(CHTYPES, CHIDS, EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
     }
     return r;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::disable(const std::string& name)
-{
-    bool r = false;
-    if(entryExists(allGunProts, name))
-    {
-        std::string m1 = "Failed to send EPICS_ACTIVATE";
-        std::string m2 = "Failed to send EPICS_SEND";
-        r = sendCommand(
-            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF].CHTYPE,
-            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF].CHID,m1,m2);
-    }
-    return r;
-}
-//____________________________________________________________________________________________
-bool gunProtInterface::disable(const std::vector<std::string>& names)
-{
-    bool r = false;
-    std::vector<chid*> CHIDS;
-    std::vector<chtype*> CHTYPES;
-    for( auto && name : names )
-    {
-        if(entryExists(allGunProts, name))
-        {
-            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF].CHID);
-            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF].CHTYPE);
-        }
-    }
-    if(CHIDS.size()>0)
-    {
-        std::string m1 = "Failed to send EPICS_ACTIVATE";
-        std::string m2 = "Failed to send EPICS_SEND";
-        r = sendCommand(CHTYPES,CHIDS,m1,m2);
-    }
-    return r;
-}
-//____________________________________________________________________________________________
-bool gunProtInterface::sendCommand(const std::vector<chtype*>& CHTYPE, const std::vector<chid*>& CHID, const std::string& m1, const std::string& m2)
+bool gunProtInterface::sendCommand(const std::vector<const chtype*>& CHTYPE,
+                                   const std::vector<const chid*>& CHID,
+                                   const std::string& m1, const std::string& m2) const
 {
     bool ret = false;
-    for(size_t i = 0; i < CHTYPE.size(); ++i)
+    for(size_t i = UTL::ZERO_SIZET; i < CHTYPE.size(); ++i)
         ca_put(*CHTYPE[i], *CHID[i], &EPICS_ACTIVATE);
+
 //    message( "activate" );
+
     int status = sendToEpics( "ca_put", "", m1.c_str());
     if (status == ECA_NORMAL )
     {
-        for(size_t i = 0; i < CHTYPE.size(); ++i)// MAGIC_NUMBER
+        for(size_t i = UTL::ZERO_SIZET; i < CHTYPE.size(); ++i)// MAGIC_NUMBER
             ca_put(*CHTYPE[i], *CHID[i], &EPICS_SEND);
 
         int status = sendToEpics("ca_put", "", m2.c_str());
         if(status == ECA_NORMAL)
             ret = true;
-            //std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); // MAGIC_NUMBER
-//        else
-//            message( " status == ECA_NORMAL" );
     }
     else
         message("EPICS_ACTIVATE did not return ECA_NORMAL");
     return ret;
 }
+
+////____________________________________________________________________________________________
+//bool gunProtInterface::reset(const std::string& name) const
+//{
+//    bool r = false;
+//    rfProtStructs::RF_GUN_PROT_PV_TYPE reset = rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET;
+//    if(exists_in_allGunProts(name,reset))
+//    {
+//        r = sendCommand(
+//            allGunProts.at(name).pvComStructs.at(reset).CHTYPE,
+//            allGunProts.at(name).pvComStructs.at(reset).CHID,
+//            EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
+//    }
+//    return r;
+//}
+////____________________________________________________________________________________________
+//bool gunProtInterface::enable(const std::string& name)
+//{
+//    bool r = false;
+//    if(entryExists(allGunProts, name ) )
+//    {
+//        std::string m1 = "Failed to send EPICS_ACTIVATE";
+//        std::string m2 = "Failed to send EPICS_SEND";
+//        r = sendCommand(
+//            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHTYPE,
+//            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHID,
+//            EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
+//    }
+//    return r;
+//}
+////____________________________________________________________________________________________
+//bool gunProtInterface::enable(const std::vector<std::string>& names)
+//{
+//    bool r = false;
+//    std::vector<chid*> CHIDS;
+//    std::vector<chtype*> CHTYPES;
+//    for( auto && name : names )
+//    {
+//        if(entryExists(allGunProts, name))
+//        {
+//            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHID);
+//            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::ON].CHTYPE);
+//        }
+//    }
+//    if(CHIDS.size()>0)
+//    {
+//        std::string m1 = "Failed to send EPICS_ACTIVATE";
+//        std::string m2 = "Failed to send EPICS_SEND";
+//        r = sendCommand(CHTYPES, CHIDS, EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
+//    }
+//    return r;
+//}
+////____________________________________________________________________________________________
+//bool gunProtInterface::disable(const std::string& name)
+//{
+//    bool r = false;
+//    if(entryExists(allGunProts, name))
+//    {
+//        std::string m1 = "Failed to send EPICS_ACTIVATE";
+//        std::string m2 = "Failed to send EPICS_SEND";
+//
+//                    if(entryExists(allGunProts.at(name).pvComStructs, off))
+//            {
+//                CHIDS.push_back(&allGunProts.at(name).pvComStructs.at(off).CHID);
+//                CHTYPES.push_back(&allGunProts.at(name).pvComStructsat(off).CHTYPE);
+//            }
+//
+//        r = sendCommand(
+//            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF].CHTYPE,
+//            allGunProts[name].pvComStructs[rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF].CHID,
+//            EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
+//    }
+//    return r;
+//}
+////____________________________________________________________________________________________
+//bool gunProtInterface::disable(const std::vector<std::string>& names)
+//{
+//    bool r = false;
+//    std::vector<chid*> CHIDS;
+//    std::vector<chtype*> CHTYPES;
+//    rfProtStructs::RF_GUN_PROT_PV_TYPE off = rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF;
+//    for( auto && name : names )
+//    {
+//        if(entryExists(allGunProts, name))
+//        {
+//            if(entryExists(allGunProts.at(name).pvComStructs, off))
+//            {
+//                CHIDS.push_back(&allGunProts.at(name).pvComStructs.at(off).CHID);
+//                CHTYPES.push_back(&allGunProts.at(name).pvComStructsat(off).CHTYPE);
+//            }
+//        }
+//    }
+//    if(CHIDS.size() > UTL::ZERO_SIZET)
+//    {
+//        std::string m1 = "Failed to send EPICS_ACTIVATE";
+//        std::string m2 = "Failed to send EPICS_SEND";
+//        r = sendCommand(CHTYPES,CHIDS,m1,m2);
+//    }
+//    return r;
+//}
+////____________________________________________________________________________________________
+//
+////____________________________________________________________________________________________
+//bool gunProtInterface::sendCommand(const chtype& CHTYPE,  const chid& CHID,
+//                                   const std::string& m1, const std::string& m2) const
+//{
+//    bool ret = false;
+//    ca_put(CHTYPE, CHID, &EPICS_ACTIVATE);
+////    message( "activate" );
+//    int status = sendToEpics( "ca_put", "", m1.c_str());
+//    if (status == ECA_NORMAL )
+//    {
+//        ca_put(CHTYPE, CHID, &EPICS_SEND);
+//        int status = sendToEpics("ca_put", "", m2.c_str());
+//        if(status == ECA_NORMAL)
+//            ret = true;
+//            //std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); // MAGIC_NUMBER
+////        else
+////            message( " status == ECA_NORMAL" );
+//    }
+//    else
+//        message("EPICS_ACTIVATE did not return ECA_NORMAL");
+//    return ret;
+//}
 //____________________________________________________________________________________________
-bool gunProtInterface::sendCommand(const chtype& CHTYPE, const chid& CHID, const std::string& m1, const std::string& m2)
-{
-    bool ret = false;
-    ca_put(CHTYPE, CHID, &EPICS_ACTIVATE);
-//    message( "activate" );
-    int status = sendToEpics( "ca_put", "", m1.c_str());
-    if (status == ECA_NORMAL )
-    {
-        ca_put(CHTYPE, CHID, &EPICS_SEND);
-        int status = sendToEpics("ca_put", "", m2.c_str());
-        if(status == ECA_NORMAL)
-            ret = true;
-            //std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); // MAGIC_NUMBER
-//        else
-//            message( " status == ECA_NORMAL" );
-    }
-    else
-        message("EPICS_ACTIVATE did not return ECA_NORMAL");
-    return ret;
-}
-//____________________________________________________________________________________________
-bool gunProtInterface::isGood(const std::string & name )
+bool gunProtInterface::isGood(const std::string & name ) const
 {
     bool ans = false;
-    if(entryExists(allGunProts, name ) )
-        if(allGunProts[name].status  == rfProtStructs::RF_GUN_PROT_STATUS::GOOD )
+    if(entryExists(allGunProts, name))
+        if(allGunProts.at(name).status == rfProtStructs::RF_GUN_PROT_STATUS::GOOD)
             ans = true;
     return ans;
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isNotGood(const std::string & name )
+bool gunProtInterface::isNotGood(const std::string & name) const
 {
     return !isGood(name);
 }
 //____________________________________________________________________________________________
-bool gunProtInterface::isBad(const std::string& name)
+bool gunProtInterface::isBad(const std::string& name) const
 {
     bool ans = false;
-    if(entryExists(allGunProts, name ) )
-        if(allGunProts[name].status  == rfProtStructs::RF_GUN_PROT_STATUS::BAD)
+    if(entryExists(allGunProts, name))
+        if(allGunProts.at(name).status == rfProtStructs::RF_GUN_PROT_STATUS::BAD)
             ans = true;
     return ans;
 }
 //____________________________________________________________________________________________
-const rfProtStructs::rfGunProtObject& gunProtInterface::getRFProtObjConstRef(const std::string& name)
+const rfProtStructs::rfGunProtObject&
+    gunProtInterface::getRFProtObjConstRef(const std::string& name)  const
 {
     if(entryExists(allGunProts, name))
     {
-        return allGunProts[name];
+        return allGunProts.at(name);
     }
     rfProtStructs::rfGunProtObject r = rfProtStructs::rfGunProtObject();
     return r;
 }
 //____________________________________________________________________________________________
-gunProtInterface::IlockMap1 gunProtInterface::getILockStates(const std::string& name)
+interface::map_ilck_state gunProtInterface::getILockStates(const std::string& name) const
 {
-    IlockMap1 r;
+    interface::map_ilck_state r;
     if(entryExists(allGunProts, name))
     {
-        return allGunProts[name].iLockStates;
+        return allGunProts.at(name).iLockStates;
     }
     return r;
 }
 //____________________________________________________________________________________________
-gunProtInterface::IlockMap2 gunProtInterface::getILockStatesStr(const std::string& name)
+interface::map_ilck_string gunProtInterface::getILockStatesStr(const std::string& name) const
 {
-    IlockMap2 r;
+    interface::map_ilck_string r;
     if(entryExists(allGunProts, name))
     {
-        for( auto && it : allGunProts[name].iLockStates)
+        for( auto && it : allGunProts.at(name).iLockStates)
             r[it.first] = ENUM_TO_STRING(it.second);
     }
     return r;
