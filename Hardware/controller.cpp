@@ -131,6 +131,11 @@ bool controller::isDebugMessageOn() const
         return false;
 }
 //______________________________________________________________________________
+HWC_ENUM::CONTROLLER_TYPE controller::getControllerType() const
+{
+    return controllerType;
+}
+//______________________________________________________________________________
 #ifdef BUILD_DLL
 boost::python::dict controller::getILockStatesDefinition() const
 {

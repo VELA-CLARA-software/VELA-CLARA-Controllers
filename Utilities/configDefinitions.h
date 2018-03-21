@@ -96,6 +96,7 @@ namespace UTL
 
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
     const std::chrono::milliseconds PAUSE_300(300);
+    const std::chrono::milliseconds PAUSE_500(500);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
@@ -952,6 +953,9 @@ namespace UTL
     const boost::python::arg NAMES_ARG  = boost::python::arg("names");
     const boost::python::arg VALUE_ARG  = boost::python::arg("value");
     const boost::python::arg VALUES_ARG = boost::python::arg("values");
+    const boost::python::arg TIME_ARG = boost::python::arg("time");
+    const boost::python::arg AREA_ARG = boost::python::arg("mode");
+    const boost::python::arg MODE_ARG = boost::python::arg("area");
 #endif //BUILD_DLL
 
 

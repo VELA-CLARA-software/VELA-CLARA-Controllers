@@ -195,10 +195,11 @@ namespace BOOST_PYTHON_INCLUDE
         // expose controller base,
         /* NB pure_virtual methods MUST be overloaded in derived classes
            document strings for VCbase functions */
-        const char* isDebugMessageOn_doc="Returns TRUE if debug message are enabled.";
-        const char* isMessageOn_doc     ="Returns TRUE if message are enabled.";
-        const char* isVerbose_doc       ="Returns TRUE if verbose mode is enabled.";
-        const char* isSilent_doc        ="Returns TRUE if silent mode is enabled.";
+        const char* isDebugMessageOn_doc ="Returns TRUE if debug message are enabled.";
+        const char* isMessageOn_doc      ="Returns TRUE if message are enabled.";
+        const char* isVerbose_doc        ="Returns TRUE if verbose mode is enabled.";
+        const char* isSilent_doc         ="Returns TRUE if silent mode is enabled.";
+        const char* getControllerType_doc="Returns controller type.";
         class_<controller, bases<baseObject>, noncopyable>("controller", no_init)
             .def("get_CA_PEND_IO_TIMEOUT",
                  pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
@@ -208,6 +209,8 @@ namespace BOOST_PYTHON_INCLUDE
                  pure_virtual(&controller::getILockStatesStr     ))
             .def("getILockStates",
                  pure_virtual(&controller::getILockStates        ))
+            .def("getControllerType",
+                 &controller::getControllerType,getControllerType_doc)
             .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc)
             .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc          )
             .def("isVerbose",       &controller::isVerbose,isVerbose_doc              )

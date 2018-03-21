@@ -42,6 +42,7 @@ class gunProtController : public controller
                           const std::string &allGunProtsConf, const bool startVirtualMachine,
                           const bool shouldStartEPICs );
         ~gunProtController();
+
       // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT(double val);

@@ -37,27 +37,20 @@ class VCrfprot : public VCbase
         VCrfprot();
         ~VCrfprot();
 
-//        void setQuiet();
-//        void setVerbose();
-//        void setMessage();
-//        void setDebugMessage();
-
         gunProtController& virtual_Gun_Protection_Controller();
         gunProtController& physical_Gun_Protection_Controller();
         gunProtController& offline_Gun_Protection_Controller();
 
+        gunProtController& getProtectionController(const HWC_ENUM::MACHINE_MODE mode,
+                                                   const HWC_ENUM::MACHINE_AREA area);
     protected:
 
     private:
-        gunProtController * virtual_Gun_Protection_Controller_Obj ;
-        gunProtController * physical_Gun_Protection_Controller_Obj;
-        gunProtController * offline_Gun_Protection_Controller_Obj ;
+        gunProtController* virtual_Gun_Protection_Controller_Obj ;
+        gunProtController* physical_Gun_Protection_Controller_Obj;
+        gunProtController* offline_Gun_Protection_Controller_Obj ;
 
-//        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-//        bool  shouldShowDebugMessage, shouldShowMessage;
         const std::string allGunProtsConf;
-
-
 };
 /* yay, function pointers for boost.python overloads */
 using namespace boost::python;
@@ -74,7 +67,7 @@ bool(gunProtController::*disable_1)(const std::string&) =
                                                 &gunProtController::disable;
 bool(gunProtController::*disable_2)(const std::vector<std::string>&) =
                                                 &gunProtController::disable;
-
+//______________________________________________________________________________
 using namespace boost::python;
 using namespace rfProtStructs;
 using namespace UTL;
@@ -86,68 +79,125 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
     /* Main project objects and enums are defined in here */
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
         /* docstrings will be defined like this  */
-    const char * RF_GUN_PROT_STATUS_str = "RF_GUN_PROT_STATUS: a named integer giving the state of an RF protection object";
-
-
-    enum_<RF_GUN_PROT_STATUS>("RF_GUN_PROT_STATUS",RF_GUN_PROT_STATUS_str)
+    const char * RF_GUN_PROT_STATUS_doc = "RF_GUN_PROT_STATUS: a named integer"
+                                " giving the state of an RF protection object";
+    enum_<RF_GUN_PROT_STATUS>("RF_GUN_PROT_STATUS",RF_GUN_PROT_STATUS_doc)
         .value("UNKNOWN",RF_GUN_PROT_STATUS::UNKNOWN)
         .value("ERROR",  RF_GUN_PROT_STATUS::ERROR)
         .value("GOOD",   RF_GUN_PROT_STATUS::GOOD)
         .value("BAD",    RF_GUN_PROT_STATUS::BAD)
         ;
+    const char* gunProtKeyBitValues_doc = "key bit values";
+    const char* gunProtKeyBits_doc      = "which bits in cmi refer to physcial keys";
+    const char* protType_doc            = "RF gun protection type";
+    const char* pvRoot_doc              = "object PV Root";
+    const char* status_doc              = "object status";
+    const char* name_doc                = "object name";
+    const char* cmi_doc                 = "cmi value";
 
-    boost::python::class_<rfGunProtObject,boost::noncopyable>
-        ("rfGunProtObject","rfGunProtObject member variables (read access only)", boost::python::no_init)
-        .def_readonly("name",               &rfGunProtObject::name,"object name")
-        .def_readonly("pvRoot",             &rfGunProtObject::pvRoot,"object pvRoot")
-        .def_readonly("status",             &rfGunProtObject::status,"object status")
-        .def_readonly("cmi",                &rfGunProtObject::cmi,"object cmi")
-        .def_readonly("gunProtKeyBits",     &rfGunProtObject::gunProtKeyBits,"which bits in cmi refer to physcial keys")
-        .def_readonly("gunProtKeyBitValues",&rfGunProtObject::gunProtKeyBitValues,"key bit values")
-        .def_readonly("protType",           &rfGunProtObject::protType,"rf gun protection type ")
+    using namespace boost;
+    class_<rfGunProtObject,noncopyable>
+        ("rfGunProtObject","rfGunProtObject member variables (read access only)", no_init)
+        .def_readonly("gunProtKeyBitValues",
+                      &rfGunProtObject::gunProtKeyBitValues,gunProtKeyBitValues_doc)
+        .def_readonly("gunProtKeyBits",
+                      &rfGunProtObject::gunProtKeyBits,gunProtKeyBits_doc)
+        .def_readonly("protType",
+                      &rfGunProtObject::protType,protType_doc)
+        .def_readonly("pvRoot",
+                      &rfGunProtObject::pvRoot, pvRoot_doc)
+        .def_readonly("status",
+                      &rfGunProtObject::status, status_doc)
+        .def_readonly("name",
+                      &rfGunProtObject::name,name_doc)
+        .def_readonly("cmi",
+                      &rfGunProtObject::cmi, cmi_doc)
         ;
 
- boost::python::class_<gunProtController, boost::python::bases<controller>, boost::noncopyable>
-        ("gunProtController","DOCSTRING", boost::python::no_init)
-        .def("getILockStates",         &gunProtController::getILockStates,"Return the state of interlocks as an integer. There are currently NO epics ilocks for the gun protections (in a sense the protections ARE the interlocks).")
-        .def("getILockStatesStr",      &gunProtController::getILockStatesStr,"Return state of interlocks as a stringr. There are currently NO epics ilocks for the gun protections (in a sense the protections ARE the interlocks)")
-        .def("get_CA_PEND_IO_TIMEOUT", &gunProtController::get_CA_PEND_IO_TIMEOUT,"Return the current waiting time [seconds] when sending commands to EPICS.")
-        .def("set_CA_PEND_IO_TIMEOUT",  &gunProtController::set_CA_PEND_IO_TIMEOUT, (boost::python::arg("time"), "Set a new waiting time [seconds] when sending commands to EPICS"))
-        .def("getRFProtObjConstRef",&gunProtController::getRFProtObjConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return RF protection object 'name'")
-        .def("isGood",      &gunProtController::isGood,    (boost::python::arg("name"),"returns True if protection status is good"))
-        .def("isNotGood",   &gunProtController::isNotGood, (boost::python::arg("name"),"returns True if protection status is not good"))
-        .def("isBad",       &gunProtController::isBad,     (boost::python::arg("name"),"returns True if protection status is bad"))
-        .def("reset",       reset_1,   (NAME_ARG,"reset protection by name"))
-        .def("reset",       reset_2,   (boost::python::arg("names"),"reset multiple protections by names"))
-        .def("enable",      enable_1,  (boost::python::arg("name"),"enable protection by name"))
-        .def("enable",      enable_2,  (boost::python::arg("names"),"enable multiple protections by names"))
-        .def("enable",      enable_3,  "enable general, current mode and enable, protections, in that order")
-        .def("disable",     disable_1, (boost::python::arg("name"),"disable protection by name"))
-        .def("disable",     disable_2, (boost::python::arg("names"),"disable multiple protections by names"))
-        .def("getGeneralProtName",     &gunProtController::getGeneralProtName, "returns the object name for the general protection")
-        .def("getEnableProtName",     &gunProtController::getEnableProtName, "returns the object name for the enable protection")
-        .def("getCurrentModeProtName",     &gunProtController::getCurrentModeProtName, "returns the object name for the current mode protection. Current mode depnds on which physical keys are active.")
-        //.def_readonly("currentMode",               &gunProtController::currentMode,"Varibale defining the current mode of the gun system. Current mode depnds on which physical keys are active and could be, VELA line, LRRG, CLARA line HRRG, Test mode, etc.")
+
+    const char* gunProtController_doc = "Monitors and controls the Gun protections";
+    const char* getILockStates_doc = "Return the state of interlocks as an integer."
+        "There are currently NO epics ilocks for the gun protections (in a sense the"
+        " protections ARE the interlocks).";
+    const char* getILockStatesStr_doc = "Return state of interlocks as a stringr. "
+        "There are currently NO epics ilocks for the gun protections (in a sense the "
+        "protections ARE the interlocks)";
+    const char* get_CA_PEND_IO_TIMEOUT_doc = "Return the current waiting time (seconds)"
+        " when sending commands to EPICS.";
+    const char* set_CA_PEND_IO_TIMEOUT_doc = "Set the waiting time to 'time'(seconds) "
+        "when sending commands to EPICS";
+    const char* getRFProtObjConstRef_doc = "Return RF protection object 'name'";
+    const char* getCurrentModeProtName_doc = "returns the object name for the 'current"
+        " mode' protection. Current mode depends on which physical keys are active.";
+    const char* getGeneralProtName_doc= "returns the object name for the 'general protection'";
+    const char* getEnableProtName_doc= "returns the object name for the enable protection";
+    const char* isNotGood_doc= "returns True if protection status is not good";
+    const char* isGood_doc   = "returns True if protection status is good";
+    const char* isBad_doc= "returns True if protection status is bad";
+    const char* reset1_doc= "reset protection 'name'";
+    const char* reset2_doc= "reset multiple protections given by 'names'";
+    const char* enable1_doc= "enable protection 'name'";
+    const char* enable2_doc= "enable multiple protections given by 'names'";
+    const char* enable3_doc= "enable general, current mode and enable, protections, in that order";
+    const char* disable1_doc= "disable protection 'name'";
+    const char* disable2_doc= "disable multiple protections given by 'names'";
+
+    class_<gunProtController, bases<controller>, noncopyable>
+        ("gunProtController",gunProtController_doc, no_init)
+        .def("getILockStates",
+             &gunProtController::getILockStates,getILockStates_doc)
+        .def("getILockStatesStr",
+             &gunProtController::getILockStatesStr,getILockStatesStr_doc)
+        .def("get_CA_PEND_IO_TIMEOUT",
+             &gunProtController::get_CA_PEND_IO_TIMEOUT,get_CA_PEND_IO_TIMEOUT_doc)
+        .def("set_CA_PEND_IO_TIMEOUT",
+             &gunProtController::set_CA_PEND_IO_TIMEOUT,
+             (TIME_ARG,set_CA_PEND_IO_TIMEOUT_doc))
+        .def("getRFProtObjConstRef",
+             &gunProtController::getRFProtObjConstRef,
+             return_value_policy<reference_existing_object>(),
+             (NAME_ARG,getRFProtObjConstRef_doc))
+        .def("isGood",
+             &gunProtController::isGood,    (NAME_ARG,isGood_doc))
+        .def("isNotGood",
+             &gunProtController::isNotGood, (NAME_ARG,isNotGood_doc))
+        .def("isBad",
+             &gunProtController::isBad,(NAME_ARG,isBad_doc))
+        .def("reset",       reset_1,   (NAME_ARG,reset1_doc))
+        .def("reset",       reset_2,   (NAMES_ARG,reset2_doc))
+        .def("enable",      enable_1,  (NAME_ARG,enable1_doc))
+        .def("enable",      enable_2,  (NAMES_ARG,enable2_doc))
+        .def("enable",      enable_3,   enable3_doc)
+        .def("disable",     disable_1, (NAME_ARG,disable1_doc))
+        .def("disable",     disable_2, (NAMES_ARG,disable2_doc))
+        .def("getGeneralProtName",
+             &gunProtController::getGeneralProtName,getGeneralProtName_doc)
+        .def("getEnableProtName",
+             &gunProtController::getEnableProtName,getEnableProtName_doc)
+        .def("getCurrentModeProtName",
+             &gunProtController::getCurrentModeProtName,getCurrentModeProtName_doc)
         ;
 
-        using namespace boost;
-    /// The main class that creates all the controller obejcts
+    const char* GPC_doc = "Returns a reference to the protection object given "
+                          "by 'mode' and 'area'.";
+    const char* vGPC_doc = "Returns a reference to the virtual gun protection object.";
+    const char* pGPC_doc = "Returns a reference to the physical gun protection object.";
+    const char* oGPC_doc = "Returns a reference to the offline gun protection object.";
+
     class_<VCrfprot, bases<VCbase>, noncopyable>("init")
-        .def("virtual_Gun_Protection_Controller",  &VCrfprot::virtual_Gun_Protection_Controller,
-             return_value_policy<reference_existing_object>(),
-             "returns a reference to the virtual gun protection object.")
-        .def("physical_Gun_Protection_Controller",  &VCrfprot::physical_Gun_Protection_Controller,
-             return_value_policy<reference_existing_object>(),
-            "returns a reference to the physical gun protection object.")
-        .def("offline_Gun_Protection_Controller",  &VCrfprot::offline_Gun_Protection_Controller,
-             return_value_policy<reference_existing_object>(),
-             "returns a reference to the offline gun protection object.")
-//        .def("setQuiet",         &VCrfprot::setQuiet,
-//             "set Quiet Mode (no messages, no debug messages) for all PI laser objects." )
-//        .def("setVerbose",       &VCrfprot::setVerbose,"set Verbose Mode (all messages, all debug messages) for all gun protection objects.")
-//        .def("setMessage",       &VCrfprot::setMessage, "set Message Mode (all  messages, no debug messages) for all gun protection objects.")
-//        .def("setDebugMessage",  &VCrfprot::setDebugMessage, "set Debug Mode (no messages, all debug messages) for all gun protection objects." )
+        .def("getProtectionController",
+             &VCrfprot::getProtectionController,
+             return_value_policy<reference_existing_object>(),(MODE_ARG,AREA_ARG,GPC_doc))
+        .def("virtual_Gun_Protection_Controller",
+             &VCrfprot::virtual_Gun_Protection_Controller,
+             return_value_policy<reference_existing_object>(),vGPC_doc)
+        .def("physical_Gun_Protection_Controller",
+             &VCrfprot::physical_Gun_Protection_Controller,
+             return_value_policy<reference_existing_object>(),pGPC_doc)
+        .def("offline_Gun_Protection_Controller",
+             &VCrfprot::offline_Gun_Protection_Controller,
+             return_value_policy<reference_existing_object>(),oGPC_doc)
         ;
 }
-
-#endif // VCrfprot_H_
+//______________________________________________________________________________
+#endif // VC_RFPROTECTION_H_

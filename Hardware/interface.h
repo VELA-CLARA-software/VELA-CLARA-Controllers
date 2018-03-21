@@ -113,6 +113,7 @@ class interface : public baseObject
         static void staticEntryILockMonitor(event_handler_args args);
 
         static unsigned short getDBRunsignedShort(const event_handler_args& args);
+        static unsigned long  getDBRunsignedLong (const event_handler_args& args);
         static std::string    getDBRstring       (const event_handler_args& args);
         static double         getDBRdouble       (const event_handler_args& args);
         static long           getDBRlong         (const event_handler_args& args);

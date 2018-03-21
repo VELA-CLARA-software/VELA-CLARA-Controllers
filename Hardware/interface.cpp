@@ -472,6 +472,11 @@ unsigned short interface::getDBRunsignedShort(const event_handler_args& args)
     return *(unsigned short*)args.dbr;
 }
 //______________________________________________________________________________
+unsigned long interface::getDBRunsignedLong(const event_handler_args& args)
+{
+    return *(unsigned long*)args.dbr;
+}
+//______________________________________________________________________________
 bool interface::getDBRbool(const event_handler_args& args)
 {
     return *(bool*)args.dbr;

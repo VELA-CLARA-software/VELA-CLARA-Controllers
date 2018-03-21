@@ -57,6 +57,8 @@ class controller : public baseObject
         bool isDebugMessageOn() const;
         const HWC_ENUM::CONTROLLER_TYPE controllerType;
 
+        HWC_ENUM::CONTROLLER_TYPE getControllerType() const;
+
         /* The below seemed like a good idea when we first implemented it
            This pure virtual method MUST be overwritten in the derived controller
            (making this an abstract base class)

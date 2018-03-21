@@ -83,6 +83,8 @@ namespace HWC_ENUM
                                                       (CLARA_S02)
                                                       (CLARA_L01)
                                                       (UNKNOWN_AREA)
+                                                      (RF_GUN)
+                                                      (RF_L01)
                                                       (USER)
                                         )
     /* Controller type, defined in controller derived class */
