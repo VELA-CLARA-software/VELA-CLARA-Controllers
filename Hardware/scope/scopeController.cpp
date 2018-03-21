@@ -172,7 +172,7 @@ size_t scopeController::getBufferSize( const std::string & name )
     return localInterface.getBufferSize( name );
 }
 //______________________________________________________________________________
-const VELA_ENUM::DIAG_TYPE scopeController::getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
+const scopeStructs::DIAG_TYPE scopeController::getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     return localInterface.getDiagType( scopeName, pvType );
 }

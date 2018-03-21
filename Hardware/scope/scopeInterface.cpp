@@ -801,7 +801,7 @@ size_t scopeInterface::getBufferSize( const std::string & scopeName )
     }
 }
 //______________________________________________________________________________
-const VELA_ENUM::DIAG_TYPE scopeInterface::getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
+const scopeStructs::DIAG_TYPE scopeInterface::getDiagType( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType )
 {
     if( entryExists( scopeObj.traceObjects, scopeName ) && isATracePV( pvType ) )
     {
@@ -814,7 +814,7 @@ const VELA_ENUM::DIAG_TYPE scopeInterface::getDiagType( const std::string & scop
     else
     {
         message("ERROR!!!!! Scope not defined in config file!!!!");
-        return VELA_ENUM::DIAG_TYPE::UNKNOWN_DIAG_TYPE;
+        return scopeStructs::DIAG_TYPE::UNKNOWN_DIAG_TYPE;
     }
 }
 //______________________________________________________________________________
@@ -1205,7 +1205,7 @@ double scopeInterface::getWCMQ()
     {
         for( auto && it2 : it.second.pvMonStructs )
         {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
+            if( it2.second.diagType == scopeStructs::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
             {
                 minVal = it.second.numData.at( it2.second.pvType ).back();
                 wcmQ   = minVal * -250;
@@ -1217,7 +1217,7 @@ double scopeInterface::getWCMQ()
 //    {
 //        for( auto && it2 : it.second.pvMonStructs )
 //        {
-//            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
+//            if( it2.second.diagType == scopeStructs::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
 //            {
 //                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
 //                wcmQ   = minVal * -250;
@@ -1239,7 +1239,7 @@ double scopeInterface::getICT1Q( const int part1, const int part2 )
     {
         for( auto && it2 : it.second.pvMonStructs )
         {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::ICT1 )
+            if( it2.second.diagType == scopeStructs::DIAG_TYPE::ICT1 )
             {
                 traceArea = getAreaUnderTraces( it.first, it2.second.pvType ).back();
                 noise = getAvgNoise( it.second.name, it2.second.pvType, part1, part2 ).back();
@@ -1262,7 +1262,7 @@ double scopeInterface::getICT2Q( const int part1, const int part2 )
     {
         for( auto && it2 : it.second.pvMonStructs )
         {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::ICT2 )
+            if( it2.second.diagType == scopeStructs::DIAG_TYPE::ICT2 )
             {
                 traceArea = getAreaUnderTraces( it.second.name, it2.second.pvType ).back();
                 noise = getAvgNoise( it.second.name, it2.second.pvType, part1, part2 ).back();
@@ -1285,7 +1285,7 @@ double scopeInterface::getFCUPQ()
     {
         for( auto && it2 : it.second.pvMonStructs )
         {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
+            if( it2.second.diagType == scopeStructs::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
             {
                 minVal = getScopeNums( it.first, it2.second.pvType ).back();
                 fcupQ   = minVal * -250;
@@ -1296,7 +1296,7 @@ double scopeInterface::getFCUPQ()
 //    {
 //        for( auto && it2 : it.second.pvMonStructs )
 //        {
-//            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
+//            if( it2.second.diagType == scopeStructs::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
 //            {
 //                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
 //                fcupQ   = minVal * -250;
@@ -1320,7 +1320,7 @@ double scopeInterface::getEDFCUPQ()
     {
         for( auto && it2 : it.second.pvMonStructs )
         {
-            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
+            if( it2.second.diagType == scopeStructs::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::NUM )
             {
                 minVal = getScopeNums( it.first, it2.second.pvType ).back();
                 edfcupQ   = minVal * -100;
@@ -1331,7 +1331,7 @@ double scopeInterface::getEDFCUPQ()
 //    {
 //        for( auto && it2 : it.second.pvMonStructs )
 //        {
-//            if( it2.second.diagType == VELA_ENUM::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
+//            if( it2.second.diagType == scopeStructs::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
 //            {
 //                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
 //                edfcupQ   = minVal * -100;

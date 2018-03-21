@@ -355,9 +355,9 @@ bool scopeConfigReader::readConfig( scopeConfigReader & obj, const std::string f
     return success;
 }
 //______________________________________________________________________________
-VELA_ENUM::DIAG_TYPE scopeConfigReader::getDiagType( const std::string & val )
+scopeStructs::DIAG_TYPE scopeConfigReader::getDiagType( const std::string & val )
 {
-    VELA_ENUM::DIAG_TYPE r;
+    scopeStructs::DIAG_TYPE r;
 
     if( val == UTL::WCM )
         r = VELA_ENUM::WCM;

@@ -28,6 +28,7 @@ namespace scopeStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_PV_TYPE, (P1) (P2) (P3) (P4) (TR1) (TR2) (TR3) (TR4) (UNKNOWN) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_TYPE, (NUM) (ARRAY) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_NAME, (CLARASCOPE01) (VELASCOPE02) (UNKNOWN_SCOPE_NAME) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DIAG_TYPE, (WCM) (ICT1) (ED_FCUP) (ICT2) (FCUP) (UNKNOWN_DIAG_TYPE) )
 
     /// monType could be used to switch in the staticCallbackFunction
     /// For the scope this is basically redundant, there is only one monitor: "Sta"
@@ -36,7 +37,7 @@ namespace scopeStructs
     struct pvStruct
     {
         SCOPE_PV_TYPE             pvType;
-        VELA_ENUM::DIAG_TYPE      diagType;
+        scopeStructs::DIAG_TYPE      diagType;
         SCOPE_TYPE                scopeType;
         chid                      CHID;
         std::string               pvSuffix, objName;
@@ -57,7 +58,7 @@ namespace scopeStructs
                            numShots( UTL::ZERO_INT ),
                            buffer( UTL::BUFFER_TEN ) {}
         std::string                name, pvRoot;
-        VELA_ENUM::DIAG_TYPE       diagType;
+        scopeStructs::DIAG_TYPE       diagType;
         SCOPE_NAME      scopeName;
         bool                       isAContinuousMonitorStruct, isATemporaryMonitorStruct;
         bool                       isMonitoring;
@@ -89,7 +90,7 @@ namespace scopeStructs
                            numShots( -2 ),
                            buffer( UTL::BUFFER_TEN ) {}
         std::string                          name, pvRoot;
-        VELA_ENUM::DIAG_TYPE                 diagType;
+        scopeStructs::DIAG_TYPE                 diagType;
         SCOPE_NAME                scopeName;
         bool                                 isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
         bool                                 isMonitoringTr1, isMonitoringTr2, isMonitoringTr3, isMonitoringTr4;
@@ -125,7 +126,7 @@ namespace scopeStructs
     struct monitorStruct /// We use pointers when we wnat acces to the object (data) or... just  make a copy
     {
         SCOPE_PV_TYPE        monType;
-        VELA_ENUM::DIAG_TYPE diagType;
+        scopeStructs::DIAG_TYPE diagType;
         scopeObject*         scopeObject;
         std::string          objName;
         chtype               CHTYPE;

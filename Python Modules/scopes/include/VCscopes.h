@@ -244,12 +244,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .value("UNKNOWN_SCOPE_NAME", scopeStructs::SCOPE_NAME::UNKNOWN_SCOPE_NAME )
             ;
 
-    enum_<VELA_ENUM::DIAG_TYPE>("DIAG_TYPE")
-            .value("WCM",     VELA_ENUM::DIAG_TYPE::WCM       )
-            .value("ICT1",    VELA_ENUM::DIAG_TYPE::ICT2      )
-            .value("ICT2",    VELA_ENUM::DIAG_TYPE::ICT2      )
-            .value("FCUP",    VELA_ENUM::DIAG_TYPE::FCUP      )
-            .value("ED_FCUP", VELA_ENUM::DIAG_TYPE::ED_FCUP   )
+    enum_<scopeStructs::DIAG_TYPE>("DIAG_TYPE")
+            .value("WCM",     scopeStructs::DIAG_TYPE::WCM       )
+            .value("ICT1",    scopeStructs::DIAG_TYPE::ICT2      )
+            .value("ICT2",    scopeStructs::DIAG_TYPE::ICT2      )
+            .value("FCUP",    scopeStructs::DIAG_TYPE::FCUP      )
+            .value("ED_FCUP", scopeStructs::DIAG_TYPE::ED_FCUP   )
             ;
     char const* scopeNumObjectStructString = "This struct contains data for the four channels on the scope - e.g. p1 contains the P1 value from the scope.\n"
                                        "This will only contain real-time data if scope number data is being submitted to EPICS - you will need to check this on the scope.\n"
