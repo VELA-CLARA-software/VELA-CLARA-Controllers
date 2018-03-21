@@ -227,23 +227,27 @@ void gunProtInterface::staticEntryMonitor(const event_handler_args args)
 void gunProtInterface::updateCMIBits(rfProtStructs::rfGunProtObject& obj)
 {
     //message(obj.name, " new cmi value =   ", obj.cmi);
-
-    size_t counter = 0;
-    for( auto bit = 0; bit < 8; ++bit)
+    /*
+        the bits in the cmi number code the state of the protection
+    */
+    size_t counter = UTL::ZERO_SIZET;
+    for( auto bit = 0; bit < 8; ++bit)//MAGIC_NUMBER
     {
         //message(obj.name, " bit ", bit, " value = ",  (obj.cmi &( 1 << bit)) >> bit);
-
-        if( std::find(obj.gunProtKeyBits.begin(), obj.gunProtKeyBits.end(), bit) != obj.gunProtKeyBits.end())
+        if( std::find(obj.gunProtKeyBits.begin(),
+                      obj.gunProtKeyBits.end(), bit) != obj.gunProtKeyBits.end())
         {
             obj.gunProtKeyBitValues[counter] = (obj.cmi &( 1 << bit)) >> bit;
-            message( "obj.gunProtKeyBitValues part ", counter, " = ", obj.gunProtKeyBitValues[counter]);
+            message("obj.gunProtKeyBitValues part ",
+                    counter, " = ",
+                    obj.gunProtKeyBitValues[counter]);
             ++counter;
         }
     }
 
     if(allkeybitsaregood(obj))
     {
-        message("Allkeybits for ", ENUM_TO_STRING(obj.protType), "ARE GOOD");
+        message("Allkeybits for ", ENUM_TO_STRING(obj.protType), " ARE GOOD");
         switch( obj.protType)
         {
             case rfProtStructs::RF_GUN_PROT_TYPE::CLARA_HRRG:
@@ -281,7 +285,6 @@ bool gunProtInterface::allkeybitsaregood(const std::string & name) const
 bool gunProtInterface::allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj) const
 {
     bool r = false;
-
     if(isNotGeneralProt(obj.name) && isNotEnableProt(obj.name))
     {
         r = true;
@@ -305,29 +308,29 @@ void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,cons
             }
             break;
         case DBR_ENUM:
-            updateProtStatus(obj,  *(unsigned short *)args.dbr);
+            updateProtStatus(obj,  getDBRunsignedShort(args));
             break;
     }
 }
 //____________________________________________________________________________________________
-void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,const unsigned short  value)
+void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,
+                                        const unsigned short value)
 {   //std::cout << "updateProtStatus(rfProtStructs::rfGunProtObject& obj,const long value) called" << std::endl;
     message(obj.name , " value =  ", value);
-
-     switch(value)
-     {
-        case 1:
-            obj.status = rfProtStructs::RF_GUN_PROT_STATUS::GOOD;
-            //message(obj.name , " status = GOOD ");
-            break;
-        case 0:
-            obj.status = rfProtStructs::RF_GUN_PROT_STATUS::BAD;
-            //message(obj.name , " status = BAD ");
-            break;
+    switch(value)
+    {
+       case UTL::ZERO_US:
+           obj.status = rfProtStructs::RF_GUN_PROT_STATUS::BAD;
+           //message(obj.name , " status = BAD ");
+           break;
+       case UTL::ONE_US:
+           obj.status = rfProtStructs::RF_GUN_PROT_STATUS::GOOD;
+           //message(obj.name , " status = GOOD ");
+           break;
         default:
-            obj.status = rfProtStructs::RF_GUN_PROT_STATUS::ERROR;
-            //message(obj.name , " status = ERROR ");
-     }
+           obj.status = rfProtStructs::RF_GUN_PROT_STATUS::ERROR;
+           //message(obj.name , " status = ERROR ");
+    }
 }
 //____________________________________________________________________________________________
 std::string gunProtInterface::getGeneralProtName() const
@@ -398,7 +401,7 @@ bool gunProtInterface::isNotEnableProt(const std::string& name) const
 bool gunProtInterface::enable()const
 {
     /*  enable everything, by going through each protection in sequence
-        these are th egeneric names (inorder) */
+        these are the generic names (inorder) */
     std::string genname = getGeneralProtName();
     std::string ennname = getEnableProtName();
     std::string modname = getCurrentModeProtName();
@@ -552,7 +555,7 @@ bool gunProtInterface::sendCommand(const std::vector<std::string>& names,
             CHTYPES.push_back( &allGunProts.at(name).pvComStructs.at(pv).CHTYPE);
         }
     }
-    if(CHIDS.size()>0)
+    if(CHIDS.size() > UTL::ZERO_SIZET)
     {
         r = sendCommand(CHTYPES, CHIDS, EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
     }
@@ -572,7 +575,7 @@ bool gunProtInterface::sendCommand(const std::vector<const chtype*>& CHTYPE,
     int status = sendToEpics( "ca_put", "", m1.c_str());
     if (status == ECA_NORMAL)
     {
-        for(size_t i = UTL::ZERO_SIZET; i < CHTYPE.size(); ++i)// MAGIC_NUMBER
+        for(size_t i = UTL::ZERO_SIZET; i < CHTYPE.size(); ++i)
             ca_put(*CHTYPE[i], *CHID[i], &EPICS_SEND);
 
         int status = sendToEpics("ca_put", "", m2.c_str());
@@ -634,7 +637,7 @@ interface::map_ilck_string gunProtInterface::getILockStatesStr(const std::string
     if(entryExists(allGunProts, name))
     {
         for( auto && it : allGunProts.at(name).iLockStates)
-            r[it.first] = ENUM_TO_STRING(it.second);
+            r.at(it.first) = ENUM_TO_STRING(it.second);
     }
     return r;
 }

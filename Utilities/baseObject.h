@@ -173,7 +173,9 @@ class baseObject
         }
 
         template<typename T = std::string>
-        void getSetDifference(const std::vector<T>& a, const std::vector<T>& b, std::vector<T>& c)
+        void getSetDifference(const std::vector<T>& a,
+                              const std::vector<T>& b,
+                              std::vector<T>& c)
         {
             c.clear();
             std::vector<T> aCopy = a;
@@ -184,7 +186,11 @@ class baseObject
                 c.resize(aCopy.size());
             else
                 c.resize(bCopy.size());
-            auto it = std::set_difference(aCopy.begin(), aCopy.end(), bCopy.begin(), bCopy.end(), c.begin());
+            auto it = std::set_difference(aCopy.begin(),
+                                          aCopy.end(),
+                                          bCopy.begin(),
+                                          bCopy.end(),
+                                          c.begin());
             c.resize(it - c.begin());
         }
 
@@ -203,18 +209,27 @@ class baseObject
 
 #ifdef BUILD_DLL
         template<typename T>
-        std::vector<T> to_std_vector(const boost::python::object& iterable)
+        std::vector<T> to_std_vector(const boost::python::object& iterable)const
         {
             return std::vector<T>(boost::python::stl_input_iterator<T>(iterable),
                                   boost::python::stl_input_iterator<T>());
         }
 
         template<class T,  class U>
-        boost::python::dict enumMapToPythonDict(std::map<T, U> m)
+        boost::python::dict enumMapToPythonDict(std::map<T, U> m)const
         {
             boost::python::dict dictionary;
-            for(auto& it : m)
+            for(auto&& it : m)
                 dictionary[ (int)it.first] = (int)it.second;
+            return dictionary;
+        }
+
+        template<class T,  class U>
+        boost::python::dict toPythonDict(std::map<T, U> m)const
+        {
+            boost::python::dict dictionary;
+            for(auto&& it : m)
+                dictionary[ it.first] = it.second;
             return dictionary;
         }
 
@@ -228,7 +243,7 @@ class baseObject
         }
 
         template <class T>
-        boost::python::list toPythonList(std::vector<T> vector)
+        boost::python::list toPythonList(std::vector<T> vector) const
         {
             typename std::vector<T>::iterator iter;
             boost::python::list list;
@@ -239,7 +254,7 @@ class baseObject
             return list;
         }
         template <class T>
-        boost::python::list toPythonList(std::deque<T> deque)
+        boost::python::list toPythonList(std::deque<T> deque) const
         {
             typename std::deque<T>::iterator iter;
             boost::python::list list;
@@ -250,7 +265,7 @@ class baseObject
             return list;
         }
         template <class T>
-        boost::python::list toPythonList(boost::circular_buffer<T> circular_buffer)
+        boost::python::list toPythonList(boost::circular_buffer<T> circular_buffer) const
         {
             typename boost::circular_buffer<T>::iterator iter;
             boost::python::list list;
@@ -262,6 +277,5 @@ class baseObject
         }
 #endif
     private:
-
 };
 #endif //BASE_OBJECT_H
