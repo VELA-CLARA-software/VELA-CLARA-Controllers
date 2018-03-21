@@ -32,14 +32,14 @@ using namespace rfProtStructs;
 gunProtController::gunProtController(
                                         const bool show_messages,
                                         const bool show_debug_messages,
-                                        const std::string & allGunProtsConf,
+                                        const std::string& allGunProtsConf,
                                         const bool startVirtualMachine,
                                         const bool shouldStartEPICs):
 controller(show_messages,show_debug_messages,CONTROLLER_TYPE::RF_PROT),
 localInterface(allGunProtsConf,
                startVirtualMachine,
-               &SHOW_MESSAGES,
-               &SHOW_DEBUG_MESSAGES,
+              &SHOW_MESSAGES,
+              &SHOW_DEBUG_MESSAGES,
                shouldStartEPICs),
 shouldStartEPICs(shouldStartEPICs)
 {
@@ -56,7 +56,7 @@ shouldStartEPICs(shouldStartEPICs)
 //______________________________________________________________________________
 gunProtController::~gunProtController(){}
 //______________________________________________________________________________
-void gunProtController::initialise()
+void gunProtController::initialise()const
 {
     if(localInterface.interfaceInitReport(shouldStartEPICs))
     {
@@ -64,27 +64,98 @@ void gunProtController::initialise()
     }
 }
 //______________________________________________________________________________
-bool gunProtController::isGood(const std::string & name)
+bool gunProtController::isGood(const std::string& name)const
 {
     return localInterface.isGood(name);
 }
 //______________________________________________________________________________
-bool gunProtController::isNotGood(const std::string & name)
+bool gunProtController::isNotGood(const std::string& name)const
 {
     return localInterface.isNotGood(name);
 }
 //______________________________________________________________________________
-const rfGunProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)
+const rfGunProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)const
 {
     return localInterface.getRFProtObjConstRef(name);
 }
 //______________________________________________________________________________
-bool gunProtController::isBad(const std::string & name)
+bool gunProtController::isBad(const std::string& name)const
 {
     return localInterface.isBad(name);
 }
 //____________________________________________________________________________________________
-double gunProtController::get_CA_PEND_IO_TIMEOUT()
+bool gunProtController::reset(const std::string& name)const
+{
+    return localInterface.reset(name);
+}
+//____________________________________________________________________________________________
+bool gunProtController::reset(const std::vector<std::string>& names)const
+{
+    return localInterface.reset(names);
+}
+//____________________________________________________________________________________________
+bool gunProtController::enable(const std::string& name)const
+{
+    return localInterface.enable(name);
+}
+//____________________________________________________________________________________________
+bool gunProtController::enable(const std::vector<std::string>& names)const
+{
+    return localInterface.enable(names);
+}
+//____________________________________________________________________________________________
+bool gunProtController::enable()const
+{
+    return localInterface.enable();
+}
+//____________________________________________________________________________________________
+bool gunProtController::disable(const std::string& name)const
+{
+    return localInterface.disable(name);
+}
+//____________________________________________________________________________________________
+bool gunProtController::disable(const std::vector<std::string>& names)const
+{
+    return localInterface.disable(names);
+}
+//____________________________________________________________________________________________
+std::string gunProtController::getGeneralProtName()const
+{
+     return localInterface.getGeneralProtName();
+}
+//____________________________________________________________________________________________
+std::string gunProtController::getEnableProtName() const
+{
+    return localInterface.getEnableProtName();
+}
+//____________________________________________________________________________________________
+std::string gunProtController::getCurrentModeProtName() const
+{
+    return localInterface.getCurrentModeProtName();
+}
+//____________________________________________________________________________________________
+std::vector<std::string> gunProtController::getProtNames()const
+{
+    return localInterface.getProtNames();
+}
+
+        /*  These are pure virtual methods in the controller base ,
+            so need to have some implmentation in derived classes
+        */
+//______________________________________________________________________________________________
+std::map<ILOCK_NUMBER,std::string>
+    gunProtController::getILockStatesStr(const std::string& name)const
+{
+    return localInterface.getILockStatesStr(name);
+}
+//______________________________________________________________________________________________
+std::map<ILOCK_NUMBER,ILOCK_STATE>
+    gunProtController::getILockStates(const std::string& name)const
+{
+    return localInterface.getILockStates(name);
+}
+//____________________________________________________________________________________________
+double gunProtController::get_CA_PEND_IO_TIMEOUT()const
 {
   return localInterface.get_CA_PEND_IO_TIMEOUT();
 }
@@ -93,65 +164,25 @@ void gunProtController::set_CA_PEND_IO_TIMEOUT(double val)
 {
     localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
-//______________________________________________________________________________________________
-std::map<ILOCK_NUMBER,ILOCK_STATE> gunProtController::getILockStates(const std::string& name)
+//______________________________________________________________________________
+#ifdef BUILD_DLL
+// overloads to expose containers as python objetcs
+//______________________________________________________________________________
+boost::python::list gunProtController::getProtNames_Py() const
 {
-    return localInterface.getILockStates(name);
+    return toPythonList(getProtNames());
 }
-//______________________________________________________________________________________________
-std::map<ILOCK_NUMBER,std::string> gunProtController::getILockStatesStr(const std::string& name)
+//______________________________________________________________________________
+boost::python::dict gunProtController::getILockStatesStr_Py(const std::string& name) const
 {
-    return localInterface.getILockStatesStr(name);
+    return toPythonDict(getILockStatesStr(name));
 }
-//____________________________________________________________________________________________
-bool gunProtController::reset(const std::string& name)
+//______________________________________________________________________________
+boost::python::dict gunProtController::getILockStates_Py(const std::string& name) const
 {
-    return localInterface.reset(name);
+    return toPythonDict(getILockStates(name));
 }
-//____________________________________________________________________________________________
-bool gunProtController::reset(const std::vector<std::string>& names)
-{
-    return localInterface.reset(names);
-}
-//____________________________________________________________________________________________
-bool gunProtController::enable(const std::string& name)
-{
-    return localInterface.enable(name);
-}
-//____________________________________________________________________________________________
-bool gunProtController::enable(const std::vector<std::string>& names)
-{
-    return localInterface.enable(names);
-}
-//____________________________________________________________________________________________
-bool gunProtController::enable()
-{
-    return localInterface.enable();
-}
-//____________________________________________________________________________________________
-bool gunProtController::disable(const std::string& name)
-{
-    return localInterface.disable(name);
-}
-//____________________________________________________________________________________________
-bool gunProtController::disable(const std::vector<std::string>& names)
-{
-    return localInterface.disable(names);
-}
-//____________________________________________________________________________________________
-std::string gunProtController::getGeneralProtName()
-{
-     return localInterface.getGeneralProtName();
-}
-//____________________________________________________________________________________________
-std::string gunProtController::getEnableProtName()
-{
-    return localInterface.getEnableProtName();
-}
-//____________________________________________________________________________________________
-std::string gunProtController::getCurrentModeProtName()
-{
-    return localInterface.getCurrentModeProtName();
-}
-//____________________________________________________________________________________________
+//______________________________________________________________________________
+#endif //BUILD_DLL
+
 

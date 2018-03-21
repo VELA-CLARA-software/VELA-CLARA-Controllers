@@ -83,7 +83,7 @@ void interface::killILockMonitors()
     }
 }
 //______________________________________________________________________________
-double interface::get_CA_PEND_IO_TIMEOUT()
+double interface::get_CA_PEND_IO_TIMEOUT()const
 {
     return CA_PEND_IO_TIMEOUT;
 }
@@ -328,7 +328,7 @@ void interface::checkCHIDState(const chid& CHID, const std::string& name)
    }
 }
 //______________________________________________________________________________
-bool interface::interfaceInitReport(bool shouldStartEPICs)
+bool interface::interfaceInitReport(bool shouldStartEPICs) const
 {
     bool ret = true;
 

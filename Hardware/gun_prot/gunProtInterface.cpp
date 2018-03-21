@@ -397,55 +397,64 @@ bool gunProtInterface::isNotEnableProt(const std::string& name) const
 //____________________________________________________________________________________________
 bool gunProtInterface::enable()const
 {
+    /*  enable everything, by going through each protection in sequence
+        these are th egeneric names (inorder) */
     std::string genname = getGeneralProtName();
     std::string ennname = getEnableProtName();
     std::string modname = getCurrentModeProtName();
 
     bool carryon = true;
 
-    if( genname == UTL::UNKNOWN_STRING)
-        carryon = false;
-    if( ennname == UTL::UNKNOWN_STRING)
-        carryon = false;
-    if( modname == UTL::UNKNOWN_STRING)
-        carryon = false;
-
-    debugMessage("genname = ",genname);
-    debugMessage("ennname = ",ennname);
-    debugMessage("modname = ",modname);
-
-
-    if( carryon)
+    if(genname == UTL::UNKNOWN_STRING)
     {
-        debugMessage("Resetting RFGUN General Protection");
+        message("!!ERROR!! in gunProtInterface::enable() genname = ",
+                     genname," can't complete enbale");
+        carryon = false;
+    }
+    if(ennname == UTL::UNKNOWN_STRING)
+    {
+        message("!!ERROR!! in gunProtInterface::enable() ennname = ",
+                ennname," can't complete enbale");
+        carryon = false;
+    }
+    if(modname == UTL::UNKNOWN_STRING)
+    {
+        message("!!ERROR!! in gunProtInterface::enable() modname = ",
+                modname," can't complete enbale");
+        carryon = false;
+    }
+    /*  if names appear to be good, cycle through each, resetting and enabling,
+        with pauses after each commnd */
+    if(carryon)
+    {
+        debugMessage("Resetting RF_GUN General Protection");
         reset(genname);
-        std::this_thread::sleep_for(std::chrono::milliseconds( 300)); // MAGIC_NUMBER
+        UTL::PAUSE_300;
         debugMessage("Enabling General Protection");
         carryon = enable(genname);
         if( carryon )
         {
-
-            std::this_thread::sleep_for(std::chrono::milliseconds( 300)); // MAGIC_NUMBER
+            UTL::PAUSE_300;
             if( isGood(genname))
             {
                 debugMessage("Enabling RFGUN General Protection Success");
                 debugMessage("Resetting Curent Mode Protection");
                 reset(modname);
-                std::this_thread::sleep_for(std::chrono::milliseconds( 300)); // MAGIC_NUMBER
+                UTL::PAUSE_300;
                 debugMessage("Enabling ", ENUM_TO_STRING(currentMode)," Protection");
                 carryon = enable(modname);
-                std::this_thread::sleep_for(std::chrono::milliseconds( 300)); // MAGIC_NUMBER
+                UTL::PAUSE_300;
                 if( isGood(modname))
                 {
-                    debugMessage("Enabling ", ENUM_TO_STRING(currentMode)," RFGUN Protection Success");
+                    debugMessage("Enabling ",
+                                 ENUM_TO_STRING(currentMode),
+                                 " RFGUN Protection Success");
                     debugMessage("Resetting RFGUN Enable Protection");
-
                     reset(ennname);
-                    std::this_thread::sleep_for(std::chrono::milliseconds( 300)); // MAGIC_NUMBER
+                    UTL::PAUSE_300;
                     debugMessage("Enabling Enable Protection");
                     carryon = enable(ennname);
-                    std::this_thread::sleep_for(std::chrono::milliseconds( 300)); // MAGIC_NUMBER
-
+                    UTL::PAUSE_300;
                     if( isGood(ennname))
                     {
                         carryon = true;
@@ -461,7 +470,9 @@ bool gunProtInterface::enable()const
                 else
                 {
                     carryon = false;
-                     debugMessage("Enabling ", ENUM_TO_STRING(currentMode),"RFGUN Protection Failure");;
+                     debugMessage("Enabling ",
+                                  ENUM_TO_STRING(currentMode),
+                                  "RFGUN Protection Failure");;
                 }
             }
             else
@@ -627,11 +638,17 @@ interface::map_ilck_string gunProtInterface::getILockStatesStr(const std::string
     }
     return r;
 }
-
-
-
-
-
+//____________________________________________________________________________________________
+std::vector<std::string> gunProtInterface::getProtNames() const
+{
+    std::vector<std::string> r;
+    for(auto&& it: allGunProts)
+    {
+        r.push_back(it.second.name);
+    }
+    return r;
+}
+//____________________________________________________________________________________________
 
 //bool gunProtInterface::reset(const std::vector<std::string>& names)
 //{

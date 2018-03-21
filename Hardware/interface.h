@@ -62,14 +62,14 @@ class interface : public baseObject
         virtual map_ilck_string getILockStatesStr(const std::string& name) const = 0;
         virtual map_ilck_state  getILockStates   (const std::string& name) const = 0;
 
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
 
         /*  Reports back if the main init tasks:
             reading config, finding chids, setting up monitors
             (add your own if needed)
         */
-        bool interfaceInitReport(bool shouldStartEPICs = true);
+        bool interfaceInitReport(bool shouldStartEPICs = true)const;
 
     protected:
         // this should be called in the derived interface destructor

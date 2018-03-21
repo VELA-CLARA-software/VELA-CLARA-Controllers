@@ -38,40 +38,53 @@ class gunProtController : public controller
     public:
         // just have 1 constructor, but we have a higher level class that create these objects
         gunProtController();
-        gunProtController(const bool show_messages, const bool show_debug_messagese,
-                          const std::string &allGunProtsConf, const bool startVirtualMachine,
+        gunProtController(const bool show_messages,
+                          const bool show_debug_messagese,
+                          const std::string &allGunProtsConf,
+                          const bool startVirtualMachine,
                           const bool shouldStartEPICs );
         ~gunProtController();
 
-      // These are pure virtual methods, so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
+        bool isGood(const std::string & name)const;
+        bool isNotGood(const std::string & name)const;
+        bool isBad(const std::string & name)const;
+
+        bool reset(const std::string& name)const;
+        bool reset(const std::vector<std::string>& names)const;
+
+        bool enable(const std::string& name)const;
+        bool enable(const std::vector<std::string>& names)const;
+        bool enable()const;
+
+        bool disable(const std::string& name)const;
+        bool disable(const std::vector<std::string>& names)const;
+
+        std::string getGeneralProtName()const;
+        std::string getEnableProtName()const;
+        std::string getCurrentModeProtName()const;
+        std::vector<std::string> getProtNames()const;
+
+        const rfProtStructs::rfGunProtObject&
+            getRFProtObjConstRef(const std::string& name)const;
+
+        /*  These are pure virtual methods,
+            so need to have some implmentation in derived classes
+        */
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
-        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
-        std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
+        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE>
+            getILockStates(const std::string& name)const;
+        std::map<HWC_ENUM::ILOCK_NUMBER,std::string>
+            getILockStatesStr(const std::string& name)const;
 
-        bool isGood(const std::string & name);
-        bool isNotGood(const std::string & name);
-        bool isBad(const std::string & name);
-
-        bool reset(const std::string& name);
-        bool reset(const std::vector<std::string>& names);
-
-        bool enable(const std::string& name);
-        bool enable(const std::vector<std::string>& names);
-        bool enable();
-
-        bool disable(const std::string& name);
-        bool disable(const std::vector<std::string>& names);
-
-        std::string getGeneralProtName();
-        std::string getEnableProtName();
-        std::string getCurrentModeProtName();
-
-        const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name);
-
+    #ifdef BUILD_DLL
+        boost::python::list getProtNames_Py() const;
+        boost::python::dict getILockStatesStr_Py(const std::string& name) const;
+        boost::python::dict getILockStates_Py(const std::string& name) const;
+    #endif
     protected:
     private:
-        void initialise();
+        void initialise()const;
         const bool shouldStartEPICs;
         gunProtInterface localInterface;
 };

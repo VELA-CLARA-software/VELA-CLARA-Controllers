@@ -54,18 +54,18 @@ class VCrfprot : public VCbase
 };
 /* yay, function pointers for boost.python overloads */
 using namespace boost::python;
-bool(gunProtController::*reset_1)(const std::string&) =
+bool(gunProtController::*reset_1)(const std::string&) const=
                                                 &gunProtController::reset;
-bool(gunProtController::*reset_2)(const std::vector<std::string>&) =
+bool(gunProtController::*reset_2)(const std::vector<std::string>&) const=
                                                 &gunProtController::reset;
-bool(gunProtController::*enable_1 )(const std::string&) =
+bool(gunProtController::*enable_1 )(const std::string&) const=
                                                 &gunProtController::enable;
-bool(gunProtController::*enable_2 )(const std::vector<std::string>&) =
+bool(gunProtController::*enable_2 )(const std::vector<std::string>&) const=
                                                 &gunProtController::enable;
-bool(gunProtController::*enable_3 )() = &gunProtController::enable;
-bool(gunProtController::*disable_1)(const std::string&) =
+bool(gunProtController::*enable_3 )() const= &gunProtController::enable;
+bool(gunProtController::*disable_1)(const std::string&) const=
                                                 &gunProtController::disable;
-bool(gunProtController::*disable_2)(const std::vector<std::string>&) =
+bool(gunProtController::*disable_2)(const std::vector<std::string>&) const=
                                                 &gunProtController::disable;
 //______________________________________________________________________________
 using namespace boost::python;
@@ -132,22 +132,25 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
     const char* getGeneralProtName_doc= "returns the object name for the 'general protection'";
     const char* getEnableProtName_doc= "returns the object name for the enable protection";
     const char* isNotGood_doc= "returns True if protection status is not good";
+    const char* getProtNames_doc= "Return names of protection objects in controller";
     const char* isGood_doc   = "returns True if protection status is good";
     const char* isBad_doc= "returns True if protection status is bad";
-    const char* reset1_doc= "reset protection 'name'";
-    const char* reset2_doc= "reset multiple protections given by 'names'";
-    const char* enable1_doc= "enable protection 'name'";
-    const char* enable2_doc= "enable multiple protections given by 'names'";
-    const char* enable3_doc= "enable general, current mode and enable, protections, in that order";
+
+    const char* reset1_doc  = "reset protection 'name'";
+    const char* reset2_doc  = "reset multiple protections given by 'names'";
+    const char* enable1_doc = "enable protection 'name'";
+    const char* enable2_doc = "enable multiple protections given by 'names'";
+    const char* enable3_doc = "enable general, current mode and enable, "
+                              "protections, in that order";
     const char* disable1_doc= "disable protection 'name'";
     const char* disable2_doc= "disable multiple protections given by 'names'";
 
     class_<gunProtController, bases<controller>, noncopyable>
         ("gunProtController",gunProtController_doc, no_init)
         .def("getILockStates",
-             &gunProtController::getILockStates,getILockStates_doc)
+             &gunProtController::getILockStates_Py,getILockStates_doc)
         .def("getILockStatesStr",
-             &gunProtController::getILockStatesStr,getILockStatesStr_doc)
+             &gunProtController::getILockStatesStr_Py,getILockStatesStr_doc)
         .def("get_CA_PEND_IO_TIMEOUT",
              &gunProtController::get_CA_PEND_IO_TIMEOUT,get_CA_PEND_IO_TIMEOUT_doc)
         .def("set_CA_PEND_IO_TIMEOUT",
@@ -176,6 +179,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
              &gunProtController::getEnableProtName,getEnableProtName_doc)
         .def("getCurrentModeProtName",
              &gunProtController::getCurrentModeProtName,getCurrentModeProtName_doc)
+        .def("getProtNames",
+             &gunProtController::getProtNames_Py,getProtNames_doc)
         ;
 
     const char* GPC_doc = "Returns a reference to the protection object given "

@@ -76,6 +76,8 @@ class gunProtInterface : public interface
         std::string gunProtInterface::getEnableProtName() const;
         std::string gunProtInterface::getCurrentModeProtName() const;
 
+        std::vector<std::string> getProtNames() const;
+
         const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name)const;
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
