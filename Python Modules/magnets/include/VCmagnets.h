@@ -3,6 +3,7 @@
 //
 #include "magnetController.h"
 #include "VCheader.h"
+#include "VCbase.h"
 //
 //
 #include <boost/python/detail/wrap_python.hpp>
@@ -16,7 +17,7 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
 
-class VCmagnets
+class VCmagnets : public VCbase
 {
         /// These VC classes could all be done more elegantly, with less copypasta
         /// however we went for explicit functions as a quick fix
@@ -41,7 +42,7 @@ class VCmagnets
         magnetController& offline_VELA_BA2_Magnet_Controller();
         magnetController& physical_VELA_BA2_Magnet_Controller();
 
-        magnetController& getMagnetController(VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area);
+        magnetController& getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area);
 
         magnetController& virtual_USER_Magnet_Controller(const std::string & config_path);
         magnetController& offline_USER_Magnet_Controller(const std::string & config_path);
@@ -55,33 +56,33 @@ class VCmagnets
 //        magnetController& virtual_CLARA_PH1_Magnet_Controller();
 //        magnetController& offline_CLARA_PH1_Magnet_Controller();
 //        magnetController& physical_CLARA_PH1_Magnet_Controller();
-
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+//
+//        void setQuiet();
+//        void setVerbose();
+//        void setMessage();
+//        void setDebugMessage();
 
     protected:
 
     private:
 
-        magnetController * virtual_CLARA_PH1_Magnet_Controller_Obj;
-        magnetController * offline_CLARA_PH1_Magnet_Controller_Obj;
-        magnetController * physical_CLARA_PH1_Magnet_Controller_Obj;
+        magnetController* virtual_CLARA_PH1_Magnet_Controller_Obj;
+        magnetController* offline_CLARA_PH1_Magnet_Controller_Obj;
+        magnetController* physical_CLARA_PH1_Magnet_Controller_Obj;
 
-        magnetController * virtual_VELA_INJ_Magnet_Controller_Obj;
-        magnetController * offline_VELA_INJ_Magnet_Controller_Obj;
-        magnetController * physical_VELA_INJ_Magnet_Controller_Obj;
+        magnetController* virtual_VELA_INJ_Magnet_Controller_Obj;
+        magnetController* offline_VELA_INJ_Magnet_Controller_Obj;
+        magnetController* physical_VELA_INJ_Magnet_Controller_Obj;
 
-        magnetController * virtual_USER_Magnet_Controller_Obj;
-        magnetController * offline_USER_Magnet_Controller_Obj;
-        magnetController * physical_USER_Magnet_Controller_Obj;
+        magnetController* virtual_USER_Magnet_Controller_Obj;
+        magnetController* offline_USER_Magnet_Controller_Obj;
+        magnetController* physical_USER_Magnet_Controller_Obj;
 
         magnetController& getController(magnetController * cont,const std::string& conf,
                                        const std::string & name, const bool shouldVM, const bool shouldEPICS,
-                                       const VELA_ENUM::MACHINE_AREA myMachineArea);
+                                       const HWC_ENUM::MACHINE_AREA myMachineArea);
 
-//        magnetController& getMagnetController(VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area);
+//        magnetController& getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area);
 
         magnetController * virtual_VELA_BA1_Magnet_Controller_Obj;
         magnetController * offline_VELA_BA1_Magnet_Controller_Obj;
@@ -95,10 +96,10 @@ class VCmagnets
 //        magnetController * offline_CLARA_PH1_Magnet_Controller_Obj;
 //        magnetController * physical_CLARA_PH1_Magnet_Controller_Obj;
 
-        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
+//        const bool withEPICS, withoutEPICS, withoutVM, withVM;
+//        bool  shouldShowDebugMessage, shouldShowMessage;
 
-        const VELA_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA,USER;
+        const HWC_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA,USER;
 };
 
 typedef double doub;
@@ -206,7 +207,9 @@ bool  (magnetController::*setSIZero_2)(cves &) = &magnetController::setSIZero;
 using namespace boost::python;
 BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
 {
-    /// Things that you want to use in python must be exposed:
+    /*  some doc-string options, to try an dreuce th eamount of
+        blurb python adds to documentation
+    */
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
     /// Include ALL the enums you want to expose to Python

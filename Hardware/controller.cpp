@@ -30,19 +30,13 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-controller::controller(bool show_messages, bool show_debug_messages):
-controller(show_messages,
-           show_debug_messages,
-           HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
-{}
-//___________________________________________________________
-controller::controller(bool show_messages,
-                       bool show_debug_messages,
+controller::controller(bool* show_messages,
+                       bool* show_debug_messages,
                        const HWC_ENUM::CONTROLLER_TYPE type):
 SHOW_DEBUG_MESSAGES(show_debug_messages),
 SHOW_MESSAGES(show_messages),
 controllerType(type),
-baseObject(&SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES)
+baseObject(show_messages, show_debug_messages)
 {
     if(show_messages)
     {
@@ -67,44 +61,44 @@ controller::~controller(){}
 void controller::debugMessagesOn()
 {
     std::cout << "debugMessages On" <<std::endl;
-    SHOW_DEBUG_MESSAGES = true;
+    *SHOW_DEBUG_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::debugMessagesOff()
 {
     std::cout << "debugMessages Off" <<std::endl;
-    SHOW_DEBUG_MESSAGES = false;
+    *SHOW_DEBUG_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::messagesOn()
 {
     std::cout << "messages On" <<std::endl;
-    SHOW_MESSAGES = true;
+    *SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::messagesOff()
 {
     std::cout << "messages Off" <<std::endl;
-    SHOW_MESSAGES = false;
+    *SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::silence()
 {
     std::cout << "silence" <<std::endl;
-    SHOW_DEBUG_MESSAGES = false;
-    SHOW_MESSAGES = false;
+    *SHOW_DEBUG_MESSAGES = false;
+    *SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::verbose()
 {
     std::cout <<"verbose" <<std::endl;
-    SHOW_DEBUG_MESSAGES = true;
-    SHOW_MESSAGES = true;
+    *SHOW_DEBUG_MESSAGES = true;
+    *SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 bool controller::isSilent() const
 {
-    if(!SHOW_DEBUG_MESSAGES && !SHOW_MESSAGES)
+    if(!*SHOW_DEBUG_MESSAGES && !*SHOW_MESSAGES)
         return true;
     else
         return false;
@@ -117,7 +111,7 @@ bool controller::isVerbose() const
 //______________________________________________________________________________
 bool controller::isMessageOn() const
 {
-    if(SHOW_MESSAGES)
+    if(*SHOW_MESSAGES)
         return true;
     else
         return false;
@@ -125,7 +119,7 @@ bool controller::isMessageOn() const
 //______________________________________________________________________________
 bool controller::isDebugMessageOn() const
 {
-    if(SHOW_DEBUG_MESSAGES)
+    if(*SHOW_DEBUG_MESSAGES)
         return true;
     else
         return false;

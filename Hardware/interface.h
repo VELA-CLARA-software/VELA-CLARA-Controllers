@@ -41,10 +41,10 @@
 class interface : public baseObject
 {
     public:
-        interface(const bool* show_messages_ptr,
-                  const bool* show_debug_messages_ptr);
-        interface(const bool* show_messages_ptr,
-                  const bool* show_debug_messages_ptr,
+        interface(const bool* show_messages,
+                  const bool* show_debug_messages);
+        interface(const bool* show_messages,
+                  const bool* show_debug_messages,
                   const bool  shouldStartEPICs);
         ~interface();
 
@@ -144,9 +144,7 @@ class interface : public baseObject
         /*  This is a vector of pointers...
             "no!!" you say "let's follow Bjarne Stroustrup's advice and:
             "Store many objects in a container by value."?"
-
 http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
-
             ok... maybe one day we re-factor, for now:
                         REMEMBER TO DELETE THIS IN THE DESTRCTOR
                         REMEMBER TO DELETE THIS IN THE DESTRCTOR

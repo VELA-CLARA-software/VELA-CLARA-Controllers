@@ -91,7 +91,8 @@ namespace rfProtStructs
             {}
         std::string         name,pvRoot;
         RF_GUN_PROT_STATUS  status;
-        unsigned long       cmi;
+        long       cmi;
+        //unsigned long       cmi;
         // the bit position of the key bits in the prot cmi
         std::vector<int>    gunProtKeyBits;
         // values of the key bits

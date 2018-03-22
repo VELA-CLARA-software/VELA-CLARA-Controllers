@@ -19,18 +19,12 @@ physical_VELA_INJ_Magnet_Controller_Obj(nullptr),
 virtual_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 offline_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 physical_CLARA_PH1_Magnet_Controller_Obj(nullptr),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true),
-VELA_INJ (VELA_ENUM::MACHINE_AREA::VELA_INJ),
-VELA_BA1 (VELA_ENUM::MACHINE_AREA::VELA_BA1),
-VELA_BA2 (VELA_ENUM::MACHINE_AREA::VELA_BA2),
-CLARA_PH1(VELA_ENUM::MACHINE_AREA::CLARA_PH1),
-USER(VELA_ENUM::MACHINE_AREA::USER),
-UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is quiet mode
+VELA_INJ (HWC_ENUM::MACHINE_AREA::VELA_INJ),
+VELA_BA1 (HWC_ENUM::MACHINE_AREA::VELA_BA1),
+VELA_BA2 (HWC_ENUM::MACHINE_AREA::VELA_BA2),
+CLARA_PH1(HWC_ENUM::MACHINE_AREA::CLARA_PH1),
+USER(HWC_ENUM::MACHINE_AREA::USER),
+UNKNOWN_AREA(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA)
 {
     std::cout <<"Instantiated a VCmagnets in Quiet Mode" <<std::endl;
     //ctor
@@ -105,34 +99,34 @@ VCmagnets::~VCmagnets()
 //    }
 
 }
-//______________________________________________________________________________
-void VCmagnets::setQuiet()
-{
-    std::cout <<"VCmagnets Quiet Mode Set." <<std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = false;
-}
-//______________________________________________________________________________
-void VCmagnets::setVerbose()
-{
-    std::cout <<"VCmagnets Verbose Mode Set." <<std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCmagnets::setMessage()
-{
-    std::cout <<"VCmagnets Message Mode Set." <<std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCmagnets::setDebugMessage()
-{
-    std::cout <<"VCmagnets DebugMessage Mode Set." <<std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = false;
-}
+////______________________________________________________________________________
+//void VCmagnets::setQuiet()
+//{
+//    std::cout <<"VCmagnets Quiet Mode Set." <<std::endl;
+//    shouldShowDebugMessage = false;
+//    shouldShowMessage = false;
+//}
+////______________________________________________________________________________
+//void VCmagnets::setVerbose()
+//{
+//    std::cout <<"VCmagnets Verbose Mode Set." <<std::endl;
+//    shouldShowDebugMessage = true;
+//    shouldShowMessage = true;
+//}
+////______________________________________________________________________________
+//void VCmagnets::setMessage()
+//{
+//    std::cout <<"VCmagnets Message Mode Set." <<std::endl;
+//    shouldShowDebugMessage = false;
+//    shouldShowMessage = true;
+//}
+////______________________________________________________________________________
+//void VCmagnets::setDebugMessage()
+//{
+//    std::cout <<"VCmagnets DebugMessage Mode Set." <<std::endl;
+//    shouldShowDebugMessage = true;
+//    shouldShowMessage = false;
+//}
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_CLARA_PH1_Magnet_Controller()
 {
@@ -239,7 +233,7 @@ magnetController& VCmagnets::physical_USER_Magnet_Controller(const std::string& 
     return getController(physical_USER_Magnet_Controller_Obj,config_path,name,withoutVM,withEPICS,USER);
 }
 //______________________________________________________________________________
-magnetController& VCmagnets::getController(magnetController * cont,const std::string& conf,const std::string & name, const bool shouldVM, const bool shouldEPICS, const VELA_ENUM::MACHINE_AREA myMachineArea)
+magnetController& VCmagnets::getController(magnetController * cont,const std::string& conf,const std::string & name, const bool shouldVM, const bool shouldEPICS, const HWC_ENUM::MACHINE_AREA myMachineArea)
 {
     if(cont)
     {
@@ -455,31 +449,31 @@ magnetController& VCmagnets::getController(magnetController * cont,const std::st
 //    return *physical_CLARA_PH1_Magnet_Controller_Obj;
 //}
 //______________________________________________________________________________
-magnetController& VCmagnets::getMagnetController(VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area)
+magnetController& VCmagnets::getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area)
 {
-    if(mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ)
+    if(mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ)
         return offline_VELA_INJ_Magnet_Controller();
-    else if(mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ)
+    else if(mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_INJ)
         return virtual_VELA_INJ_Magnet_Controller();
-    else if(mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ)
+    else if(mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_INJ)
         return physical_VELA_INJ_Magnet_Controller();
-    else if(mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1)
+    else if(mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA1)
         return offline_VELA_BA1_Magnet_Controller();
-    else if(mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1)
+    else if(mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA1)
         return virtual_VELA_BA1_Magnet_Controller();
-    else if(mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1)
+    else if(mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA1)
         return physical_VELA_BA1_Magnet_Controller();
-    else if(mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2)
+    else if(mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA2)
         return offline_VELA_BA2_Magnet_Controller();
-    else if(mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2)
+    else if(mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA2)
         return virtual_VELA_BA2_Magnet_Controller();
-    else if(mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2)
+    else if(mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA2)
         return physical_VELA_BA2_Magnet_Controller();
-    else if(mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_PH1)
+    else if(mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::CLARA_PH1)
         return offline_CLARA_PH1_Magnet_Controller();
-    else if(mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_PH1)
+    else if(mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_PH1)
         return virtual_CLARA_PH1_Magnet_Controller();
-    else if(mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_PH1)
+    else if(mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_PH1)
         return physical_CLARA_PH1_Magnet_Controller();
 
 }

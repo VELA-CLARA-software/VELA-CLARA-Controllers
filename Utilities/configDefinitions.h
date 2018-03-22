@@ -94,12 +94,15 @@ namespace UTL
     const unsigned short EPICS_RESET    = ONE_US;
     const double         DBL_ERR_NUM    =-9999.9999;
 
+    const time_t TIMET_45 = 45;
+
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
     const std::chrono::milliseconds PAUSE_300(300);
     const std::chrono::milliseconds PAUSE_500(500);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
+    const std::string  DUMMY_NAME   = "DUMMY_NAME";
     const std::string EMPTY_STRING = "";
     const std::string END_OF_LINE = ";";
     const std::string SLASH_SLASH = "\\";

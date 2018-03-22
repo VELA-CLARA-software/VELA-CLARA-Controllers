@@ -31,14 +31,11 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-baseObject::baseObject():
-baseObject(nullptr,nullptr)
-{}
 //______________________________________________________________________________
-baseObject::baseObject(const bool* show_messages_ptr,
-                       const bool* show_debug_messages_ptr):
-SHOW_MESSAGES_PTR(show_messages_ptr),
-SHOW_DEBUG_MESSAGES_PTR(show_debug_messages_ptr)
+baseObject::baseObject(const bool* show_messages,
+                       const bool* show_debug_messages):
+SHOW_MESSAGES(show_messages),
+SHOW_DEBUG_MESSAGES(show_debug_messages)
 {}
 //______________________________________________________________________________
 baseObject::~baseObject(){}

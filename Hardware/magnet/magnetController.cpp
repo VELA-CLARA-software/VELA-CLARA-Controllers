@@ -22,7 +22,7 @@ magnetController::magnetController(
     const std::string & magConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
-    const VELA_ENUM::MACHINE_AREA myMachineArea):
+    const HWC_ENUM::MACHINE_AREA myMachineArea):
 controller(show_messages, show_debug_messages),
 localInterface(magConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea),
 shouldStartEPICs(shouldStartEPICs),
@@ -37,17 +37,17 @@ myMachineArea(myMachineArea)
 //______________________________________________________________________________
 magnetController::~magnetController(){}    //dtor
 //______________________________________________________________________________
-std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> magnetController::getILockStates(const std::string & name)
+std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> magnetController::getILockStates(const std::string & name)const
 {
     return localInterface.getILockStates(name);
 }
 //______________________________________________________________________________
-std::map<VELA_ENUM::ILOCK_NUMBER, std::string> magnetController::getILockStatesStr(const std::string & name)
+std::map<HWC_ENUM::ILOCK_NUMBER, std::string> magnetController::getILockStatesStr(const std::string & name)const
 {
     return localInterface.getILockStatesStr(name);
 }
 //______________________________________________________________________________
-double magnetController::get_CA_PEND_IO_TIMEOUT()
+double magnetController::get_CA_PEND_IO_TIMEOUT()const
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT();
 }
@@ -517,14 +517,12 @@ boost::python::dict magnetController::getILockStates_Py(std::string magName)
 //______________________________________________________________________________
 boost::python::dict magnetController::getMagPSUStateDefinition()
 {
-    std::map<VELA_ENUM::MAG_PSU_STATE,  std::string > m;
-
-    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR); // ENUM_TO_STRING MACRO in velaStructs.h
-    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE); // ENUM_TO_STRING MACRO in velaStructs.h
-
+    std::map<magnetStructs::MAG_PSU_STATE,  std::string > m;
+    m[magnetStructs::MAG_PSU_STATE::OFF ]    = ENUM_TO_STRING(magnetStructs::MAG_PSU_STATE::OFF);
+    m[magnetStructs::MAG_PSU_STATE::ON ]     = ENUM_TO_STRING(magnetStructs::MAG_PSU_STATE::ON);
+    m[magnetStructs::MAG_PSU_STATE::TIMING ] = ENUM_TO_STRING(magnetStructs::MAG_PSU_STATE::TIMING);
+    m[magnetStructs::MAG_PSU_STATE::ERROR ]  = ENUM_TO_STRING(magnetStructs::MAG_PSU_STATE::ERROR);
+    m[magnetStructs::MAG_PSU_STATE::NONE ]   = ENUM_TO_STRING(magnetStructs::MAG_PSU_STATE::NONE);
     return enumStringMapToPythonDict(m);
 }
 //______________________________________________________________________________

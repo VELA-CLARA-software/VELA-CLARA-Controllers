@@ -25,6 +25,8 @@
 // stl includes
 #include <iostream>
 #include <string>
+#include <map>
+#include <utility>
 //______________________________________________________________________________
 class VCbase
 {
@@ -44,8 +46,9 @@ class VCbase
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
         bool  shouldShowDebugMessage, shouldShowMessage;
 
-    private:
+        virtual void updateMessageStates() = 0;
 
+    private:
 };
 //______________________________________________________________________________
 #endif // VCBASE_H

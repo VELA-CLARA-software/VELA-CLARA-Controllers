@@ -38,8 +38,8 @@ class gunProtController : public controller
     public:
         // just have 1 constructor, but we have a higher level class that create these objects
         gunProtController();
-        gunProtController(const bool show_messages,
-                          const bool show_debug_messagese,
+        gunProtController(bool* show_messages,
+                          bool* show_debug_messages,
                           const std::string &allGunProtsConf,
                           const bool startVirtualMachine,
                           const bool shouldStartEPICs );

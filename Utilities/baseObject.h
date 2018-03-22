@@ -53,17 +53,17 @@ class baseObject
             to print messages or not,
         */
 
-        baseObject();
-        baseObject(const bool* show_messages_ptr,
-                   const bool* show_debug_messages_ptr
-                  );
+        //baseObject();
+        baseObject(const bool* show_messages,
+                   const bool* show_debug_messages);
         /*  protected destructor to make sure this class is never instantiated
             the compiler won't let us call delete on any base class pointers */
    protected:
         ~baseObject();
         /* These are const pointers set at instantiation.
            They point to bools held in the controller */
-        const bool *SHOW_DEBUG_MESSAGES_PTR, *SHOW_MESSAGES_PTR;
+        const bool* SHOW_DEBUG_MESSAGES;
+        const bool* SHOW_MESSAGES;
 
         /* the main mesdsage functions, i.e print to the sreen
            using default template types makes this easy, (c++11 feature !?)
@@ -73,14 +73,14 @@ class baseObject
         */
         void debugMessage(const std::stringstream& p) const
         {
-            if(*SHOW_DEBUG_MESSAGES_PTR)
+            if(*SHOW_DEBUG_MESSAGES)
             {
                 printMessage(p.str());
             }
         }
         void message(const std::stringstream& p) const
         {
-            if(*SHOW_MESSAGES_PTR)
+            if(*SHOW_MESSAGES)
             {
                 printMessage(p.str());
             }
@@ -103,7 +103,7 @@ class baseObject
                           const G p14 = "",const H p15 = ""
                         ) const
         {
-            if(*SHOW_DEBUG_MESSAGES_PTR)
+            if(*SHOW_DEBUG_MESSAGES)
                 printMessage(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
         }
 
@@ -124,7 +124,7 @@ class baseObject
                      const G p14 = "",const H p15 = ""
                     )const
         {
-            if(*SHOW_MESSAGES_PTR)
+            if(*SHOW_MESSAGES)
                 printMessage(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
         }
 

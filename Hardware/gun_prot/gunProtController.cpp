@@ -29,19 +29,18 @@ using namespace rfProtStructs;
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-gunProtController::gunProtController(
-                                        const bool show_messages,
-                                        const bool show_debug_messages,
-                                        const std::string& allGunProtsConf,
-                                        const bool startVirtualMachine,
-                                        const bool shouldStartEPICs):
+gunProtController::gunProtController(bool* show_messages,
+                                     bool* show_debug_messages,
+                                     const std::string& allGunProtsConf,
+                                     const bool startVirtualMachine,
+                                     const bool shouldStartEPICs):
+shouldStartEPICs(shouldStartEPICs),
 controller(show_messages,show_debug_messages,CONTROLLER_TYPE::RF_PROT),
 localInterface(allGunProtsConf,
                startVirtualMachine,
-              &SHOW_MESSAGES,
-              &SHOW_DEBUG_MESSAGES,
-               shouldStartEPICs),
-shouldStartEPICs(shouldStartEPICs)
+               show_messages,
+               show_debug_messages,
+               shouldStartEPICs)
 {
     if(shouldStartEPICs)
     {

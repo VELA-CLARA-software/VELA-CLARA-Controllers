@@ -41,17 +41,10 @@ class magnetController : public controller
         magnetController();
         /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         magnetController(const bool show_messages,    const bool show_debug_messagese,
-                          const std::string &magConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea);
+                         const std::string &magConf, const bool startVirtualMachine,
+                         const bool shouldStartEPICs, const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         ~magnetController();
-
-        // These are pure virtual methods, so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT(double val);
-        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
-        std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
-
 
       /// Magnet Type tests
         bool isAQuad(const std::string & magName);
@@ -189,8 +182,17 @@ class magnetController : public controller
 #endif // BUILD_DLL
 
         /// YOU CANNOT SET THE CONTROLLER TYPE, NO-WAY JOSE
-        VELA_ENUM::MACHINE_AREA getmyMachineArea(){return myMachineArea;};
+        HWC_ENUM::MACHINE_AREA getmyMachineArea(){return myMachineArea;};
         ///void setmyMachineArea(){ no chance matey };
+
+        // These are pure virtual methods, so need to have some implmentation in derived classes
+        double get_CA_PEND_IO_TIMEOUT() const;
+        void   set_CA_PEND_IO_TIMEOUT(double val);
+        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE>
+            getILockStates(const std::string& name)const;
+        std::map<HWC_ENUM::ILOCK_NUMBER,std::string>
+            getILockStatesStr(const std::string& name)const;
+
 
     protected:
     private:
@@ -200,7 +202,7 @@ class magnetController : public controller
         const bool shouldStartEPICs;
 //
 //        /// what flavour of controller am i ?
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
         magnetInterface localInterface;
 };
 

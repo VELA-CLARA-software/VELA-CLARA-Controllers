@@ -37,10 +37,14 @@ class controller : public baseObject
 {
     public:
 
-        controller(bool show_messages,
-                   bool show_debug_messages,
+//        controller(bool show_messages,
+//                   bool show_debug_messages,
+//                   const HWC_ENUM::CONTROLLER_TYPE type);
+//        controller::controller(bool show_messages, bool show_debug_messages);
+        controller(bool* show_messages,
+                   bool* show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type);
-        controller::controller(bool show_messages, bool show_debug_messages);
+        controller::controller(bool* show_messages, bool* show_debug_messages);
         ~controller();
 
         /* Turn on and off debug messages and general messages */
@@ -78,10 +82,11 @@ class controller : public baseObject
     protected:
 
         /* these bools determine if messages can be printed or not,
-           pointers to them are passed to th ebaseObject and used by
-           all other classes in th eproject
+           them are passed to the baseObject and used by
+           all other classes in the project
         */
-        bool SHOW_DEBUG_MESSAGES, SHOW_MESSAGES;
+        bool* SHOW_DEBUG_MESSAGES;
+        bool* SHOW_MESSAGES;
 
     private:
 }; // class controller

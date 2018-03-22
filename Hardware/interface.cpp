@@ -27,20 +27,20 @@
 #include <sstream>
 #include <chrono>
 
-interface::interface(const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr):
-interface(show_messages_ptr, show_debug_messages_ptr, false)
+interface::interface(const bool* show_messages,
+                     const bool* show_debug_messages):
+interface(show_messages, show_debug_messages, false)
 {}
 //______________________________________________________________________________
-interface::interface(const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr,
+interface::interface(const bool* show_messages,
+                     const bool* show_debug_messages,
                      const bool  shouldStartEPICs
                      ):
 thisCaContext(nullptr),
 configFileRead(false),
 shouldStartEPICs(shouldStartEPICs),
 CA_PEND_IO_TIMEOUT(UTL::FIVE_DOUBLE),
-baseObject(show_messages_ptr, show_debug_messages_ptr),
+baseObject(show_messages, show_debug_messages),
 EPICS_ACTIVATE(UTL::EPICS_ACTIVATE),
 EPICS_SEND(UTL::EPICS_SEND),
 EPICS_RESET(UTL::EPICS_RESET),
@@ -97,7 +97,7 @@ void interface::printStatusResult(const int   status,
                                   const char* success,
                                   const char* timeout) const
 {
-    if(*SHOW_MESSAGES_PTR)
+    if(SHOW_MESSAGES)
     {
         switch (status)
         {

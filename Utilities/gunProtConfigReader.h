@@ -39,7 +39,7 @@ class gunProtConfigReader : public configReader
         gunProtConfigReader(const std::string& configFileLocation1,
                             const bool startVirtualMachine,
                             const bool* showMessages,
-                            const  bool* showDebugMessages );
+                            const bool* showDebugMessages );
         ~gunProtConfigReader();
 
         bool readConfig();

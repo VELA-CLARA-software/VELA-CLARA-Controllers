@@ -37,9 +37,16 @@ namespace magnetStructs
     /// Yeah NR_GANGED, just when you thought it was already too complicated
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PV_TYPE, (SETI) (GETSETI) (READI) (RPOWER) (SPOWER) (RILK)
                                                      (UNKNOWN_MAG_PV_TYPE))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE,   (ON)   (OFF) (ERROR) (NONE))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE,
+                                        (ON)
+                                        (OFF)
+                                        (TIMING)
+                                        (ERROR)
+                                        (NONE)
+                                        )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_ILOCK_STATE, (GOOD) (BAD))
-    /// These can't go in VELA_ENUM as they need a pvType.
+
+    /// These can't go in HWC_ENUM as they need a pvType.
     struct pvStruct
     {   // proviude a default constructor
         pvStruct() : pvSuffix("UNKNOWN_PV_SUFFIX"), objName(UTL::UNKNOWN_NAME),COUNT(UTL::ZERO_INT), MASK(UTL::ZERO_INT), pvType(UNKNOWN_MAG_PV_TYPE) {}
@@ -61,7 +68,7 @@ namespace magnetStructs
     {
         magnetObject():magType(MAG_TYPE::UNKNOWN_MAGNET_TYPE),
                        revType(MAG_REV_TYPE::BIPOLAR),
-                       machineArea(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
+                       machineArea(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA),
                        numDegaussSteps(UTL::ZERO_INT),
                        maxWaitTime(UTL::ZERO_INT),
                        numDegaussElements(UTL::ZERO_INT),
@@ -82,7 +89,7 @@ namespace magnetStructs
                        {}
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_PSU_STATE psuState;
-        VELA_ENUM::MACHINE_AREA  machineArea;
+        HWC_ENUM::MACHINE_AREA  machineArea;
         MAG_REV_TYPE revType;
         bool SETIequalREADI;
         double siWithPol,    // this is the GETSI (i.e. read-only) value in controls 2017 scheme that is consistent between VELA / CALRA
@@ -120,20 +127,20 @@ namespace magnetStructs
     struct degaussStruct
     {   // proviude a default constructor
         degaussStruct():interface(nullptr),thread(nullptr),key(UTL::ZERO_INT),
-                        resetToZero(true),machineArea(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA){}
+                        resetToZero(true),machineArea(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA){}
         magnetInterface          *interface;
         std::vector<std::string>  magsToDeguass;
         std::thread              *thread;
         size_t                    key;
         bool                      resetToZero;
-        VELA_ENUM::MACHINE_AREA   machineArea;
+        HWC_ENUM::MACHINE_AREA   machineArea;
     };
     /// one-stop shop for magnet state
     struct magnetStateStruct
     {   // proviude a default constructor
-        magnetStateStruct():numMags(UTL::ZERO_INT),machineArea(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA){};
+        magnetStateStruct():numMags(UTL::ZERO_INT),machineArea(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA){};
         size_t numMags;
-        VELA_ENUM::MACHINE_AREA machineArea;
+        HWC_ENUM::MACHINE_AREA machineArea;
         std::vector<std::string> magNames;
         std::vector<MAG_PSU_STATE> psuStates;
         std::vector<double> siValues,riValues;

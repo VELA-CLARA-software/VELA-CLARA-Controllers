@@ -22,7 +22,11 @@
 //*/
 #ifndef VCHEADER_H_INCLUDED
 #define VCHEADER_H_INCLUDED
+// project includes
+#include "VCbase.h"
+#include "structs.h"
 //______________________________________________________________________________
+// boost.python includes
 /// !!!IF YOU SIGNIFCANTLY CHANGE THIS FILE YOU MIGHT
 /// RECOMPILE EVERY HARDWARE CONTROLLER!!!
 #include <boost/python/detail/wrap_python.hpp>
@@ -54,6 +58,9 @@ typedef const std::vector<std::string> cves;
 using namespace boost::python;
 namespace BOOST_PYTHON_INCLUDE
 {
+    /* Things that you want to use in python must be exposed:
+    */
+
     /*  these functions exposes objects that can be defined in mulitple HWC.
         Without this implementation you will get a Python warning that the
         objects have been defined multiple times
@@ -215,6 +222,12 @@ namespace BOOST_PYTHON_INCLUDE
             .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc          )
             .def("isVerbose",       &controller::isVerbose,isVerbose_doc              )
             .def("isSilent",        &controller::isSilent,isSilent_doc                )
+            .def("debugMessagesOn",&controller::debugMessagesOn,isDebugMessageOn_doc)
+            .def("debugMessagesOff",     &controller::debugMessagesOff,isMessageOn_doc          )
+            .def("messagesOn",       &controller::messagesOn,isVerbose_doc              )
+            .def("messagesOff",        &controller::messagesOff,isSilent_doc                )
+            .def("silence",        &controller::silence,isSilent_doc                )
+            .def("verbose",        &controller::verbose,isSilent_doc                )
             ;
         //
         // expose VCbase

@@ -14,7 +14,7 @@
 
 dburt::dburt(const bool* show_messages_ptr,
              const  bool * show_debug_messages_ptr,
-             const VELA_ENUM::MACHINE_AREA myMachineArea ):
+             const HWC_ENUM::MACHINE_AREA myMachineArea ):
 configReader(UTL::DBURT_PATH, show_messages_ptr, show_debug_messages_ptr),
 myMachineArea(myMachineArea)
 {
@@ -169,14 +169,14 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
                 keyvalval = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                if(keyvalval[1] == ENUM_TO_STRING(VELA_ENUM::MACHINE_AREA::VELA_INJ))
-                    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_INJ;
-                else if(keyvalval[1] == ENUM_TO_STRING(VELA_ENUM::MACHINE_AREA::VELA_BA1))
-                    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_BA1;
-                else if(keyvalval[1] == ENUM_TO_STRING(VELA_ENUM::MACHINE_AREA::VELA_BA2))
-                    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_BA2;
-                else if(keyvalval[1] == ENUM_TO_STRING(VELA_ENUM::MACHINE_AREA::CLARA_INJ))
-                    magState.machineArea = VELA_ENUM::MACHINE_AREA::CLARA_INJ;
+                if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_INJ;
+                else if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA1))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA1;
+                else if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA2))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA2;
+                else if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
             }
 
         } // while
@@ -226,23 +226,23 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const 
             outputFile <<magState.magNames[i] <<UTL::COLON_C;
             switch(magState.psuStates[i])
             {
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF:
+                case magnetStructs::MAG_PSU_STATE::OFF:
                     outputFile <<UTL::OFF <<UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON:
+                case magnetStructs::MAG_PSU_STATE::ON:
                     outputFile <<UTL::ON <<UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING:
+                case magnetStructs::MAG_PSU_STATE::TIMING:
                     outputFile <<UTL::TIMING<<UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR:
+                case magnetStructs::MAG_PSU_STATE::ERROR:
                     outputFile <<UTL::ERROR<<UTL::COLON_C;
                     break;
 
-                case VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE:
+                case magnetStructs::MAG_PSU_STATE::NONE:
                      outputFile <<UTL::NONE<<UTL::COLON_C;
                     break;
 
@@ -261,9 +261,6 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const 
     }
     return success;
 }
-
-
-
 /// LEGACY
 
 //______________________________________________________________________________
@@ -277,7 +274,7 @@ magnetStructs::magnetStateStruct dburt::readDBURTv1(const char* fileName, const 
 
 
     magnetStructs::magnetStateStruct magState;
-    magState.machineArea = VELA_ENUM::MACHINE_AREA::VELA_INJ;
+    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_INJ;
 
     std::string line, trimmedLine;
     std::ifstream inputFile;

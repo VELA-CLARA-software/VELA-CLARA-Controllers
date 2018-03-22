@@ -23,7 +23,7 @@
 #include "VCrfprot.h"
 #include <iostream>
 VCrfprot::VCrfprot():
-VCbase(),
+VCbase("VCrfprot"),
 virtual_Gun_Protection_Controller_Obj(nullptr),
 physical_Gun_Protection_Controller_Obj(nullptr),
 offline_Gun_Protection_Controller_Obj(nullptr),
@@ -112,12 +112,15 @@ gunProtController& VCrfprot::virtual_Gun_Protection_Controller()
     {
         std::cout << "Creating virtual_Gun_Protection_Controller object"
                   << std::endl;
+        messageStates[virtual_Gun_Protection_Controller_Obj].first  = shouldShowMessage;
+        messageStates[virtual_Gun_Protection_Controller_Obj].second = shouldShowDebugMessage;
         virtual_Gun_Protection_Controller_Obj =
-            new gunProtController(shouldShowMessage,
-                                  shouldShowDebugMessage,
+            new gunProtController(&messageStates[virtual_Gun_Protection_Controller_Obj].first,
+                                  &messageStates[virtual_Gun_Protection_Controller_Obj].second,
                                   allGunProtsConf,
                                   withVM,
                                   withEPICS);
+
     }
     return *virtual_Gun_Protection_Controller_Obj;
 }
@@ -133,12 +136,15 @@ gunProtController& VCrfprot::physical_Gun_Protection_Controller()
     {
         std::cout << "Creating physical_Gun_Protection_Controller object"
                   << std::endl;
+        messageStates[physical_Gun_Protection_Controller_Obj].first  = shouldShowMessage;
+        messageStates[physical_Gun_Protection_Controller_Obj].second = shouldShowDebugMessage;
         physical_Gun_Protection_Controller_Obj =
-            new gunProtController(shouldShowMessage,
-                                  shouldShowDebugMessage,
+            new gunProtController(&messageStates[physical_Gun_Protection_Controller_Obj].first,
+                                  &messageStates[physical_Gun_Protection_Controller_Obj].second,
                                   allGunProtsConf,
                                   withoutVM,
                                   withEPICS);
+        //std::map<gunProtController*, std::pair<bool,bool>> messageStates;
     }
     return *physical_Gun_Protection_Controller_Obj;
 }
@@ -154,16 +160,26 @@ gunProtController& VCrfprot::offline_Gun_Protection_Controller()
     {
         std::cout << "Creating offline_Gun_ProtectionController object"
                   << std::endl;
+        messageStates[offline_Gun_Protection_Controller_Obj].first  = shouldShowMessage;
+        messageStates[offline_Gun_Protection_Controller_Obj].second = shouldShowDebugMessage;
         offline_Gun_Protection_Controller_Obj =
-            new gunProtController(shouldShowMessage,
-                                  shouldShowDebugMessage,
+            new gunProtController(&messageStates[offline_Gun_Protection_Controller_Obj].first,
+                                  &messageStates[offline_Gun_Protection_Controller_Obj].second,
                                   allGunProtsConf,
                                   withoutVM,
                                   withoutEPICS);
     }
     return *offline_Gun_Protection_Controller_Obj;
 }
-
+//______________________________________________________________________________
+void VCrfprot::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
+}
 
 
 

@@ -24,6 +24,8 @@
 #define VC_RFPROTECTION_H_
 // STL
 #include <string>
+#include <map>
+#include <utility>
 // HWC
 #include "gunProtController.h"
 #include "rfProtStructs.h"
@@ -49,6 +51,10 @@ class VCrfprot : public VCbase
         gunProtController* virtual_Gun_Protection_Controller_Obj ;
         gunProtController* physical_Gun_Protection_Controller_Obj;
         gunProtController* offline_Gun_Protection_Controller_Obj ;
+
+        std::map<gunProtController*, std::pair<bool,bool>> messageStates;
+
+        void updateMessageStates();
 
         const std::string allGunProtsConf;
 };

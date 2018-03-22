@@ -77,7 +77,7 @@ configReader::configReader(const std::string & configFile_Location1,
                            const std::string & configFile_Location4,
                            const std::string & configFile_Location5,
                            const bool* show_messages_ptr,
-                           const  bool * show_debug_messages_ptr):
+                           const  bool* show_debug_messages_ptr):
 configVersion(UTL::MINUS_ONE_INT),
 numObjs(UTL::MINUS_ONE_INT),
 numIlocks(UTL::MINUS_ONE_INT),

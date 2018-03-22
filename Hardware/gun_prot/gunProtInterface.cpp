@@ -47,6 +47,7 @@ EPICS_ACTIVATE_FAIL("Failed to send EPICS_ACTIVATE"),
 EPICS_SEND_FAIL("Failed to send EPICS_SEND")
 {
     initialise();
+    message("initialise  fin");
 }
 //______________________________________________________________________________
 gunProtInterface::~gunProtInterface()
@@ -101,6 +102,7 @@ void gunProtInterface::initialise()
                 /* subscribe to the channel ids */
                 initChids();
                 /* start the monitors: set up the callback functions */
+                message("The gunProtInterface is trying to start monitors");
                 startMonitors();
                 /* The pause allows EPICS to catch up.*/
                 UTL::STANDARD_PAUSE;
@@ -111,7 +113,7 @@ void gunProtInterface::initialise()
         }
         else
             message("!!!The gunProtInterface received an Error while "
-                    "getting laser data!!!");
+                    "getting RFprotection config data !!!");
     }
 }
 //______________________________________________________________________________
@@ -208,6 +210,11 @@ void gunProtInterface::startMonitors()
 void gunProtInterface::staticEntryMonitor(const event_handler_args args)
 {
     rfProtStructs::monitorStruct*ms = static_cast<rfProtStructs::monitorStruct*>(args.usr);
+//    ms->interface->debugMessage("staticEntryMonitor ",
+//                                ENUM_TO_STRING(ms -> monType)," ",
+//                                ms -> rfProtObject -> name
+//                                );
+
     switch(ms -> monType)
     {
         case rfProtStructs::RF_GUN_PROT_PV_TYPE::STATUS:
@@ -215,13 +222,14 @@ void gunProtInterface::staticEntryMonitor(const event_handler_args args)
             break;
         case rfProtStructs::RF_GUN_PROT_PV_TYPE::CMI:
             //ms->rfProtObject -> cmi = *(unsigned long*)args.dbr;
-            ms->rfProtObject -> cmi = getDBRunsignedLong(args);
+            ms->rfProtObject -> cmi = getDBRlong(args);
             ms->interface->updateCMIBits(*(ms->rfProtObject));
             break;
         default:
             ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to gunProtInterface::staticEntryPILMonitor");
             break;
     }
+//    ms->interface->debugMessage("staticEntryMonitor fin");
 }
 //____________________________________________________________________________________________
 void gunProtInterface::updateCMIBits(rfProtStructs::rfGunProtObject& obj)
@@ -231,16 +239,16 @@ void gunProtInterface::updateCMIBits(rfProtStructs::rfGunProtObject& obj)
         the bits in the cmi number code the state of the protection
     */
     size_t counter = UTL::ZERO_SIZET;
-    for( auto bit = 0; bit < 8; ++bit)//MAGIC_NUMBER
+    for(auto bit = 0; bit < 8; ++bit)//MAGIC_NUMBER
     {
         //message(obj.name, " bit ", bit, " value = ",  (obj.cmi &( 1 << bit)) >> bit);
         if( std::find(obj.gunProtKeyBits.begin(),
                       obj.gunProtKeyBits.end(), bit) != obj.gunProtKeyBits.end())
         {
             obj.gunProtKeyBitValues[counter] = (obj.cmi &( 1 << bit)) >> bit;
-            message("obj.gunProtKeyBitValues part ",
-                    counter, " = ",
-                    obj.gunProtKeyBitValues[counter]);
+            //message("obj.gunProtKeyBitValues part ",
+            //        counter, " = ",
+            //        obj.gunProtKeyBitValues[counter]);
             ++counter;
         }
     }
@@ -265,7 +273,7 @@ void gunProtInterface::updateCMIBits(rfProtStructs::rfGunProtObject& obj)
             case rfProtStructs::RF_GUN_PROT_TYPE::TEST:
                 currentMode = obj.protType;
                 break;
-            default :
+            default:
                 currentMode = rfProtStructs::RF_GUN_PROT_TYPE::NO_MODE;
         }
         message("RF GUN Mode is ", ENUM_TO_STRING(currentMode));
@@ -288,7 +296,7 @@ bool gunProtInterface::allkeybitsaregood(const rfProtStructs::rfGunProtObject& o
     if(isNotGeneralProt(obj.name) && isNotEnableProt(obj.name))
     {
         r = true;
-        for(auto && it : obj.gunProtKeyBitValues)
+        for(auto&& it : obj.gunProtKeyBitValues)
         {
             if(!it)
                 r = false;
@@ -297,26 +305,31 @@ bool gunProtInterface::allkeybitsaregood(const rfProtStructs::rfGunProtObject& o
     return r;
 }
 //____________________________________________________________________________________________
-void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,const event_handler_args args)
-{   //std::cout << "updateProtStatus(rfProtStructs::rfGunProtObject& obj,const event_handler_args args) called" << std::endl;
+void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,
+                                        const event_handler_args args)
+{   //message("updateProtStatus(,const event_handler_args args) called");
     switch(args.type)
     {
         case DBR_TIME_ENUM:
             {
-                const dbr_time_enum * pTD = ( const struct dbr_time_enum *) args.dbr;
+                //message("DBR_TIME_ENUM");
+                const dbr_time_enum* pTD = ( const struct dbr_time_enum *) args.dbr;
                 updateProtStatus(obj, (unsigned short)pTD ->value);
             }
             break;
         case DBR_ENUM:
-            updateProtStatus(obj,  getDBRunsignedShort(args));
+            {
+                //message("DBR_ENUM");
+                updateProtStatus(obj,  getDBRunsignedShort(args));
+            }
             break;
     }
+    //message("updateProtStatus(,const event_handler_args args) FIN");
 }
 //____________________________________________________________________________________________
 void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,
                                         const unsigned short value)
-{   //std::cout << "updateProtStatus(rfProtStructs::rfGunProtObject& obj,const long value) called" << std::endl;
-    message(obj.name , " value =  ", value);
+{   //message(obj.name , " value =  ", value, " updateProtStatus(obj,const long value)");
     switch(value)
     {
        case UTL::ZERO_US:
@@ -335,7 +348,7 @@ void gunProtInterface::updateProtStatus(rfProtStructs::rfGunProtObject& obj,
 //____________________________________________________________________________________________
 std::string gunProtInterface::getGeneralProtName() const
 {
-    for( auto && it : allGunProts)
+    for( auto&& it : allGunProts)
     {
         if( isProtOfType( it.first, rfProtStructs::RF_GUN_PROT_TYPE::GENERAL))
             return it.first;
@@ -346,7 +359,7 @@ std::string gunProtInterface::getGeneralProtName() const
 //____________________________________________________________________________________________
 std::string gunProtInterface::getEnableProtName() const
 {
-    for( auto && it : allGunProts)
+    for(auto&& it : allGunProts)
     {
         if( isProtOfType( it.first, rfProtStructs::RF_GUN_PROT_TYPE::ENABLE))
             return it.first;
@@ -358,7 +371,7 @@ std::string gunProtInterface::getEnableProtName() const
 std::string gunProtInterface::getCurrentModeProtName() const
 {
     message("getCurrentModeProtName ", ENUM_TO_STRING(currentMode));
-    for( auto && it : allGunProts)
+    for(auto&& it : allGunProts)
     {
         if( isProtOfType( it.first, currentMode))
             return it.first;
@@ -458,7 +471,7 @@ bool gunProtInterface::enable()const
                     debugMessage("Enabling Enable Protection");
                     carryon = enable(ennname);
                     UTL::PAUSE_300;
-                    if( isGood(ennname))
+                    if(isGood(ennname))
                     {
                         carryon = true;
                         debugMessage("Enabling RFGUN Enable Protection Success");
@@ -473,7 +486,7 @@ bool gunProtInterface::enable()const
                 else
                 {
                     carryon = false;
-                     debugMessage("Enabling ",
+                    debugMessage("Enabling ",
                                   ENUM_TO_STRING(currentMode),
                                   "RFGUN Protection Failure");;
                 }
@@ -496,15 +509,6 @@ bool gunProtInterface::reset() const
         names.push_back( it.first);
     }
     return reset(names);
-}
-//____________________________________________________________________________________________
-bool gunProtInterface::exists_in_allGunProts(const std::string& name,
-                                             rfProtStructs::RF_GUN_PROT_PV_TYPE pv) const
-{
-    if(entryExists(allGunProts, name))
-        if(entryExists(allGunProts.at(name).pvComStructs, pv))
-           return true;
-    return false;
 }
 //____________________________________________________________________________________________
 bool gunProtInterface::reset(const std::string& name) const
@@ -538,6 +542,15 @@ bool gunProtInterface::disable(const std::string& name)const
 bool gunProtInterface::disable(const std::vector<std::string>& names)const
 {
     return sendCommand(names,rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF);
+}
+//____________________________________________________________________________________________
+bool gunProtInterface::exists_in_allGunProts(const std::string& name,
+                                             rfProtStructs::RF_GUN_PROT_PV_TYPE pv) const
+{
+    if(entryExists(allGunProts, name))
+        if(entryExists(allGunProts.at(name).pvComStructs, pv))
+           return true;
+    return false;
 }
 //____________________________________________________________________________________________
 bool gunProtInterface::sendCommand(const std::vector<std::string>& names,
