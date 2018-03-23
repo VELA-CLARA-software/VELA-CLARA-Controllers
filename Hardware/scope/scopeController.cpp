@@ -18,12 +18,12 @@ scopeController::scopeController( const std::string &configFileLocation1,
                                   const std::string &configFileLocation2,
                                   bool* show_messages,
                                   bool* show_debug_messages,
-                                  const bool shouldStartEPICS,
+                                  const bool shouldStartEPICs,
                                   const bool startVirtualMachine,
                                   HWC_ENUM::MACHINE_AREA myMachineArea ):
 controller( show_messages, show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::SCOPE ),
-localInterface( configFileLocation1, configFileLocation2, show_messages, show_debug_messages, shouldStartEPICS, startVirtualMachine, myMachineArea ),
-shouldStartEPICS( shouldStartEPICS ),
+localInterface( configFileLocation1, configFileLocation2, show_messages, show_debug_messages, shouldStartEPICs, startVirtualMachine, myMachineArea ),
+shouldStartEPICs( shouldStartEPICs ),
 machineArea( myMachineArea )
 {
     initialise();
@@ -31,7 +31,7 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 void scopeController::initialise()
 {
-    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
+    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
         message("scopeController instantiation success.");
 }
 //______________________________________________________________________________
@@ -473,6 +473,16 @@ boost::python::list scopeController::getScopeNumPVs_Py()
 //{
 //    return ENUM_TO_STRING(localInterface.getScopeState( name ));
 //}
+//______________________________________________________________________________________________
+std::map<HWC_ENUM::ILOCK_NUMBER,std::string> scopeController::getILockStatesStr(const std::string& name)const
+{
+    return localInterface.getILockStatesStr(name);
+}
+//______________________________________________________________________________________________
+std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> scopeController::getILockStates(const std::string& name)const
+{
+    return localInterface.getILockStates(name);
+}
 //______________________________________________________________________________
 double scopeController::get_CA_PEND_IO_TIMEOUT()const
 {

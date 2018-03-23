@@ -42,22 +42,24 @@ class VCscopes : public VCbase
         scopeController & virtual_VELA_BA2_Scope_Controller();
         scopeController & offline_VELA_BA2_Scope_Controller();
         scopeController & physical_VELA_BA2_Scope_Controller();
-        scopeController & virtual_CLARA_S01_Scope_Controller();
-        scopeController & offline_CLARA_S01_Scope_Controller();
-        scopeController & physical_CLARA_S01_Scope_Controller();
         scopeController & virtual_CLARA_PH1_Scope_Controller();
         scopeController & offline_CLARA_PH1_Scope_Controller();
         scopeController & physical_CLARA_PH1_Scope_Controller();
         scopeController & getScopeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
-
-#ifdef BUILD_DLL
-#endif // BUILD_DLL
 
     protected:
     private:
 
         std::map<scopeController*, std::pair<bool,bool>> messageStates;
         void updateMessageStates();
+
+        scopeController& getController(scopeController*& cont,
+                                       const std::string& conf1,
+                                       const std::string& conf2,
+                                       const std::string& name,
+                                       const bool shouldVM,
+                                       const bool shouldEPICS,
+                                       const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         scopeController * virtual_VELA_INJ_Scope_Controller_Obj;
         scopeController * offline_VELA_INJ_Scope_Controller_Obj;
@@ -68,86 +70,26 @@ class VCscopes : public VCbase
         scopeController * virtual_VELA_BA2_Scope_Controller_Obj;
         scopeController * offline_VELA_BA2_Scope_Controller_Obj;
         scopeController * physical_VELA_BA2_Scope_Controller_Obj;
-        scopeController * virtual_CLARA_S01_Scope_Controller_Obj;
-        scopeController * offline_CLARA_S01_Scope_Controller_Obj;
-        scopeController * physical_CLARA_S01_Scope_Controller_Obj;
         scopeController * virtual_CLARA_PH1_Scope_Controller_Obj;
         scopeController * offline_CLARA_PH1_Scope_Controller_Obj;
         scopeController * physical_CLARA_PH1_Scope_Controller_Obj;
 };
 
 #ifdef BUILD_DLL
-
-/// Boost has incorporated an "autolink" feature.
-/// http://www.codeproject.com/Articles/11597/Building-Boost-libraries-for-Visual-Studio
-/// or do it yourself!
-
 #define BOOST_LIB_DIAGNOSTIC
-
-/// FUNCTION OVERLOADING, if you have overloaded functions:
-/// Create a load of different function pointers and use them in the bindings
-/// For examples See magnets...
-
-/// As another example we have overloaded constructors to enable / disable messages
-/// and / or debug messages when instantiating. See here
-/// http://www.boost.org/doc/libs/1_59_0/libs/python/doc/tutorial/doc/html/python/exposing.html
-/// and beware of: http://stackoverflow.com/questions/8140155/boost-python-confused-about-similar-constructor
-
 
 using namespace boost::python;
 
 BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
 {
-
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
+
     /// Include ALL the enums you want to expose to Python
 
-//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > > ("v2_map")
-//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< double > > >());
-//
-//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >("vv2_map")
-//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >());
-//
-//    class_< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >("bool_map")
-//        .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, bool > >());
-
-    boost::python::type_info info = boost::python::type_id< std::vector< std::string > > ();
+    boost::python::type_info info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
     const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::vector< std::string > >("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string > > ())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::vector< std::string > >("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string > > ())
-            ;
-    }
-
-    info = boost::python::type_id< std::vector< double > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::vector< double > >("std_vector_double")
-            .def(vector_indexing_suite< std::vector< double > > ())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::vector< double > >("std_vector_double")
-            .def(vector_indexing_suite< std::vector< double > > ())
-            ;
-    }
-
-    info = boost::python::type_id< std::vector< std::vector< double > > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::vector< std::vector< double > > >("std_vector_vector_double")
-            .def(vector_indexing_suite< std::vector< std::vector< double > > > ())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::vector< std::vector< double > > >("std_vector_vector_double")
-            .def(vector_indexing_suite< std::vector< std::vector< double > > > ())
-            ;
-    }
 
     info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
     reg = boost::python::converter::registry::query(info);
@@ -184,28 +126,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .def( map_indexing_suite< std::map< scopeStructs::SCOPE_PV_TYPE, std::vector< std::vector< double > > > >())
             ;
     }
-
-//    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-//            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
-//            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-//            .value("PHYSICAL",  VELA_ENUM::MACHINE_MODE::PHYSICAL )
-//            ;
-//
-//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-//            .value("VELA_INJ",  VELA_ENUM::MACHINE_AREA::VELA_INJ  )
-//            .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
-//            .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
-//            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
-//            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_PH1 )
-//            .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
-//            .value("C2V",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-//            ;
-//
-//    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-//            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-//            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-//            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-            ;
 
     enum_<scopeStructs::SCOPE_PV_TYPE>("SCOPE_PV_TYPE")
             .value("TR1", scopeStructs::SCOPE_PV_TYPE::TR1 )
@@ -362,16 +282,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
 
 	boost::python::class_<scopeController, boost::python::bases<controller>, boost::noncopyable>
             ("scopeController","scopeController Doc String",boost::python::no_init)
-//            .def(boost::python::init<const std::string, const std::string, optional<  const bool, const bool > >())
-//            .def(boost::python::init< optional<const bool, const bool, const bool> >())
-//            .def("getScopeStateDefinition",         &scopeController::getScopeStateDefinition                   )
-//            .def("getILockStatesDefinition",        &scopeController::getILockStatesDefinition                  )
             .def("get_CA_PEND_IO_TIMEOUT",          &scopeController::get_CA_PEND_IO_TIMEOUT                    )
             .def("set_CA_PEND_IO_TIMEOUT",          &scopeController::set_CA_PEND_IO_TIMEOUT                    )
-//            .def("getScopeState",                   &velaChargeScopeController::getScopeState_Py                          )
-//            .def("getILockStates",                  &velaChargeScopeController::getILockStates_Py                         )
-//            .def("hasNoTrig",                       &velaChargeScopeController::hasNoTrig_Py, boost::python::args("name") )
-//            .def("hasTrig",                         &velaChargeScopeController::hasTrig_Py, boost::python::args("name")   )
             .def("getScopeTraceDataStruct",         &scopeController::getScopeTraceDataStruct, getScopeTraceDataStructString, return_value_policy<reference_existing_object>())
             .def("getScopeNumDataStruct",           &scopeController::getScopeNumDataStruct, getScopeNumDataStructString, return_value_policy<reference_existing_object>()  )
             .def("isMonitoringScopeTrace",          &scopeController::isMonitoringScopeTrace, isMonitoringTraceDocString           )
@@ -447,18 +359,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def("virtual_VELA_BA2_Scope_Controller",   &VCscopes::virtual_VELA_BA2_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_BA2_Scope_Controller",   &VCscopes::offline_VELA_BA2_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_VELA_BA2_Scope_Controller",  &VCscopes::physical_VELA_BA2_Scope_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_S01_Scope_Controller",  &VCscopes::virtual_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_S01_Scope_Controller",  &VCscopes::offline_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_S01_Scope_Controller", &VCscopes::physical_CLARA_S01_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("virtual_CLARA_PH1_Scope_Controller",  &VCscopes::virtual_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Scope_Controller",  &VCscopes::offline_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Scope_Controller", &VCscopes::physical_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("getScopeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
         ;
-
 };
 
 #endif // BUILD_DLL
-
 #endif // velaChrageScopeController_H
 

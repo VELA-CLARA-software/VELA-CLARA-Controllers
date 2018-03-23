@@ -58,7 +58,7 @@ void scopeInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfigFiles();
-    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+    UTL::STANDARD_PAUSE;
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
@@ -72,7 +72,7 @@ void scopeInterface::initialise()
                 /// start the monitors: set up the callback functions
                 monitorScopes();
                 /// The pause allows EPICS to catch up.
-                std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+                UTL::STANDARD_PAUSE;
             }
             else
                 message("The scopeInterface Read Config files, Not Starting EPICS Monitors" );
@@ -109,7 +109,7 @@ void scopeInterface::initScopeChids()
     int status = sendToEpics( "ca_create_channel", "Found scope chids.", "!!TIMEOUT!! Not all scope ChIds found." );
     if( status == ECA_TIMEOUT )
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); /// MAGIC NUMBERR
+        UTL::PAUSE_500;
         for( auto && it1 : scopeObj.traceObjects )
             for( auto && it2 : it1.second.pvMonStructs )
                 checkCHIDState( it2.second.CHID, it2.second.pvSuffix  );
@@ -126,14 +126,13 @@ void scopeInterface::addChannel( const std::string & pvRoot, scopeStructs::pvStr
 {
     std::stringstream s1;
     s1 << pvRoot << ":" << pv.pvSuffix;
-    ca_create_channel( s1.str().c_str(), 0, 0, 0, &pv.CHID );
+    ca_create_channel( s1.str().c_str(), nullptr, nullptr, UTL::PRIORITY_0, &pv.CHID );
     debugMessage( "Create channel to ", s1.str() );
 }
 //______________________________________________________________________________
 void scopeInterface::monitorScopes()
 {
     continuousMonitorStructs.clear();
-
     for( auto && it1 : scopeObj.traceObjects )
     {
         for( auto && it2 : it1.second.pvMonStructs )
@@ -158,8 +157,6 @@ void scopeInterface::monitorScopes()
             }
         }
     }
-
-//
     for( auto && it1 : scopeObj.numObjects )
     {
         for( auto && it2 : it1.second.pvMonStructs )
@@ -324,7 +321,6 @@ void scopeInterface::staticEntryrMonitor( const event_handler_args args )
 //______________________________________________________________________________
 void scopeInterface::updateTrace( scopeStructs::monitorStruct * ms, const event_handler_args args )
 {
-    /// this could be better, with the type passed from the config
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
     scopeStructs::scopeTraceData * td = reinterpret_cast< scopeStructs::scopeTraceData *> (ms -> val);
 
@@ -511,11 +507,6 @@ void scopeInterface::monitorTracesForNShots( size_t N )
             }
         }
         int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to scope Trace Monitors failed" );
-//        if ( status == ECA_NORMAL )
-//            for( auto && it : scopeObj.traceObjects )
-//                for( auto && it1: it.second.isMonitoringMap )
-//                    it1.second = true;
-//            monitoringTraces = true; /// interface base class member
     }
     else
     {
@@ -823,11 +814,6 @@ const std::string scopeInterface::getDiagTypeStr( const std::string & scopeName,
 //______________________________________________________________________________
 std::vector< std::vector< double > > scopeInterface::getScopeTraces( const std::string & name, scopeStructs::SCOPE_PV_TYPE pvType )
 {
-//    while( scopeObj.traceObjects.at( name ).isMonitoringMap.at( pvType ) )
-//    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 10 ));
-//    }
-
     return scopeObj.traceObjects.at( name ).traceData.at( pvType );
 }
 //______________________________________________________________________________
@@ -1124,15 +1110,6 @@ bool scopeInterface::isANumPV( scopeStructs::SCOPE_PV_TYPE pv )
         ret = true;
     return ret;
 }
-////______________________________________________________________________________
-//VELA_ENUM::TRIG_STATE scopeInterface::getScopeState( const  std::string & objName )
-//{
-//    VELA_ENUM::TRIG_STATE r =  VELA_ENUM::TRIG_STATE::TRIG_ERROR;
-//    auto iter = allScopeData.find( objName );
-//    if (iter != allScopeData.end() )
-//        r = iter -> second.scopeState;
-//    return r;
-//}
 //______________________________________________________________________________
 std::vector< double > scopeInterface::getAvgNoise( const std::string & name, scopeStructs::SCOPE_PV_TYPE & pvType, const int part1, const int part2 )
 {
@@ -1210,18 +1187,6 @@ double scopeInterface::getWCMQ()
             }
         }
     }
-    message(wcmQ);
-//    for( auto && it : scopeObj.traceObjects )
-//    {
-//        for( auto && it2 : it.second.pvMonStructs )
-//        {
-//            if( it2.second.diagType == scopeStructs::DIAG_TYPE::WCM && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
-//            {
-//                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
-//                wcmQ   = minVal * -250;
-//            }
-//        }
-//    }
     if( wcmQ == UTL::DUMMY_DOUBLE )
     {
         message("DID NOT FIND WCM AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
@@ -1290,17 +1255,6 @@ double scopeInterface::getFCUPQ()
             }
         }
     }
-//    for( auto && it : scopeObj.traceObjects )
-//    {
-//        for( auto && it2 : it.second.pvMonStructs )
-//        {
-//            if( it2.second.diagType == scopeStructs::DIAG_TYPE::FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
-//            {
-//                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
-//                fcupQ   = minVal * -250;
-//            }
-//        }
-//    }
     if( fcupQ == UTL::DUMMY_DOUBLE )
     {
         message("DID NOT FIND FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
@@ -1325,17 +1279,6 @@ double scopeInterface::getEDFCUPQ()
             }
         }
     }
-//    for( auto && it : scopeObj.traceObjects )
-//    {
-//        for( auto && it2 : it.second.pvMonStructs )
-//        {
-//            if( it2.second.diagType == scopeStructs::DIAG_TYPE::ED_FCUP && it2.second.scopeType == scopeStructs::SCOPE_TYPE::ARRAY )
-//            {
-//                minVal = getMinOfTraces( it.first, it2.second.pvType ).back();
-//                edfcupQ   = minVal * -100;
-//            }
-//        }
-//    }
     if( edfcupQ == UTL::DUMMY_DOUBLE )
     {
         message("DID NOT FIND ED-FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
@@ -1450,7 +1393,7 @@ bool scopeInterface::toggleAndWait( isOCMemFn f1, isOCMemFn f2, OCMemFn f3, cons
 
         while( CALL_MEMBER_FN(obj, f1)( name ) )
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); /// MAGIC NUMBER
+            UTL::PAUSE_300;
             time_t currentTime = time( 0 );
             time_t timeDif = currentTime - timeStart;
             if( timeDif > waitTime )

@@ -47,7 +47,7 @@ class scopeController : public controller
                          const std::string &configFileLocation2,
                          bool* show_messages,
                          bool* show_debug_messages,
-                         const bool shouldStartEPICS,
+                         const bool shouldStartEPICs,
                          const bool startVirtualMachine,
                          const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~scopeController();
@@ -150,6 +150,8 @@ class scopeController : public controller
 //        VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
 //        std::string getScopeStateStr( const std::string & name );
 
+        std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name)const;
+        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name)const;
         double get_CA_PEND_IO_TIMEOUT() const;
         void set_CA_PEND_IO_TIMEOUT( double val );
 
@@ -167,7 +169,7 @@ class scopeController : public controller
 
         std::vector< std::string > scopeNames;
 
-        const bool shouldStartEPICS;
+        const bool shouldStartEPICs;
         const HWC_ENUM::MACHINE_AREA machineArea;
 };
 
