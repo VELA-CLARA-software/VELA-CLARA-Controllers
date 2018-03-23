@@ -104,7 +104,7 @@ namespace HWC_ENUM
                                                         (RF_PROT)
                                                         (UNKNOWN_CONTROLLER_TYPE)
                                         )
-    /* INTERLOCK STATES (LEGACY FROM WHEN THOUGHT HARDWARE WAS HARMONISED*/
+    /* INTERLOCK STATES (LEGACY FROM WHEN WE THOUGHT HARDWARE WAS HARMONISED*/
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(ILOCK_NUMBER, (ILOCK_1)
                                                       (ILOCK_2)
                                                       (ILOCK_3)
@@ -177,14 +177,14 @@ namespace HWC_ENUM
         const chtype        CHTYPE;
     };
     /*
-        monitorStructs are recast as void* and passed to ca_create_supscription
-        static callback functions can then recast the monitorStruct and get
+        monitorStructs are recast as void* and passed to ca_create_supscription.
+        Static callback functions can then recast the monitorStruct and get
         access to all data required to update the values, etc., from within the
-        callback functions
+        callback function.
     */
     struct iLockMonitorStruct
     {
-        // ALWAYS proviude a default constructor
+        // ALWAYS provide a default constructor
         iLockMonitorStruct():
             objName(UTL::UNKNOWN_STRING),
             iLockState(nullptr),
@@ -195,14 +195,10 @@ namespace HWC_ENUM
         ILOCK_NUMBER iLockNumber;
         ILOCK_STATE* iLockState;
         /* an interface pointer allows us to access interface class
-           members from within the callback function */
+           members from within the static callback function */
         interface* interface;
-        evid                EVID;
+        evid       EVID;
     };
-
-//    typedef std::map<ILOCK_NUMBER,ILOCK_STATE> ilck_num_state_map;
-//    typedef std::map<ILOCK_NUMBER,std::string> ilck_num_str_map;
-
 }
 //______________________________________________________________________________
 //

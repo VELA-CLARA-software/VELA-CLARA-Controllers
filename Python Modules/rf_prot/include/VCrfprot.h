@@ -45,6 +45,7 @@ class VCrfprot : public VCbase
 
         gunProtController& getProtectionController(const HWC_ENUM::MACHINE_MODE mode,
                                                    const HWC_ENUM::MACHINE_AREA area);
+
     protected:
 
     private:
@@ -52,7 +53,19 @@ class VCrfprot : public VCbase
         gunProtController* physical_Gun_Protection_Controller_Obj;
         gunProtController* offline_Gun_Protection_Controller_Obj ;
 
-        std::map<gunProtController*, std::pair<bool,bool>> messageStates;
+        /* all get controller functions route here */
+        gunProtController& getController(gunProtController*& cont,
+                                         const std::string& conf,
+                                         const std::string& name,
+                                         const bool shouldVM,
+                                         const bool shouldEPICS,
+                                         const HWC_ENUM::MACHINE_AREA myMachineArea);
+        /*
+            map of showmessage showdebugmessage states
+            pointers to these bools are passed down the class
+            heirarchy
+        */
+        std::map<const gunProtController*, std::pair<bool,bool>> messageStates;
 
         void updateMessageStates();
 

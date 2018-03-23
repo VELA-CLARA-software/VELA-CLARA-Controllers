@@ -22,6 +22,8 @@
 //*/
 #ifndef _VCBASE_H_
 #define _VCBASE_H_
+// project includes
+#include "structs.h"
 // stl includes
 #include <iostream>
 #include <string>
@@ -48,7 +50,15 @@ class VCbase
 
         virtual void updateMessageStates() = 0;
 
+        // local copies
+        const HWC_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,
+                                     UNKNOWN_AREA,USER,CLARA_INJ,
+                                     CLARA_2_VELA,CLARA_S01,CLARA_S02,
+                                     CLARA_L01,RF_GUN,RF_L01;
+        const HWC_ENUM::MACHINE_MODE OFFLINE,VIRTUAL,PHYSICAL,
+                                     UNKNOWN_MACHINE_MODE;
     private:
+
 };
 //______________________________________________________________________________
 #endif // VCBASE_H

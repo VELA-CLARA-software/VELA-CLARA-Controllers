@@ -207,27 +207,35 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isVerbose_doc        ="Returns TRUE if verbose mode is enabled.";
         const char* isSilent_doc         ="Returns TRUE if silent mode is enabled.";
         const char* getControllerType_doc="Returns controller type.";
+        const char* debugMessagesOn_doc ="Sets debug messages ON for this controller";
+        const char* debugMessagesOff_doc="Sets debug messages OFF for this controller";
+        const char* messagesOn_doc      ="Sets messages ON for this controller";
+        const char* messagesOff_doc     ="Sets messages OFF for this controller";
+        const char* silence_doc         ="Sets silent mode for this controller";
+        const char* verbose_doc         ="Sets verbose mode for this controller";
+        const char* contName_doc        ="The name of the controller";
+        const char* typeName_doc        ="The type of the controller";
+
         class_<controller, bases<baseObject>, noncopyable>("controller", no_init)
-            .def("get_CA_PEND_IO_TIMEOUT",
-                 pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
-            .def("set_CA_PEND_IO_TIMEOUT",
-                 pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-            .def("getILockStatesStr",
-                 pure_virtual(&controller::getILockStatesStr     ))
-            .def("getILockStates",
-                 pure_virtual(&controller::getILockStates        ))
-            .def("getControllerType",
-                 &controller::getControllerType,getControllerType_doc)
-            .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc)
-            .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc          )
-            .def("isVerbose",       &controller::isVerbose,isVerbose_doc              )
-            .def("isSilent",        &controller::isSilent,isSilent_doc                )
-            .def("debugMessagesOn",&controller::debugMessagesOn,isDebugMessageOn_doc)
-            .def("debugMessagesOff",     &controller::debugMessagesOff,isMessageOn_doc          )
-            .def("messagesOn",       &controller::messagesOn,isVerbose_doc              )
-            .def("messagesOff",        &controller::messagesOff,isSilent_doc                )
-            .def("silence",        &controller::silence,isSilent_doc                )
-            .def("verbose",        &controller::verbose,isSilent_doc                )
+            .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
+            .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
+            .def("getILockStatesStr",     pure_virtual(&controller::getILockStatesStr     ))
+            .def("getILockStates",        pure_virtual(&controller::getILockStates))
+
+            .def_readonly("type",   &controller::controllerType, typeName_doc)
+            .def_readonly("name",   &controller::name, contName_doc          )
+
+            .def("getControllerType",&controller::getControllerType,getControllerType_doc)
+            .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc   )
+            .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc             )
+            .def("isVerbose",       &controller::isVerbose,isVerbose_doc                 )
+            .def("isSilent",        &controller::isSilent,isSilent_doc                   )
+            .def("debugMessagesOn", &controller::debugMessagesOn,debugMessagesOn_doc     )
+            .def("debugMessagesOff",&controller::debugMessagesOff,debugMessagesOff_doc   )
+            .def("messagesOn",      &controller::messagesOn,messagesOn_doc               )
+            .def("messagesOff",     &controller::messagesOff,messagesOff_doc             )
+            .def("silence",         &controller::silence,silence_doc                     )
+            .def("verbose",         &controller::verbose,verbose_doc                     )
             ;
         //
         // expose VCbase

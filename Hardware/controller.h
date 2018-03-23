@@ -43,6 +43,10 @@ class controller : public baseObject
 //        controller::controller(bool show_messages, bool show_debug_messages);
         controller(bool* show_messages,
                    bool* show_debug_messages,
+                   const HWC_ENUM::CONTROLLER_TYPE type,
+                   const std::string& name);
+        controller(bool* show_messages,
+                   bool* show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type);
         controller::controller(bool* show_messages, bool* show_debug_messages);
         ~controller();
@@ -60,6 +64,10 @@ class controller : public baseObject
         bool isMessageOn() const;
         bool isDebugMessageOn() const;
         const HWC_ENUM::CONTROLLER_TYPE controllerType;
+
+
+        const std::string name;
+
 
         HWC_ENUM::CONTROLLER_TYPE getControllerType() const;
 

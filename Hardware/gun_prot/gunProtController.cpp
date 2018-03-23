@@ -33,9 +33,11 @@ gunProtController::gunProtController(bool* show_messages,
                                      bool* show_debug_messages,
                                      const std::string& allGunProtsConf,
                                      const bool startVirtualMachine,
-                                     const bool shouldStartEPICs):
+                                     const bool shouldStartEPICs,
+                                     const std::string& name
+                                     ):
 shouldStartEPICs(shouldStartEPICs),
-controller(show_messages,show_debug_messages,CONTROLLER_TYPE::RF_PROT),
+controller(show_messages,show_debug_messages,CONTROLLER_TYPE::RF_PROT,name),
 localInterface(allGunProtsConf,
                startVirtualMachine,
                show_messages,

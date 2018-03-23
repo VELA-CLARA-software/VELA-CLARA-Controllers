@@ -57,39 +57,39 @@ gunProtController&
     VCrfprot::getProtectionController(const HWC_ENUM::MACHINE_MODE mode,
                                       const HWC_ENUM::MACHINE_AREA area)
 {
-    if(area == HWC_ENUM::VELA_INJ)
+    if(area == VELA_INJ)
     {
-        getProtectionController(mode, HWC_ENUM::RF_GUN);
+        getProtectionController(mode, RF_GUN);
     }
-    else if(area == HWC_ENUM::CLARA_INJ)
+    else if(area == CLARA_INJ)
     {
-        getProtectionController(mode, HWC_ENUM::RF_GUN);
+        getProtectionController(mode, RF_GUN);
     }
-    else if(area == HWC_ENUM::CLARA_L01)
+    else if(area == CLARA_L01)
     {
-        getProtectionController(mode, HWC_ENUM::RF_L01);
+        getProtectionController(mode, RF_L01);
     }
-    else if(mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::RF_GUN)
+    else if(mode == VIRTUAL && area == RF_GUN)
     {
         return virtual_Gun_Protection_Controller();
     }
-    else if(mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::RF_GUN)
+    else if(mode == PHYSICAL && area == RF_GUN)
     {
         return physical_Gun_Protection_Controller();
     }
-    else if(mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::RF_GUN)
+    else if(mode == OFFLINE && area == RF_GUN)
     {
         return offline_Gun_Protection_Controller();
     }
-    else if(mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::RF_L01)
+    else if(mode == VIRTUAL && area == RF_L01)
     {
         //return offline_Gun_Protection_Controller();
     }
-    else if(mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::RF_L01)
+    else if(mode == PHYSICAL && area == RF_L01)
     {
         //return offline_Gun_Protection_Controller();
     }
-    else if(mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::RF_L01)
+    else if(mode == OFFLINE && area == RF_L01)
     {
         //return offline_Gun_Protection_Controller();
     }
@@ -103,73 +103,66 @@ gunProtController&
 //______________________________________________________________________________
 gunProtController& VCrfprot::virtual_Gun_Protection_Controller()
 {
-    if(virtual_Gun_Protection_Controller_Obj)
-    {
-        std::cout << "virtual_Gun_Protection_Controller object already exists,"
-                  << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_Gun_Protection_Controller object"
-                  << std::endl;
-        messageStates[virtual_Gun_Protection_Controller_Obj].first  = shouldShowMessage;
-        messageStates[virtual_Gun_Protection_Controller_Obj].second = shouldShowDebugMessage;
-        virtual_Gun_Protection_Controller_Obj =
-            new gunProtController(&messageStates[virtual_Gun_Protection_Controller_Obj].first,
-                                  &messageStates[virtual_Gun_Protection_Controller_Obj].second,
-                                  allGunProtsConf,
-                                  withVM,
-                                  withEPICS);
-
-    }
-    return *virtual_Gun_Protection_Controller_Obj;
+    std::string name  = "virtual_Gun_Protection_Controller_Obj";
+    return getController(virtual_Gun_Protection_Controller_Obj,
+                         allGunProtsConf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         RF_GUN);
 }
 //______________________________________________________________________________
 gunProtController& VCrfprot::physical_Gun_Protection_Controller()
 {
-    if(physical_Gun_Protection_Controller_Obj)
-    {
-        std::cout << "physical_Gun_Protection_Controller object already exists,"
-                  << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_Gun_Protection_Controller object"
-                  << std::endl;
-        messageStates[physical_Gun_Protection_Controller_Obj].first  = shouldShowMessage;
-        messageStates[physical_Gun_Protection_Controller_Obj].second = shouldShowDebugMessage;
-        physical_Gun_Protection_Controller_Obj =
-            new gunProtController(&messageStates[physical_Gun_Protection_Controller_Obj].first,
-                                  &messageStates[physical_Gun_Protection_Controller_Obj].second,
-                                  allGunProtsConf,
-                                  withoutVM,
-                                  withEPICS);
-        //std::map<gunProtController*, std::pair<bool,bool>> messageStates;
-    }
-    return *physical_Gun_Protection_Controller_Obj;
+    std::string name  = "physical_Gun_Protection_Controller_Obj";
+    return getController(physical_Gun_Protection_Controller_Obj,
+                         allGunProtsConf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         RF_GUN);
 }
 //______________________________________________________________________________
 gunProtController& VCrfprot::offline_Gun_Protection_Controller()
 {
-    if(offline_Gun_Protection_Controller_Obj)
+    std::string name  = "offline_Gun_Protection_Controller_Obj";
+    return getController(offline_Gun_Protection_Controller_Obj,
+                         allGunProtsConf,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         RF_GUN);
+}
+//______________________________________________________________________________
+gunProtController& VCrfprot::getController(gunProtController*& cont,
+                                           const std::string& conf,
+                                           const std::string & name,
+                                           const bool shouldVM,
+                                           const bool shouldEPICS,
+                                           const HWC_ENUM::MACHINE_AREA myMachineArea)
+{
+    if(cont)
     {
-        std::cout << "offline_Gun_ProtectionController object already exists,"
-                  << std::endl;
+        std::cout << name  <<" object already exists," <<std::endl;
     }
     else
     {
-        std::cout << "Creating offline_Gun_ProtectionController object"
-                  << std::endl;
-        messageStates[offline_Gun_Protection_Controller_Obj].first  = shouldShowMessage;
-        messageStates[offline_Gun_Protection_Controller_Obj].second = shouldShowDebugMessage;
-        offline_Gun_Protection_Controller_Obj =
-            new gunProtController(&messageStates[offline_Gun_Protection_Controller_Obj].first,
-                                  &messageStates[offline_Gun_Protection_Controller_Obj].second,
-                                  allGunProtsConf,
-                                  withoutVM,
-                                  withoutEPICS);
+        std::cout <<"Creating " <<name <<" object" <<std::endl;
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+        switch(myMachineArea)
+        {
+
+            case HWC_ENUM::MACHINE_AREA::RF_GUN:
+                cont = new gunProtController(&messageStates.at(cont).first,
+                                             &messageStates.at(cont).second,
+                                             conf, shouldVM, shouldEPICS,name);
+                break;
+            default:
+                std::cout << name  <<" can't be created just yet," <<std::endl;
+        }
     }
-    return *offline_Gun_Protection_Controller_Obj;
+    return *cont;
 }
 //______________________________________________________________________________
 void VCrfprot::updateMessageStates()

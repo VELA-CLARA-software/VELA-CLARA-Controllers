@@ -40,13 +40,14 @@ class gunProtController : public controller
         gunProtController();
         gunProtController(bool* show_messages,
                           bool* show_debug_messages,
-                          const std::string &allGunProtsConf,
+                          const std::string& allGunProtsConf,
                           const bool startVirtualMachine,
-                          const bool shouldStartEPICs );
+                          const bool shouldStartEPICs,
+                          const std::string& name);
         ~gunProtController();
 
-        bool isGood(const std::string & name)const;
-        bool isNotGood(const std::string & name)const;
+        bool isGood(const std::string& name)const;
+        bool isNotGood(const std::string& name)const;
         bool isBad(const std::string & name)const;
 
         bool reset(const std::string& name)const;
