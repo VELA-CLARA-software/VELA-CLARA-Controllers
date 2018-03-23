@@ -219,8 +219,8 @@ namespace BOOST_PYTHON_INCLUDE
         class_<controller, bases<baseObject>, noncopyable>("controller", no_init)
             .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
             .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-            .def("getILockStatesStr",     pure_virtual(&controller::getILockStatesStr     ))
-            .def("getILockStates",        pure_virtual(&controller::getILockStates))
+//            .def("getILockStatesStr",     pure_virtual(&controller::getILockStatesStr     ))
+//            .def("getILockStates",        pure_virtual(&controller::getILockStates))
 
             .def_readonly("type",   &controller::controllerType, typeName_doc)
             .def_readonly("name",   &controller::name, contName_doc          )

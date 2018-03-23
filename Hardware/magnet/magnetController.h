@@ -20,6 +20,7 @@
 #include <map>
 // project
 #include "magnetInterface.h"
+#include "magnetStructs.h"
 #include "controller.h"
 // boost.python
 #ifdef BUILD_DLL
@@ -34,15 +35,20 @@
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/overloads.hpp>
 #endif
-
+//______________________________________________________________________________
 class magnetController : public controller
 {
     public:
         magnetController();
-        /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
-        magnetController(const bool show_messages,    const bool show_debug_messagese,
-                         const std::string &magConf, const bool startVirtualMachine,
-                         const bool shouldStartEPICs, const HWC_ENUM::MACHINE_AREA myMachineArea);
+
+        magnetController(bool* show_messages,
+                         bool* show_debug_messagese,
+                         const std::string &magConf,
+                         const bool startVirtualMachine,
+                         const bool shouldStartEPICs,
+                         const HWC_ENUM::MACHINE_AREA myMachineArea,
+                         const std::string& name
+                         );
 
         ~magnetController();
 

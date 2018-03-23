@@ -17,23 +17,19 @@
 #include <iostream>
 // stl
 magnetController::magnetController(
-    const bool show_messages,
-    const bool show_debug_messages,
+    bool* show_messages,
+    bool* show_debug_messages,
     const std::string & magConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
-    const HWC_ENUM::MACHINE_AREA myMachineArea):
-controller(show_messages, show_debug_messages),
-localInterface(magConf, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea),
+    const HWC_ENUM::MACHINE_AREA myMachineArea,
+    const std::string& name
+    ):
+controller(show_messages,show_debug_messages,HWC_ENUM::CONTROLLER_TYPE::MAGNET,name),
+localInterface(magConf, startVirtualMachine, SHOW_MESSAGES, SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
-{
-//    if(shouldStartEPICs)
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
-//    initialise();
-}
+{}
 //______________________________________________________________________________
 magnetController::~magnetController(){}    //dtor
 //______________________________________________________________________________

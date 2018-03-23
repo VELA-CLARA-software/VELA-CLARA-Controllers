@@ -136,7 +136,7 @@ void magnetInterface::initialise()
                 "Failed to read the config file.");
     }
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
 bool magnetInterface::initObjects()
 {
     bool magDatSuccess = configReader.getMagData(allMagnetData);
@@ -146,7 +146,10 @@ bool magnetInterface::initObjects()
        this allows for flavour switching functions, such as switchON etc..
     */
     for(auto&& it:allMagnetData)
+    {
         it.second.machineArea = myMachineArea;
+        it.second.interface   = this;
+    }
     return magDatSuccess;
 }
 //______________________________________________________________________________
@@ -1364,7 +1367,7 @@ using namespace magnetStructs;
 magnetStateStruct magnetInterface::getDBURT(const std::string& fileName)const
 {
     /// create a dburt object
-    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myMachineArea);
+    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES,myMachineArea);
     return dbr.readDBURT(fileName);
 }
 //______________________________________________________________________________
@@ -1429,7 +1432,7 @@ bool magnetInterface::writeDBURT(const magnetStructs::magnetStateStruct& ms,
                                  const std::string& keywords)
 {
     // create a dburt object
-    dburt dbr(SHOW_DEBUG_MESSAGES_PTR, SHOW_MESSAGES_PTR,myMachineArea);
+    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES,myMachineArea);
     // write the file with the dburt  and return the result
     return dbr.writeDBURT(ms, fileName, comments);
 }

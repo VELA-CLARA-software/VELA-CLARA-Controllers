@@ -78,9 +78,12 @@ class VCmagnets : public VCbase
         magnetController* offline_USER_Magnet_Controller_Obj;
         magnetController* physical_USER_Magnet_Controller_Obj;
 
-        magnetController& getController(magnetController * cont,const std::string& conf,
-                                       const std::string & name, const bool shouldVM, const bool shouldEPICS,
-                                       const HWC_ENUM::MACHINE_AREA myMachineArea);
+        magnetController& getController(magnetController*& cont,
+                                        const std::string& conf,
+                                        const std::string & name,
+                                        const bool shouldVM,
+                                        const bool shouldEPICS,
+                                        const HWC_ENUM::MACHINE_AREA myMachineArea);
 
 //        magnetController& getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area);
 
@@ -92,10 +95,13 @@ class VCmagnets : public VCbase
         magnetController * offline_VELA_BA2_Magnet_Controller_Obj;
         magnetController * physical_VELA_BA2_Magnet_Controller_Obj;
 
-        std::map<gunProtController*, std::pair<bool,bool>> messageStates;
+        std::map<magnetController*, std::pair<bool,bool>> messageStates;
         void updateMessageStates();
 
-
+        const std::string CLARA_PH1_CONFIG,
+                          VELA_INJ_MAG_CONFIG,
+                          VELA_BA1_MAG_CONFIG,
+                          VELA_BA2_MAG_CONFIG;
 };
 
 typedef double doub;
@@ -263,6 +269,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def_readonly("magType",      &magnetStructs::magnetObject::magType)
         .def_readonly("psuState",     &magnetStructs::magnetObject::psuState)
         .def_readonly("siWithPol",    &magnetStructs::magnetObject::siWithPol)
+        .add_property("SI", &magnetStructs::magnetObject::siWithPol,
+                            &magnetStructs::magnetObject::setSI)
+        .add_property("PSU",&magnetStructs::magnetObject::psuState,
+                            &magnetStructs::magnetObject::setPSU)
         .def_readonly("riWithPol",    &magnetStructs::magnetObject::riWithPol)
         .def_readonly("riTolerance",  &magnetStructs::magnetObject::riTolerance)
         .def_readonly("name",         &magnetStructs::magnetObject::name)

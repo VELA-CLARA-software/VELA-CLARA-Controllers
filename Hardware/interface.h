@@ -61,8 +61,8 @@ class interface : public baseObject
            interface (making this an abstract base class)
            This also means the destructor need not be protected
         */
-        virtual map_ilck_string getILockStatesStr(const std::string& name) const = 0;
-        virtual map_ilck_state  getILockStates   (const std::string& name) const = 0;
+        //virtual map_ilck_string getILockStatesStr(const std::string& name) const = 0;
+        //virtual map_ilck_state  getILockStates   (const std::string& name) const = 0;
 
         double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);

@@ -65,7 +65,6 @@ class controller : public baseObject
         bool isDebugMessageOn() const;
         const HWC_ENUM::CONTROLLER_TYPE controllerType;
 
-
         const std::string name;
 
 
@@ -76,10 +75,10 @@ class controller : public baseObject
            (making this an abstract base class)
            This also means the destructor need not be protected
         */
-        virtual std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE>
-                getILockStates(const std::string& name)const = 0;
-        virtual std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-            getILockStatesStr(const std::string & name)const = 0;
+        //virtual std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE>
+        //        getILockStates(const std::string& name)const = 0;
+        //virtual std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+        //    getILockStatesStr(const std::string & name)const = 0;
         virtual double get_CA_PEND_IO_TIMEOUT() const = 0;
         virtual void   set_CA_PEND_IO_TIMEOUT(double val) = 0;
 

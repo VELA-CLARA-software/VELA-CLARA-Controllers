@@ -19,9 +19,8 @@
 #include <cadef.h>
 #endif
 
+////______________________________________________________________________________
 class magnetInterface;
-
-
 namespace magnetStructs
 {
     struct degaussStruct;
@@ -31,15 +30,31 @@ namespace magnetStructs
     struct magnetStateStruct;
     struct monitorStruct;
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_TYPE, (QUAD) (DIP) (HCOR) (VCOR) (BSOL) (SOL) (SEXT)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_TYPE, (QUAD)
+                                                  (DIP)
+                                                  (HCOR)
+                                                  (VCOR)
+                                                  (BSOL)
+                                                  (SOL)
+                                                  (SEXT)
                                                   (UNKNOWN_MAGNET_TYPE))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_REV_TYPE, (NR) (BIPOLAR) (NR_GANGED) (POS) (UNKNOWN_MAG_REV_TYPE))
-    /// Yeah NR_GANGED, just when you thought it was already too complicated
+    /*
+        since EPICS integration has started being a thing
+        controls group aresimplfying th einterface to hardware
+        and we won't have to worry too much about reverse types
+    */
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_REV_TYPE,
+                                        (NR)
+                                        (BIPOLAR)
+                                        (NR_GANGED)     /// Yeah NR_GANGED, just when you thought it was already too complicated
+
+                                        (POS)
+                                        (UNKNOWN_MAG_REV_TYPE))
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PV_TYPE, (SETI) (GETSETI) (READI) (RPOWER) (SPOWER) (RILK)
                                                      (UNKNOWN_MAG_PV_TYPE))
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE,
-                                        (ON)
                                         (OFF)
+                                        (ON)
                                         (TIMING)
                                         (ERROR)
                                         (NONE)
@@ -64,6 +79,8 @@ namespace magnetStructs
     const std::string UNKNOWN_MAGNET_BRANCH = "UNKNOWN_MAGNET_BRANCH";
     const std::string UNKNOWN_MEASUREMENT_DATA_LOCATION = "UNKNOWN_MEASUREMENT_DATA_LOCATION";
 
+    //struct  magnetObject
+
     struct  magnetObject
     {
         magnetObject():magType(MAG_TYPE::UNKNOWN_MAGNET_TYPE),
@@ -85,7 +102,8 @@ namespace magnetStructs
                        minI(UTL::DUMMY_DOUBLE),
                        psuRoot(SAME_AS_PV_ROOT),
                        SETIequalREADI(false),
-                       psuState(ERROR)
+                       psuState(ERROR),
+                       interface(nullptr)
                        {}
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_PSU_STATE psuState;
@@ -97,8 +115,11 @@ namespace magnetStructs
                riWithPol, riTolerance, position, magneticLength, degTolerance, maxI, minI;
         std::string name, pvRoot, psuRoot, manufacturer, serialNumber, measurementDataLocation,magnetBranch;
         std::vector<double> degValues, fieldIntegralCoefficients;
-        size_t numIlocks,numDegaussSteps, maxWaitTime, numDegaussElements;
+        size_t numIlocks, numDegaussSteps, maxWaitTime, numDegaussElements;
         MAG_ILOCK_STATE iLock;
+        magnetInterface* interface;
+        bool setSI(const double v);
+        bool setPSU(const MAG_PSU_STATE s);
         std::map<MAG_PV_TYPE, pvStruct> pvMonStructs;
         std::map<MAG_PV_TYPE, pvStruct> pvComStructs;
     };

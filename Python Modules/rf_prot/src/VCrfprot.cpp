@@ -150,16 +150,9 @@ gunProtController& VCrfprot::getController(gunProtController*& cont,
         std::cout <<"Creating " <<name <<" object" <<std::endl;
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
-        switch(myMachineArea)
-        {
-
-            case HWC_ENUM::MACHINE_AREA::RF_GUN:
-                cont = new gunProtController(&messageStates.at(cont).first,
-                                             &messageStates.at(cont).second,
-                                             conf, shouldVM, shouldEPICS,name);
-                break;
-            default:
-                std::cout << name  <<" can't be created just yet," <<std::endl;
+        cont = new gunProtController(&messageStates.at(cont).first,
+                                     &messageStates.at(cont).second,
+                                     conf, shouldVM, shouldEPICS,name);
         }
     }
     return *cont;
