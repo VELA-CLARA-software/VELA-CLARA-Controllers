@@ -12,12 +12,15 @@
 #include <algorithm>
 #include <ctype.h>
 
-scopeConfigReader::scopeConfigReader( const std::string & scopeConf1, const std::string & scopeConf2,
-                                      const bool *show_messages_ptr, const bool *show_debug_messages_ptr,
+scopeConfigReader::scopeConfigReader( const std::string & scopeConf1,
+                                      const std::string & scopeConf2,
+                                      const bool* show_messages_ptr,
+                                      const bool* show_debug_messages_ptr,
                                       const bool startVirtualMachine ):
-scopeConf1(scopeConf1), scopeConf2(scopeConf2),
-configReader( show_messages_ptr, show_debug_messages_ptr ),
-usingVirtualMachine(startVirtualMachine)
+scopeConf1( scopeConf1 ),
+scopeConf2( scopeConf2 ),
+startVirtualMachine( startVirtualMachine ),
+configReader(scopeConf1, scopeConf2, show_messages_ptr, show_debug_messages_ptr )
 {
 
 }
@@ -139,7 +142,7 @@ void scopeConfigReader::addToScopeNumObjectsV1( const std::vector<std::string> &
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
-        if( usingVirtualMachine )
+        if( startVirtualMachine )
             scopeNumObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
         else
             scopeNumObjects.back().pvRoot = keyVal[ 1 ];
@@ -162,7 +165,7 @@ void scopeConfigReader::addToScopeTraceDataObjectsV1( const std::vector<std::str
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
-        if( usingVirtualMachine )
+        if( startVirtualMachine )
             scopeTraceDataObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
         else
             scopeTraceDataObjects.back().pvRoot = keyVal[ 1 ];
@@ -360,15 +363,15 @@ scopeStructs::DIAG_TYPE scopeConfigReader::getDiagType( const std::string & val 
     scopeStructs::DIAG_TYPE r;
 
     if( val == UTL::WCM )
-        r = VELA_ENUM::WCM;
+        r = scopeStructs::DIAG_TYPE::WCM;
     else if( val == UTL::ICT1 )
-        r = VELA_ENUM::ICT1;
+        r = scopeStructs::DIAG_TYPE::ICT1;
     else if( val == UTL::ICT2 )
-        r = VELA_ENUM::ICT2;
+        r = scopeStructs::DIAG_TYPE::ICT2;
     else if( val == UTL::ED_FCUP )
-        r = VELA_ENUM::ED_FCUP;
+        r = scopeStructs::DIAG_TYPE::ED_FCUP;
     else if( val == UTL::FCUP )
-        r = VELA_ENUM::FCUP;
+        r = scopeStructs::DIAG_TYPE::FCUP;
 
     return r;
 }
@@ -378,9 +381,9 @@ scopeStructs::SCOPE_NAME scopeConfigReader::getScopeName( const std::string & va
     scopeStructs::SCOPE_NAME r;
 
     if( val == UTL::CLARASCOPE01 )
-        r = scopeStructs::CLARASCOPE01;
+        r = scopeStructs::SCOPE_NAME::CLARASCOPE01;
     else if( val == UTL::VELASCOPE02 )
-        r = scopeStructs::VELASCOPE02;
+        r = scopeStructs::SCOPE_NAME::VELASCOPE02;
     else
         r = scopeStructs::UNKNOWN_SCOPE_NAME;
 

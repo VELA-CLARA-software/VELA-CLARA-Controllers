@@ -13,21 +13,16 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
 #include "scopeController.h"
-// stl
-#include <iostream>
-// djs
-#include "scopeInterface.h"
-
 //______________________________________________________________________________
 scopeController::scopeController( const std::string &configFileLocation1,
                                   const std::string &configFileLocation2,
-                                  const bool show_messages,
-                                  const bool show_debug_messages,
+                                  bool* show_messages,
+                                  bool* show_debug_messages,
                                   const bool shouldStartEPICS,
                                   const bool startVirtualMachine,
-                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
-controller( show_messages, show_debug_messages ),
-localInterface( configFileLocation1, configFileLocation2, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS, startVirtualMachine, myMachineArea ),
+                                  HWC_ENUM::MACHINE_AREA myMachineArea ):
+controller( show_messages, show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::SCOPE ),
+localInterface( configFileLocation1, configFileLocation2, show_messages, show_debug_messages, shouldStartEPICS, startVirtualMachine, myMachineArea ),
 shouldStartEPICS( shouldStartEPICS ),
 machineArea( myMachineArea )
 {
@@ -479,17 +474,7 @@ boost::python::list scopeController::getScopeNumPVs_Py()
 //    return ENUM_TO_STRING(localInterface.getScopeState( name ));
 //}
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > scopeController::getILockStates( const std::string & objName )
-{
-    return localInterface.getILockStates( objName );
-}
-//______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > scopeController::getILockStatesStr( const std::string & objName )
-{
-    return localInterface.getILockStatesStr( objName );
-}
-//______________________________________________________________________________
-double scopeController::get_CA_PEND_IO_TIMEOUT()
+double scopeController::get_CA_PEND_IO_TIMEOUT()const
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }

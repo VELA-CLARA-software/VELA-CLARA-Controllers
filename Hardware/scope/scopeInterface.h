@@ -18,6 +18,7 @@
 #include "interface.h"
 #include "scopeStructs.h"
 #include "scopeConfigReader.h"
+#include "structs.h"
 //stl
 #include <vector>
 #include <string>
@@ -30,10 +31,14 @@ class scopeInterface : public interface
 
         /// Not a singleton, two construction methods....
 
-        scopeInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        scopeInterface( const std::string & configFileLocation1, const std::string & configFileLocation2,
-                        const bool* show_messages_ptr, const bool * show_debug_messages_ptr, const bool shouldStartEPICS,
-                        const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
+        scopeInterface::scopeInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
+        scopeInterface( const std::string & configFileLocation1,
+                        const std::string & configFileLocation2,
+                        const bool* show_messages_ptr,
+                        const bool* show_debug_messages_ptr,
+                        const bool shouldStartEPICS,
+                        const bool startVirtualMachine,
+                        const HWC_ENUM::MACHINE_AREA myMachineArea );
 
         bool monitoringTraces = false;
         bool monitoringNums = false;
@@ -109,17 +114,14 @@ class scopeInterface : public interface
 
         scopeStructs::scopeObject getScopeObject( const std::string & scopeName );
 
-        VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
-        scopeStructs::scopeObject scopeObject;
-
         void killTraceCallBack( scopeStructs::monitorStruct * ms );
         void killNumCallBack( scopeStructs::monitorStruct * ms );
         bool killTraceMonitors();
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
 
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & scopeName );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >        getILockStatesStr( const std::string & scopeName );
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & scopeName )const;
+        std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >        getILockStatesStr( const std::string & scopeName )const;
 
     protected:
     private:
@@ -127,10 +129,7 @@ class scopeInterface : public interface
         /// called from constructor to set-up chids, montiros, etc.
 
         void initialise();
-
-        const bool shouldStartEPICS;
-        const bool startVM;
-        const VELA_ENUM::MACHINE_AREA machineArea;
+        const HWC_ENUM::MACHINE_AREA machineArea;
         scopeConfigReader configReader;
 
         bool initScopeObjects();

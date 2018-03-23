@@ -38,12 +38,12 @@ class scopeConfigReader : public configReader
         /// base as the functions addToObjectsV1() etc. are in derived classes
         /// This seems like a "nice" use of function pointers
 
+        const std::string scopeConf1;
+        const std::string scopeConf2;
+        const bool startVirtualMachine;
+
         typedef void (scopeConfigReader::*aKeyValMemFn)( const std::vector<std::string> &keyVal );
         bool readConfig( scopeConfigReader & obj, const std::string fn, aKeyValMemFn f1, aKeyValMemFn f2, aKeyValMemFn f3 );
-
-        const std::string & scopeConf1;
-        const std::string & scopeConf2;
-        const bool usingVirtualMachine;
 
         /// These are read into vectors as you can use the .back() member function, which i find handy.
         /// once all the data is read in we can construct the final map of objects

@@ -90,8 +90,8 @@ namespace scopeStructs
                            numShots( -2 ),
                            buffer( UTL::BUFFER_TEN ) {}
         std::string                          name, pvRoot;
-        scopeStructs::DIAG_TYPE                 diagType;
-        SCOPE_NAME                scopeName;
+        scopeStructs::DIAG_TYPE              diagType;
+        SCOPE_NAME                           scopeName;
         bool                                 isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
         bool                                 isMonitoringTr1, isMonitoringTr2, isMonitoringTr3, isMonitoringTr4;
         double                               timebase, noiseFloor;
@@ -118,8 +118,8 @@ namespace scopeStructs
 //        scopeNumObject numObject;
         std::map< std::string, scopeNumObject > numObjects;
         std::map< std::string, scopeTraceData > traceObjects; /// There are four scope trace objects
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > iLockStates;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
 
     };
 

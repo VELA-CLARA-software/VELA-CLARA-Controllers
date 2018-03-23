@@ -32,14 +32,12 @@
 scopeInterface::scopeInterface( const std::string & configFileLocation1,
                                 const std::string & configFileLocation2,
                                 const bool* show_messages_ptr,
-                                const bool * show_debug_messages_ptr,
-                                const bool shouldStartEPICS,
+                                const bool* show_debug_messages_ptr,
+                                const bool shouldStartEPICs,
                                 const bool startVirtualMachine,
-                                const VELA_ENUM::MACHINE_AREA myMachineArea ):
+                                const HWC_ENUM::MACHINE_AREA myMachineArea ):
 configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-shouldStartEPICS( shouldStartEPICS ),
-startVM( startVirtualMachine ),
+interface( show_messages_ptr, show_debug_messages_ptr, shouldStartEPICs ),
 machineArea( myMachineArea )
 {
     initialise();
@@ -67,7 +65,7 @@ void scopeInterface::initialise()
         bool getDataSuccess = initScopeObjects();
         if( getDataSuccess )
         {
-            if( shouldStartEPICS )
+            if( shouldStartEPICs )
             {
                 /// subscribe to the channel ids
                 initScopeChids();
@@ -1423,18 +1421,18 @@ std::vector< std::string > scopeInterface::getScopeNumPVs()
     return scopeNames;
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > scopeInterface::getILockStates( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > scopeInterface::getILockStates( const std::string & objName )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > r;
     auto iter = allScopeData.find( objName );
     if( iter != allScopeData.end() )
         r = iter -> second.iLockStates;
     return r;
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  scopeInterface::getILockStatesStr( const std::string & name )
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >  scopeInterface::getILockStatesStr( const std::string & name )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, std::string  > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, std::string  > r;
     auto iter = allScopeData.find( name );
     if( iter != allScopeData.end() )
         for( auto it : iter -> second.iLockStates )

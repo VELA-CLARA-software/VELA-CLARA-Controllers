@@ -43,9 +43,13 @@ class scopeController : public controller
         /// we have overloaded constructors to specify config-file location
 
         scopeController();// const bool show_messages = true, const bool show_debug_messages = true );
-        scopeController( const std::string &configFileLocation1, const std::string &configFileLocation2,
-                         const bool show_messages, const bool show_debug_messages, const bool shouldStartEPICS,
-                         const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
+        scopeController( const std::string &configFileLocation1,
+                         const std::string &configFileLocation2,
+                         bool* show_messages,
+                         bool* show_debug_messages,
+                         const bool shouldStartEPICS,
+                         const bool startVirtualMachine,
+                         const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~scopeController();
 //
 //        bool hasTrig( const std::string & scopeName );
@@ -146,15 +150,11 @@ class scopeController : public controller
 //        VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
 //        std::string getScopeStateStr( const std::string & name );
 
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT() const;
         void set_CA_PEND_IO_TIMEOUT( double val );
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
         /// write a method that returns string version of enums using ENUM_TO_STRING
-
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & objName );
-
 
     protected:
     private:
@@ -168,7 +168,7 @@ class scopeController : public controller
         std::vector< std::string > scopeNames;
 
         const bool shouldStartEPICS;
-        const VELA_ENUM::MACHINE_AREA machineArea;
+        const HWC_ENUM::MACHINE_AREA machineArea;
 };
 
 

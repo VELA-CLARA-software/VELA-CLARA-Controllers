@@ -3,11 +3,15 @@
 
 // project
 #include "scopeController.h"
+#include "scopeStructs.h"
 #include "VCheader.h"
+#include "VCbase.h"
+#include "configDefinitions.h"
 // stl
 #include <string>
 #include <vector>
 #include <map>
+#include <utility>
 #include <list>
 //boost
 #include <boost/python/detail/wrap_python.hpp>
@@ -22,13 +26,10 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/docstring_options.hpp>
-
-class VCscopes// : public beamPositionMonitorController
+//______________________________________________________________________________
+class VCscopes : public VCbase
 {
     public:
-
-        /// we have overloaded constructors to specify config-file location
-//        velaINJBeamPositionMonitorController( const bool show_messages = true, const bool show_debug_messages = true, const std::string configFileLocation );
         VCscopes();
         ~VCscopes();
 
@@ -47,12 +48,7 @@ class VCscopes// : public beamPositionMonitorController
         scopeController & virtual_CLARA_PH1_Scope_Controller();
         scopeController & offline_CLARA_PH1_Scope_Controller();
         scopeController & physical_CLARA_PH1_Scope_Controller();
-        scopeController & getScopeController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
-
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+        scopeController & getScopeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
 
 #ifdef BUILD_DLL
 #endif // BUILD_DLL
@@ -60,19 +56,8 @@ class VCscopes// : public beamPositionMonitorController
     protected:
     private:
 
-        bool withEPICS;
-        bool withoutEPICS;
-        bool withVM;
-        bool withoutVM;
-        bool showDebugMessages;
-        bool showMessages;
-        VELA_ENUM::MACHINE_AREA VELA_INJ;
-        VELA_ENUM::MACHINE_AREA VELA_BA1;
-        VELA_ENUM::MACHINE_AREA VELA_BA2;
-        VELA_ENUM::MACHINE_AREA CLARA_S01;
-        VELA_ENUM::MACHINE_AREA CLARA_PH1;
-        VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
-        VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
+        std::map<scopeController*, std::pair<bool,bool>> messageStates;
+        void updateMessageStates();
 
         scopeController * virtual_VELA_INJ_Scope_Controller_Obj;
         scopeController * offline_VELA_INJ_Scope_Controller_Obj;
@@ -89,7 +74,6 @@ class VCscopes// : public beamPositionMonitorController
         scopeController * virtual_CLARA_PH1_Scope_Controller_Obj;
         scopeController * offline_CLARA_PH1_Scope_Controller_Obj;
         scopeController * physical_CLARA_PH1_Scope_Controller_Obj;
-
 };
 
 #ifdef BUILD_DLL
@@ -111,9 +95,6 @@ class VCscopes// : public beamPositionMonitorController
 
 
 using namespace boost::python;
-
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
 
 BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
 {
@@ -456,7 +437,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
             .def("verbose",                         &scopeController::verbose                                )
 		;
 
-    boost::python::class_<VCscopes,boost::noncopyable> ("init")
+    boost::python::class_<VCscopes,boost::python::bases<VCbase>,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_Scope_Controller",   &VCscopes::virtual_VELA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_Scope_Controller",   &VCscopes::offline_VELA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_VELA_INJ_Scope_Controller",  &VCscopes::physical_VELA_INJ_Scope_Controller, return_value_policy<reference_existing_object>())
@@ -473,10 +454,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
         .def("offline_CLARA_PH1_Scope_Controller",  &VCscopes::offline_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Scope_Controller", &VCscopes::physical_CLARA_PH1_Scope_Controller, return_value_policy<reference_existing_object>())
         .def("getScopeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCscopes::setQuiet )
-        .def("setVerbose",       &VCscopes::setVerbose )
-        .def("setMessage",       &VCscopes::setMessage )
-        .def("setDebugMessage",  &VCscopes::setDebugMessage )
         ;
 
 };
