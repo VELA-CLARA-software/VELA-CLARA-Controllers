@@ -49,12 +49,14 @@ class interface : public baseObject
         ~interface();
 
         /* typedefs for long type names */
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
-                    map_ilck_state;
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-                    map_ilck_string;
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct>
-                    map_ilck_pvstruct;
+        using map_ilck_state =
+            std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
+                    ;
+        using map_ilck_string =
+            std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+                    ;
+        using map_ilck_pvstruct =
+            std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct>;
         /* These pure virtual methods MUST be overwritten in the derived
            interface (making this an abstract base class)
            This also means the destructor need not be protected

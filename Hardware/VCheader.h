@@ -42,18 +42,18 @@
 #include <boost/python/scope.hpp>
 #include <boost/python/manage_new_object.hpp>
 /* some typdefs */
-typedef double doub;
-typedef const double cdou;
-typedef std::vector<double> vecd;
-typedef std::vector<std::vector<double>> vvcd;
-typedef const std::vector<double> cved;
-typedef const size_t csiz;
-typedef size_t size;
-typedef std::vector<size_t> vsiz;
-typedef std::string stri;
-typedef const std::string cstr;
-typedef std::vector<std::string> vecs;
-typedef const std::vector<std::string> cves;
+using doub = double ;
+using cdou = const double;
+using vecd = std::vector<double>;
+using vvcd = std::vector<std::vector<double>> ;
+using cved = const std::vector<double> ;
+using csiz = const size_t ;
+using size = size_t;
+using vsiz = std::vector<size_t> ;
+using stri = std::string ;
+using cstr = const std::string ;
+using vecs = std::vector<std::string> ;
+using cves = const std::vector<std::string> ;
 //______________________________________________________________________________
 using namespace boost::python;
 namespace BOOST_PYTHON_INCLUDE

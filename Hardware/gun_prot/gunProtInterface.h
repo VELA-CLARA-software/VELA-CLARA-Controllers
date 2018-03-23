@@ -37,9 +37,9 @@ class gunProtInterface : public interface
 {
     public:
 
-        typedef std::vector<bool> vec_b;
-        typedef std::vector< std::string > vec_s;
-        typedef std::vector<double> vec_d;
+        using vec_b = std::vector<bool> ;
+        using vec_s = std::vector<std::string>;
+        using vec_d = std::vector<double> ;
 
 
         gunProtInterface::gunProtInterface();
