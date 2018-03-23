@@ -19,12 +19,6 @@ physical_VELA_INJ_Magnet_Controller_Obj(nullptr),
 virtual_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 offline_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 physical_CLARA_PH1_Magnet_Controller_Obj(nullptr),
-VELA_INJ (HWC_ENUM::MACHINE_AREA::VELA_INJ),
-VELA_BA1 (HWC_ENUM::MACHINE_AREA::VELA_BA1),
-VELA_BA2 (HWC_ENUM::MACHINE_AREA::VELA_BA2),
-CLARA_PH1(HWC_ENUM::MACHINE_AREA::CLARA_PH1),
-USER(HWC_ENUM::MACHINE_AREA::USER),
-UNKNOWN_AREA(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA)
 {
     std::cout <<"Instantiated a VCmagnets in Quiet Mode" <<std::endl;
     //ctor
@@ -97,36 +91,7 @@ VCmagnets::~VCmagnets()
 //        delete physical_VELA_INJ_Magnet_Controller_Obj;
 //               physical_VELA_INJ_Magnet_Controller_Obj = nullptr;
 //    }
-
 }
-////______________________________________________________________________________
-//void VCmagnets::setQuiet()
-//{
-//    std::cout <<"VCmagnets Quiet Mode Set." <<std::endl;
-//    shouldShowDebugMessage = false;
-//    shouldShowMessage = false;
-//}
-////______________________________________________________________________________
-//void VCmagnets::setVerbose()
-//{
-//    std::cout <<"VCmagnets Verbose Mode Set." <<std::endl;
-//    shouldShowDebugMessage = true;
-//    shouldShowMessage = true;
-//}
-////______________________________________________________________________________
-//void VCmagnets::setMessage()
-//{
-//    std::cout <<"VCmagnets Message Mode Set." <<std::endl;
-//    shouldShowDebugMessage = false;
-//    shouldShowMessage = true;
-//}
-////______________________________________________________________________________
-//void VCmagnets::setDebugMessage()
-//{
-//    std::cout <<"VCmagnets DebugMessage Mode Set." <<std::endl;
-//    shouldShowDebugMessage = true;
-//    shouldShowMessage = false;
-//}
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_CLARA_PH1_Magnet_Controller()
 {
@@ -246,6 +211,19 @@ magnetController& VCmagnets::getController(magnetController * cont,const std::st
     }
     return *cont;
 }
+
+
+//______________________________________________________________________________
+void VCmagnets::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
+}
+
+
 ////______________________________________________________________________________
 //magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 ////void VCmagnets::virtual_VELA_INJ_Magnet_Controller()

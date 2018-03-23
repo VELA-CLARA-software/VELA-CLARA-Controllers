@@ -91,15 +91,11 @@ class VCmagnets : public VCbase
         magnetController * virtual_VELA_BA2_Magnet_Controller_Obj;
         magnetController * offline_VELA_BA2_Magnet_Controller_Obj;
         magnetController * physical_VELA_BA2_Magnet_Controller_Obj;
-//
-//        magnetController * virtual_CLARA_PH1_Magnet_Controller_Obj;
-//        magnetController * offline_CLARA_PH1_Magnet_Controller_Obj;
-//        magnetController * physical_CLARA_PH1_Magnet_Controller_Obj;
 
-//        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-//        bool  shouldShowDebugMessage, shouldShowMessage;
+        std::map<gunProtController*, std::pair<bool,bool>> messageStates;
+        void updateMessageStates();
 
-        const HWC_ENUM::MACHINE_AREA  VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA,USER;
+
 };
 
 typedef double doub;
