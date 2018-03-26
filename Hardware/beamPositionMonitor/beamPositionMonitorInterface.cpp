@@ -13,9 +13,6 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
 #include "beamPositionMonitorInterface.h"
-//#include "velaScopeInterface.h"
-//djs
-#include "configDefinitions.h"
 // stl
 #include <iostream>
 #include <sstream>
@@ -29,13 +26,14 @@
 #include <stdlib.h>
 #include <epicsTime.h>
 
-beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
-                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
-                                                            const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation,
+                                                            const bool* show_messages_ptr,
+                                                            const bool* show_debug_messages_ptr,
+                                                            const bool shouldStartEPICs,
+                                                            const bool startVirtualMachine,
+                                                            const HWC_ENUM::MACHINE_AREA myMachineArea ):
 configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-shouldStartEPICS( shouldStartEPICS ),
-startVM( startVirtualMachine ),
+interface( show_messages_ptr, show_debug_messages_ptr, shouldStartEPICs ),
 machineArea( myMachineArea )
 {
     initialise();
@@ -77,14 +75,14 @@ void beamPositionMonitorInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfigFiles();
-    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+    UTL::STANDARD_PAUSE;
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
         bool getDataSuccess = initBPMObjects();
         if( getDataSuccess )
         {
-            if( shouldStartEPICS )
+            if( shouldStartEPICs )
             {
                 std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
@@ -92,7 +90,7 @@ void beamPositionMonitorInterface::initialise()
                 /// start the monitors: set up the callback functions
                 monitorBPMs();
                 /// The pause allows EPICS to catch up.
-                std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); // MAGIC_NUMBER
+                UTL::PAUSE_500;
             }
             else
                 message("The bpmInterface Read Config files, Not Starting EPICS Monitors" );
@@ -135,7 +133,7 @@ void beamPositionMonitorInterface::initBPMChids()
     int status = sendToEpics( "ca_create_channel", "Found bpm chids.", "!!TIMEOUT!! Not all bpm ChIds found." );
     if( status == ECA_TIMEOUT )
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); /// MAGIC NUMBERR
+        UTL::PAUSE_500;
         for( auto && it1 : bpmObj.dataObjects )
         {
             for( auto && it2 : it1.second.pvMonStructs )
@@ -158,7 +156,7 @@ void beamPositionMonitorInterface::addChannel( const std::string & pvRoot, beamP
     std::string s1;
 //    s1 << pvRoot << ":" << pv.pvSuffix;
     s1 = pvRoot + pv.pvSuffix;
-    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
+    ca_create_channel( s1.c_str(), nullptr, nullptr, UTL::PRIORITY_0, &pv.CHID );
     debugMessage( "Create channel to ", s1 );
 }
 //______________________________________________________________________________
@@ -174,18 +172,6 @@ void beamPositionMonitorInterface::monitorBPMs()
         it1.second.yPVBuffer.resize(UTL::BUFFER_TEN);
         for( auto && it2 : it1.second.pvMonStructs )
         {
-//            if( !isADataPV( it2.second.pvType ) )
-//            {   //NOT SURE ABOUT THIS "IF" -----> I WANT TO SET THIS BOOL TO TRUE EVEN IF IT IS A DATA PV
-//                it1.second.bpmRawData.isAContinuousMonitorStruct = true;
-//                it1.second.bpmRawData.isATemporaryMonitorStruct = false;
-//                it1.second.bpmRawData.appendingData = false;
-//                if( it1.second.bpmRawData.isAContinuousMonitorStruct )
-//                {
-//                    resetDataVectors( 1 );
-//                    addToMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
-//                }
-//            }
-            {
             continuousMonitorStructs.push_back(new beamPositionMonitorStructs::monitorStruct());
             continuousMonitorStructs.back()->monType = it2.first;
             continuousMonitorStructs.back()->objName = it1.second.name;
@@ -201,7 +187,6 @@ void beamPositionMonitorInterface::monitorBPMs()
                                    (void*)continuousMonitorStructs.back(),
                                    &continuousMonitorStructs.back()->EVID);
             debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
-            }
         }
     }
 
@@ -1154,53 +1139,6 @@ void beamPositionMonitorInterface::reCalAttenuation( const std::string & bpmName
 
 }
 //______________________________________________________________________________
-VELA_ENUM::MACHINE_AREA beamPositionMonitorInterface::getMachineArea()
-{
-    return machineArea;
-}
-//______________________________________________________________________________
-VELA_ENUM::MACHINE_MODE beamPositionMonitorInterface::getMachineMode()
-{
-    if ((startVM) && (shouldStartEPICS))
-        return VELA_ENUM::MACHINE_MODE::VIRTUAL;
-    else if ((startVM) && (!shouldStartEPICS))
-        return VELA_ENUM::MACHINE_MODE::OFFLINE;
-    else if (!startVM)
-        return VELA_ENUM::MACHINE_MODE::PHYSICAL;
-    else
-        return VELA_ENUM::MACHINE_MODE::UNKNOWN_MACHINE_MODE;
-}
-////______________________________________________________________________________
-//bool beamPositionMonitorInterface::hasTrig( const std::string & bpm )
-//{
-//    bool ret = false;
-//    if( allBPMData.count( bpm ) )
-//        if( allBPMData[ bpm ].bpmState == VELA_ENUM::TRIG_STATE::TRIG )
-//            ret = true;
-//
-//    if( ret )
-//        debugMessage( bpm, " has trigger");
-//    else
-//        debugMessage( bpm, " has no trigger");
-//
-//    return ret;
-//}
-////______________________________________________________________________________
-//bool beamPositionMonitorInterface::hasNoTrig( const std::string & bpm )
-//{
-//    bool ret = false;
-//    if( allBPMData.count( bpm ) )
-//        if( allBPMData[ bpm ].bpmState == VELA_ENUM::TRIG_STATE::NOTRIG )
-//            ret = true;
-//
-//    if( ret )
-//        debugMessage( bpm, " has trigger");
-//    else
-//        debugMessage( bpm, " has no trigger");
-//
-//    return ret;
-//}
-//______________________________________________________________________________
 std::vector< std::string > beamPositionMonitorInterface::getBPMNames()
 {
     std::vector< std::string > bpmNames;
@@ -1212,28 +1150,19 @@ std::vector< std::string > beamPositionMonitorInterface::getBPMNames()
 
     return bpmNames;
 }
-////______________________________________________________________________________
-//VELA_ENUM::TRIG_STATE beamPositionMonitorInterface::getBPMState( const  std::string & objName )
-//{
-//    VELA_ENUM::TRIG_STATE r =  VELA_ENUM::TRIG_STATE::TRIG_ERROR;
-//    auto iter = allBPMData.find( objName );
-//    if (iter != allBPMData.end() )
-//        r = iter -> second.bpmState;
-//    return r;
-//}
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > beamPositionMonitorInterface::getILockStates( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > beamPositionMonitorInterface::getILockStates( const std::string & objName )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > r;
     auto iter = allBPMData.find( objName );
     if( iter != allBPMData.end() )
         r = iter -> second.iLockStates;
     return r;
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  beamPositionMonitorInterface::getILockStatesStr( const std::string & name )
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >  beamPositionMonitorInterface::getILockStatesStr( const std::string & name )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, std::string  > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, std::string  > r;
     auto iter = allBPMData.find( name );
     if( iter != allBPMData.end() )
         for( auto it : iter -> second.iLockStates )

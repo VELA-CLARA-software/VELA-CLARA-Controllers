@@ -3,10 +3,16 @@
 
 // project
 #include "beamPositionMonitorController.h"
+#include "beamPositionMonitorStructs.h"
 #include "VCheader.h"
+#include "VCbase.h"
+#include "configDefinitions.h"
 // stl
 #include <string>
 #include <vector>
+#include <map>
+#include <utility>
+#include <list>
 //boost
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
@@ -21,7 +27,7 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/docstring_options.hpp>
 
-class VCBPMs// : public beamPositionMonitorController
+class VCBPMs : public VCbase
 {
     public:
 
@@ -44,12 +50,7 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController & virtual_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & offline_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & physical_CLARA_2_VELA_BPM_Controller();
-        beamPositionMonitorController & getBPMController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
-
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+        beamPositionMonitorController & getBPMController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
 
 #ifdef BUILD_DLL
 
@@ -58,19 +59,15 @@ class VCBPMs// : public beamPositionMonitorController
     protected:
     private:
 
-        bool withEPICS;
-        bool withoutEPICS;
-        bool withVM;
-        bool withoutVM;
-        bool showDebugMessages;
-        bool showMessages;
-        VELA_ENUM::MACHINE_AREA VELA_INJ;
-        VELA_ENUM::MACHINE_AREA VELA_BA1;
-        VELA_ENUM::MACHINE_AREA VELA_BA2;
-        VELA_ENUM::MACHINE_AREA CLARA_INJ;
-        VELA_ENUM::MACHINE_AREA CLARA_PH1;
-        VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
-        VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
+        std::map<beamPositionMonitorController*, std::pair<bool,bool>> messageStates;
+        void updateMessageStates();
+
+        beamPositionMonitorController& getController(beamPositionMonitorController*& cont,
+                                                     const std::string& conf,
+                                                     const std::string& name,
+                                                     const bool shouldVM,
+                                                     const bool shouldEPICS,
+                                                     const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         beamPositionMonitorController * virtual_VELA_INJ_BPM_Controller_Obj;
         beamPositionMonitorController * offline_VELA_INJ_BPM_Controller_Obj;
@@ -84,10 +81,6 @@ class VCBPMs// : public beamPositionMonitorController
         beamPositionMonitorController * virtual_CLARA_PH1_BPM_Controller_Obj;
         beamPositionMonitorController * offline_CLARA_PH1_BPM_Controller_Obj;
         beamPositionMonitorController * physical_CLARA_PH1_BPM_Controller_Obj;
-        beamPositionMonitorController * virtual_CLARA_2_VELA_BPM_Controller_Obj;
-        beamPositionMonitorController * offline_CLARA_2_VELA_BPM_Controller_Obj;
-        beamPositionMonitorController * physical_CLARA_2_VELA_BPM_Controller_Obj;
-
 };
 
 typedef std::vector<std::string> vecString;
@@ -107,13 +100,6 @@ class getVecString
 };
 
 #ifdef BUILD_DLL
-
-/// Boost has incorporated an "autolink" feature.
-/// http://www.codeproject.com/Articles/11597/Building-Boost-libraries-for-Visual-Studio
-/// or do it yourself!
-
-
-
 /// FUNCTION OVERLOADING, if you have overloaded functions:
 /// Create a load of different function pointers and use them in the bindings
 /// For examples See magnets...
@@ -125,101 +111,18 @@ class getVecString
 void(beamPositionMonitorController::*monitorMultipleDataForNShots)(size_t, const std::vector< std::string > &) = &beamPositionMonitorController::monitorDataForNShots;
 void(beamPositionMonitorController::*monitorDataForNShots)(size_t, const std::string &) = &beamPositionMonitorController::monitorDataForNShots;
 
-
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorDataForNShots, beamPositionMonitorController::monitorDataForNShots, 2, 2)
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( monitorMultipleDataForNShots, beamPositionMonitorController::monitorDataForNShots, 1, 2)
-
 using namespace boost::python;
-
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads1, openAndWait_Py , 0, 1 );
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( vvvc_overloads2, closeAndWait_Py , 0, 1 );
 
 BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 {
-
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
-    /// Include ALL the enums you want to expose to Python
-
-    boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    }
-
-    info = boost::python::type_id<std::vector<double> >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    }
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    }
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
 
     /// we have to tell boost.python about pure virtual methods in abstract base classes
-
     boost::python::class_<controller, boost::python::bases<baseObject>,  boost::noncopyable> ("controller", boost::python::no_init)
         .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
         .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
@@ -320,22 +223,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* getBPMDataObjectDocString = "Returns the bpm data object for str(bpmName) - these are defined in the config file.\n"
                                             "To be used in conjunction with function monitorDataForNShots. Type help(VELA_CLARA_BPM_Control.bpmDataObject) to see what this contains.";
     char const* getBPMNamesDocString = "Returns all of the BPM names defined in the config file.";
-    char const* getAreaDocString = "Returns, as a VELA_ENUM, the machine area for the controller.";
-    char const* getModeDocString = "Returns, as a VELA_ENUM, the machine mode for the controller (OFFLINE, PHYSICAL, VIRTUAL).";
+    char const* getAreaDocString = "Returns, as a HWC_ENUM, the machine area for the controller.";
+    char const* getModeDocString = "Returns, as a HWC_ENUM, the machine mode for the controller (OFFLINE, PHYSICAL, VIRTUAL).";
     char const* getILocksDocString = "Why are you here? BPMs don't have interlocks. At least as far as I'm aware. I'm not sure why they would.";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
             ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
-//            .def(boost::python::init<const std::string, optional<const bool, const bool > >())
-//            .def(boost::python::init< optional<const bool, const bool, const bool >>())
             .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, getBPMDataObjectDocString, return_value_policy<reference_existing_object>()            )
-//            .def("getBPMStateDefinition",           &beamPositionMonitorController::getBPMStateDefinition                     )
             .def("getILockStatesDefinition",        &beamPositionMonitorController::getILockStatesDefinition                             )
             .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT                               )
             .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT                               )
-//            .def("getBPMState",                     &velaINJBeamPositionMonitorController::getBPMState_Py                            )
             .def("getILockStates",                  &beamPositionMonitorController::getILockStates, getILocksDocString                   )
-//            .def("hasNoTrig",                       &velaINJBeamPositionMonitorController::hasNoTrig_Py, boost::python::args("name") )
-//            .def("hasTrig",                         &velaINJBeamPositionMonitorController::hasTrig_Py, boost::python::args("name")   )
             .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData, isMonitoringDocString           )
             .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData, isNotMonitoringDocString     )
             .def("getX",                            &beamPositionMonitorController::getX, getXDocString                                  )
@@ -370,14 +267,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                              )
             .def("setX",                            &beamPositionMonitorController::setX, setXDocString                                  )
             .def("setY",                            &beamPositionMonitorController::setY, setYDocString                                  )
-            .def("getMachineArea",                  &beamPositionMonitorController::getMachineArea, getAreaDocString                     )
-            .def("getMachineMode",                  &beamPositionMonitorController::getMachineMode, getModeDocString                     )
             .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                    )
             .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                            )
-            //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::vector< std::string >&)>
-            //    (&beamPositionMonitorController::monitorDataForNShots), monitorMultipleDataForNShots()          )
-            //.def("monitorDataForNShots", static_cast< void(beamPositionMonitorController::*) (size_t, const std::string&)>
-            //    (&beamPositionMonitorController::monitorDataForNShots), monitorDataForNShots()                  )
             .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames_Py, getBPMNamesDocString                 )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )
@@ -386,16 +277,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("messagesOn",                      &beamPositionMonitorController::messagesOn                  )
             .def("silence",                         &beamPositionMonitorController::silence                     )
             .def("verbose",                         &beamPositionMonitorController::verbose                     )
-            .def("isSilent",                        &beamPositionMonitorController::isSilent                    )
-            .def("isVerbose",                       &beamPositionMonitorController::isVerbose                   )
-            .def("isMessageOn",                     &beamPositionMonitorController::isMessageOn                 )
-            .def("isDebugMessageOn",                &beamPositionMonitorController::isDebugMessageOn            )
 		;
 
     char const* getControllerDocString = "This will instantiate a controller based on beamline and controller type. This requires enums as arguments.\n"
                                          "arg1 - machine mode - can be used as follows: mode=VELA_CLARA_BPM_Control.MACHINE_MODE.VIRTUAL/PHYSICAL/OFFLINE.\n"
                                          "arg2 - machine area - can be used as follows: mode=VELA_CLARA_BPM_Control.MACHINE_AREA.VELA_INJ/VELA_BA1/VELA_BA2/CLARA_INJ/CLARA_2_VELA.";
-    boost::python::class_<VCBPMs,boost::noncopyable> ("init")
+    boost::python::class_<VCBPMs,boost::python::bases<VCbase>,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_BPM_Controller",  &VCBPMs::virtual_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_BPM_Controller",  &VCBPMs::offline_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("physical_VELA_INJ_BPM_Controller", &VCBPMs::physical_VELA_INJ_BPM_Controller, return_value_policy<reference_existing_object>())
@@ -408,16 +295,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def("virtual_CLARA_PH1_BPM_Controller",  &VCBPMs::virtual_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_BPM_Controller",  &VCBPMs::offline_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_BPM_Controller", &VCBPMs::physical_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_2_VELA_BPM_Controller",  &VCBPMs::virtual_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_2_VELA_BPM_Controller",  &VCBPMs::offline_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_2_VELA_BPM_Controller", &VCBPMs::physical_CLARA_2_VELA_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("getBPMController", &VCBPMs::getBPMController, getControllerDocString, return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCBPMs::setQuiet )
-        .def("setVerbose",       &VCBPMs::setVerbose )
-        .def("setMessage",       &VCBPMs::setMessage )
-        .def("setDebugMessage",  &VCBPMs::setDebugMessage )
         ;
-
 };
 
 #endif // BUILD_DLL

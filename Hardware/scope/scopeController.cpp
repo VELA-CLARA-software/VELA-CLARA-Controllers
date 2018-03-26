@@ -453,26 +453,6 @@ boost::python::list scopeController::getScopeNumPVs_Py()
     return toPythonList(getScopeNumPVs());
 }
 #endif
-//______________________________________________________________________________
-//bool scopeController::hasTrig( const std::string & name )
-//{
-//    return localInterface.hasTrig( name );
-//}
-////______________________________________________________________________________
-//bool scopeController::hasNoTrig( const std::string & name )
-//{
-//    return localInterface.hasNoTrig( name );
-//}
-////______________________________________________________________________________
-//VELA_ENUM::TRIG_STATE  scopeController::getScopeState( const std::string & name )
-//{
-//    return localInterface.getScopeState( name );
-//}
-////______________________________________________________________________________
-//std::string scopeController::getScopeStateStr( const std::string & name )
-//{
-//    return ENUM_TO_STRING(localInterface.getScopeState( name ));
-//}
 //______________________________________________________________________________________________
 std::map<HWC_ENUM::ILOCK_NUMBER,std::string> scopeController::getILockStatesStr(const std::string& name)const
 {

@@ -51,9 +51,6 @@ class scopeController : public controller
                          const bool startVirtualMachine,
                          const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~scopeController();
-//
-//        bool hasTrig( const std::string & scopeName );
-//        bool hasNoTrig( const std::string & scopeName );
 
         bool monitoringTraces;
         bool monitoringNums;
@@ -145,18 +142,13 @@ class scopeController : public controller
         boost::python::list getScopeTracePVs_Py();
         boost::python::list getScopeNumPVs_Py();
         #endif
+
+        /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
         /// write a method that returns string version of enums using ENUM_TO_STRING
-
-//        VELA_ENUM::TRIG_STATE getScopeState( const std::string & scopeName );
-//        std::string getScopeStateStr( const std::string & name );
-
         std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name)const;
         std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name)const;
         double get_CA_PEND_IO_TIMEOUT() const;
         void set_CA_PEND_IO_TIMEOUT( double val );
-
-        /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
-        /// write a method that returns string version of enums using ENUM_TO_STRING
 
     protected:
     private:
@@ -164,9 +156,7 @@ class scopeController : public controller
         void initialise();
 
         /// No singletons, no pointers, let's just have an object
-
         scopeInterface localInterface;
-
         std::vector< std::string > scopeNames;
 
         const bool shouldStartEPICs;

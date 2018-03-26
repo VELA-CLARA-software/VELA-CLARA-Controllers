@@ -156,7 +156,7 @@ scopeController & VCscopes::physical_VELA_INJ_Scope_Controller()
                          scopeconf1,
                          scopeconf2,
                          name,
-                         withVM,
+                         withoutVM,
                          withEPICS,
                          HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }

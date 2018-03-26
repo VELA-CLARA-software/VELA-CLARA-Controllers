@@ -92,9 +92,8 @@ namespace beamPositionMonitorStructs
         boost::circular_buffer< double > timeStampsBuffer;
         std::vector< std::vector< double > > rawBPMData;
         boost::circular_buffer< std::vector< double > > rawBPMDataBuffer;
-        VELA_ENUM::TRIG_STATE bpmState;
-        VELA_ENUM::MACHINE_AREA machineArea;
-        VELA_ENUM::MACHINE_MODE machineMode;
+        HWC_ENUM::MACHINE_AREA machineArea;
+        HWC_ENUM::MACHINE_MODE machineMode;
     #ifndef __CINT__
         std::map< BPM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< BPM_PV_TYPE, pvStruct > pvComStructs;
@@ -105,8 +104,8 @@ namespace beamPositionMonitorStructs
     {
         std::string name;
         std::map< std::string, bpmDataObject > dataObjects; /// There are nine bpm data objects
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
 
     };
 

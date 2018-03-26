@@ -72,7 +72,7 @@ void scopeInterface::initialise()
                 /// start the monitors: set up the callback functions
                 monitorScopes();
                 /// The pause allows EPICS to catch up.
-                UTL::STANDARD_PAUSE;
+                UTL::PAUSE_500;
             }
             else
                 message("The scopeInterface Read Config files, Not Starting EPICS Monitors" );

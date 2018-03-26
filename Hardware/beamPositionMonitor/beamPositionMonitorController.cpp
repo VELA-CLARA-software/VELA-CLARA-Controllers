@@ -15,16 +15,16 @@
 #include "beamPositionMonitorController.h"
 // stl
 #include <iostream>
-// djs
-#include "beamPositionMonitorInterface.h"
-
 //______________________________________________________________________________
-beamPositionMonitorController::beamPositionMonitorController( const std::string &configFileLocation, const bool show_messages,
-                                                              const bool show_debug_messages, const bool shouldStartEPICS,
-                                                              const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
-controller( show_messages, show_debug_messages ),
-localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS, startVirtualMachine, myMachineArea ),
-shouldStartEPICS( shouldStartEPICS ),
+beamPositionMonitorController::beamPositionMonitorController( const std::string &configFileLocation,
+                                                              bool* show_messages,
+                                                              bool* show_debug_messages,
+                                                              const bool shouldStartEPICs,
+                                                              const bool startVirtualMachine,
+                                                              const HWC_ENUM::MACHINE_AREA myMachineArea ):
+controller( show_messages, show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::BPM ),
+localInterface( configFileLocation, show_messages, show_debug_messages, shouldStartEPICs, startVirtualMachine, myMachineArea ),
+shouldStartEPICs( shouldStartEPICs ),
 machineArea( myMachineArea )
 {
     initialise();
@@ -40,7 +40,7 @@ beamPositionMonitorController::~beamPositionMonitorController(){}    //dtor
 //______________________________________________________________________________
 void beamPositionMonitorController::initialise()
 {
-    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
+    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
         message("beamPositionMonitorController instantiation success.");
 }
 //______________________________________________________________________________
@@ -295,48 +295,18 @@ boost::python::list beamPositionMonitorController::getTimeStampsBuffer_Py( const
     return toPythonList(getTimeStampsBuffer( name ));
 }
 #endif
-////______________________________________________________________________________
-//bool beamPositionMonitorController::hasTrig( const std::string & name )
-//{
-//    return localInterface.hasTrig( name );
-//}
-////______________________________________________________________________________
-//bool beamPositionMonitorController::hasNoTrig( const std::string & name )
-//{
-//    return localInterface.hasNoTrig( name );
-//}
-////______________________________________________________________________________
-//VELA_ENUM::TRIG_STATE  beamPositionMonitorController::getBPMState( const std::string & name )
-//{
-//    return localInterface.getBPMState( name );
-//}
-////______________________________________________________________________________
-//std::string beamPositionMonitorController::getBPMStateStr( const std::string & name )
-//{
-//    return ENUM_TO_STRING(localInterface.getBPMState( name ));
-//}
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > beamPositionMonitorController::getILockStates( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > beamPositionMonitorController::getILockStates( const std::string & objName )const
 {
     return localInterface.getILockStates( objName );
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > beamPositionMonitorController::getILockStatesStr( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string > beamPositionMonitorController::getILockStatesStr( const std::string & objName )const
 {
     return localInterface.getILockStatesStr( objName );
 }
 //______________________________________________________________________________
-VELA_ENUM::MACHINE_AREA beamPositionMonitorController::getMachineArea()
-{
-    return localInterface.getMachineArea();
-}
-//______________________________________________________________________________
-VELA_ENUM::MACHINE_MODE beamPositionMonitorController::getMachineMode()
-{
-    return localInterface.getMachineMode();
-}
-//______________________________________________________________________________
-double beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT()
+double beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT()const
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }

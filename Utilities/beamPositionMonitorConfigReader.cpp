@@ -107,42 +107,42 @@ void beamPositionMonitorConfigReader::addToBPMDataObjectsV1( const std::vector<s
 
     else if( keyVal[0] == UTL::ATT1CAL )
     {
-        bpmDataObjects.back().att1cal = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().att1cal = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::ATT2CAL )
     {
-        bpmDataObjects.back().att2cal = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().att2cal = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::V1CAL )
     {
-        bpmDataObjects.back().v1cal = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().v1cal = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::V2CAL )
     {
-        bpmDataObjects.back().v2cal = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().v2cal = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::QCAL )
     {
-        bpmDataObjects.back().qcal = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().qcal = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::MN )
     {
-        bpmDataObjects.back().mn = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().mn = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::XN )
     {
-        bpmDataObjects.back().xn = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().xn = getNumD( keyVal[ 1 ] );
     }
 
     else if( keyVal[0] == UTL::YN )
     {
-        bpmDataObjects.back().yn = getNumD( keyVal[ 1 ] ); /// djs edit stringToDouble for getNumD 10.11.15
+        bpmDataObjects.back().yn = getNumD( keyVal[ 1 ] );
     }
 }
 //______________________________________________________________________________

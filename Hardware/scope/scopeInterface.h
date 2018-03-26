@@ -40,13 +40,6 @@ class scopeInterface : public interface
                         const bool startVirtualMachine,
                         const HWC_ENUM::MACHINE_AREA myMachineArea );
 
-        bool monitoringTraces = false;
-        bool monitoringNums = false;
-        bool isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
-        bool isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
-        bool isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
-        bool isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
-
         ~scopeInterface();
 
         void getScopeNames( std::vector< std::string >  & scopeNames );
@@ -105,12 +98,12 @@ class scopeInterface : public interface
         std::vector< std::string > getScopeNumPVs();
         const scopeStructs::scopeTraceData & getScopeTraceDataStruct( const std::string & scopeName );
         const scopeStructs::scopeNumObject & getScopeNumDataStruct( const std::string & scopeName );
-//        char getTimestamp( std::string & scope );
-//        bool hasTrig( const std::string & scope );
-//        bool hasNoTrig( const std::string & scope );
-
-        void addToTraceMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeTraceData * traobj );
-        void addToNumMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeNumObject * numobj );
+        bool monitoringTraces = false;
+        bool monitoringNums = false;
+        bool isMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeTrace( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
+        bool isNotMonitoringScopeNum( const std::string & scopeName, scopeStructs::SCOPE_PV_TYPE pvType );
 
         scopeStructs::scopeObject getScopeObject( const std::string & scopeName );
 
@@ -127,31 +120,27 @@ class scopeInterface : public interface
     private:
 
         /// called from constructor to set-up chids, montiros, etc.
-
         void initialise();
         const HWC_ENUM::MACHINE_AREA machineArea;
         scopeConfigReader configReader;
 
         bool initScopeObjects();
         void initScopeChids();
-        //void addChannel( std::map< std::string, scopeStructs::scopeObject >::iterator & it1, std::map< scopeStructs::SCOPE_PV_TYPE, std::string >::const_iterator & it2 );
         void addChannel( const std::string & pvRoot, scopeStructs::pvStruct & pv );
-
         void monitorScopes();
         void clearContinuousMonitorStructs();
         void clearContinuousTraceMonitorStructs();
         void clearContinuousNumMonitorStructs();
+        void addToTraceMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeTraceData * traobj );
+        void addToNumMonitorStructs( std::vector< scopeStructs::monitorStruct * > & msv, scopeStructs::pvStruct & pv,  scopeStructs::scopeNumObject * numobj );
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the scope is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
-
         typedef  bool (scopeInterface::*isOCMemFn)(const std::string & );
         typedef  void (scopeInterface::*OCMemFn)  (const std::string & );
         bool toggleAndWait( isOCMemFn f1, isOCMemFn f2, OCMemFn f3, const std::string & name, const time_t waitTime, scopeInterface & obj );
 
         /// static function that can be called back from epics to update values
-
-//        static void staticEntryScopeMonitor( const event_handler_args args );
         static void staticEntryrMonitor( const event_handler_args args );
 
         bool isATracePV( scopeStructs::SCOPE_PV_TYPE pv );
@@ -167,11 +156,9 @@ class scopeInterface : public interface
         std::vector< scopeStructs::monitorStruct* > traceMonitorStructs;
         void addTraceMonitorStructs( const std::string &scopeName );
 
-
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
-
         std::vector< scopeStructs::monitorStruct * > continuousMonitorStructs;
         std::vector< scopeStructs::monitorStruct * > continuousTraceMonitorStructs;
         std::vector< scopeStructs::monitorStruct * > continuousNumMonitorStructs;
@@ -179,7 +166,6 @@ class scopeInterface : public interface
         std::map< std::string, scopeStructs::scopeObject > allScopeData; /// All the scope data is stored in this map, keyed by the scope name
 
         std::vector< std::vector< double > > allScopeMonitorData;
-
         std::vector< std::vector< double > > traceMonitorData;
         std::map< bool, scopeStructs::scopeObject* > isMonitoringMap;
 };
