@@ -2,63 +2,26 @@
 #include <iostream>
 
 VCscreens::VCscreens():
+VCbase("VCscreens"),
 virtual_VELA_INJ_Screen_Controller_Obj(nullptr),
 offline_VELA_INJ_Screen_Controller_Obj(nullptr),
 physical_VELA_INJ_Screen_Controller_Obj(nullptr),
-
 virtual_VELA_BA1_Screen_Controller_Obj(nullptr),
 offline_VELA_BA1_Screen_Controller_Obj(nullptr),
 physical_VELA_BA1_Screen_Controller_Obj(nullptr),
-
 virtual_VELA_BA2_Screen_Controller_Obj(nullptr),
 offline_VELA_BA2_Screen_Controller_Obj(nullptr),
 physical_VELA_BA2_Screen_Controller_Obj(nullptr),
-
 virtual_CLARA_PH1_Screen_Controller_Obj(nullptr),
 offline_CLARA_PH1_Screen_Controller_Obj(nullptr),
 physical_CLARA_PH1_Screen_Controller_Obj(nullptr),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true),
-VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
-VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
-VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1 ),
-UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is quiet mode
+VELA_INJ ( HWC_ENUM::MACHINE_AREA::VELA_INJ ),
+VELA_BA1 ( HWC_ENUM::MACHINE_AREA::VELA_BA1 ),
+VELA_BA2 ( HWC_ENUM::MACHINE_AREA::VELA_BA2 ),
+CLARA_PH1( HWC_ENUM::MACHINE_AREA::CLARA_PH1 ),
+UNKNOWN_AREA(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA)
 {
-    std::cout << "Instantiated a VCscreens in Quiet Mode" << std::endl;
     //ctor
-}
-//______________________________________________________________________________
-void VCscreens::setQuiet()
-{
-    std::cout << "VCscreens Quiet Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = false;
-}
-//______________________________________________________________________________
-void VCscreens::setVerbose()
-{
-    std::cout << "VCscreens Verbose Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCscreens::setMessage()
-{
-    std::cout << "VCscreens Message Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCscreens::setDebugMessage()
-{
-    std::cout << "VCscreens DebugMessage Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = false;
 }
 //______________________________________________________________________________
 VCscreens::~VCscreens()
@@ -121,238 +84,210 @@ VCscreens::~VCscreens()
     }
 }
 //______________________________________________________________________________
-screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
+screenController & VCscreens::getController(screenController*& cont,
+                                            const std::string& conf,
+                                            const std::string & name,
+                                            const bool shouldVM,
+                                            const bool shouldEPICS,
+                                            const HWC_ENUM::MACHINE_AREA myMachineArea)
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-
-    if( virtual_VELA_INJ_Screen_Controller_Obj )
+    if(cont)
     {
-        std::cout << "virtual_VELA_INJ_Screen_Controller object already exists," << std::endl;
+        std::cout << name  <<" object already exists," <<std::endl;
     }
     else
     {
-        std::cout << "Creating virtual_VELA_INJ_Screen_Controller object" << std::endl;
-        virtual_VELA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_INJ);
+        std::cout <<"Creating " <<name <<" object" <<std::endl;
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+        cont = new screenController(conf,
+                                    &messageStates.at(cont).first,
+                                    &messageStates.at(cont).second,
+                                    shouldEPICS,
+                                    shouldVM,
+                                    myMachineArea);
     }
-    return *virtual_VELA_INJ_Screen_Controller_Obj;
+    return *cont;
+}
+//______________________________________________________________________________
+screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
+{
+    std::string name  = "virtual_VELA_INJ_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    return getController(virtual_VELA_INJ_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
 screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( offline_VELA_INJ_Screen_Controller_Obj )
-    {
-        std::cout << "offline_VELA_INJ_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_VELA_INJ_Screen_Controller object" << std::endl;
-        offline_VELA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withoutEPICS,VELA_INJ);
-    }
-    return *offline_VELA_INJ_Screen_Controller_Obj;
+    std::string name  = "offline_VELA_INJ_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    return getController(offline_VELA_INJ_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
 screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( physical_VELA_INJ_Screen_Controller_Obj )
-    {
-        std::cout << "physical_VELA_INJ_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_VELA_INJ_Screen_Controller object" << std::endl;
-        physical_VELA_INJ_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_INJ);
-    }
-    return *physical_VELA_INJ_Screen_Controller_Obj;
+    std::string name  = "physical_VELA_INJ_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    return getController(physical_VELA_INJ_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
 screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( virtual_VELA_BA1_Screen_Controller_Obj )
-    {
-        std::cout << "virtual_VELA_BA1_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_VELA_BA1_Screen_Controller object" << std::endl;
-        virtual_VELA_BA1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_BA1);
-    }
-    return *virtual_VELA_BA1_Screen_Controller_Obj;
+    std::string name  = "virtual_VELA_BA1_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
+    return getController(virtual_VELA_BA1_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
 screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( offline_VELA_BA1_Screen_Controller_Obj )
-    {
-        std::cout << "offline_VELA_BA1_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_VELA_BA1_Screen_Controller object" << std::endl;
-        offline_VELA_BA1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withoutEPICS,VELA_BA1);
-    }
-    return *offline_VELA_BA1_Screen_Controller_Obj;
+    std::string name  = "offline_VELA_BA1_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
+    return getController(offline_VELA_BA1_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
 screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( physical_VELA_BA1_Screen_Controller_Obj )
-    {
-        std::cout << "physical_VELA_BA1_Screen_Controlle object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_VELA_BA1_Screen_Controlle object" << std::endl;
-        physical_VELA_BA1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_BA1);
-    }
-    return *physical_VELA_BA1_Screen_Controller_Obj;
+    std::string name  = "physical_VELA_BA1_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
+    return getController(physical_VELA_BA1_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
 screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( virtual_VELA_BA2_Screen_Controller_Obj )
-    {
-        std::cout << "virtual_VELA_BA2_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_VELA_BA2_Screen_Controller object" << std::endl;
-        virtual_VELA_BA2_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,VELA_BA2);
-    }
-    return *virtual_VELA_BA2_Screen_Controller_Obj;
+    std::string name  = "virtual_VELA_BA2_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
+    return getController(virtual_VELA_BA2_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
 screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( offline_VELA_BA2_Screen_Controller_Obj )
-    {
-        std::cout << "offline_VELA_BA2_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_VELA_BA2_Screen_Controller object" << std::endl;
-        offline_VELA_BA2_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withoutEPICS,VELA_BA2);
-    }
-    return *offline_VELA_BA2_Screen_Controller_Obj;
+    std::string name  = "offline_VELA_BA2_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
+    return getController(offline_VELA_BA2_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
 screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
-    if( physical_VELA_BA2_Screen_Controller_Obj )
-    {
-        std::cout << "physical_VELA_BA2_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_VELA_BA2_Screen_Controller object" << std::endl;
-        physical_VELA_BA2_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,VELA_BA2);
-    }
-    return *physical_VELA_BA2_Screen_Controller_Obj;
+    std::string name  = "physical_VELA_BA2_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
+    return getController(physical_VELA_BA2_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
 screenController& VCscreens::virtual_CLARA_PH1_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
-    if( virtual_CLARA_PH1_Screen_Controller_Obj )
-    {
-        std::cout << "virtual_CLARA_PH1_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_CLARA_PH1_Screen_Controller object" << std::endl;
-        virtual_CLARA_PH1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withVM,withEPICS,CLARA_PH1);
-    }
-    return *virtual_CLARA_PH1_Screen_Controller_Obj;
+    std::string name  = "virtual_CLARA_PH1_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    return getController(virtual_CLARA_PH1_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
 screenController& VCscreens::offline_CLARA_PH1_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
-    if( offline_CLARA_PH1_Screen_Controller_Obj )
-    {
-        std::cout << "offline_CLARA_PH1_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_CLARA_PH1_Screen_Controller object" << std::endl;
-        offline_CLARA_PH1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withoutEPICS,CLARA_PH1);
-    }
-    return *offline_CLARA_PH1_Screen_Controller_Obj;
+    std::string name  = "offline_CLARA_PH1_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    return getController(offline_CLARA_PH1_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
 screenController& VCscreens::physical_CLARA_PH1_Screen_Controller()
 {
-    std::string configfile  = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
-    if( physical_CLARA_PH1_Screen_Controller_Obj )
-    {
-        std::cout << "physical_CLARA_PH1_Screen_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_CLARA_PH1_Screen_Controller object" << std::endl;
-        physical_CLARA_PH1_Screen_Controller_Obj =
-            new screenController(shouldShowMessage,shouldShowDebugMessage,configfile,withoutVM,withEPICS,CLARA_PH1);
-    }
-    return *physical_CLARA_PH1_Screen_Controller_Obj;
+    std::string name  = "physical_CLARA_PH1_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    return getController(physical_CLARA_PH1_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-screenController& VCscreens::getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
+screenController& VCscreens::getScreenController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area )
 {
-    if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
+    if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
         return offline_VELA_INJ_Screen_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_INJ )
         return virtual_VELA_INJ_Screen_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_INJ )
         return physical_VELA_INJ_Screen_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA1 )
         return offline_VELA_BA1_Screen_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA1 )
         return virtual_VELA_BA1_Screen_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA1 )
         return physical_VELA_BA1_Screen_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA2 )
         return offline_VELA_BA2_Screen_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA2 )
         return virtual_VELA_BA2_Screen_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA2 )
         return physical_VELA_BA2_Screen_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_PH1 )
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::CLARA_PH1 )
         return offline_CLARA_PH1_Screen_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_PH1 )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_PH1 )
         return virtual_CLARA_PH1_Screen_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_PH1 )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_PH1 )
         return physical_CLARA_PH1_Screen_Controller();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//______________________________________________________________________________
+void VCscreens::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
+}
+//______________________________________________________________________________

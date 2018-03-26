@@ -2,27 +2,16 @@
 //stl
 #include <iostream>
 #include <time.h>
-//djs
-#include "screenInterface.h"
-#include "structs.h"
-
-///Initialsing
-///Moving
-///Checks
-///Get Stuff
-
-
-screenController::screenController(
-    const bool show_messages,
-    const bool show_debug_messages,
-    const std::string & conf1,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs,
-    const VELA_ENUM::MACHINE_AREA myMachineArea):
-controller( show_messages, show_debug_messages ),
-localInterface( conf1, startVirtualMachine, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea ),
-shouldStartEPICs(shouldStartEPICs),
-myMachineArea(myMachineArea)
+screenController::screenController( const std::string &configFileLocation,
+                                    bool* show_messages,
+                                    bool* show_debug_messages,
+                                    const bool shouldStartEPICs,
+                                    const bool startVirtualMachine,
+                                    const HWC_ENUM::MACHINE_AREA myMachineArea ):
+controller( show_messages, show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::SCREEN ),
+localInterface( configFileLocation, show_messages, show_debug_messages, shouldStartEPICs, startVirtualMachine, myMachineArea ),
+shouldStartEPICs( shouldStartEPICs ),
+machineArea( myMachineArea )
 {
     initialise();
 }
@@ -312,7 +301,7 @@ boost::python::dict screenController::get_DRIVER_STATE_Definition()
 //______________________________________________________________________________
 #endif // BUILD_DLL
 //____________________________________________________________________________________________
-double screenController::get_CA_PEND_IO_TIMEOUT()
+double screenController::get_CA_PEND_IO_TIMEOUT()const
 {
   return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }
@@ -322,12 +311,12 @@ void screenController::set_CA_PEND_IO_TIMEOUT( double val )
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > screenController::getILockStates( const std::string & name )
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > screenController::getILockStates( const std::string & name )const
 {
     return localInterface.getILockStates( name );
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > screenController::getILockStatesStr( const std::string & name )
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string > screenController::getILockStatesStr( const std::string & name )const
 {
     return localInterface.getILockStatesStr( name );
 }

@@ -5,6 +5,9 @@
 //
 #include "screenController.h"
 #include "VCheader.h"
+#include "screenStructs.h"
+#include "VCbase.h"
+#include "configDefinitions.h"
 
 #include <boost/python/detail/wrap_python.hpp>
 #define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
@@ -19,7 +22,7 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/docstring_options.hpp>
 
-class VCscreens
+class VCscreens : public VCbase
 {
         /// These VC classes could all be done more elegantly, with less copypasta
         /// however we went for expliocit functions asa quick fix
@@ -48,13 +51,22 @@ class VCscreens
         void setMessage();
         void setDebugMessage();
 
-        screenController& getScreenController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
+        screenController& getScreenController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
 
     protected:
 
     private:
 
-     /// we just need to decide good names for these things...
+        std::map<screenController*, std::pair<bool,bool>> messageStates;
+        void updateMessageStates();
+
+        screenController& getController(screenController*& cont,
+                                                     const std::string& conf,
+                                                     const std::string& name,
+                                                     const bool shouldVM,
+                                                     const bool shouldEPICS,
+                                                     const HWC_ENUM::MACHINE_AREA myMachineArea);
+
         screenController * virtual_VELA_INJ_Screen_Controller_Obj ;
         screenController * physical_VELA_INJ_Screen_Controller_Obj;
         screenController * offline_VELA_INJ_Screen_Controller_Obj ;
@@ -70,11 +82,7 @@ class VCscreens
         screenController * virtual_CLARA_PH1_Screen_Controller_Obj;
         screenController * offline_CLARA_PH1_Screen_Controller_Obj;
         screenController * physical_CLARA_PH1_Screen_Controller_Obj;
-
-        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
-
-        const VELA_ENUM::MACHINE_AREA  VELA_INJ, VELA_BA1, VELA_BA2, CLARA_PH1, UNKNOWN_AREA;
+        const HWC_ENUM::MACHINE_AREA  VELA_INJ, VELA_BA1, VELA_BA2, CLARA_PH1, UNKNOWN_AREA;
 };
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
 /// Create a load of different function pointers and use them in the bindings
@@ -127,19 +135,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
     /// Things that you want to use in python muct be exposed:
     /// containers
-
-    boost::python::type_info info = boost::python::type_id< std::vector< std::string > > ();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::vector< std::string > >("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string > > ())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::vector< std::string > >("std_vector_string")
-            .def(vector_indexing_suite< std::vector< std::string > > ())
-            ;
-    }
-
     // screen structs
     enum_<screenStructs::SCREEN_STATE>("SCREEN_STATE")
         .value("SCREEN_IN",       screenStructs::SCREEN_STATE::SCREEN_IN  )
@@ -243,13 +238,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
     /// we have to tell boost.python about pure virtual methods in abstract base classes
-    boost::python::class_<controller,boost::python::bases<baseObject>,boost::noncopyable>
-        ("controller", boost::python::no_init) /// forces Python to not be able to construct (init) this object
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
-        ;
+//    boost::python::class_<controller, boost::python::bases<baseObject>,  boost::noncopyable> ("controller", boost::python::no_init)
+//        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
+//        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
+//        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
+//        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
+//		;
 
     char const* getScreenObjectString = "Returns the screen object (name).";
     char const* isHOutString = "Returns true if the horizontal stage is out.";
@@ -331,7 +325,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     ;
 
     /// The main class that creates all the controller obejcts
-        boost::python::class_<VCscreens,boost::noncopyable> ("init")
+        boost::python::class_<VCscreens,boost::python::bases<VCbase>,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_Screen_Controller",  &VCscreens::virtual_VELA_INJ_Screen_Controller,
              return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_Screen_Controller",  &VCscreens::offline_VELA_INJ_Screen_Controller,
@@ -358,10 +352,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
              return_value_policy<reference_existing_object>())
         .def("getScreenController",  &VCscreens::getScreenController,
              return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCscreens::setQuiet )
-        .def("setVerbose",       &VCscreens::setVerbose )
-        .def("setMessage",       &VCscreens::setMessage )
-        .def("setDebugMessage",  &VCscreens::setDebugMessage )
         ;
 }
 

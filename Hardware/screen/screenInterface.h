@@ -1,10 +1,10 @@
 #ifndef screenInterface_H
 #define screenInterface_H
 //djs
-
 #include "interface.h"
 #include "screenStructs.h"
 #include "screenConfigReader.h"
+#include "structs.h"
 //stl
 #include <vector>
 #include <string>
@@ -18,13 +18,13 @@ class screenInterface: public interface
 
             ///Not a singleton, two construction methods...
 
-
+        screenInterface::screenInterface();
         screenInterface(const std::string & conf1,
-                        const bool startVirtualMachine,
                         const bool* show_messages_ptr,
                         const bool* show_debug_messages_ptr,
                         const bool shouldStartEPICs,
-                        const VELA_ENUM::MACHINE_AREA myMachineArea );
+                        const bool startVirtualMachine,
+                        const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~screenInterface();
         /// GETTERS
         bool isHOut(screenStructs::screenObject& scr);
@@ -100,8 +100,8 @@ class screenInterface: public interface
         void checkScreenCHIDStates();
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived interface...
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string >  getILockStatesStr( const std::string & name );
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & name )const;
+        std::map< HWC_ENUM::ILOCK_NUMBER, std::string >  getILockStatesStr( const std::string & name )const;
 
     protected:
     private:
@@ -121,17 +121,11 @@ class screenInterface: public interface
 
         // this map conatins all the screen objects, which combine online and offline data
         std::map<std::string,screenStructs::screenObject>allScreentData;
-
-        // updates the VELA_PNEUMATIC screen state
         void updateSta(screenStructs::monitorStruct* ms, const  unsigned short args );
-        // updates a VELA_HV_MOVER screenState, called after a driver enters DRIVER_STATIONARY state
         void updateScreenState(screenStructs::screenObject& scr);
-        //void update_STA_Bit_map( screenStructs::monitorStruct   * ms , const int argsdbr );
         void update_STA_Bit_map(screenStructs::monitorStruct* ms, const int argsdbr );
 
         void updateRPOS(screenStructs::monitorStruct* ms, const double args);
-        // update RPOS updates the screen state, if there is a match
-//        void updateCassettePosition(screenStructs::screenCassette& cas, const double pos  );
 
         void updateACTPOS(screenStructs::monitorStruct* ms,const double args);
         void updateEN(screenStructs::monitorStruct* ms, const unsigned short args);
@@ -140,11 +134,9 @@ class screenInterface: public interface
         void updateDevCent( screenStructs::monitorStruct * ms, const double args );
         void updateJDiff( screenStructs::monitorStruct * ms, const double args );
         void updateMoving( screenStructs::monitorStruct * ms, const unsigned short args );
-        //void updateMABS(screenStructs::monitorStruct* ms,const double args);
 
         // version to use when we already know the answer
         bool entryExists2(const std::string& name, bool weKnowEntryExists = false );
-
 
         // helper function for main screenMoveTo() function
         bool get_NOT_Locked_and_NOT_MovingScreens( const std::vector<std::string>& scrIN,
@@ -179,79 +171,28 @@ class screenInterface: public interface
         bool move_CLARA_HV_MOVER_Screens  (const std::vector<std::string>& names,const std::vector< screenStructs::SCREEN_STATE > & states  );
         bool move_CLARA_V_MOVER_Screens  (const std::vector<std::string>& names,const std::vector< screenStructs::SCREEN_STATE > & states  );
         bool set_VELA_HV_MOVER_Position(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta );
-//        bool set_VELA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driverS, const double value);
-//        bool set_VELA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta );
-//        bool set_CLARA_HV_MOVER_Position(const std::string & name, const screenStructs::DRIVER_DIRECTION dir, const screenStructs::SCREEN_STATE& sta );
-//        bool set_CLARA_HV_MOVER_Position(const screenStructs::screenDriverStatus& driverS, const double value);
-//        bool set_CLARA_HV_MOVER_Position(const std::string& name,  const screenStructs::SCREEN_STATE& sta );
-
-        // complex screen movements are handled in different threads,
-        // HV_dualMoveStruct contains the info to run that thread
-//        std::map<size_t,screenStructs::HV_dualMoveStruct> screenDualMoveStructsMap;
-
-        // screens are locked if this prgoramme is moving them, but...
-        // they also have a trajectory bool, that locks them when moved external to this controller (i.e. by controls synoptic)
 
         std::map<std::string,std::atomic<bool> > isLockedMap; /// std::atomic< bool > are not CopyConstructible, so this is held locally
-
-//        static void staticEntryDualMove(screenStructs::HV_dualMoveStruct & ms );
         size_t dualMoveNum;
 
         void killFinishedMoveThreads();
-
-        //static function that can be called back from epics to update values
         static void staticEntryScreenMonitor( const event_handler_args args );
-
-//        bool yagOnV(const screenStructs::screenDriver& scrdr );
-//        bool isVDriveEnabled (const screenStructs::screenDriver& scrdr);
-//        bool isHDriveEnabled (const screenStructs::screenDriver& scrdr);
-//        bool isHDriveDisabled(const screenStructs::screenDriver& scrdr);
-//        bool isVDriveDisabled(const screenStructs::screenDriver& scrdr);
         bool is_OUT_AND_VDriveEnabled(const std::string & name);
         bool is_IN_OR_OUT(const screenStructs::SCREEN_STATE sta );
         bool screen_is_out_AND_sta_is_in(const std::string & name, const screenStructs::SCREEN_STATE sta );
         bool screen_is_in_AND_sta_is_out(const std::string & name, const screenStructs::SCREEN_STATE sta );
 
-        // return the psoition of teh element in the map
-//        double getElementPosition(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e );
-//        double getElementPos(const screenStructs::screenCassette & scrcas, screenStructs::SCREEN_STATE e );
-
-
-        //std::map<std::string,  std::atomic< bool > > dualMoveNum; /// std::atomic< bool > are not CopyConstructible, so this is held locally
-
-        //bool waitForElementToMove( const screenStructs::velaINJscreenObject & scr, screenStructs::SCREEN_STATE e, time_t TIMEOUT);
-
-
-        /// As an overly complicated example let's try some function pointers. Toggling (open / close ) the shutter is now easy
-        /// https://isocpp.org/wiki/faq/pointers-to-members
-
         typedef  bool(screenInterface::*isOCMemFn)(const std::string & );
         typedef  void(screenInterface::*OCMemFn)  (const std::string & );
-
-        //void toggleScreen( chtype & cht, chid & chi, const char * m1 = "", const char * m2 = "");
-
-
-
-//        static void UpdateDouble( screenStructs::monitorStruct * ms, const void * argsdbr );
-//        static void UpdateEnum( screenStructs::monitorStruct * ms, const void * argsdbr );
 
         /// This is a vector of pointers... no you say !! let's follow  Bjarne Stroustrup's advice and "Store many objects in a container by value." ?
         /// http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
-        //std::vector< screenStructs::monitorStruct * > continuousMonitorStructs;
         std::vector< screenStructs::monitorStruct * > continuousMonitorStructsDEV;
         std::vector< screenStructs::monitorStruct * > continuousMonitorStructs;
-
-
-        //void addToComplexMonitorStructs( std::vector<screenStructs::monitorStruct*>& cms, screenStructs::pvStruct& pv, screenStructs::COMPLEX_YAG_Object * COMPLEX_YAG  );
-        //void addToSimpleMonitorStructs ( std::vector<screenStructs::monitorStruct*>& cms, screenStructs::pvStruct& pv, screenStructs::SIMPLE_YAG_Object * SIMPLE_YAG  );
-
-
         screenStructs::screenObject screenObject;
 
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
-        // MOVE TO BASE CLASS
-        const bool shouldStartEPICs;
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
 
 
 };

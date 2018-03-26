@@ -18,16 +18,14 @@
 //
 
 screenInterface::screenInterface( const std::string & conf1,
-                                  const bool startVirtualMachine,
                                   const bool* show_messages_ptr,
                                   const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
-                                  const VELA_ENUM::MACHINE_AREA myMachineArea ):
-configReader( conf1, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-shouldStartEPICs( shouldStartEPICs ),
-myMachineArea(myMachineArea),
-dualMoveNum(0)
+                                  const bool startVirtualMachine,
+                                  const HWC_ENUM::MACHINE_AREA myMachineArea ):
+configReader( conf1, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
+interface( show_messages_ptr, show_debug_messages_ptr, shouldStartEPICs ),
+myMachineArea(myMachineArea)
 {
     initialise();
 }
@@ -54,6 +52,7 @@ void screenInterface::initialise()
     /// The config file reader
     message("Attempting to read Screen Config file." );
     configFileRead = configReader.readConfig();
+    UTL::STANDARD_PAUSE;
     if( configFileRead )
     {
         message("Screen Config file read, getting screens" );
@@ -69,7 +68,7 @@ void screenInterface::initialise()
                 //if( allChidsInitialised )
                 monitorScreens();
                 ///The pause allows EPICS to catch up.
-                std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); ///MAGIC NUMBER
+                UTL::PAUSE_500;
             }
             else
                 message("Screen abjects acquired, not starting EPICS" );
@@ -142,7 +141,7 @@ void screenInterface::initScreenChids()
 void screenInterface::addChannel( const std::string & pvRoot, screenStructs::pvStruct & pv )
 {
     std::string s1 = pvRoot + pv.pvSuffix;
-    ca_create_channel( s1.c_str(),0,0,0, &pv.CHID );//MAGIC_NUMBER see epics CA manual, we're a 'casual user'
+    ca_create_channel( s1.c_str(), nullptr, nullptr, UTL::PRIORITY_0, &pv.CHID );//MAGIC_NUMBER see epics CA manual, we're a 'casual user'
     debugMessage( "Create channel to ", s1 );
 }
 //__________________________________________________________________________________________________________________
@@ -1580,76 +1579,22 @@ std::vector<bool> screenInterface::exists_and_isNotLocked(const std::string& nam
     debugMessage("exists_and_isNotLocked return ", r[0], "  ", r[1]);
     return r;
 }
-////_________________________________________________________________________________________________________________
-//bool screenInterface::screen_is_out_AND_sta_is_in(const std::string & name, const screenStructs::SCREEN_STATE sta )
-//{
-//    return sta == screenStructs::SCREEN_STATE::SCREEN_IN && isScreenOUT(name);
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::screen_is_in_AND_sta_is_out(const std::string & name, const screenStructs::SCREEN_STATE sta )
-//{
-//    return sta == screenStructs::SCREEN_STATE::SCREEN_OUT && isScreenIN(name);
-//}
-////_________________________________________________________________________________________________________________
-//double screenInterface::get_H_ACTPOS(const std::string & name)
-//{
-//    if(is_CLARA_HV_MOVER(name))
-//    {
-//        return allScreentData.at( name ).driver.hDriverSTA.position;
-//    }
-//}
-////_________________________________________________________________________________________________________________
-//double screenInterface::get_V_ACTPOS(const std::string & name)
-//{
-//    if(is_CLARA_HV_MOVER(name) || is_CLARA_V_MOVER(name))
-//    {
-//        return allScreentData.at( name ).driver.vDriverSTA.position;
-//    }
-//}
-//___________________________________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > screenInterface::getILockStates( const std::string & name )
+//______________________________________________________________________________
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > screenInterface::getILockStates( const std::string & objName )const
 {
-//    if( entryExists( velaINJscreenObject.simpleObjects, name ) )
-//    {   std::cout << "Entry Exists getILockStates" << std::endl;
-//        return velaINJscreenObject.simpleObjects[ name ].iLockStates;
-//    }
-//
-//    else if( entryExists( velaINJscreenObject.complexObjects, name ) )
-//    {   std::cout << "Entry Exists getILockStates" << std::endl;
-//        return velaINJscreenObject.complexObjects[ name ].iLockStates;
-//    }
-//
-//    else
-//    {
-//        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r = {{VELA_ENUM::ILOCK_NUMBER::ILOCK_ERR, VELA_ENUM::ILOCK_STATE::ILOCK_ERROR}};
-//        return r;
-//    }
-    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > r;
+    auto iter = allScreentData.find( objName );
+    if( iter != allScreentData.end() )
+        r = iter -> second.iLockStates;
     return r;
 }
-////__________________________________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  screenInterface::getILockStatesStr( const std::string & name )
+//______________________________________________________________________________
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >  screenInterface::getILockStatesStr( const std::string & name )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, std::string  > r;
-
-//    if( entryExists( velaINJscreenObject.simpleObjects, name ) )
-//    {
-//        std::cout << "Entry Exists getILockStatesStr" << std::endl;
-//        for( auto it : velaINJscreenObject.simpleObjects[ name ].iLockStates )
-//        {
-//            message( "hello", it.second  );
-//            r[ it.first ] = ENUM_TO_STRING( it.second );
-//        }
-//    }
-//
-//    if( entryExists( velaINJscreenObject.complexObjects, name ) )
-//    {
-//        std::cout << "Entry Exists getILockStatesStr" << std::endl;
-//        for( auto it : velaINJscreenObject.complexObjects[ name ].iLockStates )
-//            r[ it.first ] = ENUM_TO_STRING( it.second );
-//    }
-//
-//    else
-//        r[ VELA_ENUM::ILOCK_NUMBER::ILOCK_ERR ] = ENUM_TO_STRING( VELA_ENUM::ILOCK_STATE::ILOCK_ERROR );
+    std::map< HWC_ENUM::ILOCK_NUMBER, std::string  > r;
+    auto iter = allScreentData.find( name );
+    if( iter != allScreentData.end() )
+        for( auto it : iter -> second.iLockStates )
+            r[ it.first ] = ENUM_TO_STRING( it.second );
     return r;
 }

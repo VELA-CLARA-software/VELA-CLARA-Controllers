@@ -29,7 +29,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="/DEBUG" />
-					<Add option="/debug" />
 					<Add option="/INCREMENTAL:NO" />
 					<Add library="user32" />
 				</Linker>
@@ -67,6 +66,8 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
 		<Unit filename="../../Hardware/VCheader.h" />
 		<Unit filename="../../Hardware/beamPositionMonitor/beamPositionMonitorController.cpp" />
 		<Unit filename="../../Hardware/beamPositionMonitor/beamPositionMonitorController.h" />

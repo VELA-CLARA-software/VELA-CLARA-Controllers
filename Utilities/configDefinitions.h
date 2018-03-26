@@ -239,6 +239,8 @@ namespace UTL
     const std::string CLARA_PH1_MAG_CONFIG             = "claraPH1Magnets.config";
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
+    const std::string VELA_BA1_SCREENS_CONFIG  = "velaBA1Screens.config";
+    const std::string VELA_BA2_SCREENS_CONFIG  = "velaBA2Screens.config";
     const std::string CLARA_PH1_SCREENS_CONFIG  = "claraPH1Screens.config";
 /// pilaser (DJS faked 17-02-2017)
     const std::string PILASER_CONFIG        = "velaclaraPILaser.config";

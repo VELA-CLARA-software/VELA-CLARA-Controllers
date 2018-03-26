@@ -11,25 +11,17 @@
 #include <algorithm>
 #include <ctype.h>
 //____________________________________________________________________________________________________
-screenConfigReader::screenConfigReader( const std::string & configFileLocation1,
-                                        const bool startVirtualMachine,
+screenConfigReader::screenConfigReader( const std::string & configFile1,
                                         const bool* show_messages_ptr,
-                                        const bool* show_debug_messages_ptr ):
-configReader( configFileLocation1,  show_messages_ptr, show_debug_messages_ptr ),
-usingVirtualMachine(startVirtualMachine),
-lastPVStruct(nullptr)
+                                        const bool* show_debug_messages_ptr,
+                                        const bool startVirtualMachine ):
+configReader( show_messages_ptr, show_debug_messages_ptr ),
+configFile1( configFile1 ),
+usingVirtualMachine(startVirtualMachine)
 {
-//    std::cout << configFileLocation1 << std::endl;
 }
 //_____________________________________________________________________________________________________
-screenConfigReader::~screenConfigReader()
-{
-    if( lastPVStruct )
-    {
-        delete lastPVStruct;
-        lastPVStruct = nullptr;
-    }
-}
+screenConfigReader::~screenConfigReader(){}
 //______________________________________________________________________________________________________
 bool screenConfigReader::readConfig()
 {

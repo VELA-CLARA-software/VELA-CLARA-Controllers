@@ -128,11 +128,11 @@ namespace screenStructs
         std::map< SCREEN_STATE, unsigned short >   elementPositions;      // position element on cassette (from config)
         std::map< SCREEN_STATE, double >           devicePositions;      // position element on cassette (from config)
         int numIlocks;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
     #ifndef __CINT__
         std::map< SCREEN_PV_TYPE, pvStruct > pvMonStructs;
         std::map< SCREEN_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
     #endif
     };
 
