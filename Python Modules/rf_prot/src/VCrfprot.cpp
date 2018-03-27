@@ -153,7 +153,6 @@ gunProtController& VCrfprot::getController(gunProtController*& cont,
         cont = new gunProtController(&messageStates.at(cont).first,
                                      &messageStates.at(cont).second,
                                      conf, shouldVM, shouldEPICS,name);
-        }
     }
     return *cont;
 }

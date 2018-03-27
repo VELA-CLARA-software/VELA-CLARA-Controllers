@@ -77,11 +77,11 @@ bool(gunProtController::*reset_1)(const std::string&) const=
                                                 &gunProtController::reset;
 bool(gunProtController::*reset_2)(const std::vector<std::string>&) const=
                                                 &gunProtController::reset;
-bool(gunProtController::*enable_1 )(const std::string&) const=
+bool(gunProtController::*enable_1)(const std::string&) const=
                                                 &gunProtController::enable;
-bool(gunProtController::*enable_2 )(const std::vector<std::string>&) const=
+bool(gunProtController::*enable_2)(const std::vector<std::string>&) const=
                                                 &gunProtController::enable;
-bool(gunProtController::*enable_3 )() const= &gunProtController::enable;
+bool(gunProtController::*enable_3)() const= &gunProtController::enable;
 bool(gunProtController::*disable_1)(const std::string&) const=
                                                 &gunProtController::disable;
 bool(gunProtController::*disable_2)(const std::vector<std::string>&) const=

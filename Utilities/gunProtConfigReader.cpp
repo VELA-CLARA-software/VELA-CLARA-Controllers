@@ -213,24 +213,24 @@ void gunProtConfigReader::addToProtObjectsV1(const std::vector<std::string> &key
             gunProtObjects.back().gunProtKeyBitValues.push_back(false);
         }
     }
-    else if(keyVal[0] == UTL::RF_GUN_PROT_TYPE)
+    else if(keyVal[0] == UTL::RF_PROT_TYPE)
     {
         if( keyVal[1] == UTL::ENABLE)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::ENABLE;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::ENABLE;
         else if( keyVal[1] == UTL::GENERAL)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::GENERAL;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::GENERAL;
         else if( keyVal[1] == UTL::CLARA_HRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::CLARA_HRRG;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_HRRG;
         else if( keyVal[1] == UTL::VELA_LRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::VELA_LRRG;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_LRRG;
         else if( keyVal[1] == UTL::CLARA_LRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::CLARA_LRRG;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_LRRG;
         else if( keyVal[1] == UTL::VELA_HRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::VELA_HRRG;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_HRRG;
         else if( keyVal[1] == UTL::TEST)
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::TEST;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::TEST;
         else
-            gunProtObjects.back().protType = rfProtStructs::RF_GUN_PROT_TYPE::NOT_KNOWN;
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::NOT_KNOWN;
 
         message(gunProtObjects.back().name," gunProtObjects.back().protType = ", ENUM_TO_STRING(gunProtObjects.back().protType));
     }

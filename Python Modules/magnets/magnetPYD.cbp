@@ -94,6 +94,7 @@
 		<Unit filename="../../Hardware/magnet/magnetController.h" />
 		<Unit filename="../../Hardware/magnet/magnetInterface.cpp" />
 		<Unit filename="../../Hardware/magnet/magnetInterface.h" />
+		<Unit filename="../../Structs/magnetStructs.cpp" />
 		<Unit filename="../../Structs/magnetStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
@@ -107,8 +108,6 @@
 		<Unit filename="../../Utilities/magnetConfigReader.cpp" />
 		<Unit filename="../../Utilities/magnetConfigReader.h" />
 		<Unit filename="include/VCmagnets.h" />
-		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
 		<Unit filename="src/VCmagnets.cpp" />
 		<Extensions>
 			<code_completion />

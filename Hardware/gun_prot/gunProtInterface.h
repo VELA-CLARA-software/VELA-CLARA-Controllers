@@ -59,7 +59,7 @@ class gunProtInterface : public interface
         bool isNotEnableProt(const std::string& name) const;
         bool isEnableProt(const std::string& name) const;
         bool isProtOfType(const std::string& name,
-                          const rfProtStructs::RF_GUN_PROT_TYPE type) const;
+                          const rfProtStructs::RF_PROT_TYPE type) const;
 
         bool reset() const;
         bool reset(const std::vector<std::string>& names) const;
@@ -99,7 +99,7 @@ class gunProtInterface : public interface
         bool exists_in_allGunProts(const std::string& name,
                                    rfProtStructs::RF_GUN_PROT_PV_TYPE pv) const;
 
-        rfProtStructs::RF_GUN_PROT_TYPE currentMode;
+        rfProtStructs::RF_PROT_TYPE currentMode;
 
         bool allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj) const;
 

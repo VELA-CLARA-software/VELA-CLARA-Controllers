@@ -42,7 +42,7 @@ gunProtInterface::gunProtInterface(const std::string& config_file,
                                    const bool  shouldStartEPICs):
 configReader(config_file, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr, shouldStartEPICs),
-currentMode(rfProtStructs::RF_GUN_PROT_TYPE::NOT_KNOWN),
+currentMode(rfProtStructs::RF_PROT_TYPE::NOT_KNOWN),
 EPICS_ACTIVATE_FAIL("Failed to send EPICS_ACTIVATE"),
 EPICS_SEND_FAIL("Failed to send EPICS_SEND")
 {
@@ -258,23 +258,23 @@ void gunProtInterface::updateCMIBits(rfProtStructs::rfGunProtObject& obj)
         message("Allkeybits for ", ENUM_TO_STRING(obj.protType), " ARE GOOD");
         switch( obj.protType)
         {
-            case rfProtStructs::RF_GUN_PROT_TYPE::CLARA_HRRG:
+            case rfProtStructs::RF_PROT_TYPE::CLARA_HRRG:
                 currentMode = obj.protType;
                 break;
-            case rfProtStructs::RF_GUN_PROT_TYPE::VELA_LRRG:
+            case rfProtStructs::RF_PROT_TYPE::VELA_LRRG:
                 currentMode = obj.protType;
                 break;
-            case rfProtStructs::RF_GUN_PROT_TYPE::VELA_HRRG:
+            case rfProtStructs::RF_PROT_TYPE::VELA_HRRG:
                 currentMode = obj.protType;
                 break;
-            case rfProtStructs::RF_GUN_PROT_TYPE::CLARA_LRRG:
+            case rfProtStructs::RF_PROT_TYPE::CLARA_LRRG:
                 currentMode = obj.protType;
                 break;
-            case rfProtStructs::RF_GUN_PROT_TYPE::TEST:
+            case rfProtStructs::RF_PROT_TYPE::TEST:
                 currentMode = obj.protType;
                 break;
             default:
-                currentMode = rfProtStructs::RF_GUN_PROT_TYPE::NO_MODE;
+                currentMode = rfProtStructs::RF_PROT_TYPE::NO_MODE;
         }
         message("RF GUN Mode is ", ENUM_TO_STRING(currentMode));
     }
@@ -350,7 +350,7 @@ std::string gunProtInterface::getGeneralProtName() const
 {
     for( auto&& it : allGunProts)
     {
-        if( isProtOfType( it.first, rfProtStructs::RF_GUN_PROT_TYPE::GENERAL))
+        if( isProtOfType( it.first, rfProtStructs::RF_PROT_TYPE::GENERAL))
             return it.first;
     }
     std::string r = UTL::UNKNOWN_STRING;
@@ -361,7 +361,7 @@ std::string gunProtInterface::getEnableProtName() const
 {
     for(auto&& it : allGunProts)
     {
-        if( isProtOfType( it.first, rfProtStructs::RF_GUN_PROT_TYPE::ENABLE))
+        if( isProtOfType( it.first, rfProtStructs::RF_PROT_TYPE::ENABLE))
             return it.first;
     }
     std::string r = UTL::UNKNOWN_STRING;
@@ -381,7 +381,7 @@ std::string gunProtInterface::getCurrentModeProtName() const
 }
 //____________________________________________________________________________________________
 bool gunProtInterface::isProtOfType(const std::string& name,
-                                    const rfProtStructs::RF_GUN_PROT_TYPE type) const
+                                    const rfProtStructs::RF_PROT_TYPE type) const
 {
     bool r = false;
     if(entryExists(allGunProts,name))
@@ -393,7 +393,7 @@ bool gunProtInterface::isProtOfType(const std::string& name,
 //____________________________________________________________________________________________
 bool gunProtInterface::isGeneralProt(const std::string& name) const
 {
-    return isProtOfType(name, rfProtStructs::RF_GUN_PROT_TYPE::GENERAL);
+    return isProtOfType(name, rfProtStructs::RF_PROT_TYPE::GENERAL);
 }
 //____________________________________________________________________________________________
 bool gunProtInterface::isNotGeneralProt(const std::string& name) const
@@ -403,7 +403,7 @@ bool gunProtInterface::isNotGeneralProt(const std::string& name) const
 //____________________________________________________________________________________________
 bool gunProtInterface::isEnableProt(const std::string& name) const
 {
-    return isProtOfType(name, rfProtStructs::RF_GUN_PROT_TYPE::ENABLE);
+    return isProtOfType(name, rfProtStructs::RF_PROT_TYPE::ENABLE);
 }
 //____________________________________________________________________________________________
 bool gunProtInterface::isNotEnableProt(const std::string& name) const

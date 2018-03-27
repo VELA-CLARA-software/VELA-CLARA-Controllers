@@ -408,7 +408,7 @@ namespace UTL
 /// RF Protection
     const std::string RF_GUN_PROTECTION_CONFIG          = "RFGunProtection.config";
     const std::string GUN_PROT_KEY_BITS = "GUN_PROT_KEY_BITS";
-    const std::string RF_GUN_PROT_TYPE = "RF_GUN_PROT_TYPE";
+    const std::string RF_PROT_TYPE = "RF_PROT_TYPE";
     const std::string ENABLE     = "ENABLE";
     const std::string TEST       = "TEST";
     const std::string CLARA_LRRG = "CLARA_LRRG";

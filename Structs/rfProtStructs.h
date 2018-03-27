@@ -45,7 +45,7 @@ namespace rfProtStructs
                                                              (UNKNOWN_PV)
                                         )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_TYPE, (CLARA_HRRG)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_TYPE, (CLARA_HRRG)
 
                                                           (VELA_LRRG)
                                                           (VELA_HRRG)
@@ -98,7 +98,7 @@ namespace rfProtStructs
         // values of the key bits
         std::vector<bool>   gunProtKeyBitValues;
         size_t              numIlocks;
-        RF_GUN_PROT_TYPE        protType;
+        RF_PROT_TYPE        protType;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> iLockStates;
         std::map<RF_GUN_PROT_PV_TYPE, pvStruct> pvMonStructs;
         std::map<RF_GUN_PROT_PV_TYPE, pvStruct> pvComStructs;

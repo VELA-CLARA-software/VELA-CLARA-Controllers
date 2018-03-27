@@ -25,6 +25,19 @@
 //*/
 #ifndef _HWC_STRUCTS_H_
 #define _HWC_STRUCTS_H_
+
+//stl includes
+#include <string>
+
+/*
+    vela_clara_enums is a .pyd that contains all the
+    enums that are shared amongst many HWC. In Python programmes
+    that use many HWC it can(should) be imported first
+    in every file so that only the vela_clara_enums namespace
+    has the defintions. (making accesing this enums consistant
+    throughout the python programme.
+*/
+#ifndef __VC_ENUM_ONLY__
 // project includes
 #include "configDefinitions.h"
 //stl includes
@@ -33,6 +46,9 @@
 #include <map>
 // epics includes
 #include <cadef.h>
+
+#endif // __VC_ENUM_ONLY__
+
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //                                                                            \
     /// This macro creates an enum and also enables us to                     \
@@ -62,8 +78,13 @@
 /// https://isocpp.org/wiki/faq/pointers-to-members
 #define CALL_MEMBER_FN(object,ptrToMember)((object).*(ptrToMember))
 
-/* forward declare interface class */
+/*
+    forward declare interface class,
+    but NOT when compiling VELA_CLARA_enums
+*/
+#ifndef __VC_ENUM_ONLY__
 class interface;
+#endif // __VC_ENUM_ONLY__
 namespace HWC_ENUM
 {
     /* Which mode is the controller to be used for */
@@ -143,6 +164,17 @@ namespace HWC_ENUM
                                                (ERR)
                                                (UNKNOWN)
                                         )
+
+/*
+    vela_clara_enums is a .pyd that contains all the
+    enums that are shared amongst many HWC. In Python programmes
+    that use many HWC it can(should) be imported first
+    in every file so that only the vela_clara_enums namespace
+    has the defintions. (making accesing this enums consistant
+    throughout the python programme.
+    Put all ENUMS ABOVE this commen and structs below
+*/
+#ifndef __VC_ENUM_ONLY__
     /*
         PV structs are used to set up the EPICS channels and subscriptions
         they should be held in a map keyed by an ILOCK_NUMBER
@@ -199,7 +231,9 @@ namespace HWC_ENUM
         interface* interface;
         evid       EVID;
     };
+#endif // __VC_ENUM_ONLY__
 }
+#endif // _HWC_STRUCTS_H_
 //______________________________________________________________________________
 //
 // OLD STUFF TO BE COMMENTED OUT AT SOMEPOINT
@@ -377,4 +411,4 @@ namespace HWC_ENUM
 //        evid                EVID;
 //    };
 //}
-#endif // _HWC_STRUCTS_H_
+//#endif // _HWC_STRUCTS_H_
