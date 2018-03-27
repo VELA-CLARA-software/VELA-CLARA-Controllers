@@ -22,16 +22,32 @@
 //*/
 #ifndef VCHEADER_H_INCLUDED
 #define VCHEADER_H_INCLUDED
+/*
+    vela_clara_enums is a .pyd that contains all the
+    enums that are shared amongst many HWC. In Python programmes
+    that use many HWC it can(should) be imported first
+    in every file so that only the vela_clara_enums namespace
+    has the defintions. (making accesing this enums consistant
+    throughout the python programme.
+*/
 // project includes
+#include "structs.h"
+#ifndef __VC_ENUM_ONLY__
 #include "VCbase.h"
 #include "structs.h"
+#endif // __VC_ENUM_ONLY__
+// stl inlcudes
+#include <string>
+#include <vector>
 //______________________________________________________________________________
 // boost.python includes
 /// !!!IF YOU SIGNIFCANTLY CHANGE THIS FILE YOU MIGHT
 /// RECOMPILE EVERY HARDWARE CONTROLLER!!!
-#include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#define BOOST_PYTHON_STATIC_LIB
+
+#include <boost/python/detail/wrap_python.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/docstring_options.hpp>
@@ -41,32 +57,34 @@
 #include <boost/python/def.hpp>
 #include <boost/python/scope.hpp>
 #include <boost/python/manage_new_object.hpp>
+#ifndef __VC_ENUM_ONLY__
+#endif // __VC_ENUM_ONLY__
 /* some typdefs */
-using doub = double ;
+using doub = double;
 using cdou = const double;
 using vecd = std::vector<double>;
-using vvcd = std::vector<std::vector<double>> ;
-using cved = const std::vector<double> ;
-using csiz = const size_t ;
+using vvcd = std::vector<std::vector<double>>;
+using cved = const std::vector<double>;
+using csiz = const size_t;
 using size = size_t;
-using vsiz = std::vector<size_t> ;
-using stri = std::string ;
-using cstr = const std::string ;
-using vecs = std::vector<std::string> ;
-using cves = const std::vector<std::string> ;
+using vsiz = std::vector<size_t>;
+using stri = std::string;
+using cstr = const std::string;
+using vecs = std::vector<std::string>;
+using cves = const std::vector<std::string>;
 //______________________________________________________________________________
 using namespace boost::python;
 namespace BOOST_PYTHON_INCLUDE
 {
-    /* Things that you want to use in python must be exposed:
+    /*
+        Things that you want to use in python must be exposed:
     */
-
-    /*  these functions exposes objects that can be defined in mulitple HWC.
+    /*  these functions expose objects that can be defined in mulitple HWC.
         Without this implementation you will get a Python warning that the
         objects have been defined multiple times
     */
     template<typename T>
-    void reg_class(const char* py_name, const char* py_docs, class_<T> def)
+    void reg_class(const char* py_name, const char* py_docs, class_<T>& def)
     {
         /* info on the type we are exposing */
         boost::python::type_info info = type_id<T>();
@@ -83,7 +101,7 @@ namespace BOOST_PYTHON_INCLUDE
         }
     }
     template<typename T>
-    void reg_enum(const char* py_name, const char* py_docs, enum_<T> def)
+    void reg_enum(const char* py_name, const char* py_docs, enum_<T>& def)
     {
         /* info on the type we are exposing */
         boost::python::type_info info = type_id<T>();
@@ -104,9 +122,8 @@ namespace BOOST_PYTHON_INCLUDE
     {
         /*  this function exposes objects that can be defined in mulitple HWC
             without this you will get a Python warning that the objects have
-            been defined multiple time
+            been defined multiple times
         */
-
         /* the name of the object as it will appear in Python*/
         const char * py_name;
         /* the object docstring as it will appear in Python */
@@ -115,24 +132,8 @@ namespace BOOST_PYTHON_INCLUDE
         // expose std::vector<std::string>
         py_name = "std_vector_string";
         py_docs = "c++ standard vector of standard strings";
-        /* the class definition, exposed to python, cf templated */
-        class_<vecs> vecs_def =
-            class_<vecs>(py_name, py_docs)
-                .def(vector_indexing_suite<vecs>())
-                ;
-        reg_class<vecs>(py_name, py_docs, vecs_def);
-
         //
-        // expose std::vector<double>
-        py_name = "std_vector_double";
-        py_docs = "c++ standard vector of doubles";
-        class_<vecd> vecd_def =
-            class_<vecd>(py_name, py_docs)
-                .def(vector_indexing_suite<vecd>())
-                ;
-        reg_class<vecd>(py_name, py_docs, vecd_def);
-
-        /* Expose VELA_ENUM enums */
+        // Expose HWC_ENUM enums
         using namespace HWC_ENUM;
 
         // MACHINE_MODE
@@ -162,9 +163,37 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("VELA_INJ",     MACHINE_AREA::VELA_INJ    )
                 .value("VELA_BA2",     MACHINE_AREA::VELA_BA2    )
                 .value("VELA_BA1",     MACHINE_AREA::VELA_BA1    )
+                .value("RF_GUN",       MACHINE_AREA::RF_GUN      )
+                .value("RF_L01",       MACHINE_AREA::RF_L01      )
                 .value("USER",         MACHINE_AREA::USER        )
                 ;
+
         reg_enum<MACHINE_AREA>(py_name, py_docs, ma_def);
+
+
+
+        // CONTROLLER_TYPE
+        py_name = "CONTROLLER_TYPE";
+        py_docs = "CONTROLLER_TYPE: an enum for named hardware controllers";
+        enum_<CONTROLLER_TYPE> ct_def =
+            enum_<CONTROLLER_TYPE>(py_name,py_docs)
+                .value("UNKNOWN_CONTROLLER_TYPE",CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
+                .value("GENERAL_MONITOR",        CONTROLLER_TYPE::GENERAL_MONITOR)
+                .value("CAMERA_DAQ",             CONTROLLER_TYPE::CAMERA_DAQ)
+                .value("VAC_VALVES",             CONTROLLER_TYPE::VAC_VALVES)
+                .value("CAMERA_IA",             CONTROLLER_TYPE::CAMERA_IA)
+                .value("PI_LASER",              CONTROLLER_TYPE::PI_LASER)
+                .value("SHUTTER",               CONTROLLER_TYPE::SHUTTER)
+                .value("RF_PROT",               CONTROLLER_TYPE::RF_PROT)
+                .value("MAGNET",                CONTROLLER_TYPE::MAGNET)
+                .value("SCREEN",                CONTROLLER_TYPE::SCREEN)
+                .value("RF_MOD",                CONTROLLER_TYPE::RF_MOD)
+                .value("SCOPE",                 CONTROLLER_TYPE::SCOPE)
+                .value("LLRF",                  CONTROLLER_TYPE::LLRF)
+                .value("IMG",                   CONTROLLER_TYPE::IMG)
+                .value("BPM",                   CONTROLLER_TYPE::BPM)
+                ;
+        reg_enum<CONTROLLER_TYPE>(py_name, py_docs, ct_def);
 
         // ILOCK_STATE
         py_name = "ILOCK_STATE";
@@ -188,6 +217,35 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("ERR",    STATE::ERR    )
                 ;
         reg_enum<STATE>(py_name, py_docs, s_def);
+/*
+    vela_clara_enums is a .pyd that contains all the
+    enums that are shared amongst many HWC. In Python programmes
+    that use many HWC it can(should) be imported first
+    in every file so that only the vela_clara_enums namespace
+    has the defintions. (making accesing this enums consistant
+    throughout the python programme.
+*/
+#ifndef __VC_ENUM_ONLY__
+        //
+        // expose std::vector<std::string>
+        py_name = "std_vector_string";
+        py_docs = "c++ standard vector of standard strings";
+        /* the class definition, exposed to python, cf templated */
+        class_<vecs> vecs_def =
+            class_<vecs>(py_name, py_docs,no_init)
+                .def(vector_indexing_suite<vecs>())
+                ;
+        reg_class<vecs>(py_name, py_docs, vecs_def);
+
+        //
+        // expose std::vector<double>
+        py_name = "std_vector_double";
+        py_docs = "c++ standard vector of doubles";
+        class_<vecd> vecd_def =
+            class_<vecd>(py_name, py_docs,no_init)
+                .def(vector_indexing_suite<vecd>())
+                ;
+        reg_class<vecd>(py_name, py_docs, vecd_def);
 
         /*  Expose base classes,  these should never be multiply defined
             no_int  forces Python to not construct (init) this object
@@ -207,8 +265,8 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isVerbose_doc        ="Returns TRUE if verbose mode is enabled.";
         const char* isSilent_doc         ="Returns TRUE if silent mode is enabled.";
         const char* getControllerType_doc="Returns controller type.";
-        const char* debugMessagesOn_doc ="Sets debug messages ON for this controller";
         const char* debugMessagesOff_doc="Sets debug messages OFF for this controller";
+        const char* debugMessagesOn_doc ="Sets debug messages ON for this controller";
         const char* messagesOn_doc      ="Sets messages ON for this controller";
         const char* messagesOff_doc     ="Sets messages OFF for this controller";
         const char* silence_doc         ="Sets silent mode for this controller";
@@ -256,6 +314,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def("setMessage",      &VCbase::setMessage,setMess__doc      )
             .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
             ;
+#endif //__VC_ENUM_ONLY__
     }
 }
 //______________________________________________________________________________

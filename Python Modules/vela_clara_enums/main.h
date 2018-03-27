@@ -1,139 +1,52 @@
-
-
-#include "structs.h"
-
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    main.h
+//  Description:
+//
+//
+//*/
 #ifndef __MAIN_H__
 #define __MAIN_H__
-
-#include <windows.h>
-
-/*  To use this exported function of dll, include this header
- *  in your project.
- */
-
-#ifdef BUILD_DLL
-    #define DLL_EXPORT __declspec(dllexport)
-#else
-    #define DLL_EXPORT __declspec(dllimport)
-#endif
-
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-void DLL_EXPORT SomeFunction(const LPCSTR sometext);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // __MAIN_H__
-
-
-//#include <boost/python/detail/wrap_python.hpp>
-//#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
-//#define BOOST_LIB_DIAGNOSTIC
-//#include <boost/config.hpp>
-#include <boost/python.hpp>
-//#include <boost/python/class.hpp>
-//#include <boost/python/module.hpp>
-//#include <boost/python/def.hpp>
-//#include <boost/python/object/function.hpp>
-//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-//#include <boost/python/docstring_options.hpp>
+#include "VCheader.h"
 
 using namespace boost::python;
-
-
 BOOST_PYTHON_MODULE(VELA_CLARA_enums)
 {
+    docstring_options doc_options(true, false, false);
+    doc_options.disable_cpp_signatures();
 
-    boost::python::type_info info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == nullptr)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    } else if ((*reg).m_to_python == nullptr) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE","MACHINE_MODE Doc String")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == nullptr)  {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    } else if ((*reg).m_to_python == nullptr) {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    }
-
-    info = boost::python::type_id<VELA_ENUM::ILOCK_STATE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == nullptr)  {
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-            ;
-    } else if ((*reg).m_to_python == nullptr) {
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE","ILOCK_STATE Doc String")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-            ;
-    }
-
-    info = boost::python::type_id<VELA_ENUM::STATE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == nullptr)  {
-    enum_<VELA_ENUM::STATE>
-    ("STATE","STATE Doc String")
-            .value("BAD",    VELA_ENUM::STATE::BAD  )
-            .value("GOOD",   VELA_ENUM::STATE::GOOD )
-            .value("ERR",    VELA_ENUM::STATE::ERR)
-            .value("UNKNOWN",VELA_ENUM::STATE::UNKNOWN)
-            ;
-    }
-    else if ((*reg).m_to_python == nullptr) {
-    enum_<VELA_ENUM::STATE>("STATE","STATE Doc String")
-            .value("BAD",    VELA_ENUM::STATE::BAD  )
-            .value("GOOD",   VELA_ENUM::STATE::GOOD )
-            .value("ERR",    VELA_ENUM::STATE::ERR)
-            .value("UNKNOWN",VELA_ENUM::STATE::UNKNOWN)
-            ;
-    }
-
+    // https://wiki.python.org/moin/boost.python/module
+    // set the docstring of the current module scope
+    scope().attr("__doc__") = "\n*** VELA_CLARA_enums ***\n\n"
+    "A .pyd that contains all the enums that are shared\n"
+    "amongst many HWC. In Python programmes that use many\n"
+    "HWC it can(should) be imported first in every file so\n"
+    "that only the vela_clara_enums namespace has the\n"
+    "defintions. (making accesing this enums consistant\n"
+    "throughout the python programme.\n";
+/*
+    vela_clara_enums is a .pyd that contains all the
+    enums that are shared amongst many HWC. In Python programmes
+    that use many HWC it can(should) be imported first
+    in every file so that only the vela_clara_enums namespace
+    has the defintions. (making accesing this enums consistant
+    throughout the python programme.
+*/
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 }
+#endif // __MAIN_H__

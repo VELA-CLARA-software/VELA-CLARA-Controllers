@@ -19,7 +19,10 @@
 					<Add option="/W3" />
 					<Add option="/DBUILD_DLL" />
 					<Add option="/DNDEBUG" />
+					<Add option="/D__VC_ENUM_ONLY__" />
 					<Add directory="../../structs" />
+					<Add directory="../../Hardware" />
+					<Add directory="../../Utilities" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -30,9 +33,16 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
-		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Hardware/VCheader.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../../Structs/structs.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
+		<Unit filename="main.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
