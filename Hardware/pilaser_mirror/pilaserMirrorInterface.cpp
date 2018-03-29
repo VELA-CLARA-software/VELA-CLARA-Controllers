@@ -39,15 +39,14 @@ pilaserMirrorInterface::pilaserMirrorInterface(bool* show_messages,
                          const bool shouldStartEPICs,
                          const std::string& configFile
                         ):
-configReader(configFile,startVirtualMachine, show_messages, show_debug_messages),
+configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
 interface(show_messages,show_debug_messages)
-//shouldStartEPICs( shouldStartEPICs )
 {
-//    if( shouldStartEPICs )
-//    message("magnet pilaserMirrorInterface shouldStartEPICs is true");
-//    else
-//    message("magnet pilaserMirrorInterface shouldStartEPICs is false");
-//    initialise();
+    if(shouldStartEPICs)
+        message("pilaserMirrorInterface shouldStartEPICs is true");
+    else
+        message("pilaserMirrorInterface shouldStartEPICs is false");
+    initialise();
 }
 //______________________________________________________________________________
 pilaserMirrorInterface::~pilaserMirrorInterface()
@@ -66,19 +65,19 @@ pilaserMirrorInterface::~pilaserMirrorInterface()
 //    int status = ca_clear_subscription( ms -> EVID );
 //}
 ////______________________________________________________________________________
-//void pilaserMirrorInterface::initialise()
-//{
+void pilaserMirrorInterface::initialise()
+{
 //    /// The config file reader
 //    configFileRead = configReader.readConfig();
-//    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
-//    if( configFileRead )
+//    UTL::STANDARD_PAUSE;
+//    if(configFileRead)
 //    {
 //        message("The pilaserMirrorInterface has read the config file, acquiring objects");
 //        /// initialise the objects based on what is read from the config file
 //        bool getDataSuccess = initObjects();
 //        if( getDataSuccess )
 //        {
-//            if( shouldStartEPICs )
+//            if(shouldStartEPICs)
 //            {
 //                message("The pilaserMirrorInterface has acquired objects, connecting to EPICS");
 //                //std::cout << "WE ARE HERE" << std::endl;
@@ -95,7 +94,7 @@ pilaserMirrorInterface::~pilaserMirrorInterface()
 //        else
 //            message( "!!!The pilaserMirrorInterface received an Error while getting laser data!!!" );
 //    }
-//}
+}
 ////______________________________________________________________________________
 //bool pilaserMirrorInterface::initObjects()
 //{

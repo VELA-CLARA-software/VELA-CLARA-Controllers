@@ -20,7 +20,6 @@
 //
 //
 //*/
-
 #ifndef VELA_MAG_INTERFACE_H
 #define VELA_MAG_INTERFACE_H
 // djs
@@ -33,7 +32,7 @@
 #include <string>
 #include <atomic>
 #include <map>
-
+//______________________________________________________________________________
 class virtualCathodeInterface : public interface
 {
     public:
@@ -45,7 +44,7 @@ class virtualCathodeInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         virtualCathodeInterface(bool* show_messages,
-                                bool* show_debug_messagese,
+                                bool* show_debug_messages,
                                 const bool startVirtualMachine,
                                 const bool shouldStartEPICs,
                                 const std::string& configFile
@@ -70,26 +69,30 @@ class virtualCathodeInterface : public interface
 
 
     private:
-        // MOVE TO BASE CLASS
-//        const bool shouldStartEPICs;
+
+
+
 //
 //        void killMonitor( pilaserStructs::monitorStruct * ms );
 //
-//        void initialise();
-//        bool initObjects();
-//        void initChids();
-//        void addChannel( const std::string & pvRoot, pilaserStructs::pvStruct & pv );
-//        void startMonitors();
+        void initialise();
+        bool initObjects();
+        void initChids();
+        void addChannel(const std::string & pvRoot, virtualCathodeStructs::pvStruct & pv );
+        void startMonitors();
+        void addToBuffer();
+
 //        // all client set functions route to here
 //        bool setValue( pilaserStructs::pvStruct& pvs, double value);
 //
-//        pilaserStructs::pilaserObject pilaser;
+        virtualCathodeStructs::virtualCathodeDataObject object;
 //
-//        std::vector<pilaserStructs::monitorStruct*> continuousMonitorStructs;
+        std::vector<virtualCathodeStructs::monitorStruct*> continuousMonitorStructs;
 //        // all EPICS callbacks route here
-//        static void staticEntryPILMonitor( const event_handler_args args);
-
+        static void staticEntryMonitor( const event_handler_args args);
+        void updateValue(const event_handler_args args, virtualCathodeStructs::PV_TYPE pv);
         virtualCathodeConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message
 };
+//______________________________________________________________________________
 #endif // VELA_MAG_INTERFACE_H

@@ -22,7 +22,10 @@ namespace shutterStructs
 
     /// Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SHUTTER_PV_TYPE, (Sta) (On) (Off) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SHUTTER_PV_TYPE,(Sta)
+                                                        (On)
+                                                        (Off)
+                                        )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(SHUTTER_STATE,(CLOSED)
                                                       (OPEN)

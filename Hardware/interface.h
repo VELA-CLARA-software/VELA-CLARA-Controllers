@@ -93,12 +93,12 @@ class interface : public baseObject
         const double DBL_ERR_NUM;
         bool configFileRead, allChidsInitialised, allMonitorsStarted;
         double CA_PEND_IO_TIMEOUT;
-        void updateTime(const epicsTimeStamp& stamp,
-                        double& val,
-                        std::string& str);
-
+        static void updateTime(const epicsTimeStamp& stamp,
+                               double& val,
+                               std::string& str);
 #ifndef __CINT__
-        /*  This is the 'only' ca_client_context
+        /*
+            This is the 'only' ca_client_context
             attach and detach to this when multi-threading
         */
         ca_client_context * thisCaContext;
@@ -121,6 +121,9 @@ class interface : public baseObject
         static long           getDBRlong         (const event_handler_args& args);
         static int            getDBRint          (const event_handler_args& args);
         static bool           getDBRbool         (const event_handler_args& args);
+        static void        getDBRdouble_timestamp(const event_handler_args& args,
+                                                  HWC_ENUM::epics_timestamp& ts,
+                                                  double& val);
         void updateBoolState(const event_handler_args& args, bool& parameter);
 
         void checkCHIDState(const chid& CHID, const std::string& name);

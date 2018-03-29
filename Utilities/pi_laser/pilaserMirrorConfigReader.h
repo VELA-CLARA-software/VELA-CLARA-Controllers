@@ -34,8 +34,10 @@
 class pilaserMirrorConfigReader : public configReader
 {
     public:
-        pilaserMirrorConfigReader(const std::string & configFileLocation1,const bool startVirtualMachine,
-                          const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
+        pilaserMirrorConfigReader(const std::string& configFile,
+                     const bool* show_messages,
+                     const bool* show_debug_messages,
+                     const bool usingVM);
         ~pilaserMirrorConfigReader();
 
 //        bool readConfig( );

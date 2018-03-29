@@ -88,17 +88,17 @@ class VCpilaser : VCbase
 //typedef const std::vector<std::string> cves;
 //typedef std::vector<bool> vecb;
 /////
-////bool(pilaserController::*screenIN_1)  (cstr& ) = &pilaserController::screenIN;
+////bool(pilaserController::*screenIN_1)  (cstr& = &pilaserController::screenIN;
 //
 //bool(pilaserController::*setHpos_1)(doub) = &pilaserController::setHpos;
-//bool(pilaserController::*setHpos_2)(int ) = &pilaserController::setHpos;
+//bool(pilaserController::*setHpos_2)(int = &pilaserController::setHpos;
 //bool(pilaserController::*setVpos_1)(doub) = &pilaserController::setVpos;
-//bool(pilaserController::*setVpos_2)(int ) = &pilaserController::setVpos;
+//bool(pilaserController::*setVpos_2)(int = &pilaserController::setVpos;
 //bool(pilaserController::*setIntensity_1)(doub) = &pilaserController::setIntensity;
 //bool(pilaserController::*setIntensity_2)(int) = &pilaserController::setIntensity;
 //
 //using namespace boost::python;
-//BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl )
+//BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl
 //{
 //    //using namespace boost::python;
 //    docstring_options doc_options(true, false, false);
@@ -119,7 +119,7 @@ class VCpilaser : VCbase
 //        .def_readonly("hPos",      &pilaserStructs::pilaserObject::hPos,
 //                      "The horizontal position of the laser on the cathode [mm hopefully]")
 //        .def_readonly("vPos",      &pilaserStructs::pilaserObject::vPos,
-//                      "The vertical position of the laser on the cathode [mm hopefully]" )
+//                      "The vertical position of the laser on the cathode [mm hopefully]"
 //        .def_readonly("intensity", &pilaserStructs::pilaserObject::intensity,
 //                      "The intensity of the laser on the cathode [mJ ??]")
 ////        .def_readonly("numIlocks", &pilaserStructs::pilaserObject::numIlocks,
@@ -166,20 +166,20 @@ class VCpilaser : VCbase
 //                                        (boost::python::arg("time"),
 //                                        "Set a new waiting time [seconds] when sending commands to EPICS"))
 //        .def("getHpos", &pilaserController::getHpos,
-//                            "returns the horizontal position of the laser on the cathode [units etc?]." )
+//                            "returns the horizontal position of the laser on the cathode [units etc?]."
 //        .def("getVpos", &pilaserController::getVpos,
-//                            "returns the vertical position of the laser on the cathode [units etc?]."   )
+//                            "returns the vertical position of the laser on the cathode [units etc?]."
 //        .def("getIntensity", &pilaserController::getIntensity,
-//                            "returns the intensity the laser [units etc?]."                   )
+//                            "returns the intensity the laser [units etc?]."
 //        .def("getPILObjConstRef",  &pilaserController::getPILObjConstRef,
 //                                   return_value_policy<reference_existing_object>(),
-//                            "returns a reference to a PI laser object, (identified by its name)."      )
+//                            "returns a reference to a PI laser object, (identified by its name)."
 //        .def("setHpos",  setHpos_1,
-//                            "set the horizontal position of the laser beam on the cathode."  )
+//                            "set the horizontal position of the laser beam on the cathode."
 //        .def("setHpos",  setHpos_2,
-//             "set the horizontal position of the laser beam on the cathode."  )
-//        .def("setVpos",  setVpos_1,"set the vertical position of the laser beam on the cathode." )
-//        .def("setVpos",  setVpos_2,"set the vertical position of the laser beam on the cathode."  )
+//             "set the horizontal position of the laser beam on the cathode."
+//        .def("setVpos",  setVpos_1,"set the vertical position of the laser beam on the cathode."
+//        .def("setVpos",  setVpos_2,"set the vertical position of the laser beam on the cathode."
 //        .def("setIntensity",  setIntensity_1,"set the intensity of the laser beam on the cathode.")
 //        .def("setIntensity",  setIntensity_2,"set the intensity of the laser beam on the cathode.")
 //        ;
@@ -195,13 +195,13 @@ class VCpilaser : VCbase
 //             return_value_policy<reference_existing_object>(),
 //             "returns a reference to the offline PI laser object.")
 //        .def("setQuiet",         &VCpilaser::setQuiet,
-//             "set Quiet Mode (no messages, no debug messages) for all PI laser objects." )
+//             "set Quiet Mode (no messages, no debug messages) for all PI laser objects."
 //        .def("setVerbose",       &VCpilaser::setVerbose,
 //             "set Verbose Mode (all messages, all debug messages) for all PI laser objects.")
 //        .def("setMessage",       &VCpilaser::setMessage,
 //             "set Message Mode (all  messages, no debug messages) for all PI laser objects.")
 //        .def("setDebugMessage",  &VCpilaser::setDebugMessage,
-//             "set Debug Mode (no messages, all debug messages) for all PI laser objects." )
+//             "set Debug Mode (no messages, all debug messages) for all PI laser objects."
 //        ;
 //}
 

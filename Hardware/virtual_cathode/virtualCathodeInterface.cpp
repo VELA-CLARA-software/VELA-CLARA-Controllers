@@ -38,163 +38,249 @@ virtualCathodeInterface::virtualCathodeInterface(bool* show_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
-                                  ):
-configReader(configFile, startVirtualMachine, show_messages, show_debug_messages),
+                                 ):
+configReader(configFile, show_messages, show_debug_messages, startVirtualMachine),
 interface(show_messages, show_debug_messages)
-//shouldStartEPICs( shouldStartEPICs )
 {
-//    if( shouldStartEPICs )
-//    message("magnet virtualCathodeInterface shouldStartEPICs is true");
-//    else
-//    message("magnet virtualCathodeInterface shouldStartEPICs is false");
-//    initialise();
+    if(shouldStartEPICs)
+        message("virtualCathodeData shouldStartEPICs is true");
+    else
+        message("virtualCathodeData shouldStartEPICs is false");
+    initialise();
 }
 //______________________________________________________________________________
 virtualCathodeInterface::~virtualCathodeInterface()
 {
 //    killILockMonitors();
-//    for( auto && it : continuousMonitorStructs )
+//    for(auto && it : continuousMonitorStructs)
 //    {
-//        killMonitor( it );
+//        killMonitor(it);
 //        delete it;
 //    }
-//    debugMessage( "virtualCathodeInterface DESTRUCTOR COMPLETE ");
+//    debugMessage("virtualCathodeInterface DESTRUCTOR COMPLETE ");
 }
 ////______________________________________________________________________________
-//void virtualCathodeInterface::killMonitor( pilaserStructs::monitorStruct * ms )
+//void virtualCathodeInterface::killMonitor(pilaserStructs::monitorStruct * ms)
 //{
-//    int status = ca_clear_subscription( ms -> EVID );
-//    //if( status == ECA_NORMAL)
-//        //debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
+//    int status = ca_clear_subscription(ms -> EVID);
+//    //if(status == ECA_NORMAL)
+//        //debugMessage(ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
 ////    else
-//        //debugMessage("ERROR virtualCathodeInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
+//        //debugMessage("ERROR virtualCathodeInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType));
 //}
-////______________________________________________________________________________
-//void virtualCathodeInterface::initialise()
-//{
-//    /// The config file reader
-//    configFileRead = configReader.readConfig();
-//    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
-//    if( configFileRead )
-//    {
-//        message("The virtualCathodeInterface has read the config file, acquiring objects");
-//        /// initialise the objects based on what is read from the config file
-//        bool getDataSuccess = initObjects();
-//        if( getDataSuccess )
-//        {
-//            if( shouldStartEPICs )
-//            {
-//                message("The virtualCathodeInterface has acquired objects, connecting to EPICS");
-//                //std::cout << "WE ARE HERE" << std::endl;
-//                /// subscribe to the channel ids
-//                initChids();
-//                /// start the monitors: set up the callback functions
-//                startMonitors();
-//                /// The pause allows EPICS to catch up.
-//                std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
-//            }
-//            else
-//             message("The virtualCathodeInterface has acquired objects, NOT connecting to EPICS");
-//        }
-//        else
-//            message( "!!!The virtualCathodeInterface received an Error while getting laser data!!!" );
-//    }
-//}
-////______________________________________________________________________________
-//bool virtualCathodeInterface::initObjects()
-//{
-//    bool ans = configReader.getpilaserObject(pilaser);
-//    debugMessage( "pilaser.pvComStructs.size() = ", pilaser.pvComStructs.size() );
-//    debugMessage( "pilaser.pvMonStructs.size() = ", pilaser.pvMonStructs.size() );
-//    return ans;
-//}
-////______________________________________________________________________________
-//void virtualCathodeInterface::initChids()
-//{
-//    message( "\n", "Searching for PILaser chids...");
+//______________________________________________________________________________
+void virtualCathodeInterface::initialise()
+{
+    /* read config */
+    configFileRead = configReader.readConfig();
+    UTL::STANDARD_PAUSE;
+    if(configFileRead)
+    {
+        message("The virtualCathodeInterface has read the config file"
+                ", acquiring objects");
+        bool getDataSuccess = initObjects();
+        if( getDataSuccess)
+        {
+            if(shouldStartEPICs)
+            {
+                message("The virtualCathodeInterface has acquired objects"
+                        ", connecting to EPICS");
+                initChids();
+                startMonitors();
+                /* The pause allows EPICS to catch up. */
+                UTL::STANDARD_PAUSE;
+            }
+            else
+            {
+             message("The virtualCathodeInterface has acquired objects"
+                     ", NOT connecting to EPICS");
+            }
+        }
+        else
+        {
+            message("!!!The virtualCathodeInterface received an Error "
+                    "while getting laser data!!!");
+        }
+    }
+}
+//______________________________________________________________________________
+bool virtualCathodeInterface::initObjects()
+{
+    bool ans = configReader.getVirtualCathodeDataObject(object);
+    debugMessage("pilaser.pvMonStructs.size() = ", object.pvMonStructs.size());
+    // add the first data_struct to the buffer
+    addToBuffer();
+    // on start-up the monitored data MUST go in the first elment of the buffer
+    // so set those pointers in image_data_buffer_next_update
+    for(auto&& it: object.image_data_buffer.front())
+    {
+        object.image_data_buffer_next_update[it.first] = &object.image_data_buffer.front();
+    }
+    return ans;
+}
+//______________________________________________________________________________
+void virtualCathodeInterface::initChids()
+{
+    message("\n", "Searching for VirtualCathodeData chids...");
+    for(auto && it : object.pvMonStructs)
+    {
+        addChannel(object.pvRoot, it.second);
+    }
+    // currently there are no command only PVs for the PIL
+    int status = sendToEpics("ca_create_channel",
+                             "Found VirtualCathodeData ChIds.",
+                             "!!TIMEOUT!! Not all VirtualCathodeData ChIds found.");
+    if(status == ECA_TIMEOUT)
+    {
+        UTL::PAUSE_500;
+        message("\n", "Checking VirtualCathodeData ChIds ");
+        for(auto && it : object.pvMonStructs)
+        {
+            checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
+        }
+        UTL::STANDARD_PAUSE;
+    }
+    else if (status == ECA_NORMAL)
+    {
+        allChidsInitialised = true;
+    }
+}
+//______________________________________________________________________________
+void virtualCathodeInterface::addChannel(const std::string & pvRoot,
+                                         virtualCathodeStructs::pvStruct & pv)
+{
+    std::string s = pvRoot + pv.pvSuffix;
+    ca_create_channel(s.c_str(), nullptr, nullptr, UTL::PRIORITY_0, &pv.CHID);
+    message("Create channel to ", s);
+}
+//______________________________________________________________________________
+void virtualCathodeInterface::startMonitors()
+{
+    continuousMonitorStructs.clear();
+    continuousILockMonitorStructs.clear();
+
+    for(auto && it : object.pvMonStructs)
+    {
+        continuousMonitorStructs.push_back(new virtualCathodeStructs::monitorStruct());
+        continuousMonitorStructs.back() -> monType    = it.first;
+        continuousMonitorStructs.back() -> object = &object;
+        continuousMonitorStructs.back() -> interface  = this;
+        ca_create_subscription(it.second.CHTYPE,
+                               it.second.COUNT,
+                               it.second.CHID,
+                               it.second.MASK,
+                               virtualCathodeInterface::staticEntryMonitor,
+                               (void*)continuousMonitorStructs.back(),
+                               &continuousMonitorStructs.back() -> EVID);
+    }
+    int status = sendToEpics("ca_create_subscription",
+                             "Succesfully Subscribed to VirtualCathodeData Monitors",
+                             "!!TIMEOUT!! Subscription to VirtualCathodeData monitors failed");
+    if (status == ECA_NORMAL)
+    {
+        allMonitorsStarted = true;
+    }
+}
+//____________________________________________________________________________________________
+void virtualCathodeInterface::staticEntryMonitor(const event_handler_args args)
+{
+    using namespace virtualCathodeStructs;
+    monitorStruct*ms = static_cast<monitorStruct *>(args.usr);
+    ms->interface->updateValue(args,ms -> monType);
+
 //
-//    for( auto && it : pilaser.pvMonStructs )
-//    {
-//        addChannel( pilaser.pvRoot, it.second );
-//    }
-//    // currently there are no command only PVs for the PIL
-//    for( auto && it : pilaser.pvComStructs )
-//    {
-//        addChannel( pilaser.pvRoot, it.second );
-//    }
-//    addILockChannels( pilaser.numIlocks, pilaser.pvRoot, pilaser.name, pilaser.iLockPVStructs );
-//    int status = sendToEpics( "ca_create_channel", "Found PILaser ChIds.", "!!TIMEOUT!! Not all PILaser ChIds found." );
-//    if( status == ECA_TIMEOUT )
-//    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 500 ));//MAGIC_NUMBER
-//        message("\n", "Checking PILaser ChIds ");
-//        for( auto && it : pilaser.pvMonStructs )
-//        {
-//            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first ) );
-//        }
-//        for( auto && it : pilaser.pvComStructs)
-//        {
-//            checkCHIDState( it.second.CHID, ENUM_TO_STRING( it.first ) );
-//        }
-//        std::this_thread::sleep_for(std::chrono::milliseconds( 5000 )); // MAGIC_NUMBER
-//    }
-//    else if ( status == ECA_NORMAL )
-//        allChidsInitialised = true;  /// interface base class member
-//}
-////______________________________________________________________________________
-//void virtualCathodeInterface::addChannel( const std::string & pvRoot, pilaserStructs::pvStruct & pv )
-//{
-//    std::string s1 = pvRoot + pv.pvSuffix;
-//    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
-//    debugMessage( "Create channel to ", s1 );
-//}
-////______________________________________________________________________________
-//void virtualCathodeInterface::startMonitors()
-//{
-//    continuousMonitorStructs.clear();
-//    continuousILockMonitorStructs.clear();
-//
-//    for( auto && it : pilaser.pvMonStructs )
-//    {
-//        continuousMonitorStructs.push_back( new pilaserStructs::monitorStruct() );
-//        continuousMonitorStructs.back() -> monType    = it.first;
-//        continuousMonitorStructs.back() -> pilaserObj = &pilaser;
-//        continuousMonitorStructs.back() -> interface  = this;
-//        ca_create_subscription(it.second.CHTYPE,
-//                               it.second.COUNT,
-//                               it.second.CHID,
-//                               it.second.MASK,
-//                               virtualCathodeInterface::staticEntryPILMonitor,
-//                               (void*)continuousMonitorStructs.back(),
-//                               &continuousMonitorStructs.back() -> EVID);
-//    }
-//    int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to PILaser Monitors", "!!TIMEOUT!! Subscription to PILaser monitors failed" );
-//    if ( status == ECA_NORMAL )
-//        allMonitorsStarted = true; /// interface base class member
-//}
-////____________________________________________________________________________________________
-//void virtualCathodeInterface::staticEntryPILMonitor(const event_handler_args args)
-//{
-//    pilaserStructs::monitorStruct*ms = static_cast<pilaserStructs::monitorStruct *>(args.usr);
 //    switch(ms -> monType)
 //    {
-//        case pilaserStructs::PILASER_PV_TYPE::H_POS:
-//            //ms->interface->debugMessage("PILaser H_pos = ",*(double*)args.dbr);
-//            ms->pilaserObj->hPos =  *(double*)args.dbr;
+//        case PV_TYPE::X_RBV:
+//            //ms->pilaserObj->hPos =  *(double*)args.dbr;
 //            break;
-//        case pilaserStructs::PILASER_PV_TYPE::V_POS:
+//        case PV_TYPE::Y_RBV:
 //            //ms->interface->debugMessage("PILaser V_POS = ",*(double*)args.dbr);
-//            ms->pilaserObj->vPos =  *(double*)args.dbr;
+//            //ms->pilaserObj->vPos =  *(double*)args.dbr;
 //            break;
-//        case pilaserStructs::PILASER_PV_TYPE::INTENSITY:
+//        case PV_TYPE::SIGMA_X_RBV:
 //            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::SIGMA_Y_RBV:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::COV_XY_RBV:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::X_PIX:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::Y_PIX:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::SIGMA_X_PIX:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::SIGMA_Y_PIX:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::COV_XY_PIX:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
+//            break;
+//        case PV_TYPE::VC_INTENSITY:
+//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
 //            break;
 //        default:
-//            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to virtualCathodeInterface::staticEntryPILMonitor");
+//            //ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to virtualCathodeInterface::staticEntryPILMonitor");
 //            break;
 //    }
-//}
+}
+//____________________________________________________________________________________________
+void virtualCathodeInterface::updateValue(const event_handler_args args,
+                                          virtualCathodeStructs::PV_TYPE pv)
+{
+    /*
+        update the values,
+        using the pointer at object.image_data_buffer_next_update.at(pv)
+        to access the correct part of image_data_buffer
+    */
+    getDBRdouble_timestamp(args,
+                           object.image_data_buffer_next_update.at(pv)->at(pv).time,
+                           object.image_data_buffer_next_update.at(pv)->at(pv).value
+    );
+
+    /*
+        we now KNOW image_data_buffer must be extended, but ...
+        we need to check if it already has been extended
+        check if the pointer is the same as the address of the back element
+    */
+    if(object.image_data_buffer_next_update.at(pv) == &object.image_data_buffer.back())
+    {
+        /*
+            image_data_buffer has not already been extended
+            so extend it
+        */
+        addToBuffer();
+    }
+    /*
+        update image_data_buffer_next_update to point at the
+        back of image_data_buffer
+    */
+    object.image_data_buffer_next_update.at(pv) = &object.image_data_buffer.back();
+}
+//____________________________________________________________________________________________
+void virtualCathodeInterface::addToBuffer()
+{
+    object.image_data_buffer.push_back( virtualCathodeStructs::static_blank_image_data::create_blank_image_data());
+    if(object.image_data_buffer.size() > object.buffer_size)
+    {
+        object.image_data_buffer.pop_front();
+    }
+}
 ////____________________________________________________________________________________________
 //double virtualCathodeInterface::getHpos()
 //{
@@ -246,7 +332,7 @@ virtualCathodeInterface::~virtualCathodeInterface()
 //    return pilaser;
 //}
 ////____________________________________________________________________________________________
-//bool virtualCathodeInterface::setValue( pilaserStructs::pvStruct& pvs, double value)
+//bool virtualCathodeInterface::setValue(pilaserStructs::pvStruct& pvs, double value)
 //{
 //    bool ret = false;
 //    ca_put(pvs.CHTYPE,pvs.CHID,&value);

@@ -65,7 +65,7 @@ namespace rfProtStructs
 
     struct pvStruct
     {
-        pvStruct() :
+        pvStruct():
             pvSuffix(UTL::UNKNOWN_STRING),
             objName(UTL::UNKNOWN_NAME),
             COUNT(UTL::ZERO_UL),

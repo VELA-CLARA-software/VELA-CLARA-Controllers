@@ -481,4 +481,15 @@ bool interface::getDBRbool(const event_handler_args& args)
 {
     return *(bool*)args.dbr;
 }
+//______________________________________________________________________________
+void interface::getDBRdouble_timestamp(const event_handler_args& args,
+                                       HWC_ENUM::epics_timestamp& ts,
+                                       double& val)
+{
+    const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
+    val = p->value;
+    ts.etime = p->stamp;
+    updateTime(ts.etime, ts.time_ns, ts.time_Str);
+}
+
 

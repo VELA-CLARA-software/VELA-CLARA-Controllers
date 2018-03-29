@@ -49,7 +49,7 @@ class virtualCathodeController : public controller
         // just have 1 constructor, but we have a higher level class that create these objects
         //virtualCathodeController();
         virtualCathodeController(bool* show_messages,
-                                bool* show_debug_messagese,
+                                bool* show_debug_messages,
                                 const bool startVirtualMachine,
                                 const bool shouldStartEPICs,
                                 const std::string& configFile,

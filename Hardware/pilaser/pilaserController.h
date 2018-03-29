@@ -40,7 +40,7 @@ class pilaserController : public controller
     public:
         //pilaserController();
         pilaserController(bool* show_messages,
-                          bool* show_debug_messagese,
+                          bool* show_debug_messages,
                           const bool startVirtualMachine,
                           const bool shouldStartEPICs,
                           const std::string& name,

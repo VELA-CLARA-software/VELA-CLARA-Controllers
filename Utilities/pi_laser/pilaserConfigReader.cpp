@@ -11,12 +11,11 @@
 #include <algorithm>
 #include <ctype.h>
 //____________________________________________________________________________________________________
-pilaserConfigReader::pilaserConfigReader( const std::string & configFileLocation1,
-                                        const bool startVirtualMachine,
-                                        const bool* show_messages_ptr,
-                                        const bool* show_debug_messages_ptr ):
-configReader( configFileLocation1, show_messages_ptr, show_debug_messages_ptr )
-//usingVirtualMachine(startVirtualMachine)
+pilaserConfigReader::pilaserConfigReader(const std::string& configFile,
+                           const bool* show_messages,
+                           const bool* show_debug_messages,
+                           const bool usingVM):
+configReader(configFile,  show_messages, show_debug_messages,usingVM)
 {
 //    std::cout << configFileLocation1 << std::endl;
 }

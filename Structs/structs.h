@@ -25,16 +25,14 @@
 //*/
 #ifndef _HWC_STRUCTS_H_
 #define _HWC_STRUCTS_H_
-
 //stl includes
 #include <string>
-
 /*
     vela_clara_enums is a .pyd that contains all the
     enums that are shared amongst many HWC. In Python programmes
     that use many HWC it can(should) be imported first
     in every file so that only the vela_clara_enums namespace
-    has the defintions. (making accesing this enums consistant
+    has the definitions. (making accesing these enums consistant
     throughout the python programme.
 */
 #ifndef __VC_ENUM_ONLY__
@@ -232,6 +230,17 @@ namespace HWC_ENUM
            members from within the static callback function */
         interface* interface;
         evid       EVID;
+    };
+
+    struct epics_timestamp
+    {
+        epics_timestamp():
+            time_ns(UTL::ZERO_DOUBLE),
+            time_Str(UTL::EMPTY_STRING)
+            {}
+        double         time_ns;
+        std::string    time_Str;
+        epicsTimeStamp etime;
     };
 #endif // __VC_ENUM_ONLY__
 }

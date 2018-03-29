@@ -15,7 +15,7 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    VCpilaser.cpp
+//  FileName:    pilaserInterface.h
 //  Description:
 //
 //
@@ -45,7 +45,7 @@ class pilaserInterface : public interface
 
         //pilaserInterface::pilaserInterface();
         pilaserInterface(bool* show_messages,
-                          bool* show_debug_messagese,
+                          bool* show_debug_messages,
                           const bool startVirtualMachine,
                           const bool shouldStartEPICs,
                           const std::string& configFile

@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    pilaserInterface.cpp
+//  Description:
+//
+//
+//*/
 #include "pilaserInterface.h"
 //djs
 #include "configDefinitions.h"
@@ -27,13 +35,13 @@
 //
 //______________________________________________________________________________
 pilaserInterface::pilaserInterface(bool* show_messages,
-                                   bool* show_debug_messagese,
+                                   bool* show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
                                   ):
-configReader(configFile,startVirtualMachine, show_messages, show_debug_messagese ),
-interface(show_messages,show_debug_messagese)
+configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
+interface(show_messages,show_debug_messages)
 //shouldStartEPICs( shouldStartEPICs )
 {
 //    if( shouldStartEPICs )

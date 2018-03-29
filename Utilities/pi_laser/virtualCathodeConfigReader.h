@@ -15,46 +15,39 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    virtualCathodeConfigReader.cpp
+//  FileName:    virtualCathodeConfigReader.h
 //  Description:
 //
 //
 //*/
-#ifndef CONFIG_READER_PyIL_SHUTTER_H
-#define CONFIG_READER_PyIL_SHUTTER_H
+#ifndef _VIRTUAL_CATHODE_CONFIG_READER_
+#define _VIRTUAL_CATHODE_CONFIG_READER_
 // stl
 #include <string>
 #include <vector>
 #include <map>
 // me
 #include "configReader.h"
-#include "pilaserStructs.h"
-
-
+#include "virtualCathodeStructs.h"
+//______________________________________________________________________________
 class virtualCathodeConfigReader:public configReader
 {
     public:
-        virtualCathodeConfigReader(const std::string & configFileLocation1,const bool startVirtualMachine,
-                          const bool* show_messages_ptr, const bool* show_debug_messages_ptr );
+        virtualCathodeConfigReader(const std::string& configFile,
+                                   const bool* show_messages,
+                                   const bool* show_debug_messages,
+                                   const bool usingVM);
         ~virtualCathodeConfigReader();
-//
-//        bool readConfig( );
-//        bool getpilaserObject(pilaserStructs::pilaserObject & obj);
-
+        bool readConfig( );
+        bool getVirtualCathodeDataObject(virtualCathodeStructs::virtualCathodeDataObject & obj);
     private:
-//        pilaserStructs::pilaserObject pilaserObject;
-//        std::vector<pilaserStructs::pvStruct> pvMonStructs;
-//        std::vector<pilaserStructs::pvStruct> pvComStructs;
-//
-//        // hand pointer so we cna keep track of the last PV struct we were adding data to
-//        //std::vector< pilaserStructs::pvStruct > * lastPVStruct;
-//
-//        void addToPVStruct(std::vector< pilaserStructs::pvStruct > & pvs, const pilaserStructs::PILASER_PV_TYPE pvtype, const std::string& pvSuffix);
-//
-//        void addTopilaserObjectsV1( const std::vector<std::string> &keyVal );
-//        void addToPVCommandMapV1  ( const std::vector<std::string> &keyVal );
-//        void addToPVMonitorMapV1  ( const std::vector<std::string> &keyVal );
-//
-//        const bool usingVirtualMachine;
+        virtualCathodeStructs::virtualCathodeDataObject object;
+        std::vector<virtualCathodeStructs::pvStruct> pvMonStructs;
+        std::vector<virtualCathodeStructs::pvStruct> *lastPVStruct;
+        void addToPVStruct(std::vector< virtualCathodeStructs::pvStruct >& pvs,
+                           const virtualCathodeStructs::PV_TYPE pvtype, const std::string& pvSuffix);
+        void addToObjectsV1( const std::vector<std::string> &keyVal );
+        void addToPVMonitorMapV1  ( const std::vector<std::string> &keyVal );
 };
-#endif //UTL_FILE_IO_H
+//______________________________________________________________________________
+#endif //_VIRTUAL_CATHODE_CONFIG_READER_

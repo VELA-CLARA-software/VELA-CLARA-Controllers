@@ -41,43 +41,46 @@ class configReader : public baseObject
             config files
         */
         configReader();
-        configReader(const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr);
         configReader(const std::string& configFile_Location1,
-                     const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr);
+                     const bool* show_messages,
+                     const bool* show_debug_messages,
+                     const bool usingVM);
+        configReader(const bool* show_messages,
+                     const bool* show_debug_messages);
+        configReader(const std::string& configFile_Location1,
+                     const bool* show_messages,
+                     const bool* show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
-                    const bool* show_messages_ptr,
-                    const bool* show_debug_messages_ptr);
+                    const bool* show_messages,
+                    const bool* show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
-                     const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr);
+                     const bool* show_messages,
+                     const bool* show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const std::string& configFile_Location4,
-                     const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr);
+                     const bool* show_messages,
+                     const bool* show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const std::string& configFile_Location4,
                      const std::string& configFile_Location5,
-                     const bool* show_messages_ptr,
-                     const bool* show_debug_messages_ptr);
+                     const bool* show_messages,
+                     const bool* show_debug_messages);
 
         void setConfigFilePath(const std::string& path);
 
     protected:
-
         /* protected destructor to make sure this class is never instantiated
            the compiler won't let us call delete on any base class pointers
         */
         ~configReader();
-
+        const bool useVM;
         int configVersion, numObjs, numIlocks;
 
         void getVersion(const std::string& str);
@@ -113,7 +116,6 @@ class configReader : public baseObject
         bool isNO_CONFIG_FILE(const std::string& str) const;
         bool isnotNO_CONFIG_FILE(const  std::string& str) const;
     private:
-
         template<typename T>
         std::vector<T> getNumVector(const std::string& str) const
         {

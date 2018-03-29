@@ -58,6 +58,7 @@ namespace UTL
     const size_t BUFFER_TEN   = 10;
     const size_t BUFFER_EIGHTY= 80;
     const size_t BUFFER_36    = 36;
+    const size_t BUFFER_60000 = 60000;
     const long   ZERO_LONG    = 0;
     const int    ZERO_INT     = 0;
     const int    ONE_INT      = 1;
@@ -151,7 +152,7 @@ namespace UTL
 
 /// PI Laser configs
     const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
-    const std::string VIRTUAL_CATHODE_ANALYSIS = "virtualCathodeImageAnalysis.config";
+    const std::string VIRTUAL_CATHODE_ANALYSIS = "virtualCathodeData.config";
     const std::string PIL_MIRROR_CONFIG        = "photoInjectorLaserMirror.config";
     const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
 // quantum box

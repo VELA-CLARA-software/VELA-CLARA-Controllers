@@ -6,86 +6,115 @@
 //stl
 #include <string>
 #include <map>
+#include <deque>
 //epics
-#ifndef __CINT__
 #include <cadef.h>
-#endif
-
-class pilaserInterface;
-
-namespace pilaserStructs
+//______________________________________________________________________________
+class virtualCathodeInterface;
+//______________________________________________________________________________
+namespace virtualCathodeStructs
 {
     // Forward declare structs, gcc seems to like this...
     struct monitorStuct;
-    struct pilaserObject;
+    struct virtualCathodeDataObject;
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS)
-                                                         (V_POS)
-                                                         (INTENSITY)
-                                                         (SHUTTER_2_OPEN)
-                                                         (SHUTTER_1_CLOSE)
-                                                         (SHUTTER_1_OPEN)
-                                                         (VC_X_POS)
-                                                         (VC_X_WIDTH)
-                                                         (VC_Y_POS)
-                                                         (VC_Y_WIDTH)
-                                                         (VC_INTENSITY)
-                                                         (VC_XY_COV)
-                                                         (UNKNOWN_PV)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PV_TYPE,(X_RBV)
+                                                 (Y_RBV)
+                                                 (SIGMA_X_RBV)
+                                                 (SIGMA_Y_RBV)
+                                                 (COV_XY_RBV)
+                                                 (X_PIX)
+                                                 (Y_PIX)
+                                                 (SIGMA_X_PIX)
+                                                 (SIGMA_Y_PIX)
+                                                 (COV_XY_PIX)
+                                                 (VC_INTENSITY)
+                                                 (UNKNOWN_PV)
                                         )
-
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS,(ON)
-                                                        (OFF)
-                                                        (ERROR)
-                                                        (UNKNOWN)
-                                        )
-    // monType could be used to switch in the staticCallbackFunction
-    // For the shutter this is basically redundant, there is only one monitor: "Sta"
-    // (apart from interlocks, these are handled in the base class)
-    // monType could be used to switch in the statisCallbackFunction
     struct monitorStruct
     {
         monitorStruct():
             monType(UNKNOWN_PV),
             interface(nullptr),
             EVID(nullptr),
-            pilaserObj(nullptr)
+            object(nullptr)
             {}
-        PILASER_PV_TYPE   monType;
-        pilaserInterface* interface;
-        chtype            CHTYPE;
-        evid              EVID;
-        pilaserObject*    pilaserObj;
+        PV_TYPE   monType;
+        virtualCathodeInterface*  interface;
+        chtype                    CHTYPE;
+        evid                      EVID;
+        virtualCathodeDataObject* object;
     };
-    // The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
-    // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
+
     struct pvStruct
     {
-        PILASER_PV_TYPE pvType;
+        pvStruct():
+            pvSuffix(UTL::UNKNOWN_STRING),
+            COUNT(UTL::ZERO_UL),
+            MASK(UTL::ZERO_UL)
+            {}
+        PV_TYPE       pvType;
         chid          CHID;
         std::string   pvSuffix;
         unsigned long COUNT, MASK;
         chtype        CHTYPE;
         evid          EVID;
     };
-    // The main hardware object holds ...
-    struct pilaserObject
+    // the data from each PV will go, timestamped, in a data struct
+    struct data
     {
-        pilaserObject():status(PILASER_STATUS::UNKNOWN),hPos(UTL::DUMMY_DOUBLE),
-                        vPos(UTL::DUMMY_DOUBLE),intensity(UTL::DUMMY_DOUBLE),
-                        name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT){};
+        data():
+            value(UTL::DUMMY_DOUBLE)
+            {}
+        double                   value;
+        HWC_ENUM::epics_timestamp time;
+    };
+//     all the image data from a single frame goes in a image_data struct
+//    struct image_data
+//    {
+//        std::map<PV_TYPE, data> dataStructs;
+//    };
+    // we have a blank const map ready to update
+    // image_data_buffer with as new entries come in
+    struct static_blank_image_data
+    {
+        static std::map<PV_TYPE, data> create_blank_image_data()
+        {
+            std::map<PV_TYPE, data> m;
+            m[PV_TYPE::X_RBV] = data();
+            m[PV_TYPE::Y_RBV] = data();
+            m[PV_TYPE::SIGMA_X_RBV] = data();
+            m[PV_TYPE::SIGMA_Y_RBV] = data();
+            m[PV_TYPE::COV_XY_RBV] = data();
+            m[PV_TYPE::X_PIX] = data();
+            m[PV_TYPE::Y_PIX] = data();
+            m[PV_TYPE::SIGMA_X_PIX] = data();
+            m[PV_TYPE::SIGMA_Y_PIX] = data();
+            m[PV_TYPE::COV_XY_PIX] = data();
+            m[PV_TYPE::VC_INTENSITY] = data();
+            return m;
+        }
+        static const std::map<PV_TYPE, data>  blank_image_data;
+    };
+    // The main hardware object holds ...
+    struct virtualCathodeDataObject
+    {
+        virtualCathodeDataObject():
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            buffer_size(UTL::BUFFER_60000)
+            {}
         std::string name, pvRoot;
-        double hPos, vPos, intensity;
-        int numIlocks;
-        PILASER_STATUS status;
-        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
-#ifndef __CINT__
-        /// keep data seperate from epics stuff
-        std::map< PILASER_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< PILASER_PV_TYPE, pvStruct > pvComStructs;
-        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
-#endif
+        size_t buffer_size;
+        // the raw data
+        std::deque<std::map<PV_TYPE, data> > image_data_buffer;
+        // pointer of where the next data entry will go, so we can try and keep
+        // anlysis of each image in the same image_data struct
+        //std::map< PV_TYPE, std::dequestd::map<PV_TYPE, data>::iterator > image_data_buffer_next_update;
+        std::map<PV_TYPE, std::map<PV_TYPE, data>*> image_data_buffer_next_update;
+        std::map<PV_TYPE, pvStruct> pvMonStructs;
     };
 }
+//______________________________________________________________________________
 #endif
