@@ -118,6 +118,8 @@ namespace HWC_ENUM
                                                         (SCOPE)
                                                         (GENERAL_MONITOR)
                                                         (PI_LASER)
+                                                        (PI_LASER_MIRROR)
+                                                        (VIRTUAL_CATHODE_ANALYSIS)
                                                         (VAC_VALVES)
                                                         (SHUTTER)
                                                         (IMG)

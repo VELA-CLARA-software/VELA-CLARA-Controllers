@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,19 +12,31 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    VCpilaser.cpp
+//  Description:
+//
+//
+//*/
 // project
 #include "pilaserMirrorController.h"
 // stl
 
-pilaserMirrorController::pilaserMirrorController(
-    bool* show_messages,
-    bool* show_debug_messages,
-    const std::string & pilaserConf,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs):
-controller(show_messages,show_debug_messages),
-localInterface(pilaserConf,startVirtualMachine,SHOW_MESSAGES,SHOW_DEBUG_MESSAGES,shouldStartEPICs)
+pilaserMirrorController::pilaserMirrorController(bool* show_messages,
+                                                 bool* show_debug_messages,
+                                                 const bool startVirtualMachine,
+                                                 const bool shouldStartEPICs,
+                                                 const std::string& configFile,
+                                                 const std::string& name
+                                                ):
+controller(show_messages, show_debug_messages,name, HWC_ENUM::CONTROLLER_TYPE::PI_LASER_MIRROR),
+localInterface(show_messages,
+               show_debug_messages,
+               startVirtualMachine,
+               shouldStartEPICs,
+               configFile)
 //shouldStartEPICs(shouldStartEPICs)
 {
 //    if( shouldStartEPICs )
@@ -93,7 +106,7 @@ pilaserMirrorController::~pilaserMirrorController(){}    //dtor
 //    return localInterface.getPILObjConstRef();
 //}
 ////____________________________________________________________________________________________
-double pilaserMirrorController::get_CA_PEND_IO_TIMEOUT()
+double pilaserMirrorController::get_CA_PEND_IO_TIMEOUT()const
 {
   //return localInterface.get_CA_PEND_IO_TIMEOUT();
   return 1.0;

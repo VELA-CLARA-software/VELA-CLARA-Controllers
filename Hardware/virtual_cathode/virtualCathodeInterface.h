@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,6 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    virtualCathodeInterface.h
+//  Description:
+//
+//
+//*/
 
 #ifndef VELA_MAG_INTERFACE_H
 #define VELA_MAG_INTERFACE_H
@@ -35,13 +44,12 @@ class virtualCathodeInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
-        virtualCathodeInterface::virtualCathodeInterface();
-        virtualCathodeInterface( const std::string &pilaserConf,
-                         const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
-                         const bool shouldStartEPICs);
-
+        virtualCathodeInterface(bool* show_messages,
+                                bool* show_debug_messagese,
+                                const bool startVirtualMachine,
+                                const bool shouldStartEPICs,
+                                const std::string& configFile
+                               );
         ~virtualCathodeInterface();
 
 //        double getHpos();

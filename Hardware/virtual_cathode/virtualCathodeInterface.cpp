@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,11 +12,18 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    virtualCathodeInterface.cpp
+//  Description:
+//
+//
+//*/
+// project includes
 #include "virtualCathodeInterface.h"
-//djs
 #include "configDefinitions.h"
-// stl
+// stl includes
 #include <iostream>
 #include <sstream>
 #include <chrono>
@@ -25,12 +33,14 @@
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-virtualCathodeInterface::virtualCathodeInterface( const std::string &pilaserConf,
-                                const bool startVirtualMachine,
-                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs ):
-configReader(pilaserConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface(show_messages_ptr,show_debug_messages_ptr)
+virtualCathodeInterface::virtualCathodeInterface(bool* show_messages,
+                                   bool* show_debug_messages,
+                                   const bool startVirtualMachine,
+                                   const bool shouldStartEPICs,
+                                   const std::string& configFile
+                                  ):
+configReader(configFile, startVirtualMachine, show_messages, show_debug_messages),
+interface(show_messages, show_debug_messages)
 //shouldStartEPICs( shouldStartEPICs )
 {
 //    if( shouldStartEPICs )

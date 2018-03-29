@@ -1,11 +1,27 @@
-///
-/// Duncan Scott July 2015
-///
-/// For reading in parameters
-/// Input files will be plain text
-///
-#ifndef CONFIG_READER_PyIL_SHUTTER_H
-#define CONFIG_READER_PyIL_SHUTTER_H
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    pilaserMirrorConfigReader.cpp
+//  Description:
+//
+//
+//*/
+#ifndef _PI_LASER_MIRROR_CONFIG_READER_H_
+#define _PI_LASER_MIRROR_CONFIG_READER_H_
 // stl
 #include <string>
 #include <vector>
@@ -15,7 +31,7 @@
 #include "pilaserStructs.h"
 
 
-class pilaserMirrorConfigReader:public configReader
+class pilaserMirrorConfigReader : public configReader
 {
     public:
         pilaserMirrorConfigReader(const std::string & configFileLocation1,const bool startVirtualMachine,
@@ -41,4 +57,4 @@ class pilaserMirrorConfigReader:public configReader
 //
 //        const bool usingVirtualMachine;
 };
-#endif //UTL_FILE_IO_H
+#endif //_PI_LASER_MIRROR_CONFIG_READER_H_

@@ -25,13 +25,15 @@
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-pilaserInterface::pilaserInterface( const std::string &pilaserConf,
-                                const bool startVirtualMachine,
-                                const bool* show_messages_ptr,
-                                const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs ):
-configReader(pilaserConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
-interface(show_messages_ptr,show_debug_messages_ptr)
+//______________________________________________________________________________
+pilaserInterface::pilaserInterface(bool* show_messages,
+                                   bool* show_debug_messagese,
+                                   const bool startVirtualMachine,
+                                   const bool shouldStartEPICs,
+                                   const std::string& configFile
+                                  ):
+configReader(configFile,startVirtualMachine, show_messages, show_debug_messagese ),
+interface(show_messages,show_debug_messagese)
 //shouldStartEPICs( shouldStartEPICs )
 {
 //    if( shouldStartEPICs )

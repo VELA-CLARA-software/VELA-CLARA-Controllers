@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,25 +12,36 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    VCpilaser.cpp
+//  Description:
+//
+//
+//*/
+// project includes
 #include "virtualCathodeController.h"
+// stl includes
 #include <fstream>
 #include <iostream>
-// stl
-virtualCathodeController::virtualCathodeController(
-    bool* show_messages,
-    bool* show_debug_messages,
-    const std::string & pilaserConf,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs):
-controller(show_messages,show_debug_messages),
-localInterface(pilaserConf,startVirtualMachine,SHOW_MESSAGES,SHOW_DEBUG_MESSAGES,shouldStartEPICs)
-//shouldStartEPICs(shouldStartEPICs)
+//______________________________________________________________________________
+virtualCathodeController::virtualCathodeController(bool* show_messages,
+                                                   bool* show_debug_messages,
+                                                   const bool startVirtualMachine,
+                                                   const bool shouldStartEPICs,
+                                                   const std::string& configFile,
+                                                   const std::string& name
+                                                   ):
+controller(show_messages,
+           show_debug_messages,name,
+           HWC_ENUM::CONTROLLER_TYPE::VIRTUAL_CATHODE_ANALYSIS),
+localInterface(show_messages,
+               show_debug_messages,
+               startVirtualMachine,
+               shouldStartEPICs,
+               configFile)
 {
-//    if( shouldStartEPICs )
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
     initialise();
 }
 //______________________________________________________________________________
@@ -93,7 +105,7 @@ void virtualCathodeController::initialise()
 //    return localInterface.getPILObjConstRef();
 //}
 ////____________________________________________________________________________________________
-double virtualCathodeController::get_CA_PEND_IO_TIMEOUT()
+double virtualCathodeController::get_CA_PEND_IO_TIMEOUT()const
 {
   //return localInterface.get_CA_PEND_IO_TIMEOUT();
   return 1.0;

@@ -143,11 +143,11 @@ gunProtController& VCrfprot::getController(gunProtController*& cont,
 {
     if(cont)
     {
-        std::cout << name  <<" object already exists," <<std::endl;
+        std::cout << name << " object already exists," <<std::endl;
     }
     else
     {
-        std::cout <<"Creating " <<name <<" object" <<std::endl;
+        std::cout << "Creating " << name << " object" <<std::endl;
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
         cont = new gunProtController(&messageStates.at(cont).first,

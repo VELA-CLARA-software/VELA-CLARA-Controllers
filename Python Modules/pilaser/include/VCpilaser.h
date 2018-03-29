@@ -1,47 +1,71 @@
-#ifndef _VCpilaser_H
-#define _VCpilaser_H
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    VCpilaser.h
+//  Description:
+//
+//
+//*/
+#ifndef _VC_PILASER_H_
+#define _VC_PILASER_H_
 //stl
 #include <string>
 //
-//#include "pilaserController.h"
+#include "pilaserController.h"
 #include "VCheader.h"
 #include "VCbase.h"
-
-
-
+//______________________________________________________________________________
 class VCpilaser : VCbase
 {
-        /// These VC classes could all be done more elegantly, with less copypasta
-        /// however we went for expliocit functions asa quick fix
-
-    public:
+   public:
         VCpilaser();
         ~VCpilaser();
-//        pilaserController& virtual_PILaser_Controller();
-//        pilaserController& physical_PILaser_Controller();
-//        pilaserController& offline_PILaser_Controller();
-//
-//        // base class functions?
-//        void setQuiet();
-//        void setVerbose();
-//        void setMessage();
-//        void setDebugMessage();
-//
-//        pilaserController& getpilaserController( HWC_ENUM::MACHINE_MODE mode );
 
+        pilaserController& virtual_PILaser_Controller();
+        pilaserController& physical_PILaser_Controller();
+        pilaserController& offline_PILaser_Controller();
+
+
+        pilaserController& getpilaserController(pilaserController*& cont,
+                                                const std::string & name,
+                                                const bool shouldVM,
+                                                const bool shouldEPICS,
+                                                const std::string& pilaserConf,
+                                                const std::string& vcAnalysisConf,
+                                                const std::string& piLaserMirrorConf,
+                                                const std::string& piLaserShutterConf);
     protected:
-
     private:
+        /* object names */
+        pilaserController* virtual_pilaser_Controller_Obj ;
+        pilaserController* physical_pilaser_Controller_Obj;
+        pilaserController* offline_pilaser_Controller_Obj ;
 
-//     /// we just need to decide good names for these things...
-//        pilaserController* virtual_pilaser_Controller_Obj ;
-//        pilaserController* physical_pilaser_Controller_Obj;
-//        pilaserController* offline_pilaser_Controller_Obj ;
-//
-//        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-//        bool  shouldShowDebugMessage, shouldShowMessage;
-//        const std::string pilaserConf;
-
+        const bool withEPICS, withoutEPICS, withoutVM, withVM;
+        bool  shouldShowDebugMessage, shouldShowMessage;
+        const std::string pilaserConf, vcAnalysisConf,
+                          piLaserMirrorConf,piLaserShutterConf;
+        /*
+            map of showmessage showdebugmessage states
+            pointers to these bools are passed down the class
+            heirarchy
+        */
+        std::map<const pilaserController*, std::pair<bool,bool>> messageStates;
+        void updateMessageStates();
 };
 ///// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
 ///// Create a load of different function pointers and use them in the bindings
@@ -181,4 +205,4 @@ class VCpilaser : VCbase
 //        ;
 //}
 
-#endif // _VCpilaser_H
+#endif // _VC_PILASER_H_

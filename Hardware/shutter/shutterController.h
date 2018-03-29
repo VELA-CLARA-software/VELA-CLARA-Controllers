@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,9 +12,16 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
-#ifndef shutter_CONTROLLER_H
-#define shutter_CONTROLLER_H
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    VCpilaser.cpp
+//  Description:
+//
+//
+//*/
+#ifndef _SHUTTER_CONTROLLER_H_
+#define _SHUTTER_CONTROLLER_H_
 
 // project
 #include "shutterStructs.h"
@@ -30,10 +38,15 @@
 class shutterController : public controller
 {
     public:
-
-        /// we have overloaded constructors to specify config-file location
-        shutterController( bool* show_messages , bool * show_debug_messages );
-        shutterController( const std::string configFileLocation, bool* show_messages , bool* show_debug_messages);
+        //shutterController();
+        shutterController(bool* show_messages,
+                          bool* show_debug_messagese,
+                          const bool startVirtualMachine,
+                          const bool shouldStartEPICs,
+                          const std::string& configFile,
+                          const std::string& name
+                          );
+//        shutterController(const std::string configFileLocation, bool* show_messages , bool* show_debug_messages);
         ~shutterController( );
 
 //        void open( const std::string & name );
@@ -66,14 +79,14 @@ class shutterController : public controller
 //        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
 //        std::map< HWC_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & name );
 //
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
 //
 //    private:
-//        void initialise();
+        void initialise();
 //        /// No singletons, no pointers, let's just have an object
-//        shutterInterface localInterface;
+        shutterInterface localInterface;
 //        std::vector< std::string > pilShutterNames;
 };
 
-#endif // shutterController_H
+#endif // _SHUTTER_CONTROLLER_H_

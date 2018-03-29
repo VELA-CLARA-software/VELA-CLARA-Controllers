@@ -34,14 +34,18 @@ controller::controller(bool* show_messages,
                        bool* show_debug_messages):
 controller(show_messages,
            show_debug_messages,
-           HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
-{}
+           HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE){}
 //______________________________________________________________________________
 controller::controller(bool* show_messages,
                        bool* show_debug_messages,
                        const HWC_ENUM::CONTROLLER_TYPE type):
-controller(show_messages,show_debug_messages,type,UTL::UNKNOWN_NAME)
-{}
+controller(show_messages,show_debug_messages,type,UTL::UNKNOWN_NAME){}
+//______________________________________________________________________________
+controller::controller(bool* show_messages,
+           bool* show_debug_messages,
+           const std::string& name,
+           const HWC_ENUM::CONTROLLER_TYPE type):
+controller(show_messages,show_debug_messages,type,name){}
 //______________________________________________________________________________
 controller::controller(bool* show_messages,
            bool* show_debug_messages,
@@ -150,8 +154,8 @@ HWC_ENUM::CONTROLLER_TYPE controller::getControllerType() const
 #ifdef BUILD_DLL
 boost::python::dict controller::getILockStatesDefinition() const
 {
-    std::map<HWC_ENUM::ILOCK_STATE, std::string> m;
     using namespace HWC_ENUM;
+    std::map<ILOCK_STATE, std::string> m;
     m[ILOCK_STATE::ILOCK_GOOD ] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_GOOD);
     m[ILOCK_STATE::ILOCK_BAD  ] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_BAD);
     m[ILOCK_STATE::ILOCK_ERROR] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_ERROR);

@@ -149,8 +149,12 @@ namespace UTL
     const std::string PV_MASK   = "PV_MASK"  ;
     const std::string PV_NAME   = "PV_NAME"  ;
 
-/// Laser shutters
-    const std::string VELA_PIL_SHUTTER_CONFIG          = "velaPhotoInjectorpilaserShutter.config";
+/// PI Laser configs
+    const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
+    const std::string VIRTUAL_CATHODE_ANALYSIS = "virtualCathodeImageAnalysis.config";
+    const std::string PIL_MIRROR_CONFIG        = "photoInjectorLaserMirror.config";
+    const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
+// quantum box
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
 /// BPMs
     const std::string VELA_INJ_BPM_CONFIG              = "velaINJBeamPositionMonitors.config";

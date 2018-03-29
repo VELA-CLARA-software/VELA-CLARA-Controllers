@@ -4,8 +4,8 @@
 /// For reading in parameters
 /// Input files will be plain text
 ///
-#ifndef CONFIG_READER_PyIL_SHUTTER_H
-#define CONFIG_READER_PyIL_SHUTTER_H
+#ifndef _PI_LASER_CONFIG_READER_H_
+#define _PI_LASER_CONFIG_READER_H_
 // stl
 #include <string>
 #include <vector>
@@ -41,4 +41,4 @@ class pilaserConfigReader:public configReader
 //
 //        const bool usingVirtualMachine;
 };
-#endif //UTL_FILE_IO_H
+#endif //_PI_LASER_CONFIG_READER_H_

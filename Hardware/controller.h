@@ -47,6 +47,10 @@ class controller : public baseObject
                    const std::string& name);
         controller(bool* show_messages,
                    bool* show_debug_messages,
+                   const std::string& name,
+                   const HWC_ENUM::CONTROLLER_TYPE type);
+        controller(bool* show_messages,
+                   bool* show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type);
         controller::controller(bool* show_messages, bool* show_debug_messages);
         ~controller();
@@ -69,25 +73,18 @@ class controller : public baseObject
 
 
         HWC_ENUM::CONTROLLER_TYPE getControllerType() const;
-
         /* The below seemed like a good idea when we first implemented it
-           This pure virtual method MUST be overwritten in the derived controller
+           These pure virtual methods MUST be overwritten in the derived controller
            (making this an abstract base class)
            This also means the destructor need not be protected
         */
-        //virtual std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE>
-        //        getILockStates(const std::string& name)const = 0;
-        //virtual std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-        //    getILockStatesStr(const std::string & name)const = 0;
         virtual double get_CA_PEND_IO_TIMEOUT() const = 0;
         virtual void   set_CA_PEND_IO_TIMEOUT(double val) = 0;
 
 #ifdef BUILD_DLL
         boost::python::dict getILockStatesDefinition() const;
 #endif
-
     protected:
-
         /* these bools determine if messages can be printed or not,
            them are passed to the baseObject and used by
            all other classes in the project

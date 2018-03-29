@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,6 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    pilaserController.cpp
+//  Description:
+//
+//
+//*/
 
 #include "pilaserController.h"
 #include <fstream>
@@ -19,17 +28,33 @@
 pilaserController::pilaserController(
     bool* show_messages,
     bool* show_debug_messages,
-    const std::string & pilaserConf,
     const bool startVirtualMachine,
-    const bool shouldStartEPICs):
-controller(show_messages,show_debug_messages)
-//localInterface(pilaserConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs),
-//shouldStartEPICs(shouldStartEPICs)
+    const bool shouldStartEPICs,
+    const std::string& name,
+    const std::string& pilaserConf,
+    const std::string& vcAnalysisConf,
+    const std::string& piLaserMirrorConf,
+    const std::string& piLaserShutterConf
+    ):
+controller(show_messages,show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::PI_LASER),
+localMirrorName("LASER_MIRROR_CONTROLLER"),
+localShutterName("LASER_SHUTTER_CONTROLLER"),
+localVirtualCathodeName("VIRTUAL_CATHODE_ANALYSIS_CONTROLLER"),
+localMirror(show_messages,
+                        show_debug_messages,
+                        startVirtualMachine,
+                        shouldStartEPICs,
+                        piLaserMirrorConf,
+                        localMirrorName),
+localShutter(show_messages,       show_debug_messages,
+                  startVirtualMachine, shouldStartEPICs,
+                  piLaserShutterConf,  localShutterName),
+//localVirtualCathode(show_messages,show_debug_messages,
+//                        startVirtualMachine,shouldStartEPICs,vcAnalysisConf,localVirtualCathodeName),
+localInterface(show_messages,show_debug_messages,
+                 startVirtualMachine,shouldStartEPICs,pilaserConf),
+name(name)
 {
-//    if( shouldStartEPICs )
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
 //    initialise();
 }
 //______________________________________________________________________________
@@ -93,7 +118,7 @@ pilaserController::~pilaserController(){}    //dtor
 //    return localInterface.getPILObjConstRef();
 //}
 ////____________________________________________________________________________________________
-double pilaserController::get_CA_PEND_IO_TIMEOUT()
+double pilaserController::get_CA_PEND_IO_TIMEOUT()const
 {
     //return localInterface.get_CA_PEND_IO_TIMEOUT();
     return 1.0;

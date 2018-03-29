@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    VCpilaser.cpp
+//  Description:
+//
+//
+//*/
 #ifndef _PI_LASER_INTERFACE_H
 #define _PI_LASER_INTERFACE_H
 // djs
@@ -35,12 +43,13 @@ class pilaserInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
-        pilaserInterface::pilaserInterface();
-        pilaserInterface( const std::string &pilaserConf,
-                         const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
-                         const bool shouldStartEPICs);
+        //pilaserInterface::pilaserInterface();
+        pilaserInterface(bool* show_messages,
+                          bool* show_debug_messagese,
+                          const bool startVirtualMachine,
+                          const bool shouldStartEPICs,
+                          const std::string& configFile
+                          );
 
         ~pilaserInterface();
 
@@ -56,9 +65,9 @@ class pilaserInterface : public interface
 //        bool setIntensity(int value);
 //        const pilaserStructs::pilaserObject &getPILObjConstRef();
 
-        /// These are pure virtual methods, so need to have some implmentation in derived classes
-        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
-        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+//        /// These are pure virtual methods, so need to have some implmentation in derived classes
+//        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
+//        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
 
 
     private:

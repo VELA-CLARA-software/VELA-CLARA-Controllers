@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    virtualCathodeController.h
+//  Description:
+//
+//
+//*/
 #ifndef pilaser_CONTROLLER_H_
 #define pilaser_CONTROLLER_H_
 // stl
@@ -39,13 +47,17 @@ class virtualCathodeController : public controller
 {
     public:
         // just have 1 constructor, but we have a higher level class that create these objects
-        virtualCathodeController();
-        virtualCathodeController(bool* show_messages, bool* show_debug_messagese,
-                          const std::string & pilaserConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs );
+        //virtualCathodeController();
+        virtualCathodeController(bool* show_messages,
+                                bool* show_debug_messagese,
+                                const bool startVirtualMachine,
+                                const bool shouldStartEPICs,
+                                const std::string& configFile,
+                                const std::string& name
+                               );
         ~virtualCathodeController( );
       // These are pure virtual methods, so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT( double val );
 //        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
 //        std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);

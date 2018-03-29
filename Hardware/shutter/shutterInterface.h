@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    shutterInterface.h
+//  Description:
+//
+//
+//*/
 #ifndef VELA_PIL_SHUTTER_INTERFACE_H
 #define VELA_PIL_SHUTTER_INTERFACE_H
 // djs
@@ -25,18 +33,17 @@
 class shutterInterface : public interface
 {
     public:
-
-
-        shutterInterface( const bool* show_messages_ptr, const bool* show_debug_messages_ptr  );
-        shutterInterface( const std::string &configFileLocation, const bool* show_messages_ptr, const bool* show_debug_messages_ptr  );
+        shutterInterface(bool* show_messages,
+                         bool* show_debug_messagese,
+                         const bool startVirtualMachine,
+                         const bool shouldStartEPICs,
+                         const std::string& configFile
+                        );
 
         ~shutterInterface();
 
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT( double val );
-
-
-        shutterConfigReader configReader;
 
 //        void close( const std::string &name );
 //        void open ( const std::string &name );
@@ -62,7 +69,7 @@ class shutterInterface : public interface
 
 //        /// called from constructor to set-up chids, monitors, etc.
 //        void initialise();
-//        shutterConfigReader configReader; /// class member so we can pass in file path in ctor
+        shutterConfigReader configReader; /// class member so we can pass in file path in ctor
 //        void initObjects();
 //        void initChids();
 //        void addChannel( const std::string & pvRoot, shutterStructs::pvStruct & pv );
