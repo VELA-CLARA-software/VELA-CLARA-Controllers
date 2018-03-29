@@ -12,18 +12,18 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "pilaserController.h"
-#include <fstream>
-#include <iostream>
+// project
+#include "pilaserMirrorController.h"
 // stl
-pilaserController::pilaserController(
+
+pilaserMirrorController::pilaserMirrorController(
     bool* show_messages,
     bool* show_debug_messages,
     const std::string & pilaserConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs):
-controller(show_messages,show_debug_messages)
-//localInterface(pilaserConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs),
+controller(show_messages,show_debug_messages),
+localInterface(pilaserConf,startVirtualMachine,SHOW_MESSAGES,SHOW_DEBUG_MESSAGES,shouldStartEPICs)
 //shouldStartEPICs(shouldStartEPICs)
 {
 //    if( shouldStartEPICs )
@@ -33,98 +33,98 @@ controller(show_messages,show_debug_messages)
 //    initialise();
 }
 //______________________________________________________________________________
-pilaserController::~pilaserController(){}    //dtor
-//______________________________________________________________________________
-//void pilaserController::initialise()
+pilaserMirrorController::~pilaserMirrorController(){}    //dtor
+////______________________________________________________________________________
+//void pilaserMirrorController::initialise()
 //{
 //    if( localInterface.interfaceInitReport(shouldStartEPICs) )
-//        message("pilaserController instantiation success.");
+//        message("pilaserMirrorController instantiation success.");
 //}
 ////______________________________________________________________________________
 //#ifdef BUILD_DLL
 ////____________________________________________________________________________________________
-//double pilaserController::getHpos()
+//double pilaserMirrorController::getHpos()
 //{
 //    return localInterface.getHpos();
 //}
 ////____________________________________________________________________________________________
-//double pilaserController::getVpos()
+//double pilaserMirrorController::getVpos()
 //{
 //    return localInterface.getVpos();
 //}
 ////____________________________________________________________________________________________
-//double pilaserController::getIntensity()
+//double pilaserMirrorController::getIntensity()
 //{
 //    return localInterface.getIntensity();
 //}
 ////____________________________________________________________________________________________
-//bool pilaserController::setHpos(double value)
+//bool pilaserMirrorController::setHpos(double value)
 //{
 //    return localInterface.setHpos( value );
 //}
 ////____________________________________________________________________________________________
-//bool pilaserController::setHpos(int value)
+//bool pilaserMirrorController::setHpos(int value)
 //{
 //    return localInterface.setHpos( value );
 //}
 ////____________________________________________________________________________________________
-//bool pilaserController::setVpos(double value)
+//bool pilaserMirrorController::setVpos(double value)
 //{
 //    return localInterface.setVpos( value );
 //}
 ////____________________________________________________________________________________________
-//bool pilaserController::setVpos(int value)
+//bool pilaserMirrorController::setVpos(int value)
 //{
 //    return localInterface.setVpos( value );
 //}
 ////____________________________________________________________________________________________
-//bool pilaserController::setIntensity(double value)
+//bool pilaserMirrorController::setIntensity(double value)
 //{
 //    return localInterface.setIntensity( value );
 //}
 ////____________________________________________________________________________________________
-//bool pilaserController::setIntensity(int value)
+//bool pilaserMirrorController::setIntensity(int value)
 //{
 //    return localInterface.setIntensity( value );
 //}
 ////____________________________________________________________________________________________
-//const pilaserStructs::pilaserObject &pilaserController::getPILObjConstRef()
+//const pilaserStructs::pilaserObject &pilaserMirrorController::getPILObjConstRef()
 //{
 //    return localInterface.getPILObjConstRef();
 //}
 ////____________________________________________________________________________________________
-double pilaserController::get_CA_PEND_IO_TIMEOUT()
+double pilaserMirrorController::get_CA_PEND_IO_TIMEOUT()
 {
-    //return localInterface.get_CA_PEND_IO_TIMEOUT();
-    return 1.0;
+  //return localInterface.get_CA_PEND_IO_TIMEOUT();
+  return 1.0;
 }
 //_____________________________________________________________________________________________
-void pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
+void pilaserMirrorController::set_CA_PEND_IO_TIMEOUT(double val)
 {
-    //localInterface.set_CA_PEND_IO_TIMEOUT(val);
+    localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
 ////______________________________________________________________________________________________
-//std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > pilaserController::getILockStates(const std::string& name)
+//std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > pilaserMirrorController::getILockStates(const std::string& name)
 //{
 //    return localInterface.getILockStates(name);
 //}
 ////______________________________________________________________________________________________
-//std::map<HWC_ENUM::ILOCK_NUMBER,std::string> pilaserController::getILockStatesStr(const std::string& name)
+//std::map<HWC_ENUM::ILOCK_NUMBER,std::string> pilaserMirrorController::getILockStatesStr(const std::string& name)
 //{
 //    return localInterface.getILockStatesStr(name);
 //}
 ////______________________________________________________________________________
-////boost::python::dict pilaserController::getILockStatesStr_Py( std::string magName )
+////boost::python::dict pilaserMirrorController::getILockStatesStr_Py( std::string magName )
 ////{
 ////    return enumStringMapToPythonDict( getILockStatesStr( magName ) );
 ////}
 //////______________________________________________________________________________
-////boost::python::dict pilaserController::getILockStates_Py( std::string magName )
+////boost::python::dict pilaserMirrorController::getILockStates_Py( std::string magName )
 ////{
 ////    return enumMapToPythonDict( getILockStates( magName ) );
 ////}
 //////______________________________________________________________________________
-////boost::python::dict pilaserController::getMagPSUStateDefinition()
+////boost::python::dict pilaserMirrorController::getMagPSUStateDefinition()
 ////{
 ////    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
 ////

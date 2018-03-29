@@ -1,6 +1,6 @@
 //djs
-#include "shutterConfigReader.h"
-#include "shutterStructs.h"
+#include "pilaserMirrorConfigReader.h"
+#include "pilaserStructs.h"
 //stl
 #include <iostream>
 #include <vector>
@@ -10,23 +10,22 @@
 #include <time.h>
 #include <algorithm>
 #include <ctype.h>
+//____________________________________________________________________________________________________
+pilaserMirrorConfigReader::pilaserMirrorConfigReader( const std::string & configFileLocation1,
+                                        const bool startVirtualMachine,
+                                        const bool* show_messages_ptr,
+                                        const bool* show_debug_messages_ptr ):
+configReader( configFileLocation1, show_messages_ptr, show_debug_messages_ptr )
+//usingVirtualMachine(startVirtualMachine)
+{
+//    std::cout << configFileLocation1 << std::endl;
+}
 //______________________________________________________________________________
-shutterConfigReader::shutterConfigReader(const bool* show_messages_ptr,
-                                         const  bool * show_debug_messages_ptr):
-configReader(UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr)
-{}
-//______________________________________________________________________________
-shutterConfigReader::shutterConfigReader(const std::string & configFileLocation,
-                                         const bool* show_messages_ptr,
-                                         const bool* show_debug_messages_ptr):
-configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr )
-{}
-//______________________________________________________________________________
-shutterConfigReader::~shutterConfigReader(){}
-//______________________________________________________________________________
-//bool shutterConfigReader::readPILShutterConfig()
+pilaserMirrorConfigReader::~pilaserMirrorConfigReader(){}
+////______________________________________________________________________________
+//bool pilaserMirrorConfigReader::readConfig()
 //{
-//    debugMessage( "\n", "**** Attempting to Read The Shutter Config File ****" );
+//    debugMessage( "\n", "**** Attempting to Read PILaser Config File ****" );
 //
 //    std::string line, trimmedLine;
 //    bool success = false;
@@ -76,7 +75,7 @@ shutterConfigReader::~shutterConfigReader(){}
 //                                    std::vector<std::string> keyVal = getKeyVal( trimmedLine );
 //
 //                                    if( readingObjs )
-//                                        addToShutterObjectsV1( keyVal );
+//                                        addTopilaserObjectsV1( keyVal );
 //
 //                                    else if ( readingCommandPVs  )
 //                                        addToPVCommandMapV1( keyVal );
@@ -121,32 +120,57 @@ shutterConfigReader::~shutterConfigReader(){}
 //        inputFile.close( );
 //        debugMessage( "File Closed" );
 //
-//        if( numObjs == shutterObjects.size() )
-//            debugMessage( "*** Created ", numObjs, " Shutter Objects, As Expected ***" );
-//        else
-//            debugMessage( "*** Created ", shutterObjects.size() ," Expected ", numObjs,  " ERROR ***"  );
-//
 //        success = true;
 //    }
 //    else{
-//        message( "!!!! Error Can't Open Shutter Config File after searching in:  ", configFile1, " !!!!"  );
+//        message( "!!!! Error Can't Open PILaser Config File after searching in:  ", configFile1, " !!!!"  );
 //    }
 //    return success;
+//    return false;
 //}
 ////______________________________________________________________________________
-//void shutterConfigReader::addToPVMonitorMapV1( const  std::vector<std::string> &keyVal  )
+//void pilaserMirrorConfigReader::addToPVMonitorMapV1( const  std::vector<std::string> &keyVal  )
 //{
-//    if( keyVal[ 0 ] == UTL::PV_SUFFIX_STA )
-//       addPVStruct( pvMonStructs, keyVal );
-//    else if( keyVal[0] == UTL::PV_COUNT )
-//        pvMonStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
-//    else if( keyVal[0] == UTL::PV_MASK )
-//        pvMonStructs.back().MASK = getMASK( keyVal[ 1 ] );
-//    else if( keyVal[0] == UTL::PV_CHTYPE )
-//        pvMonStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
+//    if( stringIsSubString( keyVal[0], "SUFFIX" ) )
+//    {
+//        // there are different types of screen, here we are hardcoding in how to interpret the config file and where to put
+//        // each type of monitor.
+//        if( keyVal[0] == UTL::PV_SUFFIX_LASER_V_POS  )
+//        {
+//            addToPVStruct( pvMonStructs, pilaserStructs::PILASER_PV_TYPE::V_POS,keyVal[1] );
+//        }
+//        else if( keyVal[0] == UTL::PV_SUFFIX_LASER_H_POS  )
+//        {
+//            addToPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::H_POS,keyVal[1] );
+//        }
+//        else if( keyVal[0] == UTL::PV_SUFFIX_LASER_INTENSITY  )
+//        {
+//            addToPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::INTENSITY,keyVal[1] );
+//        }
+//    }
+//    else
+//    {
+//        if( keyVal[0] == UTL::PV_COUNT )
+//            pvMonStructs.back().COUNT = getCOUNT( keyVal[ 1 ] );
+//        else if( keyVal[0] == UTL::PV_MASK )
+//            pvMonStructs.back().MASK = getMASK( keyVal[ 1 ] );
+//        else if( keyVal[0] == UTL::PV_CHTYPE )
+//            pvMonStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
+//    }
 //}
 ////______________________________________________________________________________
-//void shutterConfigReader::addToPVCommandMapV1( const  std::vector<std::string> &keyVal  )
+//void pilaserMirrorConfigReader::addToPVStruct(std::vector< pilaserStructs::pvStruct > & pvs, const pilaserStructs::PILASER_PV_TYPE pvtype, const std::string& pvSuffix)
+//{
+//    pvs.push_back( pilaserStructs::pvStruct() );
+//    pvs.back().pvType      = pvtype;
+//    pvs.back().pvSuffix    = pvSuffix;
+//    // we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
+//    // so store a ref to which vector to update with that info. (this does make sense)
+//    //lastPVStruct = &pvs;
+//    debugMessage("Added ", pvs.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvs.back().pvType) );
+//}
+////______________________________________________________________________________
+//void pilaserMirrorConfigReader::addToPVCommandMapV1( const  std::vector<std::string> &keyVal  )
 //{
 //    if( keyVal[0] == UTL::PV_SUFFIX_ON )
 //        addPVStruct( pvComStructs, keyVal );
@@ -160,59 +184,60 @@ shutterConfigReader::~shutterConfigReader(){}
 //        pvComStructs.back().CHTYPE = getCHTYPE( keyVal[ 1 ] );
 //}
 ////______________________________________________________________________________
-//void shutterConfigReader::addPVStruct( std::vector< shutterStructs::pvStruct > & pvStruct_v,  const  std::vector<std::string> &keyVal )
-//{
-//    /// http://stackoverflow.com/questions/5914422/proper-way-to-initialize-c-structs
-//    /// init structs 'correctly'
-//    pvStruct_v.push_back( shutterStructs::pvStruct() );
-//    pvStruct_v.back().pvSuffix = keyVal[1];
-//    if( keyVal[0] == UTL::PV_SUFFIX_ON  )
-//        pvStruct_v.back().pvType = shutterStructs::PIL_SHUTTER_PV_TYPE::On;
-//    else if( keyVal[0] == UTL::PV_SUFFIX_OFF  )
-//        pvStruct_v.back().pvType = shutterStructs::PIL_SHUTTER_PV_TYPE::Off;
-//    else if( keyVal[0] == UTL::PV_SUFFIX_STA  )
-//        pvStruct_v.back().pvType = shutterStructs::PIL_SHUTTER_PV_TYPE::Sta;
-//
-//    debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix" );
-//}
-////______________________________________________________________________________
-//void shutterConfigReader::addToShutterObjectsV1( const std::vector<std::string> &keyVal   )
+//void pilaserMirrorConfigReader::addTopilaserObjectsV1( const std::vector<std::string> &keyVal   )
 //{
 //    if( keyVal[0] == UTL::NAME )
 //    {
-//        /// http://stackoverflow.com/questions/5914422/proper-way-to-initialize-c-structs
-//        /// init structs 'correctly'
-//        shutterStructs::shutterObject shob = shutterStructs::shutterObject();
-//        shob.name = keyVal[ 1 ];
-//        shob.shutterState = VELA_ENUM::SHUTTER_STATE::SHUTTER_ERROR;
-//        shob.numIlocks = numIlocks;
-//        shutterObjects.push_back( shob );
-//        debugMessage("Added ", shutterObjects.back().name );
+//        pilaserObject.name = keyVal[ 1 ];
+//        pilaserObject.numIlocks = numIlocks;
+//        debugMessage("Added ", pilaserObject.name );
 //    }
 //    else if( keyVal[0] == UTL::PV_ROOT )
-//        shutterObjects.back().pvRoot = keyVal[ 1 ];
+//    {
+//        if( usingVirtualMachine )
+//            pilaserObject.pvRoot =  UTL::VM_PREFIX + keyVal[ 1 ];
+//        else
+//            pilaserObject.pvRoot = keyVal[ 1 ];
+//    }
 //}
 ////______________________________________________________________________________
-//const std::vector< shutterStructs::shutterObject > shutterConfigReader::getShutterObjects()
+//bool pilaserMirrorConfigReader::getpilaserObject( pilaserStructs::pilaserObject & obj )
 //{
-//    /// turn the pv vectors into maps, you can probably figure a way of doing this in
-//    /// addPVStruct, but i like using vector.back()
-//
-//    std::map< shutterStructs::PIL_SHUTTER_PV_TYPE, shutterStructs::pvStruct > pvMonStructs_m;
-//    std::map< shutterStructs::PIL_SHUTTER_PV_TYPE, shutterStructs::pvStruct > pvComStructs_m;
-//    for( auto && it : pvMonStructs )
-//        pvMonStructs_m[ it.pvType ] = it;
-//
-//    for( auto && it : pvComStructs )
-//        pvComStructs_m[ it.pvType ] = it;
-//
-//    for( auto && it : shutterObjects )
+//    obj = pilaserObject;
+//    for(auto && it : pvMonStructs)
 //    {
-//        it.pvComStructs = pvComStructs_m;
-//        it.pvMonStructs = pvMonStructs_m;
+//        obj.pvMonStructs[it.pvType] = it;
 //    }
-//    return shutterObjects;
+//    for(auto && it : pvComStructs)
+//    {
+//        obj.pvComStructs[it.pvType] = it;
+//    }
+//    return true;
 //}
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
 

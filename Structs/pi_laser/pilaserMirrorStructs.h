@@ -20,19 +20,38 @@ namespace pilaserStructs
     struct pilaserObject;
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS) (V_POS) (INTENSITY)
-                                        (SHUTTER_1_OPEN) (SHUTTER_2_OPEN)
-                                        (SHUTTER_1_CLOSE) (SHUTTER_2_CLOSE)
-                                        (UNKNOWN_PILASER_PV_TYPE) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS, (ON)(OFF) (ERROR)(UNKNOWN) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS)
+                                                         (V_POS)
+                                                         (INTENSITY)
+                                                         (SHUTTER_2_OPEN)
+                                                         (SHUTTER_1_CLOSE)
+                                                         (SHUTTER_1_OPEN)
+                                                         (VC_X_POS)
+                                                         (VC_X_WIDTH)
+                                                         (VC_Y_POS)
+                                                         (VC_Y_WIDTH)
+                                                         (VC_INTENSITY)
+                                                         (VC_XY_COV)
+                                                         (UNKNOWN_PV)
+                                        )
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS,(ON)
+                                                        (OFF)
+                                                        (ERROR)
+                                                        (UNKNOWN)
+                                        )
     // monType could be used to switch in the staticCallbackFunction
     // For the shutter this is basically redundant, there is only one monitor: "Sta"
     // (apart from interlocks, these are handled in the base class)
     // monType could be used to switch in the statisCallbackFunction
     struct monitorStruct
     {
-        monitorStruct():monType(UNKNOWN_PILASER_PV_TYPE),interface(nullptr),
-                        EVID(nullptr),pilaserObj(nullptr){}
+        monitorStruct():
+            monType(UNKNOWN_PV),
+            interface(nullptr),
+            EVID(nullptr),
+            pilaserObj(nullptr)
+            {}
         PILASER_PV_TYPE   monType;
         pilaserInterface* interface;
         chtype            CHTYPE;
@@ -60,12 +79,12 @@ namespace pilaserStructs
         double hPos, vPos, intensity;
         int numIlocks;
         PILASER_STATUS status;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
 #ifndef __CINT__
         /// keep data seperate from epics stuff
         std::map< PILASER_PV_TYPE, pvStruct > pvMonStructs;
         std::map< PILASER_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
 #endif
     };
 }

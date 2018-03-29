@@ -239,7 +239,7 @@ namespace HWC_ENUM
 // OLD STUFF TO BE COMMENTED OUT AT SOMEPOINT
 //
 //______________________________________________________________________________
-//namespace VELA_ENUM /* seems like a really out of date name now */
+//namespace HWC_ENUM /* seems like a really out of date name now */
 //{
 //    /* SHOULD GO IN THE SHUTTER CONTROLLER */
 //    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SHUTTER_STATE, (SHUTTER_CLOSED)

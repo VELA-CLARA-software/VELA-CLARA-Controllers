@@ -12,7 +12,7 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#include "pilaserInterface.h"
+#include "pilaserMirrorInterface.h"
 //djs
 #include "configDefinitions.h"
 // stl
@@ -25,23 +25,22 @@
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-pilaserInterface::pilaserInterface( const std::string &pilaserConf,
+pilaserMirrorInterface::pilaserMirrorInterface( const std::string &pilaserConf,
                                 const bool startVirtualMachine,
-                                const bool* show_messages_ptr,
-                                const bool* show_debug_messages_ptr,
+                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
                                 const bool shouldStartEPICs ):
 configReader(pilaserConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr ),
 interface(show_messages_ptr,show_debug_messages_ptr)
 //shouldStartEPICs( shouldStartEPICs )
 {
 //    if( shouldStartEPICs )
-//    message("magnet pilaserInterface shouldStartEPICs is true");
+//    message("magnet pilaserMirrorInterface shouldStartEPICs is true");
 //    else
-//    message("magnet pilaserInterface shouldStartEPICs is false");
+//    message("magnet pilaserMirrorInterface shouldStartEPICs is false");
 //    initialise();
 }
 //______________________________________________________________________________
-pilaserInterface::~pilaserInterface()
+pilaserMirrorInterface::~pilaserMirrorInterface()
 {
 //    killILockMonitors();
 //    for( auto && it : continuousMonitorStructs )
@@ -49,33 +48,29 @@ pilaserInterface::~pilaserInterface()
 //        killMonitor( it );
 //        delete it;
 //    }
-//    debugMessage( "pilaserInterface DESTRUCTOR COMPLETE ");
+//    debugMessage( "pilaserMirrorInterface DESTRUCTOR COMPLETE ");
 }
 ////______________________________________________________________________________
-//void pilaserInterface::killMonitor( pilaserStructs::monitorStruct * ms )
+//void pilaserMirrorInterface::killMonitor( pilaserStructs::monitorStruct * ms )
 //{
 //    int status = ca_clear_subscription( ms -> EVID );
-//    //if( status == ECA_NORMAL)
-//        //debugMessage( ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
-////    else
-//        //debugMessage("ERROR pilaserInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType) );
 //}
 ////______________________________________________________________________________
-//void pilaserInterface::initialise()
+//void pilaserMirrorInterface::initialise()
 //{
 //    /// The config file reader
 //    configFileRead = configReader.readConfig();
 //    std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
 //    if( configFileRead )
 //    {
-//        message("The pilaserInterface has read the config file, acquiring objects");
+//        message("The pilaserMirrorInterface has read the config file, acquiring objects");
 //        /// initialise the objects based on what is read from the config file
 //        bool getDataSuccess = initObjects();
 //        if( getDataSuccess )
 //        {
 //            if( shouldStartEPICs )
 //            {
-//                message("The pilaserInterface has acquired objects, connecting to EPICS");
+//                message("The pilaserMirrorInterface has acquired objects, connecting to EPICS");
 //                //std::cout << "WE ARE HERE" << std::endl;
 //                /// subscribe to the channel ids
 //                initChids();
@@ -85,14 +80,14 @@ pilaserInterface::~pilaserInterface()
 //                std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
 //            }
 //            else
-//             message("The pilaserInterface has acquired objects, NOT connecting to EPICS");
+//             message("The pilaserMirrorInterface has acquired objects, NOT connecting to EPICS");
 //        }
 //        else
-//            message( "!!!The pilaserInterface received an Error while getting laser data!!!" );
+//            message( "!!!The pilaserMirrorInterface received an Error while getting laser data!!!" );
 //    }
 //}
 ////______________________________________________________________________________
-//bool pilaserInterface::initObjects()
+//bool pilaserMirrorInterface::initObjects()
 //{
 //    bool ans = configReader.getpilaserObject(pilaser);
 //    debugMessage( "pilaser.pvComStructs.size() = ", pilaser.pvComStructs.size() );
@@ -100,7 +95,7 @@ pilaserInterface::~pilaserInterface()
 //    return ans;
 //}
 ////______________________________________________________________________________
-//void pilaserInterface::initChids()
+//void pilaserMirrorInterface::initChids()
 //{
 //    message( "\n", "Searching for PILaser chids...");
 //
@@ -133,14 +128,14 @@ pilaserInterface::~pilaserInterface()
 //        allChidsInitialised = true;  /// interface base class member
 //}
 ////______________________________________________________________________________
-//void pilaserInterface::addChannel( const std::string & pvRoot, pilaserStructs::pvStruct & pv )
+//void pilaserMirrorInterface::addChannel( const std::string & pvRoot, pilaserStructs::pvStruct & pv )
 //{
 //    std::string s1 = pvRoot + pv.pvSuffix;
 //    ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );//MAGIC_NUMBER
 //    debugMessage( "Create channel to ", s1 );
 //}
 ////______________________________________________________________________________
-//void pilaserInterface::startMonitors()
+//void pilaserMirrorInterface::startMonitors()
 //{
 //    continuousMonitorStructs.clear();
 //    continuousILockMonitorStructs.clear();
@@ -155,7 +150,7 @@ pilaserInterface::~pilaserInterface()
 //                               it.second.COUNT,
 //                               it.second.CHID,
 //                               it.second.MASK,
-//                               pilaserInterface::staticEntryPILMonitor,
+//                               pilaserMirrorInterface::staticEntryPILMonitor,
 //                               (void*)continuousMonitorStructs.back(),
 //                               &continuousMonitorStructs.back() -> EVID);
 //    }
@@ -164,7 +159,7 @@ pilaserInterface::~pilaserInterface()
 //        allMonitorsStarted = true; /// interface base class member
 //}
 ////____________________________________________________________________________________________
-//void pilaserInterface::staticEntryPILMonitor(const event_handler_args args)
+//void pilaserMirrorInterface::staticEntryPILMonitor(const event_handler_args args)
 //{
 //    pilaserStructs::monitorStruct*ms = static_cast<pilaserStructs::monitorStruct *>(args.usr);
 //    switch(ms -> monType)
@@ -182,62 +177,62 @@ pilaserInterface::~pilaserInterface()
 //            ms->pilaserObj->intensity =  *(double*)args.dbr;
 //            break;
 //        default:
-//            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to pilaserInterface::staticEntryPILMonitor");
+//            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to pilaserMirrorInterface::staticEntryPILMonitor");
 //            break;
 //    }
 //}
 ////____________________________________________________________________________________________
-//double pilaserInterface::getHpos()
+//double pilaserMirrorInterface::getHpos()
 //{
 //    return pilaser.hPos;
 //}
 ////____________________________________________________________________________________________
-//double pilaserInterface::getVpos()
+//double pilaserMirrorInterface::getVpos()
 //{
 //    return pilaser.vPos;
 //}
 ////____________________________________________________________________________________________
-//double pilaserInterface::getIntensity()
+//double pilaserMirrorInterface::getIntensity()
 //{
 //    return pilaser.intensity;
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setHpos(double value)
+//bool pilaserMirrorInterface::setHpos(double value)
 //{
 //    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::H_POS),value);
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setHpos(int value)
+//bool pilaserMirrorInterface::setHpos(int value)
 //{
 //    return setHpos((double)value);
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setVpos(double value)
+//bool pilaserMirrorInterface::setVpos(double value)
 //{
 //    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::V_POS),value);
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setVpos(int value)
+//bool pilaserMirrorInterface::setVpos(int value)
 //{
 //    return setVpos((double)value);
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setIntensity(double value)
+//bool pilaserMirrorInterface::setIntensity(double value)
 //{
 //    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::INTENSITY),value);
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setIntensity(int value)
+//bool pilaserMirrorInterface::setIntensity(int value)
 //{
 //    return setIntensity((double)value);
 //}
 ////____________________________________________________________________________________________
-//const pilaserStructs::pilaserObject& pilaserInterface::getPILObjConstRef()
+//const pilaserStructs::pilaserObject& pilaserMirrorInterface::getPILObjConstRef()
 //{
 //    return pilaser;
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::setValue( pilaserStructs::pvStruct& pvs, double value)
+//bool pilaserMirrorInterface::setValue( pilaserStructs::pvStruct& pvs, double value)
 //{
 //    bool ret = false;
 //    ca_put(pvs.CHTYPE,pvs.CHID,&value);
@@ -249,12 +244,12 @@ pilaserInterface::~pilaserInterface()
 //    return ret;
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::openShutter()
+//bool pilaserMirrorInterface::openShutter()
 //{
 //    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::ON),1);
 //}
 ////____________________________________________________________________________________________
-//bool pilaserInterface::closeShutter()
+//bool pilaserMirrorInterface::closeShutter()
 //{
 //    return setValue(pilaser.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::OFF),1);
 //}

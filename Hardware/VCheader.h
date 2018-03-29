@@ -34,9 +34,12 @@
 #include "structs.h"
 #ifndef __VC_ENUM_ONLY__
 #include "VCbase.h"
+#include "baseObject.h"
+#include "controller.h"
+#include "interface.h"
 #include "structs.h"
 #endif // __VC_ENUM_ONLY__
-// stl inlcudes
+// stl includes
 #include <string>
 #include <vector>
 //______________________________________________________________________________
@@ -181,17 +184,17 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("GENERAL_MONITOR",        CONTROLLER_TYPE::GENERAL_MONITOR)
                 .value("CAMERA_DAQ",             CONTROLLER_TYPE::CAMERA_DAQ)
                 .value("VAC_VALVES",             CONTROLLER_TYPE::VAC_VALVES)
-                .value("CAMERA_IA",             CONTROLLER_TYPE::CAMERA_IA)
-                .value("PI_LASER",              CONTROLLER_TYPE::PI_LASER)
-                .value("SHUTTER",               CONTROLLER_TYPE::SHUTTER)
-                .value("RF_PROT",               CONTROLLER_TYPE::RF_PROT)
-                .value("MAGNET",                CONTROLLER_TYPE::MAGNET)
-                .value("SCREEN",                CONTROLLER_TYPE::SCREEN)
-                .value("RF_MOD",                CONTROLLER_TYPE::RF_MOD)
-                .value("SCOPE",                 CONTROLLER_TYPE::SCOPE)
-                .value("LLRF",                  CONTROLLER_TYPE::LLRF)
-                .value("IMG",                   CONTROLLER_TYPE::IMG)
-                .value("BPM",                   CONTROLLER_TYPE::BPM)
+                .value("CAMERA_IA",              CONTROLLER_TYPE::CAMERA_IA)
+                .value("PI_LASER",               CONTROLLER_TYPE::PI_LASER)
+                .value("SHUTTER",                CONTROLLER_TYPE::SHUTTER)
+                .value("RF_PROT",                CONTROLLER_TYPE::RF_PROT)
+                .value("MAGNET",                 CONTROLLER_TYPE::MAGNET)
+                .value("SCREEN",                 CONTROLLER_TYPE::SCREEN)
+                .value("RF_MOD",                 CONTROLLER_TYPE::RF_MOD)
+                .value("SCOPE",                  CONTROLLER_TYPE::SCOPE)
+                .value("LLRF",                   CONTROLLER_TYPE::LLRF)
+                .value("IMG",                    CONTROLLER_TYPE::IMG)
+                .value("BPM",                    CONTROLLER_TYPE::BPM)
                 ;
         reg_enum<CONTROLLER_TYPE>(py_name, py_docs, ct_def);
 

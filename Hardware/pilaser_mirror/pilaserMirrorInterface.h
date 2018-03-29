@@ -12,20 +12,20 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 
-#ifndef _PI_LASER_INTERFACE_H
-#define _PI_LASER_INTERFACE_H
+#ifndef VELA_MAG_INTERFACE_H
+#define VELA_MAG_INTERFACE_H
 // djs
 #include "interface.h"
-#include "pilaserStructs.h"
 #include "structs.h"
-#include "pilaserConfigReader.h"
+#include "pilaserMirrorStructs.h"
+#include "pilaserMirrorConfigReader.h"
 //stl
 #include <vector>
 #include <string>
 #include <atomic>
 #include <map>
 
-class pilaserInterface : public interface
+class pilaserMirrorInterface : public interface
 {
     public:
 
@@ -35,14 +35,14 @@ class pilaserInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
-        pilaserInterface::pilaserInterface();
-        pilaserInterface( const std::string &pilaserConf,
+        pilaserMirrorInterface::pilaserMirrorInterface();
+        pilaserMirrorInterface( const std::string &pilaserConf,
                          const bool startVirtualMachine,
                          const bool* show_messages_ptr,
                          const bool* show_debug_messages_ptr,
                          const bool shouldStartEPICs);
 
-        ~pilaserInterface();
+        ~pilaserMirrorInterface();
 
 //        double getHpos();
 //        double getVpos();
@@ -52,16 +52,12 @@ class pilaserInterface : public interface
 //        bool setHpos(int value);
 //        bool setVpos(double value);
 //        bool setVpos(int value);
-//        bool setIntensity(double value);
-//        bool setIntensity(int value);
-//        const pilaserStructs::pilaserObject &getPILObjConstRef();
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
         IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
 
-
-    private:
+//    private:
         // MOVE TO BASE CLASS
 //        const bool shouldStartEPICs;
 //
@@ -81,7 +77,6 @@ class pilaserInterface : public interface
 //        // all EPICS callbacks route here
 //        static void staticEntryPILMonitor( const event_handler_args args);
 
-        pilaserConfigReader configReader; /// class member so we can pass in file path in ctor
-        ///message
+        pilaserMirrorConfigReader configReader;
 };
-#endif // _PI_LASER_INTERFACE_H
+#endif // VELA_MAG_INTERFACE_H

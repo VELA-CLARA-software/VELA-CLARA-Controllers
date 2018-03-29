@@ -19,9 +19,7 @@
 #include <vector>
 #include <map>
 // project
-#include "shutterController.h"
-#include "pilaserMirrorController.h"
-#include "virtualCathodeController.h"
+#include "pilaserMirrorInterface.h"
 #include "controller.h"
 // boost.python
 #ifdef BUILD_DLL
@@ -37,46 +35,30 @@
 #include <boost/python/overloads.hpp>
 #endif
 
-class pilaserController : public controller
+class pilaserMirrorController : public controller
 {
     public:
         // just have 1 constructor, but we have a higher level class that create these objects
-        pilaserController();
-        pilaserController(bool* show_messages, bool* show_debug_messagese,
-                          const std::string& pilaserConf,
-                          const bool startVirtualMachine,
+        pilaserMirrorController();
+        pilaserMirrorController(
+                                bool* show_messages, bool* show_debug_messagese,
+                          const std::string & pilaserConf, const bool startVirtualMachine,
                           const bool shouldStartEPICs );
-        ~pilaserController( );
-      // These are pure virtual methods, so need to have some implmentation in derived classes
+        ~pilaserMirrorController( );
+
         double get_CA_PEND_IO_TIMEOUT();
         void   set_CA_PEND_IO_TIMEOUT( double val );
-        //std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
-        //std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
-      // any functions that return a map need a wrapper to convert to a python dictionary (?)
-      // (we need the functions that return std::map types when building c++ applications)
-//#ifdef BUILD_DLL
-//        boost::python::dict getILockStates_Py( std::string magName );
-//        boost::python::dict getILockStatesStr_Py( std::string magName );
-//        boost::python::dict getMagPSUStateDefinition();
-//#endif // BUILD_DLL
-        // getters, not sure of type for these parameters (or if they will exist...)
+
 //        double getHpos();
 //        double getVpos();
-//        double getIntensity();
-//        // setters, not sure of type for these parameters (or if they will exist...)
-//        bool setHpos(double value);
-//        bool setHpos(int value);
+//
 //        bool setVpos(double value);
 //        bool setVpos(int value);
 //        bool setIntensity(double value);
 //        bool setIntensity(int value);
-//        const pilaserStructs::pilaserObject& getPILObjConstRef();
-//    protected:
-//    private:
-//        void initialise();
-////        const bool shouldStartEPICs;
-//        pilaserMirrorController   localMirror;
-//        shutterController         localShutter;
-//        virtualCathodeController  localVirtualCathode;
+    protected:
+    private:
+        //void initialise();
+        pilaserMirrorInterface localInterface;
 };
 #endif // VELA_MAG_CONTROLLER_H_
