@@ -27,13 +27,13 @@
 #include <sstream>
 #include <chrono>
 
-interface::interface(const bool* show_messages,
-                     const bool* show_debug_messages):
+interface::interface(const bool& show_messages,
+                     const bool& show_debug_messages):
 interface(show_messages, show_debug_messages, false)
 {}
 //______________________________________________________________________________
-interface::interface(const bool* show_messages,
-                     const bool* show_debug_messages,
+interface::interface(const bool& show_messages,
+                     const bool& show_debug_messages,
                      const bool  shouldStartEPICs
                      ):
 thisCaContext(nullptr),

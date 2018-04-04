@@ -187,57 +187,6 @@ void virtualCathodeInterface::staticEntryMonitor(const event_handler_args args)
     using namespace virtualCathodeStructs;
     monitorStruct*ms = static_cast<monitorStruct *>(args.usr);
     ms->interface->updateValue(args,ms -> monType);
-
-//
-//    switch(ms -> monType)
-//    {
-//        case PV_TYPE::X_RBV:
-//            //ms->pilaserObj->hPos =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::Y_RBV:
-//            //ms->interface->debugMessage("PILaser V_POS = ",*(double*)args.dbr);
-//            //ms->pilaserObj->vPos =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::SIGMA_X_RBV:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::SIGMA_Y_RBV:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::COV_XY_RBV:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::X_PIX:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::Y_PIX:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::SIGMA_X_PIX:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::SIGMA_Y_PIX:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::COV_XY_PIX:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        case PV_TYPE::VC_INTENSITY:
-//            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
-//            //ms->pilaserObj->intensity =  *(double*)args.dbr;
-//            break;
-//        default:
-//            //ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to virtualCathodeInterface::staticEntryPILMonitor");
-//            break;
-//    }
 }
 //____________________________________________________________________________________________
 void virtualCathodeInterface::updateValue(const event_handler_args args,
@@ -252,7 +201,6 @@ void virtualCathodeInterface::updateValue(const event_handler_args args,
                            object.image_data_buffer_next_update.at(pv)->at(pv).time,
                            object.image_data_buffer_next_update.at(pv)->at(pv).value
     );
-
     /*
         we now KNOW image_data_buffer must be extended, but ...
         we need to check if it already has been extended

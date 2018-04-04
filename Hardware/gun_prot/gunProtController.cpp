@@ -29,8 +29,8 @@ using namespace rfProtStructs;
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-gunProtController::gunProtController(bool* show_messages,
-                                     bool* show_debug_messages,
+gunProtController::gunProtController(bool& show_messages,
+                                     bool& show_debug_messages,
                                      const std::string& allGunProtsConf,
                                      const bool startVirtualMachine,
                                      const bool shouldStartEPICs,

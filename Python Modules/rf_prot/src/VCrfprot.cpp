@@ -136,7 +136,7 @@ gunProtController& VCrfprot::offline_Gun_Protection_Controller()
 //______________________________________________________________________________
 gunProtController& VCrfprot::getController(gunProtController*& cont,
                                            const std::string& conf,
-                                           const std::string & name,
+                                           const std::string& name,
                                            const bool shouldVM,
                                            const bool shouldEPICS,
                                            const HWC_ENUM::MACHINE_AREA myMachineArea)
@@ -148,10 +148,12 @@ gunProtController& VCrfprot::getController(gunProtController*& cont,
     else
     {
         std::cout << "Creating " << name << " object" <<std::endl;
+        std::cout << "shouldShowMessage = " << shouldShowMessage <<std::endl;
+        std::cout << "shouldShowDebugMessage " << shouldShowDebugMessage <<std::endl;
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
-        cont = new gunProtController(&messageStates.at(cont).first,
-                                     &messageStates.at(cont).second,
+        cont = new gunProtController(messageStates.at(cont).first,
+                                     messageStates.at(cont).second,
                                      conf, shouldVM, shouldEPICS,name);
     }
     return *cont;

@@ -41,18 +41,19 @@ class controller : public baseObject
 //                   bool show_debug_messages,
 //                   const HWC_ENUM::CONTROLLER_TYPE type);
 //        controller::controller(bool show_messages, bool show_debug_messages);
-        controller(bool* show_messages,
-                   bool* show_debug_messages,
+        controller(bool& show_messages,
+                   bool& show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type,
                    const std::string& name);
-        controller(bool* show_messages,
-                   bool* show_debug_messages,
+        controller(bool& show_messages,
+                   bool& show_debug_messages,
                    const std::string& name,
                    const HWC_ENUM::CONTROLLER_TYPE type);
-        controller(bool* show_messages,
-                   bool* show_debug_messages,
+        controller(bool& show_messages,
+                   bool& show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type);
-        controller::controller(bool* show_messages, bool* show_debug_messages);
+        controller::controller(bool& show_messages,
+                               bool& show_debug_messages);
         ~controller();
 
         /* Turn on and off debug messages and general messages */
@@ -89,8 +90,8 @@ class controller : public baseObject
            them are passed to the baseObject and used by
            all other classes in the project
         */
-        bool* SHOW_DEBUG_MESSAGES;
-        bool* SHOW_MESSAGES;
+        bool& SHOW_DEBUG_MESSAGES;
+        bool& SHOW_MESSAGES;
 
     private:
 }; // class controller

@@ -37,10 +37,10 @@
 //______________________________________________________________________________
 gunProtInterface::gunProtInterface(const std::string& config_file,
                                    const bool  startVirtualMachine,
-                                   const bool* show_messages_ptr,
-                                   const bool* show_debug_messages_ptr,
+                                   const bool& show_messages_ptr,
+                                   const bool& show_debug_messages_ptr,
                                    const bool  shouldStartEPICs):
-configReader(config_file, startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
+configReader(config_file, startVirtualMachine,show_messages_ptr, show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr, shouldStartEPICs),
 currentMode(rfProtStructs::RF_PROT_TYPE::NOT_KNOWN),
 EPICS_ACTIVATE_FAIL("Failed to send EPICS_ACTIVATE"),

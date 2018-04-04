@@ -40,38 +40,38 @@ class configReader : public baseObject
         /*  There are many overloaded config file constructors to handle multiple
             config files
         */
-        configReader();
+        //configReader();
         configReader(const std::string& configFile_Location1,
-                     const bool* show_messages,
-                     const bool* show_debug_messages,
+                     const bool& show_messages,
+                     const bool& show_debug_messages,
                      const bool usingVM);
-        configReader(const bool* show_messages,
-                     const bool* show_debug_messages);
+        configReader(const bool& show_messages,
+                     const bool& show_debug_messages);
         configReader(const std::string& configFile_Location1,
-                     const bool* show_messages,
-                     const bool* show_debug_messages);
+                     const bool& show_messages,
+                     const bool& show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
-                    const bool* show_messages,
-                    const bool* show_debug_messages);
+                    const bool& show_messages,
+                    const bool& show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
-                     const bool* show_messages,
-                     const bool* show_debug_messages);
+                     const bool& show_messages,
+                     const bool& show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const std::string& configFile_Location4,
-                     const bool* show_messages,
-                     const bool* show_debug_messages);
+                     const bool& show_messages,
+                     const bool& show_debug_messages);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const std::string& configFile_Location4,
                      const std::string& configFile_Location5,
-                     const bool* show_messages,
-                     const bool* show_debug_messages);
+                     const bool& show_messages,
+                     const bool& show_debug_messages);
 
         void setConfigFilePath(const std::string& path);
 

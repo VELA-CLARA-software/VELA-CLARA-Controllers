@@ -31,8 +31,8 @@
 #include "structs.h"
 //______________________________________________________________________________
 configReader::configReader(const std::string& configFile_Location1,
-                           const bool* show_messages,
-                           const bool* show_debug_messages,
+                           const bool& show_messages,
+                           const bool& show_debug_messages,
                            const bool usingVM):
 configVersion(UTL::MINUS_ONE_INT),
 numObjs(UTL::MINUS_ONE_INT),
@@ -47,9 +47,25 @@ baseObject(show_messages, show_debug_messages)
 {}
 //______________________________________________________________________________
 configReader::configReader(const std::string& configFile_Location1,
+                           const bool& show_messages,
+                           const bool& show_debug_messages):
+configVersion(UTL::MINUS_ONE_INT),
+numObjs(UTL::MINUS_ONE_INT),
+numIlocks(UTL::MINUS_ONE_INT),
+configFile1(configFile_Location1),
+configFile2(UTL::EMPTY_STRING),
+configFile3(UTL::EMPTY_STRING),
+configFile4(UTL::EMPTY_STRING),
+configFile5(UTL::EMPTY_STRING),
+useVM(false),
+baseObject(show_messages, show_debug_messages)
+{}
+//______________________________________________________________________________
+
+configReader::configReader(const std::string& configFile_Location1,
                            const std::string& configFile_Location2,
-                           const bool* show_messages,
-                           const bool* show_debug_messages):
+                           const bool& show_messages,
+                           const bool& show_debug_messages):
 configReader(configFile_Location1, configFile_Location2,
              UTL::EMPTY_STRING, show_messages, show_debug_messages)
 {}
@@ -57,8 +73,8 @@ configReader(configFile_Location1, configFile_Location2,
 configReader::configReader(const std::string& configFile_Location1,
                            const std::string& configFile_Location2,
                            const std::string& configFile_Location3,
-                           const bool* show_messages,
-                           const bool* show_debug_messages):
+                           const bool& show_messages,
+                           const bool& show_debug_messages):
 configReader(configFile_Location1, configFile_Location2,
              configFile_Location3,
              UTL::EMPTY_STRING, show_messages, show_debug_messages)
@@ -68,8 +84,8 @@ configReader::configReader(const std::string & configFile_Location1,
                            const std::string & configFile_Location2,
                            const std::string & configFile_Location3,
                            const std::string & configFile_Location4,
-                           const bool* show_messages,
-                           const bool* show_debug_messages):
+                           const bool& show_messages,
+                           const bool& show_debug_messages):
 configReader(configFile_Location1, configFile_Location2,
              configFile_Location3, configFile_Location4,
              UTL::EMPTY_STRING, show_messages, show_debug_messages)
@@ -80,8 +96,8 @@ configReader::configReader(const std::string & configFile_Location1,
                            const std::string & configFile_Location3,
                            const std::string & configFile_Location4,
                            const std::string & configFile_Location5,
-                           const bool* show_messages,
-                           const  bool* show_debug_messages):
+                           const bool& show_messages,
+                           const bool& show_debug_messages):
 configVersion(UTL::MINUS_ONE_INT),
 numObjs(UTL::MINUS_ONE_INT),
 numIlocks(UTL::MINUS_ONE_INT),

@@ -41,10 +41,10 @@
 class interface : public baseObject
 {
     public:
-        interface(const bool& show_messages,
-                  const bool& show_debug_messages);
-        interface(const bool& show_messages,
-                  const bool& show_debug_messages,
+        interface(const bool*& show_messages,
+                  const bool*& show_debug_messages);
+        interface(const bool*& show_messages,
+                  const bool*& show_debug_messages,
                   const bool  shouldStartEPICs);
         ~interface();
 
