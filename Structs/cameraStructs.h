@@ -184,7 +184,7 @@ namespace cameraStructs
         std::vector<camDataType> rawData;
         // we're going to store a background image array ion a PV
         std::vector<camDataType> rawBackgroundData;
-        //VELA_ENUM::MACHINE_AREA  machineArea;
+        //HWC_ENUM::MACHINE_AREA  machineArea;
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         //std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
 
@@ -335,7 +335,7 @@ namespace cameraStructs
         //std::vector<camDataType> rawBackgroundData;
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
-        VELA_ENUM::MACHINE_AREA  machineArea;
+        HWC_ENUM::MACHINE_AREA  machineArea;
         cameraDAQObject DAQ;
         cameraIAObject IA;
     };

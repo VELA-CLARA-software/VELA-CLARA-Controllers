@@ -68,6 +68,9 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
+		<Unit filename="../../Hardware/VCheader.h" />
 		<Unit filename="../../Hardware/camera/cameraController.h" />
 		<Unit filename="../../Hardware/camera/cameraIA/cameraIAController.cpp" />
 		<Unit filename="../../Hardware/camera/cameraIA/cameraIAController.h" />

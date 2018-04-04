@@ -16,31 +16,31 @@
 
 // stl
 cameraIAController::cameraIAController(
-    const bool show_messages,
-    const bool show_debug_messages,
-    const VELA_ENUM::CONTROLLER_TYPE type,
-    const std::string & magConf,
+    bool* show_messages,
+    bool* show_debug_messages,
+    const HWC_ENUM::CONTROLLER_TYPE type,
+    const std::string & conf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
-    const VELA_ENUM::MACHINE_AREA myMachineArea):
+    const HWC_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages, type),
-localInterface(magConf,
+localInterface(conf,
                startVirtualMachine,
-               &SHOW_MESSAGES,
-               &SHOW_DEBUG_MESSAGES,
+               show_messages,
+               show_debug_messages,
                shouldStartEPICs,
                myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea),
-offlineIA(show_messages,show_debug_messages,&localInterface)
+offlineIA( show_messages, show_debug_messages,&localInterface)
 {
 }
 cameraIAController::~cameraIAController(){}    //dtor
-std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraIAController::getILockStates(const std::string &name)
+std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> cameraIAController::getILockStates(const std::string &name)
 {
     return localInterface.getILockStates(name);
 }
-std::map<VELA_ENUM::ILOCK_NUMBER,std::string> cameraIAController::getILockStatesStr(const std::string &name)
+std::map<HWC_ENUM::ILOCK_NUMBER,std::string> cameraIAController::getILockStatesStr(const std::string &name)
 {
     return localInterface.getILockStatesStr(name);
 }

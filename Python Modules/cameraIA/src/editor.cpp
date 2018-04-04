@@ -11,7 +11,7 @@
 
 ///--------------------------------EDIT FUNCTIONS------------------------------------///
 //CONSTRUCTOR
-editor::editor( const bool* show_messages_ptr, const  bool* show_debug_messages_ptr ): baseObject( show_messages_ptr, show_debug_messages_ptr )
+editor::editor( bool* show_messages_ptr, bool* show_debug_messages_ptr ): baseObject( show_messages_ptr, show_debug_messages_ptr )
 {}
 //DESTRUCTOR
 editor::~editor(){}

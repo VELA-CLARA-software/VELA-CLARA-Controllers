@@ -28,7 +28,7 @@ cameraIAInterface::cameraIAInterface( const std::string &Conf,
                                   const bool* show_messages_ptr,
                                   const bool* show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
-                                  const VELA_ENUM::MACHINE_AREA myMachineArea):
+                                  const HWC_ENUM::MACHINE_AREA myMachineArea):
 configReader(Conf,startVirtualMachine,show_messages_ptr,show_debug_messages_ptr),
 cameraInterface(show_messages_ptr,show_debug_messages_ptr),
 shouldStartEPICs(shouldStartEPICs),

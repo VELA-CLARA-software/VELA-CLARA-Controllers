@@ -36,7 +36,7 @@ class cameraIAInterface : public cameraInterface
                           const bool* show_messages_ptr,
                           const bool* show_debug_messages_ptr,
                           const bool shouldStartEPICs,
-                          const VELA_ENUM::MACHINE_AREA myMachineArea);
+                          const HWC_ENUM::MACHINE_AREA myMachineArea);
         ~cameraIAInterface();
 
         ///Functions Accessible to Python Controller///
@@ -60,7 +60,7 @@ class cameraIAInterface : public cameraInterface
     protected:
 
     private:
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
         const bool shouldStartEPICs;
         void initialise();
         cameraIAConfigReader configReader; /// class member so we can pass in file path in ctor

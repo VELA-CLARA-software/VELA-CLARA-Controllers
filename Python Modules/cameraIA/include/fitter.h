@@ -12,7 +12,7 @@ using namespace cameraStructs;
 class fitter: public baseObject{
     public:
         //Constructor
-        fitter( const bool* show_messages_ptr, const  bool * show_debug_messages_ptr );
+        fitter( bool* show_messages_ptr, bool * show_debug_messages_ptr );
         //Destructor
         ~fitter();
 

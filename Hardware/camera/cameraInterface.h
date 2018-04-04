@@ -30,20 +30,20 @@ class cameraInterface : public interface
         typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
         typedef std::vector<double> vec_d;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         cameraInterface();
         cameraInterface(const bool* show_messages_ptr,
                         const bool* show_debug_messages_ptr);
         ~cameraInterface();
 
-        IlockMap1 getILockStates(const std::string &name)
+        map_ilck_state getILockStates(const std::string &name)
         {
             IlockMap1 r;
             return r;
         }
-        IlockMap2 getILockStatesStr(const std::string &name)
+        map_ilck_string getILockStatesStr(const std::string &name)
         {
             IlockMap2 r;
             return r;

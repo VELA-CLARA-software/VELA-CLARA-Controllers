@@ -16,17 +16,19 @@
 //tp
 #include "cameraIAController.h"
 #include "offlineImageAnalyser.h"
-//boost
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
+#include "VCbase.h"
+#include "VCHeader.h"
+////boost
+//#include <boost/python/detail/wrap_python.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#/include <boost/python/return_value_policy.hpp>
+//#include <boost/python/detail/wrap_python.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#include <boost/python/return_value_policy.hpp>
 typedef int inter;
 typedef const int cinter;
 typedef double doub;
@@ -47,7 +49,8 @@ typedef boost::python::list & cbpl;
 
 using namespace cameraStructs;
 
-class VCcameraIA
+class VCcameraIA : public VCbase
+
 {
     public:
         VCcameraIA();
@@ -58,24 +61,25 @@ class VCcameraIA
         cameraIAController& virtual_CLARA_Camera_IA_Controller();
         cameraIAController& offline_CLARA_Camera_IA_Controller();
         cameraIAController& physical_CLARA_Camera_IA_Controller();
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+
+        cameraIAController& getIAController(const HWC_ENUM::MACHINE_MODE mode,
+                                            const HWC_ENUM::MACHINE_AREA area);
+
     protected:
 
     private:
-        cameraIAController * virtual_Camera_IA_Controller_Obj;
-        cameraIAController * offline_Camera_IA_Controller_Obj;
-        cameraIAController * physical_Camera_IA_Controller_Obj;
-        cameraIAController& getController(cameraIAController * cont,const std::string& conf,
-                                        const std::string & name,
-                                        const bool shouldVM,
-                                        const bool shouldEPICS,
-                                        const VELA_ENUM::MACHINE_AREA myMachineArea );
-        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
-        const VELA_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
+        cameraIAController* virtual_Camera_IA_Controller_Obj;
+        cameraIAController* offline_Camera_IA_Controller_Obj;
+        cameraIAController* physical_Camera_IA_Controller_Obj;
+        cameraIAController& getController(cameraIAController*& cont,
+                                          const std::string& conf,
+                                          const std::string & name,
+                                          const bool shouldVM,
+                                          const bool shouldEPICS,
+                                          const HWC_ENUM::MACHINE_AREA myMachineArea );
+        std::map<const cameraIAController*, std::pair<bool,bool>> messageStates;
+
+        void updateMessageStates();
 };
 
 using namespace boost::python;
@@ -83,9 +87,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
 {
     docstring_options doc_options(true);
     doc_options.disable_cpp_signatures();
-    //doc_options.disable_py_signatures();
-
-    ///Expose Vectors
+    /* Main project objects and enums are defined in here */
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+    /*///Expose Vectors
     // if not used don't inlcude
     class_<std::vector< std::string > >("std_vector_string")
         .def( vector_indexing_suite< std::vector< std::string >>())
@@ -95,7 +99,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         ;
     //class_<std::vector<cameraObject>>("std_vector_cameraObject")
      //   .def( vector_indexing_suite< std::vector<cameraObject>>())
-      //  ;
+      //  ;*/
  ///Expose Enums
     enum_<CAM_STATE>("CAM_STATE","Enum to interpet the power state of camera.")
         .value("CAM_ON",            CAM_STATE::CAM_ON)
@@ -122,6 +126,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .value("WRITE_CHECK_ERROR", WRITE_CHECK::WRITE_CHECK_ERROR)
         ;
     ///Expose Classes
+    /*
     class_<baseObject, boost::noncopyable>("baseObject", no_init)
         ;
 
@@ -129,9 +134,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         ("controller","controller Doc String", boost::python::no_init) /// forces Python to not be able to construct (init) this object
         .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
         .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
-        ;
+       // .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
+       // .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
+        ;*/
     boost::python::class_<cameraStructs::cameraObject,boost::noncopyable>
         ("cameraObject_from_IA","cameraObject Doc String", boost::python::no_init)/// The has been exposed under a differnt name to stop clashes!!!!!!
         .def_readonly("name",
@@ -613,14 +618,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def("physical_CLARA_Camera_IA_Controller",
              &VCcameraIA::physical_CLARA_Camera_IA_Controller,
              return_value_policy<reference_existing_object>())
-        .def("setQuiet",              &VCcameraIA::setQuiet,
+        /*.def("setQuiet",              &VCcameraIA::setQuiet,
             "This is the setQuiet function that sops the controller displaying all messages")
         .def("setVerbose",            &VCcameraIA::setVerbose,
              "This is the setVerbose function that sets the controller to display all messages")
         .def("setMessage",            &VCcameraIA::setMessage,
             "This is the setMessage function that sets the controller to only display messages")
         .def("setDebugMessage",  &VCcameraIA::setDebugMessage,
-            "This is the setDebugMessage function that sets the controller to only display debug messages")
+            "This is the setDebugMessage function that sets the controller to only display debug messages")*/
         ;
 }
 

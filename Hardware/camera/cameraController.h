@@ -35,7 +35,7 @@ class cameraController  : public controller
         /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
         cameraController( const bool show_messages,    const bool show_debug_messagese,
                           const std::string &camConf, const bool startVirtualMachine,
-                          const bool shouldStartEPICs, const VELA_ENUM::MACHINE_AREA myMachineArea);
+                          const bool shouldStartEPICs, const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         ~cameraController( );
 
@@ -68,8 +68,8 @@ class cameraController  : public controller
         double getSigmaY();
         double getSigmaXY();
         /// This pure virtual method MUST be overwritten in the derived controller ( making this an abstract base class)
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name );
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
+        std::map< HWC_ENUM::ILOCK_NUMBER, std::string >         getILockStatesStr( const std::string & name );
 
         const cameraStructs::cameraObject &getCamObjConstRef( const std::string & camName  );
     protected:
@@ -79,7 +79,7 @@ class cameraController  : public controller
         #cameraInterface  localInterface;
         void initialise();
         const bool shouldStartEPICs;
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
 
 
 

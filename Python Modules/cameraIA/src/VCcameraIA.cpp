@@ -17,20 +17,21 @@
 #include <string>
 
 VCcameraIA::VCcameraIA():
+VCbase("VCcameraIA"),
 virtual_Camera_IA_Controller_Obj(nullptr),
 offline_Camera_IA_Controller_Obj(nullptr),
-physical_Camera_IA_Controller_Obj(nullptr),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true),
-VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
-VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
-VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
-UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is not show messages!!
+physical_Camera_IA_Controller_Obj(nullptr)
+//withEPICS(true),
+//withoutEPICS(false),
+//withoutVM(false),
+//withVM(true),
+//VELA_INJ ( HWC_ENUM::MACHINE_AREA::VELA_INJ ),
+//VELA_BA1 ( HWC_ENUM::MACHINE_AREA::VELA_BA1 ),
+//VELA_BA2 ( HWC_ENUM::MACHINE_AREA::VELA_BA2 ),
+//CLARA_PH1( HWC_ENUM::MACHINE_AREA::CLARA_PH1),
+//UNKNOWN_AREA(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA),
+//shouldShowDebugMessage(false),//default is quiet mode
+//shouldShowMessage(false)//default is not show messages!!
 {
     std::cout << "Instantiated a VCcameraIA in Quiet Mode" << std::endl;
     //ctor
@@ -38,6 +39,8 @@ shouldShowMessage(false)//default is not show messages!!
 VCcameraIA::~VCcameraIA()
 {
 }
+
+/*
 void VCcameraIA::setQuiet()
 {
     std::cout << "VCcameraIA Quiet Mode Set." << std::endl;
@@ -61,7 +64,7 @@ void VCcameraIA::setDebugMessage()
     std::cout << "VCcameraIA DebugMessage Mode Set." << std::endl;
     shouldShowDebugMessage = true;
     shouldShowMessage = false;
-}
+}*/
 cameraIAController& VCcameraIA::physical_CLARA_Camera_IA_Controller()
 {
     std::string cconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
@@ -128,12 +131,12 @@ cameraIAController& VCcameraIA::offline_VELA_Camera_IA_Controller()
                          withoutEPICS,
                          VELA_INJ);
 }
-cameraIAController& VCcameraIA::getController(cameraIAController *cont,
+cameraIAController& VCcameraIA::getController(cameraIAController*& cont,
                                             const std::string &conf,
                                             const std::string &name,
                                             const bool shouldVM,
                                             const bool shouldEPICS,
-                                            const VELA_ENUM::MACHINE_AREA myMachineArea)
+                                            const HWC_ENUM::MACHINE_AREA myMachineArea)
 {
     if(cont)
     {
@@ -142,14 +145,24 @@ cameraIAController& VCcameraIA::getController(cameraIAController *cont,
     else
     {
         std::cout << "Creating " << name << " object" << std::endl;
-        cont = new cameraIAController(shouldShowMessage,
-                                       shouldShowDebugMessage,
-                                       VELA_ENUM::CONTROLLER_TYPE::CAMERA_IA,
-                                       conf,
-                                       shouldVM,
-                                       shouldEPICS,
-                                       myMachineArea);
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+        cont = new cameraIAController(&messageStates.at(cont).first,
+                                      &messageStates.at(cont).second,
+                                      HWC_ENUM::CONTROLLER_TYPE::CAMERA_IA,
+                                      conf,
+                                      shouldVM,
+                                      shouldEPICS,
+                                      myMachineArea);
     }
     return *cont;
 }
 
+void VCcameraIA::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
+}
