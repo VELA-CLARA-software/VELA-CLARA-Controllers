@@ -33,17 +33,17 @@ class cameraIAController  : public controller
         /// we have overloaded constructors to specify config-file location
         cameraIAController();
         /// New scheem - we just have 1 constructor, but we have a higher level class that create these objects
-        cameraIAController(bool* show_messages,
-                            bool* show_debug_messagese,
-                            const HWC_ENUM::CONTROLLER_TYPE type,
-                            const std::string &camConf,
-                            const bool startVirtualMachine,
-                            const bool shouldStartEPICs,
-                            const HWC_ENUM::MACHINE_AREA myMachineArea);
+        cameraIAController(bool& show_messages,
+                           bool& show_debug_messagese,
+                           const HWC_ENUM::CONTROLLER_TYPE type,
+                           const std::string &camConf,
+                           const bool startVirtualMachine,
+                           const bool shouldStartEPICs,
+                           const HWC_ENUM::MACHINE_AREA myMachineArea);
         ~cameraIAController( );
         // These are pure virtual methods,
         // so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
         // This pure virtual method MUST be overwritten in the derived controller
         // ( making this an abstract base class)

@@ -29,9 +29,9 @@ class cameraIAConfigReader : public configReader
     public:
         cameraIAConfigReader();
         cameraIAConfigReader::cameraIAConfigReader(const std::string&camConfig,
-                                                const bool startVirtualMachine,
-                                                const bool*show_messages_ptr,
-                                                const bool*show_debug_messages_ptr);
+                                                   const bool startVirtualMachine,
+                                                   bool& show_messages_ptr,
+                                                   bool& show_debug_messages_ptr);
         ~cameraIAConfigReader();
 
         bool readConfig();

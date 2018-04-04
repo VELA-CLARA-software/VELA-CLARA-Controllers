@@ -12,7 +12,7 @@ using namespace cameraStructs;
 class editor: public baseObject{
     public:
         //Constructor
-        editor( bool* show_messages_ptr, bool * show_debug_messages_ptr );
+        editor(bool& show_messages_ptr, bool& show_debug_messages_ptr );
         //Destructor
         ~editor();
 

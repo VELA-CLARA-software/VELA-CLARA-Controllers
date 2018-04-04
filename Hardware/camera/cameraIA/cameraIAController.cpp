@@ -15,14 +15,13 @@
 #include "cameraIAController.h"
 
 // stl
-cameraIAController::cameraIAController(
-    bool* show_messages,
-    bool* show_debug_messages,
-    const HWC_ENUM::CONTROLLER_TYPE type,
-    const std::string & conf,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs,
-    const HWC_ENUM::MACHINE_AREA myMachineArea):
+cameraIAController::cameraIAController(bool& show_messages,
+                                       bool& show_debug_messages,
+                                       const HWC_ENUM::CONTROLLER_TYPE type,
+                                       const std::string & conf,
+                                       const bool startVirtualMachine,
+                                       const bool shouldStartEPICs,
+                                       const HWC_ENUM::MACHINE_AREA myMachineArea):
 controller( show_messages, show_debug_messages, type),
 localInterface(conf,
                startVirtualMachine,
@@ -36,15 +35,15 @@ offlineIA( show_messages, show_debug_messages,&localInterface)
 {
 }
 cameraIAController::~cameraIAController(){}    //dtor
-std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> cameraIAController::getILockStates(const std::string &name)
+/*std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> cameraIAController::getILockStates(const std::string &name)
 {
     return localInterface.getILockStates(name);
 }
 std::map<HWC_ENUM::ILOCK_NUMBER,std::string> cameraIAController::getILockStatesStr(const std::string &name)
 {
     return localInterface.getILockStatesStr(name);
-}
-double cameraIAController::get_CA_PEND_IO_TIMEOUT()
+}*/
+double cameraIAController::get_CA_PEND_IO_TIMEOUT()const
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }

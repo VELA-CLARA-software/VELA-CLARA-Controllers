@@ -34,8 +34,8 @@ class cameraInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         cameraInterface();
-        cameraInterface(const bool* show_messages_ptr,
-                        const bool* show_debug_messages_ptr);
+        cameraInterface(bool& show_messages_ptr,
+                        bool& show_debug_messages_ptr);
         ~cameraInterface();
 
         map_ilck_state getILockStates(const std::string &name)

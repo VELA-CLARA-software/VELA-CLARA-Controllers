@@ -147,8 +147,8 @@ cameraIAController& VCcameraIA::getController(cameraIAController*& cont,
         std::cout << "Creating " << name << " object" << std::endl;
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
-        cont = new cameraIAController(&messageStates.at(cont).first,
-                                      &messageStates.at(cont).second,
+        cont = new cameraIAController(messageStates.at(cont).first,
+                                      messageStates.at(cont).second,
                                       HWC_ENUM::CONTROLLER_TYPE::CAMERA_IA,
                                       conf,
                                       shouldVM,

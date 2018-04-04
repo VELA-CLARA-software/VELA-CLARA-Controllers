@@ -16,8 +16,8 @@
 std::mutex mu;
 ///--------------------------------IMAGE ANAYLSER FUNCTIONS------------------------------------///
 //CONSTRUCTOR
-offlineImageAnalyser::offlineImageAnalyser(bool* show_messages,
-                                           bool* show_debug_messages,
+offlineImageAnalyser::offlineImageAnalyser(bool& show_messages,
+                                           bool& show_debug_messages,
                                            cameraIAInterface* CI)
 : //baseObject( &show_messages, &show_debug_messages ),
 fit( show_messages, show_debug_messages ),

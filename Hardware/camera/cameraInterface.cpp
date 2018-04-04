@@ -23,8 +23,8 @@
 #include <thread>
 using namespace cameraStructs;
 
-cameraInterface::cameraInterface(const bool* show_messages_ptr,
-                                 const bool* show_debug_messages_ptr):
+cameraInterface::cameraInterface(bool& show_messages_ptr,
+                                 bool& show_debug_messages_ptr):
 interface(show_messages_ptr, show_debug_messages_ptr),
 selectedCameraRef(selectedCameraObj),
 vcCameraRef(vcCameraObj)

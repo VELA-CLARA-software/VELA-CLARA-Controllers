@@ -20,8 +20,8 @@ using namespace cameraStructs;
 class offlineImageAnalyser{
     public:
         //Constructor
-        offlineImageAnalyser(bool* show_messages,
-                             bool* show_debug_messages,
+        offlineImageAnalyser(bool& show_messages,
+                             bool& show_debug_messages,
                              cameraIAInterface* CI = &cameraIAInterface());
         //Destructor
         ~offlineImageAnalyser();

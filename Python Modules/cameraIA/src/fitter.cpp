@@ -28,7 +28,7 @@
 
 ///--------------------------------FIT FUNCTIONS------------------------------------///
 //CONSTRUCTOR
-fitter::fitter( bool* show_messages_ptr, bool * show_debug_messages_ptr )
+fitter::fitter(bool& show_messages_ptr, bool& show_debug_messages_ptr )
 : baseObject( show_messages_ptr, show_debug_messages_ptr ),
 editFunctions( show_messages_ptr, show_debug_messages_ptr )
 {}
