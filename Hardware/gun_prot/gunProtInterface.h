@@ -45,8 +45,8 @@ class gunProtInterface : public interface
         gunProtInterface::gunProtInterface();
         gunProtInterface(const std::string &config_file,
                          const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
+                         const bool& show_messages_ptr,
+                         const bool& show_debug_messages_ptr,
                          const bool shouldStartEPICs);
 
         ~gunProtInterface();

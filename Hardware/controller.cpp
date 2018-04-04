@@ -30,27 +30,27 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-controller::controller(bool* show_messages,
-                       bool* show_debug_messages):
+controller::controller(bool& show_messages,
+                       bool& show_debug_messages):
 controller(show_messages,
            show_debug_messages,
            HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE){}
 //______________________________________________________________________________
-controller::controller(bool* show_messages,
-                       bool* show_debug_messages,
+controller::controller(bool& show_messages,
+                       bool& show_debug_messages,
                        const HWC_ENUM::CONTROLLER_TYPE type):
 controller(show_messages,show_debug_messages,type,UTL::UNKNOWN_NAME){}
 //______________________________________________________________________________
-controller::controller(bool* show_messages,
-           bool* show_debug_messages,
-           const std::string& name,
-           const HWC_ENUM::CONTROLLER_TYPE type):
+controller::controller(bool& show_messages,
+                       bool& show_debug_messages,
+                       const std::string& name,
+                       const HWC_ENUM::CONTROLLER_TYPE type):
 controller(show_messages,show_debug_messages,type,name){}
 //______________________________________________________________________________
-controller::controller(bool* show_messages,
-           bool* show_debug_messages,
-           const HWC_ENUM::CONTROLLER_TYPE type,
-           const std::string& name):
+controller::controller(bool& show_messages,
+                       bool& show_debug_messages,
+                       const HWC_ENUM::CONTROLLER_TYPE type,
+                       const std::string& name):
 SHOW_DEBUG_MESSAGES(show_debug_messages),
 SHOW_MESSAGES(show_messages),
 controllerType(type),
@@ -81,45 +81,45 @@ controller::~controller(){}
 //______________________________________________________________________________
 void controller::debugMessagesOn()
 {
-    std::cout << "debugMessages On" <<std::endl;
-    *SHOW_DEBUG_MESSAGES = true;
+    std::cout << "debugMessages On" << std::endl;
+    SHOW_DEBUG_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::debugMessagesOff()
 {
     std::cout << "debugMessages Off" <<std::endl;
-    *SHOW_DEBUG_MESSAGES = false;
+    SHOW_DEBUG_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::messagesOn()
 {
     std::cout << "messages On" <<std::endl;
-    *SHOW_MESSAGES = true;
+    SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::messagesOff()
 {
     std::cout << "messages Off" <<std::endl;
-    *SHOW_MESSAGES = false;
+    SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::silence()
 {
     std::cout << "silence" <<std::endl;
-    *SHOW_DEBUG_MESSAGES = false;
-    *SHOW_MESSAGES = false;
+    SHOW_DEBUG_MESSAGES = false;
+    SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::verbose()
 {
     std::cout <<"verbose" <<std::endl;
-    *SHOW_DEBUG_MESSAGES = true;
-    *SHOW_MESSAGES = true;
+    SHOW_DEBUG_MESSAGES = true;
+    SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 bool controller::isSilent() const
 {
-    if(!*SHOW_DEBUG_MESSAGES && !*SHOW_MESSAGES)
+    if(!SHOW_DEBUG_MESSAGES && !SHOW_MESSAGES)
         return true;
     else
         return false;
@@ -132,7 +132,7 @@ bool controller::isVerbose() const
 //______________________________________________________________________________
 bool controller::isMessageOn() const
 {
-    if(*SHOW_MESSAGES)
+    if(SHOW_MESSAGES)
         return true;
     else
         return false;
@@ -140,7 +140,7 @@ bool controller::isMessageOn() const
 //______________________________________________________________________________
 bool controller::isDebugMessageOn() const
 {
-    if(*SHOW_DEBUG_MESSAGES)
+    if(SHOW_DEBUG_MESSAGES)
         return true;
     else
         return false;

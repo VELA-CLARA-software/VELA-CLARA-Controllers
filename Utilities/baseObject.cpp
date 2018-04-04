@@ -32,8 +32,8 @@
 //
 //______________________________________________________________________________
 //______________________________________________________________________________
-baseObject::baseObject(const bool* show_messages,
-                       const bool* show_debug_messages):
+baseObject::baseObject(const bool& show_messages,
+                       const bool& show_debug_messages):
 SHOW_MESSAGES(show_messages),
 SHOW_DEBUG_MESSAGES(show_debug_messages)
 {}

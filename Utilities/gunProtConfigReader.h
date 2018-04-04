@@ -34,12 +34,12 @@
 class gunProtConfigReader : public configReader
 {
     public:
-        gunProtConfigReader(const bool* show_messages_ptr,
-                            const bool* show_debug_messages_ptr );
+        gunProtConfigReader(const bool& show_messages_ptr,
+                            const bool& show_debug_messages_ptr );
         gunProtConfigReader(const std::string& configFileLocation1,
                             const bool startVirtualMachine,
-                            const bool* showMessages,
-                            const bool* showDebugMessages );
+                            const bool& showMessages,
+                            const bool& showDebugMessages );
         ~gunProtConfigReader();
 
         bool readConfig();
@@ -54,8 +54,8 @@ class gunProtConfigReader : public configReader
             pvMonStructs hold the data for PVs to be monitored
             pvComStructs hold the data for PVs to be monitored and/or controlled
         */
-        std::vector< rfProtStructs::pvStruct > pvMonStructs;
-        std::vector< rfProtStructs::pvStruct > pvComStructs;
+        std::vector<rfProtStructs::pvStruct> pvMonStructs;
+        std::vector<rfProtStructs::pvStruct> pvComStructs;
 
         /* Functions to add the config file data to objects/pvStructs */
         void addToProtObjectsV1(const std::vector<std::string> &keyVal );
@@ -64,10 +64,10 @@ class gunProtConfigReader : public configReader
 
         std::vector<rfProtStructs::rfGunProtObject> gunProtObjects;
 
-        void addToPVStruct(std::vector< rfProtStructs::pvStruct >& pvStruct_v,
-                           const  std::vector<std::string>& keyVal );
+        void addToPVStruct(std::vector<rfProtStructs::pvStruct>& pvStruct_v,
+                           const std::vector<std::string>& keyVal);
 
         void addCOUNT_MASK_OR_CHTYPE(std::vector<rfProtStructs::pvStruct>& pvStruct_v,
-                                     const std::vector<std::string>& keyVal );
+                                     const std::vector<std::string>& keyVal);
 };
 #endif //_GUN_PROT_CONFIG_READER_H_
