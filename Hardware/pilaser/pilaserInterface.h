@@ -44,8 +44,8 @@ class pilaserInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         //pilaserInterface::pilaserInterface();
-        pilaserInterface(bool* show_messages,
-                          bool* show_debug_messages,
+        pilaserInterface(bool& show_messages,
+                          bool& show_debug_messages,
                           const bool startVirtualMachine,
                           const bool shouldStartEPICs,
                           const std::string& configFile

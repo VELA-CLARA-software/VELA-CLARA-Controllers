@@ -34,8 +34,8 @@
 #include <ctype.h>
 //____________________________________________________________________________________________________
 virtualCathodeConfigReader::virtualCathodeConfigReader(const std::string& configFile,
-                           const bool* show_messages,
-                           const bool* show_debug_messages,
+                           const bool& show_messages,
+                           const bool& show_debug_messages,
                            const bool usingVM):
 configReader(configFile,  show_messages, show_debug_messages,usingVM){}
 //______________________________________________________________________________
@@ -232,14 +232,14 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
 {
     if( keyVal[UTL::ZERO_SIZET] == UTL::NAME )
     {
-        object.name = keyVal[ UTL::ONE_SIZET ];
+        object.name = keyVal[UTL::ONE_SIZET];
         //object.numIlocks = numIlocks;
         debugMessage("Added ", object.name );
     }
     else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_ROOT)
     {
         if( useVM )
-            object.pvRoot =  UTL::VM_PREFIX + keyVal[ UTL::ONE_SIZET ];
+            object.pvRoot =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
         else
             object.pvRoot = keyVal[UTL::ONE_SIZET];
     }

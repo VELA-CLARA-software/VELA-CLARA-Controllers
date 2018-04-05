@@ -124,8 +124,8 @@ pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
         std::cout << "Creating " << name << " object" <<std::endl;
         messageStates[cont].first     = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
-        cont = new pilaserController(&messageStates.at(cont).first,
-                                     &messageStates.at(cont).second,
+        cont = new pilaserController(messageStates.at(cont).first,
+                                     messageStates.at(cont).second,
                                      shouldVM,
                                      shouldEPICS,
                                      name,

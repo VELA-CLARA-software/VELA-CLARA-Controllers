@@ -15,7 +15,7 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    pilaserMirrorConfigReader.cpp
+//  FileName:    shutterConfigReader.h
 //  Description:
 //
 //
@@ -35,26 +35,25 @@ class shutterConfigReader : public configReader
 {
     public:
         shutterConfigReader(const std::string& configFile,
-                           const bool* show_messages,
-                           const bool* show_debug_messages,
+                           const bool& show_messages,
+                           const bool& show_debug_messages,
                            const bool usingVM);
         ~shutterConfigReader();
 //
-//        bool readPILShutterConfig( );
-//        const std::vector< shutterStructs::shutterObject >                 getShutterObjects();
+        bool readShutterConfig( );
+        const std::vector<shutterStructs::shutterObject> getShutterObjects();
 
     private:
+        std::vector<shutterStructs::shutterObject> shutterObjects;
+        std::vector<shutterStructs::pvStruct     > pvMonStructs;
+        std::vector<shutterStructs::pvStruct     > pvComStructs;
 
-//
-//        std::vector< shutterStructs::shutterObject > shutterObjects;
-//        std::vector< shutterStructs::pvStruct      > pvMonStructs;
-//        std::vector< shutterStructs::pvStruct      > pvComStructs;
-//
-//        void addPVStruct( std::vector< shutterStructs::pvStruct > & pvStruct_v, const std::vector<std::string> &keyVal );
-//
-//        void addToShutterObjectsV1( const std::vector<std::string> &keyVal );
-//        void addToPVCommandMapV1  ( const std::vector<std::string> &keyVal );
-//        void addToPVMonitorMapV1  ( const std::vector<std::string> &keyVal );
+        void addPVStruct(std::vector<shutterStructs::pvStruct>& pvStruct_v,
+                         const std::vector<std::string>& keyVal);
+
+        void addToShutterObjectsV1(const std::vector<std::string> &keyVal);
+        void addToPVCommandMapV1  (const std::vector<std::string> &keyVal);
+        void addToPVMonitorMapV1  (const std::vector<std::string> &keyVal);
 
 };
 #endif //UTL_FILE_IO_H

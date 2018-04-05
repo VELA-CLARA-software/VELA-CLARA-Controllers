@@ -220,7 +220,7 @@ class baseObject
         {
             boost::python::dict dictionary;
             for(auto&& it : m)
-                dictionary[ (int)it.first] = (int)it.second;
+                dictionary[(int)it.first] = (int)it.second;
             return dictionary;
         }
 
@@ -229,7 +229,7 @@ class baseObject
         {
             boost::python::dict dictionary;
             for(auto&& it : m)
-                dictionary[ it.first] = it.second;
+                dictionary[it.first] = it.second;
             return dictionary;
         }
 
@@ -238,7 +238,7 @@ class baseObject
         {
             boost::python::dict dictionary;
             for(auto&& it : m)
-                dictionary[ (int)it.first] = it.second;
+                dictionary[(int)it.first] = it.second;
             return dictionary;
         }
 

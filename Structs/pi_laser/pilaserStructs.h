@@ -1,3 +1,25 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    shutterConfigReader.cpp
+//  Description:
+//
+//
+//*/
 #ifndef _VELA_CLARA_PIL_STRUCTS_H_
 #define _VELA_CLARA_PIL_STRUCTS_H_
 //
@@ -15,35 +37,24 @@ class pilaserInterface;
 
 namespace pilaserStructs
 {
-    // Forward declare structs, gcc seems to like this...
+    /* Forward declare structs, gcc seems to like this...*/
     struct monitorStuct;
     struct pilaserObject;
     struct pvStruct;
-    // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS)
-                                                         (V_POS)
-                                                         (INTENSITY)
-                                                         (SHUTTER_2_OPEN)
-                                                         (SHUTTER_1_CLOSE)
-                                                         (SHUTTER_1_OPEN)
-                                                         (VC_X_POS)
-                                                         (VC_X_WIDTH)
-                                                         (VC_Y_POS)
-                                                         (VC_Y_WIDTH)
-                                                         (VC_INTENSITY)
-                                                         (VC_XY_COV)
+    /*
+        Use this MACRO to define enums.
+        Consider putting ENUMS that are more 'global' in structs.h
+    */
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(INTENSITY)
+                                                         (STABILISATION)
+                                                         (STATUS)
                                                          (UNKNOWN_PV)
                                         )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS,(ON)
                                                         (OFF)
                                                         (ERROR)
-                                                        (UNKNOWN)
                                         )
-    // monType could be used to switch in the staticCallbackFunction
-    // For the shutter this is basically redundant, there is only one monitor: "Sta"
-    // (apart from interlocks, these are handled in the base class)
-    // monType could be used to switch in the statisCallbackFunction
     struct monitorStruct
     {
         monitorStruct():
@@ -58,34 +69,43 @@ namespace pilaserStructs
         evid              EVID;
         pilaserObject*    pilaserObj;
     };
-    // The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
-    // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
+    /*
+        The hardware object holds a map keyed by PV type,
+        with pvStruct values, some values come from the config
+        The rest are paramaters passed to EPICS, ca_create_channel,
+        ca_create_subscription etc..
+    */
     struct pvStruct
     {
+        pvStruct():
+            pvSuffix(UTL::UNKNOWN_STRING),
+            COUNT(UTL::ZERO_UL),
+            MASK(UTL::ZERO_UL),
+            pvType(UNKNOWN_PV)
+            {};
         PILASER_PV_TYPE pvType;
-        chid          CHID;
-        std::string   pvSuffix;
-        unsigned long COUNT, MASK;
-        chtype        CHTYPE;
-        evid          EVID;
+        chid            CHID;
+        std::string     pvSuffix;
+        unsigned long   COUNT, MASK;
+        chtype          CHTYPE;
+        evid            EVID;
     };
     // The main hardware object holds ...
     struct pilaserObject
     {
-        pilaserObject():status(PILASER_STATUS::UNKNOWN),hPos(UTL::DUMMY_DOUBLE),
-                        vPos(UTL::DUMMY_DOUBLE),intensity(UTL::DUMMY_DOUBLE),
-                        name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT){};
+        pilaserObject():
+            status(PILASER_STATUS::ERROR),
+            stabilisation_status(PILASER_STATUS::ERROR),
+            intensity(UTL::DUMMY_DOUBLE),
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT)
+            {};
         std::string name, pvRoot;
-        double hPos, vPos, intensity;
-        int numIlocks;
-        PILASER_STATUS status;
-        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
-#ifndef __CINT__
-        /// keep data seperate from epics stuff
-        std::map< PILASER_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< PILASER_PV_TYPE, pvStruct > pvComStructs;
-        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
-#endif
+        double intensity;
+        PILASER_STATUS status, stabilisation_status;
+        std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
+        std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
     };
 }
 #endif

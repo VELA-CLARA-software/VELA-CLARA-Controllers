@@ -198,7 +198,7 @@ void pilaserMirrorConfigReader::addToPVCommandMapV1(const  std::vector<std::stri
             addPVStruct(pvComStructs, keyVal);
         else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_H_MOVE)
             addPVStruct(pvComStructs, keyVal);
-        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_V_MOVE)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_Y_MOVE)
             addPVStruct(pvComStructs, keyVal);
     }
 
@@ -215,19 +215,19 @@ void pilaserMirrorConfigReader::addTopilaserObjectsV1(const std::vector<std::str
     if(keyVal[UTL::ZERO_SIZET] == UTL::NAME)
     {
         pilMirrorObject.name = keyVal[UTL::ONE_SIZET];
-        //pilMirrorObject.numIlocks = numIlocks;
+        pilMirrorObject.numIlocks = numIlocks;
         debugMessage("Added ", pilMirrorObject.name);
     }
     else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_ROOT)
     {
-        if(useVM)
+        if(usingVirtualMachine)
             pilMirrorObject.pvRoot =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
         else
             pilMirrorObject.pvRoot = keyVal[UTL::ONE_SIZET];
     }
 }
 //______________________________________________________________________________
-bool pilaserMirrorConfigReader::getpilMirrorObject(pilaserMirrorStructs::pilMirrorObject & obj)
+bool getpilMirrorObject(pilaserMirrorStructs::pilMirrorObject & obj) const;
 {
     obj = pilMirrorObject;
     for(auto&& it:pvMonStructs)

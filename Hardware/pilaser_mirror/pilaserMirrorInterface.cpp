@@ -33,8 +33,8 @@
 // /  `  |  /  \ |__)  /  |  \  |  /  \ |__)
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
-pilaserMirrorInterface::pilaserMirrorInterface(bool* show_messages,
-                         bool* show_debug_messages,
+pilaserMirrorInterface::pilaserMirrorInterface(bool& show_messages,
+                         bool& show_debug_messages,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
                          const std::string& configFile
