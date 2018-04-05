@@ -45,8 +45,8 @@ class scopeController : public controller
         scopeController();// const bool show_messages = true, const bool show_debug_messages = true );
         scopeController( const std::string &configFileLocation1,
                          const std::string &configFileLocation2,
-                         bool* show_messages,
-                         bool* show_debug_messages,
+                         bool& show_messages,
+                         bool& show_debug_messages,
                          const bool shouldStartEPICs,
                          const bool startVirtualMachine,
                          const HWC_ENUM::MACHINE_AREA myMachineArea );

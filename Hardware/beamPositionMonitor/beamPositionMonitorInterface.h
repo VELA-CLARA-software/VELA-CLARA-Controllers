@@ -32,8 +32,8 @@ class beamPositionMonitorInterface : public interface
 
         beamPositionMonitorInterface::beamPositionMonitorInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
         beamPositionMonitorInterface( const std::string & configFileLocation,
-                                      const bool* show_messages_ptr,
-                                      const bool* show_debug_messages_ptr,
+                                      const bool& show_messages_ptr,
+                                      const bool& show_debug_messages_ptr,
                                       const bool shouldStartEPICS,
                                       const bool startVirtualMachine,
                                       const HWC_ENUM::MACHINE_AREA myMachineArea );

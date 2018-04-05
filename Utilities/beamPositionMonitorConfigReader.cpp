@@ -12,10 +12,10 @@
 #include <algorithm>
 #include <ctype.h>
 
-beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & bpmConf, const bool*show_messages_ptr,
-                                                                  const bool*show_debug_messages_ptr, const bool startVirtualMachine ):
+beamPositionMonitorConfigReader::beamPositionMonitorConfigReader( const std::string & bpmConf, const bool& show_messages_ptr,
+                                                                  const bool& show_debug_messages_ptr, const bool startVirtualMachine ):
 bpmConf( bpmConf ),
-configReader( show_messages_ptr, show_debug_messages_ptr ),
+configReader( bpmConf, show_messages_ptr, show_debug_messages_ptr ),
 usingVirtualMachine(startVirtualMachine)
 {
 

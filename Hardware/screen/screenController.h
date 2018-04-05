@@ -14,8 +14,8 @@ class screenController : public controller
     public:
         screenController();
         screenController(const std::string & conf1,
-                         bool* show_messages,
-                         bool* show_debug_messages,
+                         bool& show_messages,
+                         bool& show_debug_messages,
                          const bool shouldStartEPICs,
                          const bool startVirtualMachine,
                          const HWC_ENUM::MACHINE_AREA);

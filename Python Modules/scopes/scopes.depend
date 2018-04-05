@@ -141,12 +141,12 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1521812689 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
+1522919568 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1521812689 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
+1522919568 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -154,14 +154,14 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1521812689 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
+1522919568 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
 	"baseObject.h"
 	"structs.h"
 
-1521798405 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
+1522919568 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -182,7 +182,8 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1521812689 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
+1522767178 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
+	<string>
 	"configDefinitions.h"
 	<string>
 	<vector>
@@ -190,16 +191,16 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1521798405 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
+1522919568 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
 	<chrono>
 
-1521822235 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.cpp
+1522922476 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.cpp
 	"scopeController.h"
 
-1521822235 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.h
+1522922470 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.h
 	"scopeInterface.h"
 	"controller.h"
 	<string>
@@ -216,7 +217,7 @@
 	<boost/python/overloads.hpp>
 	<boost/circular_buffer.hpp>
 
-1521822235 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.h
+1522922436 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.h
 	"interface.h"
 	"scopeStructs.h"
 	"scopeConfigReader.h"
@@ -233,7 +234,7 @@
 	<cadef.h>
 	<boost/circular_buffer.hpp>
 
-1521812692 d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.h
+1522922452 d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -242,7 +243,7 @@
 	"scopeStructs.h"
 	<boost/circular_buffer.hpp>
 
-1521654974 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
+1522919568 d:\vela-clara_software\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -250,7 +251,7 @@
 	<vector>
 	<cadef.h>
 
-1521798405 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
+1522767178 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -258,7 +259,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1521822235 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
+1522922444 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
 	"scopeInterface.h"
 	<iostream>
 	<sstream>
@@ -273,12 +274,12 @@
 	<stdlib.h>
 	<epicsTime.h>
 
-1521798405 source:d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.cpp
+1522919568 source:d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
 
-1521798405 source:d:\vela-clara_software\vela-clara-controllers\utilities\configreader.cpp
+1522919568 source:d:\vela-clara_software\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<time.h>
@@ -287,7 +288,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1521812692 source:d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.cpp
+1522922460 source:d:\vela-clara_software\vela-clara-controllers\utilities\scopeconfigreader.cpp
 	"scopeConfigReader.h"
 	"configDefinitions.h"
 	"scopeStructs.h"

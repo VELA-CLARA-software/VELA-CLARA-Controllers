@@ -20,8 +20,8 @@ class screenConfigReader : public configReader
     public:
         screenConfigReader::screenConfigReader();
         screenConfigReader( const std::string & configFile1,
-                            const bool* show_messages_ptr,
-                            const bool* show_debug_messages_ptr,
+                            const bool& show_messages_ptr,
+                            const bool& show_debug_messages_ptr,
                             const bool startVirtualMachine );
 
         ~screenConfigReader();

@@ -18,8 +18,8 @@
 //
 
 screenInterface::screenInterface( const std::string & conf1,
-                                  const bool* show_messages_ptr,
-                                  const bool* show_debug_messages_ptr,
+                                  const bool& show_messages_ptr,
+                                  const bool& show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
                                   const bool startVirtualMachine,
                                   const HWC_ENUM::MACHINE_AREA myMachineArea ):

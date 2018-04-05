@@ -14,8 +14,8 @@
 
 scopeConfigReader::scopeConfigReader( const std::string & scopeConf1,
                                       const std::string & scopeConf2,
-                                      const bool* show_messages_ptr,
-                                      const bool* show_debug_messages_ptr,
+                                      const bool& show_messages_ptr,
+                                      const bool& show_debug_messages_ptr,
                                       const bool startVirtualMachine ):
 scopeConf1( scopeConf1 ),
 scopeConf2( scopeConf2 ),

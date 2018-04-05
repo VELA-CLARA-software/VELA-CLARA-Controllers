@@ -16,8 +16,8 @@
 //______________________________________________________________________________
 scopeController::scopeController( const std::string &configFileLocation1,
                                   const std::string &configFileLocation2,
-                                  bool* show_messages,
-                                  bool* show_debug_messages,
+                                  bool& show_messages,
+                                  bool& show_debug_messages,
                                   const bool shouldStartEPICs,
                                   const bool startVirtualMachine,
                                   HWC_ENUM::MACHINE_AREA myMachineArea ):
