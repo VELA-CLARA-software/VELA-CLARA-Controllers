@@ -206,6 +206,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("maskYRad",
                       &cameraStructs::cameraIAObject::maskYRad,
                       "Vertical radius of mask used in image analysis in pixels.")
+        .def_readonly("maskX",
+                      &cameraStructs::cameraIAObject::maskX,
+                      "X position of mask used in image analysis in pixels.")
+        .def_readonly("maskY",
+                      &cameraStructs::cameraIAObject::maskY,
+                      "Y position of mask used in image analysis in pixels.")
         .def_readonly("bitDepth",
                       &cameraStructs::cameraIAObject::bitDepth,
                       "Bit depth of image. ")
@@ -596,7 +602,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
             &cameraIAController::controllerType,
             "This is an enum that returns the controller type")
         ;
-   class_<VCcameraIA,boost::noncopyable>("init")
+   class_<VCcameraIA, bases<VCbase>, boost::noncopyable>("init")
         .def("virtual_VELA_Camera_IA_Controller",
              &VCcameraIA::virtual_VELA_Camera_IA_Controller,
              return_value_policy<reference_existing_object>(),

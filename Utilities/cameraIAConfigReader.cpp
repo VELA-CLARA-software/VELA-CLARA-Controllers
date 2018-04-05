@@ -15,7 +15,7 @@ cameraIAConfigReader::cameraIAConfigReader(const std::string& camConfig,
                                              const bool startVirtualMachine,
                                              bool& show_messages_ptr,
                                              bool& show_debug_messages_ptr ):
-camConfig(camConfig), configReader( show_messages_ptr, show_debug_messages_ptr ), usingVirtualMachine(startVirtualMachine)
+camConfig(camConfig), configReader( camConfig, show_messages_ptr, show_debug_messages_ptr ), usingVirtualMachine(startVirtualMachine)
 {
 }
 cameraIAConfigReader::~cameraIAConfigReader(){}
