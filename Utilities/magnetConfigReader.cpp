@@ -13,11 +13,12 @@
 #include <ctype.h>
 
 
-magnetConfigReader::magnetConfigReader(const std::string& magConf  ,const bool startVirtualMachine,
-                                       const bool*show_messages_ptr,const bool* show_debug_messages_ptr):
+magnetConfigReader::magnetConfigReader(const std::string& magConf,
+                                       const bool startVirtualMachine,
+                                       const bool& show_messages,
+                                       const bool& show_debug_messages):
 magConf(magConf),
-configReader(show_messages_ptr, show_debug_messages_ptr),
-usingVirtualMachine(startVirtualMachine)
+configReader(magConf, show_messages, show_debug_messages, startVirtualMachine)
 {
 }
 //______________________________________________________________________________
@@ -28,7 +29,7 @@ bool magnetConfigReader::getMagData(std::map<std::string, magnetStructs::magnetO
     bool success = true;
     mapToFill.clear();
 
-    size_t nCount = 0; // this may actually be borke??
+    size_t nCount = 0; // this may actually be broke??
     size_t rCount = 0;
 
     for(auto && it : magObjects)
@@ -58,7 +59,7 @@ magnetStructs::degaussValues magnetConfigReader::getDeguassStruct()
 //______________________________________________________________________________
 bool magnetConfigReader::readConfig()
 {
-    if(usingVirtualMachine)
+    if(useVM)
         debugMessage("\n", "**** Using VIRTUAL Machine  ****");
     else
         debugMessage("**** Using PHYSICAL Machine  ****","\n");
@@ -188,14 +189,14 @@ void magnetConfigReader::addToMagObjectsV1(const std::vector<std::string> &keyVa
     }
     else if(keyVal[0] == UTL::PV_ROOT)
     {
-        if(usingVirtualMachine)
+        if(useVM)
             magObjects.back().pvRoot = UTL::VM_PREFIX + value;
         else
             magObjects.back().pvRoot = value;
     }
     else if(keyVal[0] == UTL::PV_PSU_ROOT)
     {
-        if(usingVirtualMachine)
+        if(useVM)
             magObjects.back().psuRoot = UTL::VM_PREFIX + value;
         else
             magObjects.back().psuRoot = value;

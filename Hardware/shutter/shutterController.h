@@ -38,26 +38,25 @@
 class shutterController : public controller
 {
     public:
-        //shutterController();
-        shutterController(bool* show_messages,
-                          bool* show_debug_messages,
+        shutterController(bool& show_messages,
+                          bool& show_debug_messages,
                           const bool startVirtualMachine,
                           const bool shouldStartEPICs,
                           const std::string& configFile,
                           const std::string& name
                           );
-//        shutterController(const std::string configFileLocation, bool* show_messages , bool* show_debug_messages);
+
         ~shutterController( );
 
-//        void open( const std::string & name );
-//        void close( const std::string & name );
-//        bool isOpen( const std::string & name );
-//        bool isClosed( const std::string & name );
-//        bool closeAndWait( const std::string & name, const time_t waitTime = 2);
-//        bool openAndWait ( const std::string & name, const time_t waitTime = 2);
-//
-//        std::vector< std::string > getShutterNames();
-//
+        bool isClosed(const std::string& name) const;
+        bool isOpen(  const std::string& name) const;
+        void close(   const std::string& name);
+        void open(    const std::string& name);
+        bool closeAndWait(const std::string& name, const time_t waitTime = 2);
+        bool openAndWait (const std::string& name, const time_t waitTime = 2);
+
+        std::vector<std::string> getShutterNames();
+
 //        /// write a method that returns string version of enums using ENUM_TO_STRING
 //
 //        HWC_ENUM::SHUTTER_STATE getShutterState( const std::string & name );
@@ -84,9 +83,7 @@ class shutterController : public controller
 //
 //    private:
         void initialise();
-//        /// No singletons, no pointers, let's just have an object
         shutterInterface localInterface;
-//        std::vector< std::string > pilShutterNames;
 };
 
 #endif // _SHUTTER_CONTROLLER_H_

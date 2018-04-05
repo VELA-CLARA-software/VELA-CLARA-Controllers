@@ -33,8 +33,8 @@
 class shutterInterface : public interface
 {
     public:
-        shutterInterface(bool* show_messages,
-                         bool* show_debug_messages,
+        shutterInterface(bool& show_messages,
+                         bool& show_debug_messages,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
                          const std::string& configFile
@@ -42,17 +42,14 @@ class shutterInterface : public interface
 
         ~shutterInterface();
 
-        double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT( double val );
-
-//        void close( const std::string &name );
-//        void open ( const std::string &name );
+        void close(const std::string& name);
+        void open (const std::string& name);
 //
-//        bool isClosed( const std::string &name );
-//        bool isOpen  ( const std::string &name );
+        bool isClosed(const std::string& name ) const;
+        bool isOpen  (const std::string& name ) const;
 //
-//        bool closeAndWait( const std::string & name, const time_t waitTime );
-//        bool openAndWait ( const std::string & name, const time_t waitTime );
+        bool closeAndWait(const std::string& name, const time_t waitTime );
+        bool openAndWait (const std::string& name, const time_t waitTime );
 //
 //        void getShutterNames( std::vector< std::string > &names );
 //        HWC_ENUM::SHUTTER_STATE getShutterState( const std::string & name ); /// getShutterStateStr is in the controller

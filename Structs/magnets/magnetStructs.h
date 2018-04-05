@@ -64,7 +64,9 @@ namespace magnetStructs
     /// These can't go in HWC_ENUM as they need a pvType.
     struct pvStruct
     {   // proviude a default constructor
-        pvStruct() : pvSuffix("UNKNOWN_PV_SUFFIX"), objName(UTL::UNKNOWN_NAME),COUNT(UTL::ZERO_INT), MASK(UTL::ZERO_INT), pvType(UNKNOWN_MAG_PV_TYPE) {}
+        pvStruct() :
+            pvSuffix("UNKNOWN_PV_SUFFIX"),
+        objName(UTL::UNKNOWN_NAME),COUNT(UTL::ZERO_INT), MASK(UTL::ZERO_INT), pvType(UNKNOWN_MAG_PV_TYPE) {}
         MAG_PV_TYPE   pvType;
         chid          CHID;
         std::string   pvSuffix, objName;

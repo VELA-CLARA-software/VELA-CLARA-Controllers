@@ -45,12 +45,12 @@ using vec_b     = std::vector<bool>;
 //______________________________________________________________________________
 magnetInterface::magnetInterface(const std::string&magConf,
                                  const bool startVirtualMachine,
-                                 const bool* show_messages_ptr,
-                                 const bool* show_debug_messages_ptr,
+                                 const bool& show_messages,
+                                 const bool& show_debug_messages,
                                  const bool shouldStartEPICs,
                                  const HWC_ENUM::MACHINE_AREA myMachineArea):
-configReader(magConf,startVirtualMachine, show_messages_ptr,show_debug_messages_ptr),
-interface(show_messages_ptr, show_debug_messages_ptr),
+configReader(magConf,startVirtualMachine, show_messages,show_debug_messages),
+interface(show_messages, show_debug_messages),
 dummyName(UTL::DUMMY_NAME),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea),

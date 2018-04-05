@@ -12,16 +12,16 @@
 #include <algorithm>
 #include <ctype.h>
 
-dburt::dburt(const bool* show_messages_ptr,
-             const  bool * show_debug_messages_ptr,
+dburt::dburt(const bool& show_messages,
+             const bool& show_debug_messages,
              const HWC_ENUM::MACHINE_AREA myMachineArea ):
-configReader(UTL::DBURT_PATH, show_messages_ptr, show_debug_messages_ptr),
+configReader(UTL::DBURT_PATH, show_messages, show_debug_messages),
 myMachineArea(myMachineArea)
 {
 }
 //______________________________________________________________________________
-//dburt::dburt(const std::string & configFile_Location, const bool* show_messages_ptr, const bool * show_debug_messages_ptr ):
-//configReader(configFile_Location, show_messages_ptr, show_debug_messages_ptr)
+//dburt::dburt(const std::string & configFile_Location, const bool* show_messages, const bool * show_debug_messages ):
+//configReader(configFile_Location, show_messages, show_debug_messages)
 //{
 //}
 //______________________________________________________________________________

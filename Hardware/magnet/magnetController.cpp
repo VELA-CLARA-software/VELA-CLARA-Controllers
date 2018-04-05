@@ -17,8 +17,8 @@
 #include <iostream>
 // stl
 magnetController::magnetController(
-    bool* show_messages,
-    bool* show_debug_messages,
+    bool& show_messages,
+    bool& show_debug_messages,
     const std::string & magConf,
     const bool startVirtualMachine,
     const bool shouldStartEPICs,
@@ -26,7 +26,7 @@ magnetController::magnetController(
     const std::string& name
     ):
 controller(show_messages,show_debug_messages,HWC_ENUM::CONTROLLER_TYPE::MAGNET,name),
-localInterface(magConf, startVirtualMachine, SHOW_MESSAGES, SHOW_DEBUG_MESSAGES, shouldStartEPICs, myMachineArea),
+localInterface(magConf, startVirtualMachine, show_messages, show_debug_messages, shouldStartEPICs, myMachineArea),
 shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {}
