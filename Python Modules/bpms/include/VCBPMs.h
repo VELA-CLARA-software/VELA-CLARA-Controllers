@@ -121,14 +121,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
-
-    /// we have to tell boost.python about pure virtual methods in abstract base classes
-    boost::python::class_<controller, boost::python::bases<baseObject>,  boost::noncopyable> ("controller", boost::python::no_init)
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
-		;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>

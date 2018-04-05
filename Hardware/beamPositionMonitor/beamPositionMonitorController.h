@@ -44,8 +44,8 @@ class beamPositionMonitorController : public controller
 
         beamPositionMonitorController();
         beamPositionMonitorController( const std::string & configFileLocation,
-                                       bool* show_messages,
-                                       bool* show_debug_messages,
+                                       bool& show_messages,
+                                       bool& show_debug_messages,
                                        const bool shouldStartEPICS,
                                        const bool startVirtualMachine,
                                        const HWC_ENUM::MACHINE_AREA myMachineArea );

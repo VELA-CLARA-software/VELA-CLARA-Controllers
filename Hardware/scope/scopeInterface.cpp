@@ -31,8 +31,8 @@
 //______________________________________________________________________________
 scopeInterface::scopeInterface( const std::string & configFileLocation1,
                                 const std::string & configFileLocation2,
-                                const bool* show_messages_ptr,
-                                const bool* show_debug_messages_ptr,
+                                const bool& show_messages_ptr,
+                                const bool& show_debug_messages_ptr,
                                 const bool shouldStartEPICs,
                                 const bool startVirtualMachine,
                                 const HWC_ENUM::MACHINE_AREA myMachineArea ):

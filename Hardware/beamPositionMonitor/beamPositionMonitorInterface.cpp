@@ -27,8 +27,8 @@
 #include <epicsTime.h>
 
 beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation,
-                                                            const bool* show_messages_ptr,
-                                                            const bool* show_debug_messages_ptr,
+                                                            const bool& show_messages_ptr,
+                                                            const bool& show_debug_messages_ptr,
                                                             const bool shouldStartEPICs,
                                                             const bool startVirtualMachine,
                                                             const HWC_ENUM::MACHINE_AREA myMachineArea ):

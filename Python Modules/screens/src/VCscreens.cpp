@@ -101,8 +101,8 @@ screenController & VCscreens::getController(screenController*& cont,
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
         cont = new screenController(conf,
-                                    &messageStates.at(cont).first,
-                                    &messageStates.at(cont).second,
+                                    messageStates.at(cont).first,
+                                    messageStates.at(cont).second,
                                     shouldEPICS,
                                     shouldVM,
                                     myMachineArea);

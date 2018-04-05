@@ -102,8 +102,8 @@ beamPositionMonitorController & VCBPMs::getController(beamPositionMonitorControl
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
         cont = new beamPositionMonitorController(conf,
-                                                 &messageStates.at(cont).first,
-                                                 &messageStates.at(cont).second,
+                                                 messageStates.at(cont).first,
+                                                 messageStates.at(cont).second,
                                                  shouldEPICS,
                                                  shouldVM,
                                                  myMachineArea);

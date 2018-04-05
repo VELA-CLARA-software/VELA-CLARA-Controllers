@@ -106,8 +106,8 @@ scopeController& VCscopes::getController(scopeController*& cont,
             case HWC_ENUM::MACHINE_AREA::VELA_INJ:
                 cont = new scopeController(conf1,
                                            conf2,
-                                           &messageStates.at(cont).first,
-                                           &messageStates.at(cont).second,
+                                           messageStates.at(cont).first,
+                                           messageStates.at(cont).second,
                                            shouldEPICS,
                                            shouldVM,
                                            myMachineArea);
