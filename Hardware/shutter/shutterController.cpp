@@ -25,8 +25,8 @@
 #include <iostream>
 // djs
 //______________________________________________________________________________
-shutterController::shutterController(bool* show_messages,
-                                     bool* show_debug_messages,
+shutterController::shutterController(bool& show_messages,
+                                     bool& show_debug_messages,
                                      const bool startVirtualMachine,
                                      const bool shouldStartEPICs,
                                      const std::string& configFile,
@@ -78,13 +78,13 @@ void shutterController::initialise()
 //void shutterController::openShutter2( )
 //{
 //    if( pilShutterNames.size() >= 2 )
-//        open( pilShutterNames[ 1 ] );
+//        open( pilShutterNames[1] );
 //}
 ////______________________________________________________________________________
 //void shutterController::closeShutter2( )
 //{
 //    if( pilShutterNames.size() >= 2 )
-//        close( pilShutterNames[ 1 ] );
+//        close( pilShutterNames[1] );
 //}
 ////______________________________________________________________________________
 //bool shutterController::isOpen( const std::string & name )

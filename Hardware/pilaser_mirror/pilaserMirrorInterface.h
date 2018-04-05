@@ -43,8 +43,8 @@ class pilaserMirrorInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
-        pilaserMirrorInterface(bool* show_messages,
-                         bool* show_debug_messages,
+        pilaserMirrorInterface(bool& show_messages,
+                         bool& show_debug_messages,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
                          const std::string& configFile

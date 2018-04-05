@@ -34,8 +34,8 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-pilaserInterface::pilaserInterface(bool* show_messages,
-                                   bool* show_debug_messages,
+pilaserInterface::pilaserInterface(bool& show_messages,
+                                   bool& show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile

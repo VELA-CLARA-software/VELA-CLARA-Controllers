@@ -43,8 +43,8 @@ class virtualCathodeInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
-        virtualCathodeInterface(bool* show_messages,
-                                bool* show_debug_messages,
+        virtualCathodeInterface(bool& show_messages,
+                                bool& show_debug_messages,
                                 const bool startVirtualMachine,
                                 const bool shouldStartEPICs,
                                 const std::string& configFile

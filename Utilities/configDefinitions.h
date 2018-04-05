@@ -150,11 +150,6 @@ namespace UTL
     const std::string PV_MASK   = "PV_MASK"  ;
     const std::string PV_NAME   = "PV_NAME"  ;
 
-/// PI Laser configs
-    const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
-    const std::string VIRTUAL_CATHODE_ANALYSIS = "virtualCathodeData.config";
-    const std::string PIL_MIRROR_CONFIG        = "photoInjectorLaserMirror.config";
-    const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
 // quantum box
     const std::string VELA_QBOX_CONFIG                 = "qbox.config";
 /// BPMs
@@ -247,17 +242,28 @@ namespace UTL
     const std::string VELA_BA1_SCREENS_CONFIG  = "velaBA1Screens.config";
     const std::string VELA_BA2_SCREENS_CONFIG  = "velaBA2Screens.config";
     const std::string CLARA_PH1_SCREENS_CONFIG  = "claraPH1Screens.config";
-/// pilaser (DJS faked 17-02-2017)
-    const std::string PILASER_CONFIG        = "velaclaraPILaser.config";
+/// PI Laser
+    /// PI Laser configs
+    const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
+    const std::string VIRTUAL_CATHODE_ANALYSIS = "virtualCathodeData.config";
+    const std::string PIL_MIRROR_CONFIG        = "photoInjectorLaserMirror.config";
+    const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
     // laser PVs
-    const std::string PV_SUFFIX_LASER_INTENSITY = "PV_SUFFIX_LASER_INTENSITY";
-    const std::string PV_SUFFIX_LASER_H_POS = "PV_SUFFIX_LASER_H_POS";
-    const std::string PV_SUFFIX_LASER_V_POS = "PV_SUFFIX_LASER_V_POS";
+    const std::string PV_SUFFIX_PIL_STABILISATION = "PV_SUFFIX_PIL_STABILISATION";
+    const std::string PV_SUFFIX_PIL_INTENSITY = "PV_SUFFIX_PIL_INTENSITY";
+    const std::string PV_SUFFIX_PIL_STATUS = "PV_SUFFIX_PIL_STATUS";
+    const std::string PV_SUFFIX_PIL_H_STEP = "PV_SUFFIX_PIL_H_STEP";
+    const std::string PV_SUFFIX_PIL_V_STEP = "PV_SUFFIX_PIL_V_STEP";
+    const std::string PV_SUFFIX_PIL_H_MOVE = "PV_SUFFIX_PIL_H_MOVE";
+    const std::string PV_SUFFIX_PIL_V_MOVE = "PV_SUFFIX_PIL_V_MOVE";
+    //when using the virtual machine these are used, April 2018 (DJS 1st faked 17-02-2017)
+    const std::string PV_SUFFIX_PIL_H_POS = "PV_SUFFIX_PIL_H_POS";
+    const std::string PV_SUFFIX_PIL_V_POS = "PV_SUFFIX_PIL_V_POS";
 
 
 /// Cameras
-    const std::string DAQ_CAMERA_CONFIG               = "cameraDAQ.config";
-    const std::string CAMERA_CONFIG               = "camera.config";
+    const std::string DAQ_CAMERA_CONFIG = "cameraDAQ.config";
+    const std::string CAMERA_CONFIG     = "camera.config";
     //const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
 /// Vacuum
     const std::string VELA_INJ_IMG_CONFIG              = "velaINJInvertedMagnetronGauge.config";

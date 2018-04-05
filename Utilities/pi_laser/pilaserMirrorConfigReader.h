@@ -15,7 +15,7 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    pilaserMirrorConfigReader.cpp
+//  FileName:    pilaserMirrorConfigReader.h
 //  Description:
 //
 //
@@ -26,37 +26,34 @@
 #include <string>
 #include <vector>
 #include <map>
-// me
+// project includes
 #include "configReader.h"
-#include "pilaserStructs.h"
-
-
+#include "pilaserMirrorStructs.h"
+//______________________________________________________________________________
 class pilaserMirrorConfigReader : public configReader
 {
     public:
         pilaserMirrorConfigReader(const std::string& configFile,
-                     const bool* show_messages,
-                     const bool* show_debug_messages,
-                     const bool usingVM);
+                                  const bool& show_messages,
+                                  const bool& show_debug_messages,
+                                  const bool usingVM);
         ~pilaserMirrorConfigReader();
 
-//        bool readConfig( );
-//        bool getpilaserObject(pilaserStructs::pilaserObject & obj);
+        bool readConfig();
+        bool getpilMirrorObject(pilaserMirrorStructs::pilMirrorObject& obj);
 
     private:
-//        pilaserStructs::pilaserObject pilaserObject;
-//        std::vector<pilaserStructs::pvStruct> pvMonStructs;
-//        std::vector<pilaserStructs::pvStruct> pvComStructs;
-//
-//        // hand pointer so we cna keep track of the last PV struct we were adding data to
-//        //std::vector< pilaserStructs::pvStruct > * lastPVStruct;
-//
-//        void addToPVStruct(std::vector< pilaserStructs::pvStruct > & pvs, const pilaserStructs::PILASER_PV_TYPE pvtype, const std::string& pvSuffix);
-//
-//        void addTopilaserObjectsV1( const std::vector<std::string> &keyVal );
-//        void addToPVCommandMapV1  ( const std::vector<std::string> &keyVal );
-//        void addToPVMonitorMapV1  ( const std::vector<std::string> &keyVal );
-//
-//        const bool usingVirtualMachine;
+        pilaserMirrorStructs::pilMirrorObject pilMirrorObject;
+
+        std::vector<pilaserMirrorStructs::pvStruct> pvMonStructs;
+        std::vector<pilaserMirrorStructs::pvStruct> pvComStructs;
+
+        void addToPVCommandMapV1(const std::vector<std::string>& keyVal);
+
+        void addPVStruct(std::vector<pilaserMirrorStructs::pvStruct>& pvs,
+                         const std::vector<std::string>& keyVal);
+
+        void addTopilaserObjectsV1(const std::vector<std::string> &keyVal );
 };
+//______________________________________________________________________________
 #endif //_PI_LASER_MIRROR_CONFIG_READER_H_

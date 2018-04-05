@@ -264,8 +264,8 @@ magnetController& VCmagnets::getController(magnetController*& cont,
         std::cout <<"Creating " <<name <<" object" <<std::endl;
         messageStates[cont].first     = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
-        cont = new magnetController(&messageStates.at(cont).first,
-                                    &messageStates.at(cont).second,
+        cont = new magnetController(messageStates.at(cont).first,
+                                    messageStates.at(cont).second,
                                     conf,
                                     shouldVM,
                                     shouldEPICS,

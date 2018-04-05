@@ -148,8 +148,6 @@ gunProtController& VCrfprot::getController(gunProtController*& cont,
     else
     {
         std::cout << "Creating " << name << " object" <<std::endl;
-        std::cout << "shouldShowMessage = " << shouldShowMessage <<std::endl;
-        std::cout << "shouldShowDebugMessage " << shouldShowDebugMessage <<std::endl;
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
         cont = new gunProtController(messageStates.at(cont).first,

@@ -21,8 +21,9 @@
 class dburt : public configReader
 {
     public:
-//        dburt(const bool* show_messages_ptr, const bool * show_debug_messages_ptr);
-        dburt(const bool* show_messages_ptr, const  bool* show_debug_messages_ptr,
+//        dburt(const bool* show_messages, const bool * show_debug_messages);
+        dburt(const bool& show_messages,
+              const bool& show_debug_messages,
              const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~dburt();
 

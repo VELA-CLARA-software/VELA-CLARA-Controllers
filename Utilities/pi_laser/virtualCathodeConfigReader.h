@@ -34,8 +34,8 @@ class virtualCathodeConfigReader:public configReader
 {
     public:
         virtualCathodeConfigReader(const std::string& configFile,
-                                   const bool* show_messages,
-                                   const bool* show_debug_messages,
+                                   const bool& show_messages,
+                                   const bool& show_debug_messages,
                                    const bool usingVM);
         ~virtualCathodeConfigReader();
         bool readConfig( );

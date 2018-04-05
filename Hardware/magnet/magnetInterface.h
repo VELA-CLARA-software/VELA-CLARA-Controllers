@@ -48,13 +48,13 @@ class magnetInterface : public interface
         magnetInterface::magnetInterface();
         magnetInterface(const std::string &magConf,
                          const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
+                         const bool& show_messages,
+                         const bool& show_debug_messages,
                          const bool shouldStartEPICs,
                          const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         ~magnetInterface();
-      //  magnetInterface(const magnetInterface& origin, const bool* show_messages_ptr, const bool * show_debug_messages_ptr); // add this line
+      //  magnetInterface(const magnetInterface& origin, const bool* show_messages, const bool * show_debug_messages); // add this line
 
         // /existentital quantifiers, and the like....
         bool isAMagType(const std::string& mag,

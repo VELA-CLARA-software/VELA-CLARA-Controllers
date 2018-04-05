@@ -39,8 +39,8 @@ class pilaserController : public controller
 {
     public:
         //pilaserController();
-        pilaserController(bool* show_messages,
-                          bool* show_debug_messages,
+        pilaserController(bool& show_messages,
+                          bool& show_debug_messages,
                           const bool startVirtualMachine,
                           const bool shouldStartEPICs,
                           const std::string& name,
@@ -52,7 +52,11 @@ class pilaserController : public controller
         ~pilaserController( );
       // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT()const;
-        void   set_CA_PEND_IO_TIMEOUT( double val );
+        void   set_CA_PEND_IO_TIMEOUT(double val);
+
+        // all functions for shutter mirror vcData
+
+
         //std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
         //std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
       // any functions that return a map need a wrapper to convert to a python dictionary (?)

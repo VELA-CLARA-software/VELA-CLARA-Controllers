@@ -1,91 +1,111 @@
-#ifndef _VELA_CLARA_PIL_STRUCTS_H_
-#define _VELA_CLARA_PIL_STRUCTS_H_
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
+//  Author:      DJS
+//  Last edit:   05-04-2018
+//  FileName:    pilaserMirrorStructs.h
+//  Description:
+//
+//
+//
+//
+//*/
+#ifndef _VELA_CLARA_PIL_MIRROR_STRUCTS_H_
+#define _VELA_CLARA_PIL_MIRROR_STRUCTS_H_
+// project includes
 #include "structs.h"
 #include "configDefinitions.h"
-//stl
+//stlincludes
 #include <string>
 #include <map>
 //epics
 #ifndef __CINT__
 #include <cadef.h>
 #endif
-
+// Forward declare class
 class pilaserInterface;
-
-namespace pilaserStructs
+//______________________________________________________________________________
+namespace pilaserMirrorStructs
 {
-    // Forward declare structs, gcc seems to like this...
     struct monitorStuct;
-    struct pilaserObject;
+    struct pilMirrorObject;
     struct pvStruct;
-    // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(H_POS)
-                                                         (V_POS)
-                                                         (INTENSITY)
-                                                         (SHUTTER_2_OPEN)
-                                                         (SHUTTER_1_CLOSE)
-                                                         (SHUTTER_1_OPEN)
-                                                         (VC_X_POS)
-                                                         (VC_X_WIDTH)
-                                                         (VC_Y_POS)
-                                                         (VC_Y_WIDTH)
-                                                         (VC_INTENSITY)
-                                                         (VC_XY_COV)
-                                                         (UNKNOWN_PV)
+    /*
+        Use this MACRO to define enums.
+        NUMS that are more 'global' in structs.h
+    */
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(PIL_MIRROR_PV_TYPE,(H_POS)
+                                                           (V_POS)
+                                                           (H_STEP)
+                                                           (V_STEP)
+                                                           (H_MOVE)
+                                                           (V_MOVE)
+                                                           (UNKNOWN)
                                         )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS,(ON)
-                                                        (OFF)
-                                                        (ERROR)
-                                                        (UNKNOWN)
-                                        )
-    // monType could be used to switch in the staticCallbackFunction
-    // For the shutter this is basically redundant, there is only one monitor: "Sta"
-    // (apart from interlocks, these are handled in the base class)
-    // monType could be used to switch in the statisCallbackFunction
     struct monitorStruct
     {
         monitorStruct():
-            monType(UNKNOWN_PV),
+            monType(UNKNOWN),
             interface(nullptr),
             EVID(nullptr),
             pilaserObj(nullptr)
-            {}
-        PILASER_PV_TYPE   monType;
-        pilaserInterface* interface;
-        chtype            CHTYPE;
-        evid              EVID;
-        pilaserObject*    pilaserObj;
+            {};
+        PIL_MIRROR_PV_TYPE monType;
+        pilaserInterface*  interface;
+        chtype             CHTYPE;
+        evid               EVID;
+        pilMirrorObject*   pilaserObj;
     };
-    // The hardware object holds a map keyed by PV type, with pvStruct values, some values come from the config
-    // The rest are paramaters passed to EPICS, ca_create_channel, ca_create_subscription etc..
+    /*
+        The hardware object holds a map keyed by PV type,
+        with pvStruct values, some values come from the config
+        The rest are paramaters passed to EPICS, ca_create_channel,
+        ca_create_subscription etc..
+    */
     struct pvStruct
     {
-        PILASER_PV_TYPE pvType;
-        chid          CHID;
-        std::string   pvSuffix;
-        unsigned long COUNT, MASK;
-        chtype        CHTYPE;
-        evid          EVID;
+        pvStruct():
+            pvSuffix(UTL::UNKNOWN_STRING),
+            COUNT(UTL::ZERO_UL),
+            MASK(UTL::ZERO_UL),
+            pvType(UNKNOWN)
+            {};
+        PIL_MIRROR_PV_TYPE pvType;
+        chid               CHID;
+        std::string        pvSuffix;
+        unsigned long      COUNT, MASK;
+        chtype             CHTYPE;
+        evid               EVID;
     };
     // The main hardware object holds ...
-    struct pilaserObject
+    struct pilMirrorObject
     {
-        pilaserObject():status(PILASER_STATUS::UNKNOWN),hPos(UTL::DUMMY_DOUBLE),
-                        vPos(UTL::DUMMY_DOUBLE),intensity(UTL::DUMMY_DOUBLE),
-                        name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT){};
+        pilMirrorObject():
+            hPos(UTL::DUMMY_DOUBLE),
+            vPos(UTL::DUMMY_DOUBLE),
+            hStep(UTL::DUMMY_DOUBLE),
+            vStep(UTL::DUMMY_DOUBLE),
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT)
+            {};
         std::string name, pvRoot;
-        double hPos, vPos, intensity;
-        int numIlocks;
-        PILASER_STATUS status;
-        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
-#ifndef __CINT__
-        /// keep data seperate from epics stuff
-        std::map< PILASER_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< PILASER_PV_TYPE, pvStruct > pvComStructs;
-        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
-#endif
+        double hPos, vPos, hStep, vStep;
+        std::map<PIL_MIRROR_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<PIL_MIRROR_PV_TYPE, pvStruct> pvComStructs;
     };
 }
-#endif
+//______________________________________________________________________________
+#endif//_VELA_CLARA_PIL_MIRROR_STRUCTS_H_

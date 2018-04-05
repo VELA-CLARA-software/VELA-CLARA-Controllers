@@ -34,8 +34,8 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-shutterInterface::shutterInterface(bool* show_messages,
-                                   bool* show_debug_messages,
+shutterInterface::shutterInterface(bool& show_messages,
+                                   bool& show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
@@ -53,17 +53,6 @@ shutterInterface::~shutterInterface()
 //        debugMessage("delete shutterInterface continuousMonitorStructs entry.");
 //        delete it;
 //    }
-}
-////______________________________________________________________________________
-double shutterInterface::get_CA_PEND_IO_TIMEOUT()
-{
-  //return localInterface.get_CA_PEND_IO_TIMEOUT();
-  return 1.0;
-}
-//_____________________________________________________________________________________________
-void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
-{
-   // localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
 
 //void shutterInterface::initialise()
@@ -87,7 +76,7 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //{
 //    const std::vector< shutterStructs::shutterObject > shutterObjs = configReader.getShutterObjects();
 //    for( auto const & it : shutterObjs )
-//        allShutterData[ it.name ] = it;
+//        allShutterData[it.name] = it;
 //}
 ////______________________________________________________________________________
 //void shutterInterface::initChids()
@@ -211,29 +200,29 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 ////                ....
 ////    }
 //}
-////
-////     __   __                         __   __
-////    /  ` /  \  |\/|  |\/|  /\  |\ | |  \ /__`
-////    \__, \__/  |  |  |  | /~~\ | \| |__/ .__/
-////
-////______________________________________________________________________________
-//void shutterInterface::open( const std::string & name )
-//{
+//
+//     __   __                         __   __
+//    /  ` /  \  |\/|  |\/|  /\  |\ | |  \ /__`
+//    \__, \__/  |  |  |  | /~~\ | \| |__/ .__/
+//
+//______________________________________________________________________________
+void shutterInterface::open( const std::string & name )
+{
 //    if( isClosed( name ) )
-//        toggleShutter( allShutterData[ name ].pvComStructs[ shutterStructs::PIL_SHUTTER_PV_TYPE::On ].CHTYPE,
-//                        allShutterData[ name ].pvComStructs[ shutterStructs::PIL_SHUTTER_PV_TYPE::On ].CHID,
+//        toggleShutter( allShutterData[name].pvComStructs[shutterStructs::SHUTTER_PV_TYPE::On].CHTYPE,
+//                        allShutterData[name].pvComStructs[shutterStructs::SHUTTER_PV_TYPE::On].CHID,
 //                        "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO SHUTTER OPEN",
 //                        "!!TIMEOUT!! FAILED TO SEND SHUTTER OPEN" );
-//}
-////______________________________________________________________________________
-//void shutterInterface::close( const std::string & name )
-//{
+}
+//______________________________________________________________________________
+void shutterInterface::close( const std::string & name )
+{
 //    if( isOpen( name ) )
-//        toggleShutter( allShutterData[ name ].pvComStructs[ shutterStructs::PIL_SHUTTER_PV_TYPE::Off ].CHTYPE,
-//            allShutterData[ name ].pvComStructs[ shutterStructs::PIL_SHUTTER_PV_TYPE::Off ].CHID,
+//        toggleShutter( allShutterData[name].pvComStructs[shutterStructs::SHUTTER_PV_TYPE::Off].CHTYPE,
+//            allShutterData[name].pvComStructs[shutterStructs::SHUTTER_PV_TYPE::Off].CHID,
 //            "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO SHUTTER CLOSE",
 //            "!!TIMEOUT!! FAILED TO SEND SHUTTER CLOSE" );
-//}
+}
 ////______________________________________________________________________________
 //void shutterInterface::toggleShutter( chtype &cht, chid &chi, const char *m1, const char *m2 )
 //{
@@ -241,10 +230,10 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //    if( status == ECA_NORMAL )
 //        caput( cht, chi, EPICS_SEND, "", m2 );
 //}
-////______________________________________________________________________________
-//bool shutterInterface::isOpen( const std::string & name )
-//{
-//    bool ret = false;
+//______________________________________________________________________________
+bool shutterInterface::isOpen( const std::string & name ) const
+{
+    bool ret = false;
 //    if(  entryExists( allShutterData, name ) )
 //        if( allShutterData[name].shutterState == HWC_ENUM::SHUTTER_STATE::SHUTTER_OPEN )
 //            ret = true;
@@ -252,12 +241,12 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //        debugMessage( name, " is open");
 //    else
 //        debugMessage( name, " is NOT open");
-//    return ret;
-//}
-////______________________________________________________________________________
-//bool shutterInterface::isClosed( const std::string & name )
-//{
-//    bool ret = false;
+    return ret;
+}
+//______________________________________________________________________________
+bool shutterInterface::isClosed( const std::string & name ) const
+{
+    bool ret = false;
 //    if(  entryExists( allShutterData, name ) )
 //        if( allShutterData[name].shutterState == HWC_ENUM::SHUTTER_STATE::SHUTTER_CLOSED )
 //            ret = true;
@@ -265,19 +254,21 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //        debugMessage( name, " is closed");
 //    else
 //        debugMessage( name, " is NOT closed");
-//    return ret;
-//}
-////______________________________________________________________________________
-//bool shutterInterface::openAndWait( const std::string & name, const time_t waitTime )
-//{
+    return ret;
+}
+//______________________________________________________________________________
+bool shutterInterface::openAndWait( const std::string & name, const time_t waitTime )
+{
 //    return toggleShutterAndWait(&shutterInterface::isClosed, &shutterInterface::isOpen, &shutterInterface::open, name, waitTime, *this);
-//}
-////______________________________________________________________________________
-//bool shutterInterface::closeAndWait( const std::string & name, const time_t waitTime )
-//{
+    return false;
+}
+//______________________________________________________________________________
+bool shutterInterface::closeAndWait( const std::string & name, const time_t waitTime )
+{
 //    return toggleShutterAndWait(&shutterInterface::isOpen, &shutterInterface::isClosed, &shutterInterface::close, name, waitTime, *this);
-//}
-////______________________________________________________________________________
+    return false;
+}
+//______________________________________________________________________________
 //bool shutterInterface::toggleShutterAndWait( isOCMemFn f1, isOCMemFn f2, OCMemFn f3, const std::string & name, const time_t waitTime, shutterInterface & obj )
 //{
 //    if( CALL_MEMBER_FN(obj, f1)( name ) ) /// CALL_MEMBER_FN MACRO in structs.h
@@ -315,7 +306,7 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //shutterStructs::shutterObject * shutterInterface::getShutterObject( const std::string &name )
 //{
 //    if( entryExists( allShutterData, name ) )
-//        return &allShutterData[ name ];
+//        return &allShutterData[name];
 //    else
 //        return nullptr;
 //}
@@ -324,14 +315,14 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //{
 //    HWC_ENUM::SHUTTER_STATE r = HWC_ENUM::SHUTTER_STATE::SHUTTER_ERROR;
 //    if( entryExists( allShutterData, name ) )
-//        r = allShutterData[ name ].shutterState;
+//        r = allShutterData[name].shutterState;
 //    return r;
 //}
 ////______________________________________________________________________________
 //std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > shutterInterface::getILockStates( const std::string & name )
 //{
 //    if( entryExists( allShutterData, name ) )
-//        return allShutterData[ name ].iLockStates;
+//        return allShutterData[name].iLockStates;
 //    else
 //    {
 //        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > r = {{HWC_ENUM::ILOCK_NUMBER::ILOCK_ERR, HWC_ENUM::ILOCK_STATE::ILOCK_ERROR}};
@@ -344,10 +335,10 @@ void shutterInterface::set_CA_PEND_IO_TIMEOUT(double val)
 //    std::map< HWC_ENUM::ILOCK_NUMBER, std::string  > r;
 //
 //    if( entryExists( allShutterData, name ) )
-//        for( auto it : allShutterData[ name ].iLockStates )
-//            r[ it.first ] = ENUM_TO_STRING( it.second );
+//        for( auto it : allShutterData[name].iLockStates )
+//            r[it.first] = ENUM_TO_STRING( it.second );
 //    else
-//        r[ HWC_ENUM::ILOCK_NUMBER::ILOCK_ERR ] = ENUM_TO_STRING( HWC_ENUM::ILOCK_STATE::ILOCK_ERROR );
+//        r[HWC_ENUM::ILOCK_NUMBER::ILOCK_ERR] = ENUM_TO_STRING( HWC_ENUM::ILOCK_STATE::ILOCK_ERROR );
 //    return r;
 //}
 //         ___

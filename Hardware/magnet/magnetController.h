@@ -41,8 +41,8 @@ class magnetController : public controller
     public:
         magnetController();
 
-        magnetController(bool* show_messages,
-                         bool* show_debug_messagese,
+        magnetController(bool& show_messages,
+                         bool& show_debug_messagese,
                          const std::string &magConf,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
