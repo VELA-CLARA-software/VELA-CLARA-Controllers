@@ -77,6 +77,7 @@
 		<Unit filename="../../Hardware/camera/cameraIA/cameraIAInterface.cpp" />
 		<Unit filename="../../Hardware/camera/cameraIA/cameraIAInterface.h" />
 		<Unit filename="../../Hardware/camera/cameraInterface.cpp" />
+		<Unit filename="../../Hardware/camera/cameraInterface.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
