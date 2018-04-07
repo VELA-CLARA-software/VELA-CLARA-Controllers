@@ -49,7 +49,7 @@ virtualCathodeController::~virtualCathodeController(){}    //dtor
 //______________________________________________________________________________
 void virtualCathodeController::initialise()
 {
-//    if( localInterface.interfaceInitReport(shouldStartEPICs))
+//    if(localInterface.interfaceInitReport(shouldStartEPICs))
 //        message("virtualCathodeController instantiation success.");
 }
 //______________________________________________________________________________
@@ -72,32 +72,32 @@ void virtualCathodeController::initialise()
 ////____________________________________________________________________________________________
 //bool virtualCathodeController::setHpos(double value)
 //{
-//    return localInterface.setHpos( value );
+//    return localInterface.setHpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool virtualCathodeController::setHpos(int value)
 //{
-//    return localInterface.setHpos( value );
+//    return localInterface.setHpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool virtualCathodeController::setVpos(double value)
 //{
-//    return localInterface.setVpos( value );
+//    return localInterface.setVpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool virtualCathodeController::setVpos(int value)
 //{
-//    return localInterface.setVpos( value );
+//    return localInterface.setVpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool virtualCathodeController::setIntensity(double value)
 //{
-//    return localInterface.setIntensity( value );
+//    return localInterface.setIntensity(value );
 //}
 ////____________________________________________________________________________________________
 //bool virtualCathodeController::setIntensity(int value)
 //{
-//    return localInterface.setIntensity( value );
+//    return localInterface.setIntensity(value );
 //}
 ////____________________________________________________________________________________________
 //const pilaserStructs::pilaserObject &virtualCathodeController::getPILObjConstRef()
@@ -126,27 +126,27 @@ void virtualCathodeController::set_CA_PEND_IO_TIMEOUT(double val)
 //    return localInterface.getILockStatesStr(name);
 //}
 //______________________________________________________________________________
-//boost::python::dict virtualCathodeController::getILockStatesStr_Py( std::string magName )
+//boost::python::dict virtualCathodeController::getILockStatesStr_Py(std::string magName )
 //{
-//    return enumStringMapToPythonDict( getILockStatesStr( magName ) );
+//    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
 //}
 ////______________________________________________________________________________
-//boost::python::dict virtualCathodeController::getILockStates_Py( std::string magName )
+//boost::python::dict virtualCathodeController::getILockStates_Py(std::string magName )
 //{
-//    return enumMapToPythonDict( getILockStates( magName ) );
+//    return enumMapToPythonDict(getILockStates(magName ) );
 //}
 ////______________________________________________________________________________
 //boost::python::dict virtualCathodeController::getMagPSUStateDefinition()
 //{
 //    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
 //
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
 //
-//    return enumStringMapToPythonDict( m );
+//    return enumStringMapToPythonDict(m );
 //}
 //______________________________________________________________________________
 //#endif // BUILD_DLL

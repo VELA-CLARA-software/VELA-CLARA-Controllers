@@ -38,7 +38,7 @@ class virtualCathodeConfigReader:public configReader
                                    const bool& show_debug_messages,
                                    const bool usingVM);
         ~virtualCathodeConfigReader();
-        bool readConfig( );
+        bool readConfig();
         bool getVirtualCathodeDataObject(virtualCathodeStructs::virtualCathodeDataObject & obj);
     private:
         virtualCathodeStructs::virtualCathodeDataObject object;
@@ -46,8 +46,8 @@ class virtualCathodeConfigReader:public configReader
         std::vector<virtualCathodeStructs::pvStruct> *lastPVStruct;
         void addToPVStruct(std::vector< virtualCathodeStructs::pvStruct >& pvs,
                            const virtualCathodeStructs::PV_TYPE pvtype, const std::string& pvSuffix);
-        void addToObjectsV1( const std::vector<std::string> &keyVal );
-        void addToPVMonitorMapV1  ( const std::vector<std::string> &keyVal );
+        void addToObjectsV1(const std::vector<std::string> &keyVal );
+        void addToPVMonitorMapV1  (const std::vector<std::string> &keyVal );
 };
 //______________________________________________________________________________
 #endif //_VIRTUAL_CATHODE_CONFIG_READER_

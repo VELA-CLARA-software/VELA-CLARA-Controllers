@@ -35,7 +35,7 @@
 #include <cadef.h>
 #endif
 // Forward declare class
-class pilaserInterface;
+class pilaserMirrorInterface;
 //______________________________________________________________________________
 namespace pilaserMirrorStructs
 {
@@ -59,15 +59,15 @@ namespace pilaserMirrorStructs
     {
         monitorStruct():
             monType(UNKNOWN),
+            pilMirrorObj(nullptr),
             interface(nullptr),
-            EVID(nullptr),
-            pilaserObj(nullptr)
+            EVID(nullptr)
             {};
         PIL_MIRROR_PV_TYPE monType;
-        pilaserInterface*  interface;
+        pilaserMirrorInterface*  interface;
         chtype             CHTYPE;
         evid               EVID;
-        pilMirrorObject*   pilaserObj;
+        pilMirrorObject*   pilMirrorObj;
     };
     /*
         The hardware object holds a map keyed by PV type,

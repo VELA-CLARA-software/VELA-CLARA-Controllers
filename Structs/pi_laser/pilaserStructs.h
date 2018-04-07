@@ -45,15 +45,10 @@ namespace pilaserStructs
         Use this MACRO to define enums.
         Consider putting ENUMS that are more 'global' in structs.h
     */
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_PV_TYPE,(INTENSITY)
-                                                         (STABILISATION)
-                                                         (STATUS)
-                                                         (UNKNOWN_PV)
-                                        )
-
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PILASER_STATUS,(ON)
-                                                        (OFF)
-                                                        (ERROR)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(PILASER_PV_TYPE,(INTENSITY)
+                                                        (STABILISATION)
+                                                        (STATUS)
+                                                        (UNKNOWN_PV)
                                         )
     struct monitorStruct
     {
@@ -94,15 +89,16 @@ namespace pilaserStructs
     struct pilaserObject
     {
         pilaserObject():
-            status(PILASER_STATUS::ERROR),
-            stabilisation_status(PILASER_STATUS::ERROR),
+            status(HWC_ENUM::STATE::UNKNOWN),
+            stabilisation_status(HWC_ENUM::STATE::UNKNOWN),
             intensity(UTL::DUMMY_DOUBLE),
+            setCharge(UTL::DUMMY_DOUBLE),
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT)
             {};
         std::string name, pvRoot;
-        double intensity;
-        PILASER_STATUS status, stabilisation_status;
+        double intensity,setCharge;
+        HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;

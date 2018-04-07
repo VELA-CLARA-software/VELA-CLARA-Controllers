@@ -319,7 +319,7 @@ void interface::checkCHIDState(const chid& CHID, const std::string& name)
             message(name, " valid chid, previously connected to server");
             break;
         case cs_conn:
-            /* if everythin is fine don't print a message */
+            /* if everything is fine don't print a message */
             //message(name, " valid chid, connected to server");
             break;
         case cs_closed:
@@ -328,7 +328,7 @@ void interface::checkCHIDState(const chid& CHID, const std::string& name)
    }
 }
 //______________________________________________________________________________
-bool interface::interfaceInitReport(bool shouldStartEPICs) const
+bool interface::interfaceInitReport() const
 {
     bool ret = true;
 
@@ -355,12 +355,9 @@ bool interface::interfaceInitReport(bool shouldStartEPICs) const
     return ret;
 }
 //______________________________________________________________________________
-bool interface::iLocksAreGood(const map_ilck_state& iLockStates) const
+bool interface::interfaceInitReport(bool shouldStartEPICs) const
 {
-    for(auto&& it : iLockStates)
-        if(it.second != HWC_ENUM::ILOCK_STATE::ILOCK_GOOD)
-            return false;
-    return true;
+    return interfaceInitReport(shouldStartEPICs);
 }
 //______________________________________________________________________________
 void interface::attachTo_thisCAContext()
@@ -491,5 +488,38 @@ void interface::getDBRdouble_timestamp(const event_handler_args& args,
     ts.etime = p->stamp;
     updateTime(ts.etime, ts.time_ns, ts.time_Str);
 }
-
-
+//______________________________________________________________________________
+void interface::pause_x(std::chrono::milliseconds x) const
+{
+    std::this_thread::sleep_for(x);
+}
+//______________________________________________________________________________
+void interface::standard_pause() const
+{
+    pause_2000();
+}
+//______________________________________________________________________________
+void interface::pause_2000() const
+{
+    pause_x(UTL::STANDARD_PAUSE);
+}
+//______________________________________________________________________________
+void interface::pause_300() const
+{
+    pause_x(UTL::PAUSE_300);
+}
+//______________________________________________________________________________
+void interface::pause_500() const
+{
+    pause_x(UTL::PAUSE_500);
+}
+//______________________________________________________________________________
+void interface::pause_2() const
+{
+    pause_x(UTL::PAUSE_2);
+}
+//______________________________________________________________________________
+void interface::pause_1() const
+{
+    pause_x(UTL::PAUSE_1);
+}

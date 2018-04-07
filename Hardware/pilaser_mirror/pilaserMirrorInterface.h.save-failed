@@ -15,7 +15,7 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    pilaserMirrorInterface.cpp
+//  FileName:    VCpilaser.cpp
 //  Description:
 //
 //
@@ -51,32 +51,20 @@ class pilaserMirrorInterface : public interface
                         );
         ~pilaserMirrorInterface();
 
-        double getHpos() const;
-        double getVpos() const;
+//        double getHpos();
+//        double getVpos();
+//        double getIntensity();
+//        // setters , not sure of type for these parameters (or if they will exist...)
+//        bool setHpos(double value);
+//        bool setHpos(int value);
+//        bool setVpos(double value);
+//        bool setVpos(int value);
 
-
-        // setters , not sure of type for these parameters (or if they will exist...)
-        bool setHpos(double value);
-        bool setHpos(int value);
-        bool setVpos(double value);
-        bool setVpos(int value);
-
-        double getHstep() const;
-        double getVstep() const;
-        bool setHstep(double value);
-        bool setVstep(double value);
-
-        bool moveH();
-        bool moveV();
-
-        const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
 //        /// These are pure virtual methods, so need to have some implmentation in derived classes
-//        IlockMap1 getILockStates(const std::string & name   ){ IlockMap1 r;return r; }
-//        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
+//        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
+//        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
 
     private:
-        pilaserMirrorStructs::pilMirrorObject laserMirror;
-        pilaserMirrorConfigReader configReader;
 
         void killMonitor(pilaserMirrorStructs::monitorStruct* ms );
         void initialise();
@@ -87,16 +75,16 @@ class pilaserMirrorInterface : public interface
         /*
             all client set functions route to here
         */
-        bool setValue(pilaserMirrorStructs::pvStruct& pvs, double value);
+        bool setValue( pilaserMirrorStructs::pvStruct& pvs, double value);
 
-        bool move(chtype& cht, chid& chi,const char* m1,const char* m2);
+        pilaserMirrorStructs::pilMirrorObject laserMirror;
 
         std::vector<pilaserMirrorStructs::monitorStruct*> continuousMonitorStructs;
         /*
             all EPICS callbacks route here
         */
-        static void staticEntryPILMirrorMonitor(const event_handler_args args);
-
+        static void staticEntryPILMonitor( const event_handler_args args);
+        pilaserMirrorConfigReader configReader;
 };
 //______________________________________________________________________________
 #endif // _PI_LASER_MIRROR_INTERFACE_H

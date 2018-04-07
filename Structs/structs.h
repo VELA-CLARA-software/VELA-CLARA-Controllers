@@ -63,7 +63,7 @@
     {                                                                         \
         switch(v)                                                             \
         {                                                                     \
-            BOOST_PP_SEQ_FOR_EACH(                                            \
+            BOOST_PP_SEQ_FOR_EACH(                                           \
                 X_DEFINE_ENUM_WITH_STRING_CONVERSIONS_TOSTRING_CASE,          \
                 name,                                                         \
                 enumerators                                                   \
@@ -162,6 +162,8 @@ namespace HWC_ENUM
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(STATE, (BAD)
                                                (GOOD)
                                                (ERR)
+                                               (ON)
+                                               (OFF)
                                                (UNKNOWN)
                                         )
 

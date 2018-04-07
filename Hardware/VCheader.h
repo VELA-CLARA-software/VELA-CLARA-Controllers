@@ -217,7 +217,9 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("UNKNOWN",STATE::UNKNOWN)
                 .value("GOOD",   STATE::GOOD   )
                 .value("BAD",    STATE::BAD    )
+                .value("OFF",    STATE::OFF    )
                 .value("ERR",    STATE::ERR    )
+                .value("ON",    STATE::ON    )
                 ;
         reg_enum<STATE>(py_name, py_docs, s_def);
 /*

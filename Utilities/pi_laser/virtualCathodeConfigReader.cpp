@@ -43,7 +43,7 @@ virtualCathodeConfigReader::~virtualCathodeConfigReader(){}
 //______________________________________________________________________________
 bool virtualCathodeConfigReader::readConfig()
 {
-    debugMessage( "\n", "**** Attempting to Read virtualCathodeData Config File ****" );
+    debugMessage("\n", "**** Attempting to Read virtualCathodeData Config File ****" );
 
     std::string line, trimmedLine;
     bool success = false;
@@ -51,96 +51,96 @@ bool virtualCathodeConfigReader::readConfig()
     pvMonStructs.clear();
     std::ifstream inputFile;
 
-    inputFile.open( configFile1, std::ios::in );
-    if( inputFile )
+    inputFile.open(configFile1, std::ios::in );
+    if(inputFile )
     {
         bool readingData       = false;
         bool readingObjs       = false;
         bool readingCommandPVs = false;
         bool readingMonitorPVs = false;
 
-        debugMessage( "Opened from ", configFile1 );
-        while( std::getline( inputFile, line ) ) /// Go through, reading file line by line
+        debugMessage("Opened from ", configFile1 );
+        while(std::getline(inputFile, line ) ) /// Go through, reading file line by line
         {
-            trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
-            if( trimmedLine.size() > UTL::ZERO_SIZET )
+            trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE ) );
+            if(trimmedLine.size() > UTL::ZERO_SIZET )
             {
-                if( stringIsSubString( line, UTL::END_OF_DATA ) )
+                if(stringIsSubString(line, UTL::END_OF_DATA ) )
                 {
-                    debugMessage( "Found END_OF_DATA" );
+                    debugMessage("Found END_OF_DATA" );
                     readingData = false;
                     readingObjs = false;
                     readingCommandPVs  = false;
                     readingMonitorPVs  = false;
                     break;
                 }
-                if( readingData )
+                if(readingData )
                 {
-                    if( stringIsSubString( trimmedLine, UTL::VERSION ) )
-                        getVersion( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_OBJECTS ) )
-                        getNumObjs( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_ILOCKS ) )
-                        getNumIlocks( trimmedLine );
+                    if(stringIsSubString(trimmedLine, UTL::VERSION ) )
+                        getVersion(trimmedLine );
+                    else if(stringIsSubString(trimmedLine, UTL::NUMBER_OF_OBJECTS ) )
+                        getNumObjs(trimmedLine );
+                    else if(stringIsSubString(trimmedLine, UTL::NUMBER_OF_ILOCKS ) )
+                        getNumIlocks(trimmedLine );
                     else
                     {
-                        switch( configVersion )
+                        switch(configVersion )
                         {
                             case 1:
-                                if( trimmedLine.find_first_of( UTL::EQUALS_SIGN ) != std::string::npos )
+                                if(trimmedLine.find_first_of(UTL::EQUALS_SIGN ) != std::string::npos )
                                 {
-                                    std::vector<std::string> keyVal = getKeyVal( trimmedLine );
+                                    std::vector<std::string> keyVal = getKeyVal(trimmedLine );
 
-                                    if( readingObjs )
-                                        addToObjectsV1( keyVal );
+                                    if(readingObjs )
+                                        addToObjectsV1(keyVal );
 
-//                                    else if ( readingCommandPVs  )
-//                                        addToPVCommandMapV1( keyVal );
+//                                    else if (readingCommandPVs  )
+//                                        addToPVCommandMapV1(keyVal );
 
-                                    else if ( readingMonitorPVs )
-                                        addToPVMonitorMapV1( keyVal );
+                                    else if (readingMonitorPVs )
+                                        addToPVMonitorMapV1(keyVal );
                                 }
                                 break;
                             default:
-                                message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
+                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
                         }
                     }
                 }
-                if( stringIsSubString( line, UTL::START_OF_DATA ) )
+                if(stringIsSubString(line, UTL::START_OF_DATA ) )
                 {
                     readingData = true;
-                    debugMessage( "Found START_OF_DATA" );
+                    debugMessage("Found START_OF_DATA" );
                 }
-                if( stringIsSubString( line, UTL::PV_COMMANDS_START ) )
+                if(stringIsSubString(line, UTL::PV_COMMANDS_START ) )
                 {
                     readingCommandPVs  = true;
                     readingObjs = false;
                     readingMonitorPVs = false;
-                    debugMessage( "Found PV_COMMANDS_START" );
+                    debugMessage("Found PV_COMMANDS_START" );
                 }
-                if( stringIsSubString( line, UTL::PV_MONITORS_START ) )
+                if(stringIsSubString(line, UTL::PV_MONITORS_START ) )
                 {
                     readingCommandPVs = false;
                     readingObjs       = false;
                     readingMonitorPVs = true;
-                    debugMessage( "Found PV_MONITORS_START" );
+                    debugMessage("Found PV_MONITORS_START" );
                 }
-                if( stringIsSubString( line, UTL::OBJECTS_START ) )
+                if(stringIsSubString(line, UTL::OBJECTS_START ) )
                 {
                     readingObjs        = true;
                     readingCommandPVs  = false;
                     readingMonitorPVs  = false;
-                    debugMessage( "Found OBJECTS_START" );
+                    debugMessage("Found OBJECTS_START" );
                 }
             }
         }
-        inputFile.close( );
-        debugMessage( "File Closed" );
+        inputFile.close();
+        debugMessage("File Closed" );
 
         success = true;
     }
     else{
-        message( "!!!! Error Can't Open PILaser Config File after searching in:  ", configFile1, " !!!!"  );
+        message("!!!! Error Can't Open PILaser Config File after searching in:  ", configFile1, " !!!!"  );
     }
     return success;
     return false;
@@ -149,7 +149,7 @@ bool virtualCathodeConfigReader::readConfig()
 void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&keyVal)
 {
     using namespace UTL;
-    if( stringIsSubString(keyVal[UTL::ZERO_SIZET], "SUFFIX"))
+    if(stringIsSubString(keyVal[UTL::ZERO_SIZET], "SUFFIX"))
     {
         using namespace virtualCathodeStructs;
         if(keyVal[UTL::ZERO_SIZET] == UTL::PV_IA_SUFFIX_X)
@@ -199,17 +199,17 @@ void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::stri
     }
     else
     {
-        if( keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT)
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT)
         {
-            pvMonStructs.back().COUNT = getCOUNT( keyVal[ONE_SIZET] );
+            pvMonStructs.back().COUNT = getCOUNT(keyVal[ONE_SIZET] );
         }
-        else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK )
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK )
         {
-            pvMonStructs.back().MASK = getMASK( keyVal[ONE_SIZET] );
+            pvMonStructs.back().MASK = getMASK(keyVal[ONE_SIZET] );
         }
-        else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE )
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE )
         {
-            pvMonStructs.back().CHTYPE = getCHTYPE( keyVal[ONE_SIZET]);
+            pvMonStructs.back().CHTYPE = getCHTYPE(keyVal[ONE_SIZET]);
         }
     }
 }
@@ -218,19 +218,19 @@ void virtualCathodeConfigReader::addToPVStruct(std::vector<virtualCathodeStructs
                                                const virtualCathodeStructs::PV_TYPE pvtype,
                                                const std::string& pvSuffix)
 {
-    pvs.push_back( virtualCathodeStructs::pvStruct() );
+    pvs.push_back(virtualCathodeStructs::pvStruct() );
     pvs.back().pvType      = pvtype;
     pvs.back().pvSuffix    = pvSuffix;
     // we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
     // so store a ref to which vector to update with that info. (this does make sense)
     //lastPVStruct = &pvs;
     debugMessage("Added ", pvs.back().pvSuffix,
-                 " suffix for ", ENUM_TO_STRING( pvs.back().pvType) );
+                 " suffix for ", ENUM_TO_STRING(pvs.back().pvType) );
 }
 //______________________________________________________________________________
 void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& keyVal)
 {
-    if( keyVal[UTL::ZERO_SIZET] == UTL::NAME )
+    if(keyVal[UTL::ZERO_SIZET] == UTL::NAME )
     {
         object.name = keyVal[UTL::ONE_SIZET];
         //object.numIlocks = numIlocks;
@@ -238,7 +238,7 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
     }
     else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_ROOT)
     {
-        if( useVM )
+        if(useVM )
             object.pvRoot =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
         else
             object.pvRoot = keyVal[UTL::ONE_SIZET];

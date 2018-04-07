@@ -67,9 +67,10 @@ namespace shutterStructs
             {};
         shutterObject*    shutObj;
         shutterInterface* interface;
-        evid              ventID;
         SHUTTER_PV_TYPE   monType;
-
+        // default values for epics types??
+        chtype              CHTYPE;
+        evid                EVID;
     };
 
     struct pvStruct

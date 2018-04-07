@@ -42,7 +42,7 @@ configReader(configFile, show_messages, show_debug_messages, usingVM)
 //______________________________________________________________________________
 shutterConfigReader::~shutterConfigReader(){}
 //______________________________________________________________________________
-bool shutterConfigReader::readShutterConfig()
+bool shutterConfigReader::readConfig()
 {
     debugMessage("\n", "**** Attempting to Read The Shutter Config File ****");
 

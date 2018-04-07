@@ -98,16 +98,16 @@ class VCpilaser : VCbase
 //bool(pilaserController::*setIntensity_2)(int) = &pilaserController::setIntensity;
 //
 //using namespace boost::python;
-//BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl
-//{
-//    //using namespace boost::python;
-//    docstring_options doc_options(true, false, false);
-//    doc_options.disable_cpp_signatures();
-//
-//    /// Things that you want to use in python muct be exposed:
-//    /// containers
-//
-//    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+BOOST_PYTHON_MODULE(VELA_CLARA_PILaserControl)
+{
+    //using namespace boost::python;
+    docstring_options doc_options(true, false, false);
+    doc_options.disable_cpp_signatures();
+    /*
+        Things that you want to use in python muct be exposed:
+        containers
+    */
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 //
 //    // pilaser object struct to be exposed, used when returning a pilaser reference
 //    boost::python::class_<pilaserStructs::pilaserObject,boost::noncopyable>
@@ -203,6 +203,6 @@ class VCpilaser : VCbase
 //        .def("setDebugMessage",  &VCpilaser::setDebugMessage,
 //             "set Debug Mode (no messages, all debug messages) for all PI laser objects."
 //        ;
-//}
+}
 
 #endif // _VC_PILASER_H_

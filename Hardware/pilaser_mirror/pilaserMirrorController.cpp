@@ -37,22 +37,83 @@ localInterface(show_messages,
                startVirtualMachine,
                shouldStartEPICs,
                configFile)
-//shouldStartEPICs(shouldStartEPICs)
 {
-//    if( shouldStartEPICs )
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
-//    initialise();
+    if(localInterface.interfaceInitReport() )
+        message("pilaserMirrorController instantiation success.");
 }
 //______________________________________________________________________________
-pilaserMirrorController::~pilaserMirrorController(){}    //dtor
-////______________________________________________________________________________
-//void pilaserMirrorController::initialise()
-//{
-//    if( localInterface.interfaceInitReport(shouldStartEPICs) )
-//        message("pilaserMirrorController instantiation success.");
-//}
+pilaserMirrorController::~pilaserMirrorController()
+{}    //dtor
+//______________________________________________________________________________
+bool pilaserMirrorController::interfaceInitReport()
+{
+    return localInterface.interfaceInitReport();
+}
+//______________________________________________________________________________
+double pilaserMirrorController::getHpos() const
+{
+    return localInterface.getHpos();
+}
+//______________________________________________________________________________
+double pilaserMirrorController::getVpos() const
+{
+    return localInterface.getVpos();
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::setHpos(double value)
+{
+     return localInterface.setHpos(value);
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::setHpos(int value)
+{
+    return localInterface.setHpos(value);
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::setVpos(double value)
+{
+    return localInterface.setVpos(value);
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::setVpos(int value)
+{
+    return localInterface.setVpos(value);
+}
+//______________________________________________________________________________
+double pilaserMirrorController::getHstep() const
+{
+    return localInterface.getHstep();
+}
+//______________________________________________________________________________
+double pilaserMirrorController::getVstep() const
+{
+    return localInterface.getVstep();
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::setHstep(double value)
+{
+    return localInterface.setHstep(value);
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::setVstep(double value)
+{
+    return localInterface.setVstep(value);
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::moveH()
+{
+    return localInterface.moveH();
+}
+//______________________________________________________________________________
+bool pilaserMirrorController::moveV()
+{
+    return localInterface.moveV();
+}
+//______________________________________________________________________________
+const pilaserMirrorStructs::pilMirrorObject& pilaserMirrorController::getpilMirrorObjConstRef() const
+{
+    return localInterface.getpilMirrorObjConstRef();
+}
 ////______________________________________________________________________________
 //#ifdef BUILD_DLL
 ////____________________________________________________________________________________________
@@ -73,32 +134,32 @@ pilaserMirrorController::~pilaserMirrorController(){}    //dtor
 ////____________________________________________________________________________________________
 //bool pilaserMirrorController::setHpos(double value)
 //{
-//    return localInterface.setHpos( value );
+//    return localInterface.setHpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool pilaserMirrorController::setHpos(int value)
 //{
-//    return localInterface.setHpos( value );
+//    return localInterface.setHpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool pilaserMirrorController::setVpos(double value)
 //{
-//    return localInterface.setVpos( value );
+//    return localInterface.setVpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool pilaserMirrorController::setVpos(int value)
 //{
-//    return localInterface.setVpos( value );
+//    return localInterface.setVpos(value );
 //}
 ////____________________________________________________________________________________________
 //bool pilaserMirrorController::setIntensity(double value)
 //{
-//    return localInterface.setIntensity( value );
+//    return localInterface.setIntensity(value );
 //}
 ////____________________________________________________________________________________________
 //bool pilaserMirrorController::setIntensity(int value)
 //{
-//    return localInterface.setIntensity( value );
+//    return localInterface.setIntensity(value );
 //}
 ////____________________________________________________________________________________________
 //const pilaserStructs::pilaserObject &pilaserMirrorController::getPILObjConstRef()
@@ -127,27 +188,27 @@ void pilaserMirrorController::set_CA_PEND_IO_TIMEOUT(double val)
 //    return localInterface.getILockStatesStr(name);
 //}
 ////______________________________________________________________________________
-////boost::python::dict pilaserMirrorController::getILockStatesStr_Py( std::string magName )
+////boost::python::dict pilaserMirrorController::getILockStatesStr_Py(std::string magName )
 ////{
-////    return enumStringMapToPythonDict( getILockStatesStr( magName ) );
+////    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
 ////}
 //////______________________________________________________________________________
-////boost::python::dict pilaserMirrorController::getILockStates_Py( std::string magName )
+////boost::python::dict pilaserMirrorController::getILockStates_Py(std::string magName )
 ////{
-////    return enumMapToPythonDict( getILockStates( magName ) );
+////    return enumMapToPythonDict(getILockStates(magName ) );
 ////}
 //////______________________________________________________________________________
 ////boost::python::dict pilaserMirrorController::getMagPSUStateDefinition()
 ////{
 ////    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
 ////
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING( HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
+////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
+////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
+////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
+////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
+////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
 ////
-////    return enumStringMapToPythonDict( m );
+////    return enumStringMapToPythonDict(m );
 ////}
 ////______________________________________________________________________________
 //#endif // BUILD_DLL

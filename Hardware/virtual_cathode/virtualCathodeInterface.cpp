@@ -79,7 +79,7 @@ void virtualCathodeInterface::initialise()
         message("The virtualCathodeInterface has read the config file"
                 ", acquiring objects");
         bool getDataSuccess = initObjects();
-        if( getDataSuccess)
+        if(getDataSuccess)
         {
             if(shouldStartEPICs)
             {
@@ -223,7 +223,7 @@ void virtualCathodeInterface::updateValue(const event_handler_args args,
 //____________________________________________________________________________________________
 void virtualCathodeInterface::addToBuffer()
 {
-    object.image_data_buffer.push_back( virtualCathodeStructs::static_blank_image_data::create_blank_image_data());
+    object.image_data_buffer.push_back(virtualCathodeStructs::static_blank_image_data::create_blank_image_data());
     if(object.image_data_buffer.size() > object.buffer_size)
     {
         object.image_data_buffer.pop_front();

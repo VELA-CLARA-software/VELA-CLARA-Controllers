@@ -1,5 +1,27 @@
-#ifndef _VELA_CLARA_PIL_STRUCTS_H_
-#define _VELA_CLARA_PIL_STRUCTS_H_
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   29-03-2018
+//  FileName:    virtualCathodeStructs.h
+//  Description:
+//
+//
+//*/
+#ifndef _VELA_CLARA_PIL_VIRTUAL_CATHODE_STRUCTS_H_
+#define _VELA_CLARA_PIL_VIRTUAL_CATHODE_STRUCTS_H_
 //
 #include "structs.h"
 #include "configDefinitions.h"
@@ -19,7 +41,7 @@ namespace virtualCathodeStructs
     struct virtualCathodeDataObject;
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( PV_TYPE,(X_RBV)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(PV_TYPE,(X_RBV)
                                                  (Y_RBV)
                                                  (SIGMA_X_RBV)
                                                  (SIGMA_Y_RBV)
@@ -117,4 +139,4 @@ namespace virtualCathodeStructs
     };
 }
 //______________________________________________________________________________
-#endif
+#endif//_VELA_CLARA_PIL_VIRTUAL_CATHODE_STRUCTS_H_
