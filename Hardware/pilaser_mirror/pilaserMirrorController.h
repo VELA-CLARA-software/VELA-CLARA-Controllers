@@ -45,28 +45,25 @@ class pilaserMirrorController : public controller
 
         double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val );
-
         double getHpos() const;
         double getVpos() const;
-
         // setters , not sure of type for these parameters (or if they will exist...)
         bool setHpos(double value);
         bool setHpos(int value);
         bool setVpos(double value);
         bool setVpos(int value);
-
+        // for the stepper movr
         double getHstep() const;
         double getVstep() const;
         bool setHstep(double value);
         bool setVstep(double value);
-
+        // command to actually move the mirror
         bool moveH();
         bool moveV();
-
+        //
         const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
-
+        // used in higher level class
         bool interfaceInitReport();
-
     protected:
     private:
         pilaserMirrorInterface localInterface;

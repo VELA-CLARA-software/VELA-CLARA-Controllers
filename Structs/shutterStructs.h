@@ -95,10 +95,10 @@ namespace shutterStructs
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
             numIlocks(UTL::ONE_INT),
-            shutterState(ERROR)
+            state(ERROR)
             {};
         std::string name, pvRoot;
-        SHUTTER_STATE shutterState;
+        SHUTTER_STATE state;
         int numIlocks;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > iLockStates;
         std::map<SHUTTER_PV_TYPE, pvStruct > pvMonStructs;

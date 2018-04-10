@@ -211,23 +211,23 @@ void shutterInterface::staticEntryShutterMonitor(const event_handler_args args)
     switch(getDBRunsignedShort(args))
     {
         case UTL::ZERO_US:
-            ms->shutObj->shutterState = SHUTTER_STATE::CLOSED;
+            ms->shutObj->state = SHUTTER_STATE::CLOSED;
             break;
         case UTL::ONE_US:
-            ms->shutObj->shutterState = SHUTTER_STATE::OPEN;
+            ms->shutObj->state = SHUTTER_STATE::OPEN;
             break;
         case UTL::TWO_US:
-            ms->shutObj->shutterState = SHUTTER_STATE::TIMING;
+            ms->shutObj->state = SHUTTER_STATE::TIMING;
             break;
         default:
-            ms->shutObj->shutterState = SHUTTER_STATE::ERROR;
+            ms->shutObj->state = SHUTTER_STATE::ERROR;
     }
     /*
         make debug messages easier to understand
         by using ENUM_TO_STRING MACRO
     */
     ms->interface->debugMessage(ms->shutObj->name, " new state = ",
-                                ENUM_TO_STRING(ms->shutObj -> shutterState));
+                                ENUM_TO_STRING(ms->shutObj -> state));
     /*
         //If subscribed to DBF_STRING use this to get the message
         char * val = (char *)args.dbr;
@@ -301,7 +301,7 @@ bool shutterInterface::is_in_state(const std::string & name, SHUTTER_STATE sta) 
         bool ret = false;
     if(entryExists(allShutterData, name))
     {
-        if(allShutterData.at(name).shutterState == sta)
+        if(allShutterData.at(name).state == sta)
         {
             ret = true;
         }
@@ -398,7 +398,7 @@ const shutterObject& shutterInterface::getShutterObjConstRef(const std::string&n
 SHUTTER_STATE shutterInterface::getShutterState(const std::string &name)
 {
     if(entryExists(allShutterData, name))
-        return allShutterData.at(name).shutterState;
+        return allShutterData.at(name).state;
     else
         return SHUTTER_STATE::ERROR;
 }
