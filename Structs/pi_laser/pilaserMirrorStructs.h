@@ -52,6 +52,9 @@ namespace pilaserMirrorStructs
                                                            (V_STEP)
                                                            (H_MOVE)
                                                            (V_MOVE)
+                                                           (H_STOP)
+                                                           (V_STOP)
+                                                           (POS_UPDATE)
                                                            (UNKNOWN)
                                         )
 
