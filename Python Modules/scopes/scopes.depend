@@ -141,12 +141,12 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1522919568 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
+1522932657 source:d:\vela-clara_software\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1522919568 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
+1523348400 d:\vela-clara_software\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -154,14 +154,16 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1522919568 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
+1523348400 d:\vela-clara_software\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
+	<chrono>
+	<thread>
 	"baseObject.h"
 	"structs.h"
 
-1522919568 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
+1522932658 d:\vela-clara_software\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -182,7 +184,7 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1522767178 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
+1523348401 d:\vela-clara_software\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -191,33 +193,24 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1522919568 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
+1523348400 source:d:\vela-clara_software\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
 	<chrono>
 
-1522922476 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.cpp
+1523536323 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.cpp
 	"scopeController.h"
 
-1522922470 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.h
+1523536403 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopecontroller.h
 	"scopeInterface.h"
 	"controller.h"
 	<string>
 	<vector>
-	<boost/python.hpp>
-	<boost/python/detail/wrap_python.hpp>
-	<boost/python.hpp>
-	<boost/python/def.hpp>
-	<boost/python/args.hpp>
-	<boost/python/class.hpp>
-	<boost/python/suite/indexing/vector_indexing_suite.hpp>
-	<boost/python/suite/indexing/map_indexing_suite.hpp>
-	<boost/python/return_value_policy.hpp>
-	<boost/python/overloads.hpp>
+	<map>
 	<boost/circular_buffer.hpp>
 
-1522922436 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.h
+1523536890 d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.h
 	"interface.h"
 	"scopeStructs.h"
 	"scopeConfigReader.h"
@@ -251,7 +244,7 @@
 	<vector>
 	<cadef.h>
 
-1522767178 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
+1523348401 d:\vela-clara_software\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -259,7 +252,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1522922444 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
+1523533057 source:d:\vela-clara_software\vela-clara-controllers\hardware\scope\scopeinterface.cpp
 	"scopeInterface.h"
 	<iostream>
 	<sstream>
@@ -307,11 +300,11 @@
 1506584842 d:\vela-clara_software\vela-clara-controllers\python modules\scopes\main.h
 	<windows.h>
 
-1521819379 source:d:\vela-clara_software\vela-clara-controllers\python modules\scopes\src\vcscopes.cpp
+1523534351 source:d:\vela-clara_software\vela-clara-controllers\python modules\scopes\src\vcscopes.cpp
 	"VCscopes.h"
 	<iostream>
 
-1521822235 d:\vela-clara_software\vela-clara-controllers\python modules\scopes\include\vcscopes.h
+1523530817 d:\vela-clara_software\vela-clara-controllers\python modules\scopes\include\vcscopes.h
 	"scopeController.h"
 	"scopeStructs.h"
 	"VCheader.h"
@@ -322,23 +315,19 @@
 	<map>
 	<utility>
 	<list>
-	<boost/python/detail/wrap_python.hpp>
-	<boost/config.hpp>
-	<boost/python.hpp>
-	<boost/python/class.hpp>
-	<boost/python/module.hpp>
-	<boost/python/def.hpp>
-	<boost/python/object/function.hpp>
-	<boost/python/suite/indexing/vector_indexing_suite.hpp>
-	<boost/python/suite/indexing/map_indexing_suite.hpp>
-	<boost/python/docstring_options.hpp>
 
-1521812689 d:\vela-clara_software\vela-clara-controllers\hardware\vcheader.h
-	"VCbase.h"
+1523348400 d:\vela-clara_software\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
-	<boost/python/detail/wrap_python.hpp>
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	<string>
+	<vector>
 	<boost/python.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/return_value_policy.hpp>
 	<boost/python/docstring_options.hpp>

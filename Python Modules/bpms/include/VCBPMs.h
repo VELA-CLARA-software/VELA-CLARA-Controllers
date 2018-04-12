@@ -50,7 +50,7 @@ class VCBPMs : public VCbase
         beamPositionMonitorController & virtual_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & offline_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & physical_CLARA_2_VELA_BPM_Controller();
-        beamPositionMonitorController & getBPMController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
+        beamPositionMonitorController & getBPMController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
 #ifdef BUILD_DLL
 

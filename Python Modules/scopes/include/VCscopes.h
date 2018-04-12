@@ -14,18 +14,18 @@
 #include <utility>
 #include <list>
 //boost
-#include <boost/python/detail/wrap_python.hpp>
-#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
-#define BOOST_LIB_DIAGNOSTIC
-#include <boost/config.hpp>
-#include <boost/python.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/module.hpp>
-#include <boost/python/def.hpp>
-#include <boost/python/object/function.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/docstring_options.hpp>
+//#include <boost/python/detail/wrap_python.hpp>
+//#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+//#define BOOST_LIB_DIAGNOSTIC
+//#include <boost/config.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/class.hpp>
+//#include <boost/python/module.hpp>
+//#include <boost/python/def.hpp>
+//#include <boost/python/object/function.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#include <boost/python/docstring_options.hpp>
 //______________________________________________________________________________
 class VCscopes : public VCbase
 {
@@ -45,7 +45,7 @@ class VCscopes : public VCbase
         scopeController & virtual_CLARA_PH1_Scope_Controller();
         scopeController & offline_CLARA_PH1_Scope_Controller();
         scopeController & physical_CLARA_PH1_Scope_Controller();
-        scopeController & getScopeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
+        scopeController & getScopeController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
     protected:
     private:

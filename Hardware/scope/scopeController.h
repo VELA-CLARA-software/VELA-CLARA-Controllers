@@ -21,19 +21,10 @@
 // stl
 #include <string>
 #include <vector>
+#include <map>
 // boost
-#ifdef BUILD_DLL
-#include <boost/python.hpp>
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/def.hpp>
-#include <boost/python/args.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
-#include <boost/python/overloads.hpp>
 #include <boost/circular_buffer.hpp>
+#ifdef BUILD_DLL
 #endif
 
 class scopeController : public controller
@@ -63,10 +54,10 @@ class scopeController : public controller
         double getScopeP2( const std::string & scopeName );
         double getScopeP3( const std::string & scopeName );
         double getScopeP4( const std::string & scopeName );
-        double getWCMQ()   ;
-        double getICT1Q( const int part1, const int part2 )  ;
-        double getICT2Q( const int part1, const int part2 )  ;
-        double getFCUPQ()  ;
+        double getWCMQ();
+        double getICT1Q( const int part1, const int part2 );
+        double getICT2Q( const int part1, const int part2 );
+        double getFCUPQ();
         double getEDFCUPQ();
         void setBufferSize( size_t bufferSize );
         void setNumBufferSize( size_t bufferSize );
