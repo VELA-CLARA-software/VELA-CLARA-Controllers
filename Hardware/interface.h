@@ -17,7 +17,7 @@
 //  Last edit:   19-03-2018
 //  FileName:    interface.h
 //  Description: The interface base class. Interface classes manage the connection
-//               to EPICS. The set up monitors, get and put data and often also do
+//               to EPICS. They set up monitors, get and put data and often also do
 //               some data processing. They hold the virtual hardware objects that
 //               contain all relevant online/offline data. They hold the config
 //               readers for each hardware type.
@@ -34,6 +34,8 @@
 // stl includes
 #include <iostream>
 #include <map>
+#include <chrono>
+#include <thread>
 // project includes
 #include "baseObject.h"
 #include "structs.h"
@@ -71,7 +73,8 @@ class interface : public baseObject
             reading config, finding chids, setting up monitors
             (add your own if needed)
         */
-        bool interfaceInitReport(bool shouldStartEPICs = true)const;
+        bool interfaceInitReport(bool shouldStartEPICs)const;
+        bool interfaceInitReport()const;
 
     protected:
         // this should be called in the derived interface destructor
@@ -151,14 +154,28 @@ class interface : public baseObject
             "Store many objects in a container by value."?"
 http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrconst-t-an-antipattern
             ok... maybe one day we re-factor, for now:
-                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
-                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
-                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
-                        REMEMBER TO DELETE THIS IN THE DESTRCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRUCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRUCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRUCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRUCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRUCTOR
+                        REMEMBER TO DELETE THIS IN THE DESTRUCTOR
         */
         std::vector<HWC_ENUM::iLockMonitorStruct*> continuousILockMonitorStructs;
-
-        /* We often check if entries exist in maps, use this function to do it safe */
+        /*
+            Pauses
+        */
+        void pause_x(std::chrono::milliseconds x) const;
+        void standard_pause() const;
+        void pause_2000() const;
+        void pause_300()  const;
+        void pause_500()  const;
+        void pause_2()    const;
+        void pause_1()    const;
+        /*
+            We often check if entries exist in maps,
+            use these functions to do it safely
+        */
         template<class T>
         bool entryExists(const std::map<std::string,T>& m,const std::string& name)const
         {

@@ -59,6 +59,10 @@
 					<Add directory="../../Hardware/invertedMagnetronGauge" />
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/pilaser" />
+					<Add directory="../../Hardware/virtual_cathode" />
+					<Add directory="../../Hardware/pilaser_mirror" />
+					<Add directory="../../Structs/pi_laser" />
+					<Add directory="../../Utilities/pi_laser" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -69,7 +73,11 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
-		<Unit filename="../../Hardware/VCheader.h" />
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
+		<Unit filename="../../Hardware/VCheader.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
@@ -78,24 +86,55 @@
 		<Unit filename="../../Hardware/pilaser/pilaserController.h" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.cpp" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.h" />
-		<Unit filename="../../Structs/pilaserStructs.h">
-			<Option target="Debug" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorController.cpp" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorController.h" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorInterface.cpp" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorInterface.h" />
+		<Unit filename="../../Hardware/shutter/shutterController.cpp" />
+		<Unit filename="../../Hardware/shutter/shutterController.h" />
+		<Unit filename="../../Hardware/shutter/shutterInterface.cpp" />
+		<Unit filename="../../Hardware/shutter/shutterInterface.h" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeController.cpp" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeController.h" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeInterface.cpp" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeInterface.h" />
+		<Unit filename="../../Structs/pi_laser/pilaserMirrorStructs.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../../Structs/pi_laser/pilaserStructs.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../../Structs/pi_laser/virtualCathodeStructs.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../../Structs/shutterStructs.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="../../Structs/structs.h">
-			<Option target="Debug" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/configDefinitions.h">
-			<Option target="Debug" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/pilaserConfigReader.cpp" />
-		<Unit filename="../../Utilities/pilaserConfigReader.h" />
+		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.cpp" />
+		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.h" />
+		<Unit filename="../../Utilities/pi_laser/pilaserMirrorConfigReader.cpp" />
+		<Unit filename="../../Utilities/pi_laser/pilaserMirrorConfigReader.h" />
+		<Unit filename="../../Utilities/pi_laser/virtualCathodeConfigReader.cpp" />
+		<Unit filename="../../Utilities/pi_laser/virtualCathodeConfigReader.h" />
+		<Unit filename="../../Utilities/shutterConfigReader.cpp" />
+		<Unit filename="../../Utilities/shutterConfigReader.h" />
 		<Unit filename="include/VCpilaser.h" />
-		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
+		<Unit filename="main.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="main.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="src/VCpilaser.cpp" />
 		<Extensions>
 			<code_completion />

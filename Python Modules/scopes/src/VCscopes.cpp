@@ -114,6 +114,7 @@ scopeController& VCscopes::getController(scopeController*& cont,
                 break;
             default:
                 std::cout << name  <<" can't be created just yet," <<std::endl;
+
         }
     }
     return *cont;
@@ -135,24 +136,24 @@ scopeController& VCscopes::virtual_VELA_INJ_Scope_Controller()
 //______________________________________________________________________________
 scopeController & VCscopes::offline_VELA_INJ_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_INJ_Scope_Controller";
+    std::string name  = "offline_VELA_INJ_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_INJ_Scope_Controller_Obj,
+    return getController(offline_VELA_INJ_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
                          withVM,
-                         withEPICS,
+                         withoutEPICS,
                          HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
 scopeController & VCscopes::physical_VELA_INJ_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_INJ_Scope_Controller";
+    std::string name  = "physical_VELA_INJ_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_INJ_Scope_Controller_Obj,
+    return getController(physical_VELA_INJ_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
@@ -163,10 +164,10 @@ scopeController & VCscopes::physical_VELA_INJ_Scope_Controller()
 //______________________________________________________________________________
 scopeController & VCscopes::virtual_VELA_BA1_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_INJ_Scope_Controller";
+    std::string name  = "virtual_VELA_BA1_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_INJ_Scope_Controller_Obj,
+    return getController(virtual_VELA_BA1_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
@@ -177,10 +178,10 @@ scopeController & VCscopes::virtual_VELA_BA1_Scope_Controller()
 //______________________________________________________________________________
 scopeController & VCscopes::offline_VELA_BA1_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_BA1_Scope_Controller";
+    std::string name  = "offline_VELA_BA1_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_INJ_Scope_Controller_Obj,
+    return getController(offline_VELA_BA1_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
@@ -191,10 +192,10 @@ scopeController & VCscopes::offline_VELA_BA1_Scope_Controller()
 //______________________________________________________________________________
 scopeController & VCscopes::physical_VELA_BA1_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_BA1_Scope_Controller";
+    std::string name  = "physical_VELA_BA1_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_BA1_Scope_Controller_Obj,
+    return getController(physical_VELA_BA1_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
@@ -219,10 +220,10 @@ scopeController & VCscopes::virtual_VELA_BA2_Scope_Controller()
 //______________________________________________________________________________
 scopeController & VCscopes::offline_VELA_BA2_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_BA2_Scope_Controller";
+    std::string name  = "offline_VELA_BA2_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_BA2_Scope_Controller_Obj,
+    return getController(offline_VELA_BA2_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
@@ -233,10 +234,10 @@ scopeController & VCscopes::offline_VELA_BA2_Scope_Controller()
 //______________________________________________________________________________
 scopeController & VCscopes::physical_VELA_BA2_Scope_Controller()
 {
-    std::string name  = "virtual_VELA_BA2_Scope_Controller";
+    std::string name  = "physical_VELA_BA2_Scope_Controller";
     const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
     const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
-    return getController(virtual_VELA_BA2_Scope_Controller_Obj,
+    return getController(physical_VELA_BA2_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
                          name,
@@ -287,7 +288,7 @@ scopeController & VCscopes::physical_CLARA_PH1_Scope_Controller()
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-scopeController & VCscopes::getScopeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area )
+scopeController & VCscopes::getScopeController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
 {
 
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
@@ -297,17 +298,17 @@ scopeController & VCscopes::getScopeController( HWC_ENUM::MACHINE_MODE mode, HWC
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_INJ )
         return physical_VELA_INJ_Scope_Controller();
     else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA1 )
-        return offline_VELA_INJ_Scope_Controller();
+        return offline_VELA_BA1_Scope_Controller();
     else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA1 )
-        return virtual_VELA_INJ_Scope_Controller();
+        return virtual_VELA_BA1_Scope_Controller();
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA1 )
-        return physical_VELA_INJ_Scope_Controller();
+        return physical_VELA_BA1_Scope_Controller();
     else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA2 )
-        return offline_VELA_INJ_Scope_Controller();
+        return offline_VELA_BA2_Scope_Controller();
     else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA2 )
-        return virtual_VELA_INJ_Scope_Controller();
+        return virtual_VELA_BA2_Scope_Controller();
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA2 )
-        return physical_VELA_INJ_Scope_Controller();
+        return physical_VELA_BA2_Scope_Controller();
     else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::CLARA_PH1 )
         return offline_CLARA_PH1_Scope_Controller();
     else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_PH1 )

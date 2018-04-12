@@ -100,6 +100,8 @@ namespace UTL
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
     const std::chrono::milliseconds PAUSE_300(300);
     const std::chrono::milliseconds PAUSE_500(500);
+    const std::chrono::milliseconds PAUSE_1(1);
+    const std::chrono::milliseconds PAUSE_2(2);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";

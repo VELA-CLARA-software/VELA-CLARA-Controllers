@@ -44,7 +44,7 @@ pilaserConfigReader::~pilaserConfigReader(){}
 //______________________________________________________________________________
 bool pilaserConfigReader::readConfig()
 {
-    debugMessage( "\n", "**** Attempting to Read PILaser Config File ****" );
+    debugMessage("\n", "**** Attempting to Read PILaser Config File ****" );
 
     std::string line, trimmedLine;
     bool success = false;
@@ -61,132 +61,132 @@ bool pilaserConfigReader::readConfig()
         bool readingCommandPVs = false;
         bool readingMonitorPVs = false;
 
-        debugMessage( "Opened from ", configFile1 );
-        while(std::getline( inputFile, line)) /// Go through, reading file line by line
+        debugMessage("Opened from ", configFile1 );
+        while(std::getline(inputFile, line)) /// Go through, reading file line by line
         {
             trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-            if( trimmedLine.size() > UTL::ZERO_SIZET )
+            if(trimmedLine.size() > UTL::ZERO_SIZET )
             {
-                if( stringIsSubString( line, UTL::END_OF_DATA ) )
+                if(stringIsSubString(line, UTL::END_OF_DATA ) )
                 {
-                    debugMessage( "Found END_OF_DATA" );
+                    debugMessage("Found END_OF_DATA" );
                     readingData = false;
                     readingObjs = false;
                     readingCommandPVs  = false;
                     readingMonitorPVs  = false;
                     break;
                 }
-                if( readingData )
+                if(readingData )
                 {
-                    if( stringIsSubString( trimmedLine, UTL::VERSION ) )
-                        getVersion( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_OBJECTS ) )
-                        getNumObjs( trimmedLine );
-                    else if( stringIsSubString( trimmedLine, UTL::NUMBER_OF_ILOCKS ) )
-                        getNumIlocks( trimmedLine );
+                    if(stringIsSubString(trimmedLine, UTL::VERSION ) )
+                        getVersion(trimmedLine );
+                    else if(stringIsSubString(trimmedLine, UTL::NUMBER_OF_OBJECTS ) )
+                        getNumObjs(trimmedLine );
+                    else if(stringIsSubString(trimmedLine, UTL::NUMBER_OF_ILOCKS ) )
+                        getNumIlocks(trimmedLine );
                     else
                     {
-                        switch( configVersion )
+                        switch(configVersion )
                         {
                             case 1:
-                                if( trimmedLine.find_first_of( UTL::EQUALS_SIGN ) != std::string::npos )
+                                if(trimmedLine.find_first_of(UTL::EQUALS_SIGN ) != std::string::npos )
                                 {
-                                    std::vector<std::string> keyVal = getKeyVal( trimmedLine );
+                                    std::vector<std::string> keyVal = getKeyVal(trimmedLine );
 
-                                    if( readingObjs )
-                                        addTopilaserObjectsV1( keyVal );
+                                    if(readingObjs )
+                                        addTopilaserObjectsV1(keyVal );
 
-                                    else if ( readingCommandPVs  )
-                                        addToPVCommandMapV1( keyVal );
+                                    else if (readingCommandPVs  )
+                                        addToPVCommandMapV1(keyVal );
 
-                                    else if ( readingMonitorPVs )
-                                        addToPVMonitorMapV1( keyVal );
+                                    else if (readingMonitorPVs )
+                                        addToPVMonitorMapV1(keyVal );
                                 }
                                 break;
                             default:
-                                message( "!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
+                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!"  );
                         }
                     }
                 }
                 if(stringIsSubString(line, UTL::START_OF_DATA))
                 {
                     readingData = true;
-                    debugMessage( "Found START_OF_DATA" );
+                    debugMessage("Found START_OF_DATA" );
                 }
-                if(stringIsSubString( line, UTL::PV_COMMANDS_START ) )
+                if(stringIsSubString(line, UTL::PV_COMMANDS_START ) )
                 {
                     readingCommandPVs  = true;
                     readingObjs = false;
                     readingMonitorPVs = false;
-                    debugMessage( "Found PV_COMMANDS_START" );
+                    debugMessage("Found PV_COMMANDS_START" );
                 }
-                if(stringIsSubString( line, UTL::PV_MONITORS_START))
+                if(stringIsSubString(line, UTL::PV_MONITORS_START))
                 {
                     readingCommandPVs = false;
                     readingObjs       = false;
                     readingMonitorPVs = true;
-                    debugMessage( "Found PV_MONITORS_START" );
+                    debugMessage("Found PV_MONITORS_START" );
                 }
-                if(stringIsSubString( line, UTL::OBJECTS_START))
+                if(stringIsSubString(line, UTL::OBJECTS_START))
                 {
                     readingObjs        = true;
                     readingCommandPVs  = false;
                     readingMonitorPVs  = false;
-                    debugMessage( "Found OBJECTS_START" );
+                    debugMessage("Found OBJECTS_START" );
                 }
             }
         }
-        inputFile.close( );
-        debugMessage( "File Closed" );
+        inputFile.close();
+        debugMessage("File Closed" );
 
         success = true;
     }
     else{
-        message( "!!!! Error Can't Open PILaser Config File after searching in:  ", configFile1, " !!!!"  );
+        message("!!!! Error Can't Open PILaser Config File after searching in:  ", configFile1, " !!!!"  );
     }
     return success;
     return false;
 }
 //______________________________________________________________________________
-void pilaserConfigReader::addToPVMonitorMapV1( const  std::vector<std::string> &keyVal  )
+void pilaserConfigReader::addToPVMonitorMapV1(const  std::vector<std::string> &keyVal  )
 {
-    if( stringIsSubString( keyVal[UTL::ZERO_SIZET], "SUFFIX" ) )
+    if(stringIsSubString(keyVal[UTL::ZERO_SIZET], "SUFFIX" ) )
     {
-        if( keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STATUS  )
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STATUS  )
         {
             addPVStruct(pvMonStructs, keyVal);
         }
     }
     else
     {
-        if( keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT )
-            pvMonStructs.back().COUNT = getCOUNT( keyVal[UTL::ONE_SIZET] );
-        else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK )
-            pvMonStructs.back().MASK = getMASK( keyVal[UTL::ONE_SIZET] );
-        else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE )
-            pvMonStructs.back().CHTYPE = getCHTYPE( keyVal[UTL::ONE_SIZET] );
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT )
+            pvMonStructs.back().COUNT = getCOUNT(keyVal[UTL::ONE_SIZET] );
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK )
+            pvMonStructs.back().MASK = getMASK(keyVal[UTL::ONE_SIZET] );
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE )
+            pvMonStructs.back().CHTYPE = getCHTYPE(keyVal[UTL::ONE_SIZET] );
     }
 }
 //______________________________________________________________________________
-void pilaserConfigReader::addToPVCommandMapV1( const  std::vector<std::string> &keyVal  )
+void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &keyVal  )
 {
-    if( keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STABILISATION )
-        addPVStruct( pvComStructs, keyVal );
-    else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY )
-        addPVStruct( pvComStructs, keyVal );
+    if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STABILISATION )
+        addPVStruct(pvComStructs, keyVal );
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY )
+        addPVStruct(pvComStructs, keyVal );
 
-    else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT)
-        pvComStructs.back().COUNT = getCOUNT( keyVal[UTL::ONE_SIZET]);
-    else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK )
-        pvComStructs.back().MASK = getMASK( keyVal[UTL::ONE_SIZET] );
-    else if( keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE )
-        pvComStructs.back().CHTYPE = getCHTYPE( keyVal[UTL::ONE_SIZET]);
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT)
+        pvComStructs.back().COUNT = getCOUNT(keyVal[UTL::ONE_SIZET]);
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK )
+        pvComStructs.back().MASK = getMASK(keyVal[UTL::ONE_SIZET] );
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE )
+        pvComStructs.back().CHTYPE = getCHTYPE(keyVal[UTL::ONE_SIZET]);
 }
 //______________________________________________________________________________
 void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pvs,
                                         const std::vector<std::string>& keyVal)
 {
-    pvs.push_back( pilaserStructs::pvStruct() );
+    pvs.push_back(pilaserStructs::pvStruct() );
     pvs.back().pvSuffix = keyVal[UTL::ONE_SIZET];
     if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY)
         pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::INTENSITY;
@@ -202,12 +202,12 @@ void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pv
         we can actually get EPICS to fill in these values for us
     */
     debugMessage("Added ", pvs.back().pvSuffix,
-                 " suffix for ", ENUM_TO_STRING( pvs.back().pvType) );
+                 " suffix for ", ENUM_TO_STRING(pvs.back().pvType) );
 }
 //______________________________________________________________________________
 void pilaserConfigReader::addTopilaserObjectsV1(const std::vector<std::string>& keyVal   )
 {
-    if( keyVal[UTL::ZERO_SIZET] == UTL::NAME )
+    if(keyVal[UTL::ZERO_SIZET] == UTL::NAME )
     {
         pilaserObject.name = keyVal[UTL::ONE_SIZET];
         //pilaserObject.numIlocks = numIlocks;

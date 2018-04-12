@@ -40,8 +40,9 @@ beamPositionMonitorController::~beamPositionMonitorController(){}    //dtor
 //______________________________________________________________________________
 void beamPositionMonitorController::initialise()
 {
-    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
-        message("beamPositionMonitorController instantiation success.");
+    message("beamPositionMonitorController instantiation success.");
+//    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
+//        message("beamPositionMonitorController instantiation success.");
 }
 //______________________________________________________________________________
 const beamPositionMonitorStructs::bpmDataObject & beamPositionMonitorController::getBPMDataObject( const std::string & name )

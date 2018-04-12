@@ -55,17 +55,17 @@ class virtualCathodeController : public controller
                                 const std::string& configFile,
                                 const std::string& name
                                );
-        ~virtualCathodeController( );
+        ~virtualCathodeController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT()const;
-        void   set_CA_PEND_IO_TIMEOUT( double val );
+        void   set_CA_PEND_IO_TIMEOUT(double val );
 //        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string& name);
 //        std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string& name);
       // any functions that return a map need a wrapper to convert to a python dictionary (?)
       // (we need the functions that return std::map types when building c++ applications)
 #ifdef BUILD_DLL
-//        boost::python::dict getILockStates_Py( std::string magName );
-//        boost::python::dict getILockStatesStr_Py( std::string magName );
+//        boost::python::dict getILockStates_Py(std::string magName );
+//        boost::python::dict getILockStatesStr_Py(std::string magName );
 //        boost::python::dict getMagPSUStateDefinition();
 #endif // BUILD_DLL
         // getters, not sure of type for these parameters (or if they will exist...)

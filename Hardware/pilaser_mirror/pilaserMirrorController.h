@@ -20,33 +20,19 @@
 //
 //
 //*/
-#ifndef pilaser_CONTROLLER_H_
-#define pilaser_CONTROLLER_H_
-// stl
+#ifndef _PILASERMIRROR_CONTROLLER_H_
+#define _PILASERMIRROR_CONTROLLER_H_
+// stl includes
 #include <string>
 #include <vector>
 #include <map>
-// project
+// project includes
 #include "pilaserMirrorInterface.h"
 #include "controller.h"
-//// boost.python
-//#ifdef BUILD_DLL
-//#include <boost/python.hpp>
-//#include <boost/python/detail/wrap_python.hpp>
-//#include <boost/python.hpp>
-//#include <boost/python/def.hpp>
-//#include <boost/python/args.hpp>
-//#include <boost/python/class.hpp>
-//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-//#include <boost/python/return_value_policy.hpp>
-//#include <boost/python/overloads.hpp>
-//#endif
-
+//______________________________________________________________________________
 class pilaserMirrorController : public controller
 {
     public:
-        // just have 1 constructor, but we have a higher level class that create these objects
         pilaserMirrorController();
         pilaserMirrorController(bool& show_messages,
                                 bool& show_debug_messages,
@@ -55,21 +41,32 @@ class pilaserMirrorController : public controller
                                 const std::string& configFile,
                                 const std::string& name
                                );
-        ~pilaserMirrorController( );
+        ~pilaserMirrorController();
 
         double get_CA_PEND_IO_TIMEOUT()const;
-        void   set_CA_PEND_IO_TIMEOUT( double val );
-
-//        double getHpos();
-//        double getVpos();
-//
-//        bool setVpos(double value);
-//        bool setVpos(int value);
-//        bool setIntensity(double value);
-//        bool setIntensity(int value);
+        void   set_CA_PEND_IO_TIMEOUT(double val );
+        double getHpos() const;
+        double getVpos() const;
+        // setters , not sure of type for these parameters (or if they will exist...)
+        bool setHpos(double value);
+        bool setHpos(int value);
+        bool setVpos(double value);
+        bool setVpos(int value);
+        // for the stepper movr
+        double getHstep() const;
+        double getVstep() const;
+        bool setHstep(double value);
+        bool setVstep(double value);
+        // command to actually move the mirror
+        bool moveH();
+        bool moveV();
+        //
+        const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
+        // used in higher level class
+        bool interfaceInitReport();
     protected:
     private:
-        //void initialise();
         pilaserMirrorInterface localInterface;
 };
-#endif // VELA_MAG_CONTROLLER_H_
+//______________________________________________________________________________
+#endif // _PILASERMIRROR_CONTROLLER_H_

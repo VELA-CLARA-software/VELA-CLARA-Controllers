@@ -97,17 +97,81 @@ class VCpilaser : VCbase
 //bool(pilaserController::*setIntensity_1)(doub) = &pilaserController::setIntensity;
 //bool(pilaserController::*setIntensity_2)(int) = &pilaserController::setIntensity;
 //
-//using namespace boost::python;
-//BOOST_PYTHON_MODULE( VELA_CLARA_PILaserControl
-//{
-//    //using namespace boost::python;
-//    docstring_options doc_options(true, false, false);
-//    doc_options.disable_cpp_signatures();
-//
-//    /// Things that you want to use in python muct be exposed:
-//    /// containers
-//
-//    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+//______________________________________________________________________________
+using namespace boost::python;
+using namespace virtualCathodeStructs;
+using namespace pilaserMirrorStructs;
+using namespace pilaserStructs;
+using namespace shutterStructs;
+using namespace UTL;
+BOOST_PYTHON_MODULE(VELA_CLARA_PILaserControl)
+{
+    //using namespace boost::python;
+    docstring_options doc_options(true, false, false);
+    doc_options.disable_cpp_signatures();
+    /*
+        Things that you want to use in python muct be exposed:
+        containers
+    */
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+
+    /*
+        // IF WE BUILD INDIVIDUAL CONTRLLER S FOR EACH SUB-HARDWRAE SYSTEM
+        // THEN THE DEFINITIONS NEED TO MOVE TO THOSE CLASSES
+        // I.E A VClasermirror.pyd
+        // we can then use pre-processor commands to include thwe desired defintions
+        // similar to   BOOST_PYTHON_INCLUDE::export_BaseObjects();
+    */
+
+    const char* hPos_doc
+        = "horizontal Mirror Position (not available as of April 2018)";
+    const char* vPos_doc
+        = "vertical Mirror Position (not available as of April 2018)";
+    const char* hStep_doc = "horizontal Mirror step size ";
+    const char* vStep_doc = "vertical   Mirror step size ";
+    const char* name_doc  = "object name";
+
+    using namespace boost;
+    class_<pilMirrorObject,noncopyable>
+        ("pilMirrorObject","pilMirrorObject member variables (read access only)", no_init)
+        .def_readonly("hStep",&pilMirrorObject::hStep,hStep_doc)
+        .def_readonly("vStep",&pilMirrorObject::vStep,vStep_doc)
+        .def_readonly("hPos", &pilMirrorObject::hPos,hPos_doc)
+        .def_readonly("vPos", &pilMirrorObject::vPos,vPos_doc)
+        .def_readonly("name", &pilMirrorObject::name,name_doc)
+        ;
+
+    const char* stabilisation_status_doc
+        = "Status (ON/OFF) of laser transport system stabilisation system.";
+    const char* intensity_doc
+        = "Laser intensity set-point (AU) add more detail when we have it.";
+    const char* status_doc  = "Status (ON/OFF) of laser system.";
+    const char* setCharge_doc = "Charge (pc) set point.";
+
+    class_<pilaserObject,noncopyable>
+        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
+        .def_readonly("status",&pilaserObject::status,status_doc)
+        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)
+        .def_readonly("intensity", &pilaserObject::intensity,intensity_doc)
+        .def_readonly("setCharge", &pilaserObject::setCharge,setCharge_doc)
+        .def_readonly("name", &pilaserObject::name,name_doc)
+        ;
+
+    class_<virtualCathodeDataObject,noncopyable>
+        ("virtualCathodeDataObject",
+            "virtualCathodeDataObject member variables (read access only) "
+            "we are waiting to see what thi swill look like"
+            , no_init)
+        ;
+
+    const char* state_doc = "State (OPEN/CLOSED) of Shutter.";
+
+    class_<shutterObject,noncopyable>
+        ("shutterObject","shutterObject member variables (read access only)", no_init)
+        .def_readonly("state",&shutterObject::state,state_doc)
+        ;
+
+
 //
 //    // pilaser object struct to be exposed, used when returning a pilaser reference
 //    boost::python::class_<pilaserStructs::pilaserObject,boost::noncopyable>
@@ -183,8 +247,11 @@ class VCpilaser : VCbase
 //        .def("setIntensity",  setIntensity_1,"set the intensity of the laser beam on the cathode.")
 //        .def("setIntensity",  setIntensity_2,"set the intensity of the laser beam on the cathode.")
 //        ;
-//    /// The main class that creates all the controller obejcts
-//        boost::python::class_<VCpilaser,boost::noncopyable> ("init")
+    /// The main class that creates all the controller obejcts
+//    class_<VCpilaser, bases<VCbase>, noncopyable>("init")
+////        .def("getProtectionController",
+////             &VCpilaser::getProtectionController,
+////             return_value_policy<reference_existing_object>(),(MODE_ARG,AREA_ARG,GPC_doc))
 //        .def("virtual_PILaser_Controller",  &VCpilaser::virtual_PILaser_Controller,
 //             return_value_policy<reference_existing_object>(),
 //             "returns a reference to the virtual PI laser object.")
@@ -194,15 +261,7 @@ class VCpilaser : VCbase
 //        .def("offline_PILaser_Controller",  &VCpilaser::offline_PILaser_Controller,
 //             return_value_policy<reference_existing_object>(),
 //             "returns a reference to the offline PI laser object.")
-//        .def("setQuiet",         &VCpilaser::setQuiet,
-//             "set Quiet Mode (no messages, no debug messages) for all PI laser objects."
-//        .def("setVerbose",       &VCpilaser::setVerbose,
-//             "set Verbose Mode (all messages, all debug messages) for all PI laser objects.")
-//        .def("setMessage",       &VCpilaser::setMessage,
-//             "set Message Mode (all  messages, no debug messages) for all PI laser objects.")
-//        .def("setDebugMessage",  &VCpilaser::setDebugMessage,
-//             "set Debug Mode (no messages, all debug messages) for all PI laser objects."
 //        ;
-//}
+}
 
 #endif // _VC_PILASER_H_

@@ -31,8 +31,10 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 void scopeController::initialise()
 {
-    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
-        message("scopeController instantiation success.");
+    message("scopeController instantiation success.");
+//    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
+//        message("scopeController instantiation success.");
+
 }
 //______________________________________________________________________________
 scopeController::~scopeController(){}    //dtor

@@ -58,7 +58,7 @@ void scopeInterface::initialise()
 {
     /// The config file reader
     configFileRead = configReader.readConfigFiles();
-    UTL::STANDARD_PAUSE;
+    pause_2000();
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
@@ -72,7 +72,7 @@ void scopeInterface::initialise()
                 /// start the monitors: set up the callback functions
                 monitorScopes();
                 /// The pause allows EPICS to catch up.
-                UTL::PAUSE_500;
+                pause_500();
             }
             else
                 message("The scopeInterface Read Config files, Not Starting EPICS Monitors" );

@@ -15,24 +15,24 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    VCpilaser.cpp
+//  FileName:    pilaserMirrorInterface.cpp
 //  Description:
 //
 //
 //*/
 #ifndef _PI_LASER_MIRROR_INTERFACE_H
 #define _PI_LASER_MIRROR_INTERFACE_H
-// djs
+// project includes
 #include "interface.h"
 #include "structs.h"
 #include "pilaserMirrorStructs.h"
 #include "pilaserMirrorConfigReader.h"
-//stl
+// stl includes
 #include <vector>
 #include <string>
 #include <atomic>
 #include <map>
-
+//______________________________________________________________________________
 class pilaserMirrorInterface : public interface
 {
     public:
@@ -51,39 +51,52 @@ class pilaserMirrorInterface : public interface
                         );
         ~pilaserMirrorInterface();
 
-//        double getHpos();
-//        double getVpos();
-//        double getIntensity();
-//        // setters , not sure of type for these parameters (or if they will exist...)
-//        bool setHpos(double value);
-//        bool setHpos(int value);
-//        bool setVpos(double value);
-//        bool setVpos(int value);
+        double getHpos() const;
+        double getVpos() const;
 
+
+        // setters , not sure of type for these parameters (or if they will exist...)
+        bool setHpos(double value);
+        bool setHpos(int value);
+        bool setVpos(double value);
+        bool setVpos(int value);
+
+        double getHstep() const;
+        double getVstep() const;
+        bool setHstep(double value);
+        bool setVstep(double value);
+
+        bool moveH();
+        bool moveV();
+
+        const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
 //        /// These are pure virtual methods, so need to have some implmentation in derived classes
-//        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
-//        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+//        IlockMap1 getILockStates(const std::string & name   ){ IlockMap1 r;return r; }
+//        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
 
-//    private:
-        // MOVE TO BASE CLASS
-//        const bool shouldStartEPICs;
-//
-//        void killMonitor( pilaserStructs::monitorStruct * ms );
-//
-        void initialise();
-//        bool initObjects();
-//        void initChids();
-//        void addChannel( const std::string & pvRoot, pilaserStructs::pvStruct & pv );
-//        void startMonitors();
-//        // all client set functions route to here
-//        bool setValue( pilaserStructs::pvStruct& pvs, double value);
-//
-//        pilaserStructs::pilaserObject pilaser;
-//
-//        std::vector<pilaserStructs::monitorStruct*> continuousMonitorStructs;
-//        // all EPICS callbacks route here
-//        static void staticEntryPILMonitor( const event_handler_args args);
-
+    private:
+        pilaserMirrorStructs::pilMirrorObject laserMirror;
         pilaserMirrorConfigReader configReader;
+
+        void killMonitor(pilaserMirrorStructs::monitorStruct* ms );
+        void initialise();
+        bool initObjects();
+        void initChids();
+        void addChannel(const std::string& pvRoot, pilaserMirrorStructs::pvStruct & pv );
+        void startMonitors();
+        /*
+            all client set functions route to here
+        */
+        bool setValue(pilaserMirrorStructs::pvStruct& pvs, double value);
+
+        bool move(chtype& cht, chid& chi,const char* m1,const char* m2);
+
+        std::vector<pilaserMirrorStructs::monitorStruct*> continuousMonitorStructs;
+        /*
+            all EPICS callbacks route here
+        */
+        static void staticEntryPILMirrorMonitor(const event_handler_args args);
+
 };
+//______________________________________________________________________________
 #endif // _PI_LASER_MIRROR_INTERFACE_H

@@ -255,7 +255,7 @@ beamPositionMonitorController& VCBPMs::physical_CLARA_PH1_BPM_Controller()
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-beamPositionMonitorController & VCBPMs::getBPMController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area )
+beamPositionMonitorController & VCBPMs::getBPMController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
 {
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
         return offline_VELA_INJ_BPM_Controller();

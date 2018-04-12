@@ -40,7 +40,7 @@ class shutterConfigReader : public configReader
                            const bool usingVM);
         ~shutterConfigReader();
 //
-        bool readShutterConfig( );
+        bool readConfig();
         const std::vector<shutterStructs::shutterObject> getShutterObjects();
 
     private:

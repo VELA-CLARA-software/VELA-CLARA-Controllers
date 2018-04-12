@@ -15,14 +15,13 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    VCpilaser.cpp
+//  FileName:    shutterController.h
 //  Description:
 //
 //
 //*/
 #ifndef _SHUTTER_CONTROLLER_H_
 #define _SHUTTER_CONTROLLER_H_
-
 // project
 #include "shutterStructs.h"
 #include "shutterInterface.h"
@@ -32,9 +31,7 @@
 #include <string>
 #include <vector>
 #include <map>
-
-
-
+//______________________________________________________________________________
 class shutterController : public controller
 {
     public:
@@ -46,44 +43,42 @@ class shutterController : public controller
                           const std::string& name
                           );
 
-        ~shutterController( );
+        ~shutterController();
 
+        bool closeAndWait(const std::string& name, const time_t waitTime);
+        bool openAndWait (const std::string& name, const time_t waitTime);
         bool isClosed(const std::string& name) const;
-        bool isOpen(  const std::string& name) const;
-        void close(   const std::string& name);
-        void open(    const std::string& name);
-        bool closeAndWait(const std::string& name, const time_t waitTime = 2);
-        bool openAndWait (const std::string& name, const time_t waitTime = 2);
+        bool isOpen  (const std::string& name) const;
+        void close(const std::string& name);
+        void open (const std::string& name);
 
-        std::vector<std::string> getShutterNames();
+        std::vector<std::string> getShutterNames()const;
+        const shutterStructs::shutterObject&
+            getShutterObjConstRef(const std::string& name )const;
 
-//        /// write a method that returns string version of enums using ENUM_TO_STRING
+        shutterStructs::SHUTTER_STATE getShutterState(const std::string& name);
+        std::string getShutterStateStr(const std::string& name );
+
+        std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
+            getILockStates(const std::string& name)const;
+        std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+            getILockStatesStr(const std::string& name)const;
+
 //
-//        HWC_ENUM::SHUTTER_STATE getShutterState( const std::string & name );
-//        std::string getShutterStateStr( const std::string & name );
+//        bool openAndWaitShutter1 (const time_t waitTime = 2 );
+//        bool openAndWaitShutter2 (const time_t waitTime = 2 );
+//        bool closeAndWaitShutter1(const time_t waitTime = 2 );
+//        bool closeAndWaitShutter2(const time_t waitTime = 2 );
 //
-//        void openShutter1();
-//        void closeShutter1();
-//        void openShutter2();
-//        void closeShutter2();
-//
-//        bool openAndWaitShutter1 ( const time_t waitTime = 2 );
-//        bool openAndWaitShutter2 ( const time_t waitTime = 2 );
-//        bool closeAndWaitShutter1( const time_t waitTime = 2 );
-//        bool closeAndWaitShutter2( const time_t waitTime = 2 );
-//
-//        /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
-//        /// write a method that returns string version of enums using ENUM_TO_STRING
-//
-//        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-//        std::map< HWC_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & name );
-//
+        bool interfaceInitReport();
         double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
 //
-//    private:
-        void initialise();
+    private:
+
+
+        //void initialise();
         shutterInterface localInterface;
 };
-
+//______________________________________________________________________________
 #endif // _SHUTTER_CONTROLLER_H_

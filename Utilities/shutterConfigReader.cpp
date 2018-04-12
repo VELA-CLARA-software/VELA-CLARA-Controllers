@@ -42,7 +42,7 @@ configReader(configFile, show_messages, show_debug_messages, usingVM)
 //______________________________________________________________________________
 shutterConfigReader::~shutterConfigReader(){}
 //______________________________________________________________________________
-bool shutterConfigReader::readShutterConfig()
+bool shutterConfigReader::readConfig()
 {
     debugMessage("\n", "**** Attempting to Read The Shutter Config File ****");
 
@@ -199,7 +199,7 @@ void shutterConfigReader::addToShutterObjectsV1(const std::vector<std::string>& 
     {
         shutterStructs::shutterObject shob = shutterStructs::shutterObject();
         shob.name = keyVal[UTL::ONE_SIZET];
-        shob.shutterState = shutterStructs::SHUTTER_STATE::ERROR;
+        shob.state = shutterStructs::SHUTTER_STATE::ERROR;
         shob.numIlocks = numIlocks;
         shutterObjects.push_back(shob);
         debugMessage("Added ", shutterObjects.back().name);

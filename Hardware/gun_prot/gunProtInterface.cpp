@@ -104,8 +104,8 @@ void gunProtInterface::initialise()
                 /* start the monitors: set up the callback functions */
                 message("The gunProtInterface is trying to start monitors");
                 startMonitors();
-                /* The pause allows EPICS to catch up.*/
-                UTL::STANDARD_PAUSE;
+                /* The pause allows EPICS callbacks to catch up.*/
+                pause_2000();
             }
             else
              message("The gunProtInterface has acquired objects, "
@@ -186,16 +186,17 @@ void gunProtInterface::startMonitors()
         for(auto && it : obj.second.pvMonStructs)
         {
             continuousMonitorStructs.push_back(new rfProtStructs::monitorStruct());
-            continuousMonitorStructs.back() -> monType      = it.first;
             continuousMonitorStructs.back() -> rfProtObject = &obj.second;
             continuousMonitorStructs.back() -> interface    = this;
+            continuousMonitorStructs.back() -> monType      = it.first;
+            continuousMonitorStructs.back() -> CHTYPE       = it.second.CHTYPE;
             ca_create_subscription(it.second.CHTYPE,
                                    it.second.COUNT,
                                    it.second.CHID,
                                    it.second.MASK,
                                    gunProtInterface::staticEntryMonitor,
                                    (void*)continuousMonitorStructs.back(),
-                                   &continuousMonitorStructs.back() -> EVID);
+                                   &continuousMonitorStructs.back()->EVID);
         }
     }
     int status = sendToEpics("ca_create_subscription",
@@ -226,7 +227,8 @@ void gunProtInterface::staticEntryMonitor(const event_handler_args args)
             ms->interface->updateCMIBits(*(ms->rfProtObject));
             break;
         default:
-            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to gunProtInterface::staticEntryPILMonitor");
+            ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed "
+                                   "to gunProtInterface::staticEntryPILMonitor");
             break;
     }
 //    ms->interface->debugMessage("staticEntryMonitor fin");
@@ -445,21 +447,21 @@ bool gunProtInterface::enable()const
     {
         debugMessage("Resetting RF_GUN General Protection");
         reset(genname);
-        UTL::PAUSE_300;
+        pause_300();
         debugMessage("Enabling General Protection");
         carryon = enable(genname);
         if( carryon )
         {
-            UTL::PAUSE_300;
+            pause_300();
             if( isGood(genname))
             {
                 debugMessage("Enabling RFGUN General Protection Success");
                 debugMessage("Resetting Curent Mode Protection");
                 reset(modname);
-                UTL::PAUSE_300;
+                pause_300();
                 debugMessage("Enabling ", ENUM_TO_STRING(currentMode)," Protection");
                 carryon = enable(modname);
-                UTL::PAUSE_300;
+                pause_300();
                 if( isGood(modname))
                 {
                     debugMessage("Enabling ",
@@ -467,10 +469,10 @@ bool gunProtInterface::enable()const
                                  " RFGUN Protection Success");
                     debugMessage("Resetting RFGUN Enable Protection");
                     reset(ennname);
-                    UTL::PAUSE_300;
+                    pause_300();
                     debugMessage("Enabling Enable Protection");
                     carryon = enable(ennname);
-                    UTL::PAUSE_300;
+                    pause_300();
                     if(isGood(ennname))
                     {
                         carryon = true;

@@ -64,8 +64,8 @@ class virtualCathodeInterface : public interface
 //        const pilaserStructs::pilaserObject &getPILObjConstRef();
 
 //        /// These are pure virtual methods, so need to have some implmentation in derived classes
-//        IlockMap1 getILockStates( const std::string & name   ){ IlockMap1 r;return r; }
-//        IlockMap2 getILockStatesStr( const std::string & name){ IlockMap2 r;return r; }
+//        IlockMap1 getILockStates(const std::string & name   ){ IlockMap1 r;return r; }
+//        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
 
 
     private:
@@ -73,7 +73,7 @@ class virtualCathodeInterface : public interface
 
 
 //
-//        void killMonitor( pilaserStructs::monitorStruct * ms );
+//        void killMonitor(pilaserStructs::monitorStruct * ms );
 //
         void initialise();
         bool initObjects();
@@ -83,13 +83,13 @@ class virtualCathodeInterface : public interface
         void addToBuffer();
 
 //        // all client set functions route to here
-//        bool setValue( pilaserStructs::pvStruct& pvs, double value);
+//        bool setValue(pilaserStructs::pvStruct& pvs, double value);
 //
         virtualCathodeStructs::virtualCathodeDataObject object;
 //
         std::vector<virtualCathodeStructs::monitorStruct*> continuousMonitorStructs;
 //        // all EPICS callbacks route here
-        static void staticEntryMonitor( const event_handler_args args);
+        static void staticEntryMonitor(const event_handler_args args);
         void updateValue(const event_handler_args args, virtualCathodeStructs::PV_TYPE pv);
         virtualCathodeConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message
