@@ -30,21 +30,22 @@ class cameraDAQController  : public controller
 {
     public:
         cameraDAQController();
-        cameraDAQController(const bool show_messages,
-                            const bool show_debug_messagese,
+        cameraDAQController(bool& show_messages,
+                            bool& show_debug_messagese,
+                            const HWC_ENUM::CONTROLLER_TYPE type,
                             const std::string &camConf,
                             const bool startVirtualMachine,
                             const bool shouldStartEPICs,
-                            const VELA_ENUM::MACHINE_AREA myMachineArea);
+                            const HWC_ENUM::MACHINE_AREA myMachineArea);
         ~cameraDAQController( );
         // These are pure virtual methods,
         //so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
         // This pure virtual method MUST be overwritten in
         //the derived controller ( making this an abstract base class)
-        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> getILockStates(const std::string &name);
-        std::map<VELA_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string &name);
+        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> getILockStates(const std::string &name);
+        std::map<HWC_ENUM::ILOCK_NUMBER,std::string> getILockStatesStr(const std::string &name);
 
         ///Functions Accessible to Python Controller///
         //Generic Functions
@@ -74,7 +75,7 @@ class cameraDAQController  : public controller
         cameraDAQInterface  localInterface;
         void initialise();
         const bool shouldStartEPICs;
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
 };
 
 #endif // cameraDAQController_H

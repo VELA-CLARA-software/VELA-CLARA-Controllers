@@ -17,20 +17,22 @@
 #include <string>
 
 VCcameraDAQ::VCcameraDAQ():
+VCbase("VCcameraDAQ"),
 virtual_Camera_DAQ_Controller_Obj(nullptr),
 offline_Camera_DAQ_Controller_Obj(nullptr),
-physical_Camera_DAQ_Controller_Obj(nullptr),
+physical_Camera_DAQ_Controller_Obj(nullptr)
+/*
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
 withVM(true),
-VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
-VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
-VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
-UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
+VELA_INJ ( HWC_ENUM::MACHINE_AREA::VELA_INJ ),
+VELA_BA1 ( HWC_ENUM::MACHINE_AREA::VELA_BA1 ),
+VELA_BA2 ( HWC_ENUM::MACHINE_AREA::VELA_BA2 ),
+CLARA_PH1( HWC_ENUM::MACHINE_AREA::CLARA_PH1),
+UNKNOWN_AREA(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA),
 shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is show messages!!
+shouldShowMessage(false)//default is show messages!!*/
 {
     std::cout << "Instantiated a cameraDAQ in Quiet Mode" << std::endl;
     //ctor
@@ -38,7 +40,8 @@ shouldShowMessage(false)//default is show messages!!
 VCcameraDAQ::~VCcameraDAQ()
 {
 }
-void VCcameraDAQ::setQuiet()
+
+/*void VCcameraDAQ::setQuiet()
 {
     std::cout << "cameraDAQ Quiet Mode Set." << std::endl;
     shouldShowDebugMessage = false;
@@ -61,10 +64,10 @@ void VCcameraDAQ::setDebugMessage()
     std::cout << "cameraDAQ DebugMessage Mode Set." << std::endl;
     shouldShowDebugMessage = true;
     shouldShowMessage = false;
-}
+}*/
 cameraDAQController& VCcameraDAQ::physical_CLARA_Camera_DAQ_Controller()
 {
-    std::string cconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
+    std::string cconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
     std::string name  = "physical_CLARA_Camera_Controller";
     return getController(physical_Camera_DAQ_Controller_Obj,
                          cconf,
@@ -75,7 +78,7 @@ cameraDAQController& VCcameraDAQ::physical_CLARA_Camera_DAQ_Controller()
 }
 cameraDAQController& VCcameraDAQ::virtual_CLARA_Camera_DAQ_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
     std::string name  = "virtual_CLARA_Camera_Controller";
     return getController(virtual_Camera_DAQ_Controller_Obj,
                          mconf,
@@ -86,7 +89,7 @@ cameraDAQController& VCcameraDAQ::virtual_CLARA_Camera_DAQ_Controller()
 }
 cameraDAQController& VCcameraDAQ::offline_CLARA_Camera_DAQ_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
     std::string name  = "offline_CLARA_Camera_Controller";
     return getController(offline_Camera_DAQ_Controller_Obj,
                          mconf,
@@ -97,7 +100,7 @@ cameraDAQController& VCcameraDAQ::offline_CLARA_Camera_DAQ_Controller()
 }
 cameraDAQController& VCcameraDAQ::physical_VELA_Camera_DAQ_Controller()
 {
-    std::string cconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
+    std::string cconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
     std::string name  = "physical_VELA_Camera_Controller";
     return getController(physical_Camera_DAQ_Controller_Obj,
                          cconf,
@@ -108,7 +111,7 @@ cameraDAQController& VCcameraDAQ::physical_VELA_Camera_DAQ_Controller()
 }
 cameraDAQController& VCcameraDAQ::virtual_VELA_Camera_DAQ_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
     std::string name  = "virtual_VELA_Camera_Controller";
     return getController(virtual_Camera_DAQ_Controller_Obj,
                          mconf,
@@ -119,7 +122,7 @@ cameraDAQController& VCcameraDAQ::virtual_VELA_Camera_DAQ_Controller()
 }
 cameraDAQController& VCcameraDAQ::offline_VELA_Camera_DAQ_Controller()
 {
-    std::string mconf = UTL::CONFIG_PATH + UTL::DAQ_CAMERA_CONFIG;
+    std::string mconf = UTL::APCLARA1_CONFIG_PATH + UTL::CAMERA_CONFIG;
     std::string name  = "offline_VELA_Camera_Controller";
     return getController(offline_Camera_DAQ_Controller_Obj,
                          mconf,
@@ -133,7 +136,7 @@ cameraDAQController& VCcameraDAQ::getController(cameraDAQController *cont,
                                             const std::string &name,
                                             const bool shouldVM,
                                             const bool shouldEPICS,
-                                            const VELA_ENUM::MACHINE_AREA myMachineArea)
+                                            const HWC_ENUM::MACHINE_AREA myMachineArea)
 {
     if(cont)
     {
@@ -142,13 +145,24 @@ cameraDAQController& VCcameraDAQ::getController(cameraDAQController *cont,
     else
     {
         std::cout << "Creating " << name << " object" << std::endl;
-        cont = new cameraDAQController(shouldShowMessage,
-                                       shouldShowDebugMessage,
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+        cont = new cameraDAQController(messageStates.at(cont).first,
+                                       messageStates.at(cont).second,
+                                       HWC_ENUM::CONTROLLER_TYPE::CAMERA_DAQ,
                                        conf,
                                        shouldVM,
                                        shouldEPICS,
                                        myMachineArea);
     }
     return *cont;
+}
+void VCcameraDAQ::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
 }
 

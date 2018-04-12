@@ -15,17 +15,19 @@
 #define VC_CAMERAS_DAQ_H
 //tp
 #include "cameraDAQController.h"
+#include "VCbase.h"
+#include "VCHeader.h"
 //boost
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
+//#include <boost/python/detail/wrap_python.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#include <boost/python/return_value_policy.hpp>
+//#include <boost/python/detail/wrap_python.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#include <boost/python/return_value_policy.hpp>
 typedef int inter;
 typedef const int cinter;
 typedef double doub;
@@ -45,7 +47,7 @@ typedef boost::python::list & cbpl;
 using namespace cameraStructs;
 
 ///Top Class///
-class VCcameraDAQ
+class VCcameraDAQ : public VCbase
 {
     public:
         VCcameraDAQ();
@@ -54,15 +56,9 @@ class VCcameraDAQ
         cameraDAQController& virtual_VELA_Camera_DAQ_Controller();
         cameraDAQController& offline_VELA_Camera_DAQ_Controller();
         cameraDAQController& physical_VELA_Camera_DAQ_Controller();
-
-
         cameraDAQController& virtual_CLARA_Camera_DAQ_Controller();
         cameraDAQController& offline_CLARA_Camera_DAQ_Controller();
         cameraDAQController& physical_CLARA_Camera_DAQ_Controller();
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
     protected:
 
     private:
@@ -74,10 +70,10 @@ class VCcameraDAQ
                                            const std::string & name,
                                            const bool shouldVM,
                                            const bool shouldEPICS,
-                                           const VELA_ENUM::MACHINE_AREA myMachineArea );
-        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
-        const VELA_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,UNKNOWN_AREA;
+                                           const HWC_ENUM::MACHINE_AREA myMachineArea );
+        std::map<const cameraDAQController*, std::pair<bool,bool>> messageStates;
+
+        void updateMessageStates();
 };
 ///Expose Relevant Classes, Vectors and Enums to Python///
 using namespace boost::python;
@@ -85,8 +81,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
 {
     docstring_options doc_options(true);
     doc_options.disable_cpp_signatures();
-    //doc_options.disable_py_signatures();
-
+    /* Main project objects and enums are defined in here */
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+/*
     ///Expose Vectors
     // if not used don't inlcude
     class_<std::vector< std::string > >("std_vector_string")
@@ -95,6 +92,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
     class_<std::vector<double>>("std_vector_double")
         .def( vector_indexing_suite< std::vector<double>>())
         ;
+*/
     ///Expose Enums
     enum_<CAM_STATE>("CAM_STATE","Enum to interpet the power state of camera.")
         .value("CAM_ON",            CAM_STATE::CAM_ON)
@@ -121,6 +119,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .value("WRITE_CHECK_ERROR", WRITE_CHECK::WRITE_CHECK_ERROR)
         ;
     ///Expose Classes
+    /*
     class_<baseObject, boost::noncopyable>("baseObject", no_init)
         ;
 
@@ -136,6 +135,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("getILockStates",
              pure_virtual(&controller::getILockStates)                  )
         ;
+    */
     boost::python::class_<cameraStructs::cameraObject,boost::noncopyable>
         ("cameraObject_from_DAQ","cameraObject Doc String", boost::python::no_init)
         .def_readonly("name",
@@ -279,7 +279,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
              "Returns a list of all the camera names.")
         ;
 
-    class_<VCcameraDAQ,boost::noncopyable>("init")
+    class_<VCcameraDAQ, bases<VCbase>, boost::noncopyable>("init")
         .def("virtual_VELA_Camera_DAQ_Controller",
              &VCcameraDAQ::virtual_VELA_Camera_DAQ_Controller,
              return_value_policy<reference_existing_object>())
@@ -298,10 +298,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("physical_CLARA_Camera_DAQ_Controller",
              &VCcameraDAQ::physical_CLARA_Camera_DAQ_Controller,
              return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCcameraDAQ::setQuiet   )
-        .def("setVerbose",       &VCcameraDAQ::setVerbose )
-        .def("setMessage",       &VCcameraDAQ::setMessage )
-        .def("setDebugMessage",  &VCcameraDAQ::setDebugMessage )
         ;
 
 }

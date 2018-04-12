@@ -14,18 +14,18 @@
 
 #include "cameraDAQController.h"
 // stl
-cameraDAQController::cameraDAQController(
-    const bool show_messages,
-    const bool show_debug_messages,
-    const std::string & magConf,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs,
-    const VELA_ENUM::MACHINE_AREA myMachineArea):
-controller( show_messages, show_debug_messages ),
-localInterface(magConf,
+cameraDAQController::cameraDAQController(bool& show_messages,
+                                         bool& show_debug_messages,
+                                         const HWC_ENUM::CONTROLLER_TYPE type,
+                                         const std::string & conf,
+                                         const bool startVirtualMachine,
+                                         const bool shouldStartEPICs,
+                                         const HWC_ENUM::MACHINE_AREA myMachineArea):
+controller( show_messages, show_debug_messages, type),
+localInterface(conf,
                startVirtualMachine,
-               &SHOW_MESSAGES,
-               &SHOW_DEBUG_MESSAGES,
+               show_messages,
+               show_debug_messages,
                shouldStartEPICs,
                myMachineArea ),
 shouldStartEPICs(shouldStartEPICs),
@@ -33,15 +33,15 @@ myMachineArea(myMachineArea)
 {
 }
 cameraDAQController::~cameraDAQController(){}    //dtor
-std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::ILOCK_STATE> cameraDAQController::getILockStates(const std::string &name)
+std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::ILOCK_STATE> cameraDAQController::getILockStates(const std::string &name)
 {
     return localInterface.getILockStates(name);
 }
-std::map<VELA_ENUM::ILOCK_NUMBER,std::string> cameraDAQController::getILockStatesStr(const std::string &name)
+std::map<HWC_ENUM::ILOCK_NUMBER,std::string> cameraDAQController::getILockStatesStr(const std::string &name)
 {
     return localInterface.getILockStatesStr(name);
 }
-double cameraDAQController::get_CA_PEND_IO_TIMEOUT()
+double cameraDAQController::get_CA_PEND_IO_TIMEOUT()const
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }

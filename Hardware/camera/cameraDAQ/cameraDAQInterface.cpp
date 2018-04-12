@@ -25,10 +25,10 @@
 
 cameraDAQInterface::cameraDAQInterface( const std::string &Conf,
                                   const bool startVirtualMachine,
-                                  const bool* show_messages_ptr,
-                                  const bool* show_debug_messages_ptr,
+                                  bool& show_messages_ptr,
+                                  bool& show_debug_messages_ptr,
                                   const bool shouldStartEPICs,
-                                  const VELA_ENUM::MACHINE_AREA myMachineArea):
+                                  const HWC_ENUM::MACHINE_AREA myMachineArea):
 configReader(Conf,startVirtualMachine,show_messages_ptr,show_debug_messages_ptr),
 cameraInterface(show_messages_ptr,show_debug_messages_ptr),
 shouldStartEPICs(shouldStartEPICs),
@@ -198,6 +198,26 @@ void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
         case CAM_PV_TYPE::CAM_SENSOR_TEMP:
             ms->interface->updateSensorTemp(*(double*)args.dbr, ms->objName );
             break;
+        case CAM_PV_TYPE::JPG_CAPTURE_RBV:
+            ms->interface->updateCapturingJPG( *(unsigned short*)args.dbr, ms->objName);
+            break;
+
+        case CAM_PV_TYPE::JPG_NUM_CAPTURED:
+            ms->interface->updateNumCapturedJPG(*(double*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::JPG_NUM_CAPTURE_RBV:
+            ms->interface->updateNumCaptureJPG(*(double*)args.dbr, ms->objName );
+            break;
+
+        case CAM_PV_TYPE::JPG_FILE_WRITE_RBV:
+            ms->interface->updateWriteStateJPG( *(unsigned short*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::JPG_FILE_WRITE_CHECK:
+            ms->interface->updateWriteCheckJPG( *(unsigned short*)args.dbr, ms->objName );
+            break;
+        case CAM_PV_TYPE::JPG_FILE_WRITE_MESSAGE:
+            ms->interface->updateWriteErrorMessageJPG(args.dbr, ms->objName );
+            break;
         default:
             ms->interface->debugMessage("!!! ERROR !!! Unknown Monitor Type passed to cameraDAQInterface::staticEntryMonitor");
             break;
@@ -315,6 +335,16 @@ void cameraDAQInterface::updateNumCapture(const unsigned long value,const std::s
     allCamData.at(cameraName).DAQ.numberOfShots = value;
     updateSelectedOrVC(cameraName);
 }
+void cameraDAQInterface::updateNumCaptureJPG(const unsigned long value,const std::string&cameraName)
+{
+    allCamData.at(cameraName).DAQ.numberOfShotsJPG = value;
+    updateSelectedOrVC(cameraName);
+}
+void cameraDAQInterface::updateNumCapturedJPG(const unsigned long value,const std::string&cameraName)
+{
+    allCamData.at(cameraName).DAQ.shotsTakenJPG = value;
+    updateSelectedOrVC(cameraName);
+}
 void cameraDAQInterface::updateWriteErrorMessage(const void *value,const std::string&cameraName)
 {
     char dummy[256];//MAGIC NUMBER
@@ -362,14 +392,81 @@ void cameraDAQInterface::updateSensorTemp(const double value,const std::string&c
         message("   2. Please CHECK FAN and FILTER (CONSULT SOMEONE).");
     }
 }
-
+void cameraDAQInterface::updateWriteCheckJPG(const unsigned short value,const std::string&cameraName)
+{
+    if(entryExists(allCamData,cameraName))
+    {
+        switch(value)
+        {
+            case 0:
+                allCamData.at(cameraName).DAQ.writeCheckJPG = WRITE_CHECK::WRITE_CHECK_OK;
+                break;
+            case 1:
+                allCamData.at(cameraName).DAQ.writeCheckJPG = WRITE_CHECK::WRITE_CHECK_ERROR;
+                break;
+            default:
+                allCamData.at(cameraName).DAQ.writeCheckJPG = WRITE_CHECK::WRITE_CHECK_ERROR;
+        }
+        updateSelectedOrVC(cameraName);
+        message(cameraName, ": Write Status is ",
+                ENUM_TO_STRING(allCamData.at(cameraName).DAQ.writeCheckJPG));
+    }
+}
+void cameraDAQInterface::updateWriteStateJPG(const unsigned short value,const std::string&cameraName)
+{
+    if(entryExists(allCamData,cameraName))
+    {
+        switch(value)
+        {
+            case 0:
+                allCamData.at(cameraName).DAQ.writeStateJPG = WRITE_STATE::NOT_WRITING;
+                break;
+            case 1:
+                allCamData.at(cameraName).DAQ.writeStateJPG = WRITE_STATE::WRITING;
+                break;
+            default:
+                allCamData.at(cameraName).DAQ.writeStateJPG = WRITE_STATE::WRITING_ERROR;
+        }
+        updateSelectedOrVC(cameraName);
+        message(cameraName, ": Write Status is ",
+                ENUM_TO_STRING(allCamData.at(cameraName).DAQ.writeStateJPG));
+    }
+}
+void cameraDAQInterface::updateCapturingJPG(const unsigned short value,const std::string&cameraName)
+{
+    if(entryExists(allCamData,cameraName))
+    {
+        switch(value)
+        {
+            case 0:
+                allCamData.at(cameraName).DAQ.captureStateJPG = CAPTURE_STATE::NOT_CAPTURING;
+                break;
+            case 1:
+                allCamData.at(cameraName).DAQ.captureStateJPG = CAPTURE_STATE::CAPTURING;
+                break;
+            default:
+                allCamData.at(cameraName).DAQ.captureStateJPG = CAPTURE_STATE::CAPTURING_ERROR;
+        }
+        updateSelectedOrVC(cameraName);
+        message(cameraName, ": Capturing state is ",
+                ENUM_TO_STRING(allCamData.at(cameraName).DAQ.captureStateJPG));
+    }
+}
+void cameraDAQInterface::updateWriteErrorMessageJPG(const void *value,const std::string&cameraName)
+{
+    char dummy[256];//MAGIC NUMBER
+    for (int i = 0;i!=256; i++)//MAGIC_NUMBER
+        dummy[i] = ((char *)value)[i];
+    allCamData.at(cameraName).DAQ.writeErrorMessageJPG = dummy;
+    updateSelectedOrVC(cameraName);
+}
 ///Functions Accessible to Python Controller///
 bool cameraDAQInterface::collect(cameraObject camera, unsigned short &comm, const int & numbOfShots)
 {
     bool ans=false;
     pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::CAM_CAPTURE));
 
-    makeANewDirectory();
+    //makeANewDirectory();
 
     if(numbOfShots<=camera.DAQ.maxShots)
     {
@@ -396,9 +493,45 @@ bool cameraDAQInterface::save(cameraObject camera, unsigned short &comm)
     int startNumber(1);// MAGIC_NUMBER should this be a one or a zero?
     pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_WRITE));
 
-    setStartFileNumber(startNumber);
+    setStartFileNumberJPG(startNumber);
 
     if( isCollecting(camera.name)==0 )
+    {
+        ans=shortCaput(comm,S);
+        message("WriteFile set to ",comm,
+                " on ",camera.name," camera.");
+    }
+    else
+        message("Still collecting images when save function was called.");
+
+    return ans;
+}
+bool cameraDAQInterface::collectJPG(cameraObject camera, unsigned short &comm)
+{
+    bool ans=false;
+    pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::JPG_CAPTURE));
+
+        int oneShot(1);//MAGIG NUMBE ONLY ALLOWING THIS FUNCTION TO TAKE ONE JPG!!!!!
+        setNumberOfShotsJPG(oneShot);
+        if( isAcquiring(camera.name) )
+        {
+            ans=shortCaput(comm,S);
+            message(" JPG Caputure set to ",comm,
+                    " on ",camera.name," camera.");
+        }
+
+
+    return ans;
+}
+bool cameraDAQInterface::saveJPG(cameraObject camera, unsigned short &comm)
+{
+    bool ans=false;
+    int startNumber(1);// MAGIC_NUMBER
+    pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_WRITE));
+
+    setStartFileNumberJPG(startNumber);
+
+    if( isCollectingJPG(camera.name)==0 )
     {
         ans=shortCaput(comm,S);
         message("WriteFile set to ",comm,
@@ -421,6 +554,12 @@ bool cameraDAQInterface::collectAndSaveVC(const int & numbOfShots)
     new std::thread(&cameraDAQInterface::staticCollectAndSave,this,vcCameraObj, numbOfShots);
     return true;
 }
+bool cameraDAQInterface::collectAndSaveJPG()
+{
+    //need to make sure your python is running while this thread is active
+    new std::thread(&cameraDAQInterface::staticCollectAndSaveJPG,this,selectedCameraObj);
+    return true;
+}
 bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & numbOfShots)
 {
     this->attachTo_thisCAContext();
@@ -435,6 +574,8 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & n
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
         collecting=this->isCollecting(camera.name);;
     }
+
+    makeANewDirectoryAndName(camera,numbOfShots);
 
     this->save(camera,go);//start saving
 
@@ -456,7 +597,44 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & n
     return success;
 
 }
-bool cameraDAQInterface::killCollectAndSave()///can only kill while collecting.
+bool cameraDAQInterface::staticCollectAndSaveJPG(cameraObject camera)
+{
+    this->attachTo_thisCAContext();
+    bool success = false;
+    unsigned short go(1);
+
+    this->collectJPG(camera,go);//starting collecting images
+
+    bool collecting=true;
+    while(collecting)   //wait until collecting is done...
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
+        collecting=this->isCollectingJPG(camera.name);;
+    }
+
+    makeANewDirectoryAndNameJPG(camera,1);
+
+    this->saveJPG(camera,go);//start saving
+
+    bool saving=true;
+    while(saving==true)    //wait until saving is done...
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
+        saving=isSavingJPG(camera.name);
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
+
+    //check status of save
+    if (this->allCamData.at(camera.name).DAQ.writeCheckJPG==WRITE_CHECK::WRITE_CHECK_OK)
+        success = true;//this->message("Successful wrote image to disk.");
+    else
+        this->debugMessage("WRITE ERROR: ",camera.DAQ.writeErrorMessageJPG);///!!!!!!!!!!!!!!!!!!!!!!!
+
+    return success;
+
+}
+bool cameraDAQInterface::killCollectAndSave()///can only kill while saving.
 {
     bool killed = false;
     unsigned short c(0);
@@ -479,15 +657,33 @@ bool cameraDAQInterface::killCollectAndSaveVC()///can only kill while saving.
     bool killed = false;
     unsigned short c(0);
     int dummyNumber(1);
-    if (isCollecting("VC"))//stop collecting
+    if (isCollecting("FAKE_VC"))//stop collecting
     {
         message("Killing while collecting...");
         killed=collect(vcCameraObj,c,dummyNumber);
     }
-    else if (isSaving("VC"))//stop saving
+    else if (isSaving("FAKE_VC"))//stop saving
     {
         message("Killing while saving...");
         killed=save(vcCameraObj,c);
+    }
+
+    return killed;
+}
+bool cameraDAQInterface::killCollectAndSaveJPG()///can only kill while saving.
+{
+    bool killed = false;
+    unsigned short c(0);
+    int dummyNumber(1);
+    if (isCollectingJPG(selectedCamera()))//stop collecting
+    {
+        message("Killing JPG while collecting...");
+        killed=collectJPG(selectedCameraObj,c);
+    }
+    else if (isSavingJPG(selectedCamera()))//stop sa
+    {
+        message("Killing JPG while saving...");
+        killed=saveJPG(selectedCameraObj,c);
     }
 
     return killed;
@@ -524,7 +720,7 @@ const cameraObject &cameraDAQInterface::getVCDAQRef()
 }
 
 ///Useful Functions for the Class///
-bool cameraDAQInterface::makeANewDirectory()///YUCK (make it look nice)
+bool cameraDAQInterface::makeANewDirectoryAndName(cameraObject &camera,const int &numbOfShots)///YUCK (make it look nice)
 {
     bool ans=false;
     std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
@@ -534,38 +730,82 @@ bool cameraDAQInterface::makeANewDirectory()///YUCK (make it look nice)
     localtime_s(&local_tm, &t);
     char  newPath[256]="/home/images/";
 
-    //char *newName = new char[256];
-    std::string strName = selectedCameraObj.name+
+    char  newName[256]="defaultname";
+    std::string strName = camera.name+
                         "_"+std::to_string(local_tm.tm_year + 1900)+
                         "-"+std::to_string(local_tm.tm_mon + 1)+
                         "-"+std::to_string(local_tm.tm_mday)+
-                        "-"+std::to_string(local_tm.tm_hour)+
-                        std::to_string(local_tm.tm_min)+
-                        std::to_string(local_tm.tm_sec);
-    //strcpy(newName, strName.c_str());
+                        "_"+std::to_string(local_tm.tm_hour)+
+                        "-"+std::to_string(local_tm.tm_min)+
+                        "-"+std::to_string(local_tm.tm_sec)+
+                        "_"+std::to_string(numbOfShots)+"images";
+    strcpy(newName, strName.c_str());
     message("File Directory would be: ",
                         std::to_string(local_tm.tm_year + 1900)+
-                        "-"+std::to_string(local_tm.tm_mon + 1)+
-                        "-"+std::to_string(local_tm.tm_mday)+
-                        "-"+std::to_string(local_tm.tm_hour)+
-                        std::to_string(local_tm.tm_min)+std::to_string(local_tm.tm_sec));
-    //message(newName);
+                        "\\"+std::to_string(local_tm.tm_mon + 1)+
+                        "\\"+std::to_string(local_tm.tm_mday)+"\\");
+    message("File name would be: ",newName);
 
-    //ca_array_put(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHTYPE,
-              //  selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).COUNT,
-             //   selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHID,
-            //    &newName);
-    ca_array_put(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).CHTYPE,
-                selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).COUNT,
-                selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).CHID,
-                &newPath);
+    ca_array_put(camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHTYPE,
+                 camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).COUNT,
+                 camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHID,
+                 &newName);
+    ca_array_put(camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).CHTYPE,
+                 camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).COUNT,
+                 camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_PATH).CHID,
+                 &newPath);
 
     int status = sendToEpics("ca_put","","Timeout trying to send new file path state.");
     if(status == ECA_NORMAL)
     {
         ans = true;
-        selectedCameraObj.DAQ.latestDirectory = newPath;
-        message("New path set to ",newPath," on ",selectedCameraObj.name," camera.");
+        camera.DAQ.latestDirectory = newPath;
+        message("New path set to ",newPath," on ",camera.name," camera.");
+    }
+
+    return ans;
+}
+bool cameraDAQInterface::makeANewDirectoryAndNameJPG(cameraObject &camera,const int &numbOfShots)///YUCK (make it look nice)
+{
+    bool ans=false;
+    std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+    std::time_t t = std::chrono::system_clock::to_time_t(p);
+    //tm local_tm = *localtime(&t);
+    struct tm local_tm;
+    localtime_s(&local_tm, &t);
+    char  newPath[256]="/home/images/";
+
+    char  newName[256]="defaultname";
+    std::string strName = camera.name+
+                        "_"+std::to_string(local_tm.tm_year + 1900)+
+                        "-"+std::to_string(local_tm.tm_mon + 1)+
+                        "-"+std::to_string(local_tm.tm_mday)+
+                        "_"+std::to_string(local_tm.tm_hour)+
+                        "-"+std::to_string(local_tm.tm_min)+
+                        "-"+std::to_string(local_tm.tm_sec)+
+                        "_"+std::to_string(numbOfShots)+"images";
+    strcpy(newName, strName.c_str());
+    message("File Directory would be: ",
+                        std::to_string(local_tm.tm_year + 1900)+
+                        "\\"+std::to_string(local_tm.tm_mon + 1)+
+                        "\\"+std::to_string(local_tm.tm_mday)+"\\");
+    message("File name would be: ",newName);
+
+    ca_array_put(camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_NAME).CHTYPE,
+                 camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_NAME).COUNT,
+                 camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_NAME).CHID,
+                 &newName);
+    ca_array_put(camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_PATH).CHTYPE,
+                 camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_PATH).COUNT,
+                 camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_PATH).CHID,
+                 &newPath);
+
+    int status = sendToEpics("ca_put","","Timeout trying to send new file path state.");
+    if(status == ECA_NORMAL)
+    {
+        ans = true;
+        camera.DAQ.latestDirectory = newPath;
+        message("New path set to ",newPath," on ",camera.name," camera.");
     }
 
     return ans;
@@ -573,6 +813,10 @@ bool cameraDAQInterface::makeANewDirectory()///YUCK (make it look nice)
 std::string cameraDAQInterface::getWriteErrorMessage()
 {
     return selectedCameraObj.DAQ.writeErrorMessage;
+}
+std::string cameraDAQInterface::getWriteErrorMessageJPG()
+{
+    return selectedCameraObj.DAQ.writeErrorMessageJPG;
 }
 bool cameraDAQInterface::setNumberOfShots(const int &numberOfShots)
 {
@@ -583,10 +827,28 @@ bool cameraDAQInterface::setNumberOfShots(const int &numberOfShots)
         message("New number of shots to take to be ", numberOfShots);
     return ans;
 }
+bool cameraDAQInterface::setNumberOfShotsJPG(const int &numberOfShots)
+{
+    bool ans(false);
+    pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::JPG_NUM_CAPTURE));
+    ans=shortCaput(numberOfShots,S);
+    if (ans==true)
+        message("New number of shots to take to be ", numberOfShots);
+    return ans;
+}
 bool cameraDAQInterface::setStartFileNumber(const int &startNumber)
 {
     bool ans(false);
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NUMBER));
+    ans=shortCaput(startNumber,S);
+    if (ans==true)
+        message("New File numbering start from ", startNumber);
+    return ans;
+}
+bool cameraDAQInterface::setStartFileNumberJPG(const int &startNumber)
+{
+    bool ans(false);
+    pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_NUMBER));
     ans=shortCaput(startNumber,S);
     if (ans==true)
         message("New File numbering start from ", startNumber);

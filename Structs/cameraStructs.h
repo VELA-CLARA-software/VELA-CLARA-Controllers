@@ -162,6 +162,8 @@ namespace cameraStructs
                             writeCheckJPG(WRITE_CHECK_ERROR),
                             shotsTaken(UTL::DUMMY_INT),
                             numberOfShots(UTL::DUMMY_INT),
+                            shotsTakenJPG(UTL::DUMMY_INT),
+                            numberOfShotsJPG(UTL::DUMMY_INT),
                             frequency(UTL::DUMMY_DOUBLE),
                             exposureTime(UTL::DUMMY_DOUBLE) {}
         //ID
@@ -178,7 +180,7 @@ namespace cameraStructs
         WRITE_CHECK writeCheck;
         // If error this string will get updated
         std::string writeErrorMessage, latestDirectory;
-        int shotsTaken, numberOfShots, maxShots;
+        int shotsTaken, numberOfShots, maxShots, shotsTakenJPG, numberOfShotsJPG;
         double frequency,exposureTime,acquisitionPeriod, sensorTemp;
         // doesn't exist for CLARA
         std::vector<camDataType> rawData;

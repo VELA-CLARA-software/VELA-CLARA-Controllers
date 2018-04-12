@@ -13,9 +13,9 @@
 
 cameraDAQConfigReader::cameraDAQConfigReader(const std::string& camConfig,
                                              const bool startVirtualMachine,
-                                             const bool*show_messages_ptr,
-                                             const bool* show_debug_messages_ptr ):
-camConfig(camConfig), configReader( show_messages_ptr, show_debug_messages_ptr ), usingVirtualMachine(startVirtualMachine)
+                                             bool& show_messages_ptr,
+                                             bool& show_debug_messages_ptr ):
+camConfig(camConfig), configReader( camConfig, show_messages_ptr, show_debug_messages_ptr ), usingVirtualMachine(startVirtualMachine)
 {
 }
 cameraDAQConfigReader::~cameraDAQConfigReader(){}
@@ -116,19 +116,19 @@ bool cameraDAQConfigReader::readConfig()
                     readingData = true;
                     debugMessage( "Found START_OF_DATA" );
                 }
-                if( stringIsSubString( line, UTL::PV_COMMANDS_START ) )
+                if( stringIsSubString( line, UTL::PV_DAQ_COMMANDS_START ) )
                 {
                     readingCommandPVs  = true;
                     readingObjs = false;
                     readingMonitorPVs = false;
-                    debugMessage( "Found PV_COMMANDS_START" );
+                    debugMessage( "Found PV_DAQ_COMMANDS_START" );
                 }
-                if( stringIsSubString( line, UTL::PV_MONITORS_START ) )
+                if( stringIsSubString( line, UTL::PV_DAQ_MONITORS_START ) )
                 {
                     readingCommandPVs = false;
                     readingObjs       = false;
                     readingMonitorPVs = true;
-                    debugMessage( "Found PV_MONITORS_START" );
+                    debugMessage( "Found PV_DAQ_MONITORS_START" );
                 }
                 if( stringIsSubString( line, UTL::OBJECTS_START ) )
                 {
@@ -171,32 +171,56 @@ void cameraDAQConfigReader::addToPVStruct( std::vector< cameraStructs::pvStruct 
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_BKGRND_DATA;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_PATH  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_PATH;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_PATH_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_PATH;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_NUMBER  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_NUMBER;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_NUMBER_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_NUMBER;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_NAME  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_NAME;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_NAME_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_NAME;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_FILE_TEMPLATE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_TEMPLATE;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_WRITE;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_RBV  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_RBV;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_RBV_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_WRITE_RBV;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_CHECK  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_CHECK;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_CHECK_J )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_WRITE_CHECK;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_MESSAGE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_FILE_WRITE_MESSAGE;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_WRITE_MESSAGE_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_FILE_WRITE_MESSAGE;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_CAM_STATE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_STATUS;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_CAPTURE;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_CAPTURE_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_CAPTURE;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_CAPTURE_RBV  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_CAPTURE_RBV;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_CAPTURE_RBV_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_CAPTURE_RBV;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_NUM_CAPTURE;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE_RBV  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURE_RBV;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_NUM_CAPTURE_RBV;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURED  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_NUM_CAPTURED;
+        else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURED_J  )
+            pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::JPG_NUM_CAPTURED;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_EXPOSURE_RBV  )
             pvStruct_v.back().pvType = cameraStructs::CAM_PV_TYPE::CAM_EXPOSURE_TIME;
         else if( keyVal[0] == UTL::PV_DAQ_SUFFIX_ACQ_PERIOD_RBV  )

@@ -178,6 +178,29 @@ bool cameraInterface::isSaving(const std::string&cameraName)
         debugMessage("Problem with isSaving() function.");
     return ans;
 }
+bool cameraInterface::isCollectingJPG(const std::string&cameraName)
+{
+    bool ans = false;
+
+    if (allCamData.at(cameraName).DAQ.captureStateJPG==1)
+        ans=true;
+    else if (allCamData.at(cameraName).DAQ.captureStateJPG==0)
+        ans=false;
+    else
+        debugMessage("Problem with isCollecting() function.");
+    return ans;
+}
+bool cameraInterface::isSavingJPG(const std::string&cameraName)
+{
+    bool ans = false;
+    if (allCamData.at(cameraName).DAQ.writeStateJPG==1)
+        ans=true;
+    else if (allCamData.at(cameraName).DAQ.writeStateJPG==0)
+        ans=false;
+    else
+        debugMessage("Problem with isSaving() function.");
+    return ans;
+}
 std::string cameraInterface::useCameraFrom(const std::string camOrScreen)
 {
     std::string cameraName;

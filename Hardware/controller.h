@@ -37,10 +37,10 @@ class controller : public baseObject
 {
     public:
 
-//        controller(bool show_messages,
+//        controller(bool& show_messages,
 //                   bool show_debug_messages,
 //                   const HWC_ENUM::CONTROLLER_TYPE type);
-//        controller::controller(bool show_messages, bool show_debug_messages);
+//        controller::controller(bool& show_messages, bool show_debug_messages);
         controller(bool& show_messages,
                    bool& show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type,

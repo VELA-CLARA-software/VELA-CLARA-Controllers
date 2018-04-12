@@ -32,20 +32,26 @@ class cameraDAQInterface : public cameraInterface
         cameraDAQInterface();
         cameraDAQInterface( const std::string &Conf,
                          const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
+                         bool& show_messages_ptr,
+                         bool& show_debug_messages_ptr,
                          const bool shouldStartEPICs,
-                         const VELA_ENUM::MACHINE_AREA myMachineArea );
+                         const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~cameraDAQInterface();
+
 
         ///Functions Accessible to Python Controller///
         bool collectAndSave (const int & numbOfShots);
+        bool collectAndSaveJPG ();
         bool collectAndSaveVC (const int & numbOfShots);
         bool staticCollectAndSave(cameraObject camera,const int & numbOfShots);
+        bool staticCollectAndSaveJPG(cameraObject camera);
         bool killCollectAndSave();
+        bool killCollectAndSaveJPG();
         bool killCollectAndSaveVC();
         bool collect(cameraObject camera,unsigned short &comm, const int & numbOfShots);
         bool save(cameraObject camera,unsigned short &comm);
+        bool collectJPG(cameraObject camera,unsigned short &comm);
+        bool saveJPG(cameraObject camera,unsigned short &comm);
         std::string getlatestDirectory();
 
         const cameraObject &getCamDAQObjConstRef(const std::string &cam);
@@ -54,7 +60,7 @@ class cameraDAQInterface : public cameraInterface
 
     protected:
     private:
-        const VELA_ENUM::MACHINE_AREA myMachineArea;
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
         const bool shouldStartEPICs;
         void initialise();
         cameraDAQConfigReader configReader;
@@ -69,17 +75,32 @@ class cameraDAQInterface : public cameraInterface
         void updateWriteState(const unsigned short value,const std::string &cameraName);
         void updateWriteCheck(const unsigned short value,const std::string &cameraName);
         void updateNumCaptured(const unsigned long value,const std::string &cameraName);
+
+        void updateNumCapturedJPG(const unsigned long value,const std::string &cameraName);
+        void updateNumCaptureJPG(const unsigned long value,const std::string &cameraName);
+
         void updateNumCapture(const unsigned long value,const std::string &cameraName);
         void updateWriteErrorMessage(const void *const value,const std::string &cameraName);
         void updateExposure(const double value,const std::string &cameraName);
         void updateAcquirePeriod(const double value,const std::string &cameraName);
         void updateFrequency(const double value,const std::string &cameraName);
         void updateSensorTemp(const double value,const std::string &cameraName);
+
+        void updateWriteCheckJPG(const unsigned short value,const std::string&cameraName);
+        void updateWriteStateJPG(const unsigned short value,const std::string&cameraName);
+        void updateCapturingJPG(const unsigned short value,const std::string&cameraName);
+        void updateWriteErrorMessageJPG(const void *value,const std::string&cameraName);
+
+
         ///Useful Functions for the Class///
         std::string getWriteErrorMessage();
-        bool makeANewDirectory();
+        std::string getWriteErrorMessageJPG();
+        bool makeANewDirectoryAndName(cameraObject &camera,const int &numbOfShots);
+        bool makeANewDirectoryAndNameJPG(cameraObject &camera,const int &numbOfShots);
         bool setNumberOfShots(const int &numberOfShots);
+        bool setNumberOfShotsJPG(const int &numberOfShots);
         bool setStartFileNumber(const int &startNumber);
+        bool setStartFileNumberJPG(const int &startNumber);
         void updateSelectedOrVC(const std::string cameraName);
 
 };
