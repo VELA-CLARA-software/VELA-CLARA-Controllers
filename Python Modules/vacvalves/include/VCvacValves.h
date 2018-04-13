@@ -3,26 +3,30 @@
 
 // project
 #include "vacuumValveController.h"
+#include "vacuumValveStructs.h"
+#include "VCheader.h"
+#include "VCbase.h"
+#include "configDefinitions.h"
 // stl
 #include <string>
 #include <vector>
 #include <map>
 #include <list>
 //boost
-#include <boost/python/detail/wrap_python.hpp>
-#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
-#define BOOST_LIB_DIAGNOSTIC
-#include <boost/config.hpp>
-#include <boost/python.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/module.hpp>
-#include <boost/python/def.hpp>
-#include <boost/python/object/function.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/docstring_options.hpp>
+//#include <boost/python/detail/wrap_python.hpp>
+//#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+//#define BOOST_LIB_DIAGNOSTIC
+//#include <boost/config.hpp>
+//#include <boost/python.hpp>
+//#include <boost/python/class.hpp>
+//#include <boost/python/module.hpp>
+//#include <boost/python/def.hpp>
+//#include <boost/python/object/function.hpp>
+//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+//#include <boost/python/docstring_options.hpp>
 
-class VCvacValves// : public vacuumValveController
+class VCvacValves : public VCbase
 {
     public:
 
@@ -43,47 +47,25 @@ class VCvacValves// : public vacuumValveController
         vacuumValveController & virtual_VELA_BA2_Vac_Valve_Controller();
         vacuumValveController & offline_VELA_BA2_Vac_Valve_Controller();
         vacuumValveController & physical_VELA_BA2_Vac_Valve_Controller();
-        ///CLARA_S01
-        vacuumValveController & virtual_CLARA_S01_Vac_Valve_Controller();
-        vacuumValveController & offline_CLARA_S01_Vac_Valve_Controller();
-        vacuumValveController & physical_CLARA_S01_Vac_Valve_Controller();
-        ///CLARA_S02
-        vacuumValveController & virtual_CLARA_S02_Vac_Valve_Controller();
-        vacuumValveController & offline_CLARA_S02_Vac_Valve_Controller();
-        vacuumValveController & physical_CLARA_S02_Vac_Valve_Controller();
         ///CLARA_PH1
         vacuumValveController & virtual_CLARA_PH1_Vac_Valve_Controller();
         vacuumValveController & offline_CLARA_PH1_Vac_Valve_Controller();
         vacuumValveController & physical_CLARA_PH1_Vac_Valve_Controller();
-        ///C2V
-        vacuumValveController & virtual_C2V_Vac_Valve_Controller();
-        vacuumValveController & offline_C2V_Vac_Valve_Controller();
-        vacuumValveController & physical_C2V_Vac_Valve_Controller();
-        vacuumValveController & getVacValveController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area );
 
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+        vacuumValveController & getVacValveController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
     protected:
     private:
 
-        bool withEPICS;
-        bool withoutEPICS;
-        bool withVM;
-        bool withoutVM;
-        bool showDebugMessages;
-        bool showMessages;
-        const VELA_ENUM::MACHINE_AREA VELA_INJ;
-        const VELA_ENUM::MACHINE_AREA VELA_BA1;
-        const VELA_ENUM::MACHINE_AREA VELA_BA2;
-        const VELA_ENUM::MACHINE_AREA CLARA_INJ;
-        const VELA_ENUM::MACHINE_AREA CLARA_S01;
-        const VELA_ENUM::MACHINE_AREA CLARA_S02;
-        const VELA_ENUM::MACHINE_AREA CLARA_PH1;
-        const VELA_ENUM::MACHINE_AREA CLARA_2_VELA;
-        const VELA_ENUM::MACHINE_AREA UNKNOWN_AREA;
+        std::map<vacuumValveController*, std::pair<bool,bool>> messageStates;
+        void updateMessageStates();
+
+        vacuumValveController& getController(vacuumValveController*& cont,
+                                             const std::string& conf1,
+                                             const std::string& name,
+                                             const bool shouldVM,
+                                             const bool shouldEPICS,
+                                             const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         ///VELA_INJ
         vacuumValveController * virtual_VELA_INJ_Vac_Valve_Controller_Obj;
@@ -97,22 +79,10 @@ class VCvacValves// : public vacuumValveController
         vacuumValveController * virtual_VELA_BA2_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_VELA_BA2_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_VELA_BA2_Vac_Valve_Controller_Obj;
-        ///CLARA_S01
-        vacuumValveController * virtual_CLARA_S01_Vac_Valve_Controller_Obj;
-        vacuumValveController * offline_CLARA_S01_Vac_Valve_Controller_Obj;
-        vacuumValveController * physical_CLARA_S01_Vac_Valve_Controller_Obj;
-        ///CLARA_S02
-        vacuumValveController * virtual_CLARA_S02_Vac_Valve_Controller_Obj;
-        vacuumValveController * offline_CLARA_S02_Vac_Valve_Controller_Obj;
-        vacuumValveController * physical_CLARA_S02_Vac_Valve_Controller_Obj;
         ///CLARA_PH1
         vacuumValveController * virtual_CLARA_PH1_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_CLARA_PH1_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_CLARA_PH1_Vac_Valve_Controller_Obj;
-        ///C2V
-        vacuumValveController * virtual_C2V_Vac_Valve_Controller_Obj;
-        vacuumValveController * offline_C2V_Vac_Valve_Controller_Obj;
-        vacuumValveController * physical_C2V_Vac_Valve_Controller_Obj;
 };
 
 //#ifdef BUILD_DLL
@@ -142,120 +112,15 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
 {
     docstring_options local_docstring_options(true, true, false);
     local_docstring_options.disable_cpp_signatures();
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
-    boost::python::type_info info = boost::python::type_id<std::vector<std::string>>();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
+    enum_<vacuumValveStructs::VALVE_STATE>("VALVE_STATE")
+            .value("VALVE_CLOSED", vacuumValveStructs::VALVE_STATE::VALVE_CLOSED )
+            .value("VALVE_OPEN",   vacuumValveStructs::VALVE_STATE::VALVE_OPEN   )
+            .value("VALVE_TIMING", vacuumValveStructs::VALVE_STATE::VALVE_TIMING )
+            .value("VALVE_ERROR",  vacuumValveStructs::VALVE_STATE::VALVE_ERROR  )
             ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<std::string>>("std_vector_string")
-            .def(vector_indexing_suite<std::vector<std::string>>())
-            ;
-    }
 
-    info = boost::python::type_id<std::vector<double> >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_<std::vector<double> >("std_vector_double")
-            .def(vector_indexing_suite< std::vector<double>>())
-            ;
-    }
-    info = boost::python::type_id<VELA_ENUM::MACHINE_MODE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-        enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-        .value("OFFLINE",  VELA_ENUM::MACHINE_MODE::OFFLINE )
-        .value("VIRTUAL",  VELA_ENUM::MACHINE_MODE::VIRTUAL )
-        .value("PHYSICAL", VELA_ENUM::MACHINE_MODE::PHYSICAL)
-        ;
-    }
-
-
-    info = boost::python::type_id<VELA_ENUM::MACHINE_AREA>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    } else if ((*reg).m_to_python == NULL) {
-    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA","MACHINE_AREA Doc String")
-        .value("VELA_INJ",     VELA_ENUM::MACHINE_AREA::VELA_INJ)
-        .value("VELA_BA1",     VELA_ENUM::MACHINE_AREA::VELA_BA1)
-        .value("VELA_BA2",     VELA_ENUM::MACHINE_AREA::VELA_BA2)
-        .value("CLARA_INJ",    VELA_ENUM::MACHINE_AREA::CLARA_INJ)
-        .value("CLARA_PH1",    VELA_ENUM::MACHINE_AREA::CLARA_PH1)
-        .value("CLARA_2_VELA", VELA_ENUM::MACHINE_AREA::CLARA_2_VELA)
-        .value("CLARA_S01",    VELA_ENUM::MACHINE_AREA::CLARA_S01)
-        .value("CLARA_S02",    VELA_ENUM::MACHINE_AREA::CLARA_S02)
-        .value("CLARA_L01",    VELA_ENUM::MACHINE_AREA::CLARA_L01)
-        .value("USER",         VELA_ENUM::MACHINE_AREA::USER)
-        .value("UNKNOWN_AREA", VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA)
-        ;
-    }
-
-
-    enum_<VELA_ENUM::VALVE_STATE>("VALVE_STATE")
-            .value("VALVE_CLOSED", VELA_ENUM::VALVE_STATE::VALVE_CLOSED )
-            .value("VALVE_OPEN",   VELA_ENUM::VALVE_STATE::VALVE_OPEN   )
-            .value("VALVE_TIMING", VELA_ENUM::VALVE_STATE::VALVE_TIMING )
-            .value("VALVE_ERROR",  VELA_ENUM::VALVE_STATE::VALVE_ERROR  )
-            ;
-    info = boost::python::type_id<VELA_ENUM::ILOCK_STATE>();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-    enum_<VELA_ENUM::ILOCK_STATE>("ILOCK_STATE")
-            .value("ILOCK_BAD",   VELA_ENUM::ILOCK_STATE::ILOCK_BAD   )
-            .value("ILOCK_GOOD",  VELA_ENUM::ILOCK_STATE::ILOCK_GOOD  )
-            .value("ILOCK_ERROR", VELA_ENUM::ILOCK_STATE::ILOCK_ERROR )
-            ;
-    }
-//    enum_<VELA_ENUM::MACHINE_MODE>("MACHINE_MODE")
-//            .value("OFFLINE",   VELA_ENUM::MACHINE_MODE::OFFLINE  )
-//            .value("VIRTUAL",   VELA_ENUM::MACHINE_MODE::VIRTUAL  )
-//            .value("PHYSICAL",  VELA_ENUM::MACHINE_MODE::PHYSICAL )
-//            ;
-//
-//    enum_<VELA_ENUM::MACHINE_AREA>("MACHINE_AREA")
-//            .value("VELA_INJ",  VELA_ENUM::MACHINE_AREA::VELA_INJ  )
-//            .value("VELA_BA1",  VELA_ENUM::MACHINE_AREA::VELA_BA1  )
-//            .value("VELA_BA2",  VELA_ENUM::MACHINE_AREA::VELA_BA2  )
-//            .value("CLARA_INJ", VELA_ENUM::MACHINE_AREA::CLARA_INJ )
-//            .value("CLARA_S01", VELA_ENUM::MACHINE_AREA::CLARA_S01 )
-//            .value("CLARA_S02", VELA_ENUM::MACHINE_AREA::CLARA_S02 )
-//            .value("CLARA_2_VELA",       VELA_ENUM::MACHINE_AREA::CLARA_2_VELA )
-//            ;
-
-    //typedef &llrfStructs::rf_trace rtr;
-    //using namespace llrfStructs;
-    // outside_mask_trace is a sturct that holds flagged traces...
     class_<vacuumValveStructs::vacValveObject>
         ("vacValveObject","vacValveObject Doc String", no_init)
         .def_readonly("name",   &vacuumValveStructs::vacValveObject::name   ,  "valve name")
@@ -264,13 +129,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .def_readonly("numIlocks",   &vacuumValveStructs::vacValveObject::numIlocks,  "numIlocks")
         ;
 
-
-
-    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
-        ;
-
     /// we have to tell boost.python about pure virtual methods in abstract base classes
-    char const* getVacValveStateString = "Returns (as a VELA_ENUM) the state of the vacuum valve - open, closed, moving, or error.\n";
+    char const* getVacValveStateString = "Returns (as a HWC_ENUM) the state of the vacuum valve - open, closed, moving, or error.\n";
     char const* getVacValveObjectString = "Returns the vacuum valve struct, containing name, PV root, current state and interlock states.\n";
     char const* closeAndWaitString = "Closes the specified valve (arg1 (string)) and waits for the given time (arg2 (time_t)).\n";
     char const* openAndWaitString = "Opens the specified valve (arg1 (string)) and waits for the given time (arg2 (time_t)).\n";
@@ -281,14 +141,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
     char const* getVacValveNamesString = "Returns, as a vector of strings, the available vacuum valve names given in the config file.\n";
     char const* getILockStates = "Returns, a map of valve interlock states, keyed by interlock number.\n.";
 
-    boost::python::class_<controller, boost::python::bases<baseObject>,  boost::noncopyable> ("controller", boost::python::no_init)
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
-        .def("getILockStatesStr",      boost::python::pure_virtual(&controller::getILockStatesStr)      )
-        .def("getILockStates",         boost::python::pure_virtual(&controller::getILockStates)         )
-		;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
-
 
 	boost::python::class_<vacuumValveController, boost::python::bases<controller>, boost::noncopyable>
             ("vacuumValveController","This class contains all the functions in the vacuum valve controller for monitoring and controlling PVs",boost::python::no_init)
@@ -346,7 +199,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .def("verbose",                         &vacuumValveController::verbose                     )
 		;
 
-    boost::python::class_<VCvacValves,boost::noncopyable> ("init")
+    boost::python::class_<VCvacValves,boost::python::bases<VCbase>,boost::noncopyable> ("init")
         .def("virtual_VELA_INJ_Vac_Valve_Controller",   &VCvacValves::virtual_VELA_INJ_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_INJ_Vac_Valve_Controller",   &VCvacValves::offline_VELA_INJ_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("physical_VELA_INJ_Vac_Valve_Controller",  &VCvacValves::physical_VELA_INJ_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
@@ -356,23 +209,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .def("virtual_VELA_BA2_Vac_Valve_Controller",   &VCvacValves::virtual_VELA_BA2_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("offline_VELA_BA2_Vac_Valve_Controller",   &VCvacValves::offline_VELA_BA2_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("physical_VELA_BA2_Vac_Valve_Controller",  &VCvacValves::physical_VELA_BA2_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_S01_Vac_Valve_Controller",  &VCvacValves::virtual_CLARA_S01_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_S01_Vac_Valve_Controller",  &VCvacValves::offline_CLARA_S01_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_S01_Vac_Valve_Controller", &VCvacValves::physical_CLARA_S01_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_S02_Vac_Valve_Controller",  &VCvacValves::virtual_CLARA_S02_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_S02_Vac_Valve_Controller",  &VCvacValves::offline_CLARA_S02_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_S02_Vac_Valve_Controller", &VCvacValves::physical_CLARA_S02_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("virtual_CLARA_PH1_Vac_Valve_Controller",  &VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Vac_Valve_Controller",  &VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Vac_Valve_Controller", &VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_C2V_Vac_Valve_Controller",        &VCvacValves::virtual_C2V_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_C2V_Vac_Valve_Controller",        &VCvacValves::offline_C2V_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_C2V_Vac_Valve_Controller",       &VCvacValves::offline_C2V_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("getVacValveController",                   &VCvacValves::getVacValveController, return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCvacValves::setQuiet )
-        .def("setVerbose",       &VCvacValves::setVerbose )
-        .def("setMessage",       &VCvacValves::setMessage )
-        .def("setDebugMessage",  &VCvacValves::setDebugMessage )
         ;
 };
 

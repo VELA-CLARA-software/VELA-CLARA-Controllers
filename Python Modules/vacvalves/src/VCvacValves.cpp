@@ -13,33 +13,9 @@ physical_VELA_BA1_Vac_Valve_Controller_Obj(nullptr),
 virtual_VELA_BA2_Vac_Valve_Controller_Obj(nullptr),
 offline_VELA_BA2_Vac_Valve_Controller_Obj(nullptr),
 physical_VELA_BA2_Vac_Valve_Controller_Obj(nullptr),
-virtual_CLARA_S01_Vac_Valve_Controller_Obj(nullptr),
-offline_CLARA_S01_Vac_Valve_Controller_Obj(nullptr),
-physical_CLARA_S01_Vac_Valve_Controller_Obj(nullptr),
 virtual_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr),
 offline_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr),
-physical_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr),
-virtual_CLARA_S02_Vac_Valve_Controller_Obj(nullptr),
-offline_CLARA_S02_Vac_Valve_Controller_Obj(nullptr),
-physical_CLARA_S02_Vac_Valve_Controller_Obj(nullptr),
-virtual_C2V_Vac_Valve_Controller_Obj(nullptr),
-offline_C2V_Vac_Valve_Controller_Obj(nullptr),
-physical_C2V_Vac_Valve_Controller_Obj(nullptr),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true),
-showDebugMessages(false),
-showMessages(true),
-VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
-VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
-VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_INJ( VELA_ENUM::MACHINE_AREA::CLARA_INJ),
-CLARA_S01( VELA_ENUM::MACHINE_AREA::CLARA_S01),
-CLARA_S02( VELA_ENUM::MACHINE_AREA::CLARA_S02),
-CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
-CLARA_2_VELA( VELA_ENUM::MACHINE_AREA::CLARA_2_VELA ),
-UNKNOWN_AREA( VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA )
+physical_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr)
 {
     //ctor
 }
@@ -107,496 +83,247 @@ VCvacValves::~VCvacValves()
     }
 
 /// CLARA_S01
-    if(virtual_CLARA_S01_Vac_Valve_Controller_Obj)
+    if(virtual_CLARA_PH1_Vac_Valve_Controller_Obj)
     {
-        std::cout << "Destructor for physical_CLARA_S01_Vac_Valve_Controller_Obj called" << std::endl;
-        delete virtual_CLARA_S01_Vac_Valve_Controller_Obj;
-               virtual_CLARA_S01_Vac_Valve_Controller_Obj = nullptr;
+        std::cout << "Destructor for physical_CLARA_PH1_Vac_Valve_Controller_Obj called" << std::endl;
+        delete virtual_CLARA_PH1_Vac_Valve_Controller_Obj;
+               virtual_CLARA_PH1_Vac_Valve_Controller_Obj = nullptr;
     }
-    if(offline_CLARA_S01_Vac_Valve_Controller_Obj)
+    if(offline_CLARA_PH1_Vac_Valve_Controller_Obj)
     {
-        std::cout << "Destructor for offline_CLARA_S01_Vac_Valve_Controller_Obj called" << std::endl;
-        delete offline_CLARA_S01_Vac_Valve_Controller_Obj;
-               offline_CLARA_S01_Vac_Valve_Controller_Obj = nullptr;
+        std::cout << "Destructor for offline_CLARA_PH1_Vac_Valve_Controller_Obj called" << std::endl;
+        delete offline_CLARA_PH1_Vac_Valve_Controller_Obj;
+               offline_CLARA_PH1_Vac_Valve_Controller_Obj = nullptr;
     }
-    if(physical_CLARA_S01_Vac_Valve_Controller_Obj)
+    if(physical_CLARA_PH1_Vac_Valve_Controller_Obj)
     {
 //        THIS IS THE CULPRIT - ASK DUNCAN ABOUT DESTRUCTORS
-        std::cout << "Destructor for physical_CLARA_S01_Vac_Valve_Controller_Obj called" << std::endl;
-        delete physical_CLARA_S01_Vac_Valve_Controller_Obj;
-               physical_CLARA_S01_Vac_Valve_Controller_Obj = nullptr;
-    }
-
-/// CLARA_S02
-    if(virtual_CLARA_S02_Vac_Valve_Controller_Obj)
-    {
-        std::cout << "Destructor for virtual_CLARA_S02_Vac_Valve_Controller_Obj called" << std::endl;
-        delete virtual_CLARA_S02_Vac_Valve_Controller_Obj;
-               virtual_CLARA_S02_Vac_Valve_Controller_Obj = nullptr;
-    }
-    if(offline_CLARA_S02_Vac_Valve_Controller_Obj)
-    {
-        std::cout << "Destructor for offline_CLARA_S02_Vac_Valve_Controller_Obj called" << std::endl;
-        delete offline_CLARA_S02_Vac_Valve_Controller_Obj;
-               offline_CLARA_S02_Vac_Valve_Controller_Obj = nullptr;
-    }
-    if(physical_CLARA_S02_Vac_Valve_Controller_Obj)
-    {
-        std::cout << "Destructor for physical_CLARA_S02_Vac_Valve_Controller_Obj called" << std::endl;
-        delete physical_CLARA_S02_Vac_Valve_Controller_Obj;
-               physical_CLARA_S02_Vac_Valve_Controller_Obj = nullptr;
-    }
-
-///    CLARA_2_VELA
-    if(virtual_C2V_Vac_Valve_Controller_Obj)
-    {
-        std::cout << "Destructor for virtual_C2V_Vac_Valve_Controller_Obj called" << std::endl;
-        delete virtual_C2V_Vac_Valve_Controller_Obj;
-               virtual_C2V_Vac_Valve_Controller_Obj = nullptr;
-    }
-    if(offline_C2V_Vac_Valve_Controller_Obj)
-    {
-        std::cout << "Destructor for offline_C2V_Vac_Valve_Controller_Obj called" << std::endl;
-        delete offline_C2V_Vac_Valve_Controller_Obj;
-               offline_C2V_Vac_Valve_Controller_Obj = nullptr;
-    }
-    if(physical_C2V_Vac_Valve_Controller_Obj)
-    {
-        std::cout << "Destructor for physical_C2V_Vac_Valve_Controller_Obj called" << std::endl;
-        delete physical_C2V_Vac_Valve_Controller_Obj;
-               physical_C2V_Vac_Valve_Controller_Obj = nullptr;
+        std::cout << "Destructor for physical_CLARA_PH1_Vac_Valve_Controller_Obj called" << std::endl;
+        delete physical_CLARA_PH1_Vac_Valve_Controller_Obj;
+               physical_CLARA_PH1_Vac_Valve_Controller_Obj = nullptr;
     }
 }    //dtor
 //______________________________________________________________________________
-void VCvacValves::setQuiet()
+vacuumValveController& VCvacValves::getController(vacuumValveController*& cont,
+                                                  const std::string& conf1,
+                                                  const std::string & name,
+                                                  const bool shouldVM,
+                                                  const bool shouldEPICS,
+                                                  const HWC_ENUM::MACHINE_AREA myMachineArea)
 {
-    std::cout << "VCvacValves Quiet Mode Set." << std::endl;
-    showDebugMessages = false;
-    showMessages = false;
-}
-//______________________________________________________________________________
-void VCvacValves::setVerbose()
-{
-    std::cout << "VCvacValves Verbose Mode Set." << std::endl;
-    showDebugMessages = true;
-    showMessages = true;
-}
-//______________________________________________________________________________
-void VCvacValves::setMessage()
-{
-    std::cout << "VCvacValves Message Mode Set." << std::endl;
-    showDebugMessages = false;
-    showMessages = true;
-}
-//______________________________________________________________________________
-void VCvacValves::setDebugMessage()
-{
-    std::cout << "VCvacValves DebugMessage Mode Set." << std::endl;
-    showDebugMessages = true;
-    showMessages = false;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_VELA_INJ_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
-
-    if( virtual_VELA_INJ_Vac_Valve_Controller_Obj )
+    if(cont)
     {
-        std::cout << "virtual_VELA_INJ_Vac_Valve_Controller object already exists," << std::endl;
+        std::cout << name  <<" object already exists," <<std::endl;
     }
     else
     {
-        std::cout << "Creating virtual_VELA_INJ_Vac_Valve_Controller object" << std::endl;
-        virtual_VELA_INJ_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, VELA_INJ );
-    }
-    return *virtual_VELA_INJ_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_VELA_INJ_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+        std::cout <<"Creating " <<name <<" object" <<std::endl;
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+        switch(myMachineArea)
+        {
+            case HWC_ENUM::MACHINE_AREA::VELA_INJ:
+                cont = new vacuumValveController(conf1,
+                                                 messageStates.at(cont).first,
+                                                 messageStates.at(cont).second,
+                                                 shouldEPICS,
+                                                 shouldVM,
+                                                 myMachineArea);
+            case HWC_ENUM::MACHINE_AREA::CLARA_PH1:
+                cont = new vacuumValveController(conf1,
+                                                 messageStates.at(cont).first,
+                                                 messageStates.at(cont).second,
+                                                 shouldEPICS,
+                                                 shouldVM,
+                                                 myMachineArea);
+                break;
+            default:
+                std::cout << name  <<" can't be created just yet," <<std::endl;
 
-    if( offline_VELA_INJ_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_VELA_INJ_Vac_Valve_Controller object already exists," << std::endl;
+        }
     }
-    else
-    {
-        std::cout << "Creating offline_VELA_INJ_Vac_Valve_Controller object" << std::endl;
-        offline_VELA_INJ_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, VELA_INJ );
-    }
-    return *offline_VELA_INJ_Vac_Valve_Controller_Obj;
+    return *cont;
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_VELA_INJ_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::virtual_VELA_INJ_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
-
-    if( physical_VELA_INJ_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_VELA_INJ_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_VELA_INJ_Vac_Valve_Controller object" << std::endl;
-        physical_VELA_INJ_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, VELA_INJ );
-    }
-    return *physical_VELA_INJ_Vac_Valve_Controller_Obj;
+    std::string name  = "virtual_VELA_INJ_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    return getController(virtual_VELA_INJ_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_VELA_BA1_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::offline_VELA_INJ_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
-
-    if( virtual_VELA_BA1_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "virtual_VELA_BA1_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_VELA_BA1_Vac_Valve_Controller object" << std::endl;
-        virtual_VELA_BA1_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, VELA_BA1 );
-    }
-    return *virtual_VELA_BA1_Vac_Valve_Controller_Obj;
+    std::string name  = "offline_VELA_INJ_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    return getController(offline_VELA_INJ_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_VELA_BA1_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::physical_VELA_INJ_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
-
-    if( offline_VELA_BA1_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_VELA_BA1_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_VELA_BA1_Vac_Valve_Controller object" << std::endl;
-        offline_VELA_BA1_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, VELA_BA1 );
-    }
-    return *offline_VELA_BA1_Vac_Valve_Controller_Obj;
+    std::string name  = "physical_VELA_INJ_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    return getController(physical_VELA_INJ_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_VELA_BA1_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::virtual_VELA_BA1_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
-
-    if( physical_VELA_BA1_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_VELA_BA1_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_VELA_BA1_Vac_Valve_Controller object" << std::endl;
-        physical_VELA_BA1_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, VELA_BA1 );
-    }
-    return *physical_VELA_BA1_Vac_Valve_Controller_Obj;
+    std::string name  = "virtual_VELA_BA1_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    return getController(virtual_VELA_BA1_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_VELA_BA2_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::offline_VELA_BA1_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
-
-    if( virtual_VELA_BA2_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "virtual_VELA_BA2_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_VELA_BA2_Vac_Valve_Controller object" << std::endl;
-        virtual_VELA_BA2_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, VELA_BA2 );
-    }
-    return *virtual_VELA_BA2_Vac_Valve_Controller_Obj;
+    std::string name  = "offline_VELA_BA1_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    return getController(offline_VELA_BA1_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_VELA_BA2_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::physical_VELA_BA1_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
-
-    if( offline_VELA_BA2_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_VELA_BA2_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_VELA_BA2_Vac_Valve_Controller object" << std::endl;
-        offline_VELA_BA2_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, VELA_BA2 );
-    }
-    return *offline_VELA_BA2_Vac_Valve_Controller_Obj;
+    std::string name  = "physical_VELA_BA1_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    return getController(physical_VELA_INJ_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_VELA_BA2_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::virtual_VELA_BA2_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
-
-    if( physical_VELA_BA2_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_VELA_BA2_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_VELA_BA2_Vac_Valve_Controller object" << std::endl;
-        physical_VELA_BA2_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, VELA_BA2 );
-    }
-    return *physical_VELA_BA2_Vac_Valve_Controller_Obj;
+    std::string name  = "virtual_VELA_BA2_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    return getController(virtual_VELA_BA2_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_CLARA_S01_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::offline_VELA_BA2_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_S01_VALVE_CONFIG;
-
-    if( virtual_CLARA_S01_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "virtual_CLARA_S01_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_CLARA_S01_Vac_Valve_Controller object" << std::endl;
-        virtual_CLARA_S01_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, CLARA_S01 );
-    }
-    return *virtual_CLARA_S01_Vac_Valve_Controller_Obj;
+    std::string name  = "offline_VELA_BA2_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    return getController(offline_VELA_BA2_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_CLARA_S01_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::physical_VELA_BA2_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_S01_VALVE_CONFIG;
-
-    if( offline_CLARA_S01_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_CLARA_S01_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_CLARA_S01_Vac_Valve_Controller object" << std::endl;
-        offline_CLARA_S01_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, CLARA_S01 );
-    }
-    return *offline_CLARA_S01_Vac_Valve_Controller_Obj;
+    std::string name  = "physical_VELA_BA2_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    return getController(physical_VELA_BA2_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_CLARA_S01_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_S01_VALVE_CONFIG;
-
-    if( physical_CLARA_S01_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_CLARA_S01_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_CLARA_S01_Vac_Valve_Controller object" << std::endl;
-        physical_CLARA_S01_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, CLARA_S01 );
-    }
-    return *physical_CLARA_S01_Vac_Valve_Controller_Obj;
+    std::string name  = "virtual_CLARA_PH1_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    return getController(virtual_CLARA_PH1_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_CLARA_S02_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_S02_VALVE_CONFIG;
-
-    if( virtual_CLARA_S02_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "virtual_CLARA_S02_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_CLARA_S02_Vac_Valve_Controller object" << std::endl;
-        virtual_CLARA_S02_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, CLARA_S02 );
-    }
-    return *virtual_CLARA_S02_Vac_Valve_Controller_Obj;
+    std::string name  = "offline_CLARA_PH1_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    return getController(offline_CLARA_PH1_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_CLARA_S02_Vac_Valve_Controller()
+vacuumValveController& VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller()
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_S02_VALVE_CONFIG;
-
-    if( offline_CLARA_S02_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_CLARA_S02_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_CLARA_S02_Vac_Valve_Controller object" << std::endl;
-        offline_CLARA_S02_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, CLARA_S02 );
-    }
-    return *offline_CLARA_S02_Vac_Valve_Controller_Obj;
+    std::string name  = "physical_CLARA_PH1_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    return getController(physical_CLARA_PH1_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_CLARA_S02_Vac_Valve_Controller()
+vacuumValveController & VCvacValves::getVacValveController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
 {
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_S02_VALVE_CONFIG;
-
-    if( physical_CLARA_S02_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_CLARA_S02_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_CLARA_S02_Vac_Valve_Controller object" << std::endl;
-        physical_CLARA_S02_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, CLARA_S02 );
-    }
-    return *physical_CLARA_S02_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
-
-    if( virtual_CLARA_PH1_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "virtual_CLARA_PH1_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_CLARA_PH1_Vac_Valve_Controller object" << std::endl;
-        virtual_CLARA_PH1_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, CLARA_PH1 );
-    }
-    return *virtual_CLARA_PH1_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
-
-    if( offline_CLARA_PH1_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_CLARA_PH1_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_CLARA_PH1_Vac_Valve_Controller object" << std::endl;
-        offline_CLARA_PH1_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, CLARA_PH1 );
-    }
-    return *offline_CLARA_PH1_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
-
-    if( physical_CLARA_PH1_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_CLARA_PH1_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_CLARA_PH1_Vac_Valve_Controller object" << std::endl;
-        physical_CLARA_PH1_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, CLARA_PH1 );
-    }
-    return *physical_CLARA_PH1_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::virtual_C2V_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_2_VELA_VALVE_CONFIG;
-
-    if( virtual_C2V_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "virtual_C2V_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_C2V_Vac_Valve_Controller object" << std::endl;
-        virtual_C2V_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withVM, CLARA_2_VELA );
-    }
-    return *virtual_C2V_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::offline_C2V_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_2_VELA_VALVE_CONFIG;
-
-    if( offline_C2V_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "offline_C2V_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_C2V_Vac_Valve_Controller object" << std::endl;
-        offline_C2V_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withoutEPICS, withoutVM, CLARA_2_VELA );
-    }
-    return *offline_C2V_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::physical_C2V_Vac_Valve_Controller()
-{
-    std::cout << "creating object" << std::endl;
-    const std::string vacvalveconf1 = UTL::CONFIG_PATH + UTL::CLARA_2_VELA_VALVE_CONFIG;
-
-    if( physical_C2V_Vac_Valve_Controller_Obj )
-    {
-        std::cout << "physical_C2V_Vac_Valve_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_C2V_Vac_Valve_Controller object" << std::endl;
-        physical_C2V_Vac_Valve_Controller_Obj = new vacuumValveController( vacvalveconf1, showMessages, showDebugMessages, withEPICS, withoutVM, CLARA_2_VELA );
-    }
-    return *physical_C2V_Vac_Valve_Controller_Obj;
-}
-//______________________________________________________________________________
-vacuumValveController & VCvacValves::getVacValveController( VELA_ENUM::MACHINE_MODE mode, VELA_ENUM::MACHINE_AREA area )
-{
-    if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_INJ )
+    if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
         return offline_VELA_INJ_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_INJ )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_INJ )
         return virtual_VELA_INJ_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_INJ )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_INJ )
         return physical_VELA_INJ_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA1 )
         return offline_VELA_BA1_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA1 )
         return virtual_VELA_BA1_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA1 )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA1 )
         return physical_VELA_BA1_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_BA2 )
         return offline_VELA_BA2_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::VELA_BA2 )
         return virtual_VELA_BA2_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::VELA_BA2 )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::VELA_BA2 )
         return physical_VELA_BA2_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_S01 )
-        return offline_CLARA_S01_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_S01 )
-        return virtual_CLARA_S01_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_S01 )
-        return physical_CLARA_S01_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_S02 )
-        return offline_CLARA_S02_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_S02 )
-        return virtual_CLARA_S02_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_S02 )
-        return physical_CLARA_S02_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_PH1 )
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::CLARA_PH1 )
         return offline_CLARA_PH1_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_PH1 )
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_PH1 )
         return virtual_CLARA_PH1_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_PH1 )
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_PH1 )
         return physical_CLARA_PH1_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::OFFLINE && area == VELA_ENUM::CLARA_2_VELA )
-        return offline_C2V_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::VIRTUAL && area == VELA_ENUM::CLARA_2_VELA )
-        return virtual_C2V_Vac_Valve_Controller();
-    else if( mode == VELA_ENUM::PHYSICAL && area == VELA_ENUM::CLARA_2_VELA )
-        return physical_C2V_Vac_Valve_Controller();
+}
+//______________________________________________________________________________
+void VCvacValves::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL

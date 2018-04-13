@@ -11,10 +11,12 @@
 #include <algorithm>
 #include <ctype.h>
 //______________________________________________________________________________
-vacuumValveConfigReader::vacuumValveConfigReader( const std::string & vacValveConf, const bool*show_messages_ptr,
-                                                                  const bool*show_debug_messages_ptr, const bool startVirtualMachine ):
+vacuumValveConfigReader::vacuumValveConfigReader( const std::string & vacValveConf,
+                                                  const bool& show_messages_ptr,
+                                                  const bool& show_debug_messages_ptr,
+                                                  const bool startVirtualMachine ):
 vacValveConf( vacValveConf ),
-configReader( show_messages_ptr, show_debug_messages_ptr ),
+configReader( vacValveConf, show_messages_ptr, show_debug_messages_ptr ),
 usingVirtualMachine(startVirtualMachine)
 {
 
@@ -207,7 +209,7 @@ void vacuumValveConfigReader::addToVacValveObjectsV1( const std::vector<std::str
 
         vacuumValveStructs::vacValveObject valob = vacuumValveStructs::vacValveObject();
         valob.name = keyVal[ 1 ];
-        valob.vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+        valob.vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_ERROR;
         valob.numIlocks = numIlocks;
 
         vacValveObjects.push_back( valob );

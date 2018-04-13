@@ -29,9 +29,12 @@ class vacuumValveInterface : public interface
         /// Not a singleton, two construction methods....
 
         vacuumValveInterface();//const bool* show_messages_ptr, const  bool * show_debug_messages_ptr  );
-        vacuumValveInterface( const std::string & configFileLocation, const bool * show_messages_ptr,
-                                      const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
-                                      const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
+        vacuumValveInterface( const std::string & configFileLocation,
+                              const bool& show_messages_ptr,
+                              const bool& show_debug_messages_ptr,
+                              const bool shouldStartEPICs,
+                              const bool startVirtualMachine,
+                              const HWC_ENUM::MACHINE_AREA myMachineArea );
 
         ~vacuumValveInterface();
 
@@ -53,12 +56,12 @@ class vacuumValveInterface : public interface
         vacuumValveStructs::vacValveObject getVacValveObject( const std::string & vacValveName );
         bool entryExists2(const std::string & name, bool weKnowEntryExists );
 
-        VELA_ENUM::VALVE_STATE getVacValveState( const std::string & vacValveName );
+        vacuumValveStructs::VALVE_STATE getVacValveState( const std::string & vacValveName );
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
 
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & vacValveName );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >        getILockStatesStr( const std::string & vacValveName );
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & vacValveName )const;
+        std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >        getILockStatesStr( const std::string & vacValveName )const;
 
         std::map< std::string, vacuumValveStructs::vacValveObject > allVacValveData; /// All the vacValve data is stored in this map, keyed by the vacValve name
 
@@ -69,9 +72,9 @@ class vacuumValveInterface : public interface
         /// called from constructor to set-up chids, montiros, etc.
 
         void initialise();
-        const bool shouldStartEPICS;
+        const bool shouldStartEPICs;
         const bool startVM;
-        const VELA_ENUM::MACHINE_AREA machineArea;
+        const HWC_ENUM::MACHINE_AREA machineArea;
 
         vacuumValveConfigReader configReader;
 

@@ -19,8 +19,10 @@ class vacuumValveConfigReader : public configReader
 {
     public:
         vacuumValveConfigReader();// const bool* show_messages_ptr, const bool * show_debug_messages_ptr );
-        vacuumValveConfigReader( const std::string & vacValveConf,  const bool * showMessages,
-                                         const bool * showDebugMessages, const bool startVirtualMachine );
+        vacuumValveConfigReader( const std::string & vacValveConf,
+                                 const bool& showMessages,
+                                 const bool& showDebugMessages,
+                                 const bool startVirtualMachine );
         ~vacuumValveConfigReader();
 
 //        bool readVacValveConfig();

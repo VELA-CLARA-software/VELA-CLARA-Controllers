@@ -19,12 +19,15 @@
 #include "vacuumValveInterface.h"
 
 //______________________________________________________________________________
-vacuumValveController::vacuumValveController( const std::string &configFileLocation, const bool show_messages,
-                                                              const bool show_debug_messages, const bool shouldStartEPICS,
-                                                              const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
-controller( show_messages, show_debug_messages ),
-localInterface( configFileLocation, &SHOW_MESSAGES, &SHOW_DEBUG_MESSAGES, shouldStartEPICS, startVirtualMachine, myMachineArea ),
-shouldStartEPICS( shouldStartEPICS ),
+vacuumValveController::vacuumValveController( const std::string &configFileLocation,
+                                              bool& show_messages,
+                                              bool& show_debug_messages,
+                                              const bool shouldStartEPICs,
+                                              const bool startVirtualMachine,
+                                              const HWC_ENUM::MACHINE_AREA myMachineArea ):
+controller( show_messages, show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::VAC_VALVES ),
+localInterface( configFileLocation, show_messages, show_debug_messages, shouldStartEPICs, startVirtualMachine, myMachineArea ),
+shouldStartEPICs( shouldStartEPICs ),
 machineArea( myMachineArea )
 {
     initialise();
@@ -38,7 +41,7 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 void vacuumValveController::initialise()
 {
-    if( localInterface.interfaceInitReport( shouldStartEPICS ) )
+//    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
         message("vacuumValveController instantiation success.");
 }
 //______________________________________________________________________________
@@ -280,7 +283,7 @@ std::vector< std::string > vacuumValveController::getVacValveNames()
     return localInterface.getVacValveNames();
 }
 //______________________________________________________________________________
-double vacuumValveController::get_CA_PEND_IO_TIMEOUT()
+double vacuumValveController::get_CA_PEND_IO_TIMEOUT()const
 {
     return localInterface.get_CA_PEND_IO_TIMEOUT( );
 }
@@ -290,7 +293,7 @@ void vacuumValveController::set_CA_PEND_IO_TIMEOUT( double val )
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
 //______________________________________________________________________________
-VELA_ENUM::VALVE_STATE  vacuumValveController::getVacValveState( const std::string & name )
+vacuumValveStructs::VALVE_STATE  vacuumValveController::getVacValveState( const std::string & name )
 {
     return localInterface.getVacValveState( name );
 }
@@ -300,12 +303,12 @@ std::string vacuumValveController::getVacValveStateStr( const std::string & name
     return ENUM_TO_STRING(localInterface.getVacValveState( name ));
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > vacuumValveController::getILockStates( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > vacuumValveController::getILockStates( const std::string & objName )const
 {
     return localInterface.getILockStates( objName );
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > vacuumValveController::getILockStatesStr( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string > vacuumValveController::getILockStatesStr( const std::string & objName )const
 {
     return localInterface.getILockStatesStr( objName );
 }

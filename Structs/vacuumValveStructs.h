@@ -12,13 +12,17 @@
 
 class vacuumValveInterface;
 
-
 namespace vacuumValveStructs
 {
     /// Forward declare structs, gcc seems to like this...
 
     struct monitorStruct;
     struct vacValveObject;
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(VALVE_STATE, (VALVE_CLOSED)
+                                                     (VALVE_OPEN)
+                                                     (VALVE_TIMING)
+                                                     (VALVE_ERROR) )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( VAC_VALVE_PV_TYPE, (Sta) (On) (Off) )
 
@@ -51,19 +55,19 @@ namespace vacuumValveStructs
     struct vacValveObject
     {
         std::string name, pvRoot;
-        VELA_ENUM::VALVE_STATE vacValveState;
+        VALVE_STATE vacValveState;
         int numIlocks;
-        std::map< VELA_ENUM::ILOCK_NUMBER , VELA_ENUM::ILOCK_STATE > iLockStates;
+        std::map< HWC_ENUM::ILOCK_NUMBER , HWC_ENUM::ILOCK_STATE > iLockStates;
 
 #ifndef __CINT__
         /// keep data seperate from epics stuff
 
         std::map< VAC_VALVE_PV_TYPE, pvStruct > pvMonStructs;
         std::map< VAC_VALVE_PV_TYPE, pvStruct > pvComStructs;
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::iLockPVStruct > iLockPVStructs;
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
 ////
 ////        std::map< PIL_SHUTTER_PV_TYPE, chid > chidMap;
-////        std::map< VELA_ENUM::ILOCK_NUMBER , chid > ilkChidMap;
+////        std::map< HWC_ENUM::ILOCK_NUMBER , chid > ilkChidMap;
 #endif
     };
 }
