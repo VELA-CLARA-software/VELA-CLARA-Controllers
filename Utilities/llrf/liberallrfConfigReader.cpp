@@ -11,11 +11,11 @@
 #include <algorithm>
 #include <ctype.h>
 //____________________________________________________________________________________________________
-liberallrfConfigReader::liberallrfConfigReader(const std::string & configFileLocation1,
+liberallrfConfigReader::liberallrfConfigReader(const std::string& configFileLocation1,
                                         const bool startVirtualMachine,
-                                        const bool* show_messages_ptr,
-                                        const bool* show_debug_messages_ptr):
-configReader(configFileLocation1, show_messages_ptr, show_debug_messages_ptr),
+                                        const bool& show_messages,
+                                        const bool& show_debug_messages_ptr):
+configReader(configFileLocation1, show_messages, show_debug_messages_ptr),
 usingVirtualMachine(startVirtualMachine),
 lastPVstruct(nullptr),
 type(llrfStructs::LLRF_TYPE::UNKNOWN_TYPE),
@@ -56,7 +56,7 @@ bool liberallrfConfigReader::readConfig()
         while(std::getline(inputFile, line)) /// Go through, reading file line by line
         {
             trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-            if(trimmedLine.size() > 0)
+            if(trimmedLine.size() > UTL::ZERO_SIZET)
             {
                 if(stringIsSubString(line, UTL::END_OF_DATA))
                 {
@@ -220,15 +220,15 @@ void liberallrfConfigReader::addToPVMapV1(const std::vector<std::string>& keyVal
     else
     {   // we assume the order in the config file is correct
         if(keyVal[0] == UTL::PV_COUNT)
-            //lastPVstruct.back().COUNT = getCOUNT(keyVal[ 1 ]);
-            lastPVstruct->COUNT = getCOUNT(keyVal[ 1 ]);
+            //lastPVstruct.back().COUNT = getCOUNT(keyVal[1]);
+            lastPVstruct->COUNT = getCOUNT(keyVal[1]);
         else if(keyVal[0] == UTL::PV_MASK)
-            lastPVstruct->MASK = getMASK(keyVal[ 1 ]);
+            lastPVstruct->MASK = getMASK(keyVal[1]);
         else if(keyVal[0] == UTL::PV_CHTYPE)
-            lastPVstruct->CHTYPE = getCHTYPE(keyVal[ 1 ]);
+            lastPVstruct->CHTYPE = getCHTYPE(keyVal[1]);
         else if(keyVal[0] == UTL::PV_NAME)
         {
-            lastPVstruct->name = keyVal[ 1 ];
+            lastPVstruct->name = keyVal[1];
             debugMessage("Added name =  ", lastPVstruct->name);
         }
     }
@@ -249,31 +249,31 @@ void liberallrfConfigReader::addToliberallrfObjectsV1(const std::vector<std::str
     {
         /// http://stackoverflow.com/questions/5914422/proper-way-to-initialize-c-structs
         /// init structs 'correctly'
-        llrfObj.name = keyVal[ 1 ];
+        llrfObj.name = keyVal[1];
         llrfObj.numIlocks = numIlocks;
         debugMessage("Added ", llrfObj.name);
     }
     else if(keyVal[0] == UTL::PV_ROOT)
     {
         if(usingVirtualMachine)
-            llrfObj.pvRoot =  UTL::VM_PREFIX + keyVal[ 1 ];
+            llrfObj.pvRoot =  UTL::VM_PREFIX + keyVal[1];
         else
-            llrfObj.pvRoot = keyVal[ 1 ];
+            llrfObj.pvRoot = keyVal[1];
         debugMessage("LLRF pvroot = ", llrfObj.pvRoot);
     }
     else if(keyVal[0] == UTL::LLRF_PHI_CALIBRATION)
     {
-        llrfObj.phiCalibration = getNumD(keyVal[ 1 ]);
+        llrfObj.phiCalibration = getNumD(keyVal[1]);
         debugMessage("LLRF phiCalibration = ", llrfObj.phiCalibration);
     }
     else if(keyVal[0] == UTL::LLRF_AMP_CALIBRATION)
     {
-        llrfObj.ampCalibration = getNumD(keyVal[ 1 ]);
+        llrfObj.ampCalibration = getNumD(keyVal[1]);
         debugMessage("LLRF ampCalibration = ", llrfObj.ampCalibration);
     }
     else if(keyVal[0] == UTL::LLRF_CREST_PHI)
     {
-        llrfObj.crestPhi = getNumL(keyVal[ 1 ]);
+        llrfObj.crestPhi = getNumL(keyVal[1]);
     }
     else if(keyVal[0] == UTL::LLRF_PULSE_LATENCY)
     {
@@ -282,7 +282,7 @@ void liberallrfConfigReader::addToliberallrfObjectsV1(const std::vector<std::str
     // potentially we hardcode this value into the binary, and have it *NOT* configurable
     else if(keyVal[0] == UTL::LLRF_MAX_AMPLITUDE)
     {
-        llrfObj.maxAmp = getNumL(keyVal[ 1 ]);
+        llrfObj.maxAmp = getNumL(keyVal[1]);
 
     }
 }
@@ -492,15 +492,15 @@ void liberallrfConfigReader::addToTracePVMap(const std::vector<std::string>& key
     else
     {   // we assume the order in the config file is correct
         if(keyVal[0] == UTL::PV_COUNT)
-            //lastPVstruct.back().COUNT = getCOUNT(keyVal[ 1 ]);
-            lastPVstruct->COUNT = getCOUNT(keyVal[ 1 ]);
+            //lastPVstruct.back().COUNT = getCOUNT(keyVal[1]);
+            lastPVstruct->COUNT = getCOUNT(keyVal[1]);
         else if(keyVal[0] == UTL::PV_MASK)
-            lastPVstruct->MASK = getMASK(keyVal[ 1 ]);
+            lastPVstruct->MASK = getMASK(keyVal[1]);
         else if(keyVal[0] == UTL::PV_CHTYPE)
-            lastPVstruct->CHTYPE = getCHTYPE(keyVal[ 1 ]);
+            lastPVstruct->CHTYPE = getCHTYPE(keyVal[1]);
         else if(keyVal[0] == UTL::PV_NAME)
         {
-            lastPVstruct->name = keyVal[ 1 ];
+            lastPVstruct->name = keyVal[1];
             debugMessage("Added name =  ", lastPVstruct->name);
         }
     }
