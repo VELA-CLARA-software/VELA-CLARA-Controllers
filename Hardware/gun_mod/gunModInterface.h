@@ -33,14 +33,14 @@ class gunModInterface : public interface
         typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
         typedef std::vector<double> vec_d;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         gunModInterface::gunModInterface();
         gunModInterface(const std::string &pilaserConf,
                          const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
+                         const bool& show_messages_ptr,
+                         const bool& show_debug_messages_ptr,
                          const bool shouldStartEPICs);
 
         ~gunModInterface();
@@ -69,7 +69,7 @@ class gunModInterface : public interface
 
     private:
         // MOVE TO BASE CLASS
-        const bool shouldStartEPICs;
+        //const bool shouldStartEPICs;
         bool allChidsInitialised;
 
         const std::string CURR,VOLT;

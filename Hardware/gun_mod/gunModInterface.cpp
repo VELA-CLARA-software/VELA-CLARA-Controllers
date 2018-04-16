@@ -14,7 +14,6 @@
 //
 // project include
 #include "gunModInterface.h"
-//#include "dburt.h"
 #include "configDefinitions.h"
 // stl
 #include <iostream>
@@ -27,11 +26,11 @@
 //
 gunModInterface::gunModInterface(const std::string &gunModConf,
                                 const bool startVirtualMachine,
-                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
-                                const bool shouldStartEPICs):
+                                const bool& show_messages_ptr, const bool& show_debug_messages_ptr,
+                                const bool ):
 configReader(gunModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
-interface(show_messages_ptr,show_debug_messages_ptr),
-shouldStartEPICs(shouldStartEPICs),
+interface(show_messages_ptr,show_debug_messages_ptr,shouldStartEPICs),
+//shouldStartEPICs(shouldStartEPICs),
 allChidsInitialised(false),
 gun_mod_hex_map(rfModStructs::gunModHexErrorCodes::create()),
 VOLT("VOLT"),
@@ -324,19 +323,19 @@ size_t gunModInterface::getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv)
 //____________________________________________________________________________________________
 void gunModInterface::updateMainState(const event_handler_args& args)
 {
-    switch( getDBRUnsignedShort(args))
+    switch( getDBRunsignedShort(args))
     {
         case 0:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::NOT_CONNECTED;
             break;
         case 1:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDYBY_INTERLOCK;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDBY;
             break;
         case 2:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::OFF;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_ON;
             break;
         case 3:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::OFF_REQUEST;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::RF_ON;
             break;
         case 4:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_INTERLOCK;

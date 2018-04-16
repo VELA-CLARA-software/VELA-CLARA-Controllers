@@ -93,6 +93,7 @@ namespace rfModStructs
                                         (TRIG_REQUEST)       // field(TVST, "Trig Request")
                                         (TRIG)               // field(TTST, "Trig")
                                         (UNKNOWN_STATE)      // my default state on instantiation
+                                        (RF_ON)
                                        );
     struct pvStruct
     {
@@ -111,7 +112,7 @@ namespace rfModStructs
     struct gunModObject
     {
         gunModObject() :
-            controller_type(VELA_ENUM::CONTROLLER_TYPE::RF_MOD),
+            controller_type(HWC_ENUM::CONTROLLER_TYPE::RF_MOD),
             main_state(GUN_MOD_STATE::UNKNOWN_STATE),
             hex_state_str(UTL::UNKNOWN_STRING),
             hex_state_message(UTL::UNKNOWN_STRING),
@@ -155,7 +156,7 @@ namespace rfModStructs
             {}
         std::string name, pvRoot, hex_state_str, state_read, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
         std::vector<std::vector<std::string>> interlock_history;
-        VELA_ENUM::CONTROLLER_TYPE controller_type;
+        HWC_ENUM::CONTROLLER_TYPE controller_type;
         GUN_MOD_STATE main_state;
         GUN_MOD_ERR_STATE error_state;
         long   warmuptime;
@@ -242,7 +243,7 @@ namespace rfModStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_FAULT, (FAULT_UNKNOWN)(NO_FAULT)(FAULT))
 
-    /// These can't go in VELA_ENUM as they need a pvType.
+    /// These can't go in HWC_ENUM as they need a pvType.
     struct l01_pvStruct
     {
       l01_pvStruct():

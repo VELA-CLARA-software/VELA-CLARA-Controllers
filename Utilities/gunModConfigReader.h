@@ -19,8 +19,8 @@
 class gunModConfigReader : public configReader
 {
     public:
-        gunModConfigReader(const bool* show_messages_ptr, const bool * show_debug_messages_ptr);
-        gunModConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool * showMessages,const  bool * showDebugMessages);
+        gunModConfigReader(const bool& show_messages_ptr, const bool& show_debug_messages_ptr);
+        gunModConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool& showMessages,const  bool& showDebugMessages);
         ~gunModConfigReader();
 
         bool readConfig();

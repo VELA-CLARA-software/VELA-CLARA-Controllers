@@ -11,17 +11,13 @@
 #define MODULE_NAME VELA_CLARA_RF_Modulator_Control
 
 #include "VCheader.h"
+#include "VCbase.h"
 
-class VCrfmod : public baseObject
+class VCrfmod : public VCbase
 {
     public:
         VCrfmod();
         ~VCrfmod();
-
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
 
         gunModController& virtual_GUN_MOD_Controller();
         gunModController& physical_GUN_MOD_Controller();
@@ -47,6 +43,27 @@ class VCrfmod : public baseObject
         bool  shouldShowDebugMessage, shouldShowMessage;
         const std::string gunModConf;
         const std::string l01ModConf;
+        l01ModController& getL01Controller(l01ModController*& cont,
+                           const std::string& conf,
+                           const std::string& name,
+                           const bool shouldVM,
+                           const bool shouldEPICS,
+                           const HWC_ENUM::MACHINE_AREA myMachineArea);
+        gunModController& getGunController(gunModController*& cont,
+                           const std::string& conf,
+                           const std::string& name,
+                           const bool shouldVM,
+                           const bool shouldEPICS,
+                           const HWC_ENUM::MACHINE_AREA myMachineArea);
+        /*
+            map of showmessage showdebugmessage states
+            pointers to these bools are passed down the class
+            heirarchy
+        */
+        std::map<const controller*, std::pair<bool,bool>> messageStates;
+
+        void VCrfmod::updateMessageStates();
+
 };
 //
 using namespace boost::python;
@@ -137,6 +154,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("TRIG_REQUEST",       rfModStructs::GUN_MOD_STATE::TRIG_REQUEST)
         .value("TRIG",               rfModStructs::GUN_MOD_STATE::TRIG)
         .value("UNKNOWN_STATE",      rfModStructs::GUN_MOD_STATE::UNKNOWN_STATE)
+        .value("RF_ON",      rfModStructs::GUN_MOD_STATE::UNKNOWN_STATE)
         ;
 
     enum_<rfModStructs::GUN_MOD_ERR_STATE>("GUN_MOD_ERR_STATE",

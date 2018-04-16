@@ -14,7 +14,6 @@
 
 #include "l01ModInterface.h"
 //djs
-#include "dburt.h"
 #include "configDefinitions.h"
 // stl
 #include <iostream>
@@ -25,13 +24,13 @@
 
 l01ModInterface::l01ModInterface(const std::string &l01ModConf,
                                 const bool startVirtualMachine,
-                                const bool* show_messages_ptr,
-                                const bool* show_debug_messages_ptr,
+                                const bool& show_messages_ptr,
+                                const bool& show_debug_messages_ptr,
                                 const bool shouldStartEPICs
                            ):
 configReader(l01ModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
-interface(show_messages_ptr,show_debug_messages_ptr),
-shouldStartEPICs(shouldStartEPICs)
+interface(show_messages_ptr,show_debug_messages_ptr,shouldStartEPICs)
+//shouldStartEPICs(shouldStartEPICs)
 {
     if(shouldStartEPICs)
         message("l01ModInterface shouldStartEPICs is true");

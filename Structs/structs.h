@@ -164,6 +164,9 @@ namespace HWC_ENUM
                                                (ERR)
                                                (ON)
                                                (OFF)
+                                               (CLOSED)
+                                               (OPEN)
+                                               (TIMING)
                                                (UNKNOWN)
                                         )
 
