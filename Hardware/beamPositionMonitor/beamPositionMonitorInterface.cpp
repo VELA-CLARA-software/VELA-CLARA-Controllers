@@ -1064,6 +1064,15 @@ double beamPositionMonitorInterface::getQ( const std::string & bpmName )
         return r;
 }
 //______________________________________________________________________________
+double beamPositionMonitorInterface::getPosition( const std::string & bpmName )
+{
+    double r = UTL::DUMMY_DOUBLE;
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
+        return bpmObj.dataObjects.at( bpmName ).position;
+    else
+        return r;
+}
+//______________________________________________________________________________
 double beamPositionMonitorInterface::getXFromPV( const std::string & bpmName )
 {
     /// The EPICS X/Y values (EBT-INJ-DIA-BPMC-[xx]:X / Y) neglect certain factors which

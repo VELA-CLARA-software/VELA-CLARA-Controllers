@@ -150,6 +150,11 @@ double beamPositionMonitorController::getQ( const std::string & name )
     return localInterface.getQ( name );
 }
 //______________________________________________________________________________
+double beamPositionMonitorController::getPosition( const std::string & name )
+{
+    return localInterface.getPosition( name );
+}
+//______________________________________________________________________________
 double beamPositionMonitorController::getXFromPV( const std::string & name )
 {
     return localInterface.getXFromPV( name );

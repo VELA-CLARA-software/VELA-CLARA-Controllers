@@ -77,7 +77,7 @@ namespace beamPositionMonitorStructs
         bool appendingData;
         int shotCount, numShots; /// we allow -1 values here so NOT a size_t
         double xPV, yPV;
-        double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn;
+        double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn, position;
         double awak, rdy, q;
         size_t buffer;
         long sa1, sa2, ra1, ra2, sd1, sd2, rd1, rd2;

@@ -138,6 +138,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("rd1",            &beamPositionMonitorStructs::bpmDataObject::rd1          )
         .def_readonly("rd2",            &beamPositionMonitorStructs::bpmDataObject::rd2          )
         .def_readonly("q",              &beamPositionMonitorStructs::bpmDataObject::q            )
+        .def_readonly("position",       &beamPositionMonitorStructs::bpmDataObject::position     )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>
@@ -195,6 +196,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getYVecDocString = "Returns a vector containing the Y values for str(bpmName) - these are defined in the config file.\n"
                                    "To be used in conjunction with function monitorDataForNShots.";
+    char const* getPositionDocString = "Returns the position of the BPM in the lattice - defined in the config file.\n"
     char const* getQVecDocString = "Returns a vector containing the Q values for str(bpmName) - these are defined in the config file.\n"
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(bpmName) - these are defined in the config file.\n"
@@ -230,6 +232,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("getX",                            &beamPositionMonitorController::getX, getXDocString                                  )
             .def("getY",                            &beamPositionMonitorController::getY, getQDocString                                  )
             .def("getQ",                            &beamPositionMonitorController::getQ, getQDocString                                  )
+            .def("getPosition",                     &beamPositionMonitorController::getPosition, getPositionDocString                     )
             .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation, reCalAttDocString                  )
             .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV, getXPVDocString                          )
             .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV, getYPVDocString                          )
