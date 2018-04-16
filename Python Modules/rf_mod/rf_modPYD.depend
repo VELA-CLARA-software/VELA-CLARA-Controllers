@@ -315,3 +315,53 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
+1523913373 d:\vela\git projects\vela-clara-controllers\structs\rf_mod\rfmodstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<vector>
+	<string>
+	<map>
+	<cadef.h>
+
+1523913373 d:\vela\git projects\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfModStructs.h"
+
+1523913373 d:\vela\git projects\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfModStructs.h"
+
+1523913373 source:d:\vela\git projects\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.cpp
+	"gunModConfigReader.h"
+	"configDefinitions.h"
+	"rfModStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1523913373 source:d:\vela\git projects\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.cpp
+	"l01ModConfigReader.h"
+	"configDefinitions.h"
+	"rfModStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
