@@ -86,30 +86,30 @@ namespace BOOST_PYTHON_INCLUDE
         Without this implementation you will get a Python warning that the
         objects have been defined multiple times
     */
+//    template<typename T>
+//    void reg_class(const char* py_name, const char* py_docs, class_<T>& def,
+//                   boost::python::type_info& info)
+//    {
+//        /* info on the type we are exposing */
+////        boost::python::type_info info = type_id<T>();
+//        const converter::registration* reg  = converter::registry::query(info);
+//        /*  if the class not been registered, register it */
+//        if(reg == nullptr)
+//        {
+//            def;
+//        }
+//        else if ((*reg).m_to_python == nullptr)
+//        {
+//            def;
+//        }
+//    }
     template<typename T>
-    void reg_class(const char* py_name, const char* py_docs, class_<T>& def)
+    void reg_enum(const char* py_name, const char* py_docs, enum_<T>& def,
+                  boost::python::type_info& info)
     {
         /* info on the type we are exposing */
-        boost::python::type_info info = type_id<T>();
-        const converter::registration* reg;
-        reg  = converter::registry::query(info);
-        /*  if the class not been registered, register it */
-        if(reg == nullptr)
-        {
-            def;
-        }
-        else if ((*reg).m_to_python == nullptr)
-        {
-            def;
-        }
-    }
-    template<typename T>
-    void reg_enum(const char* py_name, const char* py_docs, enum_<T>& def)
-    {
-        /* info on the type we are exposing */
-        boost::python::type_info info = type_id<T>();
-        const converter::registration* reg;
-        reg  = converter::registry::query(info);
+//        boost::python::type_info info = type_id<T>();
+        const converter::registration* reg = converter::registry::query(info);
         /*  if the class not been registered, register it */
         if(reg == nullptr)
         {
@@ -143,18 +143,57 @@ namespace BOOST_PYTHON_INCLUDE
         py_name = "MACHINE_MODE";
         py_docs = "MACHINE_MODE: an enum for different machine modes, virtual, "
                   "physical or offline(no EPICS)";
-        enum_<MACHINE_MODE> mm_def =
+//        enum_<MACHINE_MODE> mm_def =
+//            enum_<MACHINE_MODE>(py_name,py_docs)
+//                .value("PHYSICAL", MACHINE_MODE::PHYSICAL)
+//                .value("OFFLINE",  MACHINE_MODE::OFFLINE )
+//                .value("VIRTUAL",  MACHINE_MODE::VIRTUAL )
+//                ;
+        boost::python::type_info info1 = type_id<MACHINE_MODE>();
+        const converter::registration* reg1  = converter::registry::query(info1);
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
             enum_<MACHINE_MODE>(py_name,py_docs)
                 .value("PHYSICAL", MACHINE_MODE::PHYSICAL)
                 .value("OFFLINE",  MACHINE_MODE::OFFLINE )
                 .value("VIRTUAL",  MACHINE_MODE::VIRTUAL )
                 ;
-        reg_enum<MACHINE_MODE>(py_name, py_docs, mm_def);
+        }
+        else if((*reg1).m_to_python == nullptr)
+        {
+            enum_<MACHINE_MODE>(py_name,py_docs)
+                .value("PHYSICAL", MACHINE_MODE::PHYSICAL)
+                .value("OFFLINE",  MACHINE_MODE::OFFLINE )
+                .value("VIRTUAL",  MACHINE_MODE::VIRTUAL )
+                ;
+        }
+
+        //reg_enum<MACHINE_MODE>(py_name, py_docs, mm_def,info1);
 
         // MACHINE_AREA
         py_name = "MACHINE_AREA";
         py_docs = "MACHINE_AREA: an enum for named areas in the machine";
-        enum_<MACHINE_AREA> ma_def =
+//        enum_<MACHINE_AREA> ma_def =
+//            enum_<MACHINE_AREA>(py_name,py_docs)
+//                .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
+//                .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
+//                .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
+//                .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
+//                .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )
+//                .value("CLARA_S02",    MACHINE_AREA::CLARA_S02   )
+//                .value("CLARA_L01",    MACHINE_AREA::CLARA_L01   )
+//                .value("VELA_INJ",     MACHINE_AREA::VELA_INJ    )
+//                .value("VELA_BA2",     MACHINE_AREA::VELA_BA2    )
+//                .value("VELA_BA1",     MACHINE_AREA::VELA_BA1    )
+//                .value("RF_GUN",       MACHINE_AREA::RF_GUN      )
+//                .value("RF_L01",       MACHINE_AREA::RF_L01      )
+//                .value("USER",         MACHINE_AREA::USER        )
+//                ;
+        boost::python::type_info info2 = type_id<MACHINE_AREA>();
+        const converter::registration* reg2  = converter::registry::query(info2);
+        if(reg2 == nullptr)
+        {
             enum_<MACHINE_AREA>(py_name,py_docs)
                 .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
                 .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
@@ -170,15 +209,51 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("RF_L01",       MACHINE_AREA::RF_L01      )
                 .value("USER",         MACHINE_AREA::USER        )
                 ;
-
-        reg_enum<MACHINE_AREA>(py_name, py_docs, ma_def);
-
-
+        }
+        else if((*reg2).m_to_python == nullptr)
+        {
+            enum_<MACHINE_AREA>(py_name,py_docs)
+                .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
+                .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
+                .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
+                .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
+                .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )
+                .value("CLARA_S02",    MACHINE_AREA::CLARA_S02   )
+                .value("CLARA_L01",    MACHINE_AREA::CLARA_L01   )
+                .value("VELA_INJ",     MACHINE_AREA::VELA_INJ    )
+                .value("VELA_BA2",     MACHINE_AREA::VELA_BA2    )
+                .value("VELA_BA1",     MACHINE_AREA::VELA_BA1    )
+                .value("RF_GUN",       MACHINE_AREA::RF_GUN      )
+                .value("RF_L01",       MACHINE_AREA::RF_L01      )
+                .value("USER",         MACHINE_AREA::USER        )
+                ;
+        }
 
         // CONTROLLER_TYPE
         py_name = "CONTROLLER_TYPE";
         py_docs = "CONTROLLER_TYPE: an enum for named hardware controllers";
-        enum_<CONTROLLER_TYPE> ct_def =
+//        enum_<CONTROLLER_TYPE> ct_def =
+//            enum_<CONTROLLER_TYPE>(py_name,py_docs)
+//                .value("UNKNOWN_CONTROLLER_TYPE",CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
+//                .value("GENERAL_MONITOR",        CONTROLLER_TYPE::GENERAL_MONITOR)
+//                .value("CAMERA_DAQ",             CONTROLLER_TYPE::CAMERA_DAQ)
+//                .value("VAC_VALVES",             CONTROLLER_TYPE::VAC_VALVES)
+//                .value("CAMERA_IA",              CONTROLLER_TYPE::CAMERA_IA)
+//                .value("PI_LASER",               CONTROLLER_TYPE::PI_LASER)
+//                .value("SHUTTER",                CONTROLLER_TYPE::SHUTTER)
+//                .value("RF_PROT",                CONTROLLER_TYPE::RF_PROT)
+//                .value("MAGNET",                 CONTROLLER_TYPE::MAGNET)
+//                .value("SCREEN",                 CONTROLLER_TYPE::SCREEN)
+//                .value("RF_MOD",                 CONTROLLER_TYPE::RF_MOD)
+//                .value("SCOPE",                  CONTROLLER_TYPE::SCOPE)
+//                .value("LLRF",                   CONTROLLER_TYPE::LLRF)
+//                .value("IMG",                    CONTROLLER_TYPE::IMG)
+//                .value("BPM",                    CONTROLLER_TYPE::BPM)
+//                ;
+        boost::python::type_info info3 = type_id<CONTROLLER_TYPE>();
+        const converter::registration* reg3  = converter::registry::query(info3);
+        if(reg3 == nullptr)
+        {
             enum_<CONTROLLER_TYPE>(py_name,py_docs)
                 .value("UNKNOWN_CONTROLLER_TYPE",CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
                 .value("GENERAL_MONITOR",        CONTROLLER_TYPE::GENERAL_MONITOR)
@@ -196,23 +271,74 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("IMG",                    CONTROLLER_TYPE::IMG)
                 .value("BPM",                    CONTROLLER_TYPE::BPM)
                 ;
-        reg_enum<CONTROLLER_TYPE>(py_name, py_docs, ct_def);
+        }
+        else if((*reg3).m_to_python == nullptr)
+        {
+            enum_<CONTROLLER_TYPE>(py_name,py_docs)
+                .value("UNKNOWN_CONTROLLER_TYPE",CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
+                .value("GENERAL_MONITOR",        CONTROLLER_TYPE::GENERAL_MONITOR)
+                .value("CAMERA_DAQ",             CONTROLLER_TYPE::CAMERA_DAQ)
+                .value("VAC_VALVES",             CONTROLLER_TYPE::VAC_VALVES)
+                .value("CAMERA_IA",              CONTROLLER_TYPE::CAMERA_IA)
+                .value("PI_LASER",               CONTROLLER_TYPE::PI_LASER)
+                .value("SHUTTER",                CONTROLLER_TYPE::SHUTTER)
+                .value("RF_PROT",                CONTROLLER_TYPE::RF_PROT)
+                .value("MAGNET",                 CONTROLLER_TYPE::MAGNET)
+                .value("SCREEN",                 CONTROLLER_TYPE::SCREEN)
+                .value("RF_MOD",                 CONTROLLER_TYPE::RF_MOD)
+                .value("SCOPE",                  CONTROLLER_TYPE::SCOPE)
+                .value("LLRF",                   CONTROLLER_TYPE::LLRF)
+                .value("IMG",                    CONTROLLER_TYPE::IMG)
+                .value("BPM",                    CONTROLLER_TYPE::BPM)
+                ;
+        }
+
 
         // ILOCK_STATE
         py_name = "ILOCK_STATE";
         py_docs = "ILOCK_STATE: an enum for named interlock states in the machine";
-        enum_<ILOCK_STATE> is_def =
+//        enum_<ILOCK_STATE> is_def =
+//            enum_<ILOCK_STATE>("ILOCK_STATE")
+//                .value("ILOCK_ERROR", ILOCK_STATE::ILOCK_ERROR)
+//                .value("ILOCK_GOOD",  ILOCK_STATE::ILOCK_GOOD )
+//                .value("ILOCK_BAD",   ILOCK_STATE::ILOCK_BAD  )
+//                ;
+        boost::python::type_info info4 = type_id<ILOCK_STATE>();
+        const converter::registration* reg4  = converter::registry::query(info4);
+        if(reg4 == nullptr)
+        {
             enum_<ILOCK_STATE>("ILOCK_STATE")
                 .value("ILOCK_ERROR", ILOCK_STATE::ILOCK_ERROR)
                 .value("ILOCK_GOOD",  ILOCK_STATE::ILOCK_GOOD )
                 .value("ILOCK_BAD",   ILOCK_STATE::ILOCK_BAD  )
                 ;
-        reg_enum<ILOCK_STATE>(py_name, py_docs, is_def);
+        }
+        else if((*reg4).m_to_python == nullptr)
+        {
+            enum_<ILOCK_STATE>("ILOCK_STATE")
+                .value("ILOCK_ERROR", ILOCK_STATE::ILOCK_ERROR)
+                .value("ILOCK_GOOD",  ILOCK_STATE::ILOCK_GOOD )
+                .value("ILOCK_BAD",   ILOCK_STATE::ILOCK_BAD  )
+                ;
+        }
+
 
         // STATE
         py_name = "STATE";
         py_docs = "STATE: an enum for named states in the machine";
-        enum_<STATE> s_def =
+//        enum_<STATE> s_def =
+//            enum_<STATE>("STATE")
+//                .value("UNKNOWN",STATE::UNKNOWN)
+//                .value("GOOD",   STATE::GOOD   )
+//                .value("BAD",    STATE::BAD    )
+//                .value("OFF",    STATE::OFF    )
+//                .value("ERR",    STATE::ERR    )
+//                .value("ON",    STATE::ON    )
+//                ;
+        boost::python::type_info info5 = type_id<STATE>();
+        const converter::registration* reg5  = converter::registry::query(info5);
+        if(reg5 == nullptr)
+        {
             enum_<STATE>("STATE")
                 .value("UNKNOWN",STATE::UNKNOWN)
                 .value("GOOD",   STATE::GOOD   )
@@ -220,8 +346,25 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("OFF",    STATE::OFF    )
                 .value("ERR",    STATE::ERR    )
                 .value("ON",    STATE::ON    )
+                .value("TIMING",    STATE::TIMING    )
+                .value("OPEN",    STATE::OPEN    )
+                .value("CLOSED",    STATE::CLOSED    )
                 ;
-        reg_enum<STATE>(py_name, py_docs, s_def);
+        }
+        else if((*reg5).m_to_python == nullptr)
+        {
+            enum_<STATE>("STATE")
+                .value("UNKNOWN",STATE::UNKNOWN)
+                .value("GOOD",   STATE::GOOD   )
+                .value("BAD",    STATE::BAD    )
+                .value("OFF",    STATE::OFF    )
+                .value("ERR",    STATE::ERR    )
+                .value("ON",    STATE::ON    )
+                .value("TIMING",    STATE::TIMING    )
+                .value("OPEN",    STATE::OPEN    )
+                .value("CLOSED",    STATE::CLOSED    )
+                ;
+        }
 /*
     vela_clara_enums is a .pyd that contains all the
     enums that are shared amongst many HWC. In Python programmes
@@ -236,35 +379,80 @@ namespace BOOST_PYTHON_INCLUDE
         py_name = "std_vector_string";
         py_docs = "c++ standard vector of standard strings";
         /* the class definition, exposed to python, cf templated */
-        class_<vecs> vecs_def =
+//        class_<vecs> vecs_def =
+//            class_<vecs>(py_name, py_docs,no_init)
+//                .def(vector_indexing_suite<vecs>())
+//                ;
+        boost::python::type_info info6 = type_id<vecs>();
+        const converter::registration* reg6  = converter::registry::query(info6);
+        /*  if the class not been registered, register it */
+        if(reg6 == nullptr)
+        {
             class_<vecs>(py_name, py_docs,no_init)
                 .def(vector_indexing_suite<vecs>())
                 ;
-        reg_class<vecs>(py_name, py_docs, vecs_def);
+        }
+        else if((*reg6).m_to_python == nullptr)
+        {
+            class_<vecs>(py_name, py_docs,no_init)
+                .def(vector_indexing_suite<vecs>())
+                ;
+        }
 
         //
         // expose std::vector<double>
         py_name = "std_vector_double";
         py_docs = "c++ standard vector of doubles";
-        class_<vecd> vecd_def =
+//        class_<vecd> vecd_def =
+//            class_<vecd>(py_name, py_docs,no_init)
+//                .def(vector_indexing_suite<vecd>())
+//                ;
+        boost::python::type_info info7 = type_id<vecd>();
+        const converter::registration* reg7  = converter::registry::query(info7);
+        /*  if the class not been registered, register it */
+        if(reg7 == nullptr)
+        {
             class_<vecd>(py_name, py_docs,no_init)
                 .def(vector_indexing_suite<vecd>())
                 ;
-        reg_class<vecd>(py_name, py_docs, vecd_def);
-
-        /*  Expose base classes,  these should never be multiply defined
+        }
+        else if((*reg7).m_to_python == nullptr)
+        {
+            class_<vecd>(py_name, py_docs,no_init)
+                .def(vector_indexing_suite<vecd>())
+                ;
+        }
+        /*
+            Expose base classes,  these should never be multiply defined
             no_int  forces Python to not construct (init) this object
             pure virtual methods get their own function
         */
         using namespace boost;
         //
         // expose baseObject
-        class_<baseObject, noncopyable>("baseObject", no_init)
-            ;
+        py_name = "baseObject";
+        py_docs = "at the base of it all";
+        class_<baseObject,noncopyable> bobj_def =
+            class_<baseObject,noncopyable>(py_name, py_docs, no_init)
+                ;
+        boost::python::type_info info8 = type_id<baseObject>();
+        const converter::registration* reg8  = converter::registry::query(info8);
+        /*  if the class not been registered, register it */
+        if(reg8 == nullptr)
+        {
+            bobj_def;
+        }
+        else if((*reg8).m_to_python == nullptr)
+        {
+            bobj_def;
+        }
+
         //
         // expose controller base,
-        /* NB pure_virtual methods MUST be overloaded in derived classes
-           document strings for VCbase functions */
+        /*
+           NB pure_virtual methods MUST be overloaded in derived classes
+           document strings for VCbase functions
+        */
         const char* isDebugMessageOn_doc ="Returns TRUE if debug message are enabled.";
         const char* isMessageOn_doc      ="Returns TRUE if message are enabled.";
         const char* isVerbose_doc        ="Returns TRUE if verbose mode is enabled.";
@@ -279,27 +467,41 @@ namespace BOOST_PYTHON_INCLUDE
         const char* contName_doc        ="The name of the controller";
         const char* typeName_doc        ="The type of the controller";
 
-        class_<controller, bases<baseObject>, noncopyable>("controller", no_init)
-            .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
-            .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-//            .def("getILockStatesStr",     pure_virtual(&controller::getILockStatesStr     ))
-//            .def("getILockStates",        pure_virtual(&controller::getILockStates))
+        py_name = "controller";
+        py_docs = "controller base class";
+        class_<controller,bases<baseObject>,noncopyable> cobj_def =
+            class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
+                .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
+                .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
+    //            .def("getILockStatesStr",     pure_virtual(&controller::getILockStatesStr     ))
+    //            .def("getILockStates",        pure_virtual(&controller::getILockStates))
+                .def_readonly("type",   &controller::controllerType, typeName_doc)
+                .def_readonly("name",   &controller::name, contName_doc          )
+                .def("getControllerType",&controller::getControllerType,getControllerType_doc)
+                .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc   )
+                .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc             )
+                .def("isVerbose",       &controller::isVerbose,isVerbose_doc                 )
+                .def("isSilent",        &controller::isSilent,isSilent_doc                   )
+                .def("debugMessagesOn", &controller::debugMessagesOn,debugMessagesOn_doc     )
+                .def("debugMessagesOff",&controller::debugMessagesOff,debugMessagesOff_doc   )
+                .def("messagesOn",      &controller::messagesOn,messagesOn_doc               )
+                .def("messagesOff",     &controller::messagesOff,messagesOff_doc             )
+                .def("silence",         &controller::silence,silence_doc                     )
+                .def("verbose",         &controller::verbose,verbose_doc                     )
+                ;
+        boost::python::type_info info9 = type_id<controller>();
+        const converter::registration* reg9  = converter::registry::query(info9);
+        /*  if the class not been registered, register it */
+        if(reg9 == nullptr)
+        {
+            cobj_def;
+        }
+        else if ((*reg9).m_to_python == nullptr)
+        {
+            cobj_def;
+        }
 
-            .def_readonly("type",   &controller::controllerType, typeName_doc)
-            .def_readonly("name",   &controller::name, contName_doc          )
-
-            .def("getControllerType",&controller::getControllerType,getControllerType_doc)
-            .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc   )
-            .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc             )
-            .def("isVerbose",       &controller::isVerbose,isVerbose_doc                 )
-            .def("isSilent",        &controller::isSilent,isSilent_doc                   )
-            .def("debugMessagesOn", &controller::debugMessagesOn,debugMessagesOn_doc     )
-            .def("debugMessagesOff",&controller::debugMessagesOff,debugMessagesOff_doc   )
-            .def("messagesOn",      &controller::messagesOn,messagesOn_doc               )
-            .def("messagesOff",     &controller::messagesOff,messagesOff_doc             )
-            .def("silence",         &controller::silence,silence_doc                     )
-            .def("verbose",         &controller::verbose,verbose_doc                     )
-            ;
+        //reg_class<controller>(py_name, py_docs, cobj_def,info9);
         //
         // expose VCbase
         /* document strings for VCbase functions */
@@ -313,12 +515,24 @@ namespace BOOST_PYTHON_INCLUDE
         const char* setDebug_doc = "Set Debug  Mode: display only debug messages, "
                                 "no messages, for all controllers in this module.";
 
-        class_<VCbase, noncopyable>("VCbase", no_init)
-            .def("setDebugMessage", &VCbase::setDebugMessage, setDebug_doc)
-            .def("setVerbose",      &VCbase::setVerbose,setVerb__doc      )
-            .def("setMessage",      &VCbase::setMessage,setMess__doc      )
-            .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
-            ;
+        class_<VCbase,noncopyable> vcbobj_def =
+            class_<VCbase, noncopyable>("VCbase", no_init)
+                .def("setDebugMessage", &VCbase::setDebugMessage, setDebug_doc)
+                .def("setVerbose",      &VCbase::setVerbose,setVerb__doc      )
+                .def("setMessage",      &VCbase::setMessage,setMess__doc      )
+                .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
+                ;
+        boost::python::type_info info10 = type_id<VCbase>();
+        const converter::registration* reg10  = converter::registry::query(info10);
+        /*  if the class not been registered, register it */
+        if(reg10 == nullptr)
+        {
+            vcbobj_def;
+        }
+        else if ((*reg10).m_to_python == nullptr)
+        {
+            vcbobj_def;
+        }
 #endif //__VC_ENUM_ONLY__
     }
 }

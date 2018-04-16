@@ -77,7 +77,7 @@ class controller : public baseObject
            This also means the destructor need not be protected
         */
         virtual double get_CA_PEND_IO_TIMEOUT() const = 0;
-        virtual void   set_CA_PEND_IO_TIMEOUT(double val) = 0;
+        virtual void   set_CA_PEND_IO_TIMEOUT(const double val) = 0;
 
 #ifdef BUILD_DLL
         boost::python::dict getILockStatesDefinition() const;
