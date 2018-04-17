@@ -7,6 +7,7 @@ using namespace HWC_ENUM;
 using cstr = const std::string;
 //
 VCmagnets::VCmagnets():
+VCbase("VCmagnets"),
 //virtual_VELA_INJ_Magnet_Controller_Obj(nullptr),
 //virtual_VELA_BA1_Magnet_Controller_Obj(nullptr),
 //virtual_VELA_BA2_Magnet_Controller_Obj(nullptr),
