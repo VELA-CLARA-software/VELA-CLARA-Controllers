@@ -22,11 +22,11 @@
 //*/
 #ifndef VC_RFPROTECTION_H_
 #define VC_RFPROTECTION_H_
-// STL
+// STL includes
 #include <string>
 #include <map>
 #include <utility>
-// HWC
+// Project includes
 #include "gunProtController.h"
 #include "rfProtStructs.h"
 #include "VCbase.h"
@@ -106,6 +106,21 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         .value("GOOD",   RF_GUN_PROT_STATUS::GOOD)
         .value("BAD",    RF_GUN_PROT_STATUS::BAD)
         ;
+    const char* RF_GUN_PROT_TYPE_doc = "RF_PROT_TYPE: a named integer"
+                    " giving the type of RF protection object";
+    enum_<rfProtStructs::RF_PROT_TYPE>("RF_PROT_TYPE",RF_GUN_PROT_TYPE_doc)
+        .value("CLARA_HRRG",RF_PROT_TYPE::CLARA_HRRG)
+        .value("VELA_LRRG",  RF_PROT_TYPE::VELA_LRRG)
+        .value("VELA_HRRG",   RF_PROT_TYPE::VELA_HRRG)
+        .value("CLARA_LRRG",    RF_PROT_TYPE::CLARA_LRRG)
+        .value("TEST",    RF_PROT_TYPE::TEST)
+        .value("NOT_KNOWN",    RF_PROT_TYPE::NOT_KNOWN)
+        .value("GENERAL",    RF_PROT_TYPE::GENERAL)
+        .value("ENABLE",    RF_PROT_TYPE::ENABLE)
+        .value("NO_MODE",    RF_PROT_TYPE::NO_MODE)
+        ;
+
+
     const char* gunProtKeyBitValues_doc = "key bit values";
     const char* gunProtKeyBits_doc      = "which bits in cmi refer to physcial keys";
     const char* protType_doc            = "RF gun protection type";
@@ -221,6 +236,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         .def("offline_Gun_Protection_Controller",
              &VCrfprot::offline_Gun_Protection_Controller,
              return_value_policy<reference_existing_object>(),oGPC_doc)
+        .def("setQuiet",         &VCbase::setQuiet)
+        .def("setVerbose",       &VCbase::setVerbose)
+        .def("setMessage",       &VCbase::setMessage)
+        .def("setDebugMessage",  &VCbase::setDebugMessage)
         ;
 }
 //______________________________________________________________________________
