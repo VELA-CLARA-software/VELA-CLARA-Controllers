@@ -254,7 +254,7 @@ screenController& VCscreens::physical_CLARA_PH1_Screen_Controller()
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
-screenController& VCscreens::getScreenController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area )
+screenController& VCscreens::getScreenController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
 {
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
         return offline_VELA_INJ_Screen_Controller();

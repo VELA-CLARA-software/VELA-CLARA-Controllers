@@ -23,7 +23,7 @@ void screenController::initialise()
 {
 //  localInterface.getScreenNames( ScreenNames );
 
-  if( localInterface.interfaceInitReport() )
+//  if( localInterface.interfaceInitReport() )
         message("screenController instantation success.");
 }
 ////________________________________________________________________________________
@@ -210,6 +210,11 @@ double screenController::getJDiff(const std::string & name)
 double screenController::getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state)
 {
     return localInterface.getDevicePosition(name, state);
+}
+//________________________________________________________________________________
+double screenController::getPosition(const std::string & name)
+{
+    return localInterface.getPosition(name);
 }
 //________________________________________________________________________________
 std::vector< screenStructs::SCREEN_STATE > screenController::getAvailableDevices(const std::string & name)
