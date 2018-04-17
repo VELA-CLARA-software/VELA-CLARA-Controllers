@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,15 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   13-04-2018
+//  FileName:    liberaLLRFController.h
+//  Description:
+//
+//
+//
+//*/
 #ifndef LASER_CONTROLLER_H_
 #define LASER_CONTROLLER_H_
 // stl
@@ -39,9 +48,15 @@ class liberaLLRFController : public controller
 {
     public:
         //liberaLLRFController();
-        liberaLLRFController(const bool show_messages,const bool show_debug_messagese,
-                       const std::string & laserConf,const bool startVirtualMachine,
-                       const bool shouldStartEPICs,const llrfStructs::LLRF_TYPE type);
+        liberaLLRFController(bool& show_messages,
+                             bool& show_debug_messagese,
+                             const std::string & config,
+                             const bool startVirtualMachine,
+                             const bool shouldStartEPICs,
+                             const llrfStructs::LLRF_TYPE type,
+                             const HWC_ENUM::CONTROLLER_TYPE c_type,
+                             const std::string& name);
+
         ~liberaLLRFController();
 
         // GETTERS
@@ -338,10 +353,10 @@ class liberaLLRFController : public controller
         bool stopKlyFwdTraceMonitor();
         bool stopKlyRevTraceMonitor();
         // pure virtual methods, so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
-        void   set_CA_PEND_IO_TIMEOUT(double val);
-        std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> getILockStates(const std::string & name);
-        std::map<VELA_ENUM::ILOCK_NUMBER, std::string> getILockStatesStr(const std::string & name);
+        double get_CA_PEND_IO_TIMEOUT()const;
+        void   set_CA_PEND_IO_TIMEOUT(const double val);
+        std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> getILockStates(const std::string & name);
+        std::map<HWC_ENUM::ILOCK_NUMBER, std::string> getILockStatesStr(const std::string & name);
         // any functions that return a map need a wrapper to convert to a python dictionary
         // (we need the functions that return std::map types when building c++ applications)
 //#ifdef BUILD_DLL

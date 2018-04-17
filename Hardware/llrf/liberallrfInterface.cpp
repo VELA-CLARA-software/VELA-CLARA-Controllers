@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -12,7 +13,14 @@
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
-// vela-clara-controllers
+//  Author:      DJS
+//  Last edit:   13-04-2018
+//  FileName:    liberallrfInterface.cpp
+//  Description:
+//
+//
+//
+//*/
 #include "liberallrfInterface.h"
 #include "configDefinitions.h"
 // stl
@@ -27,12 +35,13 @@
 //
 liberallrfInterface::liberallrfInterface(const std::string &llrfConf,
                               const bool startVirtualMachine,
-                              const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
+                              const bool& show_messages,
+                              const bool& show_debug_messages_ptr,
                               const bool shouldStartEPICs ,
                               const llrfStructs::LLRF_TYPE type
                              ):
-configReader(llrfConf,startVirtualMachine,show_messages_ptr,show_debug_messages_ptr),
-interface(show_messages_ptr,show_debug_messages_ptr),
+configReader(llrfConf,startVirtualMachine,show_messages,show_debug_messages_ptr),
+interface(show_messages,show_debug_messages_ptr),
 shouldStartEPICs(shouldStartEPICs),
 usingVirtualMachine(startVirtualMachine),
 myLLRFType(type),
@@ -121,7 +130,7 @@ void liberallrfInterface::initialise()
                 debugMessage("Starting Monitors");
                 startMonitors();
                 // The pause allows EPICS to catch up.
-                std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // MAGIC_NUMBER
+                standard_pause();
             }
             else
             {
@@ -133,6 +142,7 @@ void liberallrfInterface::initialise()
             message("!!!The liberallrfInterface received an Error while getting llrf data!!!");
         }
     }
+//    debugMessage("liberallrfInterface::initialise() FIN");
 }
 //______________________________________________________________________________
 bool liberallrfInterface::initObjects()
@@ -210,7 +220,7 @@ void liberallrfInterface::initChids()
     }
 }
 //______________________________________________________________________________
-void liberallrfInterface::addChannel(const std::string & pvRoot, llrfStructs::pvStruct & pv)
+void liberallrfInterface::addChannel(const std::string & pvRoot, llrfStructs::pvStruct& pv)
 {
     std::string s1;
     // TEMPORARY HACK FOR HIGH LEVEL llrf PARAMATERS
@@ -364,6 +374,9 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
     /* Make the below neater at some point! */
     llrfStructs::monitorStruct*ms = static_cast<llrfStructs::monitorStruct *>(args.usr);
     /* switch on the PV type, complex updates a ehandled in bespoke functions */
+
+//    ms->interface->    debugMessage("staticEntryLLRFMonitor called ");
+
     if(ms->interface->Is_TracePV(ms -> monType))
     {   //ms->interface->message("staticEntryLLRFMonitor called with TRACE PV, for ", ms->name);
         ms->interface->updateTrace(args,ms->llrfObj->trace_data.at(ms->name));
@@ -433,6 +446,8 @@ void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
                 // ERROR
         }
     }
+//        ms->interface->    debugMessage("staticEntryLLRFMonitor FIN ");
+
 }
 //____________________________________________________________________________________________
 void liberallrfInterface::updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace)
@@ -730,7 +745,7 @@ void liberallrfInterface::addToOutsideMaskTraces(llrfStructs::rf_trace_data& tra
             llrf.outside_mask_traces.back().num_traces_to_collect += (3 + llrf.num_extra_traces);// MAGIC_NUMBER
             /* ref for reading ease */
             llrfStructs::rf_trace_data& t = llrf.trace_data.at(it);
-            /*add the oldest trace 1st */
+            /* add the oldest trace 1st */
             if(t.previous_previous_trace > UTL::MINUS_ONE_INT)
             {
                 llrf.outside_mask_traces.back().traces.push_back(t.traces[ t.previous_previous_trace]);

@@ -299,8 +299,9 @@ namespace UTL
     // Not sure about this yet at all,
     // hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG
     // (its the same physical LLRF equipment)
-    const std::string VM_VELA_HRRG_LLRF_CONFIG    = "vmVELA_HRRG_LLRF.config";
+    const std::string VM_VELA_HRRG_LLRF_CONFIG = "vmVELA_HRRG_LLRF.config";
     const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
+    const std::string VELA_LRRG_LLRF_CONFIG    = "VELA_LRRG_LLRF.config";
 
     // llrf object parameters
     const std::string LLRF_MAX_AMPLITUDE = "LLRF_MAX_AMPLITUDE";
@@ -405,10 +406,6 @@ namespace UTL
 // L01 MODULATOR
     const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";
 
-
-
-
-
 // RF POWER
     const std::string PV_SUFFIX_REV   = "PV_SUFFIX_REV";
     const std::string PV_SUFFIX_FWD   = "PV_SUFFIX_FWD";
@@ -461,8 +458,6 @@ namespace UTL
     const std::string SCOPE_NAME      = "SCOPE_NAME";
     const std::string CLARASCOPE01    = "CLARASCOPE01";
     const std::string VELASCOPE02     = "VELASCOPE02";
-
-
 
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";

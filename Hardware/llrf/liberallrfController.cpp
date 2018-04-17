@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,39 +12,39 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   13-04-2018
+//  FileName:    liberaLLRFController.cpp
+//  Description:
+//
+//
+//
+//*/
 #include "liberaLLRFController.h"
 #include <fstream>
 #include <iostream>
 // stl
-liberaLLRFController::liberaLLRFController(
-    const bool show_messages,
-    const bool show_debug_messages,
-    const std::string & laserConf,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs,
-    const llrfStructs::LLRF_TYPE type):
-controller(show_messages,show_debug_messages),
-localInterface(laserConf,startVirtualMachine,&SHOW_MESSAGES,&SHOW_DEBUG_MESSAGES,shouldStartEPICs,type),
+liberaLLRFController::liberaLLRFController(bool& show_messages,
+                                           bool& show_debug_messages,
+                                           const std::string & config,
+                                           const bool startVirtualMachine,
+                                           const bool shouldStartEPICs,
+                                           const llrfStructs::LLRF_TYPE type,
+                                           const HWC_ENUM::CONTROLLER_TYPE c_type,
+                                           const std::string& name):
+controller(show_messages,show_debug_messages,c_type,name),
+localInterface(config,startVirtualMachine,SHOW_MESSAGES,SHOW_DEBUG_MESSAGES,shouldStartEPICs,type),
 shouldStartEPICs(shouldStartEPICs)
 {
-//    if(shouldStartEPICs)
-//    message("magnet controller shouldStartEPICs is true");
-//    else
-//    message("magnet controller shouldStartEPICs is false");
     initialise();
 }
-//______________________________________________________________________________
-//  __   ___ ___ ___  ___  __   __
-// / _` |__   |   |  |__  |__) /__`
-// \__> |___  |   |  |___ |  \ .__/
-//
 //______________________________________________________________________________
 liberaLLRFController::~liberaLLRFController(){}    //dtor
 //______________________________________________________________________________
 void liberaLLRFController::initialise()
 {
-    if(localInterface.interfaceInitReport(shouldStartEPICs))
+    if(localInterface.interfaceInitReport())
         message("liberaLLRFController instantiation success.");
 }
 //______________________________________________________________________________
@@ -1304,22 +1305,22 @@ bool liberaLLRFController::setNumContinuousOutsideMaskCount(const std::string& n
 #ifdef BUILD_DLL
 //______________________________________________________________________________
 //____________________________________________________________________________________________
-double liberaLLRFController::get_CA_PEND_IO_TIMEOUT()
+double liberaLLRFController::get_CA_PEND_IO_TIMEOUT() const
 {
   return localInterface.get_CA_PEND_IO_TIMEOUT();
 }
 //_____________________________________________________________________________________________
-void liberaLLRFController::set_CA_PEND_IO_TIMEOUT(double val)
+void liberaLLRFController::set_CA_PEND_IO_TIMEOUT(const double val)
 {
     localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > liberaLLRFController::getILockStates(const std::string & name)
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > liberaLLRFController::getILockStates(const std::string & name)
 {
     return localInterface.getILockStates(name);
 }
 //______________________________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string > liberaLLRFController::getILockStatesStr(const std::string & name)
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string > liberaLLRFController::getILockStatesStr(const std::string & name)
 {
     return localInterface.getILockStatesStr(name);
 }
@@ -1337,13 +1338,13 @@ std::map< VELA_ENUM::ILOCK_NUMBER, std::string > liberaLLRFController::getILockS
 ////______________________________________________________________________________
 //boost::python::dict liberaLLRFController::getMagPSUStateDefinition()
 //{
-//    std::map< VELA_ENUM::MAG_PSU_STATE,  std::string  > m;
+//    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
 //
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_OFF); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ON); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[ VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING(VELA_ENUM::MAG_PSU_STATE::MAG_PSU_NONE); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[ HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE); // ENUM_TO_STRING MACRO in velaStructs.h
 //
 //    return enumStringMapToPythonDict(m);
 //}

@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,15 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   13-04-2018
+//  FileName:    liberallrfInterface.cpp
+//  Description:
+//
+//
+//
+//*/
 #ifndef VELA_MAG_INTERFACE_H
 #define VELA_MAG_INTERFACE_H
 // djs
@@ -34,16 +43,16 @@ class liberallrfInterface : public interface
         typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
         typedef std::vector<double> vec_d;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         liberallrfInterface::liberallrfInterface();
         liberallrfInterface(const std::string &llrfConf,
-                      const bool  startVirtualMachine,
-                      const bool* show_messages_ptr,
-                      const bool* show_debug_messages_ptr,
-                      const bool  shouldStartEPICs,
-                      const llrfStructs::LLRF_TYPE type);
+                            const bool  startVirtualMachine,
+                            const bool& show_messages,
+                            const bool& show_debug_messages_ptr,
+                            const bool  shouldStartEPICs,
+                            const llrfStructs::LLRF_TYPE type);
 
         ~liberallrfInterface();
 
