@@ -2,6 +2,7 @@
 #include <iostream>
 
 VCrfmod::VCrfmod():
+VCbase("VCrfmod"),
 virtual_GUN_MOD_Controller_Obj(nullptr),
 physical_GUN_MOD_Controller_Obj(nullptr),
 virtual_L01_MOD_Controller_Obj(nullptr),
@@ -38,127 +39,130 @@ VCrfmod::~VCrfmod()
         delete offline_GUN_MOD_Controller_Obj;
                offline_GUN_MOD_Controller_Obj = nullptr;
     }
-}
-//______________________________________________________________________________
-void VCrfmod::setQuiet()
-{
-    std::cout << "VCrfmod Quiet Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = false;
-}
-//______________________________________________________________________________
-void VCrfmod::setVerbose()
-{
-    std::cout << "VCrfmod Verbose Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCrfmod::setMessage()
-{
-    std::cout << "VCrfmod Message Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = true;
-}
-//______________________________________________________________________________
-void VCrfmod::setDebugMessage()
-{
-    std::cout << "VCrfmod DebugMessage Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = false;
+    if(virtual_L01_MOD_Controller_Obj)
+    {
+        delete virtual_L01_MOD_Controller_Obj;
+               virtual_L01_MOD_Controller_Obj = nullptr;
+    }
+    if(physical_L01_MOD_Controller_Obj)
+    {
+        delete physical_L01_MOD_Controller_Obj;
+               physical_L01_MOD_Controller_Obj = nullptr;
+    }
+    if(offline_L01_MOD_Controller_Obj)
+    {
+        delete offline_L01_MOD_Controller_Obj;
+               offline_L01_MOD_Controller_Obj = nullptr;
+    }
 }
 //______________________________________________________________________________
 gunModController& VCrfmod::virtual_GUN_MOD_Controller()
 {
-    if(virtual_GUN_MOD_Controller_Obj)
-    {
-        std::cout << "virtual_GUN_MOD_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_GUN_MOD_Controller object" << std::endl;
-        virtual_GUN_MOD_Controller_Obj =
-            new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf, withVM,withEPICS);
-    }
-    return *virtual_GUN_MOD_Controller_Obj;
+    const std::string name  = "virtual_GUN_MOD_Controller";
+    return getGunController(virtual_GUN_MOD_Controller_Obj,
+                                           l01ModConf,
+                                           name,withVM,withEPICS,
+                                           HWC_ENUM::MACHINE_AREA::RF_L01);
 }
 //______________________________________________________________________________
 gunModController& VCrfmod::physical_GUN_MOD_Controller()
 {
-    if(physical_GUN_MOD_Controller_Obj)
-    {
-        std::cout << "physical_GUN_MOD_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_GUN_MOD_Controller object" << std::endl;
-        physical_GUN_MOD_Controller_Obj =
-            new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf, withoutVM,withEPICS);
-    }
-    return *physical_GUN_MOD_Controller_Obj;
+    const std::string name  = "physical_GUN_MOD_Controller";
+    return getGunController(physical_GUN_MOD_Controller_Obj,
+                                           l01ModConf,
+                                           name,withoutVM,withEPICS,
+                                           HWC_ENUM::MACHINE_AREA::RF_L01);
 }
 //______________________________________________________________________________
 gunModController& VCrfmod::offline_GUN_MOD_Controller()
 {
-    if(offline_GUN_MOD_Controller_Obj)
-    {
-        std::cout << "offline_GUN_MOD_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating offline_GUN_MOD_Controller object" << std::endl;
-        offline_GUN_MOD_Controller_Obj =
-            new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
-    }
-    return *offline_GUN_MOD_Controller_Obj;
+    const std::string name  = "offline_GUN_MOD_Controller";
+    return getGunController(offline_GUN_MOD_Controller_Obj,
+                                           l01ModConf,
+                                           name,withoutVM,withoutEPICS,
+                                           HWC_ENUM::MACHINE_AREA::RF_L01);
 }
 //______________________________________________________________________________
 l01ModController& VCrfmod::virtual_L01_MOD_Controller()
 {
-    if(virtual_L01_MOD_Controller_Obj)
-    {
-        std::cout << "virtual_L01_MOD_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating virtual_L01_MOD_Controller object" << std::endl;
-        virtual_L01_MOD_Controller_Obj =
-            new l01ModController(shouldShowMessage,shouldShowDebugMessage,l01ModConf,withVM,withEPICS);
-    }
-    return *virtual_L01_MOD_Controller_Obj;
+    const std::string name  = "virtual_L01_MOD_Controller";
+    return getL01Controller(virtual_L01_MOD_Controller_Obj,
+                                           l01ModConf,
+                                           name,withVM,withEPICS,
+                                           HWC_ENUM::MACHINE_AREA::RF_L01);
 }
 //______________________________________________________________________________
 l01ModController& VCrfmod::physical_L01_MOD_Controller()
 {
-    if(physical_L01_MOD_Controller_Obj)
-    {
-        std::cout << "physical_L01_MOD_Controller object already exists," << std::endl;
-    }
-    else
-    {
-        std::cout << "Creating physical_L01_MOD_Controller_Obj object" << std::endl;
-        physical_L01_MOD_Controller_Obj =
-            new l01ModController(shouldShowMessage,shouldShowDebugMessage,l01ModConf,withoutVM,withEPICS);
-    }
-    return *physical_L01_MOD_Controller_Obj;
+    const std::string name  = "physical_L01_MOD_Controller";
+    return getL01Controller(physical_L01_MOD_Controller_Obj,
+                                           l01ModConf,
+                                           name,withoutVM,withEPICS,
+                                           HWC_ENUM::MACHINE_AREA::RF_L01);
 }
 //______________________________________________________________________________
 l01ModController& VCrfmod::offline_L01_MOD_Controller()
 {
-    if(offline_L01_MOD_Controller_Obj)
+    const std::string name  = "offline_L01_MOD_Controller";
+    return getL01Controller(offline_L01_MOD_Controller_Obj,
+                                           l01ModConf,
+                                           name,withoutVM,withoutEPICS,
+                                           HWC_ENUM::MACHINE_AREA::RF_L01);
+}
+//______________________________________________________________________________
+l01ModController& VCrfmod::getL01Controller(l01ModController*& cont,
+                           const std::string& conf,
+                           const std::string& name,
+                           const bool shouldVM,
+                           const bool shouldEPICS,
+                           const HWC_ENUM::MACHINE_AREA myMachineArea)
+{
+    if(cont)
     {
-        std::cout << "offline_L01_MOD_Controller_Obj object already exists," << std::endl;
+        std::cout << name << " object already exists," <<std::endl;
     }
     else
     {
-        std::cout << "Creating offline_L01_MOD_Controller_Obj object" << std::endl;
-        offline_L01_MOD_Controller_Obj =
-            new l01ModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
+        std::cout << "Creating " << name << " object" <<std::endl;
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+
+        cont = new l01ModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
+
     }
-    return *offline_L01_MOD_Controller_Obj;
+    return *cont;
 }
+//______________________________________________________________________________
+gunModController& VCrfmod::getGunController(gunModController*& cont,
+                                           const std::string& conf,
+                                           const std::string& name,
+                                           const bool shouldVM,
+                                           const bool shouldEPICS,
+                                           const HWC_ENUM::MACHINE_AREA myMachineArea)
+{
+    if(cont)
+    {
+        std::cout << name << " object already exists," <<std::endl;
+    }
+    else
+    {
+        std::cout << "Creating " << name << " object" <<std::endl;
+        messageStates[cont].first  = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
 
+        cont = new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
 
-
+    }
+    return *cont;
+}
+//______________________________________________________________________________
+void VCrfmod::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
+}
 
 

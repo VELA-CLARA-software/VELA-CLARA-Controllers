@@ -1065,6 +1065,19 @@ double screenInterface::getDevicePosition(const std::string & name, const screen
     }
 }
 //___________________________________________________________________________________________________________
+double screenInterface::getPosition( const std::string & name )
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name).position;
+    }
+    else
+    {
+        message("ERROR!!!! Screen not defined in config file!!!");
+        return UTL::DUMMY_DOUBLE;
+    }
+}
+//___________________________________________________________________________________________________________
 std::vector< screenStructs::SCREEN_STATE > screenInterface::getAvailableDevices(const std::string & name)
 {
     std::vector< screenStructs::SCREEN_STATE > devices;

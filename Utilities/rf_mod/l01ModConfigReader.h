@@ -19,8 +19,8 @@
 class l01ModConfigReader : public configReader
 {
     public:
-        l01ModConfigReader(const bool* show_messages_ptr, const bool * show_debug_messages_ptr);
-        l01ModConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool * showMessages,const  bool * showDebugMessages);
+        l01ModConfigReader(const bool& show_messages_ptr, const bool& show_debug_messages_ptr);
+        l01ModConfigReader(const std::string& configFileLocation1,const bool startVirtualMachine,const bool& showMessages,const  bool& showDebugMessages);
         ~l01ModConfigReader();
 
         bool readConfig();

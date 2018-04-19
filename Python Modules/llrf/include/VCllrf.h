@@ -1,23 +1,38 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   19-03-2018
+//  FileName:    VCllrf.h
+//  Description:
+//
+//
+//*/
 #ifndef _VC_LLRF_CONTROLLER_H_
 #define _VC_LLRF_CONTROLLER_H_
-//stl
+//
 #include <string>
-// vela-clara-controllers
+//
 #include "liberaLLRFController.h"
 #include "llrfStructs.h"
-//boost
-
-
-#define MODULE_NAME VELA_CLARA_LLRF_Control
-
-#include "VCheader.h"
 //
-//#include <boost/python/detail/wrap_python.hpp>
-//#include <boost/python.hpp>
-//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-//#include <boost/python/return_value_policy.hpp>
-class VCllrf
+#define MODULE_NAME VELA_CLARA_LLRF_Control
+#include "VCheader.h"
+#include "VCbase.h"
+//______________________________________________________________________________
+class VCllrf : public VCbase
 {
         /// These VC classes could all be done more elegantly, with less copypasta
         /// however we went for expliocit functions asa quick fix
@@ -46,19 +61,11 @@ class VCllrf
         liberaLLRFController& offline_L01_LLRF_Controller();
 
 
-        liberaLLRFController& getLLRFController(VELA_ENUM::MACHINE_MODE mode, llrfStructs::LLRF_TYPE type);
-
-        // base class functions?
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
-
-        //std::string CLARA_LRRG_LLRF_CONFIG,CLARA_L01_LLRF_CONFIG,VELA_HRRG_LLRF_CONFIG;
+        liberaLLRFController& getLLRFController(HWC_ENUM::MACHINE_MODE mode, llrfStructs::LLRF_TYPE type);
 
         void killGun();
 
-        //liberaLLRFController& getliberaLLRFController(VELA_ENUM::MACHINE_MODE mode);
+        //liberaLLRFController& getliberaLLRFController(HWC_ENUM::MACHINE_MODE mode);
 
     protected:
 
@@ -68,14 +75,29 @@ class VCllrf
         liberaLLRFController* GUN_LLRF_Controller_Obj;// you can only have one of these
         liberaLLRFController* L01_LLRF_Controller_Obj;
 
-        liberaLLRFController& getController(bool shouldVM, bool shouldEPICS,llrfStructs::LLRF_TYPE llrfType);
+        liberaLLRFController& getController(liberaLLRFController*& cont,
+                                           const std::string& conf,
+                                           const std::string& name,
+                                           const bool shouldVM,
+                                           const bool shouldEPICS,
+                                           llrfStructs::LLRF_TYPE llrfType,
+                                           const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         bool isaGUN(llrfStructs::LLRF_TYPE llrfType);
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
-        const std::string CLARA_LRRG_LLRF_CONFIG,CLARA_L01_LLRF_CONFIG,VELA_HRRG_LLRF_CONFIG,CLARA_HRRG_LLRF_CONFIG;
+        const std::string CLARA_LRRG_LLRF_CONFIG, VELA_HRRG_LLRF_CONFIG,
+                          CLARA_HRRG_LLRF_CONFIG, VELA_LRRG_LLRF_CONFIG,
+                          CLARA_L01_LLRF_CONFIG;
 
+        /*
+            map of showmessage showdebugmessage states
+            pointers to these bools are passed down the class
+            heirarchy
+        */
+        std::map<const liberaLLRFController*, std::pair<bool,bool>> messageStates;
+
+        void updateMessageStates();
 };
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
 /// Create a load of different function pointers and use them in the bindings
@@ -150,7 +172,7 @@ void(liberaLLRFController::*setKeepRollingAverageNoReset_1)(cstr& name, cbol val
 void(liberaLLRFController::*setKeepRollingAverageNoReset_2)(cbol value) = &liberaLLRFController::setKeepRollingAverageNoReset;
 
 
-
+//______________________________________________________________________________
 using namespace boost::python;
 using namespace llrfStructs; // !!!!
 BOOST_PYTHON_MODULE(MODULE_NAME)
@@ -164,7 +186,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
-    enum_<llrfStructs::LLRF_PV_TYPE>("LLRF_PV_TYPE")
+    enum_<LLRF_PV_TYPE>("LLRF_PV_TYPE")
         .value("LIB_LOCK",   LLRF_PV_TYPE::LIB_RF_OUTPUT)
         .value("LIB_AMP_FF", LLRF_PV_TYPE::LIB_AMP_FF)
         .value("LIB_AMP_SP", LLRF_PV_TYPE::LIB_AMP_SP)
@@ -194,7 +216,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("PHI_DEG", LLRF_PV_TYPE::PHI_DEG)
         .value("UNKNOWN", LLRF_PV_TYPE::UNKNOWN)
         ;
-    enum_<llrfStructs::LLRF_TYPE>("LLRF_TYPE")
+    enum_<LLRF_TYPE>("LLRF_TYPE")
         .value("CLARA_HRRG",LLRF_TYPE::CLARA_HRRG)
         .value("CLARA_LRRG",LLRF_TYPE::CLARA_LRRG)
         .value("VELA_HRRG", LLRF_TYPE::VELA_HRRG)
@@ -202,14 +224,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("L01", LLRF_TYPE::L01)
         .value("UNKNOWN_TYPE", LLRF_TYPE::UNKNOWN_TYPE)
         ;
-    enum_<llrfStructs::TRIG>("TRIG")
+    enum_<TRIG>("TRIG")
         .value("OFF",TRIG::OFF)
         .value("EXTERNAL",TRIG::EXTERNAL)
         .value("INTERNAL", TRIG::INTERNAL)
         .value("UNKNOWN_TRIG", TRIG::UNKNOWN_TRIG)
         ;
 
-    enum_<llrfStructs::LLRF_SCAN>("LLRF_SCAN")
+    enum_<LLRF_SCAN>("LLRF_SCAN")
         .value("PASSIVE",LLRF_SCAN::PASSIVE)
         .value("EVENT",LLRF_SCAN::EVENT)
         .value("IO_INTR", LLRF_SCAN::IO_INTR)
@@ -226,23 +248,81 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("first",  &std::pair<std::string, double>::first)
         .def_readonly("second", &std::pair<std::string, double>::second)
         ;
+//______________________________________________________________________________
+    const char* rf_trace_ds = "rf_trace object holds the data from a LLRF "
+                              "power/phase trace also holds timestamps, Event "
+                              "IDs and indices used to calclate means";
+    const char* mean_start_index_ds = "start index for mean calculation.";
+    const char* mean_stop_index_ds = "stop index for mean calculation.";
+    const char* EVID_timeStr_ds = "Trace EVID time as a string.";
+    const char* EVID_time_ds = "Trace EVID time in ns since the epoch.";
+    const char* timeStr_ds = "Epics TimeStamp ns since epoch (string).";
+    const char* value_ds = "trace values.";
+    const char* time_ds = "Epics TimeStamp ns since epoch (double).";
+    const char* EVID_ds = "Trace EVID (string).";
+    const char* mean_ds = "mean value between mean_start_index and "
+                          "mean_stop_index.";
 
-
-    class_<llrfStructs::rf_trace,boost::noncopyable>
-        ("rf_trace","rf_trace Doc String", no_init)
-        .def_readonly("value",    &rf_trace::value  ,"trace values")
-        .def_readonly("time",     &rf_trace::time   ,"Epics TimeStamp ns since epoch (double)")
-        .def_readonly("timeStr",  &rf_trace::timeStr,"Epics TimeStamp ns since epoch (string)")
-        .def_readonly("EVID",     &rf_trace::EVID   ,"Trace EVID string")
-        .def_readonly("EVID_time",&rf_trace::EVID_time   ,"Trace EVID time in ns since the epoch")
-        .def_readonly("EVID_timeStr",&rf_trace::EVID_timeStr   ,"Trace EVID time as a string")
-        .def_readonly("mean_start_index",&rf_trace::mean_start_index,"start index for mean trace calculation.")
-        .def_readonly("mean_stop_index", &rf_trace::mean_stop_index,"stop index for mean trace calculation.")
-        .def_readonly("mean", &rf_trace::mean,"mean pwoer between mean_start_index and mean_stop_index.")
+    class_<rf_trace,boost::noncopyable>("rf_trace",rf_trace_ds, no_init)
+        .def_readonly("mean_start_index",&rf_trace::mean_start_index,
+                      mean_start_index_ds)
+        .def_readonly("mean_stop_index", &rf_trace::mean_stop_index,
+                      mean_stop_index_ds)
+        .def_readonly("EVID_timeStr",    &rf_trace::EVID_timeStr,
+                      EVID_timeStr_ds)
+        .def_readonly("EVID_time",&rf_trace::EVID_time,
+                      EVID_time_ds)
+        .def_readonly("timeStr",  &rf_trace::timeStr,
+                      timeStr_ds)
+        .def_readonly("value",    &rf_trace::value,
+                      value_ds)
+        .def_readonly("time",     &rf_trace::time,
+                      time_ds)
+        .def_readonly("EVID",     &rf_trace::EVID,
+                      EVID_ds)
+        .def_readonly("mean",     &rf_trace::mean,
+                      mean_ds)
         ;
+//______________________________________________________________________________
+        const char* name_ds      = "trace name";
+        const char* check_mask_ds      = "should check mask" ;
+        const char* hi_mask_set_ds     = "is hi mask set";
+        const char* low_mask_set_ds    = "is low mask set";
+        const char* keep_rolling_average_ds= "should keep rolling average";
+        const char* keep_next_trace_ds = "should keep next trace";
+        const char* has_average_ds     = "has the trace calcualted an an average yet?";
+        const char* buffersize_ds      = "number of traces in buffer";
+        const char* trace_size_ds      = "number of elements in a trace";
+        const char* average_size_ds    = "number of traces to average";
+        const char* high_mask_ds       = "high mask values";
+        const char* low_mask_ds        = "low mask values";
+        const char* rolling_average_ds = "rolling average values";
+        const char* rolling_sum_ds     = "rolling sum values";
+        const char* rolling_min_ds     = "rolling max values";
+        const char* rolling_max_ds     = "rolling min values";
+        const char* rolling_sd_ds      = "rolling standard deviation values";
+        const char* traces_ds          = "all trace data in buffer of rf_trace objects (stored in c++ as std::vector<rf_trace> does this work?)";
+//        const char* mean_start_index_ds= "start index for mean trace calculation.";
+//        const char* mean_stop_index_ds = "stop index for mean trace calculation.";
+//        const char* EVID_ds              = "Latest EVID for this trace.";
+        const char* shot_ds     ="shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)";
+        //maybe have a ferernce to the latest trace??
+        const char* latest_trace_index_ds = "index for trace last updated.";
+        const char* current_trace_ds = "index for current trace.";
+        const char* amp_drop_value_ds = "(when enabled) amp value to set on detecting outside mask trace.";
+        const char* drop_amp_on_breakdown_ds = "If the amplitude should automatically be changed on detecting an outside mask trace.";
+        const char* mask_floor_ds = "Mask floor level.";
+        const char* num_continuous_outside_mask_count_ds = "number of continuous outside mask.";
+        const char* outside_mask_index_ds = "index of elmenet that caused outside mask event.";
+        const char* latest_max_ds = "maximum value of latest trace.";
+        const char* scan_ds = "SCAN value.";
+        const char* endInfiniteMask_Trace_Set_ds = "is endInfiniteMask_Trace_Set?.";
+        const char* mask_end_by_power_index_ds ="value mask_end_by_power_index.";
+        const char* endMaskTrace_Bound_ds ="value mask_end_by_power_index.";
+
 
     // rf_trace_data object, contains  struct to be exposed, used when returning a liberallrfObject reference
-    class_<llrfStructs::rf_trace_data,boost::noncopyable>
+    class_<rf_trace_data,boost::noncopyable>
         ("rf_trace_data","rf_trace_data object Doc-String", no_init)
         .def_readonly("name",      &rf_trace_data::name,"tarce name")
         .def_readonly("check_mask",      &rf_trace_data::check_mask,"should check mask")
@@ -254,7 +334,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("buffersize",      &rf_trace_data::buffersize,"number of traces in buffer")
         .def_readonly("trace_size",      &rf_trace_data::trace_size,"number of elements in a trace")
         .def_readonly("average_size",    &rf_trace_data::average_size,"number of traces to average")
-//        .def_readonly("rolling_sum_counter", &rf_trace_data::rolling_sum_counter,"Total number of traces that have been added to the rolling sum (NOT the number of traces IN the rolling sum)")
         .def_readonly("high_mask",       &rf_trace_data::high_mask,"high mask values")
         .def_readonly("low_mask",        &rf_trace_data::low_mask,"low mask values")
         .def_readonly("rolling_average", &rf_trace_data::rolling_average,"rolling average values")
@@ -262,7 +341,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("rolling_min",     &rf_trace_data::rolling_min,"rolling max values")
         .def_readonly("rolling_max",     &rf_trace_data::rolling_max,"rolling min values")
         .def_readonly("rolling_sd",      &rf_trace_data::rolling_sd,"rolling standard deviation values")
-        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects (stored in c++ as std::vector<llrfStructs::rf_trace> does this work?)")
+        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects (stored in c++ as std::vector<rf_trace> does this work?)")
         .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
         .def_readonly("mean_stop_index", &rf_trace_data::mean_stop_index,"stop index for mean trace calculation.")
         .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
@@ -270,12 +349,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         //maybe have a ferernce to the latest trace??
         .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"index for trace last updated.")
         .def_readonly("current_trace",&rf_trace_data::current_trace,"index for current trace.")
-
         .def_readonly("amp_drop_value", &rf_trace_data::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
         .def_readonly("drop_amp_on_breakdown", &rf_trace_data::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         .def_readonly("mask_floor", &rf_trace_data::mask_floor,"Mask floor level.")
         .def_readonly("num_continuous_outside_mask_count", &rf_trace_data::num_continuous_outside_mask_count,"number of continuous outside mask.")
-//        .def_readonly("add_next_trace", &rf_trace_data::add_next_trace,"number of traces still to add to outside mask traces.")
         .def_readonly("outside_mask_index", &rf_trace_data::outside_mask_index,"index of elmenet that caused outside mask event.")
         .def_readonly("latest_max", &rf_trace_data::latest_max,"maximum value of latest trace.")
         .def_readonly("scan", &rf_trace_data::scan,"SCAN value.")
@@ -285,14 +362,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
-    class_< std::map<std::string, llrfStructs::rf_trace_data> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)
+    class_< std::map<std::string, rf_trace_data> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)
         .def(map_indexing_suite<std::map<std::string,rf_trace_data>>())
         ;
 
 
     // The map with all the TRACE data (keyed by trace name from conifg file
-    class_< std::vector<llrfStructs::rf_trace>>("A vector of rf_trace structs ", no_init)
-        .def(vector_indexing_suite< std::vector<llrfStructs::rf_trace> >())
+    class_< std::vector<rf_trace>>("A vector of rf_trace structs ", no_init)
+        .def(vector_indexing_suite< std::vector<rf_trace> >())
         ;
 
     // outside_mask_trace is a sturct that holds flagged traces...
@@ -642,7 +719,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ;
 
     // The main class that creates all the controller objects
-    class_<VCllrf,boost::noncopyable> ("init")
+    class_<VCllrf,bases<VCbase>,boost::noncopyable> ("init")
         .def("virtual_CLARA_LRRG_LLRF_Controller", &VCllrf::virtual_CLARA_LRRG_LLRF_Controller,
              return_value_policy<reference_existing_object>())
         .def("physical_CLARA_LRRG_LLRF_Controller", &VCllrf::physical_CLARA_LRRG_LLRF_Controller,
@@ -674,10 +751,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setVerbose",       &VCllrf::setVerbose)
         .def("setMessage",       &VCllrf::setMessage)
         .def("setDebugMessage",  &VCllrf::setDebugMessage)
-
-        //.def_readwrite("CLARA_LRRG_LLRF_CONFIG", &VCllrf::CLARA_LRRG_LLRF_CONFIG)
-        //.def_readwrite("CLARA_L01_LLRF_CONFIG",  &VCllrf::CLARA_L01_LLRF_CONFIG)
-        //.def_readwrite("VELA_HRRG_LLRF_CONFIG",  &VCllrf::VELA_HRRG_LLRF_CONFIG)
         ;
 }
 

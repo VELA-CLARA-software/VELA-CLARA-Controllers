@@ -157,7 +157,7 @@ boost::python::dict controller::getILockStatesDefinition() const
     using namespace HWC_ENUM;
     std::map<ILOCK_STATE, std::string> m;
     m[ILOCK_STATE::ILOCK_GOOD] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_GOOD);
-    m[ILOCK_STATE::ILOCK_BAD ] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_BAD);
+    m[ILOCK_STATE::ILOCK_BAD] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_BAD);
     m[ILOCK_STATE::ILOCK_ERROR] = ENUM_TO_STRING(ILOCK_STATE::ILOCK_ERROR);
     return enumStringMapToPythonDict(m);
 }

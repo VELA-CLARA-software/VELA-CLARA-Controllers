@@ -51,6 +51,7 @@ class beamPositionMonitorInterface : public interface
         double getX( const std::string & bpm );
         double getY( const std::string & bpm );
         double getQ( const std::string & bpm );
+        double getPosition( const std::string & bpm );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
         const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );

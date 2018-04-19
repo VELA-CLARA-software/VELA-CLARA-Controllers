@@ -11,17 +11,13 @@
 #define MODULE_NAME VELA_CLARA_RF_Modulator_Control
 
 #include "VCheader.h"
+#include "VCbase.h"
 
-class VCrfmod : public baseObject
+class VCrfmod : public VCbase
 {
     public:
         VCrfmod();
         ~VCrfmod();
-
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
 
         gunModController& virtual_GUN_MOD_Controller();
         gunModController& physical_GUN_MOD_Controller();
@@ -47,6 +43,27 @@ class VCrfmod : public baseObject
         bool  shouldShowDebugMessage, shouldShowMessage;
         const std::string gunModConf;
         const std::string l01ModConf;
+        l01ModController& getL01Controller(l01ModController*& cont,
+                           const std::string& conf,
+                           const std::string& name,
+                           const bool shouldVM,
+                           const bool shouldEPICS,
+                           const HWC_ENUM::MACHINE_AREA myMachineArea);
+        gunModController& getGunController(gunModController*& cont,
+                           const std::string& conf,
+                           const std::string& name,
+                           const bool shouldVM,
+                           const bool shouldEPICS,
+                           const HWC_ENUM::MACHINE_AREA myMachineArea);
+        /*
+            map of showmessage showdebugmessage states
+            pointers to these bools are passed down the class
+            heirarchy
+        */
+        std::map<const controller*, std::pair<bool,bool>> messageStates;
+
+        void VCrfmod::updateMessageStates();
+
 };
 //
 using namespace boost::python;
@@ -109,8 +126,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("isErrorStateGood",&gunModController::isErrorStateGood,"Is the error state in GOOD")
         .def("isWarmedUp",&gunModController::isWarmedUp,"")
         .def("isNotWarmedUp",&gunModController::isNotWarmedUp,"")
+        .def("waitForModState",&gunModController::waitForModState,"")
         .def("isErrorStateGood",&gunModController::isErrorStateGood,"")
-        .def("isInTrig",&gunModController::isInTrig,"")
+        .def("isInRFOn",&gunModController::isInRFOn,"")
         .def("isInHVOn",&gunModController::isInHVOn,"")
         .def("isInStandby",&gunModController::isInStandby,"")
         .def("isInOff",&gunModController::isInOff,"")
@@ -118,7 +136,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("resetAndWait",&gunModController::resetAndWait,"")
         .def("getMainState",&gunModController::getMainState,"")
         .def("getErrorState",&gunModController::getErrorState,"")
-        .def("waitForModState",&gunModController::waitForModState,"")
+        .def("setOff",&gunModController::setOff,"")
+        .def("setStandby",&gunModController::setStandby,"")
+        .def("setHVOn",&gunModController::setHVOn,"")
+        .def("setRFOn",&gunModController::setRFOn,"")
         ;
 
     enum_<rfModStructs::GUN_MOD_STATE>("GUN_MOD_STATE","GUN_MOD_STATE: a named integer giving the state of the GUN Modulator")
@@ -130,12 +151,12 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("STANDBY_REQUEST",    rfModStructs::GUN_MOD_STATE::STANDBY_REQUEST)
         .value("STANDBY",            rfModStructs::GUN_MOD_STATE::STANDBY)
         .value("HV_OFF_REQUEST",     rfModStructs::GUN_MOD_STATE::HV_OFF_REQUEST)
-        .value("TRIGGER_INTERLOCK",  rfModStructs::GUN_MOD_STATE::TRIGGER_INTERLOCK)
+        .value("RF_ON_INTERLOCK",    rfModStructs::GUN_MOD_STATE::RF_ON_INTERLOCK)
         .value("HV_REQUEST",         rfModStructs::GUN_MOD_STATE::HV_REQUEST)
         .value("HV_ON",              rfModStructs::GUN_MOD_STATE::HV_ON)
-        .value("TRIG_OFF_REQUEST",   rfModStructs::GUN_MOD_STATE::TRIG_OFF_REQUEST)
-        .value("TRIG_REQUEST",       rfModStructs::GUN_MOD_STATE::TRIG_REQUEST)
-        .value("TRIG",               rfModStructs::GUN_MOD_STATE::TRIG)
+        .value("RF_OFF_REQUEST",     rfModStructs::GUN_MOD_STATE::RF_OFF_REQUEST)
+        .value("RF_ON_REQUEST",      rfModStructs::GUN_MOD_STATE::RF_ON_REQUEST)
+        .value("RF_ON",               rfModStructs::GUN_MOD_STATE::RF_ON)
         .value("UNKNOWN_STATE",      rfModStructs::GUN_MOD_STATE::UNKNOWN_STATE)
         ;
 

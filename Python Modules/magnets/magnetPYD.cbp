@@ -74,6 +74,7 @@
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/pilaser" />
 					<Add directory="../../Structs/magnets" />
+					<Add directory="../../Utilities/magnets" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -103,11 +104,13 @@
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/dburt.cpp" />
-		<Unit filename="../../Utilities/dburt.h" />
 		<Unit filename="../../Utilities/dburtDefinitions.h" />
-		<Unit filename="../../Utilities/magnetConfigReader.cpp" />
-		<Unit filename="../../Utilities/magnetConfigReader.h" />
+		<Unit filename="../../Utilities/magnets/dburt.cpp" />
+		<Unit filename="../../Utilities/magnets/dburt.h" />
+		<Unit filename="../../Utilities/magnets/dburtDefinitions.cpp" />
+		<Unit filename="../../Utilities/magnets/dburtDefinitions.h" />
+		<Unit filename="../../Utilities/magnets/magnetConfigReader.cpp" />
+		<Unit filename="../../Utilities/magnets/magnetConfigReader.h" />
 		<Unit filename="include/VCmagnets.h" />
 		<Unit filename="src/VCmagnets.cpp" />
 		<Extensions>

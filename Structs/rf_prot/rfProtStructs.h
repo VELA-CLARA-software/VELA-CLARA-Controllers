@@ -46,15 +46,14 @@ namespace rfProtStructs
                                         )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_TYPE, (CLARA_HRRG)
-
-                                                          (VELA_LRRG)
-                                                          (VELA_HRRG)
-                                                          (CLARA_LRRG)
-                                                          (TEST)
-                                                          (NOT_KNOWN)
-                                                          (GENERAL)
-                                                          (ENABLE)
-                                                          (NO_MODE)
+                                                      (VELA_LRRG)
+                                                      (VELA_HRRG)
+                                                      (CLARA_LRRG)
+                                                      (TEST)
+                                                      (NOT_KNOWN)
+                                                      (GENERAL)
+                                                      (ENABLE)
+                                                      (NO_MODE)
                                         )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)

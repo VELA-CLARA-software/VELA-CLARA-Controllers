@@ -12,15 +12,15 @@
 #include <algorithm>
 #include <ctype.h>
 
-gunModConfigReader::gunModConfigReader(const bool* show_messages_ptr, const  bool * show_debug_messages_ptr )
+gunModConfigReader::gunModConfigReader(const bool& show_messages_ptr, const  bool& show_debug_messages_ptr )
 : configReader(UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr)
 {
 }
 //______________________________________________________________________________
 gunModConfigReader::gunModConfigReader(const std::string& configFileLocation1,
                                        const bool startVirtualMachine,
-                                       const bool* show_messages_ptr,
-                                       const bool * show_debug_messages_ptr ):
+                                       const bool& show_messages_ptr,
+                                       const bool& show_debug_messages_ptr ):
 configReader(configFileLocation1, show_messages_ptr, show_debug_messages_ptr)
 {
 }
@@ -198,16 +198,10 @@ void gunModConfigReader::addToPVStruct(std::vector<rfModStructs::pvStruct>& pvSt
         pvStruct_v.push_back(rfModStructs::pvStruct());    /// Any way to avoid the ladders?
         pvStruct_v.back().pvSuffix = keyVal[1];
         //GUN  Modulator COMMANDS
-        if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_RESET )
+        if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_RESET)
         {
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::RESET;
         }
-        else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAIN_STATE_SET )
-        {
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_SET;
-        }
-
-        // MAIN_STATE and ERROR STATE reads
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_SVAL)
         {
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR;
@@ -216,9 +210,13 @@ void gunModConfigReader::addToPVStruct(std::vector<rfModStructs::pvStruct>& pvSt
         {
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ;
         }
-        else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_STATE_READ_STRING)
+        else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_STATE_SET)
         {
-            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_READ_STRING;
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_SET;
+        }
+        else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAIN_STATE_READ)// read value of the requested state
+        {
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::STATE_SET_READ;
         }
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_WARMUPT)
         {
@@ -246,9 +244,6 @@ void gunModConfigReader::addToPVStruct(std::vector<rfModStructs::pvStruct>& pvSt
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS3_VOLT_READ;
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_MAGPS4_VOLT_READ)
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::MAGPS4_VOLT_READ;
-
-
-
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS1_CURR_READ)
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS1_CURR_READ;
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS2_CURR_READ)
@@ -261,8 +256,6 @@ void gunModConfigReader::addToPVStruct(std::vector<rfModStructs::pvStruct>& pvSt
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS2_VOLT_READ;
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_HVPS3_VOLT_READ)
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::HVPS3_VOLT_READ;
-
-
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ILOCK1)
         {
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR;

@@ -33,14 +33,14 @@ class gunModInterface : public interface
         typedef std::vector<bool> vec_b;
         typedef std::vector< std::string > vec_s;
         typedef std::vector<double> vec_d;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         gunModInterface::gunModInterface();
         gunModInterface(const std::string &pilaserConf,
                          const bool startVirtualMachine,
-                         const bool* show_messages_ptr,
-                         const bool* show_debug_messages_ptr,
+                         const bool& show_messages_ptr,
+                         const bool& show_debug_messages_ptr,
                          const bool shouldStartEPICs);
 
         ~gunModInterface();
@@ -50,7 +50,7 @@ class gunModInterface : public interface
         bool isErrorStateGood() const;
         bool isWarmedUp() const;
         bool isNotWarmedUp() const;
-        bool isInTrig() const;
+        bool isInRFOn() const;
         bool isInHVOn() const;
         bool isInStandby() const;
         bool isInOff() const;
@@ -67,9 +67,15 @@ class gunModInterface : public interface
         IlockMap1 getILockStates(const std::string & name  ){IlockMap1 r;return r;}
         IlockMap2 getILockStatesStr(const std::string & name){IlockMap2 r;return r;}
 
+        bool setOff() const;
+        bool setStandby() const;
+        bool setHVOn() const;
+        bool setRFOn() const;
+        bool setModState(const rfModStructs::GUN_MOD_STATE_SET v)const;
+
     private:
         // MOVE TO BASE CLASS
-        const bool shouldStartEPICs;
+        //const bool shouldStartEPICs;
         bool allChidsInitialised;
 
         const std::string CURR,VOLT;
@@ -83,7 +89,7 @@ class gunModInterface : public interface
         void updateMainState(const event_handler_args& args);
         void updateWarmUpTime(const event_handler_args& args);
         void updateHexString(const event_handler_args& args);
-        void updateStateReadString(const event_handler_args& args);
+        void updateStateSetRead(const event_handler_args& args);
         void updateErrorState();
 
         void updateCtRead(const event_handler_args& args);

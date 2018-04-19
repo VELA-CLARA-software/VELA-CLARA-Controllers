@@ -57,6 +57,7 @@ class beamPositionMonitorController : public controller
         double getX( const std::string & bpm );
         double getY( const std::string & bpm );
         double getQ( const std::string & bpm );
+        double getPosition( const std::string & bpm );
         double getXFromPV( const std::string & bpm );
         double getYFromPV( const std::string & bpm );
         double getBPMResolution( const std::string & name );

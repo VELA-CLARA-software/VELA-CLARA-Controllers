@@ -32,9 +32,12 @@ class vacuumValveController : public controller
         /// we have overloaded constructors to specify config-file location
 
         vacuumValveController();// const bool show_messages = true, const bool show_debug_messages = true );
-        vacuumValveController( const std::string & configFileLocation, const bool show_messages,
-                                       const bool show_debug_messages, const bool shouldStartEPICS,
-                                       const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea );
+        vacuumValveController( const std::string & configFileLocation,
+                               bool& show_messages,
+                               bool& show_debug_messages,
+                               const bool shouldStartEPICs,
+                               const bool startVirtualMachine,
+                               const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~vacuumValveController();
 
         void openVacValve( const std::string & vacValveName );
@@ -47,10 +50,10 @@ class vacuumValveController : public controller
 
         /// write a method that returns string version of enums using ENUM_TO_STRING
 
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT( double val );
 
-        VELA_ENUM::VALVE_STATE getVacValveState( const std::string & vacValveName );
+        vacuumValveStructs::VALVE_STATE getVacValveState( const std::string & vacValveName );
         std::string getVacValveStateStr( const std::string & name );
 
         const vacuumValveStructs::vacValveObject& getVacValveObjConstRef( const std::string & vacValveName);
@@ -88,8 +91,8 @@ class vacuumValveController : public controller
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
         /// write a method that returns string version of enums using ENUM_TO_STRING
 
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & objName );
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > getILockStates( const std::string & name )const;
+        std::map< HWC_ENUM::ILOCK_NUMBER, std::string > getILockStatesStr( const std::string & objName )const;
 
     protected:
     private:
@@ -100,8 +103,8 @@ class vacuumValveController : public controller
 
         vacuumValveInterface localInterface;
 
-        bool shouldStartEPICS;
-        const VELA_ENUM::MACHINE_AREA machineArea;
+        bool shouldStartEPICs;
+        const HWC_ENUM::MACHINE_AREA machineArea;
 
         std::vector< std::string > vacValveNames;
 };

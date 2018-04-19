@@ -122,6 +122,7 @@ namespace screenStructs
         double            actPOSH, actPOSV, actPOSP;
         double            jDiffH, jDiffV;
         bool              hMoving, vMoving, pMoving;
+        double            position;
         DRIVER_STATE      hDriverState, vDriverState;
         std::map< SCREEN_STATE, bool >             elementExists;         // holds if an element exists on this cassette(from config)
         std::map< SCREEN_STATE, DRIVER_DIRECTION > elementDirection;

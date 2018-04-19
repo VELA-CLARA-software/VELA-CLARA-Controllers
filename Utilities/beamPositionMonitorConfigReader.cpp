@@ -144,6 +144,10 @@ void beamPositionMonitorConfigReader::addToBPMDataObjectsV1( const std::vector<s
     {
         bpmDataObjects.back().yn = getNumD( keyVal[ 1 ] );
     }
+    else if( keyVal[0] == UTL::POSITION )
+    {
+        bpmDataObjects.back().position = getNumD( keyVal[ 1 ] );
+    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorConfigReader::addToPVStruct( std::vector< beamPositionMonitorStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal )

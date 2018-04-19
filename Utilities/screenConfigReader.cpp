@@ -415,6 +415,10 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     {
         scrObjects.back().devicePositions[ screenStructs::SCREEN_STATE::H_APT_3 ] = getNumD(keyVal[1]);
     }
+    else if( keyVal[0] == UTL::POSITION )
+    {
+        scrObjects.back().position = getNumD(keyVal[1]);
+    }
 }
 ////______________________________________________________________________________________________________
 //void screenConfigReader::setCassetteElementExists( screenStructs::screenCassette & cas, const std::string & element )

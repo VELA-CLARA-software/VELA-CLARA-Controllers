@@ -458,7 +458,7 @@ namespace llrfStructs
         std::vector<outside_mask_trace> outside_mask_traces;
         std::vector<std::string> outside_mask_trace_name;
         rf_trace time_vector;
-        std::map<VELA_ENUM::ILOCK_NUMBER,VELA_ENUM::iLockPVStruct> iLockPVStructs;
+        std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct> iLockPVStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvMonStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvComStructs;
     };

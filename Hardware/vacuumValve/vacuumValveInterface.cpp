@@ -21,12 +21,15 @@
 #include <chrono>
 #include <thread>
 
-vacuumValveInterface::vacuumValveInterface( const std::string & configFileLocation, const bool* show_messages_ptr,
-                                                            const bool * show_debug_messages_ptr,   const bool shouldStartEPICS,
-                                                            const bool startVirtualMachine, const VELA_ENUM::MACHINE_AREA myMachineArea ):
+vacuumValveInterface::vacuumValveInterface( const std::string & configFileLocation,
+                                            const bool& show_messages_ptr,
+                                            const bool& show_debug_messages_ptr,
+                                            const bool shouldStartEPICs,
+                                            const bool startVirtualMachine,
+                                            const HWC_ENUM::MACHINE_AREA myMachineArea ):
 configReader( configFileLocation, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine ),
-interface( show_messages_ptr, show_debug_messages_ptr ),
-shouldStartEPICS( shouldStartEPICS ),
+interface( show_messages_ptr, show_debug_messages_ptr, shouldStartEPICs ),
+shouldStartEPICs( shouldStartEPICs ),
 startVM( startVirtualMachine ),
 machineArea( myMachineArea ),
 dummyname("DUMMY")
@@ -72,7 +75,7 @@ void vacuumValveInterface::initialise( )
         if( getDataSuccess )
         {
             /// subscribe to the channel ids
-            if( shouldStartEPICS )
+            if( shouldStartEPICs )
             {
             initVacValveChids();
 
@@ -222,17 +225,17 @@ void vacuumValveInterface::updateValveState( vacuumValveStructs::monitorStruct *
     {
         case 0:
             {
-                obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_CLOSED;
+                obj->vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_CLOSED;
                 break;
             }
         case 1:
             {
-                obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_OPEN;
+                obj->vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_OPEN;
                 break;
             }
         default:
             {
-                obj->vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+                obj->vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_ERROR;
             }
     }
     ms->interface->debugMessage( obj->name ," vacValveState = ", ENUM_TO_STRING(obj->vacValveState) );
@@ -249,15 +252,15 @@ void vacuumValveInterface::updateValveState( vacuumValveStructs::monitorStruct *
 //
 //    if( *(unsigned short*)args.dbr == 0 )
 //    {
-//        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_CLOSED;
+//        ms.vacValveObj -> vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_CLOSED;
 //    }
 //    else if( *(unsigned short*)args.dbr == 1 )
 //    {
-//        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_OPEN;
+//        ms.vacValveObj -> vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_OPEN;
 //    }
 //    else
 //    {
-//        ms.vacValveObj -> vacValveState = VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+//        ms.vacValveObj -> vacValveState = vacuumValveStructs::VALVE_STATE::VALVE_ERROR;
 //    }
 //
 //    /// make debug messages easier to understand by using ENUM_TO_STRING
@@ -337,7 +340,7 @@ bool vacuumValveInterface::isOpen( const std::string & vacValve )
     if( entryExists2( vacValve, true ) )
     {
         message(ENUM_TO_STRING(allVacValveData[ vacValve ].vacValveState));
-        if( allVacValveData[ vacValve ].vacValveState == VELA_ENUM::VALVE_STATE::VALVE_OPEN )
+        if( allVacValveData[ vacValve ].vacValveState == vacuumValveStructs::VALVE_STATE::VALVE_OPEN )
         {
             ret = true;
             message("Valve is open");
@@ -362,7 +365,7 @@ bool vacuumValveInterface::isClosed( const std::string & vacValve )
     if( entryExists2( vacValve, true ) )
     {
         message(ENUM_TO_STRING(allVacValveData[ vacValve ].vacValveState));
-        if( allVacValveData[ vacValve ].vacValveState == VELA_ENUM::VALVE_STATE::VALVE_CLOSED )
+        if( allVacValveData[ vacValve ].vacValveState == vacuumValveStructs::VALVE_STATE::VALVE_CLOSED )
         {
             ret = true;
             message("Valve is closed");
@@ -405,32 +408,32 @@ vacuumValveStructs::vacValveObject vacuumValveInterface::getVacValveObject( cons
         s << "ERROR!!! " << name << " DOES NOT EXIST";
         r.name = s.str();
         r.pvRoot = s.str();
-        r.vacValveState =  VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+        r.vacValveState =  vacuumValveStructs::VALVE_STATE::VALVE_ERROR;
     }
     return r;
 }
 //______________________________________________________________________________
-VELA_ENUM::VALVE_STATE vacuumValveInterface::getVacValveState( const  std::string & objName )
+vacuumValveStructs::VALVE_STATE vacuumValveInterface::getVacValveState( const  std::string & objName )
 {
-    VELA_ENUM::VALVE_STATE r =  VELA_ENUM::VALVE_STATE::VALVE_ERROR;
+    vacuumValveStructs::VALVE_STATE r =  vacuumValveStructs::VALVE_STATE::VALVE_ERROR;
     auto iter = allVacValveData.find( objName );
     if (iter != allVacValveData.end() )
         r = iter -> second.vacValveState;
     return r;
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > vacuumValveInterface::getILockStates( const std::string & objName )
+std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > vacuumValveInterface::getILockStates( const std::string & objName )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > r;
     auto iter = allVacValveData.find( objName );
     if( iter != allVacValveData.end() )
         r = iter -> second.iLockStates;
     return r;
 }
 //______________________________________________________________________________
-std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  vacuumValveInterface::getILockStatesStr( const std::string & name )
+std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >  vacuumValveInterface::getILockStatesStr( const std::string & name )const
 {
-    std::map< VELA_ENUM::ILOCK_NUMBER, std::string  > r;
+    std::map< HWC_ENUM::ILOCK_NUMBER, std::string  > r;
     auto iter = allVacValveData.find( name );
     if( iter != allVacValveData.end() )
         for( auto it : iter -> second.iLockStates )

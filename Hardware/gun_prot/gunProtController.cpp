@@ -59,7 +59,7 @@ gunProtController::~gunProtController(){}
 //______________________________________________________________________________
 void gunProtController::initialise()const
 {
-    if(localInterface.interfaceInitReport(shouldStartEPICs))
+    if(localInterface.interfaceInitReport())
     {
         message("gunProtController instantiation success.");
     }

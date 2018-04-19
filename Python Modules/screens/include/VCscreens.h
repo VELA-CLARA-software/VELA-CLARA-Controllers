@@ -51,7 +51,7 @@ class VCscreens : public VCbase
         void setMessage();
         void setDebugMessage();
 
-        screenController& getScreenController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
+        screenController& getScreenController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
     protected:
 
@@ -232,6 +232,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def_readonly("elementPositions", &screenStructs::screenObject::elementPositions)
         .def_readonly("elementDirection", &screenStructs::screenObject::elementDirection)
         .def_readonly("numIlocks",        &screenStructs::screenObject::numIlocks       )
+        .def_readonly("position",         &screenStructs::screenObject::position        )
         ;
 
     /// Expose base classes
@@ -279,6 +280,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* setEXString = "Sets the screen in motion after setPosition is called.";
     char const* setPositionString = "Sets the target position of the screen (mm) - for expert use and calibration.";
     char const* getDevicePosString = "Gets the position of a device SCREEN_STATE state.";
+    char const* getPosString = "Gets the position of the screen in the lattice.";
     boost::python::class_<screenController, boost::python::bases<controller>, boost::noncopyable>
         ("screenController","screenController Doc String",boost::python::no_init)
         .def("getScreenObject",       &screenController::getScreenObject, (arg("name")), getScreenObjectString, return_value_policy<reference_existing_object>() )
@@ -310,6 +312,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("getACTPOS",             &screenController::getACTPOS, (arg("name")), getACTPOSString                          )
         .def("getJDiff",              &screenController::getJDiff, (arg("name")), getJDiffString                            )
         .def("getDevicePosition",     &screenController::getDevicePosition, (arg("name"),arg("state")), getDevicePosString  )
+        .def("getPosition",           &screenController::getPosition, (arg("name")), getPosString                           )
         .def("getScreenNames",        &screenController::getScreenNames_Py, getScreenNamesString                            )
         .def("getAvailableDevices",   &screenController::getAvailableDevices, (arg("name")), getAvailableDevicesString      )
         .def("jogScreen",             &screenController::jogScreen, (arg("name"),arg("jog (mm)")), jogScreenString          )

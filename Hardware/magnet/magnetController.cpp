@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,6 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   18-04-2018
+//  FileName:    magnetController.h
+//  Description:
+//
+//
+//*/
 
 #include "magnetController.h"
 #include <fstream>
@@ -27,7 +36,6 @@ magnetController::magnetController(
     ):
 controller(show_messages,show_debug_messages,HWC_ENUM::CONTROLLER_TYPE::MAGNET,name),
 localInterface(magConf, startVirtualMachine, show_messages, show_debug_messages, shouldStartEPICs, myMachineArea),
-shouldStartEPICs(shouldStartEPICs),
 myMachineArea(myMachineArea)
 {}
 //______________________________________________________________________________
@@ -55,7 +63,7 @@ void   magnetController::set_CA_PEND_IO_TIMEOUT(double val)
 //______________________________________________________________________________
 void magnetController::initialise()
 {
-    if(localInterface.interfaceInitReport(shouldStartEPICs))
+    if(localInterface.interfaceInitReport())
         message("magnetController instantiation success.");
 }
 //______________________________________________________________________________
@@ -533,6 +541,36 @@ size_t magnetController::degauss(const boost::python::list & mag, bool resetToZe
 {
     std::vector<std::string> names = to_std_vector<std::string>(mag);
     return degauss(names, resetToZero);
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getMagnetNames_Py()
+{
+    return toPythonList(getMagnetNames());
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getQuadNames_Py()
+{
+    return toPythonList(getQuadNames());
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getHCorNames_Py()
+{
+    return toPythonList(getHCorNames());
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getVCorNames_Py()
+{
+    return toPythonList(getVCorNames());
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getDipNames_Py()
+{
+    return toPythonList(getDipNames());
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getSolNames_Py()
+{
+    return toPythonList(getSolNames());
 }
 //______________________________________________________________________________
 #endif // BUILD_DLL

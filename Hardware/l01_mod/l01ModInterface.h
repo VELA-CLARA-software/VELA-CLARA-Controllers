@@ -14,7 +14,7 @@ class l01ModInterface : public interface
     public:
         l01ModInterface(const std::string &l01ModConf,
                                 const bool startVirtualMachine,
-                                const bool* show_messages_ptr, const bool* show_debug_messages_ptr,
+                                const bool& show_messages_ptr, const bool& show_debug_messages_ptr,
                                 const bool shouldStartEPICs);
         virtual ~l01ModInterface();
 
@@ -25,8 +25,8 @@ class l01ModInterface : public interface
 
 
 //
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<VELA_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
+        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
         // These are pure virtual methods, so need to have some implmentation in derived classes
         IlockMap1 getILockStates(const std::string & name ){ IlockMap1 r;return r; }
         IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
@@ -36,7 +36,7 @@ class l01ModInterface : public interface
 
         l01ModConfigReader configReader; /// class member so we can pass in file path in ctor
 
-        const bool shouldStartEPICs;
+        //const bool shouldStartEPICs;
         bool allChidsInitialised;
         void initialise();
 

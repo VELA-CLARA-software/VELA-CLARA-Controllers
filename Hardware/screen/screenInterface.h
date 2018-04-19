@@ -64,6 +64,7 @@ class screenInterface: public interface
         double getACTPOS(const std::string & name);
         double getJDiff(const std::string & name);
         double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
+        double getPosition(const std::string & name);
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void insertYAG( const std::string & name );
