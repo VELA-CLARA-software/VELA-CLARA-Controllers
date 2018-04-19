@@ -59,6 +59,8 @@
 					<Add directory="../../Hardware/invertedMagnetronGauge" />
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/pilaser" />
+					<Add directory="../../Utilities/rf_prot" />
+					<Add directory="../../Structs/rf_prot" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -80,7 +82,7 @@
 		<Unit filename="../../Hardware/gun_prot/gunProtInterface.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
-		<Unit filename="../../Structs/rfProtStructs.h" />
+		<Unit filename="../../Structs/rf_prot/rfProtStructs.h" />
 		<Unit filename="../../Structs/structs.h">
 			<Option target="Debug" />
 		</Unit>
@@ -91,8 +93,8 @@
 		</Unit>
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/gunProtConfigReader.cpp" />
-		<Unit filename="../../Utilities/gunProtConfigReader.h" />
+		<Unit filename="../../Utilities/rf_prot/gunProtConfigReader.cpp" />
+		<Unit filename="../../Utilities/rf_prot/gunProtConfigReader.h" />
 		<Unit filename="include/VCrfprot.h" />
 		<Unit filename="src/VCrfprot.cpp" />
 		<Extensions>

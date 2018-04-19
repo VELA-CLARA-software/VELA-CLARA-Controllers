@@ -610,12 +610,15 @@ size_t magnetInterface::degaussAll(bool resetToZero)
 //______________________________________________________________________________
 size_t magnetInterface::deGauss(const std::string& mag, bool resetToZero)
 {
+    message("1");
     const vec_s mags = { mag };
     return deGauss(mags, resetToZero);
 }
 //______________________________________________________________________________
 size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
 {
+    message("2");
+
     killFinishedDegaussThreads();
     vec_s magToDegChecked;
     for(auto&& it:mag)
@@ -624,8 +627,11 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
         if(entryExists(allMagnetData, it))
         {
             /*/// it is a real magnet that is or has been degaussed  */
+            //message(it, " exists");
+
             if(entryExists(isDegaussingMap, it))
             {
+                //message(it, " exists");
                 if(isDegaussingMap.at(it))
                 {
                     message(it, " is still degaussing ");
@@ -636,12 +642,13 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
                         it's not currently degaussing so add to the
                         checkedMagnet list
                     */
+                    message(it, " is not degaussing");
                     magToDegChecked.push_back(it);
                 }
             }
             else
             {
-                isDegaussingMap.at(it) = true;
+                isDegaussingMap[it] = true;
                 magToDegChecked.push_back(it);
             }
         }
@@ -650,6 +657,8 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
             message("ERROR: in deGauss", it, " name not known, can't degauss.");
         }
     }
+    message("2AA");
+
     if(magToDegChecked.size()> UTL::ZERO_SIZET)//MAGIC_NUMBER
     {
         degaussStructsMap[degaussNum].resetToZero   = resetToZero;
@@ -660,6 +669,8 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
         degaussStructsMap[degaussNum].thread        =
             new std::thread(staticEntryDeGauss, std::ref(degaussStructsMap[degaussNum]));
         ++degaussNum;
+        message("3B");
+
     }
     return degaussNum;
 }
@@ -1004,8 +1015,8 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
                 if(isRIequalVal(mags[i], values[i], tolerances[i])) // The acid test!
                 {
                     magnetSettledState[i] = true;
-                    //debugMessage(mags[i], " RI == val. SETTLED = True."
-                    //   , currentRIValues[i], ", ", values[i], ", ", tolerances[i]);
+//                    debugMessage(mags[i], " RI == val. SETTLED = True."
+//                       , currentRIValues[i], ", ", values[i], ", ", tolerances[i]);
                 }
                 else if(settingZero[i]) // We are supposed to be setting zero....
                 {
@@ -1013,9 +1024,9 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
                     if(areSame(oldRIValues[i], currentRIValues[i], tolerances[i]))
                     {
                         magnetSettledState[i] = true;
-                        //debugMessage(mags[i],
-                        //  " is setting 0.0 and RI_new == RI_old. SETTLED = True ",
-                        //  currentRIValues[i], ", ", oldRIValues[i], ", ", tolerances[i]);
+//                        debugMessage(mags[i],
+//                          " is setting 0.0 and RI_new == RI_old. SETTLED = True ",
+//                          currentRIValues[i], ", ", oldRIValues[i], ", ", tolerances[i]);
                     }
                 }
                 else // we are not setting zero...
@@ -1032,10 +1043,10 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
                             areNotSame(UTL::ZERO_DOUBLE, currentRIValues[i], tolerances[i]))
                     {
                         magnetSettledState[i] = true;
-                        //debugMessage(mags[i],
-                        //  " RI_new != 0.0&& RI_new == RI_old RI. SETTLED = True ",
-                        //   currentRIValues[i], ", ", oldRIValues[i],
-                        //   ", ", tolerances[i]);
+//                        debugMessage(mags[i],
+//                          " RI_new != 0.0&& RI_new == RI_old RI. SETTLED = True ",
+//                           currentRIValues[i], ", ", oldRIValues[i],
+//                           ", ", tolerances[i]);
                     }
                 }
             }
@@ -1069,7 +1080,7 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
         /*  really 2000 milliseconds while we wait for RI to update>>>> ?
             YES!!
         */
-        UTL::STANDARD_PAUSE;
+        pause_2000();
 	} /// while
 
     for(size_t i = UTL::ZERO_SIZET; i <mags.size(); ++i)
@@ -1635,18 +1646,20 @@ std::vector<std::string> magnetInterface::getMeasurementDataLocation(const std::
 //______________________________________________________________________________
 void magnetInterface::printDegauss()const
 {
-    debugMessage("\n","\n","\t ____  ____  ___    __    __  __  ___  ___ ");
-    debugMessage("\t(_ \\(___)/ __)  /__\\  ()()/ __)/ __)");
-    debugMessage("\t)(_)))__)((_-. /(__)\\)(__)(\\__ \\\\__ \\");
-    debugMessage("\t(____/(____)\\___/(__)(__)(______)(___/(___/","\n","\n");
+    debugMessage("\n","\n");
+    debugMessage("\t __   ___  __             __   __  ");
+    debugMessage("\t|  \\ |__  / _`  /\\  |  | /__` /__` ");
+    debugMessage("\t|__/ |___ \\__> /~~\\ \\__/ .__/ .__/ ");
+    debugMessage("\n","\n");
 }
 //______________________________________________________________________________
 void magnetInterface::printFinish()const
 {
-    debugMessage("\n","\n","\t  ____  ____  _  _  ____  ___  _   _  ____  ____");
-    debugMessage("\t (___)(_  _)(\\()(_  _)/ __)()_()(___)(_ \\ ");
-    debugMessage("\t)__)  _)(_)  (_)(_ \\__ \\) _ ()__))(_))");
-    debugMessage("\t (__)  (____)(_)\\_)(____)(___/(_) (_)(____)(____/  ","\n","\n");
+    debugMessage("\n","\n");
+    debugMessage("\t  ___           __       ");
+    debugMessage("\t |__  | |\\ | | /__` |__| ");
+    debugMessage("\t |    | | \\| | .__/ |  | ");
+    debugMessage("\n","\n");
 }
 //______________________________________________________________________________
 const magnetStructs::magnetObject& magnetInterface::getMagObjConstRef(const std::string& magName)const

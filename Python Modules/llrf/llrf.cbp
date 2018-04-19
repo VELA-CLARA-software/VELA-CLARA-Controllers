@@ -36,6 +36,8 @@
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/laser" />
 					<Add directory="../../Hardware/llrf" />
+					<Add directory="../../Utilities/llrf" />
+					<Add directory="../../Structs/llrf" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -57,15 +59,16 @@
 		<Unit filename="../../Hardware/llrf/liberallrfController.h" />
 		<Unit filename="../../Hardware/llrf/liberallrfInterface.cpp" />
 		<Unit filename="../../Hardware/llrf/liberallrfInterface.h" />
-		<Unit filename="../../Structs/llrfStructs.h" />
+		<Unit filename="../../Structs/llrf/llrfStructs.cpp" />
+		<Unit filename="../../Structs/llrf/llrfStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/liberallrfConfigReader.cpp" />
-		<Unit filename="../../Utilities/liberallrfConfigReader.h" />
+		<Unit filename="../../Utilities/llrf/liberallrfConfigReader.cpp" />
+		<Unit filename="../../Utilities/llrf/liberallrfConfigReader.h" />
 		<Unit filename="include/VCllrf.h" />
 		<Unit filename="include/VCllrf_docstrings.h" />
 		<Unit filename="main.cpp" />

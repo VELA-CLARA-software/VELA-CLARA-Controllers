@@ -241,7 +241,8 @@ class magnetInterface : public interface
         size_t degaussNum;
 //
         std::map<size_t, magnetStructs::degaussStruct> degaussStructsMap;
-        std::map<std::string,  std::atomic<bool>> isDegaussingMap; // std::atomic<bool> are not CopyConstructible, so this is held locally
+        std::map<std::string,  std::atomic<bool>> isDegaussingMap;
+        // std::atomic<bool> are not CopyConstructible, so this is held locally
        // std::map<size_t, std::thread*> degaussThreadMap;
 //
         void killFinishedDegaussThreads();

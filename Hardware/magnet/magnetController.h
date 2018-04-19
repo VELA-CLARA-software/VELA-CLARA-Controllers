@@ -1,3 +1,4 @@
+/*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
 //    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
@@ -11,7 +12,14 @@
 //                                                                                    //
 //    You should have received a copy of the GNU General Public License               //
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
-
+//
+//  Author:      DJS
+//  Last edit:   18-04-2018
+//  FileName:    magnetController.cpp
+//  Description:
+//
+//
+//*/
 #ifndef VELA_MAG_CONTROLLER_H_
 #define VELA_MAG_CONTROLLER_H_
 // stl
@@ -89,7 +97,7 @@ class magnetController : public controller
         magnetStructs::magnetStateStruct getCurrentMagnetState(const std::vector<std::string> & s);
         magnetStructs::magnetStateStruct getCurrentMagnetState();
 
-      /// Wriote magnet data in DBURT format to file
+      /// Write magnet data in DBURT format to file
         bool writeDBURT(const magnetStructs::magnetStateStruct & ms, const std::string &fileName="", const std::string &comments="",const std::string & keywords = "");
         bool writeDBURT(const std::string &fileName="", const std::string &comments="",const std::string & keywords = "");
 
@@ -97,10 +105,7 @@ class magnetController : public controller
         bool setSI(const std::string & magName, const double value);
         bool setSI(const std::vector<std::string> &magName, const std::vector<double>& value);
 
-#ifdef BUILD_DLL
-        bool setSI(const boost::python::list & magNames, const boost::python::list & values);
-        size_t degauss(const boost::python::list & mag, bool resetToZero = true);
-#endif
+
 
         bool setSI(const std::string & magNames, const double values, const double tolerances, const size_t timeOUT);
         std::vector<std::string>  setSI(const std::vector<std::string> & magNames, const std::vector<double> & values, const std::vector<double> & tolerances, const size_t timeOUT);
@@ -182,9 +187,22 @@ class magnetController : public controller
       /// any functions that return a map need a wrapper to convert to a python dictionary
       /// (we need the functions that return std::map types when building c++ applications)
 #ifdef BUILD_DLL
+
+        bool setSI(const boost::python::list & magNames, const boost::python::list & values);
+        size_t degauss(const boost::python::list & mag, bool resetToZero = true);
+
         boost::python::dict getILockStates_Py(std::string magName);
         boost::python::dict getILockStatesStr_Py(std::string magName);
         boost::python::dict getMagPSUStateDefinition();
+
+        boost::python::list getMagnetNames_Py();
+        boost::python::list getQuadNames_Py();
+        boost::python::list getHCorNames_Py();
+        boost::python::list getVCorNames_Py();
+        boost::python::list getDipNames_Py();
+        boost::python::list getSolNames_Py();
+
+
 #endif // BUILD_DLL
 
         /// YOU CANNOT SET THE CONTROLLER TYPE, NO-WAY JOSE
@@ -205,7 +223,7 @@ class magnetController : public controller
 
         void initialise();
 
-        const bool shouldStartEPICs;
+//        const bool shouldStartEPICs;
 //
 //        /// what flavour of controller am i ?
         const HWC_ENUM::MACHINE_AREA myMachineArea;
