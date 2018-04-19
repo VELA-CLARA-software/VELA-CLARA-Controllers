@@ -159,7 +159,9 @@ void cameraDAQInterface::startMonitors()
 }
 void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
 {
+
     monitorDAQStruct*ms = static_cast<monitorDAQStruct*>(args.usr);
+
     switch(ms -> monType)
     {
         case CAM_PV_TYPE::CAM_ACQUIRE_RBV:
@@ -196,6 +198,8 @@ void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
             ms->interface->updateFrequency(*(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::CAM_SENSOR_TEMP:
+            //std::cout<<"MS Montype= "<<ENUM_TO_STRING(ms->monType)<<std::endl;
+            //std::cout<<"MS OBJNAME= "<<ms->objName<<std::endl;
             ms->interface->updateSensorTemp(*(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::JPG_CAPTURE_RBV:
@@ -371,25 +375,21 @@ void cameraDAQInterface::updateFrequency(const double value,const std::string&ca
 }
 void cameraDAQInterface::updateSensorTemp(const double value,const std::string&cameraName)
 {
+    //message("NAME: ", cameraName);
     allCamData.at(cameraName).DAQ.sensorTemp = value;
+    //message("NAME2: ", cameraName);
     updateSelectedOrVC(cameraName);
     // If the sensor temp of the camera is out of operable range (5-10 celcius)
     //kill any collecting of data then stop any rolling aquiring that is in progress.
     if (selectedCameraObj.DAQ.sensorTemp>10||selectedCameraObj.DAQ.sensorTemp<5)
     {
-        killCollectAndSave();
-        stopAcquiring();
+
         message("WARNING: Sensor temp is out correct operable temperature!!");
         message("   1. Temperature of sensor on ",selectedCameraObj.name," is: ",selectedCameraObj.DAQ.sensorTemp,"C");
         message("   2. Please CHECK FAN and FILTER (CONSULT SOMEONE).");
-    }
-    if (vcCameraObj.DAQ.sensorTemp>10||vcCameraObj.DAQ.sensorTemp<5)
-    {
-        killCollectAndSaveVC();
-        stopVCAcquiring();
-        message("WARNING: Sensor temp is out correct operable temperature!!");
-        message("   1. Temperature of sensor on ",vcCameraObj.name," is: ",vcCameraObj.DAQ.sensorTemp,"C");
-        message("   2. Please CHECK FAN and FILTER (CONSULT SOMEONE).");
+        message("Killing and Saving, Collecting or Acquiring...");
+        //killCollectAndSave();
+        //stopAcquiring();
     }
 }
 void cameraDAQInterface::updateWriteCheckJPG(const unsigned short value,const std::string&cameraName)
@@ -506,13 +506,13 @@ bool cameraDAQInterface::save(cameraObject camera, unsigned short &comm)
 
     return ans;
 }
-bool cameraDAQInterface::collectJPG(cameraObject camera, unsigned short &comm)
+bool cameraDAQInterface::collectJPG(cameraObject camera, unsigned short &comm, const int & numbOfShots)
 {
     bool ans=false;
     pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::JPG_CAPTURE));
 
-        int oneShot(1);//MAGIG NUMBE ONLY ALLOWING THIS FUNCTION TO TAKE ONE JPG!!!!!
-        setNumberOfShotsJPG(oneShot);
+        //int oneShot(1);
+        setNumberOfShotsJPG(numbOfShots);
         if( isAcquiring(camera.name) )
         {
             ans=shortCaput(comm,S);
@@ -529,7 +529,7 @@ bool cameraDAQInterface::saveJPG(cameraObject camera, unsigned short &comm)
     int startNumber(1);// MAGIC_NUMBER
     pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_WRITE));
 
-    setStartFileNumberJPG(startNumber);
+    //setStartFileNumberJPG(startNumber);
 
     if( isCollectingJPG(camera.name)==0 )
     {
@@ -556,8 +556,9 @@ bool cameraDAQInterface::collectAndSaveVC(const int & numbOfShots)
 }
 bool cameraDAQInterface::collectAndSaveJPG()
 {
+    int dummy(1);
     //need to make sure your python is running while this thread is active
-    new std::thread(&cameraDAQInterface::staticCollectAndSaveJPG,this,selectedCameraObj);
+    new std::thread(&cameraDAQInterface::staticCollectAndSaveJPG,this,selectedCameraObj,dummy);//MAGIG NUMBE ONLY ALLOWING THIS FUNCTION TO TAKE ONE JPG!!!!!
     return true;
 }
 bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & numbOfShots)
@@ -576,6 +577,7 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & n
     }
 
     makeANewDirectoryAndName(camera,numbOfShots);
+    ///std::this_thread::sleep_for(std::chrono::milliseconds( 100 )); //MAGIC_NUMBER
 
     this->save(camera,go);//start saving
 
@@ -597,13 +599,13 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & n
     return success;
 
 }
-bool cameraDAQInterface::staticCollectAndSaveJPG(cameraObject camera)
+bool cameraDAQInterface::staticCollectAndSaveJPG(cameraObject camera, const int & numbOfShots)
 {
     this->attachTo_thisCAContext();
     bool success = false;
     unsigned short go(1);
 
-    this->collectJPG(camera,go);//starting collecting images
+    this->collectJPG(camera,go, numbOfShots);//starting collecting images
 
     bool collecting=true;
     while(collecting)   //wait until collecting is done...
@@ -611,6 +613,7 @@ bool cameraDAQInterface::staticCollectAndSaveJPG(cameraObject camera)
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
         collecting=this->isCollectingJPG(camera.name);;
     }
+    //std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
 
     makeANewDirectoryAndNameJPG(camera,1);
 
@@ -620,10 +623,10 @@ bool cameraDAQInterface::staticCollectAndSaveJPG(cameraObject camera)
     while(saving==true)    //wait until saving is done...
     {
         std::this_thread::sleep_for(std::chrono::milliseconds( 50 )); //MAGIC_NUMBER
-        saving=isSavingJPG(camera.name);
+       saving=isSavingJPG(camera.name);
     }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
+    //std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); //MAGIC_NUMBER
 
     //check status of save
     if (this->allCamData.at(camera.name).DAQ.writeCheckJPG==WRITE_CHECK::WRITE_CHECK_OK)
@@ -678,7 +681,7 @@ bool cameraDAQInterface::killCollectAndSaveJPG()///can only kill while saving.
     if (isCollectingJPG(selectedCamera()))//stop collecting
     {
         message("Killing JPG while collecting...");
-        killed=collectJPG(selectedCameraObj,c);
+        killed=collectJPG(selectedCameraObj,c, dummyNumber);
     }
     else if (isSavingJPG(selectedCamera()))//stop sa
     {
@@ -728,7 +731,12 @@ bool cameraDAQInterface::makeANewDirectoryAndName(cameraObject &camera,const int
     //tm local_tm = *localtime(&t);
     struct tm local_tm;
     localtime_s(&local_tm, &t);
-    char  newPath[256]="/home/images/";
+    char  newPath[256]= "/CameraImages/";
+    std::string strPath = "/CameraImages/"+
+                        std::to_string(local_tm.tm_year + 1900)+
+                        "/"+std::to_string(local_tm.tm_mon + 1)+
+                        "/"+std::to_string(local_tm.tm_mday)+"/";
+    strcpy(newPath, strPath.c_str());
 
     char  newName[256]="defaultname";
     std::string strName = camera.name+
@@ -740,11 +748,11 @@ bool cameraDAQInterface::makeANewDirectoryAndName(cameraObject &camera,const int
                         "-"+std::to_string(local_tm.tm_sec)+
                         "_"+std::to_string(numbOfShots)+"images";
     strcpy(newName, strName.c_str());
-    message("File Directory would be: ",
-                        std::to_string(local_tm.tm_year + 1900)+
-                        "\\"+std::to_string(local_tm.tm_mon + 1)+
-                        "\\"+std::to_string(local_tm.tm_mday)+"\\");
-    message("File name would be: ",newName);
+   // message("File Directory would be: ",
+     //                   std::to_string(local_tm.tm_year + 1900)+
+     //                   "\\"+std::to_string(local_tm.tm_mon + 1)+
+     //                   "\\"+std::to_string(local_tm.tm_mday)+"\\");
+    message("File name is: ",newName);
 
     ca_array_put(camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHTYPE,
                  camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).COUNT,
@@ -773,8 +781,12 @@ bool cameraDAQInterface::makeANewDirectoryAndNameJPG(cameraObject &camera,const 
     //tm local_tm = *localtime(&t);
     struct tm local_tm;
     localtime_s(&local_tm, &t);
-    char  newPath[256]="/home/images/";
-
+    char  newPath[256]="/CameraImages/";
+    std::string strPath = "/CameraImages/"+
+                        std::to_string(local_tm.tm_year + 1900)+
+                        "/"+std::to_string(local_tm.tm_mon + 1)+
+                        "/"+std::to_string(local_tm.tm_mday)+"/";
+    //strcpy(newPath, strPath.c_str());
     char  newName[256]="defaultname";
     std::string strName = camera.name+
                         "_"+std::to_string(local_tm.tm_year + 1900)+
@@ -785,7 +797,7 @@ bool cameraDAQInterface::makeANewDirectoryAndNameJPG(cameraObject &camera,const 
                         "-"+std::to_string(local_tm.tm_sec)+
                         "_"+std::to_string(numbOfShots)+"images";
     strcpy(newName, strName.c_str());
-    message("File Directory would be: ",
+    message("File Directory will be: ",
                         std::to_string(local_tm.tm_year + 1900)+
                         "\\"+std::to_string(local_tm.tm_mon + 1)+
                         "\\"+std::to_string(local_tm.tm_mday)+"\\");

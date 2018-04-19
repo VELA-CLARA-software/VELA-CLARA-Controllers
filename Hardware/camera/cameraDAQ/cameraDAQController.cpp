@@ -98,6 +98,10 @@ bool cameraDAQController::collectAndSave(const int &numbOfShots)
 {
     return localInterface.collectAndSave(numbOfShots);
 }
+bool cameraDAQController::collectAndSaveJPG()
+{
+    return localInterface.collectAndSaveJPG();
+}
 bool cameraDAQController::collectAndSaveVC(const int &numbOfShots)
 {
     return localInterface.collectAndSaveVC(numbOfShots);
@@ -105,6 +109,10 @@ bool cameraDAQController::collectAndSaveVC(const int &numbOfShots)
 bool cameraDAQController::killCollectAndSave()
 {
     return localInterface.killCollectAndSave();
+}
+bool cameraDAQController::killCollectAndSaveJPG()
+{
+    return localInterface.killCollectAndSaveJPG();
 }
 bool cameraDAQController::killCollectAndSaveVC()
 {

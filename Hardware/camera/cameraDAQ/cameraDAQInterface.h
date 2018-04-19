@@ -44,13 +44,13 @@ class cameraDAQInterface : public cameraInterface
         bool collectAndSaveJPG ();
         bool collectAndSaveVC (const int & numbOfShots);
         bool staticCollectAndSave(cameraObject camera,const int & numbOfShots);
-        bool staticCollectAndSaveJPG(cameraObject camera);
+        bool staticCollectAndSaveJPG(cameraObject camera,const int & numbOfShots);
         bool killCollectAndSave();
         bool killCollectAndSaveJPG();
         bool killCollectAndSaveVC();
         bool collect(cameraObject camera,unsigned short &comm, const int & numbOfShots);
         bool save(cameraObject camera,unsigned short &comm);
-        bool collectJPG(cameraObject camera,unsigned short &comm);
+        bool collectJPG(cameraObject camera,unsigned short &comm,const int & numbOfShots);
         bool saveJPG(cameraObject camera,unsigned short &comm);
         std::string getlatestDirectory();
 

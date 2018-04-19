@@ -187,7 +187,7 @@ bool cameraInterface::isCollectingJPG(const std::string&cameraName)
     else if (allCamData.at(cameraName).DAQ.captureStateJPG==0)
         ans=false;
     else
-        debugMessage("Problem with isCollecting() function.");
+        debugMessage("Problem with isCollectingJPG() function.");
     return ans;
 }
 bool cameraInterface::isSavingJPG(const std::string&cameraName)
@@ -198,7 +198,7 @@ bool cameraInterface::isSavingJPG(const std::string&cameraName)
     else if (allCamData.at(cameraName).DAQ.writeStateJPG==0)
         ans=false;
     else
-        debugMessage("Problem with isSaving() function.");
+        debugMessage("Problem with isSavingJPG() function.");
     return ans;
 }
 std::string cameraInterface::useCameraFrom(const std::string camOrScreen)

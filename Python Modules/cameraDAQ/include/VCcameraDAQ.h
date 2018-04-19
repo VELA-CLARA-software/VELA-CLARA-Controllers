@@ -216,6 +216,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("killCollectAndSave",
              &cameraDAQController::killCollectAndSave,
              "Returns True if stopped the selected camera collectAndSave process")
+        .def("collectAndSaveJPG",
+             &cameraDAQController::collectAndSaveJPG,
+             "Collects and saves images from selected camera in a thread")
+        .def("killCollectAndSaveJPG",
+             &cameraDAQController::killCollectAndSaveJPG,
+             "Returns True if stopped the selected camera collectAndSaveJPG process")
        .def("collectAndSaveVC",
              &cameraDAQController::collectAndSaveVC,
              (arg("Number of Shots")),

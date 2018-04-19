@@ -64,6 +64,8 @@ class cameraDAQController  : public controller
         bool killCollectAndSave();
         bool collectAndSaveVC (const int &numbOfShots);
         bool killCollectAndSaveVC();
+        bool collectAndSaveJPG();
+        bool killCollectAndSaveJPG();
         const cameraObject &getCamDAQObjConstRef(const std::string &camName);
         const cameraObject &getSelectedDAQRef();
         const cameraObject &getVCDAQRef();
