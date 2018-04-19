@@ -50,7 +50,7 @@ class gunModInterface : public interface
         bool isErrorStateGood() const;
         bool isWarmedUp() const;
         bool isNotWarmedUp() const;
-        bool isInTrig() const;
+        bool isInRFOn() const;
         bool isInHVOn() const;
         bool isInStandby() const;
         bool isInOff() const;
@@ -66,6 +66,12 @@ class gunModInterface : public interface
         // These are pure virtual methods, so need an implEmentation in derived classes
         IlockMap1 getILockStates(const std::string & name  ){IlockMap1 r;return r;}
         IlockMap2 getILockStatesStr(const std::string & name){IlockMap2 r;return r;}
+
+        bool setOff() const;
+        bool setStandby() const;
+        bool setHVOn() const;
+        bool setRFOn() const;
+        bool setModState(const rfModStructs::GUN_MOD_STATE_SET v)const;
 
     private:
         // MOVE TO BASE CLASS
@@ -83,7 +89,7 @@ class gunModInterface : public interface
         void updateMainState(const event_handler_args& args);
         void updateWarmUpTime(const event_handler_args& args);
         void updateHexString(const event_handler_args& args);
-        void updateStateReadString(const event_handler_args& args);
+        void updateStateSetRead(const event_handler_args& args);
         void updateErrorState();
 
         void updateCtRead(const event_handler_args& args);

@@ -56,7 +56,7 @@ class gunModController : public controller
         bool isErrorStateGood() const;
         bool isWarmedUp() const;
         bool isNotWarmedUp() const;
-        bool isInTrig() const;
+        bool isInRFOn() const;
         bool isInHVOn() const;
         bool isInStandby() const;
         bool isInOff() const;
@@ -66,6 +66,13 @@ class gunModController : public controller
         rfModStructs::GUN_MOD_ERR_STATE getErrorState() const;
 
         bool waitForModState(rfModStructs::GUN_MOD_STATE state, const time_t waitTime);
+
+
+        bool setOff() const;
+        bool setStandby() const;
+        bool setHVOn() const;
+        bool setRFOn() const;
+
 
 //    protected:
 //    private:

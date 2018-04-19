@@ -55,9 +55,9 @@ bool gunModController::isNotWarmedUp() const
     return localInterface.isNotWarmedUp();
 }
 //______________________________________________________________________________
-bool gunModController::isInTrig() const
+bool gunModController::isInRFOn() const
 {
-    return localInterface.isInTrig();
+    return localInterface.isInRFOn();
 }
 //______________________________________________________________________________
 bool gunModController::isInHVOn() const
@@ -118,5 +118,25 @@ std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > gunModController::getI
 std::map<HWC_ENUM::ILOCK_NUMBER,std::string> gunModController::getILockStatesStr(const std::string& name)
 {
     return localInterface.getILockStatesStr(name);
+}
+//______________________________________________________________________________________________
+bool gunModController::setOff() const
+{
+    return localInterface.setOff();
+}
+//______________________________________________________________________________________________
+bool gunModController::setStandby() const
+{
+    return localInterface.setStandby();
+}
+//______________________________________________________________________________________________
+bool gunModController::setHVOn() const
+{
+    return localInterface.setHVOn();
+}
+//______________________________________________________________________________________________
+bool gunModController::setRFOn() const
+{
+    return localInterface.setRFOn();
 }
 

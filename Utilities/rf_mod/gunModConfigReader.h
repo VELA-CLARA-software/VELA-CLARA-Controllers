@@ -29,8 +29,8 @@ class gunModConfigReader : public configReader
     private:
 
         // Gun Modulator Objects
-        std::vector< rfModStructs::pvStruct > pvMonStructs;
-        std::vector< rfModStructs::pvStruct > pvComStructs;
+        std::vector<rfModStructs::pvStruct > pvMonStructs;
+        std::vector<rfModStructs::pvStruct > pvComStructs;
         rfModStructs::gunModObject localGunModObject;
         void addToModObjectsV1(const std::vector<std::string> &keyVal);
         void addToPVMonitorMapV1(const std::vector<std::string> &keyVal);

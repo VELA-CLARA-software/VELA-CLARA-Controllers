@@ -56,13 +56,14 @@ namespace rfModStructs
 
                                                          // these are states you can request
                                                          (MAIN_STATE_READ) // i.e. off, HV_ON,TRIG etc
-                                                         (MAIN_STATE_SET)  // i.e. off, HV_ON,TRIG etc
 
-                                                         // thi si sth ehex code Sys.ErrorRead
+                                                         // command
+                                                         (STATE_SET)  // i.e. off, HV_ON,TRIG etc
+                                                         // monitor of reqested state_set, i.e.  off, HV_ON,TRIG etc
+                                                         (STATE_SET_READ)  // i.e. off, HV_ON,TRIG etc
+
+                                                         // this is the hex code Sys.ErrorRead
                                                          (ERROR_READ_HEX_STR)//also gets converted to string in "gunModHexStringMap.h"
-
-                                                         // this is the Sys.StateRead above the hex string on the main modulato rsynoptic
-                                                         (STATE_READ_STRING)
 
                                        );
     // a derived state based on if there is an error,
@@ -78,23 +79,31 @@ namespace rfModStructs
 //    /// We keep the same numbers as the control system, therefore UNKNOWN1
 //
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_STATE,
-                                        (NOT_CONNECTED)      // field(ZRST, "Init/not conne.")
-                                        (STANDYBY_INTERLOCK) // field(ONST, "Standby Interl.")
-                                        (OFF)                // field(TWST, "OFF")
-                                        (OFF_REQUEST)        // field(THST, "Off Request")
-                                        (HV_INTERLOCK)       // field(FRST, "HV Intrlock")
-                                        (STANDBY_REQUEST)    // field(FVST, "Standby Request")
-                                        (STANDBY)            // field(SXST, "Standby")
-                                        (HV_OFF_REQUEST)     // field(SVST, "HV Off Requ.")
-                                        (TRIGGER_INTERLOCK)  // field(EIST, "Trigger Interl.")
-                                        (HV_REQUEST)         // field(NIST, "HV Request")
-                                        (HV_ON)              // field(TEST, "HV On")
-                                        (TRIG_OFF_REQUEST)   // field(ELST, "Trig Off Req.")
-                                        (TRIG_REQUEST)       // field(TVST, "Trig Request")
-                                        (TRIG)               // field(TTST, "Trig")
-                                        (UNKNOWN_STATE)      // my default state on instantiation
-                                        (RF_ON)
+                                       (NOT_CONNECTED)      // field(ZRST, "Init/not conne.")
+                                       (STANDYBY_INTERLOCK) // field(ONST, "Standby Interl.")
+                                       (OFF)                // field(TWST, "OFF")
+                                       (OFF_REQUEST)        // field(THST, "Off Request")
+                                       (HV_INTERLOCK)       // field(FRST, "HV Intrlock")
+                                       (STANDBY_REQUEST)    // field(FVST, "Standby Request")
+                                       (STANDBY)            // field(SXST, "Standby")
+                                       (HV_OFF_REQUEST)     // field(SVST, "HV Off Requ.")
+                                       (RF_ON_INTERLOCK)  // field(EIST, "Trigger Interl.")
+                                       (HV_REQUEST)         // field(NIST, "HV Request")
+                                       (HV_ON)              // field(TEST, "HV On")
+                                       (RF_OFF_REQUEST)   // field(ELST, "Trig Off Req.")
+                                       (RF_ON_REQUEST)       // field(TVST, "Trig Request")
+                                       (RF_ON)               // field(TTST, "Trig")
+                                       (UNKNOWN_STATE)      // my default state on instantiation
                                        );
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_STATE_SET,
+                                       (SET_OFF)                // field(TWST, "OFF")
+                                       (SET_STANDBY)        // field(THST, "Off Request")
+                                       (SET_HV_ON)       // field(FRST, "HV Intrlock")
+                                       (SET_RF_ON)    // field(FVST, "Standby Request")
+                                       (UNKNOWN_SET_STATE)    // field(FVST, "Standby Request")
+                                       );
+
+
     struct pvStruct
     {
         pvStruct() : pvSuffix(UTL::UNKNOWN_STRING),
@@ -116,7 +125,7 @@ namespace rfModStructs
             main_state(GUN_MOD_STATE::UNKNOWN_STATE),
             hex_state_str(UTL::UNKNOWN_STRING),
             hex_state_message(UTL::UNKNOWN_STRING),
-            state_read(UTL::UNKNOWN_STRING),
+            main_state_string(UTL::UNKNOWN_STRING),
             error_state(GUN_MOD_ERR_STATE::UNKNOWN),
 
             safelyWarmedUP(false),
@@ -151,13 +160,14 @@ namespace rfModStructs
             ilock2(UTL::UNKNOWN_STRING),
             ilock3(UTL::UNKNOWN_STRING),
             ilock4(UTL::UNKNOWN_STRING),
-            ilock5(UTL::UNKNOWN_STRING)
-
+            ilock5(UTL::UNKNOWN_STRING),
+            state_set_read(UNKNOWN_SET_STATE)
             {}
-        std::string name, pvRoot, hex_state_str, state_read, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
+        std::string name, pvRoot, hex_state_str, main_state_string, state_set_read_string, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
         std::vector<std::vector<std::string>> interlock_history;
         HWC_ENUM::CONTROLLER_TYPE controller_type;
         GUN_MOD_STATE main_state;
+        GUN_MOD_STATE_SET state_set_read;
         GUN_MOD_ERR_STATE error_state;
         long   warmuptime;
         bool   safelyWarmedUP;

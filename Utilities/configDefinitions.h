@@ -224,15 +224,17 @@ namespace UTL
 
     const std::string PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ      = "PV_SUFFIX_GUN_MOD_PULSE_WIDTH_READ";
     const std::string PV_SUFFIX_GUN_MOD_STATE_READ_STRING = "PV_SUFFIX_GUN_MOD_STATE_READ_STRING";
-    const std::string PV_SUFFIX_GUN_MOD_MAIN_STATE_SET  = "PV_SUFFIX_GUN_MOD_MAIN_STATE_SET";
+    // states set and read, i.e. off, standby, hvon, rfon
+    const std::string PV_SUFFIX_GUN_MOD_STATE_SET  = "PV_SUFFIX_GUN_MOD_STATE_SET";
+    const std::string PV_SUFFIX_GUN_MOD_STATE_SET_READ  = "PV_SUFFIX_GUN_MOD_STATE_SET_READ";
+    // main state, ie. all 13 states
     const std::string PV_SUFFIX_GUN_MOD_MAIN_STATE_READ  = "PV_SUFFIX_GUN_MOD_MAIN_STATE_READ";
-    //const std::string PV_SUFFIX_GUN_MOD_ERR_STATE  = "PV_SUFFIX_GUN_MOD_ERR_STATE";
+
     const std::string PV_SUFFIX_GUN_MOD_CVD_READ  = "PV_SUFFIX_GUN_MOD_CVD_READ";
     const std::string PV_SUFFIX_GUN_MOD_ERR_SVAL  = "PV_SUFFIX_GUN_MOD_ERR_SVAL";
     const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
     const std::string PV_SUFFIX_GUN_MOD_RESET         = "PV_SUFFIX_GUN_MOD_RESET";
-
 /// Magnets
     const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
     const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";

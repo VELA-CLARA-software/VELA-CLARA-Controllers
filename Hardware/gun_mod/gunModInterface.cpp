@@ -185,7 +185,7 @@ void gunModInterface::staticEntryGunModMonitor(const event_handler_args args)
 //____________________________________________________________________________________________
 void gunModInterface::updateValue(const event_handler_args& args,const rfModStructs::GUN_MOD_PV_TYPE pv)
 {
-   switch(pv)
+    switch(pv)
     {
         case rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ:
             updateMainState(args);
@@ -193,8 +193,8 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
         case rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR:
             updateHexString(args);
             break;
-        case rfModStructs::GUN_MOD_PV_TYPE::STATE_READ_STRING:
-            updateStateReadString(args);
+        case rfModStructs::GUN_MOD_PV_TYPE::STATE_SET_READ:
+            updateStateSetRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::WARMUP_TIME:
             updateWarmUpTime(args);
@@ -212,8 +212,8 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
             updatePlswthFwhmRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ",*(double*)args.dbr);
-            gunMod.ionp =  *(double*)args.dbr;
+            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ", getDBRdouble(args));
+            gunMod.ionp = getDBRdouble(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR:
             updateIlock_string(args, UTL::ONE_SIZET);
@@ -323,52 +323,68 @@ size_t gunModInterface::getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv)
 //____________________________________________________________________________________________
 void gunModInterface::updateMainState(const event_handler_args& args)
 {
+    message("updateMainState, passed = ",getDBRunsignedShort(args));
     switch( getDBRunsignedShort(args))
     {
         case 0:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::NOT_CONNECTED;
+            gunMod.main_state_string = "Init/not conne.";
+            gunMod.main_state        = rfModStructs::GUN_MOD_STATE::NOT_CONNECTED;
             break;
         case 1:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDBY;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDYBY_INTERLOCK;
+            gunMod.main_state_string = "Standby Interl.";
             break;
         case 2:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_ON;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::OFF;
+            gunMod.main_state_string = "Off";
             break;
         case 3:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::RF_ON;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::OFF_REQUEST;
+            gunMod.main_state_string = "Off Request";
             break;
         case 4:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_INTERLOCK;
+            gunMod.main_state_string = "HV Intrlock";
             break;
         case 5:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDBY_REQUEST;
+            gunMod.main_state_string = "Standby Request";
             break;
         case 6:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::STANDBY;
+            gunMod.main_state_string = "Standby";
             break;
         case 7:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_OFF_REQUEST;
+            gunMod.main_state_string = "HV Off Requ.";
             break;
         case 8:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIGGER_INTERLOCK;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::RF_ON_INTERLOCK;
+            gunMod.main_state_string = "RF On Interl.";
             break;
         case 9:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_REQUEST;
+            gunMod.main_state_string = "HV Request";
             break;
         case 10:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::HV_ON;
+            gunMod.main_state_string = "HV On";
             break;
         case 11:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIG_OFF_REQUEST;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::RF_OFF_REQUEST;
+            gunMod.main_state_string = "RF Off Req.";
             break;
         case 12:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIG_REQUEST;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::RF_ON_REQUEST;
+            gunMod.main_state_string = "RF On Request";
             break;
         case 13:
-            gunMod.main_state= rfModStructs::GUN_MOD_STATE::TRIG;
+            gunMod.main_state= rfModStructs::GUN_MOD_STATE::RF_ON;
+            gunMod.main_state_string = "RF On";
             break;
         default:
             gunMod.main_state= rfModStructs::GUN_MOD_STATE::UNKNOWN_STATE;
+            gunMod.main_state_string = "Unknown";
             break;
     }
     message(gunMod.name," ",gunMod.name," state changed to ",ENUM_TO_STRING(gunMod.main_state));
@@ -395,9 +411,32 @@ bool gunModInterface::convertHexStringToMessage()
     return false;
 }
 //______________________________________________________________________________
-void gunModInterface::updateStateReadString(const event_handler_args& args)
+void gunModInterface::updateStateSetRead(const event_handler_args& args)
 {
-    gunMod.state_read = getDBRstring(args);
+
+    switch( getDBRunsignedShort(args))
+    {
+        case 0:
+            gunMod.state_set_read        = rfModStructs::GUN_MOD_STATE_SET::SET_OFF;
+            gunMod.state_set_read_string = "OFF";
+            break;
+        case 1:
+            gunMod.state_set_read        = rfModStructs::GUN_MOD_STATE_SET::SET_STANDBY;
+            gunMod.state_set_read_string = "STANDBY";
+            break;
+        case 2:
+            gunMod.state_set_read        = rfModStructs::GUN_MOD_STATE_SET::SET_HV_ON;
+            gunMod.state_set_read_string = "HV_ON";
+            break;
+        case 3:
+            gunMod.state_set_read        = rfModStructs::GUN_MOD_STATE_SET::SET_RF_ON;
+            gunMod.state_set_read_string = "RF_ON";
+            break;
+        default:
+            gunMod.state_set_read        = rfModStructs::GUN_MOD_STATE_SET::UNKNOWN_SET_STATE;
+            gunMod.state_set_read_string = "UNKNOWN_STATE";
+            break;
+    }
 }
 //______________________________________________________________________________
 void gunModInterface::updateErrorState()
@@ -516,9 +555,9 @@ bool gunModInterface::isNotWarmedUp() const
     return !isWarmedUp();
 }
 //______________________________________________________________________________
-bool gunModInterface::isInTrig() const
+bool gunModInterface::isInRFOn() const
 {
-    if(gunMod.main_state == rfModStructs::GUN_MOD_STATE::TRIG)
+    if(gunMod.main_state == rfModStructs::GUN_MOD_STATE::RF_ON)
     {
         return true;
     }
@@ -709,4 +748,40 @@ bool gunModInterface::isCURR_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const
     }
     return false;
 }
+//______________________________________________________________________________
+bool gunModInterface::setOff() const
+{
+    return setModState(rfModStructs::GUN_MOD_STATE_SET::SET_OFF);
+}
+//______________________________________________________________________________
+bool gunModInterface::setStandby() const
+{
+    return setModState(rfModStructs::GUN_MOD_STATE_SET::SET_STANDBY);
+}
+//______________________________________________________________________________
+bool gunModInterface::setHVOn() const
+{
+    return setModState(rfModStructs::GUN_MOD_STATE_SET::SET_HV_ON);
+}
+//______________________________________________________________________________
+bool gunModInterface::setRFOn() const
+{
+    return setModState(rfModStructs::GUN_MOD_STATE_SET::SET_RF_ON);
+}
+//______________________________________________________________________________
+bool gunModInterface::setModState(const rfModStructs::GUN_MOD_STATE_SET v)const
+{
+    ca_put(
+        gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::STATE_SET).CHTYPE,
+        gunMod.pvComStructs.at(rfModStructs::GUN_MOD_PV_TYPE::STATE_SET).CHID,
+        &v);
+    bool ret = false;
+    int status = sendToEpics("ca_put", "", "Timeout sending Set Mod values");
+    if (status == ECA_NORMAL)
+        ret = true;
+    return ret;
+}
+
+
+
 

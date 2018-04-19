@@ -46,7 +46,7 @@
 					<Add option="/DNDEBUG" />
 					<Add directory="include" />
 					<Add directory="../../Hardware" />
-					<Add directory="../../Utilities" />
+					<Add directory="../../Utilities/rf_mod" />
 					<Add directory="../../Structs" />
 					<Add directory="../../Config" />
 					<Add directory="../../Hardware/magnet" />
@@ -61,6 +61,8 @@
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/pilaser" />
 					<Add directory="../../Hardware/l01_mod" />
+					<Add directory="../../Structs/rf_mod" />
+					<Add directory="../../Utilities" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -87,7 +89,7 @@
 		<Unit filename="../../Hardware/l01_mod/l01ModController.h" />
 		<Unit filename="../../Hardware/l01_mod/l01ModInterface.cpp" />
 		<Unit filename="../../Hardware/l01_mod/l01ModInterface.h" />
-		<Unit filename="../../Structs/rfModStructs.h" />
+		<Unit filename="../../Structs/rf_mod/rfModStructs.h" />
 		<Unit filename="../../Structs/structs.h">
 			<Option target="Debug" />
 		</Unit>
@@ -98,10 +100,10 @@
 		</Unit>
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/gunModConfigReader.cpp" />
-		<Unit filename="../../Utilities/gunModConfigReader.h" />
-		<Unit filename="../../Utilities/l01ModConfigReader.cpp" />
-		<Unit filename="../../Utilities/l01ModConfigReader.h" />
+		<Unit filename="../../Utilities/rf_mod/gunModConfigReader.cpp" />
+		<Unit filename="../../Utilities/rf_mod/gunModConfigReader.h" />
+		<Unit filename="../../Utilities/rf_mod/l01ModConfigReader.cpp" />
+		<Unit filename="../../Utilities/rf_mod/l01ModConfigReader.h" />
 		<Unit filename="include/VCrfmod.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
