@@ -1148,6 +1148,34 @@ void beamPositionMonitorInterface::reCalAttenuation( const std::string & bpmName
 
 }
 //______________________________________________________________________________
+void beamPositionMonitorInterface::setBufferSize( const std::string & bpmName, size_t bufferSize )
+{
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
+    {
+        bpmObj.dataObjects.at(bpmName).xPVBuffer.clear();
+        bpmObj.dataObjects.at(bpmName).yPVBuffer.clear();
+        bpmObj.dataObjects.at(bpmName).xBuffer.clear();
+        bpmObj.dataObjects.at(bpmName).yBuffer.clear();
+        bpmObj.dataObjects.at(bpmName).qBuffer.clear();
+        bpmObj.dataObjects.at(bpmName).timeStampsBuffer.clear();
+        for( auto && it1: bpmObj.dataObjects.at( bpmName ).rawBPMDataBuffer )
+        {
+            it1.clear();
+            it1.resize( bufferSize );
+        }
+//        bpmObj.dataObjects.at(bpmName).rawBPMDataBuffer.clear();
+
+        bpmObj.dataObjects.at(bpmName).xPVBuffer.resize( bufferSize );
+        bpmObj.dataObjects.at(bpmName).yPVBuffer.resize( bufferSize );
+        bpmObj.dataObjects.at(bpmName).xBuffer.resize( bufferSize );
+        bpmObj.dataObjects.at(bpmName).yBuffer.resize( bufferSize );
+        bpmObj.dataObjects.at(bpmName).qBuffer.resize( bufferSize );
+        bpmObj.dataObjects.at(bpmName).timeStampsBuffer.resize( bufferSize );
+//        bpmObj.dataObjects.at(bpmName).rawBPMDataBuffer.resize( bufferSize );
+        bpmObj.dataObjects.at(bpmName).buffer = bufferSize;
+    }
+}
+//______________________________________________________________________________
 std::vector< std::string > beamPositionMonitorInterface::getBPMNames()
 {
     std::vector< std::string > bpmNames;

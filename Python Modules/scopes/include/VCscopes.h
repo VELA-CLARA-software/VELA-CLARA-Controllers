@@ -91,6 +91,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Scope_Control )
     boost::python::type_info info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
     const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
 
+    info = boost::python::type_id< std::vector< std::vector< double > > > ();
+    reg = boost::python::converter::registry::query(info);
+    if (reg == NULL)  {
+        class_< std::vector< std::vector< double > > >("std_vector_double")
+            .def( vector_indexing_suite< std::vector< std::vector< double > > >())
+            ;
+    } else if ((*reg).m_to_python == NULL) {
+        class_< std::vector< std::vector< double > > >("std_vector_double")
+            .def( vector_indexing_suite< std::vector< std::vector< double > > >())
+            ;
+    }
+
     info = boost::python::type_id< std::map< scopeStructs::SCOPE_PV_TYPE, bool > > ();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {

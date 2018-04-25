@@ -184,6 +184,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* setSD2DocString = "Allows the user to set EPICS PV of SD2 for str(bpmName) - these are defined in the config file. arg2 is a long type.";
     char const* setXDocString = "Allows the user to set EPICS PV of X for str(bpmName) - these are defined in the config file. ONLY FOR THE VIRTUAL MACHINE!!!";
     char const* setYDocString = "Allows the user to set EPICS PV of Y for str(bpmName) - these are defined in the config file. ONLY FOR THE VIRTUAL MACHINE!!!";
+    char const* setBufferSizeDocString = "Allows the user to set the size of the buffer to be filled constantly - this will erase any values in the existing buffer";
     char const* monitorSglDocString = "Monitors raw voltages for str(bpmName) - these are defined in the config file. This will fill up a vector of vectors with shot-to-shot raw voltages.\n"
                                       "Data can be accessed using getBPMRawData, getBPMXVec, getBPMYVec, getBPMQVec.\n"
                                       "arg1 is an int, arg2 is a string";
@@ -196,8 +197,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getYVecDocString = "Returns a vector containing the Y values for str(bpmName) - these are defined in the config file.\n"
                                    "To be used in conjunction with function monitorDataForNShots.";
-    char const* getPositionDocString = "Returns the position of the BPM in the lattice - defined in the config file.\n"
-    char const* getQVecDocString = "Returns a vector containing the Q values for str(bpmName) - these are defined in the config file.\n"
+    char const* getPositionDocString = "Returns the position of the BPM in the lattice - defined in the config file.\n";
+    char const* getQVecDocString = "Returns a vector containing the Q values for str(bpmName) - these are defined in the config file.\n";
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(bpmName) - these are defined in the config file.\n"
                                          "To be used in conjunction with function monitorDataForNShots.";
@@ -262,6 +263,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                              )
             .def("setX",                            &beamPositionMonitorController::setX, setXDocString                                  )
             .def("setY",                            &beamPositionMonitorController::setY, setYDocString                                  )
+            .def("setBufferSize",                   &beamPositionMonitorController::setBufferSize, setBufferSizeDocString                )
             .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                    )
             .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                            )
             .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames_Py, getBPMNamesDocString                 )

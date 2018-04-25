@@ -81,6 +81,7 @@ class beamPositionMonitorInterface : public interface
         void setSD2( const std::string & bpmName, long sa1 );
         void setX( const std::string & bpmName, double val );
         void setY( const std::string & bpmName, double val );
+        void setBufferSize( const std::string & bpmName, size_t bufferSize );
         void reCalAttenuation( const std::string & bpmName, double qScope );
         void addToMonitorStructs( std::vector< beamPositionMonitorStructs::monitorStruct * > & msv, beamPositionMonitorStructs::pvStruct & pv,
                                   beamPositionMonitorStructs::bpmDataObject * bpmObj );
