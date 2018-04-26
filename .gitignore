@@ -11,12 +11,7 @@
 *.lib
 *.pyd
 # stuff
-##########
 *.exp
 *.layout
 *.save-failed
-*.obj
-*.obj
-Python Modules/magnets/obj/Release/Hardware/interface.obj
-*.save-failed
-*.save-failed
+*.depend
