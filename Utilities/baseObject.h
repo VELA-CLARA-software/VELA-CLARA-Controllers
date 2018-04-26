@@ -36,6 +36,7 @@
 #include <boost/python/detail/wrap_python.hpp>
 #include <boost/python.hpp>
 #include <boost/python/def.hpp>
+#include <boost/python/slice.hpp>
 #include <boost/python/args.hpp>
 #include <boost/python/class.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -241,7 +242,24 @@ class baseObject
                 dictionary[(int)it.first] = it.second;
             return dictionary;
         }
-
+        template <class T>
+        boost::python::list toPythonList(std::vector<std::vector<T>> vector) const
+        {
+            typename std::vector<std::vector<T>>::iterator iter;
+            typename std::vector<T>::iterator iter2;
+            boost::python::list list;
+            boost::python::list list2;
+            for(iter = vector.begin(); iter != vector.end(); ++iter)
+            {
+                for(iter2 = iter->begin(); iter2 != iter->end(); ++iter2)
+                {
+                    list2.append(*iter2);
+                }
+                list.append(list2);
+                list2[boost::python::slice()];
+            }
+            return list;
+        }
         template <class T>
         boost::python::list toPythonList(std::vector<T> vector) const
         {

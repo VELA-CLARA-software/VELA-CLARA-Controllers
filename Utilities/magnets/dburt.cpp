@@ -112,7 +112,7 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
     std::string line, trimmedLine;
     std::ifstream inputFile;
 
-    std::vector<std::string> keyvalval;
+    std::vector<std::string> keyvalue;
 
     inputFile.open(pathToDBURT+fileName, std::ios::in);
     if(inputFile)
@@ -124,7 +124,7 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
         {
             std::stringstream iss(line); /// make a stream of the line and then do some tests
             ++linenumber;
-            if(stringIsSubString(iss.str(), UTL::DBURT_EOF_V1))
+            if(stringIsSubString(iss.str(), UTL::DBURT_EOF_V3))
             {
                 message("FOUND END OF FILE ");
                 readingParameters = false;
@@ -134,30 +134,38 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
 
-                keyvalval = getKeyVal(trimmedLine, UTL::COLON_C);
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                if(keyvalval.size() == 3)
+                if(keyvalue.size() == 3)
                 {
-                    magState.magNames.push_back(keyvalval[0]);
 
-                    if(keyvalval[1] == UTL::ON)
+                    debugMessage("FOUND ",keyvalue[0],", psu state = ", keyvalue[1],", SI = ",getNumD(keyvalue[2]));
+
+                    magState.magNames.push_back(keyvalue[0]);
+
+                    if(keyvalue[1] == UTL::ON)
+                    {
                         magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
-                    else if(keyvalval[1] == UTL::OFF)
+                    }
+                    else if(keyvalue[1] == UTL::OFF)
+                    {
                         magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::OFF);
+                    }
                     else
                         magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ERROR);
 
-                    magState.siValues.push_back(getNumD(keyvalval[2]));
+                    magState.siValues.push_back(getNumD(keyvalue[2]));
                 }
             } // if(readingParameters)_END
 
-            if(stringIsSubString(iss.str(), UTL::DBURT_NUM_MAGNETS_V1) )
+            if(stringIsSubString(iss.str(), UTL::DBURT_NUM_MAGNETS_V3) )
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-                keyvalval = getKeyVal(trimmedLine, UTL::COLON_C);
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                magState.numMags = getSize(keyvalval[1]);
+                magState.numMags = getSize(keyvalue[1]);
                 message("FOUND NUM MAGNETS = ",  magState.numMags);
+                message("FOUND NUM MAGNETS = ",  getSize(keyvalue[1]), "   ", keyvalue[1]);
                 readingParameters = true;
             }
             if(stringIsSubString(iss.str(), UTL::DBURT_PARAMETERS_V1) )
@@ -167,15 +175,15 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
             if(stringIsSubString(iss.str(), UTL::DBURT_HEADER_AREA) )
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-                keyvalval = getKeyVal(trimmedLine, UTL::COLON_C);
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
+                if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_INJ;
-                else if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA1))
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA1))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA1;
-                else if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA2))
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA2))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA2;
-                else if(keyvalval[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
             }
 
@@ -216,11 +224,13 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const 
         outputFile <<std::endl;
         outputFile <<UTL::DBURT_HEADER_COM  <<comments <<UTL::END_OF_LINE <<std::endl;
         outputFile <<std::endl;
-        outputFile <<UTL::DBURT_HEADER_AREA <<ENUM_TO_STRING(myMachineArea)   <<UTL::END_OF_LINE <<std::endl;
+        outputFile <<UTL::DBURT_HEADER_AREA <<ENUM_TO_STRING(myMachineArea) << UTL::END_OF_LINE << std::endl;
         outputFile <<std::endl;
-        outputFile <<UTL::START_OF_DATA <<std::endl;
+        outputFile <<UTL::START_OF_DATA << UTL::END_OF_LINE << std::endl;
 
-        outputFile <<UTL::NUMBER_OF_OBJECTS <<UTL::EQUALS_SIGN <<magState.numMags <<std::endl;
+        outputFile <<UTL::NUMBER_OF_OBJECTS << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
+        //outputFile <<UTL::NUMBER_OF_OBJECTS    << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
+        //outputFile <<UTL::DBURT_PARAMETERS_V1  << UTL::END_OF_LINE << std::endl;
         for(size_t i = 0; i <magState.numMags; ++i)//MAGIC_NUMBER
         {
             outputFile <<magState.magNames[i] <<UTL::COLON_C;
@@ -251,7 +261,7 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const 
             }
             outputFile <<magState.siValues[i] <<";" <<std::endl;
         }
-        outputFile <<UTL::END_OF_DATA;
+        outputFile << UTL::END_OF_DATA << UTL::END_OF_LINE << std::endl;
         outputFile.close();
         success = true;
     }
@@ -279,7 +289,7 @@ magnetStructs::magnetStateStruct dburt::readDBURTv1(const char* fileName, const 
     std::string line, trimmedLine;
     std::ifstream inputFile;
 
-    std::vector<std::string> keyvalval;
+    std::vector<std::string> keyvalue;
 
     inputFile.open(pathToDBURT+fileName, std::ios::in);
     if(inputFile)
@@ -301,29 +311,31 @@ magnetStructs::magnetStateStruct dburt::readDBURTv1(const char* fileName, const 
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
 
-                keyvalval = getKeyVal(trimmedLine, UTL::COLON_C);
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                if(keyvalval.size() == 3)
+                if(keyvalue.size() == 3)
                 {
-                    magState.magNames.push_back(keyvalval[0]);
+                    magState.magNames.push_back(keyvalue[0]);
 
-                    if(keyvalval[1] == UTL::ON)
+                    if(keyvalue[1] == UTL::ON)
                         magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
-                    else if(keyvalval[1] == UTL::OFF)
+                    else if(keyvalue[1] == UTL::OFF)
                         magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::OFF);
-                    else
-                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
+//                    else
+//                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
 
-                    magState.siValues.push_back(getNumD(keyvalval[2]));
+                    magState.siValues.push_back(getNumD(keyvalue[2]));
                 }
             } // if(readingParameters)_END
 
             if(stringIsSubString(iss.str(), UTL::DBURT_NUM_MAGNETS_V1) )
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-                keyvalval = getKeyVal(trimmedLine, UTL::COLON_C);
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                magState.numMags = getSize(keyvalval[1]);
+
+                magState.numMags = getSize(keyvalue[1]);
+                message("FOUND NUM MAGNETS = ",  getSize(keyvalue[1]), "   ", keyvalue[1]);
                 message("FOUND NUM MAGNETS = ",  magState.numMags);
                 readingParameters = true;
             }

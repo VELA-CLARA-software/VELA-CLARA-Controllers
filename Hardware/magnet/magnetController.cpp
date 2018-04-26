@@ -530,17 +530,28 @@ boost::python::dict magnetController::getMagPSUStateDefinition()
     return enumStringMapToPythonDict(m);
 }
 //______________________________________________________________________________
-bool magnetController::setSI(const boost::python::list & magNames, const boost::python::list & values)
+bool magnetController::setSI_Py1(const boost::python::list& magNames,
+                                const boost::python::list& values)
 {
-    std::vector<std::string> names = to_std_vector<std::string>(magNames);
-    std::vector<double>      vals  = to_std_vector<double>(values);
-    return setSI(names, vals);
+    return setSI(to_std_vector<std::string>(magNames),
+                 to_std_vector<double>(values));
 }
 //______________________________________________________________________________
-size_t magnetController::degauss(const boost::python::list & mag, bool resetToZero)
+boost::python::list magnetController::setSI_Py2(const boost::python::list& magNames,
+                                                const boost::python::list& values,
+                                                const boost::python::list& tolerances,
+                                                const size_t timeOUT)
 {
-    std::vector<std::string> names = to_std_vector<std::string>(mag);
-    return degauss(names, resetToZero);
+    return toPythonList(
+            setSI(to_std_vector<std::string>(magNames),
+                  to_std_vector<double>(values),
+                  to_std_vector<double>(tolerances),
+                  timeOUT));
+}
+//______________________________________________________________________________
+size_t magnetController::degauss_Py(const boost::python::list& mag, bool resetToZero)
+{
+    return degauss(to_std_vector<std::string>(mag), resetToZero);
 }
 //______________________________________________________________________________
 boost::python::list magnetController::getMagnetNames_Py()
@@ -571,6 +582,116 @@ boost::python::list magnetController::getDipNames_Py()
 boost::python::list magnetController::getSolNames_Py()
 {
     return toPythonList(getSolNames());
+}
+//______________________________________________________________________________
+magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState_Py(const boost::python::list& s)
+{
+    return getCurrentMagnetState(to_std_vector<std::string>(s));
+}
+//______________________________________________________________________________
+bool magnetController::setSIZero_Py(const boost::python::list& magNames)
+{
+    return setSIZero(to_std_vector<std::string>(magNames));
+}
+//______________________________________________________________________________
+bool magnetController::switchONpsu_Py(const boost::python::list& magNames)
+{
+    return switchONpsu(to_std_vector<std::string>(magNames));
+}
+//______________________________________________________________________________
+bool magnetController::switchOFFpsu_Py(const boost::python::list& magNames)
+{
+    return switchOFFpsu(to_std_vector<std::string>(magNames));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getSI_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getSI(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getRI_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getRI(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+void magnetController::setRITolerance_Py(const boost::python::list& magNames, const boost::python::list& vals)
+{
+    return setRITolerance(to_std_vector<std::string>(magNames),
+                          to_std_vector<double>(vals));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getRITolerance_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getRITolerance(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getMagType_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getMagType(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getMagPSUState_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getMagPSUState(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getNumDegSteps_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getNumDegSteps(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getDegValues_Py1(const std::string & magName)
+{
+    return toPythonList(getDegValues(magName));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getDegValues_Py2(const boost::python::list& magName)
+{
+    return toPythonList(getDegValues(to_std_vector<std::string>(magName)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getFieldIntegralCoefficients_Py1(const std::string& magName)
+{
+    return toPythonList(getFieldIntegralCoefficients(magName));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getFieldIntegralCoefficients_Py2(const boost::python::list& magNames)
+{
+    return toPythonList(
+            getFieldIntegralCoefficients(
+                    to_std_vector<std::string>(magNames)
+                                        )
+                        );
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getPosition_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getPosition(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getMagneticLength_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getMagneticLength(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getManufacturer_Py(const boost::python::list& magNames)
+{
+    return toPythonList(getManufacturer(to_std_vector<std::string>(magNames)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getSerialNumber_Py(const boost::python::list& magName)
+{
+    return toPythonList(getSerialNumber(to_std_vector<std::string>(magName)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getMagnetBranch_Py(const boost::python::list& magName)
+{
+    return toPythonList(getMagnetBranch(to_std_vector<std::string>(magName)));
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getMeasurementDataLocation_Py(const boost::python::list& magName)
+{
+    return toPythonList(getMeasurementDataLocation(to_std_vector<std::string>(magName)));
 }
 //______________________________________________________________________________
 #endif // BUILD_DLL

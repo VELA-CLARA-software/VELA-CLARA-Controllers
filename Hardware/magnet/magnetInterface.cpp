@@ -1350,11 +1350,22 @@ void magnetInterface::applyMagnetStateStruct(const magnetStructs::magnetStateStr
             vec_s magsToSwitchOn, magsToSwitchOff;
             for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)
             {
-                if(magState.psuStates[i] == magnetStructs::MAG_PSU_STATE::OFF)
-                    magsToSwitchOff.push_back(magState.magNames[i]);
-                else if(magState.psuStates[i]  == magnetStructs::MAG_PSU_STATE::ON)
-                    magsToSwitchOn.push_back(magState.magNames[i]);
                 message("Found ", magState.magNames[i]);
+                if(magState.psuStates[i] == magnetStructs::MAG_PSU_STATE::OFF)
+                {
+                    message("Switching Off ",magState.magNames[i]);
+                    magsToSwitchOff.push_back(magState.magNames[i]);
+                }
+                else if(magState.psuStates[i]  == magnetStructs::MAG_PSU_STATE::ON)
+                {
+                    message("Switching ON ",magState.magNames[i]);
+                    magsToSwitchOn.push_back(magState.magNames[i]);
+                }
+                else
+                {
+                    message("ERROR in PSU setting for ", magState.magNames[i]);
+                }
+
             }
             switchONpsu(magsToSwitchOn);
             switchOFFpsu(magsToSwitchOff);
@@ -1379,6 +1390,7 @@ magnetStateStruct magnetInterface::getDBURT(const std::string& fileName)const
 {
     /// create a dburt object
     dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES,myMachineArea);
+    message("getting DBURT ",fileName);
     return dbr.readDBURT(fileName);
 }
 //______________________________________________________________________________

@@ -64,15 +64,6 @@
 					<Add directory="../../Structs" />
 					<Add directory="../../Config" />
 					<Add directory="../../Hardware/magnet" />
-					<Add directory="../../Hardware/screen" />
-					<Add directory="../../Hardware/scope" />
-					<Add directory="../../Hardware/gun_prot" />
-					<Add directory="../../Hardware/vacuumValve" />
-					<Add directory="../../Hardware/camera" />
-					<Add directory="../../Hardware/beamPositionMonitor" />
-					<Add directory="../../Hardware/invertedMagnetronGauge" />
-					<Add directory="../../Hardware/shutter" />
-					<Add directory="../../Hardware/pilaser" />
 					<Add directory="../../Structs/magnets" />
 					<Add directory="../../Utilities/magnets" />
 				</Compiler>
@@ -98,13 +89,14 @@
 		<Unit filename="../../Hardware/magnet/magnetInterface.h" />
 		<Unit filename="../../Structs/magnets/magnetStructs.cpp" />
 		<Unit filename="../../Structs/magnets/magnetStructs.h" />
-		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Structs/structs.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
-		<Unit filename="../../Utilities/dburtDefinitions.h" />
 		<Unit filename="../../Utilities/magnets/dburt.cpp" />
 		<Unit filename="../../Utilities/magnets/dburt.h" />
 		<Unit filename="../../Utilities/magnets/dburtDefinitions.cpp" />

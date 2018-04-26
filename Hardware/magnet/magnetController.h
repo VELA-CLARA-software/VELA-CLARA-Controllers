@@ -94,7 +94,7 @@ class magnetController : public controller
         const magnetStructs::magnetObject &getMagObjConstRef(const std::string & magName );
         const magnetStructs::magnetObject *getMagObjConstPtr(const std::string & magName );
       /// you can also get copies of the data - these can be exposed with Python bindings
-        magnetStructs::magnetStateStruct getCurrentMagnetState(const std::vector<std::string> & s);
+        magnetStructs::magnetStateStruct getCurrentMagnetState(const std::vector<std::string>& s);
         magnetStructs::magnetStateStruct getCurrentMagnetState();
 
       /// Write magnet data in DBURT format to file
@@ -104,6 +104,9 @@ class magnetController : public controller
       /// Set SI, 4 versions of this
         bool setSI(const std::string & magName, const double value);
         bool setSI(const std::vector<std::string> &magName, const std::vector<double>& value);
+
+
+
 
 
 
@@ -188,8 +191,12 @@ class magnetController : public controller
       /// (we need the functions that return std::map types when building c++ applications)
 #ifdef BUILD_DLL
 
-        bool setSI(const boost::python::list & magNames, const boost::python::list & values);
-        size_t degauss(const boost::python::list & mag, bool resetToZero = true);
+        bool setSI_Py1(const boost::python::list & magNames,
+                      const boost::python::list & values);
+        boost::python::list setSI_Py2(const boost::python::list& magNames,
+                                     const boost::python::list& values,
+                                     const boost::python::list& tolerances,
+                                     const size_t timeOUT);
 
         boost::python::dict getILockStates_Py(std::string magName);
         boost::python::dict getILockStatesStr_Py(std::string magName);
@@ -202,6 +209,30 @@ class magnetController : public controller
         boost::python::list getDipNames_Py();
         boost::python::list getSolNames_Py();
 
+
+        magnetStructs::magnetStateStruct getCurrentMagnetState_Py(const boost::python::list& s);
+
+        bool setSIZero_Py(const boost::python::list& magNames);
+        bool switchONpsu_Py(const boost::python::list& magNames);
+        bool switchOFFpsu_Py(const boost::python::list& magNames);
+        size_t degauss_Py(const boost::python::list& mag, bool resetToZero = true);
+        boost::python::list getSI_Py(const boost::python::list& magNames);
+        boost::python::list getRI_Py(const boost::python::list& magNames);
+        void setRITolerance_Py(const boost::python::list& magNames, const boost::python::list& vals);
+        boost::python::list getRITolerance_Py(const boost::python::list& magNames);
+        boost::python::list getMagType_Py(const boost::python::list& magNames);
+        boost::python::list getMagPSUState_Py(const boost::python::list& magNames);
+        boost::python::list getNumDegSteps_Py(const boost::python::list& magNames);
+        boost::python::list getDegValues_Py1(const std::string & magName);
+        boost::python::list getDegValues_Py2(const boost::python::list& magName);
+        boost::python::list getFieldIntegralCoefficients_Py1(const std::string& magName);
+        boost::python::list getFieldIntegralCoefficients_Py2(const boost::python::list& magNames);
+        boost::python::list getPosition_Py(const boost::python::list& magNames);
+        boost::python::list getMagneticLength_Py(const boost::python::list& magNames);
+        boost::python::list getManufacturer_Py(const boost::python::list& magNames);
+        boost::python::list getSerialNumber_Py(const boost::python::list& magName);
+        boost::python::list getMagnetBranch_Py(const boost::python::list& magName);
+        boost::python::list getMeasurementDataLocation_Py(const boost::python::list& magName);
 
 #endif // BUILD_DLL
 

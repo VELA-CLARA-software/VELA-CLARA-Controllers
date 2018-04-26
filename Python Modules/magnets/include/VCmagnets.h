@@ -145,7 +145,7 @@ bool(magnetController::*setSI_2)(cves&, cved&) = &magnetController::setSI;
 bool(magnetController::*setSI_3)(cstr&, cdou , cdou , csiz) = &magnetController::setSI;
 vecs(magnetController::*setSI_4)(cves&, cved&, cved&, csiz) = &magnetController::setSI;
 
-bool(magnetController::*setSI_5)(cbpl&, cbpl&) = &magnetController::setSI;
+//bool(magnetController::*setSI_5)(cbpl&, cbpl&) = &magnetController::setSI;
 //
 bool(magnetController::*switchONpsu_1)(cstr&) = &magnetController::switchONpsu;
 bool(magnetController::*switchONpsu_2)(cves&) = &magnetController::switchONpsu;
@@ -154,7 +154,7 @@ bool(magnetController::*switchOFFpsu_2)(cves&) = &magnetController::switchOFFpsu
 //
 size_t(magnetController::*degauss_1)(cstr&, bool) = &magnetController::degauss;
 size_t(magnetController::*degauss_2)(cves&, bool) = &magnetController::degauss;
-size_t(magnetController::*degauss_3)(cbpl&, bool) = &magnetController::degauss;
+//size_t(magnetController::*degauss_3)(cbpl&, bool) = &magnetController::degauss;
 //
 bool(magnetController::*writeDBURT_1)(const msst&, cstr&, cstr&, cstr&) = &magnetController::writeDBURT;
 bool(magnetController::*writeDBURT_2)(             cstr&, cstr&, cstr&) = &magnetController::writeDBURT;
@@ -309,7 +309,41 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def("setSI", setSI_2)
         .def("setSI", setSI_3)
         .def("setSI", setSI_4)
-        .def("setSI", setSI_5)
+        .def("setSI", &magnetController::setSI_Py1)
+        .def("setSI", &magnetController::setSI_Py2)
+
+        .def("getILockStates", &magnetController::getILockStates_Py)
+        .def("getILockStatesStr", &magnetController::getILockStatesStr_Py)
+        .def("getMagPSUStateDefinition", &magnetController::getMagPSUStateDefinition)
+        .def("getILockStates", &magnetController::getILockStates_Py)
+        .def("getMagnetNames", &magnetController::getMagnetNames_Py)
+        .def("getQuadNames", &magnetController::getQuadNames_Py)
+        .def("getHCorNames", &magnetController::getHCorNames_Py)
+        .def("getVCorNames", &magnetController::getVCorNames_Py)
+        .def("getDipNames", &magnetController::getDipNames_Py)
+        .def("getSolNames", &magnetController::getSolNames_Py)
+        .def("getCurrentMagnetState", &magnetController::getCurrentMagnetState_Py)
+        .def("setSIZero", &magnetController::setSIZero_Py)
+        .def("switchONpsu", &magnetController::switchONpsu_Py)
+        .def("switchOFFpsu", &magnetController::switchOFFpsu_Py)
+        .def("degauss", &magnetController::degauss_Py)
+        .def("getSI", &magnetController::getSI_Py)
+        .def("getRI", &magnetController::getRI_Py)
+        .def("setRITolerance", &magnetController::setRITolerance_Py)
+        .def("getMagType", &magnetController::getMagType_Py)
+        .def("getMagPSUState", &magnetController::getMagPSUState_Py)
+        .def("getNumDegSteps", &magnetController::getNumDegSteps_Py)
+        .def("getDegValues", &magnetController::getDegValues_Py1)
+        .def("getDegValues", &magnetController::getDegValues_Py2)
+        .def("getFieldIntegralCoefficients", &magnetController::getFieldIntegralCoefficients_Py1)
+        .def("getFieldIntegralCoefficients", &magnetController::getFieldIntegralCoefficients_Py2)
+        .def("getPosition", &magnetController::getPosition_Py)
+        .def("getMagneticLength", &magnetController::getMagneticLength_Py)
+        .def("getManufacturer", &magnetController::getManufacturer_Py)
+        .def("getPosition", &magnetController::getPosition_Py)
+        .def("getMagnetBranch", &magnetController::getMagnetBranch_Py)
+        .def("getMeasurementDataLocation", &magnetController::getMeasurementDataLocation_Py)
+
         .def("setSIZero",  setSIZero_1)
         .def("setSIZero",  setSIZero_2)
 //        .def("switchONpsu", switchONpsu_1(boost::python::arg("magnetname")),"Switch ON magnetname psu.")
@@ -325,8 +359,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
                         boost::python::arg("magnetname"),boost::python::arg("degaussToZero")=false),"deguass magnetname (single magnet), if degaussToZero = True then after degaussing the current will be left at zero, if degaussToZero = False the initial current will be reset.")
         .def("degauss", degauss_2,(
                         boost::python::arg("magnetnames"),boost::python::arg("degaussToZero")=false),"deguass magnetnames (mulitple magnets), if degaussToZero = True then after degaussing the current will be left at zero, if degaussToZero = False the initial current will be reset.")
-        .def("degauss", degauss_3,(
-                        boost::python::arg("magnetnames"),boost::python::arg("degaussToZero")=false),"deguass magnetnames (mulitple magnets), if degaussToZero = True then after degaussing the current will be left at zero, if degaussToZero = False the initial current will be reset.")
+//        .def("degauss", degauss_3,(
+//                        boost::python::arg("magnetnames"),boost::python::arg("degaussToZero")=false),"deguass magnetnames (mulitple magnets), if degaussToZero = True then after degaussing the current will be left at zero, if degaussToZero = False the initial current will be reset.")
         .def("writeDBURT",               writeDBURT_1)
         .def("writeDBURT",               writeDBURT_2)
         .def("getCurrentMagnetState",    getCurrentMagnetState_1)
