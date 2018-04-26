@@ -1,0 +1,190 @@
+# depslib dependency file v1.0
+1483526951 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1484820945 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"interface.h"
+	"baseObject.h"
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1483526951 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	"baseObject.h"
+	"structs.h"
+
+1485429777 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+
+1486661318 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	<vector>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1486661318 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+
+1487246633 source:d:\vela\git projects\vela-clara-controllers\hardware\laser\lasercontroller.cpp
+	"laserController.h"
+	<fstream>
+	<iostream>
+
+1487248446 d:\vela\git projects\vela-clara-controllers\hardware\laser\lasercontroller.h
+	<string>
+	<vector>
+	<map>
+	"laserInterface.h"
+	"controller.h"
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+
+1487247605 d:\vela\git projects\vela-clara-controllers\hardware\laser\laserinterface.h
+	"interface.h"
+	"laserStructs.h"
+	"structs.h"
+	"laserConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1486661318 d:\vela\git projects\vela-clara-controllers\structs\magnetstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<vector>
+	<string>
+	<map>
+	<thread>
+	<cadef.h>
+
+1487248074 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+
+1487247904 d:\vela\git projects\vela-clara-controllers\utilities\laserconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"laserStructs.h"
+
+1487247863 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<vector>
+	<cadef.h>
+
+1487246961 d:\vela\git projects\vela-clara-controllers\structs\laserstructs.h
+	"structs.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1487247761 source:d:\vela\git projects\vela-clara-controllers\hardware\laser\laserinterface.cpp
+	"laserInterface.h"
+	"dburt.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<algorithm>
+	<thread>
+
+1484821121 d:\vela\git projects\vela-clara-controllers\utilities\dburt.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"dburtDefinitions.h"
+	"magnetStructs.h"
+	"magnetInterface.h"
+
+1484751237 d:\vela\git projects\vela-clara-controllers\utilities\dburtdefinitions.h
+	<string>
+
+1487172057 d:\vela\git projects\vela-clara-controllers\hardware\magnet\magnetinterface.h
+	"interface.h"
+	"magnetStructs.h"
+	"structs.h"
+	"magnetConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1484839727 d:\vela\git projects\vela-clara-controllers\utilities\magnetconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"magnetStructs.h"
+
+1483526955 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	<time.h>
+
+1486661318 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1487247930 source:d:\vela\git projects\vela-clara-controllers\utilities\laserconfigreader.cpp
+	"laserConfigReader.h"
+	"laserStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1446667744 source:d:\vela\git projects\vela-clara-controllers\python modules\laser\main.cpp
+	"main.h"
+
+1446667744 d:\vela\git projects\vela-clara-controllers\python modules\laser\main.h
+	<windows.h>
+
+1487248274 source:d:\vela\git projects\vela-clara-controllers\python modules\laser\src\vclaser.cpp
+	"VClaser.h"
+	<iostream>
+
+1487247951 d:\vela\git projects\vela-clara-controllers\python modules\laser\include\vclaser.h
+	<string>
+	"laserController.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+

@@ -42,7 +42,7 @@ pilaserMirrorInterface::pilaserMirrorInterface(bool& show_messages,
                          const std::string& configFile
                        ):
 configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
-interface(show_messages,show_debug_messages)
+interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
 {
     if(shouldStartEPICs)
         message("pilaserMirrorInterface shouldStartEPICs is true");
@@ -210,16 +210,28 @@ double pilaserMirrorInterface::getVstep() const
     return laserMirror.vStep;
 }
 //____________________________________________________________________________________________
-bool pilaserMirrorInterface::setHstep(double value)
+bool pilaserMirrorInterface::setHstep(const double value)
 {
-    return setValue(
-        laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::H_STEP),value);
+    bool s = true;
+    if(usingVM)
+    {
+        bool s = setValue(
+            laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::H_STEP),value);
+    }
+    laserMirror.hStep = value;
+    return s;
 }
 //____________________________________________________________________________________________
-bool pilaserMirrorInterface::setVstep(double value)
+bool pilaserMirrorInterface::setVstep(const double value)
 {
-    return setValue(
-        laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_STEP),value);
+    bool s = true;
+    if(usingVM)
+    {
+        bool s = setValue(
+            laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_STEP),value);
+    }
+    laserMirror.vStep = value;
+    return s;
 }
 //____________________________________________________________________________________________
 double pilaserMirrorInterface::getHpos() const
@@ -232,27 +244,24 @@ double pilaserMirrorInterface::getVpos() const
     return laserMirror.vPos;
 }
 //____________________________________________________________________________________________
-bool pilaserMirrorInterface::setHpos(double value)
+bool pilaserMirrorInterface::setHpos(const double value)
 {
-    return setValue(laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::H_POS),value);
+    bool s = true;
+    if(usingVM)
+    {
+        bool s = setValue(
+            laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_STEP),value);
+    }
+    laserMirror.vStep = value;
+    return s;
 }
 //____________________________________________________________________________________________
-bool pilaserMirrorInterface::setHpos(int value)
-{
-    return setHpos((double)value);
-}
-//____________________________________________________________________________________________
-bool pilaserMirrorInterface::setVpos(double value)
+bool pilaserMirrorInterface::setVpos(const double value)
 {
     return setValue(laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_POS),value);
 }
 //____________________________________________________________________________________________
-bool pilaserMirrorInterface::setVpos(int value)
-{
-    return setVpos((double)value);
-}
-//____________________________________________________________________________________________
-bool pilaserMirrorInterface::setValue(pilaserMirrorStructs::pvStruct& pvs, double value)
+bool pilaserMirrorInterface::setValue(pilaserMirrorStructs::pvStruct& pvs,const double value)
 {
     bool ret = false;
     ca_put(pvs.CHTYPE, pvs.CHID, &value);
@@ -282,6 +291,8 @@ bool pilaserMirrorInterface::moveV()
 //____________________________________________________________________________________________
 bool pilaserMirrorInterface::move(chtype& cht, chid& chi,const char* m1,const char* m2)
 {
+    //need to figure out how to move th elaser form command line...
+
     int status = caput(cht, chi, EPICS_ACTIVATE, "", m1);
     if(status == ECA_NORMAL)
     {
