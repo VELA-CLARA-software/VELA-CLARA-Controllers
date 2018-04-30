@@ -179,8 +179,8 @@ void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, 
             pvStruct_v.back().pvType = CAM_PV_TYPE::SIGMA_Y_PIX;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_COV_XY_PIX  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::COV_XY_PIX;
-        else if( keyVal[0] == UTL::PV_IA_SUFFIX_SUM_PIX_INTENSITY  )
-            pvStruct_v.back().pvType = CAM_PV_TYPE::SUMMED_PIX_INETSITY;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_AV_PIX_INTENSITY  )
+            pvStruct_v.back().pvType = CAM_PV_TYPE::AVG_PIX_INETSITY;
 
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_START_IA  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::START_IA;

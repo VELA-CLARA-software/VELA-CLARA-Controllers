@@ -237,3 +237,15 @@ bool cameraInterface::shortCaput(const unsigned short &comm, pvStruct& S)
     }
     return ans;
 }
+
+bool cameraInterface::doubleCaput(const double &comm, pvStruct& S)
+{
+    bool ans(false);
+    ca_put(S.CHTYPE,S.CHID, &comm);
+    int status = sendToEpics("ca_put", "", "Timeout trying to sendToEpics.");
+    if(status == ECA_NORMAL)
+    {
+        ans = true;
+    }
+    return ans;
+}

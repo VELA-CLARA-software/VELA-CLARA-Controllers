@@ -75,6 +75,7 @@ class cameraIAController  : public controller
         bool startAnalysis();
         bool stopAnalysis();
         bool setStepSize(const int step);
+        bool setMask(const int xCenter,const int yCenter,const int xRadius,const int yRadius);
         bool useNPoint(const bool run);
 
         const cameraObject &getCamIAObjConstRef(const std::string &camName);

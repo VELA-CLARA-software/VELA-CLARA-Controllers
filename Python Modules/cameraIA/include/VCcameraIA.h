@@ -160,6 +160,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("DAQ",
                       &cameraStructs::cameraObject::DAQ,
                       "Object (cameraDAQObject) containing all the DAQ data.")
+        .def_readonly("streamingIPAddress",
+                     &cameraStructs::cameraObject::streamingIPAddress,
+                     "IP address for the camera live stream.")
 
         ;
     boost::python::class_<cameraStructs::cameraIAObject,boost::noncopyable>
@@ -221,9 +224,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("imageWidth",
                       &cameraStructs::cameraIAObject::imageWidth,
                       "Horizontal length of full image in pixels.")*/
-        .def_readonly("summedIntensity",
-                      &cameraStructs::cameraIAObject::summedIntensity,
-                      "Summed pixel values of image. ")
+        .def_readonly("averagePixelIntensity",
+                      &cameraStructs::cameraIAObject::averagePixelIntensity,
+                      "Average pixel values of image. ")
         .def_readonly("pix2mm",
                       &cameraStructs::cameraIAObject::pix2mm,
                       "Conversion factor for convert pixel value to mm. (mm = pix2mm*pix)")
@@ -580,9 +583,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
              (arg("int")),
              "Returns True if successful in setting the analysis to use Npoint scaling")
 
-        .def("useBackground",
+        .def("setStepSize",
              &cameraIAController::setStepSize,
              (arg("int")),
+             "Returns True if successful in setting the analysis to use a chosen step size in reading in image for analysis.")
+        .def("setMask",
+             &cameraIAController::setMask,
+             (arg("int"),arg("int"),arg("int"),arg("int")),
              "Returns True if successful in setting the analysis to use a chosen step size in reading in image for analysis.")
         .def("getCamIAObjConstRef",
              &cameraIAController::getCamIAObjConstRef,
