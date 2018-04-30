@@ -12,6 +12,11 @@
 			<Cursor1 position="0" topLine="53" />
 		</Cursor>
 	</File>
+	<File name="..\..\Hardware\VCheader.h" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1750" topLine="6" />
+		</Cursor>
+	</File>
 	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1917" topLine="7" />
@@ -32,9 +37,9 @@
 			<Cursor1 position="6371" topLine="66" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\scope\scopeInterface.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\scope\scopeInterface.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="39406" topLine="916" />
+			<Cursor1 position="50657" topLine="1149" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\scope\scopeInterface.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -52,9 +57,9 @@
 			<Cursor1 position="6615" topLine="89" />
 		</Cursor>
 	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Utilities\configDefinitions.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="11532" topLine="205" />
+			<Cursor1 position="8735" topLine="165" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -92,5 +97,5 @@
 			<Cursor1 position="14667" topLine="291" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="09a696a85add963b32c152f000000002=0;scopes:..\..\Hardware\scope\scopeController.h,1;bpms:..\..\Utilities\beamPositionMonitorConfigReader.h,2;bpms:..\..\Utilities\beamPositionMonitorConfigReader.cpp,3;bpms:..\..\Structs\beamPositionMonitorStructs.h,4;bpms:include\VCBPMs.h,*5;screenPYD:include\VCscreens.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09a696a85add963b32c152f000000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<EditorTabsLayout layout="098ea1f05ae6ef1c00005a1f00000002=0;scopes:..\..\Hardware\scope\scopeController.h,1;scopes:..\..\Hardware\scope\scopeInterface.cpp,2;scopes:..\..\Utilities\configDefinitions.h,3;bpms:src\VCBPMs.cpp,4;bpms:include\VCBPMs.h,*5;scopes:..\..\Hardware\VCheader.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=098ea1f05ae6ef1c00005a1f00000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

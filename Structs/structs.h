@@ -114,6 +114,7 @@ namespace HWC_ENUM
                                                         (CAMERA_DAQ)
                                                         (SCREEN)
                                                         (SCOPE)
+                                                        (CHARGE)
                                                         (GENERAL_MONITOR)
                                                         (PI_LASER)
                                                         (PI_LASER_MIRROR)
