@@ -63,6 +63,12 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
+		<Unit filename="../../Structs/charge/chargeStructs.h" />
+		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Utilities/charge/chargeConfigReader.cpp" />
+		<Unit filename="../../Utilities/charge/chargeConfigReader.h" />
+		<Unit filename="include/VCcharge.h" />
+		<Unit filename="src/VCcharge.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

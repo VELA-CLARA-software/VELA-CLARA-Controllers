@@ -249,8 +249,8 @@ scopeController & VCscopes::physical_VELA_BA2_Scope_Controller()
 scopeController & VCscopes::virtual_CLARA_PH1_Scope_Controller()
 {
     std::string name  = "virtual_CLARA_PH1_Scope_Controller";
-    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
     return getController(virtual_CLARA_PH1_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
@@ -263,8 +263,8 @@ scopeController & VCscopes::virtual_CLARA_PH1_Scope_Controller()
 scopeController & VCscopes::offline_CLARA_PH1_Scope_Controller()
 {
     std::string name  = "offline_CLARA_PH1_Scope_Controller";
-    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
     return getController(offline_CLARA_PH1_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
@@ -277,8 +277,8 @@ scopeController & VCscopes::offline_CLARA_PH1_Scope_Controller()
 scopeController & VCscopes::physical_CLARA_PH1_Scope_Controller()
 {
     std::string name  = "physical_CLARA_PH1_Scope_Controller";
-    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string scopeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
+    const std::string scopeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
     return getController(physical_CLARA_PH1_Scope_Controller_Obj,
                          scopeconf1,
                          scopeconf2,
