@@ -85,6 +85,8 @@ bool cameraIAController::setCamera(const std::string &cam)
     setMaskYRad(localInterface.selectedCameraObj.IA.maskYRad);
     setCenterXPixel(localInterface.selectedCameraObj.IA.xCenterPix);
     setCenterYPixel(localInterface.selectedCameraObj.IA.yCenterPix);
+    std::cout<< localInterface.selectedCameraObj.IA.pix2mm << std::endl;
+    setPixMM(localInterface.selectedCameraObj.IA.pix2mm);
     return ans;
 }
 bool cameraIAController::startAcquiring()
@@ -136,6 +138,10 @@ bool cameraIAController::setCenterYPixel(const int yC)
 bool cameraIAController::setStepSize(const int step)
 {
     return localInterface.setStepSize(step);
+}
+bool cameraIAController::setMask(const int xCenter,const int yCenter,const int xRadius,const int yRadius)
+{
+    return localInterface.setMask(xCenter,yCenter,xRadius,yRadius);
 }
 bool cameraIAController::useNPoint(const bool run)
 {

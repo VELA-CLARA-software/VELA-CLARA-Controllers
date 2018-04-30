@@ -43,6 +43,7 @@ class cameraIAInterface : public cameraInterface
         bool setBackground();
         bool useBackground(const bool run);
         bool setStepSize(const int step);
+        bool setMask(const int xCenter,const int yCenter,const int xRadius,const int yRadius);
         bool setMaskX(const int x);
         bool setMaskY(const int y);
         bool setMaskXRad(const int xRad);
@@ -78,11 +79,11 @@ class cameraIAInterface : public cameraInterface
         void updateSigmaX(const double value,const std::string& cameraName);
         void updateSigmaY(const double value,const std::string& cameraName);
         void updateCovXY(const double value,const std::string& cameraName);
-        void updateXPix(const unsigned long value,const std::string& cameraName);
-        void updateYPix(const unsigned long value,const std::string& cameraName);
-        void updateSigmaXPix(const unsigned long value,const std::string& cameraName);
-        void updateSigmaYPix(const unsigned long value,const std::string& cameraName);
-        void updateCovXYPix(const unsigned long value,const std::string& cameraName);
+        void updateXPix(const double value,const std::string& cameraName);
+        void updateYPix(const double value,const std::string& cameraName);
+        void updateSigmaXPix(const double value,const std::string& cameraName);
+        void updateSigmaYPix(const double value,const std::string& cameraName);
+        void updateCovXYPix(const double value,const std::string& cameraName);
         void updateXRad(const unsigned long value,const std::string&cameraName);
         void updateYRad(const unsigned long value,const std::string&cameraName);
         void updateXCenterPix(const unsigned long value,const std::string&cameraName);
@@ -92,7 +93,7 @@ class cameraIAInterface : public cameraInterface
         //void updateImageHeight(const unsigned long value,const std::string&cameraName);
         void updateXMask(const unsigned long value,const std::string&cameraName);
         void updateYMask(const unsigned long value,const std::string&cameraName);
-        void updateSummedIntensity(const unsigned long value,const std::string&cameraName);
+        void updateAverageIntensity(const unsigned long value,const std::string&cameraName);
         void updateAnalyseState(const unsigned short value,const std::string&cameraName);
         void updateUseBkgrnd(const unsigned short value,const std::string&cameraName);
         void updateUseNPoint(const unsigned short value,const std::string&cameraName);

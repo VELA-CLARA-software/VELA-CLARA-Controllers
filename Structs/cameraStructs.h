@@ -49,7 +49,7 @@ namespace cameraStructs
         (JPG_CAPTURE)(JPG_CAPTURE_RBV)(JPG_NUM_CAPTURE)
         (JPG_NUM_CAPTURE_RBV)(JPG_NUM_CAPTURED)
         (START_IA)(PIX_MM)(STEP_SIZE)(SET_BKGRND)(USE_BKGRND)(USE_NPOINT)
-        (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(SUMMED_PIX_INETSITY)
+        (X)(Y)(SIGMA_X)(SIGMA_Y)(COV_XY)(AVG_PIX_INETSITY)
         (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
         (MASK_X)(MASK_Y)(MASK_X_RAD)(MASK_Y_RAD)(X_CENTER)(Y_CENTER)
         (BIT_DEPTH)(UNKNOWN_CAM_PV_TYPE)
@@ -131,14 +131,14 @@ namespace cameraStructs
                            maskXRad(UTL::DUMMY_INT),
                            maskYRad(UTL::DUMMY_INT),
                            bitDepth(UTL::DUMMY_INT),
-                           summedIntensity(UTL::DUMMY_INT){}
+                           averagePixelIntensity(UTL::DUMMY_INT){}
                            //imageHeight(UTL::DUMMY_INT),
                            //imageWidth(UTL::DUMMY_INT){}
 
         double x,y,sigmaX,sigmaY,covXY,pix2mm;
         size_t xPix, yPix,sigmaXPix,sigmaYPix,covXYPix,
                xCenterPix,yCenterPix,maskXRad,maskYRad,maskX,maskY,
-               bitDepth,summedIntensity;
+               bitDepth,averagePixelIntensity;
         bool useBkgrnd, analysisState, useNPoint;
                //imageHeight,imageWidth;
         //std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;

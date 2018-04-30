@@ -178,19 +178,19 @@ void cameraIAInterface::staticEntryIAMonitor(const event_handler_args args)
             ms->interface->updateCovXY( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::X_PIX:
-            ms->interface->updateXPix( *(unsigned long*)args.dbr, ms->objName);
+            ms->interface->updateXPix( *(double*)args.dbr, ms->objName);
             break;
         case CAM_PV_TYPE::Y_PIX:
-            ms->interface->updateYPix( *(unsigned long*)args.dbr, ms->objName);
+            ms->interface->updateYPix( *(double*)args.dbr, ms->objName);
             break;
         case CAM_PV_TYPE::SIGMA_X_PIX:
-            ms->interface->updateSigmaXPix( *(unsigned long*)args.dbr, ms->objName );
+            ms->interface->updateSigmaXPix( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::SIGMA_Y_PIX:
-            ms->interface->updateSigmaYPix( *(unsigned long*)args.dbr, ms->objName );
+            ms->interface->updateSigmaYPix( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::COV_XY_PIX:
-            ms->interface->updateCovXYPix( *(unsigned long*)args.dbr, ms->objName );
+            ms->interface->updateCovXYPix( *(double*)args.dbr, ms->objName );
             break;
             /*
         case CAM_PV_TYPE::MASK_X_RAD_RBV:
@@ -215,8 +215,8 @@ void cameraIAInterface::staticEntryIAMonitor(const event_handler_args args)
         case CAM_PV_TYPE::BIT_DEPTH:
             ms->interface->updateBitDepth( *(unsigned long*)args.dbr, ms->objName );
             break;
-        case CAM_PV_TYPE::SUMMED_PIX_INETSITY:
-            ms->interface->updateSummedIntensity( *(unsigned long*)args.dbr, ms->objName );
+        case CAM_PV_TYPE::AVG_PIX_INETSITY:
+            ms->interface->updateAverageIntensity( *(double*)args.dbr, ms->objName );
             break;
         case CAM_PV_TYPE::CAM_ACQUIRE_RBV:
             ms->interface->updateAcquiring( *(unsigned short*)args.dbr, ms->objName );
@@ -305,27 +305,27 @@ void cameraIAInterface::updateCovXY(const double value,const std::string&cameraN
     allCamData.at(cameraName).IA.covXY = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateXPix(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateXPix(const double value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.xPix = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateYPix(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateYPix(const double value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.yPix = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateSigmaXPix(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateSigmaXPix(const double value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.sigmaXPix = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateSigmaYPix(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateSigmaYPix(const double value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.sigmaYPix = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateCovXYPix(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateCovXYPix(const double value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.covXYPix = value;
     updateSelectedOrVC(cameraName);
@@ -413,9 +413,9 @@ void cameraIAInterface::updateUseNPoint(const unsigned short value,const std::st
     }
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateSummedIntensity(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateAverageIntensity(const unsigned long value,const std::string&cameraName)
 {
-    allCamData.at(cameraName).IA.summedIntensity = value;
+    allCamData.at(cameraName).IA.averagePixelIntensity = value;
     updateSelectedOrVC(cameraName);
 }
 /*void cameraIAInterface::updateImageHeight(const unsigned long value,const std::string&cameraName)
@@ -466,15 +466,36 @@ bool cameraIAInterface::useNPoint(const bool run)
 bool cameraIAInterface::setBackground()
 {
     bool ans=false;
-    unsigned short comm = 1;
+    unsigned short on = 1;
+    unsigned short off = 1;
     if( isAcquiring(selectedCamera()))
     {
         pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::SET_BKGRND));
-        ans=shortCaput(comm,S);
+        ans=shortCaput(off,S);
+        std::this_thread::sleep_for(std::chrono::milliseconds( 50 ));
+        ans=shortCaput(on,S);
+        std::this_thread::sleep_for(std::chrono::milliseconds( 50 ));
+        ans=shortCaput(off,S);
         message("Setting background with next live image on ",
                 selectedCameraObj.name," camera.");
     }
     return ans;
+}
+
+bool cameraIAInterface::setMask(const int xCenter,const int yCenter,const int xRadius,const int yRadius)
+{
+    bool ans1(false), ans2(false), ans3(false), ans4(false);
+    bool finalAns=false;
+    ans1 = setMaskX(xCenter);
+    ans2 = setMaskY(yCenter);
+    ans3 = setMaskXRad(xRadius);
+    ans4 = setMaskYRad(yRadius);
+    if (ans1==true && ans2==true && ans3==true && ans4==true)
+    {
+        message("All mask parameters sucessfully set.");
+        finalAns = true;
+    }
+    return finalAns;
 }
 
 bool cameraIAInterface::setMaskX(const int x)
@@ -509,7 +530,7 @@ bool cameraIAInterface::setMaskXRad(const int xRad)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::MASK_X_RAD));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.maskY=xRad;}
+    if (ans==true) {selectedCameraObj.IA.maskXRad=xRad;}
     message("Setting mask X radius for",
             selectedCameraObj.name," camera.");
     return ans;
@@ -521,7 +542,7 @@ bool cameraIAInterface::setMaskYRad(const int yRad)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::MASK_Y_RAD));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.maskY=yRad;}
+    if (ans==true) {selectedCameraObj.IA.maskYRad=yRad;}
     message("Setting mask Y radius for",
             selectedCameraObj.name," camera.");
     return ans;
@@ -555,7 +576,7 @@ bool cameraIAInterface::setPixMM(const double pmm)
     bool ans=false;
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::PIX_MM));
-    ans=shortCaput(pmm,S);
+    ans=doubleCaput(pmm,S);
     if (ans==true) {selectedCameraObj.IA.pix2mm=pmm;}
     message("Setting pix to mm ratio for ",
             selectedCameraObj.name," camera.");

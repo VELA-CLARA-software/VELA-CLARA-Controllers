@@ -84,6 +84,7 @@ class cameraInterface : public interface
         bool isSavingJPG(const std::string&cameraName);
         std::string useCameraFrom(const std::string camOrScreen);
         bool shortCaput(const unsigned short &comm, pvStruct &S);
+        bool doubleCaput(const double &comm, pvStruct& S);
 
     protected:
         void addChannel(const std::string &pvRoot, pvStruct &pv);

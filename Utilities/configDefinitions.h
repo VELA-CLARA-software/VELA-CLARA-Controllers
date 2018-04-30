@@ -810,7 +810,7 @@ namespace UTL
     const std::string PV_IA_SUFFIX_SIGMA_X_PIX      ="PV_IA_SUFFIX_SIGMA_X_PIX";
     const std::string PV_IA_SUFFIX_SIGMA_Y_PIX      ="PV_IA_SUFFIX_SIGMA_Y_PIX";
     const std::string PV_IA_SUFFIX_COV_XY_PIX       ="PV_IA_SUFFIX_COV_XY_PIX";
-    const std::string PV_IA_SUFFIX_SUM_PIX_INTENSITY="PV_IA_SUFFIX_SUM_PIX_INTENSITY";
+    const std::string PV_IA_SUFFIX_AV_PIX_INTENSITY="PV_IA_SUFFIX_AV_PIX_INTENSITY";
 
     // Camera Object Componentns
     const std::string SCREEN_NAME               ="SCREEN_NAME";
