@@ -235,6 +235,11 @@ void beamPositionMonitorController::setX( const std::string & bpmName, double va
     localInterface.setX( bpmName, val );
 }
 //______________________________________________________________________________
+void beamPositionMonitorController::setBufferSize( const std::string & bpmName, size_t buffer )
+{
+    localInterface.setBufferSize( bpmName, buffer );
+}
+//______________________________________________________________________________
 void beamPositionMonitorController::setY( const std::string & bpmName, double val )
 {
     localInterface.setY( bpmName, val );

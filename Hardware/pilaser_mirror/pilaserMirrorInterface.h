@@ -56,15 +56,15 @@ class pilaserMirrorInterface : public interface
 
 
         // setters , not sure of type for these parameters (or if they will exist...)
-        bool setHpos(double value);
-        bool setHpos(int value);
-        bool setVpos(double value);
-        bool setVpos(int value);
+        bool setHpos(const double value);
+        //bool setHpos(const int value);
+        bool setVpos(const double value);
+        //bool setVpos(int value);
 
         double getHstep() const;
         double getVstep() const;
-        bool setHstep(double value);
-        bool setVstep(double value);
+        bool setHstep(const double value);
+        bool setVstep(const double value);
 
         bool moveH();
         bool moveV();
@@ -87,7 +87,7 @@ class pilaserMirrorInterface : public interface
         /*
             all client set functions route to here
         */
-        bool setValue(pilaserMirrorStructs::pvStruct& pvs, double value);
+        bool setValue(pilaserMirrorStructs::pvStruct& pvs,const double value);
 
         bool move(chtype& cht, chid& chi,const char* m1,const char* m2);
 

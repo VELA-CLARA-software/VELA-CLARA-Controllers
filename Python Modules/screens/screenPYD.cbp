@@ -69,6 +69,8 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
 		<Unit filename="../../Hardware/VCheader.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
