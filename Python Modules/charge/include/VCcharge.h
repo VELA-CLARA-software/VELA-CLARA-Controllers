@@ -55,7 +55,6 @@ class VCcharge : public VCbase
 
         chargeController& getController(chargeController*& cont,
                                        const std::string& conf1,
-                                       const std::string& conf2,
                                        const std::string& name,
                                        const bool shouldVM,
                                        const bool shouldEPICS,
@@ -106,11 +105,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, bool > > ();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_bool")
+        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_Charge_map_bool")
             .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, bool > >())
             ;
     } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_bool")
+        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_Charge_map_bool")
             .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, bool > >())
             ;
     }
@@ -118,11 +117,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_vector_double")
+        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_Charge_map_vector_double")
             .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >())
             ;
     } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_vector_double")
+        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_Charge_map_vector_double")
             .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >())
             ;
     }
@@ -130,11 +129,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > > ();
     reg = boost::python::converter::registry::query(info);
     if (reg == NULL)  {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >("std_charge_map_vector_vector_double")
+        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >("std_Charge_map_vector_vector_double")
             .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >())
             ;
     } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >("std_charge_map_vector_vector_double")
+        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >("std_Charge_map_vector_vector_double")
             .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >())
             ;
     }
@@ -154,7 +153,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     enum_<chargeStructs::charge_NAME>("charge_NAME")
             .value("CLARAcharge01",       chargeStructs::charge_NAME::CLARAcharge01       )
             .value("VELAcharge02",        chargeStructs::charge_NAME::VELAcharge02        )
-            .value("UNKNOWN_charge_NAME", chargeStructs::charge_NAME::UNKNOWN_charge_NAME )
+            .value("UNKNOWN_Charge_NAME", chargeStructs::charge_NAME::UNKNOWN_Charge_NAME )
             ;
 
     enum_<chargeStructs::DIAG_TYPE>("DIAG_TYPE")
@@ -350,19 +349,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
             .def("verbose",                         &chargeController::verbose                                )
 		;
 
-    boost::python::class_<VCcharges,boost::python::bases<VCbase>,boost::noncopyable> ("init")
-        .def("virtual_VELA_INJ_charge_Controller",   &VCcharges::virtual_VELA_INJ_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_INJ_charge_Controller",   &VCcharges::offline_VELA_INJ_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_INJ_charge_Controller",  &VCcharges::physical_VELA_INJ_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_VELA_BA1_charge_Controller",   &VCcharges::virtual_VELA_BA1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_BA1_charge_Controller",   &VCcharges::offline_VELA_BA1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_BA1_charge_Controller",  &VCcharges::physical_VELA_BA1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_VELA_BA2_charge_Controller",   &VCcharges::virtual_VELA_BA2_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_BA2_charge_Controller",   &VCcharges::offline_VELA_BA2_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_BA2_charge_Controller",  &VCcharges::physical_VELA_BA2_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_PH1_charge_Controller",  &VCcharges::virtual_CLARA_PH1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_PH1_charge_Controller",  &VCcharges::offline_CLARA_PH1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_PH1_charge_Controller", &VCcharges::physical_CLARA_PH1_charge_Controller, return_value_policy<reference_existing_object>())
+    boost::python::class_<VCcharge,boost::python::bases<VCbase>,boost::noncopyable> ("init")
+        .def("virtual_VELA_INJ_Charge_Controller",   &VCcharge::virtual_VELA_INJ_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_INJ_Charge_Controller",   &VCcharge::offline_VELA_INJ_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_Charge_Controller",  &VCcharge::physical_VELA_INJ_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA1_Charge_Controller",   &VCcharge::virtual_VELA_BA1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA1_Charge_Controller",   &VCcharge::offline_VELA_BA1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA1_Charge_Controller",  &VCcharge::physical_VELA_BA1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA2_Charge_Controller",   &VCcharge::virtual_VELA_BA2_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA2_Charge_Controller",   &VCcharge::offline_VELA_BA2_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA2_Charge_Controller",  &VCcharge::physical_VELA_BA2_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_PH1_Charge_Controller",  &VCcharge::virtual_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_PH1_Charge_Controller",  &VCcharge::offline_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_PH1_Charge_Controller", &VCcharge::physical_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("getchargeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
         ;
 };

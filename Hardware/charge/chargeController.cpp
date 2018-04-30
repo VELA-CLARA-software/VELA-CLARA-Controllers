@@ -15,14 +15,13 @@
 #include "chargeController.h"
 //______________________________________________________________________________
 chargeController::chargeController( const std::string &configFileLocation1,
-                                  const std::string &configFileLocation2,
-                                  bool& show_messages,
-                                  bool& show_debug_messages,
-                                  const bool shouldStartEPICs,
-                                  const bool startVirtualMachine,
-                                  HWC_ENUM::MACHINE_AREA myMachineArea ):
+                                    bool& show_messages,
+                                    bool& show_debug_messages,
+                                    const bool shouldStartEPICs,
+                                    const bool startVirtualMachine,
+                                    HWC_ENUM::MACHINE_AREA myMachineArea ):
 controller( show_messages, show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::charge ),
-localInterface( configFileLocation1, configFileLocation2, show_messages, show_debug_messages, shouldStartEPICs, startVirtualMachine, myMachineArea ),
+localInterface( configFileLocation1, show_messages, show_debug_messages, shouldStartEPICs, startVirtualMachine, myMachineArea ),
 shouldStartEPICs( shouldStartEPICs ),
 machineArea( myMachineArea )
 {

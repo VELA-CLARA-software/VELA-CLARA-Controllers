@@ -65,8 +65,13 @@
 		<Unit filename="../../Hardware/interface.h" />
 		<Unit filename="../../Structs/charge/chargeStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Utilities/baseObject.cpp" />
+		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/charge/chargeConfigReader.cpp" />
 		<Unit filename="../../Utilities/charge/chargeConfigReader.h" />
+		<Unit filename="../../Utilities/configDefinitions.h" />
+		<Unit filename="../../Utilities/configReader.cpp" />
+		<Unit filename="../../Utilities/configReader.h" />
 		<Unit filename="include/VCcharge.h" />
 		<Unit filename="src/VCcharge.cpp" />
 		<Extensions>

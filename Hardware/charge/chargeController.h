@@ -35,12 +35,11 @@ class chargeController : public controller
 
         chargeController();// const bool show_messages = true, const bool show_debug_messages = true );
         chargeController( const std::string &configFileLocation1,
-                         const std::string &configFileLocation2,
-                         bool& show_messages,
-                         bool& show_debug_messages,
-                         const bool shouldStartEPICs,
-                         const bool startVirtualMachine,
-                         const HWC_ENUM::MACHINE_AREA myMachineArea );
+                          bool& show_messages,
+                          bool& show_debug_messages,
+                          const bool shouldStartEPICs,
+                          const bool startVirtualMachine,
+                          const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~chargeController();
 
         bool monitoringTraces;

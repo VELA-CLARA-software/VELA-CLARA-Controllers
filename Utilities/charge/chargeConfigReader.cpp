@@ -31,52 +31,24 @@ chargeStructs::chargeObject chargeConfigReader::getchargeObject()
 {
     chargeStructs::chargeObject obj;
 
-    obj.name = "VELA_charge";
+    obj.name = "CHARGE";
 
-//    /// there are only 1 chargeNumObject and 1 chargeTraceDataObject
-//
-//    obj.numObject = chargeNumObject;
-//    for( auto && it : chargeNumMonStructs )
-//        obj.numObject.pvMonStructs[ it.pvType ] = it;
-//
+    for( auto && it : chargeObjects )
+        obj.dataObjects[ it.name ] = it;
 
-    for( auto && it : chargeNumObjects )
-        obj.numObjects[ it.name ] = it;
-
-    /// Then we add in the monitor structs, for each num object ...
-
-    for( auto && it : obj.numObjects )
+    for( auto && it : obj.dataObjects )
     {
-        for( auto it2 : chargeNumMonStructs )
+        for( auto it2 : chargeMonStructs )
         {
             it.second.pvMonStructs[ it2.pvType ] = it2;
-            it.second.isMonitoringMap[ it2.pvType ] = false;
-            it.second.numData[ it2.pvType ] = nums;
-            it.second.numTimeStamps[ it2.pvType ] = numtstamps;
-            it.second.numStrTimeStamps[ it2.pvType ] = numstrtstamps;
-            it.second.shotCounts[ it2.pvType ] = numshotcounts;
-            it.second.numDataBuffer[ it2.pvType ] = numsbuffer;
         }
     }
 
-    /// chargeTraceDataObjects are in a map keyed by name ...
-
-    for( auto && it : chargeTraceDataObjects )
-        obj.traceObjects[ it.name ] = it;
-
-    /// Then we add in the monitor structs, for each num object ...
-
-    for( auto && it : obj.traceObjects )
+    for( auto && it : obj.dataObjects )
     {
-        for( auto it2 : chargeTraceDataMonStructs )
+        for( auto it2 : chargeComStructs )
         {
-            it.second.pvMonStructs[ it2.pvType ] = it2;
-            it.second.isMonitoringMap[ it2.pvType ] = false;
-            it.second.traceData[ it2.pvType ] = traces;
-            it.second.timeStamps[ it2.pvType ] = tstamps;
-            it.second.strTimeStamps[ it2.pvType ] = strtstamps;
-            it.second.shotCounts[ it2.pvType ] = shotcounts;
-            it.second.traceDataBuffer[ it2.pvType ] = tracesbuffer;
+            it.second.pvComStructs[ it2.pvType ] = it2;
         }
     }
 
@@ -90,93 +62,52 @@ bool chargeConfigReader::readConfigFiles()
     /// They are defined in seperate config files to seperate the data more clearly
     /// they still all end up in an chargeObject
     //NUM
-    chargeNumObjects.clear();
-    chargeNumMonStructs.clear();
-    bool numSuccess = readConfig( *this,  chargeConf1, &chargeConfigReader::addTochargeNumObjectsV1,nullptr, &chargeConfigReader::addTochargeNumMonStructsV1 );
+    chargeObjects.clear();
+    chargeMonStructs.clear();
+    bool numSuccess = readConfig( *this,  chargeConf1, &chargeConfigReader::addToChargeObjectsV1,nullptr, &chargeConfigReader::addToChargeMonStructsV1 );
     if( !numSuccess )
         success = false;
 //    if( numObjs == chargeTraceDataObject.size() )
-    if( numObjs == chargeNumObjects.size() )
-        debugMessage( "*** Created ", numObjs, " charge num Objects, As Expected ***", "\n" );
+    if( numObjs == chargeObjects.size() )
+        debugMessage( "*** Created ", numObjs, " charge Objects, As Expected ***", "\n" );
     else
     {
-        debugMessage( "*** Created ", chargeNumObjects.size() ," charge num Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
-        success = false;
-    }
-    //TRACE
-    chargeTraceDataObjects.clear();
-    chargeTraceDataMonStructs.clear();
-    bool traceSuccess = readConfig( *this,  chargeConf2, &chargeConfigReader::addTochargeTraceDataObjectsV1,nullptr, &chargeConfigReader::addTochargeTraceDataMonStructsV1 );
-    if( !traceSuccess )
-        success = false;
-//    if( numObjs == chargeTraceDataObject.size() )
-    if( numObjs == chargeTraceDataObjects.size() )
-        debugMessage( "*** Created ", numObjs, " charge trace Objects, As Expected ***", "\n" );
-    else
-    {
-        debugMessage( "*** Created ", chargeTraceDataObjects.size() ," charge trace Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
+        debugMessage( "*** Created ", chargeNumObjects.size() ," charge Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
         success = false;
     }
 
     return success;
 }
 //______________________________________________________________________________
-void chargeConfigReader::addTochargeNumMonStructsV1( const std::vector<std::string> &keyVal )
+void chargeConfigReader::addToChargeMonStructsV1( const std::vector<std::string> &keyVal )
 {
-    addToPVStruct( chargeNumMonStructs, keyVal );
+    addToPVStruct( chargeMonStructs, keyVal );
 }
 //______________________________________________________________________________
-void chargeConfigReader::addTochargeTraceDataMonStructsV1( const std::vector<std::string> &keyVal )
+void chargeConfigReader::addToChargeTraceDataComStructsV1( const std::vector<std::string> &keyVal )
 {
-    addToPVStruct( chargeTraceDataMonStructs, keyVal );
+    addToPVStruct( chargeComStructs, keyVal );
 }
 //______________________________________________________________________________
-void chargeConfigReader::addTochargeNumObjectsV1( const std::vector<std::string> &keyVal )
+void chargeConfigReader::addToChargeObjectsV1( const std::vector<std::string> &keyVal )
 {
     if( keyVal[0] == UTL::NAME )
     {
-        chargeStructs::chargeNumObject sconumob = chargeStructs::chargeNumObject();
-        sconumob.name = keyVal[ 1 ];
-        chargeNumObjects.push_back( sconumob );
-        debugMessage("Added ", chargeNumObjects.back().name );
+        chargeStructs::chargeObject chob = chargeStructs::chargeObject();
+        chob.name = keyVal[ 1 ];
+        chargeObjects.push_back( chob );
+        debugMessage("Added ", chargeObjects.back().name );
     }
     else if( keyVal[0] == UTL::PV_ROOT )
     {
         if( startVirtualMachine )
-            chargeNumObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
+            chargeObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
         else
-            chargeNumObjects.back().pvRoot = keyVal[ 1 ];
+            chargeObjects.back().pvRoot = keyVal[ 1 ];
     }
-    else if( keyVal[0] == UTL::charge_NAME )
+    else if( keyVal[0] == UTL::DIAG_TYPE )
     {
-        chargeNumObjects.back().chargeName = getchargeName( keyVal[ 1 ] );
-    }
-
-}
-//______________________________________________________________________________
-void chargeConfigReader::addTochargeTraceDataObjectsV1( const std::vector<std::string> &keyVal )
-{
-    if( keyVal[0] == UTL::NAME )
-    {
-        chargeStructs::chargeTraceData scotrob = chargeStructs::chargeTraceData();
-        scotrob.name = keyVal[ 1 ];
-        chargeTraceDataObjects.push_back( scotrob );
-        debugMessage("Added ", chargeTraceDataObjects.back().name );
-    }
-    else if( keyVal[0] == UTL::PV_ROOT )
-    {
-        if( startVirtualMachine )
-            chargeTraceDataObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
-        else
-            chargeTraceDataObjects.back().pvRoot = keyVal[ 1 ];
-    }
-    else if( keyVal[0] == UTL::charge_NAME )
-    {
-        chargeTraceDataObjects.back().chargeName = getchargeName( keyVal[ 1 ] );
-    }
-    else if( keyVal[0] == UTL::TIMEBASE )
-    {
-        chargeTraceDataObjects.back().timebase = getNumD( keyVal[ 1 ] );
+        chargeObjects.back().diagType = getDiagType( keyVal[ 1 ] );
     }
 }
 //______________________________________________________________________________
@@ -187,50 +118,13 @@ void chargeConfigReader::addToPVStruct( std::vector< chargeStructs::pvStruct >  
         pvStruct_v.push_back( chargeStructs::pvStruct() );    /// Any way to avoid the ladders?
         pvStruct_v.back().pvSuffix = keyVal[1];
         // NUMBER PVs
-        if( keyVal[0] == UTL::PV_SUFFIX_P1  )
+        if( keyVal[0] == UTL::PV_SUFFIX_WCM  )
         {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::P1;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::NUM;
+            pvStruct_v.back().pvType    = chargeStructs::CHARGE_PV_TYPE::WCM;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_P2  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_S02_FCUP  )
         {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::P2;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::NUM;
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_P3  )
-        {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::P3;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::NUM;
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_P4  )
-        {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::P4;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::NUM;
-        }
-        // TRACE PVs
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR1  )
-        {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::TR1;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::ARRAY;
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR2  )
-        {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::TR2;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::ARRAY;
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR3  )
-        {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::TR3;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::ARRAY;
-        }
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR4  )
-        {
-            pvStruct_v.back().pvType    = chargeStructs::charge_PV_TYPE::TR4;
-            pvStruct_v.back().chargeType = chargeStructs::charge_TYPE::ARRAY;
-        }
-        else if( keyVal[0] == UTL::DIAG_TYPE )
-        {
-            pvStruct_v.back().diagType = getDiagType( keyVal[ 1 ] );
+            pvStruct_v.back().pvType    = chargeStructs::CHARGE_PV_TYPE::S02_FCUP;
         }
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
@@ -242,8 +136,6 @@ void chargeConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< chargeStructs::pv
 {
     if( keyVal[0] == UTL::PV_COUNT )
         pvStruct_v.back().COUNT = getCOUNT( keyVal[ 1 ] );
-    else if( keyVal[0] == UTL::DIAG_TYPE )
-        pvStruct_v.back().diagType = getDiagType( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_MASK )
         pvStruct_v.back().MASK = getMASK( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_CHTYPE )
@@ -358,35 +250,21 @@ bool chargeConfigReader::readConfig( chargeConfigReader & obj, const std::string
     return success;
 }
 //______________________________________________________________________________
-chargeStructs::DIAG_TYPE chargeConfigReader::getDiagType( const std::string & val )
+chargeStructs::CHARGE_PV_TYPE chargeConfigReader::getDiagType( const std::string & val )
 {
-    chargeStructs::DIAG_TYPE r;
+    chargeStructs::CHARGE_PV_TYPE r;
 
     if( val == UTL::WCM )
-        r = chargeStructs::DIAG_TYPE::WCM;
+        r = chargeStructs::CHARGE_PV_TYPE::WCM;
     else if( val == UTL::ICT1 )
-        r = chargeStructs::DIAG_TYPE::ICT1;
+        r = chargeStructs::CHARGE_PV_TYPE::ICT1;
     else if( val == UTL::ICT2 )
-        r = chargeStructs::DIAG_TYPE::ICT2;
+        r = chargeStructs::CHARGE_PV_TYPE::ICT2;
     else if( val == UTL::ED_FCUP )
-        r = chargeStructs::DIAG_TYPE::ED_FCUP;
+        r = chargeStructs::CHARGE_PV_TYPE::ED_FCUP;
     else if( val == UTL::FCUP )
-        r = chargeStructs::DIAG_TYPE::FCUP;
+        r = chargeStructs::CHARGE_PV_TYPE::FCUP;
 
     return r;
 }
 //______________________________________________________________________________
-chargeStructs::charge_NAME chargeConfigReader::getchargeName( const std::string & val )
-{
-    chargeStructs::charge_NAME r;
-
-    if( val == UTL::CLARAcharge01 )
-        r = chargeStructs::charge_NAME::CLARAcharge01;
-    else if( val == UTL::VELAcharge02 )
-        r = chargeStructs::charge_NAME::VELAcharge02;
-    else
-        r = chargeStructs::UNKNOWN_charge_NAME;
-
-    return r;
-}
-
