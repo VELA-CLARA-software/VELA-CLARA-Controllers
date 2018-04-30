@@ -355,6 +355,7 @@ void magnetInterface::updatePSUSta(const unsigned short value,const std::string&
 {
     if(entryExists(allMagnetData,magName))
     {
+        //message("value = ",value);
         switch(value)
         {
             case UTL::ZERO_US:
@@ -804,7 +805,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         {
             values.push_back(ds.interface->allMagnetData.at(it).degValues[j]);
             tolerances.push_back(ds.interface->allMagnetData.at(it).degTolerance);
-            ds.interface->message(it," ",values[j]," ",tolerances[j]);
+            ds.interface->message("Setting ",it," to ",values.back()," Amp, with tolerance = ",tolerances.back()," Amp");
         }
         //ds.interface->message("get vals");
         /* set th edesired current */
@@ -840,6 +841,13 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
     /* show results */
     ds.interface->printDegaussResults(magToDeg, magToDegOriginal);
     /*
+        set degausing flag to zero
+    */
+    for(auto&& it:magToDegOriginal)
+    {
+        ds.interface->isDegaussingMap.at(it) = false;
+    }
+    /*
         reset to zero if required
         or, reapply previous settings
     */
@@ -857,10 +865,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         clean-up, set degaussing bit to false
     */
     ds.interface->detachFrom_thisCAContext() ;
-    for(auto&& it:magToDegOriginal)
-    {
-        ds.interface->isDegaussingMap.at(it) = false;
-    }
+
     /*
         print finish and time taken
     */

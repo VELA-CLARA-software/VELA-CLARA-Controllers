@@ -169,8 +169,7 @@ const pilaserMirrorStructs::pilMirrorObject& pilaserMirrorController::getpilMirr
 ////____________________________________________________________________________________________
 double pilaserMirrorController::get_CA_PEND_IO_TIMEOUT()const
 {
-  //return localInterface.get_CA_PEND_IO_TIMEOUT();
-  return 1.0;
+  return localInterface.get_CA_PEND_IO_TIMEOUT();
 }
 //_____________________________________________________________________________________________
 void pilaserMirrorController::set_CA_PEND_IO_TIMEOUT(double val)

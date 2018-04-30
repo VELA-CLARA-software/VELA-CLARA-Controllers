@@ -49,8 +49,8 @@ virtualCathodeController::~virtualCathodeController(){}    //dtor
 //______________________________________________________________________________
 void virtualCathodeController::initialise()
 {
-//    if(localInterface.interfaceInitReport(shouldStartEPICs))
-//        message("virtualCathodeController instantiation success.");
+    if(localInterface.interfaceInitReport())
+        message("virtualCathodeController instantiation success.");
 }
 //______________________________________________________________________________
 //#ifdef BUILD_DLL

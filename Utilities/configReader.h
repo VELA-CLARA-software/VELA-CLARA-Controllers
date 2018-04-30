@@ -53,25 +53,25 @@ class configReader : public baseObject
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                     const bool& show_messages,
-                    const bool& show_debug_messages);
+                    const bool& show_debug_messages,const bool usingVM);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const bool& show_messages,
-                     const bool& show_debug_messages);
+                     const bool& show_debug_messages,const bool usingVM);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const std::string& configFile_Location4,
                      const bool& show_messages,
-                     const bool& show_debug_messages);
+                     const bool& show_debug_messages,const bool usingVM);
         configReader(const std::string& configFile_Location1,
                      const std::string& configFile_Location2,
                      const std::string& configFile_Location3,
                      const std::string& configFile_Location4,
                      const std::string& configFile_Location5,
                      const bool& show_messages,
-                     const bool& show_debug_messages);
+                     const bool& show_debug_messages,const bool usingVM);
 
         void setConfigFilePath(const std::string& path);
 
@@ -80,6 +80,8 @@ class configReader : public baseObject
            the compiler won't let us call delete on any base class pointers
         */
         ~configReader();
+        static size_t counter;
+
         const bool useVM;
         int configVersion, numObjs, numIlocks;
 

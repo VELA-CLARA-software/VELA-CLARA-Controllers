@@ -430,7 +430,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         ;
 
     /// Finally the main class that creates all the objects
-        boost::python::class_<VCmagnets,boost::noncopyable>("init")
+    boost::python::class_<VCmagnets, bases<VCbase>, boost::noncopyable>("init")
         .def("virtual_CLARA_PH1_Magnet_Controller",  &VCmagnets::virtual_CLARA_PH1_Magnet_Controller,
              return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Magnet_Controller",  &VCmagnets::offline_CLARA_PH1_Magnet_Controller,
@@ -463,10 +463,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
              return_value_policy<reference_existing_object>())
         .def("getMagnetController",  &VCmagnets::getMagnetController,
              return_value_policy<reference_existing_object>())
-        .def("setQuiet",         &VCmagnets::setQuiet  )
-        .def("setVerbose",       &VCmagnets::setVerbose)
-        .def("setMessage",       &VCmagnets::setMessage)
-        .def("setDebugMessage",  &VCmagnets::setDebugMessage)
+//        .def("setQuiet",         &VCmagnets::setQuiet  )
+//        .def("setVerbose",       &VCmagnets::setVerbose)
+//        .def("setMessage",       &VCmagnets::setMessage)
+//        .def("setDebugMessage",  &VCmagnets::setDebugMessage)
         ;
 }
 

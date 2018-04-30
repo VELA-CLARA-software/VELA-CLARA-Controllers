@@ -40,12 +40,10 @@ virtualCathodeInterface::virtualCathodeInterface(bool& show_messages,
                                    const std::string& configFile
                                  ):
 configReader(configFile, show_messages, show_debug_messages, startVirtualMachine),
-interface(show_messages, show_debug_messages)
+interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
 {
-    if(shouldStartEPICs)
-        message("virtualCathodeData shouldStartEPICs is true");
-    else
-        message("virtualCathodeData shouldStartEPICs is false");
+    message("Constructing a virtualCathodeInterface");
+    initialise();
     initialise();
 }
 //______________________________________________________________________________

@@ -43,11 +43,9 @@ pilaserMirrorInterface::pilaserMirrorInterface(bool& show_messages,
                        ):
 configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
 interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
+
 {
-    if(shouldStartEPICs)
-        message("pilaserMirrorInterface shouldStartEPICs is true");
-    else
-        message("pilaserMirrorInterface shouldStartEPICs is false");
+    message("Constructing a pilaserMirrorInterface");
     initialise();
 }
 //______________________________________________________________________________
@@ -213,7 +211,7 @@ double pilaserMirrorInterface::getVstep() const
 bool pilaserMirrorInterface::setHstep(const double value)
 {
     bool s = true;
-    if(usingVM)
+    if(startVirtualMachine)
     {
         bool s = setValue(
             laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::H_STEP),value);
@@ -225,7 +223,7 @@ bool pilaserMirrorInterface::setHstep(const double value)
 bool pilaserMirrorInterface::setVstep(const double value)
 {
     bool s = true;
-    if(usingVM)
+    if(startVirtualMachine)
     {
         bool s = setValue(
             laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_STEP),value);
@@ -247,7 +245,7 @@ double pilaserMirrorInterface::getVpos() const
 bool pilaserMirrorInterface::setHpos(const double value)
 {
     bool s = true;
-    if(usingVM)
+    if(startVirtualMachine)
     {
         bool s = setValue(
             laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_STEP),value);
@@ -276,7 +274,7 @@ bool pilaserMirrorInterface::setValue(pilaserMirrorStructs::pvStruct& pvs,const 
 bool pilaserMirrorInterface::moveH()
 {
     pvStruct& pvs = laserMirror.pvComStructs.at(PIL_MIRROR_PV_TYPE::H_MOVE);
-    move(pvs.CHTYPE,pvs.CHID,
+    return move(pvs.CHTYPE,pvs.CHID,
                   "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO MOVE H",
                   "!!TIMEOUT!! FAILED TO SEND MOVE H");
 }
@@ -284,7 +282,7 @@ bool pilaserMirrorInterface::moveH()
 bool pilaserMirrorInterface::moveV()
 {
     pvStruct& pvs = laserMirror.pvComStructs.at(PIL_MIRROR_PV_TYPE::V_MOVE);
-    move(pvs.CHTYPE,pvs.CHID,
+    return move(pvs.CHTYPE,pvs.CHID,
                   "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO MOVE V",
                   "!!TIMEOUT!! FAILED TO SEND MOVE V");
 }

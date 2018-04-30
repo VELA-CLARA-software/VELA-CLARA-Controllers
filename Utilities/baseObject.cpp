@@ -31,12 +31,16 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
+size_t baseObject::basecount = UTL::ZERO_SIZET;
 //______________________________________________________________________________
 baseObject::baseObject(const bool& show_messages,
                        const bool& show_debug_messages):
 SHOW_MESSAGES(show_messages),
 SHOW_DEBUG_MESSAGES(show_debug_messages)
-{}
+{
+    basecount += UTL::ONE_SIZET;
+    debugMessage("baseObject constructor, count = ", basecount);
+}
 //______________________________________________________________________________
 baseObject::~baseObject(){}
 //______________________________________________________________________________

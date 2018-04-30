@@ -19,7 +19,7 @@
 //  Description: The base class for all controller objects
 //               Controller objects link the interface to higher level code
 //               (e.g. the python modulec classes, or other c++ applications)
-//               They are also a goo dplave to put conversions from STL containers
+//               They are also a good place to put conversions from STL containers
 //               to python lists and/or dictionaries
 //*/
 #ifndef _HWC_CONTOLLER_BASE_H_

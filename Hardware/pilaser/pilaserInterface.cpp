@@ -34,15 +34,18 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-pilaserInterface::pilaserInterface(bool& show_messages,
-                                   bool& show_debug_messages,
+pilaserInterface::pilaserInterface(const bool& show_messages,
+                                   const bool& show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
                                   ):
 configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
-interface(show_messages,show_debug_messages)
-{}
+interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
+{
+    message("Constructing a pilaserInterface");
+    initialise();
+}
 //______________________________________________________________________________
 pilaserInterface::~pilaserInterface()
 {

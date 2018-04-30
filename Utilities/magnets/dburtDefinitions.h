@@ -20,12 +20,15 @@ namespace UTL
     // v2 got lost in the mist....
     const std::string DBURT_EOF_V1 = "END OF FILE";
     const std::string DBURT_EOF_V3 = "END_OF_DATA";
+    const std::string DBURT_EOF_V4 = "END_OF_DATA";
 
     const std::string DBURT_NUM_MAGNETS_V1 = "NUM MAGNETS:";
     const std::string DBURT_NUM_MAGNETS_V3 = "NUMBER_OF_OBJECTS";
+    const std::string DBURT_NUM_MAGNETS_V4 = "NUMBER_OF_OBJECTS";
 
     const std::string DBURT_PARAMETERS_V1  = "PARAMETERS;";
     const std::string DBURT_PARAMETERS_V3  = "PARAMETERS;";
+    const std::string DBURT_PARAMETERS_V4  = "PARAMETERS;";
     //const std::string DBURT_PARAMETERS_V1  = "PARAMETERS;";
 
 
@@ -38,6 +41,7 @@ namespace UTL
 
 
     const std::string DBURT_HEADER_V3 = "VELA-CLARA DBURT (MAGNET SAVE FILE) v3";
+    const std::string DBURT_HEADER_V4 = "VELA-CLARA DBURT (MAGNET SAVE FILE) v4";
 
     const std::string dotDBURT    = ".dburt";
 

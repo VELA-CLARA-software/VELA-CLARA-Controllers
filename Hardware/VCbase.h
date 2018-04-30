@@ -45,17 +45,17 @@ class VCbase
         ~VCbase();
 
         const std::string my_name;
-        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
+        static bool withEPICS, withoutEPICS, withoutVM, withVM;
+        static bool  shouldShowDebugMessage, shouldShowMessage;
 
         virtual void updateMessageStates() = 0;
 
         // local copies
-        const HWC_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,
+        static HWC_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,
                                      UNKNOWN_AREA,USER,CLARA_INJ,
                                      CLARA_2_VELA,CLARA_S01,CLARA_S02,
                                      CLARA_L01,RF_GUN,RF_L01;
-        const HWC_ENUM::MACHINE_MODE OFFLINE,VIRTUAL,PHYSICAL,
+        static HWC_ENUM::MACHINE_MODE OFFLINE,VIRTUAL,PHYSICAL,
                                      UNKNOWN_MACHINE_MODE;
     private:
 

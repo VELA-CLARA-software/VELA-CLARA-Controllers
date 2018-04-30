@@ -236,10 +236,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         .def("offline_Gun_Protection_Controller",
              &VCrfprot::offline_Gun_Protection_Controller,
              return_value_policy<reference_existing_object>(),oGPC_doc)
-        .def("setQuiet",         &VCbase::setQuiet)
-        .def("setVerbose",       &VCbase::setVerbose)
-        .def("setMessage",       &VCbase::setMessage)
-        .def("setDebugMessage",  &VCbase::setDebugMessage)
+//        .def("setQuiet",         &VCbase::setQuiet)
+//        .def("setVerbose",       &VCbase::setVerbose)
+//        .def("setMessage",       &VCbase::setMessage)
+//        .def("setDebugMessage",  &VCbase::setDebugMessage)
         ;
 }
 //______________________________________________________________________________

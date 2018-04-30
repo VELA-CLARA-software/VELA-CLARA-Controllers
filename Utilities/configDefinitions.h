@@ -254,6 +254,7 @@ namespace UTL
     const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
     // laser PVs
     const std::string PV_SUFFIX_PIL_STABILISATION = "PV_SUFFIX_PIL_STABILISATION";
+    const std::string PV_SUFFIX_PIL_HALF_WAVE_PLATE = "PV_SUFFIX_PIL_HALF_WAVE_PLATE";
     const std::string PV_SUFFIX_PIL_INTENSITY = "PV_SUFFIX_PIL_INTENSITY";
     const std::string PV_SUFFIX_PIL_STATUS = "PV_SUFFIX_PIL_STATUS";
     const std::string PV_SUFFIX_PIL_H_STEP = "PV_SUFFIX_PIL_H_STEP";

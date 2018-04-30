@@ -1,11 +1,27 @@
-///
-/// Duncan Scott August 2015
-///
-/// Holds all the structs required by different classes
-/// one place to make updates
-///
-#ifndef _VELA_MAGNET_STRUCTS_H_
-#define _VELA_MAGNET_STRUCTS_H_
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   30-04-2018
+//  FileName:    magnetStructs.cpp
+//  Description:
+//
+//
+//*/
+#ifndef _MAGNET_STRUCTS_H_
+#define _MAGNET_STRUCTS_H_
 //proj
 #include "structs.h"
 #include "configDefinitions.h"
@@ -18,7 +34,6 @@
 #ifndef __CINT__
 #include <cadef.h>
 #endif
-
 ////______________________________________________________________________________
 class magnetInterface;
 namespace magnetStructs
@@ -47,19 +62,26 @@ namespace magnetStructs
                                         (NR)
                                         (BIPOLAR)
                                         (NR_GANGED)     /// Yeah NR_GANGED, just when you thought it was already too complicated
-
                                         (POS)
                                         (UNKNOWN_MAG_REV_TYPE))
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PV_TYPE, (SETI) (GETSETI) (READI) (RPOWER) (SPOWER) (RILK)
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PV_TYPE, (SETI)
+                                                     (GETSETI)
+                                                     (READI)
+                                                     (RPOWER)
+                                                     (SPOWER)
+                                                     (RILK)
                                                      (UNKNOWN_MAG_PV_TYPE))
+
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE,
-                                        (OFF)
-                                        (ON)
-                                        (TIMING)
-                                        (ERROR)
-                                        (NONE)
-                                        )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_ILOCK_STATE, (GOOD) (BAD))
+                                       (OFF)
+                                       (ON)
+                                       (TIMING)
+                                       (ERROR)
+                                       (NONE))
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_ILOCK_STATE, (GOOD)
+                                                         (BAD))
 
     /// These can't go in HWC_ENUM as they need a pvType.
     struct pvStruct

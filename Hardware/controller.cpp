@@ -73,6 +73,7 @@ name(name)
     {
         debugMessagesOff();
     }
+    message(ENUM_TO_STRING(type)," controller base created");
 }
 //______________________________________________________________________________
 

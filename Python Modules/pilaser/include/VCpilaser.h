@@ -29,7 +29,7 @@
 #include "VCheader.h"
 #include "VCbase.h"
 //______________________________________________________________________________
-class VCpilaser : VCbase
+class VCpilaser : public VCbase
 {
    public:
         VCpilaser();
@@ -56,7 +56,6 @@ class VCpilaser : VCbase
         pilaserController* offline_pilaser_Controller_Obj ;
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
         const std::string pilaserConf, vcAnalysisConf,
                           piLaserMirrorConf,piLaserShutterConf;
         /*
@@ -99,12 +98,13 @@ class VCpilaser : VCbase
 //
 //______________________________________________________________________________
 using namespace boost::python;
+using namespace boost;
 using namespace virtualCathodeStructs;
-using namespace pilaserMirrorStructs;
+//using namespace pilaserMirrorStructs;
 using namespace pilaserStructs;
 using namespace shutterStructs;
 using namespace UTL;
-BOOST_PYTHON_MODULE(VELA_CLARA_PILaserControl)
+BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 {
     //using namespace boost::python;
     docstring_options doc_options(true, false, false);
@@ -123,54 +123,118 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaserControl)
         // similar to   BOOST_PYTHON_INCLUDE::export_BaseObjects();
     */
 
+    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
+    const char* closeAndWait_doc = "closeAndWait_doc.";
+    const char* openAndWait_doc = "openAndWait_doc.";
+    const char* isClosed_doc = "isClosed_doc.";
+    const char* isOpen_doc = "isOpen_doc.";
+    const char* close_doc = "close_doc.";
+    const char* open_doc = "open_doc.";
+    const char* name_doc = "name_doc.";
+    const char* getState_doc = "getState_doc.";
+
+    const char* getIntensity_doc = "getIntensity_doc.";
+    const char* setCharge_doc = "setCharge_doc.";
+    const char* setIntensity_doc = "getIntensity_doc.";
+    const char* getStatus_doc = "getIntensity_doc.";
+    const char* getStabilisationStatus_doc = "getIntensity_doc.";
+    const char* isOn_doc = "isOn_doc.";
+    const char* isOff_doc = "isOff_doc.";
+    const char* isStabilisationOn_doc = "isStabilisationOn_doc.";
+    const char* isStabilisationOff_doc = "isStabilisationOff_doc.";
+    const char* disableStabilisation_doc = "disableStabilisation_doc.";
+    const char* enableStabilisation_doc = "isStabilisationOff_doc.";
+
+    class_<pilaserController, bases<controller>,noncopyable>
+        ("pilaserController","pilaserController member functions",no_init )
+        .def("setCharge",&pilaserController::setCharge,setCharge_doc)
+        .def("setIntensity",&pilaserController::setIntensity,setIntensity_doc)
+        .def("getIntensity",&pilaserController::getIntensity,getIntensity_doc)
+        .def("getStatus",&pilaserController::getStatus,getStatus_doc)
+//        .def("getStabilisationStatus",&pilaserController::getStabilisationStatus,getStabilisationStatus_doc)
+//        .def("isOn",&pilaserController::isOn,isOn_doc)
+//        .def("isOff",&pilaserController::isOff,isOff_doc)
+//        .def("isStabilisationOff",&pilaserController::isStabilisationOff,isStabilisationOff_doc)
+//        .def("isStabilisationOn",&pilaserController::isStabilisationOn,isStabilisationOn_doc)
+//        .def("disableStabilisation",&pilaserController::disableStabilisation,disableStabilisation_doc)
+//        .def("enableStabilisation",&pilaserController::enableStabilisation,enableStabilisation_doc)
+//
+//        //.def("getName",&pilaserController::getName,name_doc)
+//        //.def("state",&pilaserController::getState,getState_doc)
+//        .def("closeAndWait",&pilaserController::closeAndWait,closeAndWait_doc)
+//        .def("openAndWait",&pilaserController::openAndWait,openAndWait_doc)
+//        .def("isClosed",&pilaserController::isClosed,isClosed_doc)
+//        .def("isOpen",&pilaserController::isOpen,isOpen_doc)
+//        .def("close",&pilaserController::close,close_doc)
+//        .def("open",&pilaserController::open,open_doc)
+//        .def("getShutterNames",&pilaserController::getShutterNames,getShutterNames_doc)
+        ;
+
     const char* hPos_doc
         = "horizontal Mirror Position (not available as of April 2018)";
     const char* vPos_doc
         = "vertical Mirror Position (not available as of April 2018)";
     const char* hStep_doc = "horizontal Mirror step size ";
     const char* vStep_doc = "vertical   Mirror step size ";
-    const char* name_doc  = "object name";
+                name_doc  = "object name";
 
-    using namespace boost;
-    class_<pilMirrorObject,noncopyable>
-        ("pilMirrorObject","pilMirrorObject member variables (read access only)", no_init)
-        .def_readonly("hStep",&pilMirrorObject::hStep,hStep_doc)
-        .def_readonly("vStep",&pilMirrorObject::vStep,vStep_doc)
-        .def_readonly("hPos", &pilMirrorObject::hPos,hPos_doc)
-        .def_readonly("vPos", &pilMirrorObject::vPos,vPos_doc)
-        .def_readonly("name", &pilMirrorObject::name,name_doc)
-        ;
+
+//    class_<pilaserMirrorStructs::pilMirrorObject,noncopyable>
+//        ("pilMirrorObject","pilMirrorObject member variables (read access only)",no_init)
+//        .def_readonly("hStep",&pilaserMirrorStructs::pilMirrorObject::hStep,hStep_doc)
+////        .def_readonly("vStep",&pilMirrorObject::vStep,vStep_doc)
+////        .def_readonly("hPos", &pilMirrorObject::hPos,hPos_doc)
+////        .def_readonly("vPos", &pilMirrorObject::vPos,vPos_doc)
+////        .def_readonly("name", &pilMirrorObject::name,name_doc)
+//        ;
 
     const char* stabilisation_status_doc
         = "Status (ON/OFF) of laser transport system stabilisation system.";
     const char* intensity_doc
         = "Laser intensity set-point (AU) add more detail when we have it.";
     const char* status_doc  = "Status (ON/OFF) of laser system.";
-    const char* setCharge_doc = "Charge (pc) set point.";
+                setCharge_doc = "Charge (pc) set point.";
 
-    class_<pilaserObject,noncopyable>
-        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
-        .def_readonly("status",&pilaserObject::status,status_doc)
-        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)
-        .def_readonly("intensity", &pilaserObject::intensity,intensity_doc)
-        .def_readonly("setCharge", &pilaserObject::setCharge,setCharge_doc)
-        .def_readonly("name", &pilaserObject::name,name_doc)
-        ;
+//    class_<pilaserObject,noncopyable>
+//        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
+//        .def_readonly("status",&pilaserObject::status,status_doc)
+//        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)
+//        .def_readonly("intensity", &pilaserObject::intensity,intensity_doc)
+//        .def_readonly("setCharge", &pilaserObject::setCharge,setCharge_doc)
+//        .def_readonly("name", &pilaserObject::name,name_doc)
+//        ;
 
-    class_<virtualCathodeDataObject,noncopyable>
-        ("virtualCathodeDataObject",
-            "virtualCathodeDataObject member variables (read access only) "
-            "we are waiting to see what thi swill look like"
-            , no_init)
-        ;
+//    class_<virtualCathodeDataObject,noncopyable>
+//        ("virtualCathodeDataObject",
+//            "virtualCathodeDataObject member variables (read access only) "
+//            "we are waiting to see what thi swill look like"
+//            , no_init)
+//        ;
 
     const char* state_doc = "State (OPEN/CLOSED) of Shutter.";
+//
+//    class_<shutterObject,noncopyable>
+//        ("shutterObject","shutterObject member variables (read access only)", no_init)
+//        .def_readonly("state",&shutterObject::state,state_doc)
+//        ;
 
-    class_<shutterObject,noncopyable>
-        ("shutterObject","shutterObject member variables (read access only)", no_init)
-        .def_readonly("state",&shutterObject::state,state_doc)
+
+    /// The main class that creates all the controller obejcts
+    class_<VCpilaser,bases<VCbase>,boost::noncopyable> ("init","Doc string")
+        .def("virtual_PILaser_Controller",  &VCpilaser::virtual_PILaser_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the virtual PI laser object.")
+        .def("physical_PILaser_Controller",  &VCpilaser::physical_PILaser_Controller,
+             return_value_policy<reference_existing_object>(),
+            "returns a reference to the physical PI laser object.")
+        .def("offline_PILaser_Controller",  &VCpilaser::offline_PILaser_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the offline PI laser object.")
+//        .def("setQuiet",         &VCbase::setQuiet)
+//        .def("setVerbose",       &VCbase::setVerbose)
+//        .def("setMessage",       &VCbase::setMessage)
+//        .def("setDebugMessage",  &VCbase::setDebugMessage)
         ;
-
 
 //
 //    // pilaser object struct to be exposed, used when returning a pilaser reference
@@ -247,21 +311,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaserControl)
 //        .def("setIntensity",  setIntensity_1,"set the intensity of the laser beam on the cathode.")
 //        .def("setIntensity",  setIntensity_2,"set the intensity of the laser beam on the cathode.")
 //        ;
-    /// The main class that creates all the controller obejcts
-//    class_<VCpilaser, bases<VCbase>, noncopyable>("init")
-////        .def("getProtectionController",
-////             &VCpilaser::getProtectionController,
-////             return_value_policy<reference_existing_object>(),(MODE_ARG,AREA_ARG,GPC_doc))
-//        .def("virtual_PILaser_Controller",  &VCpilaser::virtual_PILaser_Controller,
-//             return_value_policy<reference_existing_object>(),
-//             "returns a reference to the virtual PI laser object.")
-//        .def("physical_PILaser_Controller",  &VCpilaser::physical_PILaser_Controller,
-//             return_value_policy<reference_existing_object>(),
-//            "returns a reference to the physical PI laser object.")
-//        .def("offline_PILaser_Controller",  &VCpilaser::offline_PILaser_Controller,
-//             return_value_policy<reference_existing_object>(),
-//             "returns a reference to the offline PI laser object.")
-//        ;
+
 }
 
 #endif // _VC_PILASER_H_

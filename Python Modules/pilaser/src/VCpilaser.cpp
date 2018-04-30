@@ -35,9 +35,7 @@ piLaserShutterConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
-withVM(true),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is quiet mode
+withVM(true)
 {
     std::cout << "Instantiated a VCpilaser in Quiet Mode" << std::endl;
     //ctor
@@ -94,6 +92,7 @@ pilaserController& VCpilaser::offline_PILaser_Controller()
 pilaserController& VCpilaser::physical_PILaser_Controller()
 {
     std::string name = "physical_PILaser_Controller";
+    std::cout << "physical_PILaser_Controller" << std::endl;
     return getpilaserController(physical_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
@@ -106,7 +105,7 @@ pilaserController& VCpilaser::physical_PILaser_Controller()
 }
 //______________________________________________________________________________
 pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
-                                           const std::string & name,
+                                           const std::string& name,
                                            const bool shouldVM,
                                            const bool shouldEPICS,
                                            const std::string& pilaserConf,
@@ -121,9 +120,9 @@ pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
     }
     else
     {
-        std::cout << "Creating " << name << " object" <<std::endl;
         messageStates[cont].first     = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
+        std::cout << "Creating " << name << " object" <<std::endl;
         cont = new pilaserController(messageStates.at(cont).first,
                                      messageStates.at(cont).second,
                                      shouldVM,

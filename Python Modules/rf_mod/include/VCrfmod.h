@@ -69,6 +69,13 @@ class VCrfmod : public VCbase
 using namespace boost::python;
 BOOST_PYTHON_MODULE(MODULE_NAME)
 {
+    //using namespace boost::python;
+    docstring_options doc_options(true, false, false);
+    doc_options.disable_cpp_signatures();
+    /*
+        Things that you want to use in python muct be exposed:
+        containers
+    */
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
     enum_<rfModStructs::L01_MOD_FAULT>("L01_MOD_FAULT","L01_MOD_FAULT: a named integer giving the fault status of the L01 Modulator")
@@ -83,7 +90,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ;
 
     /// The main class that creates all the controller obejcts
-        class_<VCrfmod,bases<baseObject>,boost::noncopyable> ("init")
+        class_<VCrfmod,bases<VCbase>,boost::noncopyable> ("init")
         .def("virtual_GUN_MOD_Controller",  &VCrfmod::virtual_GUN_MOD_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the virtual gun modulator object.")
@@ -102,14 +109,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("offline_L01_MOD_Controller",  &VCrfmod::offline_L01_MOD_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the offline L01 modulator object.")
-        .def("setQuiet",         &VCrfmod::setQuiet,
-             "set Quiet Mode (no messages, no debug messages) for all PI laser objects.")
-        .def("setVerbose",       &VCrfmod::setVerbose,
-             "set Verbose Mode (all messages, all debug messages) for all PI laser objects.")
-        .def("setMessage",       &VCrfmod::setMessage,
-             "set Message Mode (all  messages, no debug messages) for all PI laser objects.")
-        .def("setDebugMessage",  &VCrfmod::setDebugMessage,
-             "set Debug Mode (no messages, all debug messages) for all PI laser objects.")
+//        .def("setQuiet",         &VCrfmod::setQuiet,
+//             "set Quiet Mode (no messages, no debug messages) for all PI laser objects.")
+//        .def("setVerbose",       &VCrfmod::setVerbose,
+//             "set Verbose Mode (all messages, all debug messages) for all PI laser objects.")
+//        .def("setMessage",       &VCrfmod::setMessage,
+//             "set Message Mode (all  messages, no debug messages) for all PI laser objects.")
+//        .def("setDebugMessage",  &VCrfmod::setDebugMessage,
+//             "set Debug Mode (no messages, all debug messages) for all PI laser objects.")
         ;
 
     class_<l01ModController, bases<controller>, boost::noncopyable>

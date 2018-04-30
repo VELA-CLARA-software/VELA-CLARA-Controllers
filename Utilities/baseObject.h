@@ -61,8 +61,11 @@ class baseObject
             the compiler won't let us call delete on any base class pointers */
    protected:
         ~baseObject();
-        /* These are const pointers set at instantiation.
-           They point to bools held in the controller */
+
+        static size_t basecount;
+
+        /* These are const references set at instantiation.
+           They refer to bools held in the controller */
         const bool& SHOW_DEBUG_MESSAGES;
         const bool& SHOW_MESSAGES;
 

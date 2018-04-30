@@ -41,8 +41,10 @@ shutterInterface::shutterInterface(bool& show_messages,
                                    const std::string& configFile
                                  ):
 configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
-interface(show_messages, show_debug_messages)
+//interface(show_messages, show_debug_messages)
+interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
 {
+    message("Constructing a shutterInterface");
     initialise();
 }
 //______________________________________________________________________________

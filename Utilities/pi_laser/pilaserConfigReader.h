@@ -34,21 +34,22 @@ class pilaserConfigReader:public configReader
 {
     public:
         pilaserConfigReader(const std::string& configFile,
-                     const bool& show_messages,
-                     const bool& show_debug_messages,
-                     const bool usingVM);
+                            const bool& show_messages,
+                            const bool& show_debug_messages,
+                            const bool usingVM);
         ~pilaserConfigReader();
 
         bool readConfig();
-        bool getpilaserObject(pilaserStructs::pilaserObject & obj);
+        bool getpilaserObject(pilaserStructs::pilaserObject& obj);
 
     private:
         pilaserStructs::pilaserObject pilaserObject;
         std::vector<pilaserStructs::pvStruct> pvMonStructs;
         std::vector<pilaserStructs::pvStruct> pvComStructs;
-
+        void addCOUNT_MASK_OR_CHTYPE(std::vector<pilaserStructs::pvStruct>& pvStruct_v,
+                                     const std::vector<std::string>& keyVal);
         void addPVStruct(std::vector< pilaserStructs::pvStruct>& pvs,
-                           const std::vector<std::string>& keyVal);
+                         const std::vector<std::string>& keyVal);
         void addTopilaserObjectsV1(const std::vector<std::string>& keyVal);
         void addToPVCommandMapV1  (const std::vector<std::string>& keyVal);
         void addToPVMonitorMapV1  (const std::vector<std::string>& keyVal);

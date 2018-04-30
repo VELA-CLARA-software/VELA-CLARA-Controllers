@@ -61,13 +61,13 @@ class pilaserController : public controller
         bool isOpen  (const std::string& name) const;
         void close(const std::string& name);
         void open (const std::string& name);
-
         std::vector<std::string> getShutterNames()const;
         const shutterStructs::shutterObject&
             getShutterObjConstRef(const std::string& name )const;
-
         shutterStructs::SHUTTER_STATE getShutterState(const std::string& name);
         std::string getShutterStateStr(const std::string& name );
+
+
 
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
             getILockStates(const std::string& name)const;
@@ -103,7 +103,12 @@ class pilaserController : public controller
         bool moveV();
         const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
 
+#ifdef BUILD_DLL
 
+
+        boost::python::list getShutterNames_Py()const;
+
+#endif
 
 
     protected:

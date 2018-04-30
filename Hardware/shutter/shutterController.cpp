@@ -119,7 +119,6 @@ std::map<ILOCK_NUMBER, std::string>
 {
     return localInterface.getILockStatesStr(name);
 }
-
 //std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > shutterController::getILockStates(const std::string & name )
 //{
 //    return localInterface.getILockStates(name );
@@ -129,13 +128,11 @@ std::map<ILOCK_NUMBER, std::string>
 //{
 //    return localInterface.getILockStatesStr(name );
 //}
-////______________________________________________________________________________
-//std::vector< std::string > shutterController::getShutterNames()
-//{
-//    return pilShutterNames;
-//}
-
-
+//______________________________________________________________________________
+std::vector< std::string > shutterController::getShutterNames()const
+{
+    return localInterface.getShutterNames();
+}
 ////______________________________________________________________________________
 //void shutterController::openShutter1()
 //{

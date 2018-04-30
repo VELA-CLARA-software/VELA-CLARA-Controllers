@@ -34,13 +34,17 @@ class dburt : public configReader
 
 
 
-        bool writeDBURT(const magnetStructs::magnetStateStruct & magState, const std::string & fileName = "", const std::string & comments = "", const std::string & keywords = "" );
+        bool writeDBURT(const magnetStructs::magnetStateStruct & magState,
+                        const std::string & fileName = "",
+                        const std::string & comments = "", const std::string & keywords = "" );
 
     private:
 
         magnetStructs::magnetStateStruct readDBURTv1(const char* fileName, const std::string & path = UTL::DBURT_PATH);
 
         magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const std::string & path = UTL::DBURT_PATH);
+
+        magnetStructs::magnetStateStruct dburt::readDBURTv4(const char* fileName, const std::string & path = UTL::DBURT_PATH);
 
         const HWC_ENUM::MACHINE_AREA myMachineArea;
 

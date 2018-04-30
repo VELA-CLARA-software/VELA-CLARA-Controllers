@@ -60,6 +60,11 @@ magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
                 configVersion = 3;// version 2 got lost around October 2015
                 break;
             }
+            else if(stringIsSubString(line, UTL::DBURT_HEADER_V4))
+            {
+                configVersion = 4;// version 2 got lost around October 2015
+                break;
+            }
             else if(stringIsSubString(line, UTL::VERSION))
             {
                 if(stringIsSubString(trimmedLine, UTL::VERSION))
@@ -90,6 +95,10 @@ magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
             debugMessage("VERSION 3 DBURT FOUND");
             magState = readDBURTv3(fileName);
             break;
+        case 4:
+            debugMessage("VERSION 4 DBURT FOUND");
+            magState = readDBURTv4(fileName);
+            break;
         default:
             debugMessage("UNEXPECTED DBURT VERSION, ", configVersion, ", FOUND");
 
@@ -97,6 +106,192 @@ magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
 
     return magState;
 }
+//______________________________________________________________________________
+magnetStructs::magnetStateStruct dburt::readDBURTv4(const char* fileName, const std::string & path)
+{
+    std::string pathToDBURT;
+    if(path == "")
+        pathToDBURT =  UTL::DBURT_PATH;
+    else
+        pathToDBURT =  UTL::DBURT_PATH;
+
+    magnetStructs::magnetStateStruct magState;
+
+
+    std::string line, trimmedLine;
+    std::ifstream inputFile;
+
+    std::vector<std::string> keyvalue;
+
+    inputFile.open(pathToDBURT+fileName, std::ios::in);
+    if(inputFile)
+    {
+        bool readingParameters = false;
+        int  linenumber        = 0;
+
+        while(std::getline(inputFile, line)) /// Go through line by line
+        {
+            std::stringstream iss(line); /// make a stream of the line and then do some tests
+            ++linenumber;
+            if(stringIsSubString(iss.str(), UTL::DBURT_EOF_V3))
+            {
+                message("FOUND END OF FILE ");
+                readingParameters = false;
+                break;
+            }
+            if(readingParameters)
+            {
+                trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
+
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
+
+                if(keyvalue.size() == 4)
+                {
+
+                    debugMessage("FOUND ",keyvalue[0],
+                                 ", psu state = ", keyvalue[1],
+                                 ", SI = ",getNumD(keyvalue[2]),
+                                 ", RI = ",getNumD(keyvalue[3])
+                                 );
+
+                    magState.magNames.push_back(keyvalue[0]);
+
+                    if(keyvalue[1] == UTL::ON)
+                    {
+                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ON);
+                    }
+                    else if(keyvalue[1] == UTL::OFF)
+                    {
+                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::OFF);
+                    }
+                    else
+                        magState.psuStates.push_back(magnetStructs::MAG_PSU_STATE::ERROR);
+
+                    magState.siValues.push_back(getNumD(keyvalue[2]));
+                }
+            } // if(readingParameters)_END
+
+            if(stringIsSubString(iss.str(), UTL::DBURT_NUM_MAGNETS_V4) )
+            {
+                trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
+
+                magState.numMags = getSize(keyvalue[1]);
+                message("FOUND NUM MAGNETS = ",  magState.numMags);
+                message("FOUND NUM MAGNETS = ",  getSize(keyvalue[1]), "   ", keyvalue[1]);
+                readingParameters = true;
+            }
+            if(stringIsSubString(iss.str(), UTL::DBURT_PARAMETERS_V4) )
+            {
+                message("FOUND START OF DATA");
+            }
+            if(stringIsSubString(iss.str(), UTL::DBURT_HEADER_AREA) )
+            {
+                trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
+                keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
+
+                if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_INJ;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA1))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA1;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA2))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA2;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_PH1))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_PH1;
+            }
+
+        } // while
+    } // main if
+    else
+        message("ERROR: In importDBURT: failed to open ",  pathToDBURT, fileName);
+
+    return magState;
+}
+
+//______________________________________________________________________________
+bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const std::string & fileName, const std::string & comments, const std::string & keywords)
+{
+    bool success = false;
+
+    std::string fn;
+    std::string cdt = currentDateTime();
+
+    message("cdt = ", cdt);
+
+    if(fileName == "")
+        fn = UTL::DBURT_PATH + UTL::SLASH_SLASH + cdt + UTL::dotDBURT;
+    else
+        fn = fileName;
+
+    std::ofstream outputFile;
+
+    outputFile.open(fn, std::ios::out);
+
+    if(outputFile)
+    {
+        outputFile << UTL::DBURT_HEADER_V4   <<std::endl;
+        outputFile << std::endl;
+        outputFile << UTL::DBURT_HEADER_DT   <<cdt <<UTL::END_OF_LINE <<std::endl;
+        outputFile << std::endl;
+        outputFile << UTL::DBURT_HEADER_KEYW <<keywords <<UTL::END_OF_LINE <<std::endl;
+        outputFile << std::endl;
+        outputFile << UTL::DBURT_HEADER_COM  <<comments <<UTL::END_OF_LINE <<std::endl;
+        outputFile << std::endl;
+        outputFile << UTL::DBURT_HEADER_AREA <<ENUM_TO_STRING(myMachineArea) << UTL::END_OF_LINE << std::endl;
+        outputFile << std::endl;
+        outputFile << UTL::START_OF_DATA << UTL::END_OF_LINE << std::endl;
+
+        outputFile <<UTL::NUMBER_OF_OBJECTS << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
+        //outputFile <<UTL::NUMBER_OF_OBJECTS    << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
+        //outputFile <<UTL::DBURT_PARAMETERS_V1  << UTL::END_OF_LINE << std::endl;
+        for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)//MAGIC_NUMBER
+        {
+            outputFile <<magState.magNames[i] <<UTL::COLON_C;
+            switch(magState.psuStates[i])
+            {
+                case magnetStructs::MAG_PSU_STATE::OFF:
+                    outputFile <<UTL::OFF <<UTL::COLON_C;
+                    break;
+
+                case magnetStructs::MAG_PSU_STATE::ON:
+                    outputFile <<UTL::ON <<UTL::COLON_C;
+                    break;
+
+                case magnetStructs::MAG_PSU_STATE::TIMING:
+                    outputFile <<UTL::TIMING<<UTL::COLON_C;
+                    break;
+
+                case magnetStructs::MAG_PSU_STATE::ERROR:
+                    outputFile <<UTL::ERROR<<UTL::COLON_C;
+                    break;
+
+                case magnetStructs::MAG_PSU_STATE::NONE:
+                     outputFile <<UTL::NONE<<UTL::COLON_C;
+                    break;
+
+                default:
+                    outputFile <<UTL::ERROR<<UTL::COLON_C;
+            }
+            outputFile << magState.siValues[i];
+            outputFile << UTL::COLON_C;
+            outputFile << magState.riValues[i];
+            outputFile << UTL::END_OF_LINE << std::endl;
+        }
+        outputFile << UTL::END_OF_DATA << UTL::END_OF_LINE << std::endl;
+        outputFile.close();
+        success = true;
+    }
+    else{
+
+        std::cout <<"Can't create output file..." <<std::endl;
+    }
+    return success;
+}
+/// LEGACY
+
+
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const std::string & path)
 {
@@ -185,6 +380,8 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA2;
                 else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_PH1))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_PH1;
             }
 
         } // while
@@ -195,83 +392,7 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
     return magState;
 }
 
-//______________________________________________________________________________
-bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const std::string & fileName, const std::string & comments, const std::string & keywords)
-{
-    bool success = false;
 
-    std::string fn;
-    std::string cdt = currentDateTime();
-
-    message("cdt = ", cdt);
-
-    if(fileName == "")
-        fn = UTL::DBURT_PATH + UTL::SLASH_SLASH + cdt + UTL::dotDBURT;
-    else
-        fn = fileName;
-
-    std::ofstream outputFile;
-
-    outputFile.open(fn, std::ios::out);
-
-    if(outputFile)
-    {
-        outputFile <<UTL::DBURT_HEADER_V3   <<std::endl;
-        outputFile <<std::endl;
-        outputFile <<UTL::DBURT_HEADER_DT   <<cdt <<UTL::END_OF_LINE <<std::endl;
-        outputFile <<std::endl;
-        outputFile <<UTL::DBURT_HEADER_KEYW <<keywords <<UTL::END_OF_LINE <<std::endl;
-        outputFile <<std::endl;
-        outputFile <<UTL::DBURT_HEADER_COM  <<comments <<UTL::END_OF_LINE <<std::endl;
-        outputFile <<std::endl;
-        outputFile <<UTL::DBURT_HEADER_AREA <<ENUM_TO_STRING(myMachineArea) << UTL::END_OF_LINE << std::endl;
-        outputFile <<std::endl;
-        outputFile <<UTL::START_OF_DATA << UTL::END_OF_LINE << std::endl;
-
-        outputFile <<UTL::NUMBER_OF_OBJECTS << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
-        //outputFile <<UTL::NUMBER_OF_OBJECTS    << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
-        //outputFile <<UTL::DBURT_PARAMETERS_V1  << UTL::END_OF_LINE << std::endl;
-        for(size_t i = 0; i <magState.numMags; ++i)//MAGIC_NUMBER
-        {
-            outputFile <<magState.magNames[i] <<UTL::COLON_C;
-            switch(magState.psuStates[i])
-            {
-                case magnetStructs::MAG_PSU_STATE::OFF:
-                    outputFile <<UTL::OFF <<UTL::COLON_C;
-                    break;
-
-                case magnetStructs::MAG_PSU_STATE::ON:
-                    outputFile <<UTL::ON <<UTL::COLON_C;
-                    break;
-
-                case magnetStructs::MAG_PSU_STATE::TIMING:
-                    outputFile <<UTL::TIMING<<UTL::COLON_C;
-                    break;
-
-                case magnetStructs::MAG_PSU_STATE::ERROR:
-                    outputFile <<UTL::ERROR<<UTL::COLON_C;
-                    break;
-
-                case magnetStructs::MAG_PSU_STATE::NONE:
-                     outputFile <<UTL::NONE<<UTL::COLON_C;
-                    break;
-
-                default:
-                    outputFile <<UTL::ERROR<<UTL::COLON_C;
-            }
-            outputFile <<magState.siValues[i] <<";" <<std::endl;
-        }
-        outputFile << UTL::END_OF_DATA << UTL::END_OF_LINE << std::endl;
-        outputFile.close();
-        success = true;
-    }
-    else{
-
-        std::cout <<"Can't create output file..." <<std::endl;
-    }
-    return success;
-}
-/// LEGACY
 
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct dburt::readDBURTv1(const char* fileName, const std::string & path)

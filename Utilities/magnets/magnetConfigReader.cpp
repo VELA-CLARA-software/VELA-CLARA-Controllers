@@ -210,7 +210,10 @@ void magnetConfigReader::addToMagObjectsV1(const std::vector<std::string> &keyVa
     else if(keyVal[0] == UTL::MAG_SET_MAX_WAIT_TIME)
         magObjects.back().maxWaitTime = getSize(value);
     else if(keyVal[0] == UTL::DEGAUSS_TOLERANCE)
+    {
         magObjects.back().degTolerance = getNumD(value);
+        message(magObjects.back().name, " ", magObjects.back().degTolerance, " ", getNumD(value) );
+    }
     else if(keyVal[0] == UTL::DEGAUSS_VALUES)
          magObjects.back().degValues = getDoubleVector(value);
     else if(keyVal[0] == UTL::POSITION)

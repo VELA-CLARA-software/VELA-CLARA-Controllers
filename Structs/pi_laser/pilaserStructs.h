@@ -48,6 +48,7 @@ namespace pilaserStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(PILASER_PV_TYPE,(INTENSITY)
                                                         (STABILISATION)
                                                         (STATUS)
+                                                        (HALF_WAVE_PLATE)
                                                         (UNKNOWN_PV)
                                         )
     struct monitorStruct

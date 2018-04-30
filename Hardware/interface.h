@@ -48,6 +48,10 @@ class interface : public baseObject
         interface(const bool& show_messages,
                   const bool& show_debug_messages,
                   const bool  shouldStartEPICs);
+        interface(const bool& show_messages,
+                  const bool& show_debug_messages,
+                  const bool  shouldStartEPICs,
+                  const bool  startVirtualMachine);
         ~interface();
 
         /* typedefs for long type names */
@@ -91,7 +95,7 @@ class interface : public baseObject
            but unsigned short works so far
            Other constant numbers could go here if needed
         */
-        const bool shouldStartEPICs;
+        const bool shouldStartEPICs, startVirtualMachine;
         const unsigned short EPICS_ACTIVATE, EPICS_SEND, EPICS_RESET;
         const double DBL_ERR_NUM;
         bool configFileRead, allChidsInitialised, allMonitorsStarted;

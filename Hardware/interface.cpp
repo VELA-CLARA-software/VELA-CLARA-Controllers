@@ -36,23 +36,32 @@ interface::interface(const bool& show_messages,
                      const bool& show_debug_messages,
                      const bool  shouldStartEPICs
                      ):
+interface(show_messages, show_debug_messages, shouldStartEPICs, false)
+{}
+//______________________________________________________________________________
+interface::interface(const bool& show_messages,
+                     const bool& show_debug_messages,
+                     const bool  shouldStartEPICs,
+                     const bool  startVirtualMachine):
 thisCaContext(nullptr),
 configFileRead(false),
+startVirtualMachine(startVirtualMachine),
 shouldStartEPICs(shouldStartEPICs),
 CA_PEND_IO_TIMEOUT(UTL::FIVE_DOUBLE),
-baseObject(show_messages, show_debug_messages),
 EPICS_ACTIVATE(UTL::EPICS_ACTIVATE),
 EPICS_SEND(UTL::EPICS_SEND),
 EPICS_RESET(UTL::EPICS_RESET),
 DBL_ERR_NUM(UTL::DBL_ERR_NUM),
 allChidsInitialised(false),
-allMonitorsStarted (false)
+allMonitorsStarted (false),
+baseObject(show_messages, show_debug_messages)
 {
     /* This 'enables' callbacks, monitoring, etc
         thisCaContext is the current (AND ONLY) context,
         use it to join from new threads with ca_attach_context
         you need to attach to this context if multi-threading
-   */
+    */
+    message("Interface base constructor.");
     ca_context_create(ca_enable_preemptive_callback);
     thisCaContext = ca_current_context();
 }
@@ -357,7 +366,7 @@ bool interface::interfaceInitReport() const
 //______________________________________________________________________________
 bool interface::interfaceInitReport(bool shouldStartEPICs) const
 {
-    return interfaceInitReport(shouldStartEPICs);
+    return interfaceInitReport();
 }
 //______________________________________________________________________________
 void interface::attachTo_thisCAContext()
