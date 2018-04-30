@@ -434,11 +434,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
       boost::python::class_<offlineImageAnalyser,boost::noncopyable>
         ("offlineImageAnalyser","offlineImageAnalyser Doc String", boost::python::no_init)
         .def("loadImage",
-                       &offlineImageAnalyser::loadImage,
+                       &offlineImageAnalyser::loadImage_Py,
                       (arg("data"),arg("height"),arg("width")),
                       "Takes in 1D array, raw image data.")
         .def("loadBackgroundImage",
-                      &offlineImageAnalyser::loadBackgroundImage,
+                      &offlineImageAnalyser::loadBackgroundImage_Py,
                       (arg("data")),
                       "Takes in 1D array, raw background image data.")
         .def("analyse",

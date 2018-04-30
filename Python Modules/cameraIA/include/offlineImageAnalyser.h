@@ -17,7 +17,7 @@
 using namespace cameraStructs;
 ///---------------------------CLASS TO ANALYSE IMAGES------------------------------///
 ///------------Holds data of image high level imageAnalysis functions-------------///
-class offlineImageAnalyser{
+class offlineImageAnalyser: public baseObject{
     public:
         //Constructor
         offlineImageAnalyser(bool& show_messages,
@@ -32,7 +32,12 @@ class offlineImageAnalyser{
         void loadImage(const std::vector<double> &originalImage,
                        const std::string &name,
                        int hieght, int width);
-
+#ifdef BUILD_DLL
+        void loadImage_Py(const boost::python::list &originalImage,
+                       const std::string &name,
+                       int hieght, int width);
+        void loadBackgroundImage_Py(const boost::python::list &originalBkgrndImage, const std::string &name);
+#endif
         void loadBackgroundImage(const std::vector<double> &originalBkgrndImage, const std::string &name);
         void writeData(const std::string &fileName);
         void analyse();

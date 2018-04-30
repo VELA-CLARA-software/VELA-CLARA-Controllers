@@ -19,7 +19,8 @@ std::mutex mu;
 offlineImageAnalyser::offlineImageAnalyser(bool& show_messages,
                                            bool& show_debug_messages,
                                            cameraIAInterface* CI)
-: //baseObject( &show_messages, &show_debug_messages ),
+:
+baseObject( &show_messages, &show_debug_messages ),
 fit( show_messages, show_debug_messages ),
 edit( show_messages, show_debug_messages )//,
 //CoIA()
@@ -704,3 +705,17 @@ double offlineImageAnalyser::getPTMRatio(){
 bool offlineImageAnalyser::isAnalysing(){
     return analysing;
 }
+
+#ifdef BUILD_DLL
+void offlineImageAnalyser::loadImage_Py(const boost::python::list &originalImage,
+                       const std::string &name,
+                       int hieght, int width)
+{
+    loadImage(to_std_vector<double>(originalImage),name,hieght,width);
+}
+void offlineImageAnalyser::loadBackgroundImage_Py(const boost::python::list &originalBkgrndImage, const std::string &name)
+{
+    loadBackgroundImage(to_std_vector<double>(originalBkgrndImage),name);
+
+}
+#endif

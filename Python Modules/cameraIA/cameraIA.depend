@@ -1,1 +1,614 @@
 # depslib dependency file v1.0
+1525093651 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiacontroller.cpp
+	"cameraIAController.h"
+
+1525093651 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiacontroller.h
+	<string>
+	<vector>
+	<map>
+	"cameraIAInterface.h"
+	"structs.h"
+	"cameraStructs.h"
+	"controller.h"
+	"offlineImageAnalyser.h"
+
+1525093651 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiainterface.h
+	<string>
+	<vector>
+	<atomic>
+	<map>
+	"cameraStructs.h"
+	"cameraInterface.h"
+	"cameraIAConfigReader.h"
+
+1525093651 d:\vela\git projects\vela-clara-controllers\structs\camerastructs.h
+	<vector>
+	<string>
+	<thread>
+	<map>
+	<cadef.h>
+	"structs.h"
+	"configDefinitions.h"
+
+1525093711 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1525093651 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1525093651 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerainterface.h
+	"cameraStructs.h"
+	"interface.h"
+	<string>
+	<vector>
+	<atomic>
+	<map>
+
+1524865288 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1525029876 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<iostream>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1524756163 d:\vela\git projects\vela-clara-controllers\utilities\cameraiaconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"cameraStructs.h"
+
+1525032480 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1524850250 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1525094376 d:\vela\git projects\vela-clara-controllers\python modules\cameraia\include\offlineimageanalyser.h
+	<string>
+	<vector>
+	<chrono>
+	"cameraStructs.h"
+	"editor.h"
+	"fitter.h"
+	"baseObject.h"
+	"cameraIAInterface.h"
+
+1524756154 d:\vela\git projects\vela-clara-controllers\python modules\cameraia\include\editor.h
+	"cameraStructs.h"
+	"baseObject.h"
+
+1524756154 d:\vela\git projects\vela-clara-controllers\python modules\cameraia\include\fitter.h
+	"cameraStructs.h"
+	"baseObject.h"
+
+1525093651 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiainterface.cpp
+	"cameraIAInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<iomanip>
+	<sstream>
+	<chrono>
+	<ctime>
+	<thread>
+
+1525093651 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerainterface.cpp
+	"cameraInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<iomanip>
+	<sstream>
+	<chrono>
+	<thread>
+
+1525029310 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1525030369 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1525075904 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	"configDefinitions.h"
+	<time.h>
+
+1525093651 source:d:\vela\git projects\vela-clara-controllers\utilities\cameraiaconfigreader.cpp
+	"cameraIAConfigReader.h"
+	"configDefinitions.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1525032479 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1524756154 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\main.cpp
+	"main.h"
+
+1524756154 d:\vela\git projects\vela-clara-controllers\python modules\cameraia\main.h
+	<windows.h>
+
+1524756155 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\src\editor.cpp
+	<fstream>
+	<iterator>
+	<vector>
+	<stdint.h>
+	<iostream>
+	<sstream>
+	<algorithm>
+	<cmath>
+	"editor.h"
+
+1524756155 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\src\fitter.cpp
+	<fstream>
+	<iterator>
+	<vector>
+	<stdint.h>
+	<iostream>
+	<sstream>
+	<cmath>
+	"TF1.h"
+	"TF2.h"
+	"TH2F.h"
+	"TGraph.h"
+	"TMath.h"
+	"TFormula.h"
+	<TMath.h>
+	<TGraph2D.h>
+	"TFitResultPtr.h"
+	"TFitResult.h"
+	"TDirectory.h"
+	"TVirtualFitter.h"
+	"TFitter.h"
+	"editor.h"
+	"fitter.h"
+
+1525076107 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1525076148 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1443796070 c:\root_v5.34.34\include\tf1.h
+	"TFormula.h"
+	"TAttLine.h"
+	"TAttFill.h"
+	"TAttMarker.h"
+	"Math/ParamFunctor.h"
+
+1443796070 c:\root_v5.34.34\include\tformula.h
+	"TNamed.h"
+	"TBits.h"
+	"TObjArray.h"
+
+1443796070 c:\root_v5.34.34\include\tnamed.h
+	"TObject.h"
+	"TString.h"
+
+1443796070 c:\root_v5.34.34\include\tobject.h
+	"Rtypes.h"
+	"TStorage.h"
+	"TVersionCheck.h"
+	"Riosfwd.h"
+	<stdarg.h>
+	"TBuffer.h"
+
+1443796070 c:\root_v5.34.34\include\rtypes.h
+	"RConfig.h"
+	"DllImport.h"
+	"Rtypeinfo.h"
+	<stdio.h>
+	<string.h>
+	<snprintf.h>
+	<strlcpy.h>
+	<atomic>
+	"TGenericClassInfo.h"
+
+1443796070 c:\root_v5.34.34\include\rconfig.h
+	"RVersion.h"
+	<standards.h>
+	<stdlib.h>
+	<features.h>
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+
+1443796070 c:\root_v5.34.34\include\rversion.h
+
+1443796070 c:\root_v5.34.34\include\dllimport.h
+
+1443796070 c:\root_v5.34.34\include\rtypeinfo.h
+	"RConfig.h"
+	<typeinfo>
+	<typeinfo>
+
+1443796070 c:\root_v5.34.34\include\snprintf.h
+	"RConfig.h"
+	<stdio.h>
+	<stdarg.h>
+
+1443796070 c:\root_v5.34.34\include\strlcpy.h
+	"RConfig.h"
+	<unistd.h>
+	<sys/types.h>
+
+1443796070 c:\root_v5.34.34\include\tgenericclassinfo.h
+	<vector>
+	"TSchemaHelper.h"
+
+1443796070 c:\root_v5.34.34\include\tschemahelper.h
+	"Rtypes.h"
+	<string>
+
+1443796070 c:\root_v5.34.34\include\tstorage.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tversioncheck.h
+	"RVersion.h"
+
+1443796070 c:\root_v5.34.34\include\riosfwd.h
+	"RConfig.h"
+	<iostream>
+	<iosfwd>
+
+1443796070 c:\root_v5.34.34\include\tbuffer.h
+	"TObject.h"
+	<typeinfo>
+
+1443796070 c:\root_v5.34.34\include\tstring.h
+	<string.h>
+	<stdio.h>
+	"Riosfwd.h"
+	"TMathBase.h"
+	<stdarg.h>
+	<string>
+
+1443796070 c:\root_v5.34.34\include\tmathbase.h
+	"Rtypes.h"
+	<cstdlib>
+	<cmath>
+
+1443796070 c:\root_v5.34.34\include\tbits.h
+	"TObject.h"
+	"Riosfwd.h"
+	<string.h>
+
+1443796070 c:\root_v5.34.34\include\tobjarray.h
+	"TSeqCollection.h"
+	<iterator>
+
+1443796070 c:\root_v5.34.34\include\tseqcollection.h
+	"TCollection.h"
+
+1443796070 c:\root_v5.34.34\include\tcollection.h
+	"TObject.h"
+	"TIterator.h"
+	"TString.h"
+
+1443796070 c:\root_v5.34.34\include\titerator.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tattline.h
+	"Rtypes.h"
+	"Riosfwd.h"
+
+1443796070 c:\root_v5.34.34\include\tattfill.h
+	"Rtypes.h"
+	"Riosfwd.h"
+
+1443796070 c:\root_v5.34.34\include\tattmarker.h
+	"Rtypes.h"
+	"Riosfwd.h"
+
+1443796070 c:\root_v5.34.34\include\math\paramfunctor.h
+	<vector>
+	<iostream>
+
+1443796070 c:\root_v5.34.34\include\tf2.h
+	"TF1.h"
+	"TArrayD.h"
+
+1443796070 c:\root_v5.34.34\include\tarrayd.h
+	"TArray.h"
+
+1443796070 c:\root_v5.34.34\include\tarray.h
+	"Rtypes.h"
+	<string.h>
+
+1443796070 c:\root_v5.34.34\include\th2f.h
+	"TH2.h"
+
+1443796070 c:\root_v5.34.34\include\th2.h
+	"TH1.h"
+	"TMatrixFBasefwd.h"
+	"TMatrixDBasefwd.h"
+
+1443796070 c:\root_v5.34.34\include\th1.h
+	"TAxis.h"
+	"TAttLine.h"
+	"TAttFill.h"
+	"TAttMarker.h"
+	"TArrayC.h"
+	"TArrayS.h"
+	"TArrayI.h"
+	"TArrayF.h"
+	"TArrayD.h"
+	"Foption.h"
+	"TVectorFfwd.h"
+	"TVectorDfwd.h"
+	<float.h>
+	"TFitResultPtr.h"
+
+1443796070 c:\root_v5.34.34\include\taxis.h
+	"TNamed.h"
+	"TAttAxis.h"
+	"TArrayD.h"
+
+1443796070 c:\root_v5.34.34\include\tattaxis.h
+	"Rtypes.h"
+	"Riosfwd.h"
+
+1443796070 c:\root_v5.34.34\include\tarrayc.h
+	"TArray.h"
+
+1443796070 c:\root_v5.34.34\include\tarrays.h
+	"TArray.h"
+
+1443796070 c:\root_v5.34.34\include\tarrayi.h
+	"TArray.h"
+
+1443796070 c:\root_v5.34.34\include\tarrayf.h
+	"TArray.h"
+
+1443796070 c:\root_v5.34.34\include\foption.h
+
+1443796070 c:\root_v5.34.34\include\tvectorffwd.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tvectordfwd.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tfitresultptr.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixfbasefwd.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixdbasefwd.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tgraph.h
+	"TNamed.h"
+	"TAttLine.h"
+	"TAttFill.h"
+	"TAttMarker.h"
+	"TVectorFfwd.h"
+	"TVectorDfwd.h"
+	"TFitResultPtr.h"
+
+1443796070 c:\root_v5.34.34\include\tmath.h
+	"Rtypes.h"
+	"TMathBase.h"
+	"TError.h"
+	<algorithm>
+	<limits>
+	<cmath>
+	<float.h>
+	<math.h>
+
+1443796070 c:\root_v5.34.34\include\terror.h
+	"Rtypes.h"
+	<stdarg.h>
+
+1443796070 c:\root_v5.34.34\include\tgraph2d.h
+	"TNamed.h"
+	"TVirtualHistPainter.h"
+	"TAttLine.h"
+	"TAttFill.h"
+	"TAttMarker.h"
+	"TFitResultPtr.h"
+
+1443796070 c:\root_v5.34.34\include\tvirtualhistpainter.h
+	"TObject.h"
+
+1443796070 c:\root_v5.34.34\include\tfitresult.h
+	"TNamed.h"
+	"Fit/FitResult.h"
+	"TMatrixDSym.h"
+
+1443796070 c:\root_v5.34.34\include\fit\fitresult.h
+	"Math/IFunctionfwd.h"
+	"Math/IParamFunctionfwd.h"
+	<vector>
+	<map>
+	<string>
+	<cmath>
+	<cassert>
+
+1443796070 c:\root_v5.34.34\include\math\ifunctionfwd.h
+
+1443796070 c:\root_v5.34.34\include\math\iparamfunctionfwd.h
+	"Math/IFunctionfwd.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixdsym.h
+	"TMatrixTSym.h"
+	"TMatrixDSymfwd.h"
+	"TMatrixDUtils.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixtsym.h
+	"TMatrixTBase.h"
+	"TMatrixTUtils.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixtbase.h
+	<limits>
+	"TNamed.h"
+	"TMatrixFBasefwd.h"
+	"TMatrixDBasefwd.h"
+	"TVectorFfwd.h"
+	"TVectorDfwd.h"
+	"TError.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixtutils.h
+	"TMatrixTBase.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixdsymfwd.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixdutils.h
+	"TMatrixTUtils.h"
+	"TMatrixDUtilsfwd.h"
+
+1443796070 c:\root_v5.34.34\include\tmatrixdutilsfwd.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tdirectory.h
+	"TNamed.h"
+	"TList.h"
+	"TDatime.h"
+	"TUUID.h"
+
+1443796070 c:\root_v5.34.34\include\tlist.h
+	"TSeqCollection.h"
+	"TString.h"
+	<iterator>
+
+1443796070 c:\root_v5.34.34\include\tdatime.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tuuid.h
+	"Rtypes.h"
+
+1443796070 c:\root_v5.34.34\include\tvirtualfitter.h
+	"TNamed.h"
+	"TMethodCall.h"
+	"Foption.h"
+
+1443796070 c:\root_v5.34.34\include\tmethodcall.h
+	"TDictionary.h"
+
+1443796070 c:\root_v5.34.34\include\tdictionary.h
+	"TNamed.h"
+	"Property.h"
+	"ESTLType.h"
+
+1443796070 c:\root_v5.34.34\include\property.h
+
+1443796070 c:\root_v5.34.34\include\estltype.h
+
+1443796070 c:\root_v5.34.34\include\tfitter.h
+	"TVirtualFitter.h"
+
+1525094402 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\src\offlineimageanalyser.cpp
+	<fstream>
+	<iterator>
+	<vector>
+	<stdint.h>
+	<iostream>
+	<sstream>
+	<algorithm>
+	<cmath>
+	<chrono>
+	<thread>
+	<mutex>
+	"cameraStructs.h"
+	"offlineImageAnalyser.h"
+
+1524756155 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\src\vccameraia.cpp
+	"VCcameraIA.h"
+	<iostream>
+	<string>
+
+1525093997 d:\vela\git projects\vela-clara-controllers\python modules\cameraia\include\vccameraia.h
+	"cameraIAController.h"
+	"offlineImageAnalyser.h"
+	"VCbase.h"
+	"VCHeader.h"
+
+1524756151 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
