@@ -25,8 +25,8 @@ namespace chargeStructs
     struct chargeTraceData;
     struct pvStruct;
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( CHARGE_PV_TYPE, (WCM) (ICT1) (ED_FCUP) (ICT2) (S02_FCUP) (SP1_FCUP) (UNKNOWN) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DIAG_TYPE, (WCM) (ICT1) (ED_FCUP) (ICT2) (S02_FCUP) (SP1_FCUP) (UNKNOWN_DIAG_TYPE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( CHARGE_DIAG_TYPE, (WCM) (VELA_ICT1) (ED_FCUP) (VELA_ICT2) (S02_FCUP) (SP1_FCUP) (UNKNOWN_CHARGE_DIAG) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( CHARGE_PV_TYPE, (V) (Q) (UNKNOWN_CHARGE_PV) )
 
     /// monType could be used to switch in the staticCallbackFunction
     /// For the charge this is basically redundant, there is only one monitor: "Sta"
@@ -34,31 +34,31 @@ namespace chargeStructs
 
     struct pvStruct
     {
-        CHARGE_PV_TYPE            pvType;
-        chargeStructs::DIAG_TYPE  diagType;
-        chid                      CHID;
-        std::string               pvSuffix, objName;
-        unsigned long             COUNT, MASK;
-        chtype                    CHTYPE;
+        CHARGE_DIAG_TYPE diagType;
+        CHARGE_PV_TYPE   pvType;
+        chid             CHID;
+        std::string      pvSuffix, objName;
+        unsigned long    COUNT, MASK;
+        chtype           CHTYPE;
     };
 
     struct dataObject
     {
-        dataObject() :                   shotCount( -2 ),
+        dataObject() :                   shotCounts( -2 ),
                                          wcm( UTL::DUMMY_DOUBLE ),
                                          s02FCUP( UTL::DUMMY_DOUBLE ),
                                          numShots( UTL::ZERO_INT ),
                                          buffer( UTL::BUFFER_TEN ) {}
         std::string                      name, pvRoot;
-        CHARGE_PV_TYPE                   diagType;
+        CHARGE_DIAG_TYPE                 diagType;
         bool                             isAContinuousMonitorStruct, isATemporaryMonitorStruct;
         bool                             isMonitoring;
-        double                           wcm, s02FCUP, charge;
-        int                              numShots, shotCount;
+        double                           wcm, s02FCUP, charge, voltage;
+        int                              numShots, shotCounts;
         double                           timeStamp;
         size_t                           buffer;
-        std::vector< double >            chargeVec;
-        boost::circular_buffer< double > chargeBuffer;
+        std::vector< double >            chargeVec, voltageVec;
+        boost::circular_buffer< double > chargeBuffer, voltageBuffer;
         std::vector< std::string >       timeStamps;
         std::vector< double >            srTimeStamps;
     #ifndef __CINT__
@@ -78,14 +78,14 @@ namespace chargeStructs
 
     struct monitorStruct /// We use pointers when we wnat acces to the object (data) or... just  make a copy
     {
-        CHARGE_PV_TYPE           monType;
-        chargeStructs::DIAG_TYPE diagType;
-        chargeObject*            chargeObject;
-        std::string              objName;
-        chtype                   CHTYPE;
-        void *                   val;
-        chargeInterface *        interface;
-        evid                     EVID;
+        CHARGE_PV_TYPE    monType;
+        CHARGE_DIAG_TYPE  diagType;
+        chargeObject*     chargeObject;
+        std::string       name;
+        chtype            CHTYPE;
+        void *            val;
+        chargeInterface * interface;
+        evid              EVID;
     };
 }
 #endif

@@ -270,6 +270,7 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("LLRF",                   CONTROLLER_TYPE::LLRF)
                 .value("IMG",                    CONTROLLER_TYPE::IMG)
                 .value("BPM",                    CONTROLLER_TYPE::BPM)
+                .value("CHARGE",                 CONTROLLER_TYPE::CHARGE)
                 ;
         }
         else if((*reg3).m_to_python == nullptr)
@@ -290,6 +291,7 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("LLRF",                   CONTROLLER_TYPE::LLRF)
                 .value("IMG",                    CONTROLLER_TYPE::IMG)
                 .value("BPM",                    CONTROLLER_TYPE::BPM)
+                .value("CHARGE",                 CONTROLLER_TYPE::CHARGE)
                 ;
         }
 

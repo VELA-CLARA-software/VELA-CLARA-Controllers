@@ -117,14 +117,13 @@ void chargeConfigReader::addToPVStruct( std::vector< chargeStructs::pvStruct >  
     {
         pvStruct_v.push_back( chargeStructs::pvStruct() );    /// Any way to avoid the ladders?
         pvStruct_v.back().pvSuffix = keyVal[1];
-        // NUMBER PVs
-        if( keyVal[0] == UTL::PV_SUFFIX_WCM  )
+        if( keyVal[0] == UTL::PV_SUFFIX_CHARGE_Q  )
         {
-            pvStruct_v.back().pvType    = chargeStructs::CHARGE_PV_TYPE::WCM;
+            pvStruct_v.back().pvType   = chargeStructs::CHARGE_PV_TYPE::Q;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_S02_FCUP  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CHARGE_V  )
         {
-            pvStruct_v.back().pvType    = chargeStructs::CHARGE_PV_TYPE::S02_FCUP;
+            pvStruct_v.back().pvType   = chargeStructs::CHARGE_PV_TYPE::V;
         }
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }

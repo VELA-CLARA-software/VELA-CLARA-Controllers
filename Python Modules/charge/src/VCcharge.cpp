@@ -218,10 +218,8 @@ chargeController & VCcharge::physical_VELA_BA2_Charge_Controller()
 {
     std::string name  = "physical_VELA_BA2_Charge_Controller";
     const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
-    const std::string chargeconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_CHARGE_TRACE_CONFIG;
     return getController(physical_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
-                         chargeconf2,
                          name,
                          withoutVM,
                          withEPICS,

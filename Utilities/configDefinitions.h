@@ -470,6 +470,8 @@ namespace UTL
     // Charge PVs
     const std::string PV_SUFFIX_WCM      = "PV_SUFFIX_WCM";
     const std::string PV_SUFFIX_S02_FCUP = "PV_SUFFIX_S02_FCUP";
+    const std::string PV_SUFFIX_CHARGE_V = "PV_SUFFIX_CHARGE_V";
+    const std::string PV_SUFFIX_CHARGE_Q = "PV_SUFFIX_CHARGE_Q";
 
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";
