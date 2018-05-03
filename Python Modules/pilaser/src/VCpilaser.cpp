@@ -31,11 +31,7 @@ physical_pilaser_Controller_Obj(nullptr),
 pilaserConf(UTL::APCLARA1_CONFIG_PATH + UTL::PI_LASER_CONFIG),
 vcAnalysisConf(UTL::APCLARA1_CONFIG_PATH + UTL::VIRTUAL_CATHODE_ANALYSIS),
 piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::VIRTUAL_CATHODE_ANALYSIS),
-piLaserShutterConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true)
+piLaserShutterConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG)
 {
     std::cout << "Instantiated a VCpilaser in Quiet Mode" << std::endl;
     //ctor
@@ -61,9 +57,10 @@ VCpilaser::~VCpilaser()
     }
 }
 //______________________________________________________________________________
-pilaserController& VCpilaser::virtual_PILaser_Controller()
+pilaserController&  VCpilaser::virtual_PILaser_Controller()
 {
     std::string name = "virtual_pilaser_Controller";
+    std::cout << "virtual_pilaser_Controller" << std::endl;
     return getpilaserController(virtual_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
@@ -78,6 +75,7 @@ pilaserController& VCpilaser::virtual_PILaser_Controller()
 pilaserController& VCpilaser::offline_PILaser_Controller()
 {
     std::string name = "offline_pilaser_Controller";
+    std::cout << "offline_pilaser_Controller" << std::endl;
     return getpilaserController(offline_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
@@ -133,6 +131,7 @@ pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
                                      piLaserMirrorConf,
                                      piLaserShutterConf
                                     );
+
     }
     return *cont;
 }

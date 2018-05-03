@@ -21,7 +21,7 @@
 //
 //*/
 // project includes
-#include "pilaserController.h"
+#include "shutterController.h"
 // stl includes
 #include <iostream>
 //______________________________________________________________________________
@@ -62,20 +62,20 @@ void shutterController::close(const std::string& name)
 //______________________________________________________________________________
 bool shutterController::isOpen(const std::string& name ) const
 {
-    return localInterface.isOpen(name );
+    return localInterface.isOpen(name);
 }
 //______________________________________________________________________________
 bool shutterController::isClosed(const std::string& name )const
 {
-    return localInterface.isClosed(name );
+    return localInterface.isClosed(name);
 }
 //______________________________________________________________________________
-bool shutterController::openAndWait(const std::string& name, const time_t waitTime )
+bool shutterController::openAndWait(const std::string& name, const time_t waitTime)
 {
     return localInterface.openAndWait(name, waitTime);
 }
 //______________________________________________________________________________
-bool shutterController::closeAndWait(const std::string & name, const time_t waitTime )
+bool shutterController::closeAndWait(const std::string & name, const time_t waitTime)
 {
     return localInterface.closeAndWait(name, waitTime );
 }

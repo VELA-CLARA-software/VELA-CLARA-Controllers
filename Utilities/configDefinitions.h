@@ -108,6 +108,7 @@ namespace UTL
     const std::string  DUMMY_NAME   = "DUMMY_NAME";
     const std::string EMPTY_STRING = "";
     const std::string END_OF_LINE = ";";
+    const std::string COMMENT_CHAR = "#";
     const std::string SLASH_SLASH = "\\";
     const std::string EQUALS_SIGN = "=";
     const char EQUALS_SIGN_C      = '=';
@@ -254,7 +255,8 @@ namespace UTL
     const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
     // laser PVs
     const std::string PV_SUFFIX_PIL_STABILISATION = "PV_SUFFIX_PIL_STABILISATION";
-    const std::string PV_SUFFIX_PIL_HALF_WAVE_PLATE = "PV_SUFFIX_PIL_HALF_WAVE_PLATE";
+    const std::string PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET = "PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET";
+    const std::string PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ = "PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ";
     const std::string PV_SUFFIX_PIL_INTENSITY = "PV_SUFFIX_PIL_INTENSITY";
     const std::string PV_SUFFIX_PIL_STATUS = "PV_SUFFIX_PIL_STATUS";
     const std::string PV_SUFFIX_PIL_H_STEP = "PV_SUFFIX_PIL_H_STEP";
@@ -812,7 +814,7 @@ namespace UTL
     const std::string PV_IA_SUFFIX_COV_XY_PIX       ="PV_IA_SUFFIX_COV_XY_PIX";
     const std::string PV_IA_SUFFIX_AV_PIX_INTENSITY="PV_IA_SUFFIX_AV_PIX_INTENSITY";
 
-    // Camera Object Componentns
+    // Camera Object Components
     const std::string SCREEN_NAME               ="SCREEN_NAME";
     const std::string X_MASK_RAD                ="X_MASK_RAD";
     const std::string Y_MASK_RAD                ="Y_MASK_RAD";

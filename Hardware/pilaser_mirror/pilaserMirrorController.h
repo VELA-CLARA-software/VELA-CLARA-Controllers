@@ -41,6 +41,7 @@ class pilaserMirrorController : public controller
                                 const std::string& configFile,
                                 const std::string& name
                                );
+        pilaserMirrorController& pilaserMirrorController::operator= ( const pilaserMirrorController& other ) = delete;
         ~pilaserMirrorController();
 
         double get_CA_PEND_IO_TIMEOUT()const;

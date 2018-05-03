@@ -42,7 +42,7 @@ class shutterController : public controller
                           const std::string& configFile,
                           const std::string& name
                           );
-
+        shutterController& shutterController::operator= ( const shutterController& other ) = delete;
         ~shutterController();
 
         bool closeAndWait(const std::string& name, const time_t waitTime);

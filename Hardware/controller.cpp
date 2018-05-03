@@ -34,18 +34,21 @@ controller::controller(bool& show_messages,
                        bool& show_debug_messages):
 controller(show_messages,
            show_debug_messages,
-           HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE){}
+           HWC_ENUM::CONTROLLER_TYPE::UNKNOWN_CONTROLLER_TYPE)
+{}
 //______________________________________________________________________________
 controller::controller(bool& show_messages,
                        bool& show_debug_messages,
                        const HWC_ENUM::CONTROLLER_TYPE type):
-controller(show_messages,show_debug_messages,type,UTL::UNKNOWN_NAME){}
+controller(show_messages,show_debug_messages,type,UTL::UNKNOWN_NAME)
+{}
 //______________________________________________________________________________
 controller::controller(bool& show_messages,
                        bool& show_debug_messages,
                        const std::string& name,
                        const HWC_ENUM::CONTROLLER_TYPE type):
-controller(show_messages,show_debug_messages,type,name){}
+controller(show_messages,show_debug_messages,type,name)
+{}
 //______________________________________________________________________________
 controller::controller(bool& show_messages,
                        bool& show_debug_messages,
@@ -54,7 +57,7 @@ controller::controller(bool& show_messages,
 SHOW_DEBUG_MESSAGES(show_debug_messages),
 SHOW_MESSAGES(show_messages),
 controllerType(type),
-baseObject(show_messages, show_debug_messages),
+baseObject(show_messages, show_debug_messages, name),
 name(name)
 {
     if(show_messages)

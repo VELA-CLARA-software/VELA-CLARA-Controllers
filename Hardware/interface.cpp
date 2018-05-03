@@ -54,7 +54,7 @@ EPICS_RESET(UTL::EPICS_RESET),
 DBL_ERR_NUM(UTL::DBL_ERR_NUM),
 allChidsInitialised(false),
 allMonitorsStarted (false),
-baseObject(show_messages, show_debug_messages)
+baseObject(show_messages, show_debug_messages,"from int")
 {
     /* This 'enables' callbacks, monitoring, etc
         thisCaContext is the current (AND ONLY) context,

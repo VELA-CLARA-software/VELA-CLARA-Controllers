@@ -34,16 +34,15 @@
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-pilaserInterface::pilaserInterface(const bool& show_messages,
-                                   const bool& show_debug_messages,
+pilaserInterface::pilaserInterface(bool& show_messages,
+                                   bool& show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
                                   ):
 configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
-interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
+interface(show_messages,show_debug_messages, shouldStartEPICs,startVirtualMachine)
 {
-    message("Constructing a pilaserInterface");
     initialise();
 }
 //______________________________________________________________________________
@@ -73,6 +72,7 @@ void pilaserInterface::killMonitor(pilaserStructs::monitorStruct* ms)
 //______________________________________________________________________________
 void pilaserInterface::initialise()
 {
+    std::cout << "pilaserInterface::initialise()" << std::endl;
     /* The config file reader */
     configFileRead = configReader.readConfig();
     if(configFileRead)
@@ -182,7 +182,7 @@ void pilaserInterface::staticEntryPILMonitor(const event_handler_args args)
     {
         case pilaserStructs::PILASER_PV_TYPE::INTENSITY:
             //ms->interface->debugMessage("PILaser H_pos = ",*(double*)args.dbr);
-            ms->pilaserObj->intensity =  *(double*)args.dbr;
+            ms->pilaserObj->intensity =  getDBRdouble(args);
             // update charg e
             break;
         case pilaserStructs::PILASER_PV_TYPE::STABILISATION:
@@ -193,10 +193,29 @@ void pilaserInterface::staticEntryPILMonitor(const event_handler_args args)
             //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
             ms->pilaserObj->status =  HWC_ENUM::STATE::ERR;
             break;
+        case pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_READ:
+            //ms->interface->debugMessage("PILaser intensity = ",*(double*)args.dbr);
+            ms->pilaserObj->HWP =  getDBRdouble(args);
+            break;
         default:
             ms->interface->message("!!! ERROR !!! Unknown Monitor Type passed to pilaserInterface::staticEntryPILMonitor");
             break;
     }
+}
+//____________________________________________________________________________________________
+int pilaserInterface::setHWP(const double value)
+{
+    // To Write
+    return caput<double>
+            (pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_SET).CHTYPE,
+             pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_SET).CHID,
+             value,
+             "", "Timeout sending Half Wave Plate Value");
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getHWP()
+{
+    return pilaser.HWP;
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::setCharge(const double value)

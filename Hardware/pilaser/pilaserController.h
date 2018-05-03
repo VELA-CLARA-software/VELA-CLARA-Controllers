@@ -33,7 +33,6 @@
 #include "pilaserInterface.h"
 #include "controller.h"
 // boost.python
-
 //______________________________________________________________________________
 class pilaserController : public controller
 {
@@ -49,30 +48,35 @@ class pilaserController : public controller
                           const std::string& piLaserMirrorConf,
                           const std::string& piLaserShutterConf
                          );
+        pilaserController& pilaserController::operator= ( const pilaserController& other ) = delete;
         ~pilaserController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
 
-        // all functions for shutter
-        bool closeAndWait(const std::string& name, const time_t waitTime);
-        bool openAndWait (const std::string& name, const time_t waitTime);
-        bool isClosed(const std::string& name) const;
-        bool isOpen  (const std::string& name) const;
-        void close(const std::string& name);
-        void open (const std::string& name);
-        std::vector<std::string> getShutterNames()const;
-        const shutterStructs::shutterObject&
-            getShutterObjConstRef(const std::string& name )const;
-        shutterStructs::SHUTTER_STATE getShutterState(const std::string& name);
-        std::string getShutterStateStr(const std::string& name );
-
-
+//        // all functions for shutter
+//        bool closeAndWait(const std::string& name, const time_t waitTime);
+//        bool openAndWait (const std::string& name, const time_t waitTime);
+//        bool isClosed(const std::string& name) const;
+//        bool isOpen  (const std::string& name) const;
+//        void close(const std::string& name);
+//        void open (const std::string& name);
+//
+//        std::vector<std::string> getShutterNames()const;
+//        const shutterStructs::shutterObject&
+//            getShutterObjConstRef(const std::string& name )const;
+//
+//        shutterStructs::SHUTTER_STATE getShutterState(const std::string& name);
+//        std::string getShutterStateStr(const std::string& name );
 
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
             getILockStates(const std::string& name)const;
         std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
             getILockStatesStr(const std::string& name)const;
+
+        int    setHWP(const double value);
+        double getHWP();
+
 
         bool setCharge(const double value);
         bool setIntensity(const double valueL);
@@ -89,32 +93,27 @@ class pilaserController : public controller
         const pilaserStructs::pilaserObject& getPILObjConstRef() const;
 
         // laser mirror functions
-        double getHpos() const;
-        double getVpos() const;
-        bool setHpos(double value);
-        bool setHpos(int value);
-        bool setVpos(double value);
-        bool setVpos(int value);
-        double getHstep() const;
-        double getVstep() const;
-        bool setHstep(double value);
-        bool setVstep(double value);
-        bool moveH();
-        bool moveV();
-        const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
-
-#ifdef BUILD_DLL
+//        double getHpos() const;
+//        double getVpos() const;
+//        bool setHpos(double value);
+//        bool setHpos(int value);
+//        bool setVpos(double value);
+//        bool setVpos(int value);
+//        double getHstep() const;
+//        double getVstep() const;
+//        bool setHstep(double value);
+//        bool setVstep(double value);
+//        bool moveH();
+//        bool moveV();
+//        const pilaserMirrorStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
 
 
-        boost::python::list getShutterNames_Py()const;
-
-#endif
 
 
     protected:
     private:
-
-        pilaserMirrorController   localMirror;
+//
+//        pilaserMirrorController   localMirror;
         shutterController         localShutter;
         virtualCathodeController  localVirtualCathode;
         pilaserInterface          localInterface;

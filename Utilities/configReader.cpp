@@ -31,7 +31,7 @@
 #include "structs.h"
 //______________________________________________________________________________
 configReader::configReader(const bool& show_messages,
-             const bool& show_debug_messages):
+                           const bool& show_debug_messages):
 configReader(UTL::EMPTY_STRING, show_messages, show_debug_messages, false)
 {}
 //______________________________________________________________________________
@@ -105,7 +105,7 @@ configFile2(configFile_Location2),
 configFile3(configFile_Location3),
 configFile4(configFile_Location4),
 configFile5(configFile_Location5),
-baseObject(show_messages, show_debug_messages),
+baseObject(show_messages, show_debug_messages,"from config"),
 useVM(usingVM)
 {
     counter += UTL::ONE_SIZET;
@@ -146,8 +146,10 @@ void configReader::getNumIlocks(const std::string & str)
 std::string configReader::trimToDelimiter(std::string const & str,
                                           const std::string & STOPDELIMITER) const
 {
-    size_t last = str.find_first_of(STOPDELIMITER);
-    return str.substr(UTL::ZERO_SIZET, last);
+    size_t end1 = str.find_first_of(UTL::COMMENT_CHAR);
+    std::string str2 = str.substr(UTL::ZERO_SIZET, end1);
+    size_t last = str2.find_first_of(STOPDELIMITER);
+    return str2.substr(UTL::ZERO_SIZET, last);
     //return str.substr(str.begin(), last);
 }
 //______________________________________________________________________________
@@ -336,4 +338,3 @@ bool configReader::isnotNO_CONFIG_FILE(const std::string& str) const
 {
     return !isNO_CONFIG_FILE(str);
 }
-

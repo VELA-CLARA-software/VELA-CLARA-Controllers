@@ -40,6 +40,16 @@ class VCpilaser : public VCbase
         pilaserController& offline_PILaser_Controller();
 
 
+    protected:
+    private:
+        /* object names */
+        pilaserController* virtual_pilaser_Controller_Obj ;
+        pilaserController* physical_pilaser_Controller_Obj;
+        pilaserController* offline_pilaser_Controller_Obj ;
+
+        const std::string pilaserConf, vcAnalysisConf,
+                          piLaserMirrorConf,piLaserShutterConf;
+
         pilaserController& getpilaserController(pilaserController*& cont,
                                                 const std::string & name,
                                                 const bool shouldVM,
@@ -48,16 +58,7 @@ class VCpilaser : public VCbase
                                                 const std::string& vcAnalysisConf,
                                                 const std::string& piLaserMirrorConf,
                                                 const std::string& piLaserShutterConf);
-    protected:
-    private:
-        /* object names */
-        pilaserController* virtual_pilaser_Controller_Obj ;
-        pilaserController* physical_pilaser_Controller_Obj;
-        pilaserController* offline_pilaser_Controller_Obj ;
 
-        const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        const std::string pilaserConf, vcAnalysisConf,
-                          piLaserMirrorConf,piLaserShutterConf;
         /*
             map of showmessage showdebugmessage states
             pointers to these bools are passed down the class
@@ -97,13 +98,12 @@ class VCpilaser : public VCbase
 //bool(pilaserController::*setIntensity_2)(int) = &pilaserController::setIntensity;
 //
 //______________________________________________________________________________
-using namespace boost::python;
-using namespace boost;
-using namespace virtualCathodeStructs;
-//using namespace pilaserMirrorStructs;
-using namespace pilaserStructs;
-using namespace shutterStructs;
-using namespace UTL;
+
+////using namespace virtualCathodeStructs;
+////using namespace pilaserMirrorStructs;
+////using namespace pilaserStructs;
+////using namespace shutterStructs;
+//using namespace UTL;
 BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 {
     //using namespace boost::python;
@@ -122,6 +122,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         // we can then use pre-processor commands to include thwe desired defintions
         // similar to   BOOST_PYTHON_INCLUDE::export_BaseObjects();
     */
+    using namespace UTL;
+    using namespace boost::python;
 
     const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
     const char* closeAndWait_doc = "closeAndWait_doc.";
@@ -144,13 +146,17 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* isStabilisationOff_doc = "isStabilisationOff_doc.";
     const char* disableStabilisation_doc = "disableStabilisation_doc.";
     const char* enableStabilisation_doc = "isStabilisationOff_doc.";
+    const char* getHWP_doc = "getHWP_doc.";
+    const char* setHWP_doc = "setHWP_doc.";
 
-    class_<pilaserController, bases<controller>,noncopyable>
-        ("pilaserController","pilaserController member functions",no_init )
-        .def("setCharge",&pilaserController::setCharge,setCharge_doc)
-        .def("setIntensity",&pilaserController::setIntensity,setIntensity_doc)
-        .def("getIntensity",&pilaserController::getIntensity,getIntensity_doc)
-        .def("getStatus",&pilaserController::getStatus,getStatus_doc)
+    class_<pilaserController, bases<controller>,boost::noncopyable>
+        ("pilaserController","pilaserController member functions", no_init )
+        .def("getHWP",&pilaserController::getHWP,getHWP_doc)
+        .def("setHWP",&pilaserController::setHWP,(VALUE_ARG),setHWP_doc)
+//        .def("setCharge",&pilaserController::setCharge,setCharge_doc)
+//        .def("setIntensity",&pilaserController::setIntensity,setIntensity_doc)
+//        .def("getIntensity",&pilaserController::getIntensity,getIntensity_doc)
+//        .def("getStatus",&pilaserController::getStatus,getStatus_doc)
 //        .def("getStabilisationStatus",&pilaserController::getStabilisationStatus,getStabilisationStatus_doc)
 //        .def("isOn",&pilaserController::isOn,isOn_doc)
 //        .def("isOff",&pilaserController::isOff,isOff_doc)
@@ -158,9 +164,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //        .def("isStabilisationOn",&pilaserController::isStabilisationOn,isStabilisationOn_doc)
 //        .def("disableStabilisation",&pilaserController::disableStabilisation,disableStabilisation_doc)
 //        .def("enableStabilisation",&pilaserController::enableStabilisation,enableStabilisation_doc)
-//
-//        //.def("getName",&pilaserController::getName,name_doc)
-//        //.def("state",&pilaserController::getState,getState_doc)
+
+        //.def("getName",&pilaserController::getName,name_doc)
+        //.def("state",&pilaserController::getState,getState_doc)
 //        .def("closeAndWait",&pilaserController::closeAndWait,closeAndWait_doc)
 //        .def("openAndWait",&pilaserController::openAndWait,openAndWait_doc)
 //        .def("isClosed",&pilaserController::isClosed,isClosed_doc)
@@ -169,14 +175,14 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //        .def("open",&pilaserController::open,open_doc)
 //        .def("getShutterNames",&pilaserController::getShutterNames,getShutterNames_doc)
         ;
-
-    const char* hPos_doc
-        = "horizontal Mirror Position (not available as of April 2018)";
-    const char* vPos_doc
-        = "vertical Mirror Position (not available as of April 2018)";
-    const char* hStep_doc = "horizontal Mirror step size ";
-    const char* vStep_doc = "vertical   Mirror step size ";
-                name_doc  = "object name";
+//
+//    const char* hPos_doc
+//        = "horizontal Mirror Position (not available as of April 2018)";
+//    const char* vPos_doc
+//        = "vertical Mirror Position (not available as of April 2018)";
+//    const char* hStep_doc = "horizontal Mirror step size ";
+//    const char* vStep_doc = "vertical   Mirror step size ";
+//                name_doc  = "object name";
 
 
 //    class_<pilaserMirrorStructs::pilMirrorObject,noncopyable>
@@ -188,34 +194,35 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 ////        .def_readonly("name", &pilMirrorObject::name,name_doc)
 //        ;
 
-    const char* stabilisation_status_doc
-        = "Status (ON/OFF) of laser transport system stabilisation system.";
-    const char* intensity_doc
-        = "Laser intensity set-point (AU) add more detail when we have it.";
-    const char* status_doc  = "Status (ON/OFF) of laser system.";
-                setCharge_doc = "Charge (pc) set point.";
+//    const char* stabilisation_status_doc
+//        = "Status (ON/OFF) of laser transport system stabilisation system.";
+//    const char* intensity_doc
+//        = "Laser intensity set-point (AU) add more detail when we have it.";
+//    const char* status_doc  = "Status (ON/OFF) of laser system.";
+//    const char* setCharge_doc2 = "Charge (pc) set point.";
 
-//    class_<pilaserObject,noncopyable>
+//    class_<pilaserStructs::pilaserObject,noncopyable>
 //        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
-//        .def_readonly("status",&pilaserObject::status,status_doc)
-//        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)
-//        .def_readonly("intensity", &pilaserObject::intensity,intensity_doc)
-//        .def_readonly("setCharge", &pilaserObject::setCharge,setCharge_doc)
-//        .def_readonly("name", &pilaserObject::name,name_doc)
+//        .def_readonly("status",&pilaserStructs::pilaserObject::status,status_doc)
+////        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)
+////        .def_readonly("intensity", &pilaserObject::intensity,intensity_doc)
+////        .def_readonly("setCharge", &pilaserObject::setCharge,setCharge_doc)
+////        .def_readonly("name", &pilaserObject::name,name_doc)
 //        ;
 
-//    class_<virtualCathodeDataObject,noncopyable>
+//    class_<virtualCathodeStructs::virtualCathodeDataObject,noncopyable>
 //        ("virtualCathodeDataObject",
 //            "virtualCathodeDataObject member variables (read access only) "
-//            "we are waiting to see what thi swill look like"
+//            "we are waiting to see what this will look like"
 //            , no_init)
+//        .def("buffer_size",&virtualCathodeStructs::virtualCathodeDataObject::buffer_size)
 //        ;
 
-    const char* state_doc = "State (OPEN/CLOSED) of Shutter.";
-//
-//    class_<shutterObject,noncopyable>
+//    const char* state_doc = "State (OPEN/CLOSED) of Shutter.";
+
+//    class_<shutterStructs::shutterObject,noncopyable>
 //        ("shutterObject","shutterObject member variables (read access only)", no_init)
-//        .def_readonly("state",&shutterObject::state,state_doc)
+//        .def_readonly("state",&shutterStructs::shutterObject::state,state_doc)
 //        ;
 
 
@@ -230,10 +237,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("offline_PILaser_Controller",  &VCpilaser::offline_PILaser_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the offline PI laser object.")
-//        .def("setQuiet",         &VCbase::setQuiet)
-//        .def("setVerbose",       &VCbase::setVerbose)
-//        .def("setMessage",       &VCbase::setMessage)
-//        .def("setDebugMessage",  &VCbase::setDebugMessage)
         ;
 
 //
@@ -312,6 +315,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //        .def("setIntensity",  setIntensity_2,"set the intensity of the laser beam on the cathode.")
 //        ;
 
+//https://wiki.python.org/moin/boost.python/FAQ
+//#include /libs/python/test/module_tail.cpp
 }
 
 #endif // _VC_PILASER_H_

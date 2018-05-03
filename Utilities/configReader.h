@@ -72,7 +72,7 @@ class configReader : public baseObject
                      const std::string& configFile_Location5,
                      const bool& show_messages,
                      const bool& show_debug_messages,const bool usingVM);
-
+        configReader& configReader::operator= ( const configReader& other ) = delete;
         void setConfigFilePath(const std::string& path);
 
     protected:

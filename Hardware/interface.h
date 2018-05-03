@@ -52,7 +52,7 @@ class interface : public baseObject
                   const bool& show_debug_messages,
                   const bool  shouldStartEPICs,
                   const bool  startVirtualMachine);
-        ~interface();
+        interface& interface::operator= ( const interface& other ) = delete;
 
         /* typedefs for long type names */
         using map_ilck_state =
@@ -81,6 +81,10 @@ class interface : public baseObject
         bool interfaceInitReport()const;
 
     protected:
+        /* protected destructor to make sure this class is never instantiated
+           the compiler won't let us call delete on any base class pointers
+        */
+        ~interface();
         // this should be called in the derived interface destructor
         void killILockMonitors();
 
@@ -198,13 +202,22 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
                     ret = true;
             return ret;
         }
+        /*
+            some caput templates...
+            more often than not roll your own
+        */
         template<class T, class U>
         int caput(U TYPE, chid& CHID,T& com,const char* mess1,const char* mess2)
         {
             ca_put(TYPE, CHID,&com);
             return sendToEpics("ca_put", mess1, mess2);
         }
-
+        template<class T, class U>
+        int caput(U TYPE, chid& CHID,const T& com,const char* mess1,const char* mess2)
+        {
+            ca_put(TYPE, CHID,&com);
+            return sendToEpics("ca_put", mess1, mess2);
+        }
     private:
 
 };

@@ -31,9 +31,6 @@ bool VCbase::withEPICS = true;
 bool VCbase::withoutEPICS = false;
 bool VCbase::withoutVM = false;
 bool VCbase::withVM = true;
-bool VCbase::shouldShowDebugMessage = false; //default is quiet mode
-bool VCbase::shouldShowMessage = false;        //default is quiet mode
-
 HWC_ENUM::MACHINE_AREA VCbase::VELA_INJ = HWC_ENUM::MACHINE_AREA::VELA_INJ;
 HWC_ENUM::MACHINE_AREA VCbase::VELA_BA1 = HWC_ENUM::MACHINE_AREA::VELA_BA1;
 HWC_ENUM::MACHINE_AREA VCbase::VELA_BA2 = HWC_ENUM::MACHINE_AREA::VELA_BA2;
@@ -54,6 +51,8 @@ HWC_ENUM::MACHINE_MODE VCbase::PHYSICAL = HWC_ENUM::MACHINE_MODE::PHYSICAL;
 HWC_ENUM::MACHINE_MODE VCbase::UNKNOWN_MACHINE_MODE = HWC_ENUM::MACHINE_MODE::UNKNOWN_MACHINE_MODE;
 //______________________________________________________________________________
 VCbase::VCbase(const std::string& name):
+shouldShowDebugMessage(false), //default is quiet mode
+shouldShowMessage(false),        //default is quiet mode
 my_name(name)
 //withEPICS(true),
 //withoutEPICS(false),

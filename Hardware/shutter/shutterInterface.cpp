@@ -40,9 +40,15 @@ shutterInterface::shutterInterface(bool& show_messages,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
                                  ):
-configReader(configFile,  show_messages, show_debug_messages,startVirtualMachine),
+configReader(configFile,
+             show_messages,
+             show_debug_messages,
+             startVirtualMachine),
 //interface(show_messages, show_debug_messages)
-interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine)
+interface(show_messages,
+          show_debug_messages,
+          shouldStartEPICs,
+          startVirtualMachine)
 {
     message("Constructing a shutterInterface");
     initialise();
@@ -50,7 +56,7 @@ interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine
 //______________________________________________________________________________
 shutterInterface::~shutterInterface()
 {
-    for(auto it : continuousMonitorStructs)
+    for(auto&& it : continuousMonitorStructs)
     {
         debugMessage("delete shutterInterface continuousMonitorStructs entry.");
         delete it;
@@ -65,14 +71,16 @@ void shutterInterface::initialise()
     configFileRead = configReader.readConfig();
     if(configFileRead)
     {
-        message("The shutterInterface has read the config file, acquiring objects");
+        message("The shutterInterface has read the config file, "
+                "acquiring objects");
         /* Initialise the objects based on what is read from the config file */
         bool getDataSuccess = initObjects();
         if(getDataSuccess )
         {
             if(shouldStartEPICs)
             {
-                message("The shutterInterface has acquired objects, ""connecting to EPICS");
+                message("The shutterInterface has acquired objects, "
+                        "connecting to EPICS");
                 /* subscribe to the channel ids */
                 initChids();
                 /* start the monitors: set up the callback functions */
@@ -81,10 +89,12 @@ void shutterInterface::initialise()
                 pause_2000();
             }
             else
-             message("The shutterInterface has acquired objects, NOT connecting to EPICS");
+             message("The shutterInterface has acquired objects, "
+                     "NOT connecting to EPICS");
         }
         else
-            message("!!!The shutterInterface received an Error while getting laser data!!!" );
+            message("!!!The shutterInterface received an Error "
+                    "while getting laser data!!!" );
     }
 }
 //______________________________________________________________________________

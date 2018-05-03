@@ -29,6 +29,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+#include <time.h>
 // boost.python includes
 #ifdef BUILD_DLL
 #include <deque>
@@ -57,6 +58,9 @@ class baseObject
         //baseObject();
         baseObject(const bool& show_messages,
                    const bool& show_debug_messages);
+        baseObject(const bool& show_messages,
+                   const bool& show_debug_messages,const std::string& message);
+        baseObject& baseObject::operator= ( const baseObject& other ) = delete;
         /*  protected destructor to make sure this class is never instantiated
             the compiler won't let us call delete on any base class pointers */
    protected:
@@ -213,14 +217,14 @@ class baseObject
 
 #ifdef BUILD_DLL
         template<typename T>
-        std::vector<T> to_std_vector(const boost::python::object& iterable)const
+        std::vector<T> to_std_vector(const boost::python::object& iterable)
         {
             return std::vector<T>(boost::python::stl_input_iterator<T>(iterable),
                                   boost::python::stl_input_iterator<T>());
         }
 
         template<class T,  class U>
-        boost::python::dict enumMapToPythonDict(std::map<T, U> m)const
+        boost::python::dict enumMapToPythonDict(std::map<T, U> m)
         {
             boost::python::dict dictionary;
             for(auto&& it : m)
@@ -229,11 +233,13 @@ class baseObject
         }
 
         template<class T,  class U>
-        boost::python::dict toPythonDict(std::map<T, U> m)const
+        boost::python::dict toPythonDict(std::map<T, U> m) const
         {
             boost::python::dict dictionary;
-            for(auto&& it : m)
+            for(auto&&it:m)
+            {
                 dictionary[it.first] = it.second;
+            }
             return dictionary;
         }
 

@@ -38,20 +38,15 @@ pilaserController::pilaserController(
     const std::string& piLaserShutterConf
     ):
 controller(show_messages,show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::PI_LASER),
-localInterface(show_messages,
-               show_debug_messages,
-               startVirtualMachine,
-               shouldStartEPICs,
-               pilaserConf),
 localMirrorName("LASER_MIRROR_CONTROLLER"),
 localShutterName("LASER_SHUTTER_CONTROLLER"),
 localVirtualCathodeName("VIRTUAL_CATHODE_ANALYSIS_CONTROLLER"),
-localMirror(show_messages,
-            show_debug_messages,
-            startVirtualMachine,
-            shouldStartEPICs,
-            piLaserMirrorConf,
-            localMirrorName),
+//localMirror(show_messages,
+//                        show_debug_messages,
+//                        startVirtualMachine,
+//                        shouldStartEPICs,
+//                        piLaserMirrorConf,
+//                        localMirrorName),
 localShutter(show_messages,
              show_debug_messages,
              startVirtualMachine,
@@ -64,113 +59,50 @@ localVirtualCathode(show_messages,
                     shouldStartEPICs,
                     vcAnalysisConf,
                     localVirtualCathodeName),
-
+localInterface(show_messages,
+               show_debug_messages,
+               startVirtualMachine,
+               shouldStartEPICs,
+               pilaserConf),
 name(name)
 {
-    if(localInterface.interfaceInitReport())
-    {
-        if(localShutter.interfaceInitReport())
-        {
-            if(localMirror.interfaceInitReport())
-                message("pilaserController instantiation success.");
-        }
-    }
+//    if(localInterface.interfaceInitReport(shouldStartEPICs))
+//    {
+//        if(localShutter.interfaceInitReport())
+//        {
+//            if(localMirror.interfaceInitReport())
+//                message("pilaserController instantiation success.");
+//        }
+//    }
+    message("pilaserController constructed");
 }
 //______________________________________________________________________________
 pilaserController::~pilaserController()
 {}    //dtor
+
+//
 //______________________________________________________________________________
 void  pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
 {
-    //localShutter.set_CA_PEND_IO_TIMEOUT(val);
+//    localShutter.set_CA_PEND_IO_TIMEOUT(val);
 }
 //______________________________________________________________________________
-double pilaserController::get_CA_PEND_IO_TIMEOUT() const
+//______________________________________________________________________________
+double pilaserController::get_CA_PEND_IO_TIMEOUT()const
 {
     //return localShutter.get_CA_PEND_IO_TIMEOUT();
     return 1.0;
 }
-
-//
-//   _________.__            __    __
-//  /   _____/|  |__  __ ___/  |__/  |_  ___________
-//  \_____  \ |  |  \|  |  \   __\   __\/ __ \_  __ \
-//  /        \|   Y  \  |  /|  |  |  | \  ___/|  | \/
-// /_______  /|___|  /____/ |__|  |__|  \___  >__|
-//         \/      \/                       \/
-//
 //______________________________________________________________________________
-std::vector<std::string> pilaserController::getShutterNames() const
+int  pilaserController::setHWP(const double value)
 {
-    return localShutter.getShutterNames();
+    return localInterface.setHWP(value);
 }
 //______________________________________________________________________________
-void pilaserController::open(const std::string& name)
+double pilaserController::getHWP()
 {
-    localShutter.open(name);
+    return localInterface.getHWP();
 }
-//______________________________________________________________________________
-void pilaserController::close(const std::string& name)
-{
-    localShutter.close(name);
-}
-//______________________________________________________________________________
-bool pilaserController::isOpen(const std::string& name ) const
-{
-    return localShutter.isOpen(name);
-}
-//______________________________________________________________________________
-bool pilaserController::isClosed(const std::string& name )const
-{
-    return localShutter.isClosed(name);
-}
-//______________________________________________________________________________
-bool pilaserController::openAndWait(const std::string& name, const time_t waitTime )
-{
-    return localShutter.openAndWait(name, waitTime);
-}
-//______________________________________________________________________________
-bool pilaserController::closeAndWait(const std::string & name, const time_t waitTime )
-{
-    return localShutter.closeAndWait(name,waitTime);
-}
-//______________________________________________________________________________
-const shutterStructs::shutterObject&
-pilaserController::getShutterObjConstRef(const std::string& name )const
-{
-    return localShutter.getShutterObjConstRef(name);
-}
-//______________________________________________________________________________
-shutterStructs::SHUTTER_STATE pilaserController::getShutterState(const std::string& name)
-{
-    return localShutter.getShutterState(name);
-}
-//______________________________________________________________________________
-std::string pilaserController::getShutterStateStr(const std::string& name)
-{
-    return localShutter.getShutterStateStr(name);
-}
-//______________________________________________________________________________
-std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
-    pilaserController::getILockStates(const std::string& name)const
-{
-    return localShutter.getILockStates(name);
-}
-//______________________________________________________________________________
-
-std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-    pilaserController::getILockStatesStr(const std::string& name)const
-{
-    return localShutter.getILockStatesStr(name);
-}
-
-//
-//.____
-//|    |   _____    ______ ___________
-//|    |   \__  \  /  ___// __ \_  __ \
-//|    |___ / __ \_\___ \\  ___/|  | \/
-//|_______ (____  /____  >\___  >__|
-//        \/    \/     \/     \/
 //______________________________________________________________________________
 bool pilaserController::setCharge(const double value)
 {
@@ -238,6 +170,85 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
 }
 //______________________________________________________________________________
 
+
+
+
+
+
+
+
+//
+//   _________.__            __    __
+//  /   _____/|  |__  __ ___/  |__/  |_  ___________
+//  \_____  \ |  |  \|  |  \   __\   __\/ __ \_  __ \
+//  /        \|   Y  \  |  /|  |  |  | \  ___/|  | \/
+// /_______  /|___|  /____/ |__|  |__|  \___  >__|
+//         \/      \/                       \/
+//
+//
+//
+
+////______________________________________________________________________________
+//void pilaserController::open(const std::string& name)
+//{
+//    localShutter.open(name);
+//}
+////______________________________________________________________________________
+//void pilaserController::close(const std::string& name)
+//{
+//    localShutter.close(name);
+//}
+////______________________________________________________________________________
+//bool pilaserController::isOpen(const std::string& name ) const
+//{
+//    return localShutter.isOpen(name );
+//}
+////______________________________________________________________________________
+//bool pilaserController::isClosed(const std::string& name )const
+//{
+//    return localShutter.isClosed(name );
+//}
+////______________________________________________________________________________
+//bool pilaserController::openAndWait(const std::string& name, const time_t waitTime )
+//{
+//    return localShutter.openAndWait(name, waitTime);
+//}
+////______________________________________________________________________________
+//bool pilaserController::closeAndWait(const std::string & name, const time_t waitTime )
+//{
+//    return localShutter.closeAndWait(name,waitTime);
+//}
+////______________________________________________________________________________
+//const shutterStructs::shutterObject&
+//pilaserController::getShutterObjConstRef(const std::string& name )const
+//{
+//    return localShutter.getShutterObjConstRef(name);
+//}
+////______________________________________________________________________________
+//shutterStructs::SHUTTER_STATE pilaserController::getShutterState(const std::string& name)
+//{
+//    return localShutter.getShutterState(name);
+//}
+////______________________________________________________________________________
+//std::string pilaserController::getShutterStateStr(const std::string& name )
+//{
+//    return localShutter.getShutterStateStr(name);
+//}
+////______________________________________________________________________________
+//std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
+//    pilaserController::getILockStates(const std::string& name)const
+//{
+//    return localShutter.getILockStates(name);
+//}
+////______________________________________________________________________________
+//
+//std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+//    pilaserController::getILockStatesStr(const std::string& name)const
+//{
+//    return localShutter.getILockStatesStr(name);
+//}
+
+
 //
 //   _____  .__
 //  /     \ |__|_____________  ___________
@@ -245,81 +256,83 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
 ///    Y    \  ||  | \/|  | \(  <_> )  | \/
 //\____|__  /__||__|   |__|   \____/|__|
 //        \/
-// MIRROR
 //
-//______________________________________________________________________________
-double pilaserController::getHpos() const
-{
-    return localMirror.getHpos();
-}
-//______________________________________________________________________________
-double pilaserController::getVpos() const
-{
-    return localMirror.getVpos();
-}
-//______________________________________________________________________________
-bool pilaserController::setHpos(double value)
-{
-     return localMirror.setHpos(value);
-}
-//______________________________________________________________________________
-bool pilaserController::setHpos(int value)
-{
-    return localMirror.setHpos(value);
-}
-//______________________________________________________________________________
-bool pilaserController::setVpos(double value)
-{
-    return localMirror.setVpos(value);
-}
-//______________________________________________________________________________
-bool pilaserController::setVpos(int value)
-{
-    return localMirror.setVpos(value);
-}
-//______________________________________________________________________________
-double pilaserController::getHstep() const
-{
-    return localMirror.getHstep();
-}
-//______________________________________________________________________________
-double pilaserController::getVstep() const
-{
-    return localMirror.getVstep();
-}
-//______________________________________________________________________________
-bool pilaserController::setHstep(double value)
-{
-    return localMirror.setHstep(value);
-}
-//______________________________________________________________________________
-bool pilaserController::setVstep(double value)
-{
-    return localMirror.setVstep(value);
-}
-//______________________________________________________________________________
-bool pilaserController::moveH()
-{
-    return localMirror.moveH();
-}
-//______________________________________________________________________________
-bool pilaserController::moveV()
-{
-    return localMirror.moveV();
-}
-//______________________________________________________________________________
-const pilaserMirrorStructs::pilMirrorObject& pilaserController::getpilMirrorObjConstRef() const
-{
-    return localMirror.getpilMirrorObjConstRef();
-}
-//______________________________________________________________________________
-#ifdef BUILD_DLL
-boost::python::list pilaserController::getShutterNames_Py()const
-{
-    return toPythonList(getShutterNames());
-}
-#endif
-//______________________________________________________________________________
+//
+//
+//
+
+
+
+
+//
+//
+////______________________________________________________________________________
+//double pilaserController::getHpos() const
+//{
+//    return localMirror.getHpos();
+//}
+////______________________________________________________________________________
+//double pilaserController::getVpos() const
+//{
+//    return localMirror.getVpos();
+//}
+////______________________________________________________________________________
+//bool pilaserController::setHpos(double value)
+//{
+//     return localMirror.setHpos(value);
+//}
+////______________________________________________________________________________
+//bool pilaserController::setHpos(int value)
+//{
+//    return localMirror.setHpos(value);
+//}
+////______________________________________________________________________________
+//bool pilaserController::setVpos(double value)
+//{
+//    return localMirror.setVpos(value);
+//}
+////______________________________________________________________________________
+//bool pilaserController::setVpos(int value)
+//{
+//    return localMirror.setVpos(value);
+//}
+////______________________________________________________________________________
+//double pilaserController::getHstep() const
+//{
+//    return localMirror.getHstep();
+//}
+////______________________________________________________________________________
+//double pilaserController::getVstep() const
+//{
+//    return localMirror.getVstep();
+//}
+////______________________________________________________________________________
+//bool pilaserController::setHstep(double value)
+//{
+//    return localMirror.setHstep(value);
+//}
+////______________________________________________________________________________
+//bool pilaserController::setVstep(double value)
+//{
+//    return localMirror.setVstep(value);
+//}
+////______________________________________________________________________________
+//bool pilaserController::moveH()
+//{
+//    return localMirror.moveH();
+//}
+////______________________________________________________________________________
+//bool pilaserController::moveV()
+//{
+//    return localMirror.moveV();
+//}
+////______________________________________________________________________________
+//const pilaserMirrorStructs::pilMirrorObject& pilaserController::getpilMirrorObjConstRef() const
+//{
+//    return localMirror.getpilMirrorObjConstRef();
+//}
+
+
 
 ////______________________________________________________________________________
 //#ifdef BUILD_DLL

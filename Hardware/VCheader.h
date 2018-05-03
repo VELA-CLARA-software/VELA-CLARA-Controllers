@@ -469,12 +469,32 @@ namespace BOOST_PYTHON_INCLUDE
 
         py_name = "controller";
         py_docs = "controller base class";
-        class_<controller,bases<baseObject>,noncopyable> cobj_def =
+//        class_<controller,bases<baseObject>,noncopyable> cobj_def =
+//            class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
+//                .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
+//                .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
+//                .def_readonly("type",   &controller::controllerType, typeName_doc)
+//                .def_readonly("name",   &controller::name, contName_doc          )
+//                .def("getControllerType",&controller::getControllerType,getControllerType_doc)
+//                .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc   )
+//                .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc             )
+//                .def("isVerbose",       &controller::isVerbose,isVerbose_doc                 )
+//                .def("isSilent",        &controller::isSilent,isSilent_doc                   )
+//                .def("debugMessagesOn", &controller::debugMessagesOn,debugMessagesOn_doc     )
+//                .def("debugMessagesOff",&controller::debugMessagesOff,debugMessagesOff_doc   )
+//                .def("messagesOn",      &controller::messagesOn,messagesOn_doc               )
+//                .def("messagesOff",     &controller::messagesOff,messagesOff_doc             )
+//                .def("silence",         &controller::silence,silence_doc                     )
+//                .def("verbose",         &controller::verbose,verbose_doc                     )
+//                ;
+        boost::python::type_info info9 = type_id<controller>();
+        const converter::registration* reg9  = converter::registry::query(info9);
+        /*  if the class not been registered, register it */
+        if(reg9 == nullptr)
+        {
             class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
                 .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
                 .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-    //            .def("getILockStatesStr",     pure_virtual(&controller::getILockStatesStr     ))
-    //            .def("getILockStates",        pure_virtual(&controller::getILockStates))
                 .def_readonly("type",   &controller::controllerType, typeName_doc)
                 .def_readonly("name",   &controller::name, contName_doc          )
                 .def("getControllerType",&controller::getControllerType,getControllerType_doc)
@@ -489,16 +509,26 @@ namespace BOOST_PYTHON_INCLUDE
                 .def("silence",         &controller::silence,silence_doc                     )
                 .def("verbose",         &controller::verbose,verbose_doc                     )
                 ;
-        boost::python::type_info info9 = type_id<controller>();
-        const converter::registration* reg9  = converter::registry::query(info9);
-        /*  if the class not been registered, register it */
-        if(reg9 == nullptr)
-        {
-            cobj_def;
         }
         else if ((*reg9).m_to_python == nullptr)
         {
-            cobj_def;
+            class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
+                .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
+                .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
+                .def_readonly("type",   &controller::controllerType, typeName_doc)
+                .def_readonly("name",   &controller::name, contName_doc          )
+                .def("getControllerType",&controller::getControllerType,getControllerType_doc)
+                .def("isDebugMessageOn",&controller::isDebugMessageOn,isDebugMessageOn_doc   )
+                .def("isMessageOn",     &controller::isMessageOn,isMessageOn_doc             )
+                .def("isVerbose",       &controller::isVerbose,isVerbose_doc                 )
+                .def("isSilent",        &controller::isSilent,isSilent_doc                   )
+                .def("debugMessagesOn", &controller::debugMessagesOn,debugMessagesOn_doc     )
+                .def("debugMessagesOff",&controller::debugMessagesOff,debugMessagesOff_doc   )
+                .def("messagesOn",      &controller::messagesOn,messagesOn_doc               )
+                .def("messagesOff",     &controller::messagesOff,messagesOff_doc             )
+                .def("silence",         &controller::silence,silence_doc                     )
+                .def("verbose",         &controller::verbose,verbose_doc                     )
+                ;
         }
 
         //reg_class<controller>(py_name, py_docs, cobj_def,info9);
@@ -515,23 +545,33 @@ namespace BOOST_PYTHON_INCLUDE
         const char* setDebug_doc = "Set Debug  Mode: display only debug messages, "
                                 "no messages, for all controllers in this module.";
 
-        class_<VCbase,noncopyable> vcbobj_def =
+//        class_<VCbase,noncopyable> vcbobj_def =
+//            class_<VCbase, noncopyable>("VCbase", no_init)
+//                .def("setDebugMessage", &VCbase::setDebugMessage, setDebug_doc)
+//                .def("setVerbose",      &VCbase::setVerbose,setVerb__doc      )
+//                .def("setMessage",      &VCbase::setMessage,setMess__doc      )
+//                .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
+//                ;
+        boost::python::type_info info10 = type_id<VCbase>();
+        const converter::registration* reg10  = converter::registry::query(info10);
+        /*  if the class not been registered, register it */
+        if(reg10 == nullptr)
+        {
             class_<VCbase, noncopyable>("VCbase", no_init)
                 .def("setDebugMessage", &VCbase::setDebugMessage, setDebug_doc)
                 .def("setVerbose",      &VCbase::setVerbose,setVerb__doc      )
                 .def("setMessage",      &VCbase::setMessage,setMess__doc      )
                 .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
                 ;
-        boost::python::type_info info10 = type_id<VCbase>();
-        const converter::registration* reg10  = converter::registry::query(info10);
-        /*  if the class not been registered, register it */
-        if(reg10 == nullptr)
-        {
-            vcbobj_def;
         }
         else if ((*reg10).m_to_python == nullptr)
         {
-            vcbobj_def;
+            class_<VCbase, noncopyable>("VCbase", no_init)
+                .def("setDebugMessage", &VCbase::setDebugMessage, setDebug_doc)
+                .def("setVerbose",      &VCbase::setVerbose,setVerb__doc      )
+                .def("setMessage",      &VCbase::setMessage,setMess__doc      )
+                .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
+                ;
         }
 #endif //__VC_ENUM_ONLY__
     }

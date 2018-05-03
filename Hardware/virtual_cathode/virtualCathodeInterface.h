@@ -49,6 +49,7 @@ class virtualCathodeInterface : public interface
                                 const bool shouldStartEPICs,
                                 const std::string& configFile
                                );
+        virtualCathodeInterface& virtualCathodeInterface::operator= ( const virtualCathodeInterface& other ) = delete;
         ~virtualCathodeInterface();
 
 //        double getHpos();
@@ -66,7 +67,6 @@ class virtualCathodeInterface : public interface
 //        /// These are pure virtual methods, so need to have some implmentation in derived classes
 //        IlockMap1 getILockStates(const std::string & name   ){ IlockMap1 r;return r; }
 //        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
-
 
     private:
 

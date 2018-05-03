@@ -158,7 +158,10 @@ void pilaserConfigReader::addToPVMonitorMapV1(const std::vector<std::string>& ke
         {
             addPVStruct(pvMonStructs, keyVal);
         }
-
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ)
+        {
+            addPVStruct(pvMonStructs, keyVal);
+        }
         //debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvMonStructs.back().pvType) ) ;
     }
     else
@@ -184,9 +187,10 @@ void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &k
             addPVStruct(pvComStructs, keyVal );
         else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY)
             addPVStruct(pvComStructs, keyVal );
-        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE)
-            addPVStruct(pvComStructs, keyVal );
-
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
+        {
+            addPVStruct(pvComStructs, keyVal);
+        }
         //debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
     }
     else
@@ -210,9 +214,13 @@ void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pv
     {
         pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::STATUS;
     }
-    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE)
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
     {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE;
+        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_SET;
+    }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ)
+    {
+        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_READ;
     }
     /*
         we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,

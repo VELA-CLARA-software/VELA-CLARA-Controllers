@@ -64,7 +64,7 @@ virtualCathodeInterface::~virtualCathodeInterface()
 //    //if(status == ECA_NORMAL)
 //        //debugMessage(ms->objName, " ", ENUM_TO_STRING(ms->monType), " monitoring = false ");
 ////    else
-//        //debugMessage("ERROR virtualCathodeInterface: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType));
+//        //debugMessage("ERROR virtualCathodeInterf0ace: in killMonitor: ca_clear_subscription failed for ", ms->objName, " ", ENUM_TO_STRING(ms->monType));
 //}
 //______________________________________________________________________________
 void virtualCathodeInterface::initialise()
@@ -301,6 +301,3 @@ void virtualCathodeInterface::addToBuffer()
 //}
 ////____________________________________________________________________________________________
 //
-
-
-

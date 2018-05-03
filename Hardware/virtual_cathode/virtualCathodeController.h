@@ -55,6 +55,7 @@ class virtualCathodeController : public controller
                                 const std::string& configFile,
                                 const std::string& name
                                );
+        virtualCathodeController& virtualCathodeController::operator= ( const virtualCathodeController& other ) = delete;
         ~virtualCathodeController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT()const;

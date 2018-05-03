@@ -35,6 +35,7 @@ class VCbase
     public:
         VCbase();
         VCbase(const std::string& name);
+        VCbase& VCbase::operator= ( const VCbase& other ) = delete;
 
         void setQuiet();
         void setVerbose();
@@ -46,7 +47,7 @@ class VCbase
 
         const std::string my_name;
         static bool withEPICS, withoutEPICS, withoutVM, withVM;
-        static bool  shouldShowDebugMessage, shouldShowMessage;
+        bool  shouldShowDebugMessage, shouldShowMessage;
 
         virtual void updateMessageStates() = 0;
 

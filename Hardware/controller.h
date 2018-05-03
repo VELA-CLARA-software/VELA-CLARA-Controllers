@@ -43,16 +43,20 @@ class controller : public baseObject
                    bool& show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type,
                    const std::string& name);
+
         controller(bool& show_messages,
                    bool& show_debug_messages,
                    const std::string& name,
                    const HWC_ENUM::CONTROLLER_TYPE type);
+
         controller(bool& show_messages,
                    bool& show_debug_messages,
                    const HWC_ENUM::CONTROLLER_TYPE type);
+
         controller(bool& show_messages,
                    bool& show_debug_messages);
-        ~controller();
+        controller& controller::operator= ( const controller& other ) = delete;
+
 
         /* Turn on and off debug messages and general messages */
         void debugMessagesOn();
@@ -83,6 +87,7 @@ class controller : public baseObject
         boost::python::dict getILockStatesDefinition() const;
 #endif
     protected:
+        ~controller();
         /* these bools determine if messages can be printed or not,
            them are passed to the baseObject and used by
            all other classes in the project

@@ -48,7 +48,8 @@ namespace pilaserStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(PILASER_PV_TYPE,(INTENSITY)
                                                         (STABILISATION)
                                                         (STATUS)
-                                                        (HALF_WAVE_PLATE)
+                                                        (HALF_WAVE_PLATE_SET)
+                                                        (HALF_WAVE_PLATE_READ)
                                                         (UNKNOWN_PV)
                                         )
     struct monitorStruct
@@ -94,11 +95,12 @@ namespace pilaserStructs
             stabilisation_status(HWC_ENUM::STATE::UNKNOWN),
             intensity(UTL::DUMMY_DOUBLE),
             setCharge(UTL::DUMMY_DOUBLE),
+            HWP(UTL::DUMMY_DOUBLE),
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT)
             {};
         std::string name, pvRoot;
-        double intensity,setCharge;
+        double intensity,setCharge,HWP;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;

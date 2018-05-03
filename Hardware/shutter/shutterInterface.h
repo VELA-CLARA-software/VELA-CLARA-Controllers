@@ -39,6 +39,7 @@ class shutterInterface : public interface
                          const bool shouldStartEPICs,
                          const std::string& configFile
                         );
+        shutterInterface& shutterInterface::operator= ( const shutterInterface& other ) = delete;
         ~shutterInterface();
 
         bool closeAndWait(const std::string& name, const time_t waitTime);

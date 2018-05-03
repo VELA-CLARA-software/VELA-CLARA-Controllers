@@ -49,6 +49,7 @@ class pilaserMirrorInterface : public interface
                          const bool shouldStartEPICs,
                          const std::string& configFile
                         );
+        pilaserMirrorInterface& pilaserMirrorInterface::operator= ( const pilaserMirrorInterface& other ) = delete;
         ~pilaserMirrorInterface();
 
         double getHpos() const;

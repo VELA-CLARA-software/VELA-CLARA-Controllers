@@ -192,7 +192,7 @@ void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::stri
         {
             addToPVStruct(pvMonStructs,PV_TYPE::COV_XY_PIX,keyVal[ONE_SIZET] );
         }
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_IA_SUFFIX_SUM_PIX_INTENSITY)
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_IA_SUFFIX_AV_PIX_INTENSITY)
         {
             addToPVStruct(pvMonStructs,PV_TYPE::VC_INTENSITY,keyVal[ONE_SIZET] );
         }

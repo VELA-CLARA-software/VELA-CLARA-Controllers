@@ -44,16 +44,20 @@ class pilaserInterface : public interface
         typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
 
         //pilaserInterface::pilaserInterface();
-        pilaserInterface(const bool& show_messages,
-                         const bool& show_debug_messages,
-                         const bool startVirtualMachine,
-                         const bool shouldStartEPICs,
-                         const std::string& configFile);
-
+        pilaserInterface(bool& show_messages,
+                          bool& show_debug_messages,
+                          const bool startVirtualMachine,
+                          const bool shouldStartEPICs,
+                          const std::string& configFile
+                          );
+        pilaserInterface& pilaserInterface::operator= ( const pilaserInterface& other ) = delete;
         ~pilaserInterface();
 
+        int  setHWP(const double value);
+        double getHWP();
+
         bool setCharge(const double value);
-        bool setIntensity(const double value);
+        bool setIntensity(const double valueL);
         double getIntensity() const;
         std::string getName() const;
         HWC_ENUM::STATE getStatus() const;
