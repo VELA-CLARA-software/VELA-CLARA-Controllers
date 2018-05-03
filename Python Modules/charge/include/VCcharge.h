@@ -55,7 +55,6 @@ class VCcharge : public VCbase
 
         chargeController& getController(chargeController*& cont,
                                        const std::string& conf1,
-                                       const std::string& conf2,
                                        const std::string& name,
                                        const bool shouldVM,
                                        const bool shouldEPICS,
@@ -88,282 +87,136 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
 
     /// Include ALL the enums you want to expose to Python
 
-    boost::python::type_info info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, bool > > ();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-
-    info = boost::python::type_id< std::vector< std::vector< double > > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::vector< std::vector< double > > >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< std::vector< double > > >())
+    enum_<chargeStructs::CHARGE_DIAG_TYPE>("CHARGE_DIAG_TYPE")
+            .value("WCM",                   chargeStructs::CHARGE_DIAG_TYPE::WCM                   )
+            .value("VELA_ICT1",             chargeStructs::CHARGE_DIAG_TYPE::VELA_ICT1             )
+            .value("ED_FCUP",               chargeStructs::CHARGE_DIAG_TYPE::ED_FCUP               )
+            .value("VELA_ICT2",             chargeStructs::CHARGE_DIAG_TYPE::VELA_ICT2             )
+            .value("S02_FCUP",              chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP              )
+            .value("SP1_FCUP",              chargeStructs::CHARGE_DIAG_TYPE::SP1_FCUP              )
+            .value("UNKNOWN_CHARGE_DIAG",   chargeStructs::CHARGE_DIAG_TYPE::UNKNOWN_CHARGE_DIAG   )
             ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::vector< std::vector< double > > >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< std::vector< double > > >())
             ;
-    }
-
-    info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, bool > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_bool")
-            .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, bool > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_bool")
-            .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, bool > >())
-            ;
-    }
-
-    info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_vector_double")
-            .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >("std_charge_map_vector_double")
-            .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< double > > >())
-            ;
-    }
-
-    info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >("std_charge_map_vector_vector_double")
-            .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >("std_charge_map_vector_vector_double")
-            .def( map_indexing_suite< std::map< chargeStructs::charge_PV_TYPE, std::vector< std::vector< double > > > >())
-            ;
-    }
-
-    enum_<chargeStructs::charge_PV_TYPE>("charge_PV_TYPE")
-            .value("TR1", chargeStructs::charge_PV_TYPE::TR1 )
-            .value("TR2", chargeStructs::charge_PV_TYPE::TR2 )
-            .value("TR3", chargeStructs::charge_PV_TYPE::TR3 )
-            .value("TR4", chargeStructs::charge_PV_TYPE::TR4 )
-            .value("P1",  chargeStructs::charge_PV_TYPE::P1  )
-            .value("P2",  chargeStructs::charge_PV_TYPE::P2  )
-            .value("P3",  chargeStructs::charge_PV_TYPE::P3  )
-            .value("P4",  chargeStructs::charge_PV_TYPE::P4  )
-            .value("UNKNOWN",  chargeStructs::charge_PV_TYPE::UNKNOWN  )
-            ;
-
-    enum_<chargeStructs::charge_NAME>("charge_NAME")
-            .value("CLARAcharge01",       chargeStructs::charge_NAME::CLARAcharge01       )
-            .value("VELAcharge02",        chargeStructs::charge_NAME::VELAcharge02        )
-            .value("UNKNOWN_charge_NAME", chargeStructs::charge_NAME::UNKNOWN_charge_NAME )
-            ;
-
-    enum_<chargeStructs::DIAG_TYPE>("DIAG_TYPE")
-            .value("WCM",     chargeStructs::DIAG_TYPE::WCM       )
-            .value("ICT1",    chargeStructs::DIAG_TYPE::ICT2      )
-            .value("ICT2",    chargeStructs::DIAG_TYPE::ICT2      )
-            .value("FCUP",    chargeStructs::DIAG_TYPE::FCUP      )
-            .value("ED_FCUP", chargeStructs::DIAG_TYPE::ED_FCUP   )
-            ;
-    char const* chargeNumObjectStructString = "This struct contains data for the four channels on the charge - e.g. p1 contains the P1 value from the charge.\n"
-                                       "This will only contain real-time data if charge number data is being submitted to EPICS - you will need to check this on the charge.\n"
-                                       "p1Vec contains a vector of values after monitorNumsForNShots, and numData contains a vector of vectors, with data from all four channels on the charge.\n"
-                                       "Timestamps can also be accessed.";
-    boost::python::class_<chargeStructs::chargeNumObject,boost::noncopyable>
-        ("chargeNumObject",chargeNumObjectStructString,boost::python::no_init)
-        .def_readonly("isMonitoringMap", &chargeStructs::chargeNumObject::isMonitoringMap)
-        .def_readonly("name",            &chargeStructs::chargeNumObject::name           )
-        .def_readonly("p1",              &chargeStructs::chargeNumObject::p1             )
-        .def_readonly("p2",              &chargeStructs::chargeNumObject::p2             )
-        .def_readonly("p3",              &chargeStructs::chargeNumObject::p3             )
-        .def_readonly("p4",              &chargeStructs::chargeNumObject::p4             )
-        .def_readonly("p1TimeStamp",     &chargeStructs::chargeNumObject::p1TimeStamp    )
-        .def_readonly("p2TimeStamp",     &chargeStructs::chargeNumObject::p2TimeStamp    )
-        .def_readonly("p3TimeStamp",     &chargeStructs::chargeNumObject::p3TimeStamp    )
-        .def_readonly("p4TimeStamp",     &chargeStructs::chargeNumObject::p4TimeStamp    )
-        .def_readonly("p1TimeStamps",    &chargeStructs::chargeNumObject::p1TimeStamps   )
-        .def_readonly("p2TimeStamps",    &chargeStructs::chargeNumObject::p2TimeStamps   )
-        .def_readonly("p3TimeStamps",    &chargeStructs::chargeNumObject::p3TimeStamps   )
-        .def_readonly("p4TimeStamps",    &chargeStructs::chargeNumObject::p4TimeStamps   )
-        .def_readonly("p1Vec",           &chargeStructs::chargeNumObject::p1Vec          )
-        .def_readonly("p2Vec",           &chargeStructs::chargeNumObject::p2Vec          )
-        .def_readonly("p3Vec",           &chargeStructs::chargeNumObject::p3Vec          )
-        .def_readonly("p4Vec",           &chargeStructs::chargeNumObject::p4Vec          )
-        .def_readonly("numData",         &chargeStructs::chargeNumObject::numData        )
-        .def_readonly("numTimeStamps",   &chargeStructs::chargeNumObject::numTimeStamps  )
-        .def_readonly("shotCounts",      &chargeStructs::chargeNumObject::shotCounts     )
-        .def_readonly("buffer",          &chargeStructs::chargeNumObject::buffer         )
-        ;
-
-    char const* chargeTraceDataStructString = "This struct contains trace data for the four channels on the charge - e.g. tr1TraceData contains a vector of the EPICS PV for channel 1 on the charge.\n"
-                                             "This will only contain real-time data if charge trace data is being submitted to EPICS - you will need to check this on the charge.\n";
-                                             "traceData contains a vector of vectors, with data from all four channels on the charge.\n"
-                                             "Timestamps can also be accessed.";
-    boost::python::class_<chargeStructs::chargeTraceData,boost::noncopyable>
-        ("chargeTraceData",chargeTraceDataStructString,boost::python::no_init)
-        .def_readonly("isMonitoringMap", &chargeStructs::chargeTraceData::isMonitoringMap)
-        .def_readonly("name",            &chargeStructs::chargeTraceData::name           )
-        .def_readonly("pvRoot",          &chargeStructs::chargeTraceData::pvRoot         )
-        .def_readonly("tr1TraceData",    &chargeStructs::chargeTraceData::tr1TraceData   )
-        .def_readonly("tr2TraceData",    &chargeStructs::chargeTraceData::tr1TraceData   )
-        .def_readonly("tr3TraceData",    &chargeStructs::chargeTraceData::tr1TraceData   )
-        .def_readonly("tr4TraceData",    &chargeStructs::chargeTraceData::tr1TraceData   )
-        .def_readonly("traceData",       &chargeStructs::chargeTraceData::traceData      )
-        .def_readonly("tr1TimeStamps",   &chargeStructs::chargeTraceData::tr1TimeStamps  )
-        .def_readonly("tr2TimeStamps",   &chargeStructs::chargeTraceData::tr2TimeStamps  )
-        .def_readonly("tr3TimeStamps",   &chargeStructs::chargeTraceData::tr3TimeStamps  )
-        .def_readonly("tr4TimeStamps",   &chargeStructs::chargeTraceData::tr4TimeStamps  )
-        .def_readonly("shotCounts",      &chargeStructs::chargeTraceData::shotCounts     )
-        .def_readonly("timebase",        &chargeStructs::chargeTraceData::timebase       )
-        .def_readonly("timeStamps",      &chargeStructs::chargeTraceData::timeStamps     )
+    char const* dataObjectStructString = "This struct contains data a given charge data object.";
+    boost::python::class_<chargeStructs::dataObject,boost::noncopyable>
+        ("dataObject",dataObjectStructString,boost::python::no_init)
+        .def_readonly("pvRoot",        &chargeStructs::dataObject::pvRoot        )
+        .def_readonly("name",          &chargeStructs::dataObject::name          )
+        .def_readonly("diagType",      &chargeStructs::dataObject::diagType      )
+        .def_readonly("isMonitoring",  &chargeStructs::dataObject::isMonitoring  )
+        .def_readonly("charge",        &chargeStructs::dataObject::charge        )
+        .def_readonly("voltage",       &chargeStructs::dataObject::voltage       )
+        .def_readonly("timestamp",     &chargeStructs::dataObject::timeStamp     )
+        .def_readonly("chargeVec",     &chargeStructs::dataObject::chargeVec     )
+        .def_readonly("voltageVec",    &chargeStructs::dataObject::voltageVec    )
+        .def_readonly("chargeBuffer",  &chargeStructs::dataObject::chargeBuffer  )
+        .def_readonly("voltageBuffer", &chargeStructs::dataObject::voltageBuffer )
+        .def_readonly("timeStamps",    &chargeStructs::dataObject::timeStamps    )
+        .def_readonly("strTimeStamps", &chargeStructs::dataObject::strTimeStamps )
         ;
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
-    char const* getchargeTraceDataStructString = "Returns the charge trace data struct for str(chargeName). See documentation on the chargeTraceData struct for what this contains.";
-    char const* getchargeNumDataStructString = "Returns the charge number data struct for str(chargeName). See documentation on the chargeNumData struct for what this contains.";
-    char const* isMonitoringTraceDocString = "Returns true if str(chargeName) traces are being monitored - these are defined in the config file.";
-    char const* isMonitoringNumDocString = "Returns true if str(chargeName) P values are being monitored - these are defined in the config file.";
-    char const* isNotMonitoringTraceDocString = "Returns true if str(chargeName) traces are not being monitored - these are defined in the config file.";
-    char const* isNotMonitoringNumDocString = "Returns true if str(chargeName) P values are not being monitored - these are defined in the config file.";
+    char const* getChargeDataStructDocString = "Returns the charge data struct for str(chargeName). See documentation on the dataObject struct for what this contains.";
     char const* setBufferSizeDocString = "Set size of buffer for continuous monitor.";
-    char const* setNumBufferSizeDocString = "Set size of buffer for continuous P values monitor.";
-    char const* setTraceBufferSizeDocString = "Set size of buffer for continuous trace monitor.";
-    char const* restartMonitoringDocString = "Restarts continuous monitoring of charge parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
-    char const* setTimebaseDocString = "Sets the timebase (number of points in trace / time window of trace).";
-    char const* getTimebaseDocString = "Returns the timebase (number of points in trace / time window of trace).";
+    char const* restartContinuousMonitoringDocString = "Restarts continuous monitoring of charge parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
+    char const* cancelDataMonitorsDocString = "Cancels monitoring of charge parameters.";
+    char const* monitorForNShotsDocString = "Monitors str(name) for N shots.";
     char const* getBufferSizeDocString = "Returns the size of the buffer.";
-    char const* getDiagTypeDocString = "Returns the diagnostic type for a given channel on the charge (Trace or number).";
-    char const* getDiagTypeStrDocString = "Returns the diagnostic type for a given channel on the charge (Trace or number).";
-    char const* getchargeNumsDocString = "Returns a vector of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), after using monitorNumsForNShots.";
-    char const* getchargeP1VecDocString = "Returns a vector of doubles for str(chargeName), for channel P1, after using monitorNumsForNShots.";
-    char const* getchargeP2VecDocString = "Returns a vector of doubles for str(chargeName), for channel P2, after using monitorNumsForNShots.";
-    char const* getchargeP3VecDocString = "Returns a vector of doubles for str(chargeName), for channel P3, after using monitorNumsForNShots.";
-    char const* getchargeP4VecDocString = "Returns a vector of doubles for str(chargeName), for channel P4, after using monitorNumsForNShots.";
-    char const* getchargeP1DocString = "Returns a double containing the value for channel P1 for str(chargeName).";
-    char const* getchargeP2DocString = "Returns a double containing the value for channel P2 for str(chargeName).";
-    char const* getchargeP3DocString = "Returns a double containing the value for channel P3 for str(chargeName).";
-    char const* getchargeP4DocString = "Returns a double containing the value for channel P4 for str(chargeName).";
-    char const* getchargeNumBufferDocString = "Returns a vector containing the last (buffersize) values for a given channel for str(chargeName).";
-    char const* getchargeTraceBufferDocString = "Returns a vector of vectors containing the last (buffersize) traces for a given channel for str(chargeName).";
-    char const* getWCMQDocString = "Returns a double containing the current value for the WCM, provided that the WCM channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS (not for dark current measurements).";
-    char const* getICT1QDocString = "Returns a double containing the current value for the ICT1, provided that the ICT1 channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getICT2QDocString = "Returns a double containing the current value for the ICT2, provided that the ICT2 channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getFCUPQDocString = "Returns a double containing the current value for the FCUP, provided that the FCUP channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getEDFCUPQDocString = "Returns a double containing the current value for the ED-FCUP, provided that the ED-FCUP channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getchargeTracesDocString = "Returns a vector of vectors of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), after using monitorTracesForNShots.";
-    char const* getPartOfTraceDocString = "Returns a vector of vectors of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), of a user-specified portion of the trace (between part1 and part2), after using monitorTracesForNShots.";
-    char const* getAreaUnderTracesDocString = "Returns a vector of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), containing the area under each trace.\n"
-                                              "This function should only be used after using monitorTracesForNShots.";
-    char const* getAreaUnderPartOfTraceDocString = "Returns a vector of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), containing the area under a user-specified portion of the trace (between part1 and part2).\n"
-                                              "The user should specify part1 and part2 to be regions of the trace where there is no signal (it may be good to check the array size first).";
-                                              "This function should only be used after using monitorTracesForNShots.";
-    char const* getAvgNoiseDocString = "Returns a vector of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), containing the average noise in a user-specified portion of the trace (between part1 and part2).\n"
-                                              "This function should only be used after using monitorTracesForNShots.";
-    char const* getMaxOfTracesDocString = "Returns a vector of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), containing the maximum value of each trace\n"
-                                              "This function should only be used after using monitorTracesForNShots.";
-    char const* getMinOfTracesDocString = "Returns a vector of doubles for str(chargeName), for the channel charge_PV_TYPE(pvType), containing the minimum value of each trace\n"
-                                              "This function should only be used after using monitorTracesForNShots.";
-    char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(charge), for the channel charge_PV_TYPE(pvType) - these are defined in the config file.\n"
-                                         "To be used in conjunction with functions monitorNumsForNShots or monitorTracesForNShots.";
-    char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(charge), for the channel charge_PV_TYPE(pvType) - these are defined in the config file.\n"
-                                         "To be used in conjunction with functions monitorNumsForNShots or monitorTracesForNShots.";
-    char const* monitorNumsDocString = "Monitors P values (see charge) for str(chargeName) - these should be defined in the config file. This will fill four vectors of doubles with charge data.\n"
-                                      "Data can be accessed using getchargeNums, or getchargeP(1/2/3/4)Vec.\n";
-    char const* monitorTracesDocString = "Monitors traces (see charge) for str(chargeName) - these should be defined in the config file. This will fill four vectors of vectors of doubles with charge trace data.\n"
-                                      "Data can be accessed using getchargeTraces - see documentation.\n";
-    char const* monitorATraceDocString = "Monitors a specific trace (see charge) for channel (pvType) of str(chargeName) - these should be defined in the config file. This will fill a vectors of vectors of doubles with charge trace data.\n"
-                                      "Data can be accessed using getchargeTraces - see documentation.\n";
-    char const* monitorANumDocString = "Monitors a specific P value (see charge) for channel (pvType) of str(chargeName) - these should be defined in the config file. This will fill a vector of doubles with charge data.\n"
-                                      "Data can be accessed using getchargeTraces - see documentation.\n";
+    char const* getDiagTypeDocString = "Returns the diagnostic type as a CHARGE_PV_TYPE for str(name).";
+    char const* getDiagTypeStrDocString = "Returns the diagnostic type as a string for str(name).";
+    char const* getChargeVectorDocString = "Returns a vector of doubles for the charge of str(chargeName), after using monitorForNShots.";
+    char const* getVoltageVectorDocString = "Returns a vector of doubles for the voltage of str(chargeName), after using monitorForNShots.";
+    char const* getWCMChargeVectorDocString = "Returns a vector of doubles for WCM charge, after using monitorForNShots.";
+    char const* getWCMVoltageVectorDocString = "Returns a vector of doubles for WCM voltage, after using monitorForNShots.";
+    char const* getS02FCUPChargeVectorDocString = "Returns a vector of doubles for S02-FCUP charge, after using monitorForNShots.";
+    char const* getS02FCUPVoltageVectorDocString = "Returns a vector of doubles for S02-FCUP voltage, after using monitorForNShots.";
+    char const* getChargeBufferDocString = "Returns a vector containing the last (buffersize) charges for str(name).";
+    char const* getVoltageBufferDocString = "Returns a vector containing the last (buffersize) voltages for str(name).";
+    char const* getWCMChargeBufferDocString = "Returns a vector containing the last (buffersize) charges for WCM.";
+    char const* getWCMVoltageBufferDocString = "Returns a vector containing the last (buffersize) voltages for WCM.";
+    char const* getS02FCUPChargeBufferDocString = "Returns a vector containing the last (buffersize) charges for S02-FCUP.";
+    char const* getS02FCUPVoltageBufferDocString = "Returns a vector containing the last (buffersize) voltages for S02-FCUP.";
+    char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(name) - these are defined in the config file.\n";
+    char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(charge) - these are defined in the config file.\n";
+    char const* getChargeDiagnosticNamesDocString = "Returns all charge diagnostic names defined in config file";
+    char const* getChargePVsDocString = "Returns all charge PVs defined in config file";
+    char const* getChargeDocString = "Returns current charge of str(name)";
+    char const* getVoltageDocString = "Returns current voltage of str(name)";
+    char const* getWCMChargeDocString = "Returns current value of WCM charge";
+    char const* getWCMVoltageDocString = "Returns current voltage of WCM";
+    char const* getS02FCUPChargeDocString = "Returns current value of S02-FCUP charge";
+    char const* getS02FCUPVoltageDocString = "Returns current voltage of S02-FCUP";
+    char const* isMonitoringChargeDocString = "Returns true if str(name) is being monitored";
+    char const* isNotMonitoringChargeDocString = "Returns true if str(name) is not being monitored";
+    char const* isMonitoringWCMDocString = "Returns true if WCM is being monitored";
+    char const* isNotMonitoringWCMDocString = "Returns true if WCM is not being monitored";
+    char const* isMonitoringS02FCUPDocString = "Returns true if S02-FCUP is being monitored";
+    char const* isNotMonitoringS02FCUPDocString = "Returns true if S02-FCUP is not being monitored";
 
 	boost::python::class_<chargeController, boost::python::bases<controller>, boost::noncopyable>
             ("chargeController","chargeController Doc String",boost::python::no_init)
-            .def("get_CA_PEND_IO_TIMEOUT",          &chargeController::get_CA_PEND_IO_TIMEOUT                    )
-            .def("set_CA_PEND_IO_TIMEOUT",          &chargeController::set_CA_PEND_IO_TIMEOUT                    )
-            .def("getchargeTraceDataStruct",         &chargeController::getchargeTraceDataStruct, getchargeTraceDataStructString, return_value_policy<reference_existing_object>())
-            .def("getchargeNumDataStruct",           &chargeController::getchargeNumDataStruct, getchargeNumDataStructString, return_value_policy<reference_existing_object>()  )
-            .def("isMonitoringchargeTrace",          &chargeController::isMonitoringchargeTrace, isMonitoringTraceDocString           )
-            .def("isMonitoringchargeNum",            &chargeController::isMonitoringchargeNum, isMonitoringNumDocString               )
-            .def("isNotMonitoringchargeTrace",       &chargeController::isNotMonitoringchargeTrace, isNotMonitoringNumDocString       )
-            .def("isNotMonitoringchargeNum",         &chargeController::isNotMonitoringchargeNum, isNotMonitoringNumDocString         )
-            .def("setBufferSize",                   &chargeController::setBufferSize, setBufferSizeDocString                        )
-            .def("setNumBufferSize",                &chargeController::setBufferSize, setNumBufferSizeDocString                     )
-            .def("setTraceBufferSize",              &chargeController::setBufferSize, setTraceBufferSizeDocString                   )
-            .def("restartContinuousMonitoring",     &chargeController::restartContinuousMonitoring, restartMonitoringDocString      )
-            .def("setTimebase",                     &chargeController::setTimebase, setTimebaseDocString                            )
-            .def("getTimebase",                     &chargeController::getTimebase, getTimebaseDocString                            )
-            .def("getBufferSize",                   &chargeController::getBufferSize, getBufferSizeDocString                        )
-            .def("getDiagType",                     &chargeController::getDiagType, getDiagTypeDocString                            )
-            .def("getDiagTypeStr",                  &chargeController::getDiagTypeStr, getDiagTypeStrDocString                      )
-            .def("getchargeNums",                    &chargeController::getchargeNums_Py, getchargeNumsDocString                       )
-            .def("getchargeP1Vec",                   &chargeController::getchargeP1Vec_Py, getchargeP1VecDocString                     )
-            .def("getchargeP2Vec",                   &chargeController::getchargeP2Vec_Py, getchargeP2VecDocString                     )
-            .def("getchargeP3Vec",                   &chargeController::getchargeP3Vec_Py, getchargeP3VecDocString                     )
-            .def("getchargeP4Vec",                   &chargeController::getchargeP4Vec_Py, getchargeP4VecDocString                     )
-            .def("getchargeNumBuffer",               &chargeController::getchargeNumBuffer_Py, getchargeNumBufferDocString             )
-            .def("getchargeP1Buffer",                &chargeController::getchargeP1Buffer_Py, getchargeNumBufferDocString              )
-            .def("getchargeP2Buffer",                &chargeController::getchargeP2Buffer_Py, getchargeNumBufferDocString              )
-            .def("getchargeP3Buffer",                &chargeController::getchargeP3Buffer_Py, getchargeNumBufferDocString              )
-            .def("getchargeP4Buffer",                &chargeController::getchargeP4Buffer_Py, getchargeNumBufferDocString              )
-            .def("getchargeTraceBuffer",             &chargeController::getchargeTraceBuffer_Py, getchargeTraceBufferDocString         )
-            .def("getchargeTR1Buffer",               &chargeController::getchargeTR1Buffer_Py, getchargeTraceBufferDocString           )
-            .def("getchargeTR2Buffer",               &chargeController::getchargeTR2Buffer_Py, getchargeTraceBufferDocString           )
-            .def("getchargeTR3Buffer",               &chargeController::getchargeTR3Buffer_Py, getchargeTraceBufferDocString           )
-            .def("getchargeTR4Buffer",               &chargeController::getchargeTR4Buffer_Py, getchargeTraceBufferDocString           )
-            .def("getchargeP1",                      &chargeController::getchargeP1, getchargeP1DocString                              )
-            .def("getchargeP2",                      &chargeController::getchargeP2, getchargeP2DocString                              )
-            .def("getchargeP3",                      &chargeController::getchargeP3, getchargeP3DocString                              )
-            .def("getchargeP4",                      &chargeController::getchargeP4, getchargeP4DocString                              )
-            .def("getWCMQ",                         &chargeController::getWCMQ, getWCMQDocString                                    )
-            .def("getICT1Q",                        &chargeController::getICT1Q, getICT1QDocString                                  )
-            .def("getICT2Q",                        &chargeController::getICT2Q, getICT2QDocString                                  )
-            .def("getFCUPQ",                        &chargeController::getFCUPQ, getFCUPQDocString                                  )
-            .def("getEDFCUPQ",                      &chargeController::getEDFCUPQ, getEDFCUPQDocString                              )
-            .def("getchargeTraces",                  &chargeController::getchargeTraces, getchargeTracesDocString                      )
-            .def("getMinOfTraces",                  &chargeController::getMinOfTraces_Py, getMinOfTracesDocString                   )
-            .def("getMaxOfTraces",                  &chargeController::getMaxOfTraces_Py, getMaxOfTracesDocString                   )
-            .def("getAreaUnderTraces",              &chargeController::getAreaUnderTraces_Py, getAreaUnderTracesDocString           )
-            .def("getAreaUnderPartOfTrace",         &chargeController::getAreaUnderPartOfTrace_Py, getAreaUnderPartOfTraceDocString )
-            .def("getAvgNoise",                     &chargeController::getAvgNoise_Py, getAvgNoiseDocString                         )
-            .def("getPartOfTrace",                  &chargeController::getPartOfTrace, getPartOfTraceDocString                      )
-            .def("getTimeStamps",                   &chargeController::getTimeStamps_Py, getTimeStampsDocString                     )
-            .def("getStrTimeStamps",                &chargeController::getStrTimeStamps_Py, getStrTimeStampsDocString               )
-            .def("monitorNumsForNShots",            &chargeController::monitorNumsForNShots, monitorNumsDocString                   )
-            .def("monitorANumForNShots",            &chargeController::monitorANumForNShots, monitorANumDocString                   )
-            .def("monitorTracesForNShots",          &chargeController::monitorTracesForNShots, monitorTracesDocString               )
-            .def("monitorATraceForNShots",          &chargeController::monitorATraceForNShots, monitorATraceDocString               )
-            .def("getchargeNames",                   &chargeController::getchargeNames_Py                                             )
-            .def("getchargePVs",                     &chargeController::getchargePVs_Py                                               )
-            .def("getchargeTracePVs",                &chargeController::getchargeTracePVs_Py                                          )
-            .def("getchargeNumPVs",                  &chargeController::getchargeNumPVs_Py                                            )
+            .def("getChargeDataStruct",         &chargeController::getChargeDataStruct, (arg("name")), getChargeDataStructDocString, return_value_policy<reference_existing_object>() )
+            .def("get_CA_PEND_IO_TIMEOUT",      &chargeController::get_CA_PEND_IO_TIMEOUT                                                   )
+            .def("set_CA_PEND_IO_TIMEOUT",      &chargeController::set_CA_PEND_IO_TIMEOUT                                                   )
+            .def("setBufferSize",               &chargeController::setBufferSize, (arg("size_t")), setBufferSizeDocString                   )
+            .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
+            .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
+//            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
+            .def("getBufferSize",               &chargeController::getBufferSize, (arg("name")), getBufferSizeDocString                     )
+            .def("getDiagType",                 &chargeController::getDiagType, (arg("name")), getDiagTypeDocString                         )
+            .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (arg("name")), getDiagTypeStrDocString                   )
+            .def("getChargeVector",             &chargeController::getChargeVector_Py, (arg("name")), getChargeVectorDocString              )
+            .def("getVoltageVector",            &chargeController::getVoltageVector_Py, (arg("name")), getVoltageVectorDocString             )
+            .def("getWCMChargeVector",          &chargeController::getWCMChargeVector_Py, getWCMChargeVectorDocString                             )
+            .def("getWCMVoltageVector",         &chargeController::getWCMVoltageVector_Py, getWCMVoltageVectorDocString                            )
+            .def("getS02FCUPChargeVector",      &chargeController::getS02FCUPChargeVector_Py, getS02FCUPChargeVectorDocString                     )
+            .def("getS02FCUPVoltageVector",     &chargeController::getS02FCUPVoltageVector_Py, getS02FCUPVoltageVectorDocString                    )
+            .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (arg("name")), getChargeBufferDocString              )
+            .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (arg("name")), getVoltageBufferDocString             )
+            .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                             )
+            .def("getWCMVoltageBuffer",         &chargeController::getWCMVoltageBuffer_Py, getWCMVoltageBufferDocString                            )
+            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString                     )
+            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString                    )
+            .def("getTimeStamps",               &chargeController::getTimeStamps_Py, (arg("name")), getTimeStampsDocString                  )
+            .def("getStrTimeStamps",            &chargeController::getStrTimeStamps_Py, (arg("name")), getStrTimeStampsDocString            )
+            .def("getChargeDiagnosticNames",    &chargeController::getChargeDiagnosticNames_Py, getChargeDiagnosticNamesDocString           )
+            .def("getChargePVs",                &chargeController::getChargePVs_Py, getChargePVsDocString                                   )
+            .def("getCharge",                   &chargeController::getCharge, (arg("name")), getChargeDocString                             )
+            .def("getVoltage",                  &chargeController::getCharge, (arg("name")), getVoltageDocString                            )
+            .def("getWCMCharge",                &chargeController::getWCMCharge, getWCMChargeDocString                                      )
+            .def("getWCMVoltage",               &chargeController::getWCMCharge, getWCMVoltageDocString                                     )
+            .def("getS02FCUPCharge",            &chargeController::getS02FCUPCharge, getS02FCUPChargeDocString                              )
+            .def("getS02FCUPVoltage",           &chargeController::getS02FCUPCharge, getS02FCUPVoltageDocString                             )
+            .def("isMonitoringCharge",          &chargeController::isMonitoringCharge, (arg("name")), isMonitoringChargeDocString           )
+            .def("isNotMonitoringCharge",       &chargeController::isNotMonitoringCharge, (arg("name")), isNotMonitoringChargeDocString     )
+            .def("isMonitoringWCM",             &chargeController::isMonitoringWCM, isMonitoringWCMDocString                                )
+            .def("isNotMonitoringWCM",          &chargeController::isNotMonitoringWCM, isNotMonitoringWCMDocString                          )
+            .def("isMonitoringS02FCUP",         &chargeController::isMonitoringS02FCUP, isMonitoringS02FCUPDocString                        )
+            .def("isNotMonitoringS02FCUP",      &chargeController::isNotMonitoringS02FCUP, isNotMonitoringS02FCUPDocString                  )
             /// Don't forget functions in the base class we want to expose....
-            .def("debugMessagesOff",                &chargeController::debugMessagesOff                       )
-            .def("debugMessagesOn",                 &chargeController::debugMessagesOn                        )
-            .def("messagesOff",                     &chargeController::messagesOff                            )
-            .def("messagesOn",                      &chargeController::messagesOn                             )
-            .def("silence",                         &chargeController::silence                                )
-            .def("verbose",                         &chargeController::verbose                                )
+            .def("debugMessagesOff",            &chargeController::debugMessagesOff                       )
+            .def("debugMessagesOn",             &chargeController::debugMessagesOn                        )
+            .def("messagesOff",                 &chargeController::messagesOff                            )
+            .def("messagesOn",                  &chargeController::messagesOn                             )
+            .def("silence",                     &chargeController::silence                                )
+            .def("verbose",                     &chargeController::verbose                                )
 		;
 
-    boost::python::class_<VCcharges,boost::python::bases<VCbase>,boost::noncopyable> ("init")
-        .def("virtual_VELA_INJ_charge_Controller",   &VCcharges::virtual_VELA_INJ_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_INJ_charge_Controller",   &VCcharges::offline_VELA_INJ_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_INJ_charge_Controller",  &VCcharges::physical_VELA_INJ_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_VELA_BA1_charge_Controller",   &VCcharges::virtual_VELA_BA1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_BA1_charge_Controller",   &VCcharges::offline_VELA_BA1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_BA1_charge_Controller",  &VCcharges::physical_VELA_BA1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_VELA_BA2_charge_Controller",   &VCcharges::virtual_VELA_BA2_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_VELA_BA2_charge_Controller",   &VCcharges::offline_VELA_BA2_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_VELA_BA2_charge_Controller",  &VCcharges::physical_VELA_BA2_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("virtual_CLARA_PH1_charge_Controller",  &VCcharges::virtual_CLARA_PH1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("offline_CLARA_PH1_charge_Controller",  &VCcharges::offline_CLARA_PH1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("physical_CLARA_PH1_charge_Controller", &VCcharges::physical_CLARA_PH1_charge_Controller, return_value_policy<reference_existing_object>())
-        .def("getchargeController",                  &VCscopes::getScopeController, return_value_policy<reference_existing_object>())
+    boost::python::class_<VCcharge,boost::python::bases<VCbase>,boost::noncopyable> ("init")
+        .def("virtual_VELA_INJ_Charge_Controller",   &VCcharge::virtual_VELA_INJ_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_INJ_Charge_Controller",   &VCcharge::offline_VELA_INJ_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_INJ_Charge_Controller",  &VCcharge::physical_VELA_INJ_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA1_Charge_Controller",   &VCcharge::virtual_VELA_BA1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA1_Charge_Controller",   &VCcharge::offline_VELA_BA1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA1_Charge_Controller",  &VCcharge::physical_VELA_BA1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_VELA_BA2_Charge_Controller",   &VCcharge::virtual_VELA_BA2_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_VELA_BA2_Charge_Controller",   &VCcharge::offline_VELA_BA2_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_VELA_BA2_Charge_Controller",  &VCcharge::physical_VELA_BA2_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_CLARA_PH1_Charge_Controller",  &VCcharge::virtual_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_CLARA_PH1_Charge_Controller",  &VCcharge::offline_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_CLARA_PH1_Charge_Controller", &VCcharge::physical_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("getChargeController",                  &VCcharge::getChargeController, return_value_policy<reference_existing_object>())
         ;
 };
 

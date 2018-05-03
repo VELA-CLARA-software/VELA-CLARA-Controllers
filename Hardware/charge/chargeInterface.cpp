@@ -30,13 +30,12 @@
 
 //______________________________________________________________________________
 chargeInterface::chargeInterface( const std::string & configFileLocation1,
-                                const std::string & configFileLocation2,
-                                const bool& show_messages_ptr,
-                                const bool& show_debug_messages_ptr,
-                                const bool shouldStartEPICs,
-                                const bool startVirtualMachine,
-                                const HWC_ENUM::MACHINE_AREA myMachineArea ):
-configReader( configFileLocation1, configFileLocation2, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine),
+                                  const bool& show_messages_ptr,
+                                  const bool& show_debug_messages_ptr,
+                                  const bool shouldStartEPICs,
+                                  const bool startVirtualMachine,
+                                  const HWC_ENUM::MACHINE_AREA myMachineArea ):
+configReader( configFileLocation1, show_messages_ptr, show_debug_messages_ptr, startVirtualMachine),
 interface( show_messages_ptr, show_debug_messages_ptr, shouldStartEPICs ),
 machineArea( myMachineArea )
 {
@@ -47,7 +46,7 @@ chargeInterface::~chargeInterface()
 {
     for( auto it : continuousMonitorStructs )
     {
-        killNumCallBack( it );
+        killCallBack( it );
         debugMessage("delete chargeInterface continuousMonitorStructs entry.");
         delete it;
     }
@@ -62,15 +61,15 @@ void chargeInterface::initialise()
     if( configFileRead )
     {
         /// initialise the objects based on what is read from the config file
-        bool getDataSuccess = initchargeObjects();
+        bool getDataSuccess = initChargeObjects();
         if( getDataSuccess )
         {
             if( shouldStartEPICs )
             {
                 /// subscribe to the channel ids
-                initchargeChids();
+                initChargeChids();
                 /// start the monitors: set up the callback functions
-                monitorcharges();
+                monitorCharges();
                 /// The pause allows EPICS to catch up.
                 pause_500();
             }
@@ -82,41 +81,39 @@ void chargeInterface::initialise()
     }
 }
 //______________________________________________________________________________
-bool chargeInterface::initchargeObjects()
+bool chargeInterface::initChargeObjects()
 {
-    chargeObj = configReader.getchargeObject();
+    chargeObj = configReader.getChargeObject();
     return true;
 }
 //______________________________________________________________________________
-void chargeInterface::initchargeChids()
+void chargeInterface::initChargeChids()
 {
     message( "\n", "Searching for charge chids..." );
-    // trace objects
-    for( auto && it1 : chargeObj.traceObjects )
+    for( auto && it1 : chargeObj.dataObjects )
+    {
         for( auto && it2 : it1.second.pvMonStructs )
         {
             addChannel( it1.second.pvRoot, it2.second );
         }
-
-    // num objects
-    for( auto && it1 : chargeObj.numObjects )
-        for( auto && it2 : it1.second.pvMonStructs )
+        for( auto && it2 : it1.second.pvComStructs )
         {
             addChannel( it1.second.pvRoot, it2.second );
         }
+    }
 
     // send
     int status = sendToEpics( "ca_create_channel", "Found charge chids.", "!!TIMEOUT!! Not all charge ChIds found." );
     if( status == ECA_TIMEOUT )
     {
         UTL::PAUSE_500;
-        for( auto && it1 : chargeObj.traceObjects )
+        for( auto && it1 : chargeObj.dataObjects )
+        {
             for( auto && it2 : it1.second.pvMonStructs )
                 checkCHIDState( it2.second.CHID, it2.second.pvSuffix  );
-        for( auto && it1 : chargeObj.numObjects )
-            for( auto && it2 : it1.second.pvMonStructs )
+            for( auto && it2 : it1.second.pvComStructs )
                 checkCHIDState( it2.second.CHID, it2.second.pvSuffix  );
-        message("");
+        }
     }
     else if ( status == ECA_NORMAL )
         allChidsInitialised = true;  /// interface base class member
@@ -130,57 +127,35 @@ void chargeInterface::addChannel( const std::string & pvRoot, chargeStructs::pvS
     debugMessage( "Create channel to ", s1.str() );
 }
 //______________________________________________________________________________
-void chargeInterface::monitorcharges()
+void chargeInterface::monitorCharges()
 {
     continuousMonitorStructs.clear();
-    for( auto && it1 : chargeObj.traceObjects )
+    for( auto && it1 : chargeObj.dataObjects )
     {
         for( auto && it2 : it1.second.pvMonStructs )
         {
-            {
-                continuousTraceMonitorStructs.push_back(new chargeStructs::monitorStruct());
-                continuousTraceMonitorStructs.back()->monType = it2.first;
-                continuousTraceMonitorStructs.back()->objName = it1.second.name;
-                continuousTraceMonitorStructs.back()->interface = this;
-                continuousTraceMonitorStructs.back()->val = &it1.second;
-                continuousTraceMonitorStructs.back()->diagType = it2.second.diagType;
-                it1.second.isAContinuousMonitorStruct = true;
-                it1.second.isATemporaryMonitorStruct = false;
-                ca_create_subscription(it2.second.CHTYPE,
-                                       it2.second.COUNT,
-                                       it2.second.CHID,
-                                       it2.second.MASK,
-                                       chargeInterface::staticEntryrMonitor,
-                                       (void*)continuousTraceMonitorStructs.back(),
-                                       &continuousTraceMonitorStructs.back()->EVID);
-                debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
-            }
+            continuousMonitorStructs.push_back(new chargeStructs::monitorStruct());
+            continuousMonitorStructs.back()->monType = it2.first;
+            continuousMonitorStructs.back()->name = it1.second.name;
+            continuousMonitorStructs.back()->interface = this;
+            continuousMonitorStructs.back()->val = &it1.second;
+            continuousMonitorStructs.back()->diagType = it2.second.diagType;
+            it1.second.isAContinuousMonitorStruct = true;
+            it1.second.isATemporaryMonitorStruct = false;
+            ca_create_subscription(it2.second.CHTYPE,
+                                   it2.second.COUNT,
+                                   it2.second.CHID,
+                                   it2.second.MASK,
+                                   chargeInterface::staticEntryrMonitor,
+                                   (void*)continuousMonitorStructs.back(),
+                                   &continuousMonitorStructs.back()->EVID);
+            debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
         }
     }
-    for( auto && it1 : chargeObj.numObjects )
-    {
-        for( auto && it2 : it1.second.pvMonStructs )
-        {
-            {
-                continuousNumMonitorStructs.push_back(new chargeStructs::monitorStruct());
-                continuousNumMonitorStructs.back()->monType = it2.first;
-                continuousNumMonitorStructs.back()->objName = it1.second.name;
-                continuousNumMonitorStructs.back()->interface = this;
-                continuousNumMonitorStructs.back()->val = &it1.second;
-                continuousNumMonitorStructs.back()->diagType = it2.second.diagType;
-                it1.second.isAContinuousMonitorStruct = true;
-                it1.second.isATemporaryMonitorStruct = false;
-                ca_create_subscription(it2.second.CHTYPE,
-                                       it2.second.COUNT,
-                                       it2.second.CHID,
-                                       it2.second.MASK,
-                                       chargeInterface::staticEntryrMonitor,
-                                       (void*)continuousNumMonitorStructs.back(),
-                                       &continuousNumMonitorStructs.back()->EVID);
-                debugMessage("Adding monitor for ",it1.second.name, " ",ENUM_TO_STRING(it2.first));
-            }
-        }
-    }
+
+    for( auto && it1 : chargeObj.dataObjects )
+        for( auto && it2 : it1.second.pvComStructs )
+            addToMonitorStructs( continuousMonitorStructs, it2.second, &it1.second  );
 
     int status = sendToEpics( "ca_create_subscription", "Succesfully Subscribed to charge Monitors", "!!TIMEOUT!! Subscription to charge Monitors failed" );
     if ( status == ECA_NORMAL )
@@ -189,80 +164,26 @@ void chargeInterface::monitorcharges()
     }
 }
 //______________________________________________________________________________
-void chargeInterface::addToTraceMonitorStructs( std::vector< chargeStructs::monitorStruct * > & msv, chargeStructs::pvStruct & pv,  chargeStructs::chargeTraceData * traceObj   )
+void chargeInterface::addToMonitorStructs( std::vector< chargeStructs::monitorStruct * > & msv, chargeStructs::pvStruct & pv,  chargeStructs::dataObject * dataOb   )
 {
     msv.push_back( new chargeStructs::monitorStruct() );
     msv.back() -> monType      = pv.pvType;
-    msv.back() -> chargeObject  = &chargeObj;
+    msv.back() -> chargeObject = &chargeObj;
     msv.back() -> interface    = this;
     msv.back() -> CHTYPE       = pv.CHTYPE;
-//    msv.back() -> EVID         = &pv.EVID;
 
     switch( pv.pvType )
     {
-        case chargeStructs::charge_PV_TYPE::TR1:
+        case chargeStructs::CHARGE_PV_TYPE::Q:
         {
-            msv.back() -> val = (void*)traceObj;
-            msv.back() -> objName = traceObj -> name;
+            msv.back() -> val  = (void*)dataOb;
+            msv.back() -> name = dataOb -> name;
             break;
         }
-        case chargeStructs::charge_PV_TYPE::TR2:
+        case chargeStructs::CHARGE_PV_TYPE::V:
         {
-            msv.back() -> val = (void*)traceObj;
-            msv.back() -> objName = traceObj -> name;
-            break;
-        }
-        case chargeStructs::charge_PV_TYPE::TR3:
-        {
-            msv.back() -> val = (void*)traceObj;
-            msv.back() -> objName = traceObj -> name;
-            break;
-        }
-        case chargeStructs::charge_PV_TYPE::TR4:
-        {
-            msv.back() -> val = (void*)traceObj;
-            msv.back() -> objName = traceObj -> name;
-            break;
-        }
-        default:
-            message("addToMonitorStructs ERROR PV_Type unknown");
-    }
-    ca_create_subscription( pv.CHTYPE, pv.COUNT, pv.CHID, pv.MASK,  chargeInterface::staticEntryrMonitor, (void*)msv.back(), &msv.back() -> EVID); // &continuousMonitorStructs.back().EventID );
-}
-//______________________________________________________________________________
-void chargeInterface::addToNumMonitorStructs( std::vector< chargeStructs::monitorStruct * > & msv, chargeStructs::pvStruct & pv,  chargeStructs::chargeNumObject * numObj   )
-{
-    msv.push_back( new chargeStructs::monitorStruct() );
-    msv.back() -> monType      = pv.pvType;
-    msv.back() -> chargeObject  = &chargeObj;
-    msv.back() -> interface    = this;
-    msv.back() -> CHTYPE       = pv.CHTYPE;
-//    msv.back() -> EVID         = &pv.EVID;
-
-    switch( pv.pvType )
-    {
-        case chargeStructs::charge_PV_TYPE::P1:
-        {
-            msv.back() -> val = (void*)numObj;
-            msv.back() -> objName = numObj -> name;
-            break;
-        }
-        case chargeStructs::charge_PV_TYPE::P2:
-        {
-            msv.back() -> val = (void*)numObj;
-            msv.back() -> objName = numObj -> name;
-            break;
-        }
-        case chargeStructs::charge_PV_TYPE::P3:
-        {
-            msv.back() -> val = (void*)numObj;
-            msv.back() -> objName = numObj -> name;
-            break;
-        }
-        case chargeStructs::charge_PV_TYPE::P4:
-        {
-            msv.back() -> val = (void*)numObj;
-            msv.back() -> objName = numObj -> name;
+            msv.back() -> val  = (void*)dataOb;
+            msv.back() -> name = dataOb -> name;
             break;
         }
         default:
@@ -276,166 +197,81 @@ void chargeInterface::staticEntryrMonitor( const event_handler_args args )
     chargeStructs::monitorStruct * ms = static_cast< chargeStructs::monitorStruct *> ( args.usr );
     switch( ms -> monType )
     {
-        case chargeStructs::charge_PV_TYPE::TR1:
-            {
-                ms->interface->updateTrace( ms, args );
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::TR2:
-            {
-                ms->interface->updateTrace( ms, args );
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::TR3:
-            {
-                ms->interface->updateTrace( ms, args );
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::TR4:
-            {
-                ms->interface->updateTrace( ms, args );
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::P1:
+        case chargeStructs::CHARGE_PV_TYPE::Q:
             {
                 ms->interface->updateValue( ms, args );
                 break;
             }
-        case chargeStructs::charge_PV_TYPE::P2:
+        case chargeStructs::CHARGE_PV_TYPE::V:
             {
                 ms->interface->updateValue( ms, args );
                 break;
             }
-        case chargeStructs::charge_PV_TYPE::P3:
-            {
-                ms->interface->updateValue( ms, args );
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::P4:
-            {
-                ms->interface->updateValue( ms, args );
-                break;
-            }
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::updateTrace( chargeStructs::monitorStruct * ms, const event_handler_args args )
-{
-    const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
-    chargeStructs::chargeTraceData * td = reinterpret_cast< chargeStructs::chargeTraceData *> (ms -> val);
-
-    if( td->isAContinuousMonitorStruct )
-    {
-        td->shotCounts.at( ms -> monType ) = 0;
-        td->diagType = ms -> diagType;
-        if( td->timeStamps.at(ms->monType).size() == 0 )
-        {
-            td->timeStamps.at(ms->monType).push_back(1);
-            td->strTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
-            td->traceData.at(ms->monType).resize(1);
-            td->traceDataBuffer.at(ms->monType).resize(td->buffer);
-        }
-    }
-    const dbr_double_t * value = &(p  -> value);
-    size_t i =1;
-    int zero = 0;
-
-    updateTime( p->stamp, td->timeStamps.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ],
-               td->strTimeStamps.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ]  );
-
-    /// resizes the trace vectors dynamically in case the trace being sent to EPICS from the charge changes size
-    /// - limited by the array size set in EPICS database (currently (6/4/17) 2000 points)
-    td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ].resize(static_cast< int >(*( &p->value ) ) );
-
-    for( auto && it : td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ] )
-    {
-        it = *( &p->value + i );
-        ++i;
-    }
-    td->traceDataBuffer.at( ms -> monType ).push_back(td->traceData.at( ms -> monType ).back());
-
-    if( td -> isATemporaryMonitorStruct )
-    {
-        if( td -> numShots > -1 )
-        {
-            ++td -> shotCounts.at( ms -> monType );
-        }
-        if( td->shotCounts.at( ms -> monType ) == td->numShots )
-        {
-            message( "Collected ", td->shotCounts.at( ms -> monType ), " shots for ", td -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
-            td->isMonitoringMap.at( ms->monType ) = false;
-            killTraceCallBack( ms );
-        }
     }
 }
 //______________________________________________________________________________
 void chargeInterface::updateValue( chargeStructs::monitorStruct * ms, const event_handler_args args )
 {
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
-    chargeStructs::chargeNumObject * scno = reinterpret_cast< chargeStructs::chargeNumObject* > (ms -> val);
+    chargeStructs::dataObject * dobj = reinterpret_cast< chargeStructs::dataObject* > (ms -> val);
 
 //    scno->isMonitoringMap.at( ms -> monType ) = true;
 
-    if( scno->isAContinuousMonitorStruct )
+    if( dobj->isAContinuousMonitorStruct )
     {
-        scno->shotCounts.at( ms -> monType ) = 0;
-        scno->diagType = ms -> diagType;
-        if( scno->numTimeStamps.at(ms->monType).size() == 0 )
+        dobj->shotCounts = 0;
+        if( dobj->timeStamps.size() == 0 )
         {
-            scno->numTimeStamps.at(ms->monType).push_back(1);
-            scno->numStrTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
-            scno->numData.at(ms->monType).push_back(UTL::DUMMY_DOUBLE);
-            scno->numDataBuffer.at(ms->monType).resize(scno->buffer);
+            dobj->timeStamps.push_back(UTL::DUMMY_DOUBLE);
+            dobj->strTimeStamps.push_back(UTL::UNKNOWN_STRING);
+            dobj->voltageVec.push_back(UTL::DUMMY_DOUBLE);
+            dobj->chargeVec.push_back(UTL::DUMMY_DOUBLE);
+            dobj->voltageBuffer.resize(dobj->buffer);
+            dobj->chargeBuffer.resize(dobj->buffer);
         }
     }
 
     const dbr_double_t * val = &(p  -> value);
     size_t i = 0;
 
-    updateTime( p->stamp, scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ],
-               scno->numStrTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ]  );
+    updateTime( p->stamp, dobj->timeStamps[ dobj->shotCounts ], dobj->strTimeStamps[ dobj->shotCounts ]  );
+
+    dobj->timeStamp = dobj->timeStamps.back();
+
     switch( ms -> monType )
     {
-        case chargeStructs::charge_PV_TYPE::P1:
+        case chargeStructs::CHARGE_PV_TYPE::Q:
             {
-                scno->p1 = *( &p -> value );
-                scno->p1TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
+                dobj->charge = *( &p -> value );
+                dobj->chargeVec[ dobj->shotCounts ] = dobj->charge;
+                dobj->chargeBuffer.push_back(dobj->charge);
                 break;
             }
-        case chargeStructs::charge_PV_TYPE::P2:
+        case chargeStructs::CHARGE_PV_TYPE::V:
             {
-                scno->p2 = *( &p -> value );
-                scno->p2TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::P3:
-            {
-                scno->p3 = *( &p -> value );
-                scno->p3TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
-                break;
-            }
-        case chargeStructs::charge_PV_TYPE::P4:
-            {
-                scno->p4 = *( &p -> value );
-                scno->p4TimeStamp = scno->numTimeStamps.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ];
+                dobj->voltage = *( &p -> value );
+                dobj->voltageVec[ dobj->shotCounts ] = dobj->voltage;
+                dobj->voltageBuffer.push_back(dobj->voltage);
                 break;
             }
     }
-    scno->numData.at( ms -> monType )[ scno->shotCounts.at( ms -> monType ) ] = *( &p -> value );
-    scno->numDataBuffer.at( ms -> monType ).push_back(*( &p -> value ));
 
-    if( scno -> isATemporaryMonitorStruct )
+    if( dobj -> isATemporaryMonitorStruct )
     {
-        if( scno -> numShots > -1 )
+        if( ms -> monType == chargeStructs::CHARGE_PV_TYPE::V )
         {
-            ++scno -> shotCounts.at( ms -> monType );
+            if( dobj -> numShots > -1 )
+            {
+                ++dobj -> shotCounts;
+            }
+            if( dobj->shotCounts == dobj->numShots )
+            {
+                message( "Collected ", dobj->shotCounts, " shots for ", dobj -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+                dobj->isMonitoring = false;
+                ms->interface->killCallBack( ms );
+            }
         }
-        if( scno->shotCounts.at( ms -> monType ) == scno->numShots )
-        {
-            message( "Collected ", scno->shotCounts.at( ms -> monType ), " shots for ", scno -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
-            scno->isMonitoringMap.at( ms->monType ) = false;
-            ms->interface->killNumCallBack( ms );
-        }
+
     }
 }
 //______________________________________________________________________________
@@ -445,92 +281,58 @@ void chargeInterface::clearContinuousMonitorStructs()
     {
         for( auto && it : continuousMonitorStructs )
         {
-            killNumCallBack(it);
-
+            killCallBack(it);
         }
         continuousMonitorStructs.clear();
     }
 }
 //______________________________________________________________________________
-void chargeInterface::clearContinuousTraceMonitorStructs()
+void chargeInterface::monitorForNShots( const std::vector< std::string > charge, size_t N )
 {
-    if( continuousTraceMonitorStructs.size() != 0 )
+    for( auto && it : chargeObj.dataObjects )
     {
-        for( auto && it : continuousTraceMonitorStructs )
+        if( isNotMonitoringCharge( it.second.name ) )
         {
-            killNumCallBack(it);
-
-        }
-        continuousTraceMonitorStructs.clear();
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::clearContinuousNumMonitorStructs()
-{
-    if( continuousNumMonitorStructs.size() != 0 )
-    {
-        for( auto && it : continuousNumMonitorStructs )
-        {
-            killNumCallBack(it);
-
-        }
-        continuousNumMonitorStructs.clear();
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::monitorTracesForNShots( size_t N )
-{
-    if( !monitoringTraces )
-    {
-        traceMonitorStructs.clear();
-        clearContinuousTraceMonitorStructs();
-        debugMessage( "Starting charge Traces Monitor " );
-        resetTraceVectors( N );
-        debugMessage( "Vectors Reset" );
-        for( auto && it1 : chargeObj.traceObjects )
-        {
-            it1.second.numShots = N;
-            it1.second.isAContinuousMonitorStruct=false;
-            it1.second.isATemporaryMonitorStruct=true;
-            for( auto && it2 : it1.second.pvMonStructs )
+            continuousMonitorStructs.clear();
+            clearContinuousMonitorStructs();
+            debugMessage( "Starting charge Monitor " );
+            resetChargeVectors( N );
+            debugMessage( "Vectors Reset" );
+            it.second.numShots = N;
+            it.second.isAContinuousMonitorStruct=false;
+            it.second.isATemporaryMonitorStruct=true;
+            it.second.isMonitoring=true;
+            for( auto && it2 : it.second.pvMonStructs )
             {
-                if( isATracePV( it2.first ) )
-                {
-                    for( auto it3 : it1.second.isMonitoringMap )
-                    {
-                        it3.second = true;
-                    }
-//                    monitoringTraces = true;
-
-                    addToTraceMonitorStructs( traceMonitorStructs, it2.second, &it1.second  );
-                }
+                addToMonitorStructs( chargeMonitorStructs, it2.second, &it.second  );
             }
+            int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Monitors failed" );
         }
-        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Trace Monitors failed" );
-    }
-    else
-    {
-        message( "Already Monitoring Traces " ); /// make more useful
+        else
+        {
+            message( "Already Monitoring Traces " ); /// make more useful
+        }
     }
 }
 //______________________________________________________________________________
-void chargeInterface::monitorATraceForNShots( const std::string trace, chargeStructs::charge_PV_TYPE channel, size_t N )
+void chargeInterface::monitorForNShots( const std::string chargeName, size_t N )
 {
-    if( !isMonitoringchargeTrace( trace, channel ) )
+    if( isNotMonitoringCharge( chargeName ) )
     {
-        traceMonitorStructs.clear();
-        clearContinuousTraceMonitorStructs();
-        debugMessage( "Starting charge Traces Monitor for ", channel );
+        chargeMonitorStructs.clear();
+        clearContinuousMonitorStructs();
+        debugMessage( "Starting charge Monitor for ", chargeName );
 //        resetATraceVector( trace, channel, N );
-        resetTraceVectors( N );
-        debugMessage( "Vector ", channel, " Reset" );
-        chargeObj.traceObjects.at( trace );
-        chargeObj.traceObjects.at( trace ).numShots = N;
-        chargeObj.traceObjects.at( trace ).isAContinuousMonitorStruct = false;
-        chargeObj.traceObjects.at( trace ).isATemporaryMonitorStruct = true;
-        chargeObj.traceObjects.at( trace ).isMonitoringMap.at( channel ) = true;
-
-        addToTraceMonitorStructs( traceMonitorStructs, chargeObj.traceObjects.at( trace ).pvMonStructs.at( channel ), &chargeObj.traceObjects.at( trace ) );
+        resetAChargeVector( chargeName, N );
+        debugMessage( "Vector ", chargeName, " Reset" );
+        chargeObj.dataObjects.at( chargeName ).numShots = N;
+        chargeObj.dataObjects.at( chargeName ).isAContinuousMonitorStruct = false;
+        chargeObj.dataObjects.at( chargeName ).isATemporaryMonitorStruct = true;
+        chargeObj.dataObjects.at( chargeName ).isMonitoring = true;
+        for( auto && it2 : chargeObj.dataObjects.at( chargeName ).pvMonStructs )
+        {
+            addToMonitorStructs( chargeMonitorStructs, it2.second, &chargeObj.dataObjects.at( chargeName )  );
+        }
         int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Trace Monitors failed" );
     }
     else
@@ -539,249 +341,67 @@ void chargeInterface::monitorATraceForNShots( const std::string trace, chargeStr
     }
 }
 //______________________________________________________________________________
-void chargeInterface::resetTraceVectors( size_t N )
+void chargeInterface::resetChargeVectors( size_t N )
 {
-    traceMonitorStructs.clear();
-    for( auto && it : chargeObj.traceObjects )
-    {   /// Clear all trace data + timestamps
-        /// Resize to N shots
-        for( auto && it2 : it.second.traceData )
-        {
-
-            it2.second.clear();
-            it2.second.resize( N );
-            for( auto && it3 : it2.second )
-            {
-                it3.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR1 ].COUNT );
-            }
-        }
-        for( auto && it3 : it.second.timeStamps )
-        {
-            it3.second.clear();
-            it3.second.resize( N );
-        }
-        for( auto && it4 : it.second.strTimeStamps )
-        {
-            it4.second.clear();
-            it4.second.resize( N );
-        }
-        for( auto && it5 : it.second.shotCounts )
-        {
-            it5.second = 0;
-        }
-        // resize sub-vectors to COUNT elements
-//        for( auto && it2 : it.second.tr1TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR1 ].COUNT );
-//        for( auto && it2 : it.second.tr2TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR2 ].COUNT );
-//        for( auto && it2 : it.second.tr3TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR3 ].COUNT );
-//        for( auto && it2 : it.second.tr4TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR4 ].COUNT );
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::resetATraceVector( const std::string chargeName, chargeStructs::charge_PV_TYPE channel, size_t N )
-{
-    traceMonitorStructs.clear();
-    chargeObj.traceObjects.at( chargeName ).traceData.at( channel ).clear();
-    chargeObj.traceObjects.at( chargeName ).traceData.at( channel ).resize( N );
-    for( auto && it3 : chargeObj.traceObjects.at( chargeName ).traceData.at( channel ) )
+    chargeMonitorStructs.clear();
+    for( auto && it : chargeObj.dataObjects )
     {
-        it3.clear();
-        it3.resize( chargeObj.traceObjects.at( chargeName ).pvMonStructs[ channel ].COUNT );
-    }
-    chargeObj.traceObjects.at( chargeName ).timeStamps.at( channel ).clear();
-    chargeObj.traceObjects.at( chargeName ).timeStamps.at( channel ).resize( N );
-    chargeObj.traceObjects.at( chargeName ).strTimeStamps.at( channel ).clear();
-    chargeObj.traceObjects.at( chargeName ).strTimeStamps.at( channel ).resize( N );
-    chargeObj.traceObjects.at( chargeName ).shotCounts.at( channel ) = 0;
-}
-//______________________________________________________________________________
-void chargeInterface::monitorNumsForNShots( size_t N )
-{
-    if( !monitoringNums )
-    {
-        numMonitorStructs.clear();
-        clearContinuousNumMonitorStructs();
-        debugMessage( "Starting charge Nums Monitor " );
-        resetNumVectors( N );
-        debugMessage( "Vectors Reset" );
-        for( auto && it1 : chargeObj.numObjects )
-        {
-            it1.second.numShots = N;
-            it1.second.isAContinuousMonitorStruct=false;
-            it1.second.isATemporaryMonitorStruct=true;
-            for( auto && it2 : it1.second.pvMonStructs )
-            {
-                if( isANumPV( it2.first ) )
-                {
-                    addToNumMonitorStructs( numMonitorStructs, it2.second, &it1.second  );
-                }
-            }
-        }
-        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Num Monitors failed" );
-        if ( status == ECA_NORMAL )
-            for( auto && it : chargeObj.numObjects )
-                for( auto && it1: it.second.isMonitoringMap )
-                    it1.second = true;
-//            monitoringNums = true; /// interface base class member
-    }
-    else
-    {
-        message( "Already Monitoring Traces " ); /// make more useful
+        it.second.chargeVec.clear();
+        it.second.chargeVec.resize( N );
+        it.second.chargeBuffer.clear();
+        it.second.chargeBuffer.resize( N );
+        it.second.voltageVec.clear();
+        it.second.voltageVec.resize( N );
+        it.second.voltageBuffer.clear();
+        it.second.voltageBuffer.resize( N );
+        it.second.timeStamps.clear();
+        it.second.timeStamps.resize( N );
+        it.second.strTimeStamps.clear();
+        it.second.strTimeStamps.resize( N );
+        it.second.shotCounts = 0;
     }
 }
 //______________________________________________________________________________
-void chargeInterface::monitorANumForNShots( const std::string num, chargeStructs::charge_PV_TYPE channel, size_t N )
+void chargeInterface::resetAChargeVector( const std::string chargeName, size_t N )
 {
-    if( !isMonitoringchargeNum( num, channel ) )
-    {
-        numMonitorStructs.clear();
-        clearContinuousNumMonitorStructs();
-        debugMessage( "Starting charge Num Monitor for ", channel );
-//        resetATraceVector( num, channel, N );
-        resetNumVectors( N );
-        debugMessage( "Vector ", channel, " Reset" );
-        chargeObj.numObjects.at( num );
-        chargeObj.numObjects.at( num ).numShots = N;
-        chargeObj.numObjects.at( num ).isAContinuousMonitorStruct = false;
-        chargeObj.numObjects.at( num ).isATemporaryMonitorStruct = true;
-        chargeObj.numObjects.at( num ).isMonitoringMap.at( channel ) = true;
-
-        addToNumMonitorStructs( numMonitorStructs, chargeObj.numObjects.at( num ).pvMonStructs.at( channel ), &chargeObj.numObjects.at( num ) );
-        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Num Monitors failed" );
-    }
-    else
-    {
-        message( "Already Monitoring Nums " ); /// make more useful
-    }
+//    chargeMonitorStructs.at( chargeName ).clear();
+    chargeObj.dataObjects.at( chargeName ).chargeVec.clear();
+    chargeObj.dataObjects.at( chargeName ).chargeVec.resize( N );
+    chargeObj.dataObjects.at( chargeName ).chargeBuffer.clear();
+    chargeObj.dataObjects.at( chargeName ).chargeBuffer.resize( N );
+    chargeObj.dataObjects.at( chargeName ).timeStamps.clear();
+    chargeObj.dataObjects.at( chargeName ).timeStamps.resize( N );
+    chargeObj.dataObjects.at( chargeName ).strTimeStamps.clear();
+    chargeObj.dataObjects.at( chargeName ).strTimeStamps.resize( N );
+    chargeObj.dataObjects.at( chargeName ).shotCounts = 0;
 }
 //______________________________________________________________________________
-void chargeInterface::resetNumVectors( size_t N )
+const bool chargeInterface::isMonitoringCharge( const std::string & chargeName )
 {
-    numMonitorStructs.clear();
-    for( auto && it : chargeObj.numObjects )
-    {   /// Clear all trace data + timestamps
-        /// Resize to N shots
-        for( auto && it2 : it.second.numData )
-        {
-            it2.second.clear();
-            it2.second.resize( N );
-        }
-        for( auto && it3 : it.second.numTimeStamps )
-        {
-            it3.second.clear();
-            it3.second.resize( N );
-        }
-        for( auto && it4 : it.second.numStrTimeStamps )
-        {
-            it4.second.clear();
-            it4.second.resize( N );
-        }
-        for( auto && it5 : it.second.shotCounts )
-        {
-            it5.second = 0;
-        }
-        // resize sub-vectors to COUNT elements
-//        for( auto && it2 : it.second.tr1TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR1 ].COUNT );
-//        for( auto && it2 : it.second.tr2TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR2 ].COUNT );
-//        for( auto && it2 : it.second.tr3TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR3 ].COUNT );
-//        for( auto && it2 : it.second.tr4TraceData )
-//            it2.resize( it.second.pvMonStructs[ chargeStructs::charge_PV_TYPE::TR4 ].COUNT );
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::resetANumVector( const std::string chargeName, chargeStructs::charge_PV_TYPE channel, size_t N )
-{
-    numMonitorStructs.clear();
-    chargeObj.numObjects.at( chargeName ).numData.at( channel ).clear();
-    chargeObj.numObjects.at( chargeName ).numData.at( channel ).resize( N );
-    chargeObj.numObjects.at( chargeName ).numTimeStamps.at( channel ).clear();
-    chargeObj.numObjects.at( chargeName ).numTimeStamps.at( channel ).resize( N );
-    chargeObj.numObjects.at( chargeName ).numStrTimeStamps.at( channel ).clear();
-    chargeObj.numObjects.at( chargeName ).numStrTimeStamps.at( channel ).resize( N );
-    chargeObj.numObjects.at( chargeName ).shotCounts.at( channel ) = 0;
-}
-//______________________________________________________________________________
-bool chargeInterface::isMonitoringchargeTrace( const std::string & chargeName, chargeStructs::charge_PV_TYPE pvType )
-{
-    if( chargeObj.traceObjects.at( chargeName ).isMonitoringMap.at( pvType ) == true )
+    if( chargeObj.dataObjects.at( chargeName ).isMonitoring == true )
         return true;
     else
         return false;
 }
 //______________________________________________________________________________
-bool chargeInterface::isNotMonitoringchargeTrace( const std::string & chargeName, chargeStructs::charge_PV_TYPE pvType )
+const bool chargeInterface::isNotMonitoringCharge( const std::string & chargeName )
 {
-    return !isMonitoringchargeTrace( chargeName, pvType );
+    return !isMonitoringCharge( chargeName );
 }
 //______________________________________________________________________________
-bool chargeInterface::isMonitoringchargeNum( const std::string & chargeName, chargeStructs::charge_PV_TYPE pvType )
+const chargeStructs::dataObject & chargeInterface::getChargeDataStruct( const std::string & chargeName )
 {
-    if( chargeObj.numObjects.at( chargeName ).isMonitoringMap.at( pvType ) == true )
-        return true;
-    else
-        return false;
-}
-//______________________________________________________________________________
-void chargeInterface::setTimebase( const std::string & chargeName, const double timebase )
-{
-    if( entryExists( chargeObj.traceObjects, chargeName ) )
-        {
-            for( auto && it : chargeObj.traceObjects )
-            {
-                it.second.timebase = timebase;
-            }
-        }
-    else
+    if( entryExists( chargeObj.dataObjects, chargeName ) )
     {
-        message("ERROR!!!!! charge not defined in config file");
-    }
-}
-//______________________________________________________________________________
-bool chargeInterface::isNotMonitoringchargeNum( const std::string & chargeName, chargeStructs::charge_PV_TYPE pvType )
-{
-    return !isMonitoringchargeNum( chargeName, pvType );
-}
-//______________________________________________________________________________
-const chargeStructs::chargeTraceData & chargeInterface::getchargeTraceDataStruct( const std::string & chargeName )
-{
-    if( entryExists( chargeObj.traceObjects, chargeName ) && chargeObj.traceObjects.at( chargeName ).traceData.size() != 0 )
-    {
-        return chargeObj.traceObjects.at( chargeName );
-    }
-}
-//______________________________________________________________________________
-const chargeStructs::chargeNumObject & chargeInterface::getchargeNumDataStruct( const std::string & chargeName )
-{
-    if( entryExists( chargeObj.numObjects, chargeName ) && chargeObj.numObjects.at( chargeName ).numData.size() != 0 )
-    {
-        return chargeObj.numObjects.at( chargeName );
-    }
-}
-//______________________________________________________________________________
-double chargeInterface::getTimebase( const std::string & chargeName )
-{
-    if( entryExists( chargeObj.traceObjects, chargeName ) )
-    {
-        return chargeObj.traceObjects.at( chargeName ).timebase;
-    }
-    else
-    {
-        message("ERROR!!!!! charge not defined in config file!!!!");
-        return UTL::DUMMY_DOUBLE;
+        return chargeObj.dataObjects.at( chargeName );
     }
 }
 //______________________________________________________________________________
 size_t chargeInterface::getBufferSize( const std::string & chargeName )
 {
-    if( entryExists( chargeObj.traceObjects, chargeName ) )
+    if( entryExists( chargeObj.dataObjects, chargeName ) )
     {
-        return chargeObj.traceObjects.at( chargeName ).buffer;
+        return chargeObj.dataObjects.at( chargeName ).buffer;
     }
     else
     {
@@ -790,523 +410,260 @@ size_t chargeInterface::getBufferSize( const std::string & chargeName )
     }
 }
 //______________________________________________________________________________
-const chargeStructs::DIAG_TYPE chargeInterface::getDiagType( const std::string & chargeName, chargeStructs::charge_PV_TYPE pvType )
+const chargeStructs::CHARGE_DIAG_TYPE chargeInterface::getDiagType( const std::string & chargeName )
 {
-    if( entryExists( chargeObj.traceObjects, chargeName ) && isATracePV( pvType ) )
+    if( entryExists( chargeObj.dataObjects, chargeName ) )
     {
-        return chargeObj.traceObjects.at( chargeName ).diagType;
-    }
-    else if( entryExists( chargeObj.numObjects, chargeName ) && isANumPV( pvType ) )
-    {
-        return chargeObj.numObjects.at( chargeName ).diagType;
+        return chargeObj.dataObjects.at( chargeName ).diagType;
     }
     else
     {
         message("ERROR!!!!! charge not defined in config file!!!!");
-        return chargeStructs::DIAG_TYPE::UNKNOWN_DIAG_TYPE;
+        return chargeStructs::CHARGE_DIAG_TYPE::UNKNOWN_CHARGE_DIAG;
     }
 }
 //______________________________________________________________________________
-const std::string chargeInterface::getDiagTypeStr( const std::string & chargeName, chargeStructs::charge_PV_TYPE pvType )
+const std::string chargeInterface::getDiagTypeStr( const std::string & chargeName )
 {
-    return getDiagTypeStr( chargeName, pvType);
+    return ENUM_TO_STRING(getDiagType( chargeName ));
 }
 //______________________________________________________________________________
-std::vector< std::vector< double > > chargeInterface::getchargeTraces( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getChargeVector( const std::string & name )
 {
-    return chargeObj.traceObjects.at( name ).traceData.at( pvType );
+    return chargeObj.dataObjects.at( name ).chargeVec;
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getchargeNums( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getVoltageVector( const std::string & name )
 {
-    return chargeObj.numObjects.at( name ).numData.at( pvType );
+    return chargeObj.dataObjects.at( name ).voltageVec;
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getMinOfTraces( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getWCMVoltageVector()
 {
-    /// For the WCM and ED-FCUP we need the first minimum of the trace
-    std::vector< double > minElements;
-
-    for( auto && it : chargeObj.traceObjects.at( name ).traceData.at( pvType ) )
+    std::vector< double > wcmQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
     {
-        minElements.push_back( (*std::min_element( it.begin(), it.end() ) ) );
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
+            {
+                wcmQ = it.second.voltageVec;
+            }
     }
-
-    return minElements;
+//    if( wcmQ == UTL::DUMMY_DOUBLE )
+//    {
+//        message("DID NOT FIND WCM, IS IT DEFINED IN THE CONFIG FILE????");
+//    }
+    return wcmQ;
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getMaxOfTraces( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getS02FCUPVoltageVector()
 {
-    /// For spectrometer FCUP we need the peak-to-peak voltage
-    std::vector< double > maxElements;
-
-    for( auto && it : chargeObj.traceObjects.at( name ).traceData.at( pvType ) )
+    std::vector< double > fcupQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
     {
-        maxElements.push_back( (*std::max_element( it.begin(), it.end() ) ) );
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+            {
+                fcupQ = it.second.voltageVec;
+            }
     }
-
-    return maxElements;
+//    if( fcupQ == UTL::DUMMY_DOUBLE )
+//    {
+//        message("DID NOT FIND S02-FCUP, IS IT DEFINED IN THE CONFIG FILE????");
+//    }
+    return fcupQ;
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getAreaUnderTraces( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getWCMChargeVector()
 {
-    /// For now this just uses the rectangle rule to calculate the area under a charge trace -
-    /// there is probably a better way to do this.
-    /// Currently we only need to integrate the ICT traces
-    std::vector< double > areaElements;
-
-    for( auto && it : chargeObj.traceObjects.at( name ).traceData.at( pvType ) )
+    std::vector< double > wcmQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
     {
-        double sum_of_elems = 0.0;
-        std::vector< double > curveAreas;
-        for( auto && it2 : it )
-        {
-//            std::cout << it2 << std::endl;
-            double curveElement = ( it2 * chargeObj.traceObjects.at( name ).timebase );// / it.size();
-            curveAreas.push_back( curveElement );
-        }
-        sum_of_elems = std::accumulate( curveAreas.begin(), curveAreas.end(), 0.0 );
-        areaElements.push_back( sum_of_elems );
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
+            {
+                wcmQ = it.second.chargeVec;
+            }
     }
-
-    return areaElements;
+//    if( wcmQ == UTL::DUMMY_DOUBLE )
+//    {
+//        message("DID NOT FIND WCM, IS IT DEFINED IN THE CONFIG FILE????");
+//    }
+    return wcmQ;
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getTimeStamps( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getS02FCUPChargeVector()
 {
-    return chargeObj.traceObjects.at( name ).timeStamps.at( pvType );
+    std::vector< double > fcupQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
+    {
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+            {
+                fcupQ = it.second.chargeVec;
+            }
+    }
+//    if( fcupQ == UTL::DUMMY_DOUBLE )
+//    {
+//        message("DID NOT FIND S02-FCUP, IS IT DEFINED IN THE CONFIG FILE????");
+//    }
+    return fcupQ;
 }
 //______________________________________________________________________________
-std::vector< std::string > chargeInterface::getStrTimeStamps( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const std::vector< double > chargeInterface::getTimeStamps( const std::string & name )
 {
-    return chargeObj.traceObjects.at( name ).strTimeStamps.at( pvType );
+    return chargeObj.dataObjects.at( name ).timeStamps;
 }
 //______________________________________________________________________________
-double chargeInterface::getchargeP1( const std::string & name )
+const std::vector< std::string > chargeInterface::getStrTimeStamps( const std::string & name )
 {
-    return chargeObj.numObjects.at( name ).p1;
+    return chargeObj.dataObjects.at( name ).strTimeStamps;
 }
 //______________________________________________________________________________
-double chargeInterface::getchargeP2( const std::string & name )
+double chargeInterface::getCharge( const std::string & name )
 {
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P2 ).back();
+    return chargeObj.dataObjects.at( name ).chargeVec.back();
 }
 //______________________________________________________________________________
-double chargeInterface::getchargeP3( const std::string & name )
+double chargeInterface::getVoltage( const std::string & name )
 {
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P3 ).back();
+    return chargeObj.dataObjects.at( name ).voltageVec.back();
 }
 //______________________________________________________________________________
-double chargeInterface::getchargeP4( const std::string & name )
+double chargeInterface::getWCMVoltage()
 {
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P4 ).back();
+    return getWCMVoltageVector().back();
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getchargeP1Vec( const std::string & name )
+double chargeInterface::getS02FCUPVoltage()
 {
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P1 );
+    return getS02FCUPVoltageVector().back();
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getchargeP2Vec( const std::string & name )
+double chargeInterface::getWCMCharge()
 {
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P2 );
+    return getWCMChargeVector().back();
 }
 //______________________________________________________________________________
-std::vector< double > chargeInterface::getchargeP3Vec( const std::string & name )
+double chargeInterface::getS02FCUPCharge()
 {
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P3 );
-}
-//______________________________________________________________________________
-std::vector< double > chargeInterface::getchargeP4Vec( const std::string & name )
-{
-    return chargeObj.numObjects.at( name ).numData.at( chargeStructs::charge_PV_TYPE::P4 );
+    return getS02FCUPChargeVector().back();
 }
 //______________________________________________________________________________
 void chargeInterface::setBufferSize( size_t bufferSize )
 {
-    for( auto && it : chargeObj.numObjects )
+    for( auto && it : chargeObj.dataObjects )
     {
-        for( auto && it1 : it.second.numDataBuffer )
-        {
-            it1.second.clear();
-            it1.second.resize( bufferSize );
-        }
-        it.second.buffer = bufferSize;
-    }
-    for( auto && it : chargeObj.traceObjects )
-    {
-        for( auto && it1 : it.second.traceDataBuffer )
-        {
-            it1.second.clear();
-            it1.second.resize( bufferSize );
-        }
-        it.second.buffer = bufferSize;
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::setNumBufferSize( size_t bufferSize )
-{
-    for( auto && it : chargeObj.numObjects )
-    {
-        for( auto && it1 : it.second.numDataBuffer )
-        {
-            it1.second.clear();
-            it1.second.resize( bufferSize );
-        }
-        it.second.buffer = bufferSize;
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::setTraceBufferSize( size_t bufferSize )
-{
-    for( auto && it : chargeObj.traceObjects )
-    {
-        for( auto && it1 : it.second.traceDataBuffer )
-        {
-            it1.second.clear();
-            it1.second.resize( bufferSize );
-        }
+        it.second.chargeBuffer.clear();
+        it.second.chargeBuffer.resize( bufferSize );
+        it.second.voltageBuffer.clear();
+        it.second.voltageBuffer.resize( bufferSize );
         it.second.buffer = bufferSize;
     }
 }
 //______________________________________________________________________________
 void chargeInterface::restartContinuousMonitoring()
 {
-    monitorcharges();
+    monitorCharges();
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > chargeInterface::getchargeNumBuffer( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
+const boost::circular_buffer< double > chargeInterface::getChargeBuffer( const std::string & name )
 {
-    if( entryExists( chargeObj.numObjects, name ) )
+    if( entryExists( chargeObj.dataObjects, name ) )
     {
-        return chargeObj.numObjects.at( name ).numDataBuffer.at( pvType );
+        return chargeObj.dataObjects.at( name ).chargeBuffer;
     }
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > chargeInterface::getchargeP1Buffer( const std::string & name )
+const boost::circular_buffer< double > chargeInterface::getVoltageBuffer( const std::string & name )
 {
-    if( entryExists( chargeObj.numObjects, name ) && chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P1 ).size() != 0 )
+    if( entryExists( chargeObj.dataObjects, name ) )
     {
-        return chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P1 );
+        return chargeObj.dataObjects.at( name ).voltageBuffer;
     }
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > chargeInterface::getchargeP2Buffer( const std::string & name )
+const boost::circular_buffer< double > chargeInterface::getWCMVoltageBuffer()
 {
-    if( entryExists( chargeObj.numObjects, name ) && chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P2 ).size() != 0 )
+    boost::circular_buffer< double > wcmQ;
+    for( auto && it : chargeObj.dataObjects )
     {
-        return chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P2 );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< double > chargeInterface::getchargeP3Buffer( const std::string & name )
-{
-    if( entryExists( chargeObj.numObjects, name ) && chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P3 ).size() != 0 )
-    {
-        return chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P3 );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< double > chargeInterface::getchargeP4Buffer( const std::string & name )
-{
-    if( entryExists( chargeObj.numObjects, name ) && chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P4 ).size() != 0 )
-    {
-        return chargeObj.numObjects.at( name ).numDataBuffer.at( chargeStructs::charge_PV_TYPE::P4 );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< std::vector< double > > chargeInterface::getchargeTraceBuffer( const std::string & name, chargeStructs::charge_PV_TYPE pvType )
-{
-    if( entryExists( chargeObj.traceObjects, name ) )
-    {
-        return chargeObj.traceObjects.at( name ).traceDataBuffer.at( pvType );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< std::vector< double > > chargeInterface::getchargeTR1Buffer( const std::string & name )
-{
-    if( entryExists( chargeObj.traceObjects, name ) && chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR1 ).size() != 0 )
-    {
-        return chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR1 );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< std::vector< double > > chargeInterface::getchargeTR2Buffer( const std::string & name )
-{
-    if( entryExists( chargeObj.traceObjects, name ) && chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR2 ).size() != 0 )
-    {
-        return chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR2 );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< std::vector< double > > chargeInterface::getchargeTR3Buffer( const std::string & name )
-{
-    if( entryExists( chargeObj.traceObjects, name ) && chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR3 ).size() != 0 )
-    {
-        return chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR3 );
-    }
-}
-//______________________________________________________________________________
-boost::circular_buffer< std::vector< double > > chargeInterface::getchargeTR4Buffer( const std::string & name )
-{
-    if( entryExists( chargeObj.traceObjects, name ) && chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR4 ).size() != 0 )
-    {
-        return chargeObj.traceObjects.at( name ).traceDataBuffer.at( chargeStructs::charge_PV_TYPE::TR4 );
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::killTraceCallBack( chargeStructs::monitorStruct * ms )
-{
-    int status = ca_clear_subscription( ms -> EVID );
-    if( status == ECA_NORMAL)
-    {
-        delete ms;
-        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
-    }
-    else
-    {
-        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->chargeObject );
-    }
-}
-//______________________________________________________________________________
-void chargeInterface::killNumCallBack( chargeStructs::monitorStruct * ms )
-{
-    int status = ca_clear_subscription( ms -> EVID );
-    if( status == ECA_NORMAL)
-    {
-        delete ms;
-        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
-    }
-    else
-    {
-        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->chargeObject );
-    }
-}
-//______________________________________________________________________________
-bool chargeInterface::isATracePV( chargeStructs::charge_PV_TYPE pv )
-{
-    bool ret = false;
-    if( pv == chargeStructs::charge_PV_TYPE::TR1 )
-        ret = true;
-    else if( pv == chargeStructs::charge_PV_TYPE::TR2 )
-        ret = true;
-    else if( pv == chargeStructs::charge_PV_TYPE::TR3 )
-        ret = true;
-    else if( pv == chargeStructs::charge_PV_TYPE::TR4 )
-        ret = true;
-    return ret;
-}
-//______________________________________________________________________________
-bool chargeInterface::isANumPV( chargeStructs::charge_PV_TYPE pv )
-{
-    bool ret = false;
-    if( pv == chargeStructs::charge_PV_TYPE::P1 )
-        ret = true;
-    else if( pv == chargeStructs::charge_PV_TYPE::P2 )
-        ret = true;
-    else if( pv == chargeStructs::charge_PV_TYPE::P3 )
-        ret = true;
-    else if( pv == chargeStructs::charge_PV_TYPE::P4 )
-        ret = true;
-    return ret;
-}
-//______________________________________________________________________________
-std::vector< double > chargeInterface::getAvgNoise( const std::string & name, chargeStructs::charge_PV_TYPE & pvType, const int part1, const int part2 )
-{
-    /// Here we take the mean of a part of the charge trace which has no beam on it
-    /// for noise subtraction - this is potentially stupid as the region of interest
-    /// may change with time. If this function isn't behaving sensibly then it is
-    /// possible that the charge hasn't been set up properly for taking this measurement
-    std::vector< double > noise, noiseTotal;
-    for( auto && it : chargeObj.traceObjects.at( name ).traceData.at( pvType ) )
-    {
-        double sum = std::accumulate( it.begin()+part1, it.begin()+part2, 0.0 );
-        noise.push_back( sum / ( part2 - part1 ) );
-        noiseTotal.push_back( noise.back());// * chargeObj.traceObjects.at( name ).timebase );
-    }
-//    std::cout << noiseTotal << std::endl;
-    return noiseTotal;
-}
-//______________________________________________________________________________
-std::vector< std::vector< double > > chargeInterface::getPartOfTrace( const std::string & name, chargeStructs::charge_PV_TYPE & pvType, const int part1, const int part2 )
-{
-    /// Here we take the mean of a part of the charge trace which has no beam on it
-    /// for noise subtraction - this is potentially stupid as the region of interest
-    /// may change with time. If this function isn't behaving sensibly then it is
-    /// possible that the charge hasn't been set up properly for taking this measurement
-
-    std::vector< std::vector< double > > vecPart( chargeObj.traceObjects.at( name ).traceData.at( pvType ).size() );
-    int i = 0;
-
-    for( auto && it : chargeObj.traceObjects.at( name ).traceData.at( pvType ) )
-    {
-        std::vector< double >::const_iterator vec1 = it.begin() + part1;
-        std::vector< double >::const_iterator vec2 = it.begin() + part2;
-        std::vector< double > newVec( vec1, vec2 );
-        vecPart.at( i ).insert( vecPart.at( i ).begin(), newVec.begin(), newVec.end() );
-        i++;
-    }
-
-    return vecPart;
-}
-//______________________________________________________________________________
-std::vector< double > chargeInterface::getAreaUnderPartOfTrace( const std::string & name, chargeStructs::charge_PV_TYPE & pvType, const int part1, const int part2 )
-{
-    double sum_of_elems;
-    std::vector< double > areaElements;
-    std::vector< std::vector< double > > vecPart = getPartOfTrace( name, pvType, part1, part2 );
-
-    for( auto && it : vecPart )
-    {
-        double sum_of_elems = 0.0;
-        std::vector< double > curveAreas;
-        for( auto && it2 : it )
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
         {
-            double curveElement = ( it2 * chargeObj.traceObjects.at( name ).timebase );// / it.size();
-            curveAreas.push_back( curveElement );
+            wcmQ = it.second.voltageBuffer;
         }
-        sum_of_elems = std::accumulate( curveAreas.begin(), curveAreas.end(), 0.0 );
-        areaElements.push_back( sum_of_elems );
-    }
-
-    return areaElements;
-}
-//______________________________________________________________________________
-double chargeInterface::getWCMQ()
-{
-    double wcmQ = UTL::DUMMY_DOUBLE;
-    double minVal;
-    for( auto && it : chargeObj.numObjects )
-    {
-        for( auto && it2 : it.second.pvMonStructs )
-        {
-            if( it2.second.diagType == chargeStructs::DIAG_TYPE::WCM && it2.second.chargeType == chargeStructs::charge_TYPE::NUM )
-            {
-                minVal = it.second.numData.at( it2.second.pvType ).back();
-                wcmQ   = minVal * -250;
-            }
-        }
-    }
-    if( wcmQ == UTL::DUMMY_DOUBLE )
-    {
-        message("DID NOT FIND WCM AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
     }
     return wcmQ;
 }
 //______________________________________________________________________________
-double chargeInterface::getICT1Q( const int part1, const int part2 )
+const boost::circular_buffer< double > chargeInterface::getS02FCUPVoltageBuffer()
 {
-    double ict1q = UTL::DUMMY_DOUBLE;
-    double traceArea, noise;
-    for( auto && it : chargeObj.traceObjects )
+    boost::circular_buffer< double > fcupQ;
+    for( auto && it : chargeObj.dataObjects )
     {
-        for( auto && it2 : it.second.pvMonStructs )
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
         {
-            if( it2.second.diagType == chargeStructs::DIAG_TYPE::ICT1 )
-            {
-                traceArea = getAreaUnderTraces( it.first, it2.second.pvType ).back();
-                noise = getAvgNoise( it.second.name, it2.second.pvType, part1, part2 ).back();
-                ict1q = ( noise - traceArea ) * 0.8;
-            }
+            fcupQ = it.second.voltageBuffer;
         }
     }
-    if( ict1q == UTL::DUMMY_DOUBLE )
-    {
-        message("DID NOT FIND ICT1 AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
-    }
-    return ( ict1q * pow( 10, 12 ) );
-}
-//______________________________________________________________________________
-double chargeInterface::getICT2Q( const int part1, const int part2 )
-{
-    double ict2q = UTL::DUMMY_DOUBLE;
-    double traceArea, noise;
-    for( auto && it : chargeObj.traceObjects )
-    {
-        for( auto && it2 : it.second.pvMonStructs )
-        {
-            if( it2.second.diagType == chargeStructs::DIAG_TYPE::ICT2 )
-            {
-                traceArea = getAreaUnderTraces( it.second.name, it2.second.pvType ).back();
-                noise = getAvgNoise( it.second.name, it2.second.pvType, part1, part2 ).back();
-                ict2q = ( noise - traceArea ) * 0.8;
-            }
-        }
-    }
-    if( ict2q == UTL::DUMMY_DOUBLE )
-    {
-        message("DID NOT FIND ICT2 AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
-    }
-    return ( ict2q * pow( 10, 12 ) );
-}
-//______________________________________________________________________________
-double chargeInterface::getFCUPQ()
-{
-    double fcupQ = UTL::DUMMY_DOUBLE;
-    double minVal;
-    for( auto && it : chargeObj.numObjects )
-    {
-        for( auto && it2 : it.second.pvMonStructs )
-        {
-            if( it2.second.diagType == chargeStructs::DIAG_TYPE::FCUP && it2.second.chargeType == chargeStructs::charge_TYPE::NUM )
-            {
-                minVal = getchargeNums( it.first, it2.second.pvType ).back();
-                fcupQ   = minVal * -250;
-            }
-        }
-    }
-    if( fcupQ == UTL::DUMMY_DOUBLE )
-    {
-        message("DID NOT FIND FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
-    }
-
-    message("WARNING!!!! THIS IS NOT THE FCUP CHARGE - IT NEEDS TO BE CALIBRATED");
     return fcupQ;
 }
 //______________________________________________________________________________
-double chargeInterface::getEDFCUPQ()
+const boost::circular_buffer< double > chargeInterface::getWCMChargeBuffer()
 {
-    double edfcupQ = UTL::DUMMY_DOUBLE;
-    double minVal;
-    for( auto && it : chargeObj.numObjects )
+    boost::circular_buffer< double > wcmQ;
+    for( auto && it : chargeObj.dataObjects )
     {
-        for( auto && it2 : it.second.pvMonStructs )
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
         {
-            if( it2.second.diagType == chargeStructs::DIAG_TYPE::ED_FCUP && it2.second.chargeType == chargeStructs::charge_TYPE::NUM )
-            {
-                minVal = getchargeNums( it.first, it2.second.pvType ).back();
-                edfcupQ   = minVal * -100;
-            }
+            wcmQ = it.second.chargeBuffer;
         }
     }
-    if( edfcupQ == UTL::DUMMY_DOUBLE )
-    {
-        message("DID NOT FIND ED-FCUP AMONG pvMonStructs, IS IT DEFINED IN THE CONFIG FILE????");
-    }
-    return edfcupQ;
+    return wcmQ;
 }
 //______________________________________________________________________________
-std::vector< std::string > chargeInterface::getchargeNames()
+const boost::circular_buffer< double > chargeInterface::getS02FCUPChargeBuffer()
+{
+    boost::circular_buffer< double > fcupQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+        {
+            fcupQ = it.second.chargeBuffer;
+        }
+    }
+    return fcupQ;
+}
+//______________________________________________________________________________
+void chargeInterface::killCallBack( chargeStructs::monitorStruct * ms )
+{
+    int status = ca_clear_subscription( ms -> EVID );
+    if( status == ECA_NORMAL)
+    {
+        delete ms;
+        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
+    }
+    else
+    {
+        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->chargeObject );
+    }
+}
+//______________________________________________________________________________
+const std::vector< std::string > chargeInterface::getChargeDiagnosticNames()
 {
     std::vector< std::string > chargeNames;
-    for( auto && iter : chargeObj.traceObjects )
+    for( auto && iter : chargeObj.dataObjects )
     {
         message( "charge Name ", iter.first );
         chargeNames.push_back( iter.first );
     }
-    for( auto && iter : chargeObj.numObjects )
-    {
-        message( "charge Name ", iter.first );
-        chargeNames.push_back( iter.first );
-    }
-
     return chargeNames;
 }
 //______________________________________________________________________________
-std::vector< std::string > chargeInterface::getchargePVs()
+const std::vector< std::string > chargeInterface::getChargePVs()
 {
     std::vector< std::string > chargeNames;
-    for( auto && iter : chargeObj.traceObjects )
+    for( auto && iter : chargeObj.dataObjects )
     {
         for( auto && iter2 : iter.second.pvMonStructs )
         {
@@ -1315,10 +672,7 @@ std::vector< std::string > chargeInterface::getchargePVs()
             s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
             chargeNames.push_back( s.str() );
         }
-    }
-    for( auto && iter : chargeObj.numObjects )
-    {
-        for( auto && iter2 : iter.second.pvMonStructs )
+        for( auto && iter2 : iter.second.pvComStructs )
         {
             std::stringstream s;
             message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
@@ -1326,49 +680,14 @@ std::vector< std::string > chargeInterface::getchargePVs()
             chargeNames.push_back( s.str() );
         }
     }
-
-    return chargeNames;
-}
-//______________________________________________________________________________
-std::vector< std::string > chargeInterface::getchargeTracePVs()
-{
-    std::vector< std::string > chargeNames;
-    for( auto && iter : chargeObj.traceObjects )
-    {
-        for( auto && iter2 : iter.second.pvMonStructs )
-        {
-            std::stringstream s;
-            message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
-            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
-            chargeNames.push_back( s.str() );
-        }
-    }
-
-    return chargeNames;
-}
-//______________________________________________________________________________
-std::vector< std::string > chargeInterface::getchargeNumPVs()
-{
-    std::vector< std::string > chargeNames;
-    for( auto && iter : chargeObj.numObjects )
-    {
-        for( auto && iter2 : iter.second.pvMonStructs )
-        {
-            std::stringstream s;
-            message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
-            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
-            chargeNames.push_back( s.str() );
-        }
-    }
-
     return chargeNames;
 }
 //______________________________________________________________________________
 std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > chargeInterface::getILockStates( const std::string & objName )const
 {
     std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > r;
-    auto iter = allchargeData.find( objName );
-    if( iter != allchargeData.end() )
+    auto iter = allChargeData.find( objName );
+    if( iter != allChargeData.end() )
         r = iter -> second.iLockStates;
     return r;
 }
@@ -1376,8 +695,8 @@ std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > chargeInterface::getIL
 std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >  chargeInterface::getILockStatesStr( const std::string & name )const
 {
     std::map< HWC_ENUM::ILOCK_NUMBER, std::string  > r;
-    auto iter = allchargeData.find( name );
-    if( iter != allchargeData.end() )
+    auto iter = allChargeData.find( name );
+    if( iter != allChargeData.end() )
         for( auto it : iter -> second.iLockStates )
             r[ it.first ] = ENUM_TO_STRING( it.second );
     return r;

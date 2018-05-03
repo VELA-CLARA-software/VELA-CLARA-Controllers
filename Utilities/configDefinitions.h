@@ -193,6 +193,12 @@ namespace UTL
     const std::string CLARA_SCOPE_CONFIG               = "claraQScope.config";
     const std::string CLARA_SCOPE_TRACE_CONFIG         = "claraQScopeTrace.config";
 
+/// Charge
+    const std::string VELA_INJ_CHARGE_CONFIG  = "velaINJCharge.config";
+    const std::string VELA_BA1_CHARGE_CONFIG  = "velaBA1Charge.config";
+    const std::string VELA_BA2_CHARGE_CONFIG  = "velaBA2Charge.config";
+    const std::string CLARA_PH1_CHARGE_CONFIG = "claraPH1Charge.config";
+
 /// Gun Modulator
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
     const std::string RF_GUN_MOD_CONFIG                = "RFGunModulator.config";
@@ -463,6 +469,13 @@ namespace UTL
     const std::string SCOPE_NAME      = "SCOPE_NAME";
     const std::string CLARASCOPE01    = "CLARASCOPE01";
     const std::string VELASCOPE02     = "VELASCOPE02";
+
+    /// Charge
+    // Charge PVs
+    const std::string PV_SUFFIX_WCM      = "PV_SUFFIX_WCM";
+    const std::string PV_SUFFIX_S02_FCUP = "PV_SUFFIX_S02_FCUP";
+    const std::string PV_SUFFIX_CHARGE_V = "PV_SUFFIX_CHARGE_V";
+    const std::string PV_SUFFIX_CHARGE_Q = "PV_SUFFIX_CHARGE_Q";
 
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";

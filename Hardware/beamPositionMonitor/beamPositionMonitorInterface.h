@@ -117,6 +117,7 @@ class beamPositionMonitorInterface : public interface
 
         void monitorBPMs();
         void updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateLong1( std::string name, long args );
         void updateData( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
 
