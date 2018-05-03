@@ -86,7 +86,22 @@
 		<Unit filename="../../Hardware/pilaser/pilaserController.h" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.cpp" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.h" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorController.cpp" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorController.h" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorInterface.cpp" />
+		<Unit filename="../../Hardware/pilaser_mirror/pilaserMirrorInterface.h" />
+		<Unit filename="../../Hardware/shutter/shutterController.cpp" />
+		<Unit filename="../../Hardware/shutter/shutterController.h" />
+		<Unit filename="../../Hardware/shutter/shutterInterface.cpp" />
+		<Unit filename="../../Hardware/shutter/shutterInterface.h" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeController.cpp" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeController.h" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeInterface.cpp" />
+		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeInterface.h" />
+		<Unit filename="../../Structs/pi_laser/pilaserMirrorStructs.h" />
 		<Unit filename="../../Structs/pi_laser/pilaserStructs.h" />
+		<Unit filename="../../Structs/pi_laser/virtualCathodeStructs.h" />
+		<Unit filename="../../Structs/shutterStructs.h" />
 		<Unit filename="../../Structs/structs.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -99,6 +114,12 @@
 		<Unit filename="../../Utilities/configReader.h" />
 		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.cpp" />
 		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.h" />
+		<Unit filename="../../Utilities/pi_laser/pilaserMirrorConfigReader.cpp" />
+		<Unit filename="../../Utilities/pi_laser/pilaserMirrorConfigReader.h" />
+		<Unit filename="../../Utilities/pi_laser/virtualCathodeConfigReader.cpp" />
+		<Unit filename="../../Utilities/pi_laser/virtualCathodeConfigReader.h" />
+		<Unit filename="../../Utilities/shutterConfigReader.cpp" />
+		<Unit filename="../../Utilities/shutterConfigReader.h" />
 		<Unit filename="include/VCpilaser.h" />
 		<Unit filename="src/VCpilaser.cpp" />
 		<Extensions>
