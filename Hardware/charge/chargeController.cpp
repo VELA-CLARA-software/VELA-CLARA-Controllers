@@ -62,11 +62,11 @@ void chargeController::restartContinuousMonitoring()
 {
     localInterface.restartContinuousMonitoring();
 }
-//______________________________________________________________________________
-void chargeController::cancelDataMonitors()
-{
-    return localInterface.cancelDataMonitors();
-}
+////______________________________________________________________________________
+//void chargeController::cancelDataMonitors()
+//{
+//    return localInterface.cancelDataMonitors();
+//}
 //______________________________________________________________________________
 size_t chargeController::getBufferSize( const std::string & name )
 {

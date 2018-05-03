@@ -208,6 +208,7 @@ void beamPositionMonitorInterface::addToMonitorStructs( std::vector< beamPositio
     msv.back() -> interface  = this;
     msv.back() -> CHTYPE     = pv.CHTYPE;
 //    msv.back() -> EVID       = &pv.EVID;
+
     switch( pv.pvType )
     {
         case beamPositionMonitorStructs::BPM_PV_TYPE::SA1:
@@ -247,7 +248,6 @@ void beamPositionMonitorInterface::addToMonitorStructs( std::vector< beamPositio
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
-
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA2:
         {
             msv.back() -> val = (void*) &bpmDataObj -> ra2;
@@ -291,42 +291,42 @@ void beamPositionMonitorInterface::staticEntryrMonitor( const event_handler_args
     {
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA1:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).ra1 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA2:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).ra2 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RD1:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).rd1 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RD2:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).rd2 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SA1:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).sa1 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SA2:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).sa1 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SD1:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).sd1 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SD2:
         {
-            ms->interface->updateLong( ms, args );
+            ms->interface->bpmObj.dataObjects.at(ms->objName).sd2 = *(long*)args.dbr;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
@@ -352,7 +352,8 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     /// this could be better, with the type passed from the config
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
 
-    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject *> (ms -> val);
+//    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject *> (ms -> val);
+    beamPositionMonitorStructs::bpmDataObject * bpmdo = &ms->interface->bpmObj.dataObjects.at( ms->objName );
 
     if( bpmdo->isAContinuousMonitorStruct )
     {
@@ -386,7 +387,7 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     size_t i = 0;
     updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ], bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
 
-    for( auto && it : bpmdo->rawBPMData[ bpmdo->shotCount ] )
+    for( auto && it : ms->interface->bpmObj.dataObjects.at( ms->objName ).rawBPMData[ bpmdo->shotCount ] )
     {
         it = *( &p->value + i);
         ++i;
@@ -431,7 +432,9 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
 void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
 {
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
-    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject* > (ms -> val);
+
+//    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject* > (ms -> val);
+    beamPositionMonitorStructs::bpmDataObject * bpmdo = &ms->interface->bpmObj.dataObjects.at( ms->objName );
 
     if( bpmdo->isAContinuousMonitorStruct )
     {
@@ -501,6 +504,11 @@ void beamPositionMonitorInterface::updateLong( beamPositionMonitorStructs::monit
 {
     *(long*)ms -> val = *(long*)args.dbr;
 }
+////______________________________________________________________________________
+//void beamPositionMonitorInterface::updateLong1( std::string name, long args, beamPositionMonitorStructs::BPM_PV_TYPE pvType )
+//{
+//    bpmObj.dataObjects.at( name ).ra1 = args;
+//}
 //______________________________________________________________________________
 void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::bpmDataObject * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
 {
@@ -966,7 +974,6 @@ std::vector< std::string > beamPositionMonitorInterface::getStrTimeStamps( const
 //______________________________________________________________________________
 long beamPositionMonitorInterface::getRA1( const std::string & bpmName )
 {
-    /// djs 10.11.15, i think this needs to be more like:
     long r = UTL::DUMMY_LONG;
     if( entryExists( bpmObj.dataObjects, bpmName ) )
         return bpmObj.dataObjects.at( bpmName ).ra1;

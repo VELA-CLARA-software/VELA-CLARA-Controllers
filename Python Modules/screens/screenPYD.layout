@@ -7,19 +7,14 @@
 			<Cursor1 position="1782" topLine="10" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3084" topLine="38" />
-		</Cursor>
-	</File>
 	<File name="..\..\Hardware\screen\screenController.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="9006" topLine="195" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\screen\screenController.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3092" topLine="35" />
+			<Cursor1 position="2789" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
@@ -27,14 +22,19 @@
 			<Cursor1 position="218" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\screen\screenInterface.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="44641" topLine="1052" />
-		</Cursor>
-	</File>
 	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenController.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3092" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenInterface.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="44641" topLine="1052" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\screen\screenInterface.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -42,9 +42,9 @@
 			<Cursor1 position="3117" topLine="51" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2789" topLine="0" />
+			<Cursor1 position="3084" topLine="38" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\screenStructs.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -92,9 +92,9 @@
 			<Cursor1 position="2433" topLine="42" />
 		</Cursor>
 	</File>
-	<File name="include\VCscreens.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="include\VCscreens.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="13274" topLine="0" />
+			<Cursor1 position="21596" topLine="282" />
 		</Cursor>
 	</File>
 	<File name="src\VCscreens.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -102,5 +102,5 @@
 			<Cursor1 position="11293" topLine="238" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="097dd6005ae04cbf00006c2600000002=*0;screenPYD:include\VCscreens.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=097dd6005ae04cbf00006c2600000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<EditorTabsLayout layout="@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|" />
 </CodeBlocks_layout_file>

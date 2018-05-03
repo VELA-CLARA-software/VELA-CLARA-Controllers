@@ -87,10 +87,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
 
     /// Include ALL the enums you want to expose to Python
 
-    boost::python::type_info info = boost::python::type_id< std::map< chargeStructs::charge_PV_TYPE, bool > > ();
-    const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
-
-    enum_<chargeStructs::charge_PV_TYPE>("CHARGE_DIAG_TYPE")
+    enum_<chargeStructs::CHARGE_DIAG_TYPE>("CHARGE_DIAG_TYPE")
             .value("WCM",                   chargeStructs::CHARGE_DIAG_TYPE::WCM                   )
             .value("VELA_ICT1",             chargeStructs::CHARGE_DIAG_TYPE::VELA_ICT1             )
             .value("ED_FCUP",               chargeStructs::CHARGE_DIAG_TYPE::ED_FCUP               )
@@ -120,9 +117,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
-    char const* getChargeDataStructString = "Returns the charge data struct for str(chargeName). See documentation on the dataObject struct for what this contains.";
+    char const* getChargeDataStructDocString = "Returns the charge data struct for str(chargeName). See documentation on the dataObject struct for what this contains.";
     char const* setBufferSizeDocString = "Set size of buffer for continuous monitor.";
-    char const* restartMonitoringDocString = "Restarts continuous monitoring of charge parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
+    char const* restartContinuousMonitoringDocString = "Restarts continuous monitoring of charge parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
+    char const* cancelDataMonitorsDocString = "Cancels monitoring of charge parameters.";
     char const* monitorForNShotsDocString = "Monitors str(name) for N shots.";
     char const* getBufferSizeDocString = "Returns the size of the buffer.";
     char const* getDiagTypeDocString = "Returns the diagnostic type as a CHARGE_PV_TYPE for str(name).";
@@ -139,8 +137,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     char const* getWCMVoltageBufferDocString = "Returns a vector containing the last (buffersize) voltages for WCM.";
     char const* getS02FCUPChargeBufferDocString = "Returns a vector containing the last (buffersize) charges for S02-FCUP.";
     char const* getS02FCUPVoltageBufferDocString = "Returns a vector containing the last (buffersize) voltages for S02-FCUP.";
-    char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(name) - these are defined in the config file.\n"
-    char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(charge) - these are defined in the config file.\n"
+    char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(name) - these are defined in the config file.\n";
+    char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(charge) - these are defined in the config file.\n";
     char const* getChargeDiagnosticNamesDocString = "Returns all charge diagnostic names defined in config file";
     char const* getChargePVsDocString = "Returns all charge PVs defined in config file";
     char const* getChargeDocString = "Returns current charge of str(name)";
@@ -164,22 +162,22 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
             .def("setBufferSize",               &chargeController::setBufferSize, (arg("size_t")), setBufferSizeDocString                   )
             .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
             .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
-            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
+//            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
             .def("getBufferSize",               &chargeController::getBufferSize, (arg("name")), getBufferSizeDocString                     )
             .def("getDiagType",                 &chargeController::getDiagType, (arg("name")), getDiagTypeDocString                         )
             .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (arg("name")), getDiagTypeStrDocString                   )
             .def("getChargeVector",             &chargeController::getChargeVector_Py, (arg("name")), getChargeVectorDocString              )
-            .def("getVoltageVector",            &chargeController::getChargeVector_Py, (arg("name")), getVoltageVectorDocString             )
-            .def("getWCMChargeVector",          &chargeController::getWCMVector_Py, getWCMChargeVectorDocString                             )
-            .def("getWCMVoltageVector",         &chargeController::getWCMVector_Py, getWCMVoltageVectorDocString                            )
-            .def("getS02FCUPChargeVector",      &chargeController::getS02FCUPVector_Py, getS02FCUPChargeVectorDocString                     )
-            .def("getS02FCUPVoltageVector",     &chargeController::getS02FCUPVector_Py, getS02FCUPVoltageVectorDocString                    )
+            .def("getVoltageVector",            &chargeController::getVoltageVector_Py, (arg("name")), getVoltageVectorDocString             )
+            .def("getWCMChargeVector",          &chargeController::getWCMChargeVector_Py, getWCMChargeVectorDocString                             )
+            .def("getWCMVoltageVector",         &chargeController::getWCMVoltageVector_Py, getWCMVoltageVectorDocString                            )
+            .def("getS02FCUPChargeVector",      &chargeController::getS02FCUPChargeVector_Py, getS02FCUPChargeVectorDocString                     )
+            .def("getS02FCUPVoltageVector",     &chargeController::getS02FCUPVoltageVector_Py, getS02FCUPVoltageVectorDocString                    )
             .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (arg("name")), getChargeBufferDocString              )
-            .def("getVoltageBuffer",            &chargeController::getChargeBuffer_Py, (arg("name")), getVoltageBufferDocString             )
-            .def("getWCMChargeBuffer",          &chargeController::getWCMBuffer_Py, getWCMChargeBufferDocString                             )
-            .def("getWCMVoltageBuffer",         &chargeController::getWCMBuffer_Py, getWCMVoltageBufferDocString                            )
-            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPBuffer_Py, getS02FCUPChargeBufferDocString                     )
-            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPBuffer_Py, getS02FCUPVoltageBufferDocString                    )
+            .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (arg("name")), getVoltageBufferDocString             )
+            .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                             )
+            .def("getWCMVoltageBuffer",         &chargeController::getWCMVoltageBuffer_Py, getWCMVoltageBufferDocString                            )
+            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString                     )
+            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString                    )
             .def("getTimeStamps",               &chargeController::getTimeStamps_Py, (arg("name")), getTimeStampsDocString                  )
             .def("getStrTimeStamps",            &chargeController::getStrTimeStamps_Py, (arg("name")), getStrTimeStampsDocString            )
             .def("getChargeDiagnosticNames",    &chargeController::getChargeDiagnosticNames_Py, getChargeDiagnosticNamesDocString           )
@@ -218,7 +216,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
         .def("virtual_CLARA_PH1_Charge_Controller",  &VCcharge::virtual_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Charge_Controller",  &VCcharge::offline_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Charge_Controller", &VCcharge::physical_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
-        .def("getChargeController",                  &VCscopes::getChargeController, return_value_policy<reference_existing_object>())
+        .def("getChargeController",                  &VCcharge::getChargeController, return_value_policy<reference_existing_object>())
         ;
 };
 

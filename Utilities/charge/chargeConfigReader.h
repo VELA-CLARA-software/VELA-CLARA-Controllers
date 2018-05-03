@@ -48,8 +48,9 @@ class chargeConfigReader : public configReader
         /// These are read into vectors as you can use the .back() member function, which i find handy.
         /// once all the data is read in we can construct the final map of objects
 
-        std::vector< chargeStructs::chargeObject > chargeObjects;
+        std::vector< chargeStructs::dataObject > chargeObjects;
         std::vector< chargeStructs::pvStruct > chargeMonStructs;
+        std::vector< chargeStructs::pvStruct > chargeComStructs;
         void addToChargeObjectsV1( const std::vector<std::string> &keyVal );
         void addToChargeMonStructsV1( const std::vector<std::string> &keyVal );
         void addToChargeComStructsV1( const std::vector<std::string> &keyVal );
@@ -57,7 +58,7 @@ class chargeConfigReader : public configReader
         void addToPVStruct( std::vector< chargeStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
         void addCOUNT_MASK_OR_CHTYPE(  std::vector< chargeStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
 
-        chargeStructs::CHARGE_PV_TYPE getDiagType( const std::string & val );
+        chargeStructs::CHARGE_DIAG_TYPE getDiagType( const std::string & val );
 
         std::vector< double >                           tstamps;
         std::vector< std::string >                      strtstamps;

@@ -133,7 +133,7 @@ class chargeInterface : public interface
         /// tough... maybe one day we re-factor, for now remember to delete in the destructor
         std::vector< chargeStructs::monitorStruct * > continuousMonitorStructs;
 
-        std::map< std::string, chargeStructs::dataObject > allChargeData; /// All the charge data is stored in this map, keyed by the charge name
+        std::map< std::string, chargeStructs::chargeObject > allChargeData; /// All the charge data is stored in this map, keyed by the charge name
 
         std::vector< std::vector< double > > allChargeMonitorData;
         std::vector< std::vector< double > > traceMonitorData;

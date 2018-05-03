@@ -13,21 +13,19 @@
 #include <ctype.h>
 
 chargeConfigReader::chargeConfigReader( const std::string & chargeConf1,
-                                      const std::string & chargeConf2,
-                                      const bool& show_messages_ptr,
-                                      const bool& show_debug_messages_ptr,
-                                      const bool startVirtualMachine ):
+                                       const bool& show_messages_ptr,
+                                       const bool& show_debug_messages_ptr,
+                                       const bool startVirtualMachine ):
 chargeConf1( chargeConf1 ),
-chargeConf2( chargeConf2 ),
 startVirtualMachine( startVirtualMachine ),
-configReader(chargeConf1, chargeConf2, show_messages_ptr, show_debug_messages_ptr )
+configReader(chargeConf1, show_messages_ptr, show_debug_messages_ptr )
 {
 
 }
 //______________________________________________________________________________
 chargeConfigReader::~chargeConfigReader(){}
 //______________________________________________________________________________
-chargeStructs::chargeObject chargeConfigReader::getchargeObject()
+chargeStructs::chargeObject chargeConfigReader::getChargeObject()
 {
     chargeStructs::chargeObject obj;
 
@@ -64,6 +62,7 @@ bool chargeConfigReader::readConfigFiles()
     //NUM
     chargeObjects.clear();
     chargeMonStructs.clear();
+    chargeComStructs.clear();
     bool numSuccess = readConfig( *this,  chargeConf1, &chargeConfigReader::addToChargeObjectsV1,nullptr, &chargeConfigReader::addToChargeMonStructsV1 );
     if( !numSuccess )
         success = false;
@@ -72,7 +71,7 @@ bool chargeConfigReader::readConfigFiles()
         debugMessage( "*** Created ", numObjs, " charge Objects, As Expected ***", "\n" );
     else
     {
-        debugMessage( "*** Created ", chargeNumObjects.size() ," charge Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
+        debugMessage( "*** Created ", chargeObjects.size() ," charge Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
         success = false;
     }
 
@@ -84,7 +83,7 @@ void chargeConfigReader::addToChargeMonStructsV1( const std::vector<std::string>
     addToPVStruct( chargeMonStructs, keyVal );
 }
 //______________________________________________________________________________
-void chargeConfigReader::addToChargeTraceDataComStructsV1( const std::vector<std::string> &keyVal )
+void chargeConfigReader::addToChargeComStructsV1( const std::vector<std::string> &keyVal )
 {
     addToPVStruct( chargeComStructs, keyVal );
 }
@@ -93,7 +92,7 @@ void chargeConfigReader::addToChargeObjectsV1( const std::vector<std::string> &k
 {
     if( keyVal[0] == UTL::NAME )
     {
-        chargeStructs::chargeObject chob = chargeStructs::chargeObject();
+        chargeStructs::dataObject chob = chargeStructs::dataObject();
         chob.name = keyVal[ 1 ];
         chargeObjects.push_back( chob );
         debugMessage("Added ", chargeObjects.back().name );
@@ -249,20 +248,22 @@ bool chargeConfigReader::readConfig( chargeConfigReader & obj, const std::string
     return success;
 }
 //______________________________________________________________________________
-chargeStructs::CHARGE_PV_TYPE chargeConfigReader::getDiagType( const std::string & val )
+chargeStructs::CHARGE_DIAG_TYPE chargeConfigReader::getDiagType( const std::string & val )
 {
-    chargeStructs::CHARGE_PV_TYPE r;
+    chargeStructs::CHARGE_DIAG_TYPE r;
 
     if( val == UTL::WCM )
-        r = chargeStructs::CHARGE_PV_TYPE::WCM;
+        r = chargeStructs::CHARGE_DIAG_TYPE::WCM;
     else if( val == UTL::ICT1 )
-        r = chargeStructs::CHARGE_PV_TYPE::ICT1;
+        r = chargeStructs::CHARGE_DIAG_TYPE::VELA_ICT1;
     else if( val == UTL::ICT2 )
-        r = chargeStructs::CHARGE_PV_TYPE::ICT2;
+        r = chargeStructs::CHARGE_DIAG_TYPE::VELA_ICT2;
     else if( val == UTL::ED_FCUP )
-        r = chargeStructs::CHARGE_PV_TYPE::ED_FCUP;
+        r = chargeStructs::CHARGE_DIAG_TYPE::ED_FCUP;
     else if( val == UTL::FCUP )
-        r = chargeStructs::CHARGE_PV_TYPE::FCUP;
+        r = chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP;
+    else if( val == UTL::FCUP )
+        r = chargeStructs::CHARGE_DIAG_TYPE::SP1_FCUP;
 
     return r;
 }

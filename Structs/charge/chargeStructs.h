@@ -59,8 +59,8 @@ namespace chargeStructs
         size_t                           buffer;
         std::vector< double >            chargeVec, voltageVec;
         boost::circular_buffer< double > chargeBuffer, voltageBuffer;
-        std::vector< std::string >       timeStamps;
-        std::vector< double >            srTimeStamps;
+        std::vector< double >            timeStamps;
+        std::vector< std::string >       strTimeStamps;
     #ifndef __CINT__
         std::map< CHARGE_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CHARGE_PV_TYPE, pvStruct > pvComStructs;
