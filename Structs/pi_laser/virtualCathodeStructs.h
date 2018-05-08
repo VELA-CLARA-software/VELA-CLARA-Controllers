@@ -38,10 +38,10 @@ namespace virtualCathodeStructs
 {
     // Forward declare structs, gcc seems to like this...
     struct monitorStuct;
-    struct virtualCathodeDataObject;
+    struct virtualCathodeObject;
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(PV_TYPE,(X_RBV)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(VC_PV_TYPE,(X_RBV)
                                                  (Y_RBV)
                                                  (SIGMA_X_RBV)
                                                  (SIGMA_Y_RBV)
@@ -52,21 +52,31 @@ namespace virtualCathodeStructs
                                                  (SIGMA_Y_PIX)
                                                  (COV_XY_PIX)
                                                  (VC_INTENSITY)
-                                                 (UNKNOWN_PV)
+                                                 (PIXEL_RESULTS)
+                                                 (H_POS)
+                                                 (V_POS)
+                                                 (H_STEP)
+                                                 (V_STEP)
+                                                 (H_MOVE)
+                                                 (V_MOVE)
+                                                 (H_STOP)
+                                                 (V_STOP)
+                                                 (POS_UPDATE)
+                                                 (UNKNOWN)
                                         )
     struct monitorStruct
     {
         monitorStruct():
-            monType(UNKNOWN_PV),
+            monType(UNKNOWN),
             interface(nullptr),
             EVID(nullptr),
             object(nullptr)
             {}
-        PV_TYPE   monType;
+        VC_PV_TYPE   monType;
         virtualCathodeInterface*  interface;
         chtype                    CHTYPE;
         evid                      EVID;
-        virtualCathodeDataObject* object;
+        virtualCathodeObject* object;
     };
 
     struct pvStruct
@@ -74,9 +84,10 @@ namespace virtualCathodeStructs
         pvStruct():
             pvSuffix(UTL::UNKNOWN_STRING),
             COUNT(UTL::ZERO_UL),
-            MASK(UTL::ZERO_UL)
+            MASK(UTL::ZERO_UL),
+            pvType(UNKNOWN)
             {}
-        PV_TYPE       pvType;
+        VC_PV_TYPE    pvType;
         chid          CHID;
         std::string   pvSuffix;
         unsigned long COUNT, MASK;
@@ -101,42 +112,80 @@ namespace virtualCathodeStructs
     // image_data_buffer with as new entries come in
     struct static_blank_image_data
     {
-        static std::map<PV_TYPE, data> create_blank_image_data()
+        static std::map<VC_PV_TYPE, data> create_blank_image_data()
         {
-            std::map<PV_TYPE, data> m;
-            m[PV_TYPE::X_RBV] = data();
-            m[PV_TYPE::Y_RBV] = data();
-            m[PV_TYPE::SIGMA_X_RBV] = data();
-            m[PV_TYPE::SIGMA_Y_RBV] = data();
-            m[PV_TYPE::COV_XY_RBV] = data();
-            m[PV_TYPE::X_PIX] = data();
-            m[PV_TYPE::Y_PIX] = data();
-            m[PV_TYPE::SIGMA_X_PIX] = data();
-            m[PV_TYPE::SIGMA_Y_PIX] = data();
-            m[PV_TYPE::COV_XY_PIX] = data();
-            m[PV_TYPE::VC_INTENSITY] = data();
+            std::map<VC_PV_TYPE, data> m;
+            m[VC_PV_TYPE::X_RBV] = data();
+            m[VC_PV_TYPE::Y_RBV] = data();
+            m[VC_PV_TYPE::SIGMA_X_RBV] = data();
+            m[VC_PV_TYPE::SIGMA_Y_RBV] = data();
+            m[VC_PV_TYPE::COV_XY_RBV] = data();
+            m[VC_PV_TYPE::X_PIX] = data();
+            m[VC_PV_TYPE::Y_PIX] = data();
+            m[VC_PV_TYPE::SIGMA_X_PIX] = data();
+            m[VC_PV_TYPE::SIGMA_Y_PIX] = data();
+            m[VC_PV_TYPE::COV_XY_PIX] = data();
+            m[VC_PV_TYPE::VC_INTENSITY] = data();
             return m;
         }
-        static const std::map<PV_TYPE, data>  blank_image_data;
+        static const std::map<VC_PV_TYPE, data>  blank_image_data;
     };
     // The main hardware object holds ...
-    struct virtualCathodeDataObject
+    struct pilMirrorObject
     {
-        virtualCathodeDataObject():
+        pilMirrorObject():
+            hPos(UTL::DUMMY_DOUBLE),
+            vPos(UTL::DUMMY_DOUBLE),
+            hStep(UTL::DUMMY_DOUBLE),
+            vStep(UTL::DUMMY_DOUBLE),
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT)
+            {};
+        std::string name, pvRoot;
+        double hPos, vPos, hStep, vStep;
+    };
+
+    // The main hardware object holds ...
+    struct virtualCathodeObject
+    {
+        virtualCathodeObject():
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
-            buffer_size(UTL::BUFFER_60000)
-            {}
-        std::string name, pvRoot;
-        size_t buffer_size;
+            buffer_size(UTL::BUFFER_60000),
+            x_pos(UTL::DUMMY_SIZET),
+            y_pos(UTL::DUMMY_SIZET),
+            x_sigma_pos(UTL::DUMMY_SIZET),
+            y_sigma_pos(UTL::DUMMY_SIZET),
+            cov_pos(UTL::DUMMY_SIZET),
+            x_name(UTL::UNKNOWN_NAME),
+            y_name(UTL::UNKNOWN_NAME),
+            x_sigma_name(UTL::UNKNOWN_NAME),
+            y_sigma_name(UTL::UNKNOWN_NAME),
+            cov_name(UTL::UNKNOWN_NAME)
+            {};
+        double hPos, vPos, hStep, vStep;
+        std::string name, pvRoot, x_name, y_name, x_sigma_name, y_sigma_name, cov_name;
+        size_t buffer_size,x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos;
+        std::vector<double> pix_values;
+        std::map<size_t,std::string> pixel_values_pos;
+        std::map<std::string,double> pixel_values;
+#ifdef BUILD_DLL
+        boost::python::dict pixel_values_dict;
+#endif
         // the raw data
-        std::deque<std::map<PV_TYPE, data> > image_data_buffer;
+        //std::deque<std::map<PV_TYPE, data> > image_data_buffer;
         // pointer of where the next data entry will go, so we can try and keep
         // anlysis of each image in the same image_data struct
-        //std::map< PV_TYPE, std::dequestd::map<PV_TYPE, data>::iterator > image_data_buffer_next_update;
-        std::map<PV_TYPE, std::map<PV_TYPE, data>*> image_data_buffer_next_update;
-        std::map<PV_TYPE, pvStruct> pvMonStructs;
+        //std::map<PV_TYPE, std::dequestd::map<PV_TYPE, data>::iterator > image_data_buffer_next_update;
+        //std::map<PV_TYPE, std::map<PV_TYPE, data>*> image_data_buffer_next_update;
+        pilMirrorObject mirror;
+        std::map<VC_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<VC_PV_TYPE, pvStruct> pvComStructs;
     };
+
+
+
+
 }
 //______________________________________________________________________________
 #endif//_VELA_CLARA_PIL_VIRTUAL_CATHODE_STRUCTS_H_

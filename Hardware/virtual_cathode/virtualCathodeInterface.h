@@ -47,11 +47,33 @@ class virtualCathodeInterface : public interface
                                 bool& show_debug_messages,
                                 const bool startVirtualMachine,
                                 const bool shouldStartEPICs,
-                                const std::string& configFile
-                               );
+                                const std::string& vcMirrorConfig,
+                                const std::string& vcDataConfig
+                                );
         virtualCathodeInterface& virtualCathodeInterface::operator= ( const virtualCathodeInterface& other ) = delete;
         ~virtualCathodeInterface();
 
+        double getHpos() const;
+        double getVpos() const;
+
+
+        // setters , not sure of type for these parameters (or if they will exist...)
+        bool setHpos(const double value);
+        //bool setHpos(const int value);
+        bool setVpos(const double value);
+        //bool setVpos(int value);
+
+        double getHstep() const;
+        double getVstep() const;
+        bool setHstep(const double value);
+        bool setVstep(const double value);
+
+        bool moveH();
+        bool moveV();
+
+        const virtualCathodeStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
+
+        bool isVCData_PV(const virtualCathodeStructs::VC_PV_TYPE& pv)const;
 //        double getHpos();
 //        double getVpos();
 //        double getIntensity();
@@ -69,7 +91,12 @@ class virtualCathodeInterface : public interface
 //        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
 
     private:
+        /*
+            all client mirrro set functions route to here
+        */
+        bool setValue(virtualCathodeStructs::pvStruct& pvs,const double value);
 
+        bool move(chtype& cht, chid& chi,const char* m1,const char* m2);
 
 
 //
@@ -78,19 +105,25 @@ class virtualCathodeInterface : public interface
         void initialise();
         bool initObjects();
         void initChids();
-        void addChannel(const std::string & pvRoot, virtualCathodeStructs::pvStruct & pv );
+        void addChannel(virtualCathodeStructs::pvStruct & pv);
         void startMonitors();
         void addToBuffer();
+
+        void updatePixelResults(const event_handler_args& args);
+
+
+        //bool isVCData_PV(const virtualCathodeStructs::VC_PV_TYPE& pv)const;
+
 
 //        // all client set functions route to here
 //        bool setValue(pilaserStructs::pvStruct& pvs, double value);
 //
-        virtualCathodeStructs::virtualCathodeDataObject object;
+        virtualCathodeStructs::virtualCathodeObject vcObject;
 //
         std::vector<virtualCathodeStructs::monitorStruct*> continuousMonitorStructs;
 //        // all EPICS callbacks route here
         static void staticEntryMonitor(const event_handler_args args);
-        void updateValue(const event_handler_args args, virtualCathodeStructs::PV_TYPE pv);
+        void updateValue(const event_handler_args args, virtualCathodeStructs::VC_PV_TYPE pv);
         virtualCathodeConfigReader configReader; /// class member so we can pass in file path in ctor
         ///message
 };

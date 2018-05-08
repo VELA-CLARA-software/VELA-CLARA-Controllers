@@ -30,7 +30,8 @@ virtualCathodeController::virtualCathodeController(bool& show_messages,
                                                    bool& show_debug_messages,
                                                    const bool startVirtualMachine,
                                                    const bool shouldStartEPICs,
-                                                   const std::string& configFile,
+                                                   const std::string& vcMirrorConfig,
+                                                   const std::string& vcDataConfig,
                                                    const std::string& name
                                                    ):
 controller(show_messages,
@@ -40,7 +41,8 @@ localInterface(show_messages,
                show_debug_messages,
                startVirtualMachine,
                shouldStartEPICs,
-               configFile)
+               vcMirrorConfig,
+               vcDataConfig)
 {
     initialise();
 }

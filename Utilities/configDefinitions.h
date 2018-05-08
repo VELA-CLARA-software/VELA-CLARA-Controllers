@@ -273,6 +273,16 @@ namespace UTL
     const std::string PV_SUFFIX_PIL_H_POS = "PV_SUFFIX_PIL_H_POS";
     const std::string PV_SUFFIX_PIL_V_POS = "PV_SUFFIX_PIL_V_POS";
 
+    const std::string X_POS = "X_POS";
+    const std::string Y_POS = "Y_POS";
+    const std::string X_SIGMA_POS = "X_SIGMA_POS";
+    const std::string Y_SIGMA_POS = "Y_SIGMA_POS";
+    const std::string COV_POS = "COV_POS";
+    const std::string X_NAME = "X_NAME";
+    const std::string Y_NAME = "Y_NAME";
+    const std::string X_SIGMA_NAME = "X_SIGMA_NAME";
+    const std::string Y_SIGMA_NAME = "Y_SIGMA_NAME";
+    const std::string COV_NAME = "COV_NAME";
 
 /// Cameras
     const std::string DAQ_CAMERA_CONFIG = "cameraDAQ.config";
@@ -825,7 +835,8 @@ namespace UTL
     const std::string PV_IA_SUFFIX_SIGMA_X_PIX      ="PV_IA_SUFFIX_SIGMA_X_PIX";
     const std::string PV_IA_SUFFIX_SIGMA_Y_PIX      ="PV_IA_SUFFIX_SIGMA_Y_PIX";
     const std::string PV_IA_SUFFIX_COV_XY_PIX       ="PV_IA_SUFFIX_COV_XY_PIX";
-    const std::string PV_IA_SUFFIX_AV_PIX_INTENSITY="PV_IA_SUFFIX_AV_PIX_INTENSITY";
+    const std::string PV_IA_SUFFIX_AV_PIX_INTENSITY ="PV_IA_SUFFIX_AV_PIX_INTENSITY";
+    const std::string PV_IA_SUFFIX_PIXEL_RESULTS    ="PV_IA_SUFFIX_PIXEL_RESULTS";
 
     // Camera Object Components
     const std::string SCREEN_NAME               ="SCREEN_NAME";

@@ -52,9 +52,11 @@ class virtualCathodeController : public controller
                                 bool& show_debug_messages,
                                 const bool startVirtualMachine,
                                 const bool shouldStartEPICs,
-                                const std::string& configFile,
+                                const std::string& vcMirrorConfig,
+                                const std::string& vcDataConfig,
                                 const std::string& name
                                );
+
         virtualCathodeController& virtualCathodeController::operator= ( const virtualCathodeController& other ) = delete;
         ~virtualCathodeController();
       // These are pure virtual methods, so need to have some implmentation in derived classes

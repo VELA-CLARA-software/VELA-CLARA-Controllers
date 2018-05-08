@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <fstream>
 // me
 #include "configReader.h"
 #include "virtualCathodeStructs.h"
@@ -33,19 +34,32 @@
 class virtualCathodeConfigReader:public configReader
 {
     public:
-        virtualCathodeConfigReader(const std::string& configFile,
+        virtualCathodeConfigReader(const std::string& vcMirrorConfig,
+                                   const std::string& vcDataConfig,
                                    const bool& show_messages,
                                    const bool& show_debug_messages,
                                    const bool usingVM);
         ~virtualCathodeConfigReader();
         bool readConfig();
-        bool getVirtualCathodeDataObject(virtualCathodeStructs::virtualCathodeDataObject & obj);
+        bool getVirtualCathodeObject(virtualCathodeStructs::virtualCathodeObject & obj);
     private:
-        virtualCathodeStructs::virtualCathodeDataObject object;
+
+        bool readingMrror, readingData;
+
+        bool readConfig(std::ifstream& inputFile);
+
+        void addToPVCommandMapV1(const std::vector<std::string>&keyVal);
+
+        void addCOUNT_MASK_OR_CHTYPE(std::vector<virtualCathodeStructs::pvStruct>& pvStruct_v,
+                                                  const std::vector<std::string>& keyVal);
+        virtualCathodeStructs::virtualCathodeObject vcObject;
+
         std::vector<virtualCathodeStructs::pvStruct> pvMonStructs;
-        std::vector<virtualCathodeStructs::pvStruct> *lastPVStruct;
+        std::vector<virtualCathodeStructs::pvStruct> pvComStructs;
+
+
         void addToPVStruct(std::vector< virtualCathodeStructs::pvStruct >& pvs,
-                           const virtualCathodeStructs::PV_TYPE pvtype, const std::string& pvSuffix);
+                           const virtualCathodeStructs::VC_PV_TYPE pvtype, const std::string& pvSuffix);
         void addToObjectsV1(const std::vector<std::string> &keyVal );
         void addToPVMonitorMapV1  (const std::vector<std::string> &keyVal );
 };
