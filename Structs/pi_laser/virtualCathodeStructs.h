@@ -41,7 +41,9 @@ namespace virtualCathodeStructs
     struct virtualCathodeObject;
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(VC_PV_TYPE,(X_RBV)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(VC_PV_TYPE,
+
+                                                (X_RBV)
                                                  (Y_RBV)
                                                  (SIGMA_X_RBV)
                                                  (SIGMA_Y_RBV)
@@ -55,6 +57,8 @@ namespace virtualCathodeStructs
                                                  (PIXEL_RESULTS)
                                                  (H_POS)
                                                  (V_POS)
+                                                 (H_MREL)
+                                                 (V_MREL)
                                                  (H_STEP)
                                                  (V_STEP)
                                                  (H_MOVE)
@@ -161,31 +165,33 @@ namespace virtualCathodeStructs
             y_name(UTL::UNKNOWN_NAME),
             x_sigma_name(UTL::UNKNOWN_NAME),
             y_sigma_name(UTL::UNKNOWN_NAME),
-            cov_name(UTL::UNKNOWN_NAME)
+            cov_name(UTL::UNKNOWN_NAME),
+            buffer_full(false)
             {};
         double hPos, vPos, hStep, vStep;
         std::string name, pvRoot, x_name, y_name, x_sigma_name, y_sigma_name, cov_name;
-        size_t buffer_size,x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos;
+        size_t buffer_size, x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos,results_count;
+        bool buffer_full;
+        /*
+            time stamped pixel array readback
+        */
         std::vector<double> pix_values;
-        std::map<size_t,std::string> pixel_values_pos;
-        std::map<std::string,double> pixel_values;
+        std::deque<std::vector<double>> pix_values_buffer;
+        std::string pix_values_time;
+        /*
+            this map is defined in the config file
+            and tells us which element is which
+            analysis data for the pixel array RBV
+        */
+        std::map<size_t, std::string> pixel_values_pos;
+        std::map<std::string, double> pixel_values;
 #ifdef BUILD_DLL
         boost::python::dict pixel_values_dict;
 #endif
-        // the raw data
-        //std::deque<std::map<PV_TYPE, data> > image_data_buffer;
-        // pointer of where the next data entry will go, so we can try and keep
-        // anlysis of each image in the same image_data struct
-        //std::map<PV_TYPE, std::dequestd::map<PV_TYPE, data>::iterator > image_data_buffer_next_update;
-        //std::map<PV_TYPE, std::map<PV_TYPE, data>*> image_data_buffer_next_update;
         pilMirrorObject mirror;
         std::map<VC_PV_TYPE, pvStruct> pvMonStructs;
         std::map<VC_PV_TYPE, pvStruct> pvComStructs;
     };
-
-
-
-
 }
 //______________________________________________________________________________
 #endif//_VELA_CLARA_PIL_VIRTUAL_CATHODE_STRUCTS_H_

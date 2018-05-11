@@ -71,9 +71,17 @@ class virtualCathodeInterface : public interface
         bool moveH();
         bool moveV();
 
+        void updateAnalysisBuffers();
+        void setBufferSize(const size_t s);
+        size_t getBufferSize(size_t s);
+        size_t clearBuffer();
+
+
+
         const virtualCathodeStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
 
-        bool isVCData_PV(const virtualCathodeStructs::VC_PV_TYPE& pv)const;
+        bool isVCMirror_PV(const virtualCathodeStructs::VC_PV_TYPE& pv)const;
+
 //        double getHpos();
 //        double getVpos();
 //        double getIntensity();

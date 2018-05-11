@@ -70,6 +70,16 @@ bool shutterController::isClosed(const std::string& name )const
     return localInterface.isClosed(name);
 }
 //______________________________________________________________________________
+bool shutterController::areAllOpen()
+{
+    return localInterface.areAllOpen();
+}
+//______________________________________________________________________________
+bool shutterController::areAllClosed()
+{
+    return localInterface.areAllClosed();
+}
+//______________________________________________________________________________
 bool shutterController::openAndWait(const std::string& name, const time_t waitTime)
 {
     return localInterface.openAndWait(name, waitTime);
@@ -129,11 +139,19 @@ std::map<ILOCK_NUMBER, std::string>
 //    return localInterface.getILockStatesStr(name );
 //}
 //______________________________________________________________________________
-std::vector< std::string > shutterController::getShutterNames()const
+std::vector<std::string> shutterController::getShutterNames()const
 {
     return localInterface.getShutterNames();
 }
-////______________________________________________________________________________
+//______________________________________________________________________________
+#ifdef BUILD_DLL
+boost::python::list shutterController::getShutterNames_Py()
+{
+    return toPythonList(localInterface.getShutterNames());
+}
+#endif
+
+//______________________________________________________________________________
 //void shutterController::openShutter1()
 //{
 //    if(pilShutterNames.size() >= 1 )

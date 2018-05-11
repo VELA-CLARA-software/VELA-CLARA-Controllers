@@ -22,7 +22,6 @@
 //*/
 // project includes
 #include "virtualCathodeConfigReader.h"
-#include "pilaserStructs.h"
 // stl includes
 #include <iostream>
 #include <vector>
@@ -60,7 +59,7 @@ bool virtualCathodeConfigReader::readConfig()
     inputFile.open(configFile1, std::ios::in );
     readingMrror = true;
     readingData  = false;
-    bool mirror_read = readConfig(inputFile);
+    bool mirror_read = readConfig(inputFile,configFile1);
 
     readingMrror = false;
     readingData  = true;
@@ -68,11 +67,11 @@ bool virtualCathodeConfigReader::readConfig()
     debugMessage("\n", "**** Attempting to Read vc_AnalysisData Config Files ****" );
 
     inputFile.open(configFile2, std::ios::in );
-    bool data_read   = readConfig(inputFile);
+    bool data_read   = readConfig(inputFile,configFile2);
     return true;
 }
 //______________________________________________________________________________
-bool virtualCathodeConfigReader::readConfig(std::ifstream& inputFile)
+bool virtualCathodeConfigReader::readConfig(std::ifstream& inputFile, const std::string& configFile)
 {
     std::string line, trimmedLine;
     bool success = false;
@@ -83,7 +82,7 @@ bool virtualCathodeConfigReader::readConfig(std::ifstream& inputFile)
         bool readingCommandPVs = false;
         bool readingMonitorPVs = false;
 
-        debugMessage("Opened from ", configFile1 );
+        debugMessage("Opened from ", configFile);
         while(std::getline(inputFile, line ) ) /// Go through, reading file line by line
         {
             trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE ) );
@@ -173,6 +172,7 @@ bool virtualCathodeConfigReader::readConfig(std::ifstream& inputFile)
 void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&keyVal)
 {
     using namespace UTL;
+    //message("addToPVMonitorMapV1 = ", keyVal[ZERO_SIZET]);
     /*
         switch to set different PVs for the VM and physical Machine
     */
@@ -184,63 +184,63 @@ void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::stri
     {
         if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX"))
         {
-            using namespace virtualCathodeStructs;
+            using namespace pilaserStructs;
             if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_X)
             {
-                addToPVStruct(pvMonStructs, VC_PV_TYPE::X_RBV,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs, PILASER_PV_TYPE::X_RBV,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_Y)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_Y)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::Y_RBV,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::Y_RBV,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_X)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_X)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::SIGMA_X_RBV,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::SIGMA_X_RBV,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_Y)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_Y)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::SIGMA_Y_RBV,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::SIGMA_Y_RBV,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_X_PIX)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_X_PIX)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::X_PIX,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::X_PIX,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_Y_PIX)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_Y_PIX)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::Y_PIX,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::Y_PIX,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_X_PIX)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_X_PIX)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::SIGMA_X_PIX,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::SIGMA_X_PIX,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_Y_PIX)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_Y_PIX)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::SIGMA_Y_PIX,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::SIGMA_Y_PIX,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_COV_XY)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_COV_XY)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::COV_XY_RBV,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::COV_XY_RBV,keyVal[ONE_SIZET] );
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_COV_XY_PIX)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_COV_XY_PIX)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::COV_XY_PIX,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::COV_XY_PIX,keyVal[ONE_SIZET]);
             }
-            if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_AV_PIX_INTENSITY)
+            else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_AV_PIX_INTENSITY)
             {
-                addToPVStruct(pvMonStructs,VC_PV_TYPE::VC_INTENSITY,keyVal[ONE_SIZET] );
+                addToPVStruct(pvMonStructs,PILASER_PV_TYPE::VC_INTENSITY,keyVal[ONE_SIZET]);
             }
             else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_PIXEL_RESULTS)
             {
-                 addToPVStruct(pvMonStructs,VC_PV_TYPE::PIXEL_RESULTS,keyVal[ONE_SIZET] );
+                 addToPVStruct(pvMonStructs,PILASER_PV_TYPE::PIXEL_RESULTS,keyVal[ONE_SIZET]);
             }
-//            if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_H_STEP)
-//            {
-//                addPVStruct(pvComStructs, keyVal);
-//            }
-//            else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_V_STEP)
-//            {
-//                addPVStruct(pvComStructs, keyVal);
-//            }
+            else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_V_POS)
+            {
+                 addToPVStruct(pvMonStructs,PILASER_PV_TYPE::V_POS,keyVal[ONE_SIZET]);
+            }
+            else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_H_POS)
+            {
+                 addToPVStruct(pvMonStructs,PILASER_PV_TYPE::H_POS,keyVal[ONE_SIZET]);
+            }
         }
         /*
             we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
@@ -250,7 +250,10 @@ void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::stri
             we can actually get EPICS to fill in these values for us
         */
         else
+        {
+            //message(keyVal[ZERO_SIZET], " does not contain SUFFIX");
             addCOUNT_MASK_OR_CHTYPE(pvMonStructs, keyVal);
+        }
     }// close not using vm
 }
 //______________________________________________________________________________
@@ -262,28 +265,36 @@ void virtualCathodeConfigReader::addToPVCommandMapV1(const std::vector<std::stri
     */
     if(useVM)
     {
-
+            using namespace pilaserStructs;
+            if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_H_STEP)
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::H_STEP,keyVal[ONE_SIZET]);
+            }
+            else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_V_STEP)
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::V_STEP,keyVal[ONE_SIZET]);
+            }
     }
     else// not using vm
     {
         if(stringIsSubString(keyVal[UTL::ZERO_SIZET], "SUFFIX" ) )
         {
-            using namespace virtualCathodeStructs;
-            if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_H_STEP)
+            using namespace pilaserStructs;
+            if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_H_MREL)
             {
-                addToPVStruct(pvComStructs, VC_PV_TYPE::H_STEP,keyVal[ONE_SIZET]);
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::H_MREL,keyVal[ONE_SIZET]);
             }
-            else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_V_STEP)
+            else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_V_MREL)
             {
-                addToPVStruct(pvComStructs, VC_PV_TYPE::V_STEP,keyVal[ONE_SIZET]);
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::V_MREL,keyVal[ONE_SIZET]);
             }
             else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_H_MOVE)
             {
-                addToPVStruct(pvComStructs, VC_PV_TYPE::H_MOVE,keyVal[ONE_SIZET]);
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::H_MOVE,keyVal[ONE_SIZET]);
             }
             else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_V_MOVE)
             {
-                addToPVStruct(pvComStructs, VC_PV_TYPE::V_MOVE,keyVal[ONE_SIZET]);
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::V_MOVE,keyVal[ONE_SIZET]);
             }
             //debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
         }
@@ -299,7 +310,7 @@ void virtualCathodeConfigReader::addToPVCommandMapV1(const std::vector<std::stri
     }// close not using vm
 }
 //______________________________________________________________________________
-void virtualCathodeConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<virtualCathodeStructs::pvStruct>& pvStruct_v,
+void virtualCathodeConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<pilaserStructs::pvStruct>& pvStruct_v,
                                                   const std::vector<std::string>& keyVal)
 {
     using namespace UTL;
@@ -336,7 +347,7 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
         {
             vcObject.name = keyVal[ONE_SIZET];
             //object.numIlocks = numIlocks;
-            debugMessage("Added ", vcObject.name );
+            debugMessage("Added vc_dataObject ", vcObject.name );
         }
         else if(keyVal[ZERO_SIZET] == PV_ROOT)
         {
@@ -351,7 +362,7 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
         if(keyVal[ZERO_SIZET] == NAME )
         {
             vcObject.mirror.name = keyVal[ONE_SIZET];
-            debugMessage("Added ", vcObject.mirror.name);
+            debugMessage("Added mirror object", vcObject.mirror.name);
         }
         else if(keyVal[ZERO_SIZET] == PV_ROOT)
         {
@@ -396,14 +407,18 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
         {
             vcObject.cov_name = keyVal[ONE_SIZET];
         }
+        else if(keyVal[ZERO_SIZET] == RESULTS_COUNT)
+        {
+           vcObject.results_count = getSize(keyVal[ONE_SIZET]);
+        }
     }
 }
 //______________________________________________________________________________
-void virtualCathodeConfigReader::addToPVStruct(std::vector<virtualCathodeStructs::pvStruct>& pvs,
-                                               const virtualCathodeStructs::VC_PV_TYPE pvtype,
+void virtualCathodeConfigReader::addToPVStruct(std::vector<pilaserStructs::pvStruct>& pvs,
+                                               const pilaserStructs::PILASER_PV_TYPE pvtype,
                                                const std::string& pvSuffix)
 {
-    pvs.push_back(virtualCathodeStructs::pvStruct());
+    pvs.push_back(pilaserStructs::pvStruct());
     pvs.back().pvType      = pvtype;
     pvs.back().pvSuffix    = pvSuffix;
     // we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
@@ -415,7 +430,7 @@ void virtualCathodeConfigReader::addToPVStruct(std::vector<virtualCathodeStructs
 
 //______________________________________________________________________________
 bool virtualCathodeConfigReader::getVirtualCathodeObject(
-                virtualCathodeStructs::virtualCathodeObject& obj)
+                pilaserStructs::virtualCathodeDataObject& obj)
 {
     obj = vcObject;
     for(auto&&it:pvMonStructs)

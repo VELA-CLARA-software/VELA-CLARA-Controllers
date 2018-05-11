@@ -47,11 +47,11 @@ class interface : public baseObject
                   const bool& show_debug_messages);
         interface(const bool& show_messages,
                   const bool& show_debug_messages,
-                  const bool  shouldStartEPICs);
+                  const bool shouldStartEPICs);
         interface(const bool& show_messages,
                   const bool& show_debug_messages,
-                  const bool  shouldStartEPICs,
-                  const bool  startVirtualMachine);
+                  const bool shouldStartEPICs,
+                  const bool startVirtualMachine);
         interface& interface::operator= ( const interface& other ) = delete;
 
         /* typedefs for long type names */

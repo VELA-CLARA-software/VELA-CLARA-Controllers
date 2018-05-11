@@ -469,8 +469,8 @@ namespace BOOST_PYTHON_INCLUDE
         const char* contName_doc        ="The name of the controller";
         const char* typeName_doc        ="The type of the controller";
 
-        py_name = "controller";
-        py_docs = "controller base class";
+        const char* controller_name = "controller";
+        const char* controller_docs = "controller base class";
 //        class_<controller,bases<baseObject>,noncopyable> cobj_def =
 //            class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
 //                .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
@@ -494,7 +494,7 @@ namespace BOOST_PYTHON_INCLUDE
         /*  if the class not been registered, register it */
         if(reg9 == nullptr)
         {
-            class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
+            class_<controller, bases<baseObject>,noncopyable>(controller_name,controller_docs, no_init)
                 .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
                 .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
                 .def_readonly("type",   &controller::controllerType, typeName_doc)
@@ -514,7 +514,7 @@ namespace BOOST_PYTHON_INCLUDE
         }
         else if ((*reg9).m_to_python == nullptr)
         {
-            class_<controller, bases<baseObject>,noncopyable>(py_name,py_docs, no_init)
+            class_<controller, bases<baseObject>,noncopyable>(controller_name,controller_docs, no_init)
                 .def("get_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
                 .def("set_CA_PEND_IO_TIMEOUT",pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
                 .def_readonly("type",   &controller::controllerType, typeName_doc)

@@ -29,7 +29,7 @@
 #include <fstream>
 // me
 #include "configReader.h"
-#include "virtualCathodeStructs.h"
+#include "pilaserStructs.h"
 //______________________________________________________________________________
 class virtualCathodeConfigReader:public configReader
 {
@@ -41,25 +41,25 @@ class virtualCathodeConfigReader:public configReader
                                    const bool usingVM);
         ~virtualCathodeConfigReader();
         bool readConfig();
-        bool getVirtualCathodeObject(virtualCathodeStructs::virtualCathodeObject & obj);
+        bool getVirtualCathodeObject(pilaserStructs::virtualCathodeDataObject & obj);
     private:
 
         bool readingMrror, readingData;
 
-        bool readConfig(std::ifstream& inputFile);
+        bool readConfig(std::ifstream& inputFile, const std::string& configFile);
 
         void addToPVCommandMapV1(const std::vector<std::string>&keyVal);
 
-        void addCOUNT_MASK_OR_CHTYPE(std::vector<virtualCathodeStructs::pvStruct>& pvStruct_v,
+        void addCOUNT_MASK_OR_CHTYPE(std::vector<pilaserStructs::pvStruct>& pvStruct_v,
                                                   const std::vector<std::string>& keyVal);
-        virtualCathodeStructs::virtualCathodeObject vcObject;
+        pilaserStructs::virtualCathodeDataObject vcObject;
 
-        std::vector<virtualCathodeStructs::pvStruct> pvMonStructs;
-        std::vector<virtualCathodeStructs::pvStruct> pvComStructs;
+        std::vector<pilaserStructs::pvStruct> pvMonStructs;
+        std::vector<pilaserStructs::pvStruct> pvComStructs;
 
 
-        void addToPVStruct(std::vector< virtualCathodeStructs::pvStruct >& pvs,
-                           const virtualCathodeStructs::VC_PV_TYPE pvtype, const std::string& pvSuffix);
+        void addToPVStruct(std::vector< pilaserStructs::pvStruct >& pvs,
+                           const pilaserStructs::PILASER_PV_TYPE pvtype, const std::string& pvSuffix);
         void addToObjectsV1(const std::vector<std::string> &keyVal );
         void addToPVMonitorMapV1  (const std::vector<std::string> &keyVal );
 };

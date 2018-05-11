@@ -30,8 +30,7 @@ offline_pilaser_Controller_Obj(nullptr),
 physical_pilaser_Controller_Obj(nullptr),
 pilaserConf(UTL::APCLARA1_CONFIG_PATH + UTL::PI_LASER_CONFIG),
 vcAnalysisConf(UTL::APCLARA1_CONFIG_PATH + UTL::VIRTUAL_CATHODE_ANALYSIS),
-piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG),
-piLaserShutterConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG)
+piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG)
 {
     std::cout << "Instantiated a VCpilaser in Quiet Mode" << std::endl;
     //ctor
@@ -67,8 +66,7 @@ pilaserController&  VCpilaser::virtual_PILaser_Controller()
                                 withEPICS,
                                 pilaserConf,
                                 vcAnalysisConf,
-                                piLaserMirrorConf,
-                                piLaserShutterConf
+                                piLaserMirrorConf
                                 );
 }
 //______________________________________________________________________________
@@ -82,8 +80,7 @@ pilaserController& VCpilaser::offline_PILaser_Controller()
                                 withEPICS,
                                 pilaserConf,
                                 vcAnalysisConf,
-                                piLaserMirrorConf,
-                                piLaserShutterConf
+                                piLaserMirrorConf
                                 );
 }
 //______________________________________________________________________________
@@ -97,8 +94,7 @@ pilaserController& VCpilaser::physical_PILaser_Controller()
                                 withEPICS,
                                 pilaserConf,
                                 vcAnalysisConf,
-                                piLaserMirrorConf,
-                                piLaserShutterConf
+                                piLaserMirrorConf
                                 );
 }
 //______________________________________________________________________________
@@ -108,8 +104,7 @@ pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
                                            const bool shouldEPICS,
                                            const std::string& pilaserConf,
                                            const std::string& vcAnalysisConf,
-                                           const std::string& piLaserMirrorConf,
-                                           const std::string& piLaserShutterConf
+                                           const std::string& piLaserMirrorConf
                                         )
 {
     if(cont)
@@ -128,8 +123,7 @@ pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
                                      name,
                                      pilaserConf,
                                      vcAnalysisConf,
-                                     piLaserMirrorConf,
-                                     piLaserShutterConf
+                                     piLaserMirrorConf
                                     );
 
     }

@@ -28,6 +28,7 @@
 //stl
 #include <string>
 #include <map>
+#include <deque>
 //epics
 #ifndef __CINT__
 #include <cadef.h>
@@ -50,21 +51,44 @@ namespace pilaserStructs
                                                         (STATUS)
                                                         (HALF_WAVE_PLATE_SET)
                                                         (HALF_WAVE_PLATE_READ)
-                                                        (UNKNOWN_PV)
+                                                        (X_RBV)
+                                                        (Y_RBV)
+                                                        (SIGMA_X_RBV)
+                                                        (SIGMA_Y_RBV)
+                                                        (COV_XY_RBV)
+                                                        (X_PIX)
+                                                        (Y_PIX)
+                                                        (SIGMA_X_PIX)
+                                                        (SIGMA_Y_PIX)
+                                                        (COV_XY_PIX)
+                                                        (VC_INTENSITY)
+                                                        (PIXEL_RESULTS)
+                                                        (H_POS)
+                                                        (V_POS)
+                                                        (H_MREL)
+                                                        (V_MREL)
+                                                        (H_STEP)
+                                                        (V_STEP)
+                                                        (H_MOVE)
+                                                        (V_MOVE)
+                                                        (H_STOP)
+                                                        (V_STOP)
+                                                        (POS_UPDATE)
+                                                        (UNKNOWN)
                                         )
     struct monitorStruct
     {
         monitorStruct():
-            monType(UNKNOWN_PV),
+            monType(UNKNOWN),
             interface(nullptr),
             EVID(nullptr),
-            pilaserObj(nullptr)
+            object(nullptr)
             {}
         PILASER_PV_TYPE   monType;
-        pilaserInterface* interface;
-        chtype            CHTYPE;
-        evid              EVID;
-        pilaserObject*    pilaserObj;
+        pilaserInterface*  interface;
+        chtype                    CHTYPE;
+        evid                      EVID;
+        pilaserObject* object;
     };
     /*
         The hardware object holds a map keyed by PV type,
@@ -78,15 +102,87 @@ namespace pilaserStructs
             pvSuffix(UTL::UNKNOWN_STRING),
             COUNT(UTL::ZERO_UL),
             MASK(UTL::ZERO_UL),
-            pvType(UNKNOWN_PV)
-            {};
-        PILASER_PV_TYPE pvType;
-        chid            CHID;
-        std::string     pvSuffix;
-        unsigned long   COUNT, MASK;
-        chtype          CHTYPE;
-        evid            EVID;
+            pvType(UNKNOWN)
+            {}
+        PILASER_PV_TYPE    pvType;
+        chid          CHID;
+        std::string   pvSuffix;
+        unsigned long COUNT, MASK;
+        chtype        CHTYPE;
+        evid          EVID;
     };
+    // The main hardware object holds ...
+    struct pilMirrorObject
+    {
+        pilMirrorObject():
+            hPos(UTL::DUMMY_DOUBLE),
+            vPos(UTL::DUMMY_DOUBLE),
+            hStep(UTL::DUMMY_DOUBLE),
+            vStep(UTL::DUMMY_DOUBLE),
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT)
+            {};
+        std::string name, pvRoot;
+        double hPos, vPos, hStep, vStep;
+    };
+
+    // The main hardware object holds ...
+    struct virtualCathodeDataObject
+    {
+        virtualCathodeDataObject():
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            buffer_size(UTL::BUFFER_60000),
+            x_pos(UTL::DUMMY_SIZET),
+            y_pos(UTL::DUMMY_SIZET),
+            x_sigma_pos(UTL::DUMMY_SIZET),
+            y_sigma_pos(UTL::DUMMY_SIZET),
+            cov_pos(UTL::DUMMY_SIZET),
+            x_name(UTL::UNKNOWN_NAME),
+            y_name(UTL::UNKNOWN_NAME),
+            x_sigma_name(UTL::UNKNOWN_NAME),
+            y_sigma_name(UTL::UNKNOWN_NAME),
+            cov_name(UTL::UNKNOWN_NAME),
+            buffer_full(false),
+            x(UTL::DUMMY_DOUBLE),
+            y(UTL::DUMMY_DOUBLE),
+            sig_x(UTL::DUMMY_DOUBLE),
+            sig_y(UTL::DUMMY_DOUBLE),
+            sig_xy(UTL::DUMMY_DOUBLE),
+            x_pix(UTL::DUMMY_DOUBLE),
+            y_pix(UTL::DUMMY_DOUBLE),
+            sig_x_pix(UTL::DUMMY_DOUBLE),
+            sig_y_pix(UTL::DUMMY_DOUBLE),
+            sig_xy_pix(UTL::DUMMY_DOUBLE)
+            {};
+        double hPos, vPos, hStep, vStep;
+        std::string name, pvRoot, x_name, y_name, x_sigma_name, y_sigma_name, cov_name;
+        size_t buffer_size, x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos,results_count;
+        double x,y,sig_x,sig_y,sig_xy,x_pix,y_pix,sig_x_pix,sig_y_pix,sig_xy_pix;
+        std::deque<double> x_buf,y_buf,sig_x_buf,sig_y_buf,sig_xy_buf,x_pix_buf,y_pix_buf,sig_x_pix_buf,sig_y_pix_buf,sig_xy_pix_buf;
+        bool buffer_full;
+        /*
+            time stamped pixel array readback
+        */
+        std::vector<double> pix_values;
+        std::deque<std::vector<double>> pix_values_buffer;
+        std::string pix_values_time;
+        /*
+            this map is defined in the config file
+            and tells us which element is which
+            analysis data for the pixel array RBV
+        */
+        std::map<size_t, std::string> pixel_values_pos;
+        std::map<std::string, double> pixel_values;
+#ifdef BUILD_DLL
+        boost::python::dict pixel_values_dict;
+#endif
+        pilMirrorObject mirror;
+        std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
+    };
+
+
     // The main hardware object holds ...
     struct pilaserObject
     {
@@ -101,6 +197,7 @@ namespace pilaserStructs
             {};
         std::string name, pvRoot;
         double intensity,setCharge,HWP;
+        virtualCathodeDataObject vcData;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;

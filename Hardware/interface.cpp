@@ -41,8 +41,8 @@ interface(show_messages, show_debug_messages, shouldStartEPICs, false)
 //______________________________________________________________________________
 interface::interface(const bool& show_messages,
                      const bool& show_debug_messages,
-                     const bool  shouldStartEPICs,
-                     const bool  startVirtualMachine):
+                     const bool shouldStartEPICs,
+                     const bool startVirtualMachine):
 thisCaContext(nullptr),
 configFileRead(false),
 startVirtualMachine(startVirtualMachine),

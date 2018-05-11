@@ -89,7 +89,7 @@ class controller : public baseObject
     protected:
         ~controller();
         /* these bools determine if messages can be printed or not,
-           them are passed to the baseObject and used by
+           they are passed to the baseObject and used by
            all other classes in the project
         */
         bool& SHOW_DEBUG_MESSAGES;

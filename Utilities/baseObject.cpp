@@ -52,7 +52,8 @@ SHOW_DEBUG_MESSAGES(show_debug_messages)
     debugMessage("baseObject constructor, count = ", basecount);
 }
 //______________________________________________________________________________
-baseObject::~baseObject(){}
+baseObject::~baseObject()
+{}
 //______________________________________________________________________________
 bool baseObject::polaritiesMatch(const std::vector<double>& vals) const
 {

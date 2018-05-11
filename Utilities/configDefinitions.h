@@ -272,6 +272,9 @@ namespace UTL
     //when using the virtual machine these are used, April 2018 (DJS 1st faked 17-02-2017)
     const std::string PV_SUFFIX_PIL_H_POS = "PV_SUFFIX_PIL_H_POS";
     const std::string PV_SUFFIX_PIL_V_POS = "PV_SUFFIX_PIL_V_POS";
+    const std::string PV_SUFFIX_PIL_V_MREL = "PV_SUFFIX_PIL_V_MREL";
+    const std::string PV_SUFFIX_PIL_H_MREL = "PV_SUFFIX_PIL_H_MREL";
+
 
     const std::string X_POS = "X_POS";
     const std::string Y_POS = "Y_POS";
@@ -283,6 +286,7 @@ namespace UTL
     const std::string X_SIGMA_NAME = "X_SIGMA_NAME";
     const std::string Y_SIGMA_NAME = "Y_SIGMA_NAME";
     const std::string COV_NAME = "COV_NAME";
+    const std::string RESULTS_COUNT = "RESULTS_COUNT";
 
 /// Cameras
     const std::string DAQ_CAMERA_CONFIG = "cameraDAQ.config";
