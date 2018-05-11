@@ -153,6 +153,52 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* areAllClosed_doc = "areAllClosed_doc.";
     const char* getShutterNames_doc = "getShutterNames_doc.";
 
+
+
+    const char* getHpos_doc  = "getHpos_doc.";
+    const char* getVpos_doc  = "getVpos_doc.";
+    const char* setHpos_doc  = "setHpos_doc.";
+    const char* setVpos_doc  = "setVpos_doc.";
+    const char* getHstep_doc = "getHstep_doc.";
+    const char* getVstep_doc = "getVstep_doc.";
+    const char* setVstep_doc = "setVstep_doc.";
+    const char* setHstep_doc = "setHstep_doc.";
+    const char* moveH_doc    = "moveH_doc.";
+    const char* moveV_doc    = "moveV_doc.";
+    const char* getXBuffer_doc    = "getXBuffer_doc.";
+    const char* getYBuffer_doc    = "getYBuffer_doc.";
+    const char* getSigXBuffer_doc = "getSigXBuffer_doc.";
+    const char* getSigYBuffer_doc = "getSigYBuffer_doc.";
+    const char* getSigXYBuffer_doc= "getSigXYBuffer_doc.";
+    const char* getXPixBuffer_doc = "getXPixBuffer_doc.";
+    const char* getYPixBuffer_doc = "getYPixBuffer_doc.";
+    const char* getSigXPixBuffer_doc  = "getSigXPixBuffer_doc.";
+    const char* getSigYPixBuffer_doc  = "getSigYPixBuffer_doc.";
+    const char* getSigXYPixBuffer_doc = "getSigXYPixBuffer_doc.";
+    const char* getQBuffer_doc        = "getQBuffer_doc.";
+
+    const char* getX_doc    = "getX_doc.";
+    const char* getY_doc    = "getY_doc.";
+    const char* getSigX_doc = "getSigX_doc.";
+    const char* getSigY_doc = "getSigY_doc.";
+    const char* getSigXY_doc= "getSigXY_doc.";
+    const char* getXPix_doc = "getXPix_doc.";
+    const char* getYPix_doc = "getYPix_doc.";
+    const char* getSigXPix_doc  = "getSigXPix_doc.";
+    const char* getSigYPix_doc  = "getSigYPix_doc.";
+    const char* getSigXYPix_doc = "getSigXYP_doc.";
+    const char* getQ_doc        = "getQ_doc.";
+
+    const char* clearBuffer_doc = "clearBuffer_doc.";
+    const char* isBufferFull_doc = "isBufferFull_doc.";
+    const char* isBufferNotFull_doc = "isBufferNotFull_doc.";
+    const char* setBufferSize_doc = "setBufferSize_doc.";
+    const char* getBufferSize_doc = "getBufferSize_doc";
+    const char* getPixelValues_doc = "getPixelValues_doc";
+    const char* getPixelValuesBuffer_doc = "getPixelValuesBuffer_doc";
+    const char* getBufferCount_doc = "getBufferCount_doc";
+
+
     class_<pilaserController, bases<controller>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
@@ -168,28 +214,49 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("isStabilisationOn",&pilaserController::isStabilisationOn,isStabilisationOn_doc)
         .def("disableStabilisation",&pilaserController::disableStabilisation,disableStabilisation_doc)
         .def("enableStabilisation",&pilaserController::enableStabilisation,enableStabilisation_doc)
-        .def("getHpos", &pilaserController::getHpos,enableStabilisation_doc)
-        .def("getVpos", &pilaserController::getVpos,enableStabilisation_doc)
-        .def("setHpos", &pilaserController::setHpos,enableStabilisation_doc)
-        .def("setVpos", &pilaserController::setVpos,enableStabilisation_doc)
-        .def("getHstep",&pilaserController::getHstep,enableStabilisation_doc)
-        .def("getVstep",&pilaserController::getVstep,enableStabilisation_doc)
-        .def("setHstep",&pilaserController::setHstep,enableStabilisation_doc)
-        .def("setVstep",&pilaserController::setVstep,enableStabilisation_doc)
-        .def("moveH",   &pilaserController::moveH,enableStabilisation_doc)
-        .def("moveV",   &pilaserController::moveV,enableStabilisation_doc)
+        .def("getHpos", &pilaserController::getHpos, getHpos_doc )
+        .def("getVpos", &pilaserController::getVpos, getVpos_doc )
+        .def("setHpos", &pilaserController::setHpos, setHpos_doc )
+        .def("setVpos", &pilaserController::setVpos, setVpos_doc )
+        .def("getHstep",&pilaserController::getHstep,getHstep_doc)
+        .def("getVstep",&pilaserController::getVstep,getVstep_doc)
+        .def("setHstep",&pilaserController::setHstep,setVstep_doc)
+        .def("setVstep",&pilaserController::setVstep,setHstep_doc)
+        .def("moveH",   &pilaserController::moveH,   moveH_doc   )
+        .def("moveV",   &pilaserController::moveV,   moveV_doc   )
 
+        .def("getX",        &pilaserController::getX,    getX_doc    )
+        .def("getY",        &pilaserController::getY,    getY_doc    )
+        .def("getSigX",     &pilaserController::getSigX, getSigX_doc )
+        .def("getSigY",     &pilaserController::getSigY, getSigY_doc )
+        .def("getSigXY",    &pilaserController::getSigXY,getSigXY_doc )
+        .def("getXPix",     &pilaserController::getXPix, getXPix_doc )
+        .def("getYPix",     &pilaserController::getYPix, getYPix_doc )
+        .def("getSigXPix",  &pilaserController::getSigXPix,  getSigXPix_doc)
+        .def("getSigYPix",  &pilaserController::getSigYPix,  getSigYPix_doc)
+        .def("getSigXYPix", &pilaserController::getSigXYPix, getSigXYPix_doc)
+        .def("getQ",        &pilaserController::getQ,        getQ_doc)
 
-        .def("getXBuffer",   &pilaserController::getXBuffer_Py,enableStabilisation_doc)
-        .def("getYBuffer",   &pilaserController::getYBuffer_Py,enableStabilisation_doc)
-        .def("getSigXBuffer",   &pilaserController::getSigXBuffer_Py,enableStabilisation_doc)
-        .def("getSigYBuffer",   &pilaserController::getSigYBuffer_Py,enableStabilisation_doc)
-        .def("getSigXYBuffer",   &pilaserController::getSigXYBuffer_Py,enableStabilisation_doc)
-        .def("getXPixBuffer",   &pilaserController::getXPixBuffer_Py,enableStabilisation_doc)
-        .def("getYPixBuffer",   &pilaserController::getYPixBuffer_Py,enableStabilisation_doc)
-        .def("getSigXPixBuffer",   &pilaserController::getSigXPixBuffer_Py,enableStabilisation_doc)
-        .def("getSigYPixBuffer",   &pilaserController::getSigYPixBuffer_Py,enableStabilisation_doc)
-        .def("getSigXYPixBuffer",   &pilaserController::getSigXYPixBuffer_Py,enableStabilisation_doc)
+        .def("getBufferCount",     &pilaserController::getBufferCount,           getBufferCount_doc)
+        .def("clearBuffer",        &pilaserController::clearBuffer,              clearBuffer_doc)
+        .def("isBufferFull",       &pilaserController::isBufferFull,             isBufferFull_doc)
+        .def("isBufferNotFull",    &pilaserController::isBufferNotFull,          isBufferNotFull_doc)
+        .def("setBufferSize",      &pilaserController::setBufferSize,            setBufferSize_doc)
+        .def("getBufferSize",      &pilaserController::getBufferSize,            getBufferSize_doc)
+        .def("getPixelValues",     &pilaserController::getPixelValues_Py,        getPixelValues_doc)
+        .def("getPixelValuesBuffer",&pilaserController::getPixelValuesBuffer_Py, getPixelValuesBuffer_doc)
+
+        .def("getXBuffer",        &pilaserController::getXBuffer_Py,    getXBuffer_doc    )
+        .def("getYBuffer",        &pilaserController::getYBuffer_Py,    getYBuffer_doc    )
+        .def("getSigXBuffer",     &pilaserController::getSigXBuffer_Py, getSigXBuffer_doc )
+        .def("getSigYBuffer",     &pilaserController::getSigYBuffer_Py, getSigYBuffer_doc )
+        .def("getSigXYBuffer",    &pilaserController::getSigXYBuffer_Py,getSigXYBuffer_doc )
+        .def("getXPixBuffer",     &pilaserController::getXPixBuffer_Py, getXPixBuffer_doc )
+        .def("getYPixBuffer",     &pilaserController::getYPixBuffer_Py, getYPixBuffer_doc )
+        .def("getSigXPixBuffer",  &pilaserController::getSigXPixBuffer_Py,  getSigXPixBuffer_doc)
+        .def("getSigYPixBuffer",  &pilaserController::getSigYPixBuffer_Py,  getSigYPixBuffer_doc)
+        .def("getSigXYPixBuffer", &pilaserController::getSigXYPixBuffer_Py, getSigXYPixBuffer_doc)
+        .def("getQBuffer",        &pilaserController::getQBuffer_Py,        getQBuffer_doc)
         ;
 
 //

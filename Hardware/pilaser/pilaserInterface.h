@@ -89,9 +89,25 @@ class pilaserInterface : public interface
         std::deque<double> getSigXPixBuffer()const;
         std::deque<double> getSigYPixBuffer()const;
         std::deque<double> getSigXYPixBuffer()const;
+        std::deque<double> getQBuffer()const;
 
+        std::vector<double> getPixelValues()const;
+        std::deque<std::vector<double>> getPixelValuesBuffer()const;
 
+        bool isBufferFull();
+        bool isBufferNotFull();
 
+        double getX()const;
+        double getY()const;
+        double getSigX()const;
+        double getSigY()const;
+        double getSigXY()const;
+        double getXPix()const;
+        double getYPix()const;
+        double getSigXPix()const;
+        double getSigYPix()const;
+        double getSigXYPix()const;
+        double getQ()const;
 
         bool setHpos(const double value);
         bool setVpos(const double value);
@@ -105,7 +121,8 @@ class pilaserInterface : public interface
         bool moveV();
 
         void setBufferSize(const size_t s);
-        size_t getBufferSize(size_t s);
+        size_t getBufferCount();
+        size_t getBufferSize();
         void clearBuffer();
 
         bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
@@ -137,14 +154,11 @@ class pilaserInterface : public interface
         void updatePixelResults(const event_handler_args& args);
 
         //bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
-
         /*
             all client mirrro set functions route to here
         */
         bool setValue(pilaserStructs::pvStruct& pvs,const double value);
-
-        bool move(chtype& cht, chid& chi,const char* m1,const char* m2);
-
+        bool move(chtype& cht, chid& chi, const double val, const char* m1, const char* m2);
 };
 //______________________________________________________________________________
 #endif // _PI_LASER_INTERFACE_H

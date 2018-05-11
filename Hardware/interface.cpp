@@ -498,6 +498,15 @@ void interface::getDBRdouble_timestamp(const event_handler_args& args,
     updateTime(ts.etime, ts.time_ns, ts.time_Str);
 }
 //______________________________________________________________________________
+void interface::getDBRdouble_timestamp(const event_handler_args& args,
+                                       double& val)
+{
+    const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
+    val = p->value;
+    //ts.etime = p->stamp;
+    //updateTime(ts.etime, ts.time_ns, ts.time_Str);
+}
+//______________________________________________________________________________
 void interface::pause_x(std::chrono::milliseconds x) const
 {
     std::this_thread::sleep_for(x);

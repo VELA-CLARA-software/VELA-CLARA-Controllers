@@ -228,6 +228,7 @@ bool pilaserMirrorInterface::setVstep(const double value)
         bool s = setValue(
             laserMirror.pvMonStructs.at(pilaserMirrorStructs::PIL_MIRROR_PV_TYPE::V_STEP),value);
     }
+    if(value)
     laserMirror.vStep = value;
     return s;
 }

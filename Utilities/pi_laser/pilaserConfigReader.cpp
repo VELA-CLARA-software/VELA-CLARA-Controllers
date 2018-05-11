@@ -162,6 +162,10 @@ void pilaserConfigReader::addToPVMonitorMapV1(const std::vector<std::string>& ke
         {
             addPVStruct(pvMonStructs, keyVal);
         }
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_WCM_CHARGE)
+        {
+            addPVStruct(pvMonStructs, keyVal);
+        }
         //debugMessage("Added ", pvMonStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvMonStructs.back().pvType) ) ;
     }
     else
@@ -184,13 +188,18 @@ void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &k
     if(stringIsSubString(keyVal[UTL::ZERO_SIZET], "SUFFIX" ) )
     {
         if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STABILISATION)
+        {
             addPVStruct(pvComStructs, keyVal );
+        }
         else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY)
+        {
             addPVStruct(pvComStructs, keyVal );
+        }
         else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
         {
             addPVStruct(pvComStructs, keyVal);
         }
+
         //debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
     }
     else
@@ -222,6 +231,10 @@ void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pv
     {
         pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_READ;
     }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_WCM_CHARGE)
+    {
+        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::WCM_Q;
+    }
     /*
         we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
         so you can store a ref to which vector to update with that info.
@@ -247,6 +260,14 @@ void pilaserConfigReader::addTopilaserObjectsV1(const std::vector<std::string>& 
             pilaserObject.pvRoot =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
         else
             pilaserObject.pvRoot = keyVal[UTL::ONE_SIZET];
+    }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_ROOT_Q)
+    {
+        if(useVM)
+            pilaserObject.pvRootQ =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
+        else
+            pilaserObject.pvRootQ = keyVal[UTL::ONE_SIZET];
+
     }
 }
 //______________________________________________________________________________

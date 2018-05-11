@@ -129,7 +129,11 @@ void pilaserInterface::initChids()
     // init chids
     for(auto&& it:pilaser.pvMonStructs)
     {
-        addChannel(pilaser.pvRoot, it.second);
+        if(it.first == pilaserStructs::PILASER_PV_TYPE::WCM_Q)
+            s = pilaser.pvRootQ;
+        else
+            s = pilaser.pvRoot;
+        addChannel(s, it.second);
     }
     for(auto&& it:pilaser.pvComStructs)
     {
@@ -265,43 +269,43 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
             pilaser.HWP = getDBRdouble(args);
             break;
         case PILASER_PV_TYPE::X_RBV:
-            pilaser.vcData.x = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.x );
             addToBuffer(pilaser.vcData.x,pilaser.vcData.x_buf);
             break;
         case PILASER_PV_TYPE::Y_RBV:
-            pilaser.vcData.y = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.y );
             addToBuffer(pilaser.vcData.y,pilaser.vcData.y_buf);
             break;
         case PILASER_PV_TYPE::SIGMA_X_RBV:
-            pilaser.vcData.sig_x = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.sig_x);
             addToBuffer(pilaser.vcData.sig_x,pilaser.vcData.sig_x_buf);
             break;
         case PILASER_PV_TYPE::SIGMA_Y_RBV:
-            pilaser.vcData.sig_y = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.sig_y);
             addToBuffer(pilaser.vcData.sig_y,pilaser.vcData.sig_y_buf);
             break;
         case PILASER_PV_TYPE::COV_XY_RBV:
-            pilaser.vcData.sig_xy = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.sig_xy);
             addToBuffer(pilaser.vcData.sig_xy,pilaser.vcData.sig_xy_buf);
             break;
         case PILASER_PV_TYPE::X_PIX:
-            pilaser.vcData.x_pix = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.x_pix);
             addToBuffer(pilaser.vcData.x_pix,pilaser.vcData.x_pix_buf);
             break;
         case PILASER_PV_TYPE::Y_PIX:
-            pilaser.vcData.y_pix = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.y_pix);
             addToBuffer(pilaser.vcData.y_pix,pilaser.vcData.y_pix_buf);
             break;
         case PILASER_PV_TYPE::SIGMA_X_PIX:
-            pilaser.vcData.sig_x_pix = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.sig_x_pix);
             addToBuffer(pilaser.vcData.sig_x_pix,pilaser.vcData.sig_x_pix_buf);
             break;
         case PILASER_PV_TYPE::SIGMA_Y_PIX:
-            pilaser.vcData.sig_y_pix = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.sig_y_pix);
             addToBuffer(pilaser.vcData.sig_y_pix,pilaser.vcData.sig_y_pix_buf);
             break;
         case PILASER_PV_TYPE::COV_XY_PIX:
-            pilaser.vcData.sig_xy_pix = getDBRdouble(args);
+            getDBRdouble_timestamp(args,pilaser.vcData.sig_xy_pix);
             addToBuffer(pilaser.vcData.sig_xy_pix,pilaser.vcData.sig_xy_pix_buf);
             break;
         case PILASER_PV_TYPE::VC_INTENSITY:
@@ -335,6 +339,10 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
             break;
         case PILASER_PV_TYPE::POS_UPDATE:
             break;
+        case PILASER_PV_TYPE::WCM_Q:
+            pilaser.Q = getDBRdouble(args);
+            addToBuffer(pilaser.Q,pilaser.Q_buf);
+            break;
         default:
             message("ERROR nkown PV passed to pilaserInterface::updateValue, ",pv);
             break;
@@ -361,15 +369,13 @@ void pilaserInterface::updatePixelResults(const event_handler_args& args)
         */
         pilaser.vcData.pix_values_time = timeString;
         std::copy(pValue, pValue + pilaser.vcData.pix_values.size(), pilaser.vcData.pix_values.begin());
-
     }
     else /* set where pValue points to */
     {
         pValue = (dbr_double_t*)args.dbr;
     }
-
     /*
-        Now we have the neew values, update Buffers
+        Now we have the new values, update Buffers
     */
     updateAnalysisBuffers();
 }
@@ -377,15 +383,27 @@ void pilaserInterface::updatePixelResults(const event_handler_args& args)
 void pilaserInterface::addToBuffer(const double val,std::deque<double>& buffer)
 {
     buffer.push_back(val);
+    pilaser.vcData.buffer_count += UTL::ONE_SIZET;
     if(buffer.size() > pilaser.vcData.buffer_size )
     {
         buffer.pop_front();
+        pilaser.vcData.buffer_full = true;
+        //message("BUFFER FULL!!! ");
+        pilaser.vcData.buffer_count -= UTL::ONE_SIZET;
+    }
+    else
+    {
+        pilaser.vcData.buffer_full = false;
     }
 }
 //____________________________________________________________________________________________
 void pilaserInterface::updateAnalysisBuffers()
 {
-
+    pilaser.vcData.pix_values_buffer.push_back(pilaser.vcData.pix_values);
+    if(pilaser.vcData.pix_values_buffer.size() > pilaser.vcData.buffer_size )
+    {
+        pilaser.vcData.pix_values_buffer.pop_front();
+    }
 }
 //____________________________________________________________________________________________
 void pilaserInterface::setBufferSize(const size_t s)
@@ -393,9 +411,14 @@ void pilaserInterface::setBufferSize(const size_t s)
     pilaser.vcData.buffer_size = s;
 }
 //____________________________________________________________________________________________
-size_t pilaserInterface::getBufferSize(size_t s)
+size_t pilaserInterface::getBufferSize()
 {
     return pilaser.vcData.buffer_size;
+}
+//____________________________________________________________________________________________
+size_t pilaserInterface::getBufferCount()
+{
+    return pilaser.vcData.buffer_count;
 }
 //____________________________________________________________________________________________
 void pilaserInterface::clearBuffer()
@@ -411,6 +434,88 @@ void pilaserInterface::clearBuffer()
     pilaser.vcData.sig_y_pix_buf.clear();
     pilaser.vcData.sig_xy_pix_buf.clear();
     pilaser.vcData.pix_values_buffer.clear();
+    pilaser.vcData.buffer_full = false;
+    pilaser.vcData.buffer_count = UTL::ZERO_SIZET;
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::isBufferFull()
+{
+    return pilaser.vcData.buffer_full;
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::isBufferNotFull()
+{
+    return !isBufferFull();
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getX()const
+{
+    return pilaser.vcData.x;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getY()const
+{
+    return pilaser.vcData.y;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getSigX()const
+{
+    return pilaser.vcData.sig_x;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getSigY()const
+{
+    return pilaser.vcData.sig_y;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getSigXY()const
+{
+    return pilaser.vcData.sig_xy;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getXPix()const
+{
+    return pilaser.vcData.x_pix;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getYPix()const
+{
+    return pilaser.vcData.y_pix;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getSigXPix()const
+{
+    return pilaser.vcData.sig_x_pix;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getSigYPix()const
+{
+    return pilaser.vcData.sig_y_pix;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getSigXYPix()const
+{
+    return pilaser.vcData.sig_xy_pix;
+}
+//____________________________________________________________________________________________
+double pilaserInterface::getQ()const
+{
+    return pilaser.Q;
+}
+//____________________________________________________________________________________________
+std::vector<double> pilaserInterface::getPixelValues()const
+{
+    return pilaser.vcData.pix_values;
+}
+//____________________________________________________________________________________________
+std::deque<std::vector<double>> pilaserInterface::getPixelValuesBuffer()const
+{
+    return pilaser.vcData.pix_values_buffer;
+}
+//____________________________________________________________________________________________
+std::deque<double> pilaserInterface::getQBuffer()const
+{
+    return pilaser.Q_buf;
 }
 //____________________________________________________________________________________________
 std::deque<double> pilaserInterface::getXBuffer()const
@@ -623,7 +728,20 @@ bool pilaserInterface::setHstep(const double value)
         bool s = setValue(
             pilaser.vcData.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::H_STEP),value);
     }
-    pilaser.vcData.mirror.hStep = value;
+    else
+    {
+        if( fabs(value) <= pilaser.vcData.mirror.STEP_MAX)
+        {
+            pilaser.vcData.mirror.hStep = value;
+        }
+        else
+        {
+            if(value < UTL::ZERO_DOUBLE )
+                pilaser.vcData.mirror.hStep = -pilaser.vcData.mirror.STEP_MAX;
+            else
+                pilaser.vcData.mirror.hStep = pilaser.vcData.mirror.STEP_MAX;
+        }
+    }
     return s;
 }
 //____________________________________________________________________________________________
@@ -635,16 +753,30 @@ bool pilaserInterface::setVstep(const double value)
         bool s = setValue(
             pilaser.vcData.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::V_STEP),value);
     }
-    pilaser.vcData.mirror.vStep = value;
+    else
+    {
+        if(fabs(value) <= pilaser.vcData.mirror.STEP_MAX)
+        {
+            pilaser.vcData.mirror.vStep = -value;
+        }
+        else
+        {
+            if(value < UTL::ZERO_DOUBLE )
+                pilaser.vcData.mirror.vStep = pilaser.vcData.mirror.STEP_MAX;
+            else
+                pilaser.vcData.mirror.vStep = -pilaser.vcData.mirror.STEP_MAX;
+
+        }
+    }
     return s;
 }
 //____________________________________________________________________________________________
-double pilaserInterface::getHpos() const
+double pilaserInterface::getHpos()const
 {
     return pilaser.vcData.mirror.hPos;
 }
 //____________________________________________________________________________________________
-double pilaserInterface::getVpos() const
+double pilaserInterface::getVpos()const
 {
     return pilaser.vcData.mirror.vPos;
 }
@@ -673,31 +805,29 @@ bool pilaserInterface::setVpos(const double value)
 //____________________________________________________________________________________________
 bool pilaserInterface::moveH()
 {
-    pilaserStructs::pvStruct& pvs = pilaser.vcData.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::H_MOVE);
-    return move(pvs.CHTYPE,pvs.CHID,
+    pilaserStructs::pvStruct& pvs = pilaser.vcData.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::H_MREL);
+    return move(pvs.CHTYPE,pvs.CHID,pilaser.vcData.mirror.hStep,
                   "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO MOVE H",
                   "!!TIMEOUT!! FAILED TO SEND MOVE H");
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::moveV()
 {
-    pilaserStructs::pvStruct& pvs = pilaser.vcData.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::V_MOVE);
-    return move(pvs.CHTYPE,pvs.CHID,
+    pilaserStructs::pvStruct& pvs = pilaser.vcData.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::V_MREL);
+    return move(pvs.CHTYPE,pvs.CHID,pilaser.vcData.mirror.vStep,
                   "!!TIMEOUT!! FAILED TO SEND ACTIVATE TO MOVE V",
                   "!!TIMEOUT!! FAILED TO SEND MOVE V");
 }
 //____________________________________________________________________________________________
-bool pilaserInterface::move(chtype& cht, chid& chi,const char* m1,const char* m2)
+bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* m1,const char* m2)
 {
     //need to figure out how to move th elaser form command line...
 
-    int status = caput(cht, chi, EPICS_ACTIVATE, "", m1);
+    int status = caput(cht, chi, val, "", m1);
     if(status == ECA_NORMAL)
     {
-        status = caput(cht, chi, EPICS_SEND, "", m2);
-    }
-    if(status == ECA_NORMAL)
         return true;
+    }
     return false;
 }
 //______________________________________________________________________________

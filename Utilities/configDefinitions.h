@@ -56,6 +56,7 @@ namespace UTL
     const size_t TEN_SIZET    = 10;
     const size_t HUNDRED_SIZET= 100;
     const size_t BUFFER_TEN   = 10;
+    const size_t BUFFER_HUNDRED = 100;
     const size_t BUFFER_EIGHTY= 80;
     const size_t BUFFER_36    = 36;
     const size_t BUFFER_60000 = 60000;
@@ -274,6 +275,7 @@ namespace UTL
     const std::string PV_SUFFIX_PIL_V_POS = "PV_SUFFIX_PIL_V_POS";
     const std::string PV_SUFFIX_PIL_V_MREL = "PV_SUFFIX_PIL_V_MREL";
     const std::string PV_SUFFIX_PIL_H_MREL = "PV_SUFFIX_PIL_H_MREL";
+    const std::string PV_SUFFIX_WCM_CHARGE = "PV_SUFFIX_WCM_CHARGE";
 
 
     const std::string X_POS = "X_POS";
@@ -287,6 +289,8 @@ namespace UTL
     const std::string Y_SIGMA_NAME = "Y_SIGMA_NAME";
     const std::string COV_NAME = "COV_NAME";
     const std::string RESULTS_COUNT = "RESULTS_COUNT";
+    const std::string PV_ROOT_Q = "PV_ROOT_Q";
+    const std::string STEP_MAX = "STEP_MAX";
 
 /// Cameras
     const std::string DAQ_CAMERA_CONFIG = "cameraDAQ.config";

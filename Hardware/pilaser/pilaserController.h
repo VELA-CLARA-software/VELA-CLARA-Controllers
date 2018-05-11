@@ -83,6 +83,18 @@ class pilaserController : public controller
         bool moveH();
         bool moveV();
 
+        double getX()const;
+        double getY()const;
+        double getSigX()const;
+        double getSigY()const;
+        double getSigXY()const;
+        double getXPix()const;
+        double getYPix()const;
+        double getSigXPix()const;
+        double getSigYPix()const;
+        double getSigXYPix()const;
+        double getQ()const;
+
         std::deque<double> getXBuffer()const;
         std::deque<double> getYBuffer()const;
         std::deque<double> getSigXBuffer()const;
@@ -93,8 +105,21 @@ class pilaserController : public controller
         std::deque<double> getSigXPixBuffer()const;
         std::deque<double> getSigYPixBuffer()const;
         std::deque<double> getSigXYPixBuffer()const;
+        std::deque<double> getQBuffer()const;
+
+        std::vector<double> getPixelValues()const;
+        std::deque<std::vector<double>> getPixelValuesBuffer()const;
+
+        void clearBuffer();
+        bool isBufferFull();
+        bool isBufferNotFull();
+        void setBufferSize(const size_t s);
+        size_t getBufferSize();
+        size_t getBufferCount();
 
     #ifdef BUILD_DLL
+        boost::python::list getPixelValues_Py()const;
+        boost::python::list getPixelValuesBuffer_Py()const;
         boost::python::list getXBuffer_Py()const;
         boost::python::list getYBuffer_Py()const;
         boost::python::list getSigXBuffer_Py()const;
@@ -105,6 +130,7 @@ class pilaserController : public controller
         boost::python::list getSigXPixBuffer_Py()const;
         boost::python::list getSigYPixBuffer_Py()const;
         boost::python::list getSigXYPixBuffer_Py()const;
+        boost::python::list getQBuffer_Py()const;
     #endif // BUILD_DLL
 
 

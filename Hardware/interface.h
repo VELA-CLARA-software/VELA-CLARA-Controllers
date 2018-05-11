@@ -135,6 +135,7 @@ class interface : public baseObject
         static void        getDBRdouble_timestamp(const event_handler_args& args,
                                                   HWC_ENUM::epics_timestamp& ts,
                                                   double& val);
+        void getDBRdouble_timestamp(const event_handler_args& args, double& val);
         void updateBoolState(const event_handler_args& args, bool& parameter);
 
         void checkCHIDState(const chid& CHID, const std::string& name);

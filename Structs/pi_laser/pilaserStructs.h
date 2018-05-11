@@ -75,6 +75,7 @@ namespace pilaserStructs
                                                         (V_STOP)
                                                         (POS_UPDATE)
                                                         (UNKNOWN)
+                                                        (WCM_Q)
                                         )
     struct monitorStruct
     {
@@ -120,10 +121,11 @@ namespace pilaserStructs
             hStep(UTL::DUMMY_DOUBLE),
             vStep(UTL::DUMMY_DOUBLE),
             name(UTL::UNKNOWN_NAME),
-            pvRoot(UTL::UNKNOWN_PVROOT)
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            STEP_MAX(UTL::ZERO_DOUBLE)
             {};
         std::string name, pvRoot;
-        double hPos, vPos, hStep, vStep;
+        double hPos, vPos, hStep, vStep,STEP_MAX;
     };
 
     // The main hardware object holds ...
@@ -132,7 +134,7 @@ namespace pilaserStructs
         virtualCathodeDataObject():
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
-            buffer_size(UTL::BUFFER_60000),
+            buffer_size(UTL::BUFFER_HUNDRED),
             x_pos(UTL::DUMMY_SIZET),
             y_pos(UTL::DUMMY_SIZET),
             x_sigma_pos(UTL::DUMMY_SIZET),
@@ -157,7 +159,7 @@ namespace pilaserStructs
             {};
         double hPos, vPos, hStep, vStep;
         std::string name, pvRoot, x_name, y_name, x_sigma_name, y_sigma_name, cov_name;
-        size_t buffer_size, x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos,results_count;
+        size_t buffer_size, buffer_count, x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos,results_count;
         double x,y,sig_x,sig_y,sig_xy,x_pix,y_pix,sig_x_pix,sig_y_pix,sig_xy_pix;
         std::deque<double> x_buf,y_buf,sig_x_buf,sig_y_buf,sig_xy_buf,x_pix_buf,y_pix_buf,sig_x_pix_buf,sig_y_pix_buf,sig_xy_pix_buf;
         bool buffer_full;
@@ -182,7 +184,6 @@ namespace pilaserStructs
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
     };
 
-
     // The main hardware object holds ...
     struct pilaserObject
     {
@@ -192,11 +193,13 @@ namespace pilaserStructs
             intensity(UTL::DUMMY_DOUBLE),
             setCharge(UTL::DUMMY_DOUBLE),
             HWP(UTL::DUMMY_DOUBLE),
+            Q(UTL::DUMMY_DOUBLE),
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT)
             {};
-        std::string name, pvRoot;
-        double intensity,setCharge,HWP;
+        std::string name, pvRoot,pvRootQ;
+        double intensity,setCharge,HWP,Q;
+        std::deque<double> Q_buf;
         virtualCathodeDataObject vcData;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;

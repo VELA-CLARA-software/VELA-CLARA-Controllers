@@ -139,9 +139,94 @@ bool pilaserController::disableStabilisation()
     return localInterface.disableStabilisation();
 }
 //______________________________________________________________________________
+double pilaserController::getX()const
+{
+    return localInterface.getX();
+}
+//______________________________________________________________________________
+double pilaserController::getY()const
+{
+    return localInterface.getY();
+}
+//______________________________________________________________________________
+double pilaserController::getSigX()const
+{
+    return localInterface.getSigX();
+}
+//______________________________________________________________________________
+double pilaserController::getSigY()const
+{
+    return localInterface.getSigY();
+}
+//______________________________________________________________________________
+double pilaserController::getSigXY()const
+{
+    return localInterface.getSigXY();
+}
+//______________________________________________________________________________
+double pilaserController::getXPix()const
+{
+    return localInterface.getXPix();
+}
+//______________________________________________________________________________
+double pilaserController::getYPix()const
+{
+    return localInterface.getYPix();
+}
+//______________________________________________________________________________
+double pilaserController::getSigXPix()const
+{
+    return localInterface.getSigXPix();
+}
+//______________________________________________________________________________
+double pilaserController::getSigYPix()const
+{
+    return localInterface.getSigYPix();
+}
+//______________________________________________________________________________
+double pilaserController::getSigXYPix()const
+{
+    return localInterface.getSigXYPix();
+}
+//______________________________________________________________________________
+double pilaserController::getQ()const
+{
+    return localInterface.getQ();
+}
+//______________________________________________________________________________
 bool pilaserController::enableStabilisation()
 {
     return localInterface.enableStabilisation();
+}
+//______________________________________________________________________________
+void pilaserController::clearBuffer()
+{
+    localInterface.clearBuffer();
+}
+//______________________________________________________________________________
+bool pilaserController::isBufferFull()
+{
+    return localInterface.isBufferFull();
+}
+//______________________________________________________________________________
+bool pilaserController::isBufferNotFull()
+{
+    return localInterface.isBufferNotFull();
+}
+//______________________________________________________________________________
+void pilaserController::setBufferSize(const size_t s)
+{
+    localInterface.setBufferSize(s);
+}
+//______________________________________________________________________________
+size_t pilaserController::getBufferCount()
+{
+    return localInterface.getBufferCount();
+}
+//______________________________________________________________________________
+size_t pilaserController::getBufferSize()
+{
+    return localInterface.getBufferSize();
 }
 //______________________________________________________________________________
 std::deque<double> pilaserController::getXBuffer() const
@@ -194,7 +279,37 @@ std::deque<double> pilaserController::getSigXYPixBuffer()const
     return localInterface.getSigXYPixBuffer();
 }
 //______________________________________________________________________________
+std::deque<double> pilaserController::getQBuffer()const
+{
+    return localInterface.getQBuffer();
+}
+//______________________________________________________________________________
+std::vector<double> pilaserController::getPixelValues()const
+{
+    return localInterface.getPixelValues();
+}
+//______________________________________________________________________________
+std::deque<std::vector<double>> pilaserController::getPixelValuesBuffer()const
+{
+    return localInterface.getPixelValuesBuffer();
+}
+//______________________________________________________________________________
 #ifdef BUILD_DLL
+boost::python::list pilaserController::getPixelValues_Py()const
+{
+    return toPythonList(getPixelValues());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getPixelValuesBuffer_Py()const
+{
+    return toPythonList(getPixelValuesBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getQBuffer_Py()const
+{
+    return toPythonList(getQBuffer());
+}
+//______________________________________________________________________________
 boost::python::list pilaserController::getXBuffer_Py()const
 {
     return toPythonList(getXBuffer());

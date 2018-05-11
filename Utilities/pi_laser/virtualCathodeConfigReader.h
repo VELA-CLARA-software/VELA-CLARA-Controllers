@@ -60,8 +60,8 @@ class virtualCathodeConfigReader:public configReader
 
         void addToPVStruct(std::vector< pilaserStructs::pvStruct >& pvs,
                            const pilaserStructs::PILASER_PV_TYPE pvtype, const std::string& pvSuffix);
-        void addToObjectsV1(const std::vector<std::string> &keyVal );
-        void addToPVMonitorMapV1  (const std::vector<std::string> &keyVal );
+        void addToObjectsV1(const std::vector<std::string> &keyVal);
+        void addToPVMonitorMapV1(const std::vector<std::string> &keyVal);
 };
 //______________________________________________________________________________
 #endif //_VIRTUAL_CATHODE_CONFIG_READER_

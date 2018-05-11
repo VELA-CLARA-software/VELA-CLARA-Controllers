@@ -356,21 +356,7 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
             else
                 vcObject.pvRoot = keyVal[ONE_SIZET];
         }
-    }
-    if(readingMrror)
-    {
-        if(keyVal[ZERO_SIZET] == NAME )
-        {
-            vcObject.mirror.name = keyVal[ONE_SIZET];
-            debugMessage("Added mirror object", vcObject.mirror.name);
-        }
-        else if(keyVal[ZERO_SIZET] == PV_ROOT)
-        {
-            if(useVM)
-                vcObject.mirror.pvRoot =  VM_PREFIX + keyVal[ONE_SIZET];
-            else
-                vcObject.mirror.pvRoot = keyVal[ONE_SIZET];
-        }
+
         else if(keyVal[ZERO_SIZET] == X_POS)
         {
             vcObject.x_pos = getSize(keyVal[ONE_SIZET]);
@@ -410,6 +396,25 @@ void virtualCathodeConfigReader::addToObjectsV1(const std::vector<std::string>& 
         else if(keyVal[ZERO_SIZET] == RESULTS_COUNT)
         {
            vcObject.results_count = getSize(keyVal[ONE_SIZET]);
+        }
+    }
+    if(readingMrror)
+    {
+        if(keyVal[ZERO_SIZET] == NAME )
+        {
+            vcObject.mirror.name = keyVal[ONE_SIZET];
+            debugMessage("Added mirror object", vcObject.mirror.name);
+        }
+        else if(keyVal[ZERO_SIZET] == PV_ROOT)
+        {
+            if(useVM)
+                vcObject.mirror.pvRoot = VM_PREFIX + keyVal[ONE_SIZET];
+            else
+                vcObject.mirror.pvRoot = keyVal[ONE_SIZET];
+        }
+        else if(keyVal[ZERO_SIZET] == STEP_MAX)
+        {
+            vcObject.mirror.STEP_MAX = getNumD(keyVal[ONE_SIZET]);
         }
     }
 }
