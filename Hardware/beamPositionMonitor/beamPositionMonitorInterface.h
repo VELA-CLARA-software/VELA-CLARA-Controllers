@@ -62,6 +62,8 @@ class beamPositionMonitorInterface : public interface
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
         boost::circular_buffer< std::vector< double > > getBPMRawDataBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMXPVBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMYPVBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getBPMXBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getBPMYBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getBPMQBuffer( const std::string & bpmName );

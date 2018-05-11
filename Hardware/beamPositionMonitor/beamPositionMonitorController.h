@@ -69,6 +69,8 @@ class beamPositionMonitorController : public controller
         std::vector< double > getTimeStamps( const std::string & bpmName );
         std::vector< std::string > getStrTimeStamps( const std::string & bpmName );
         boost::circular_buffer< std::vector< double > > getBPMRawDataBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMXPVBuffer( const std::string & bpmName );
+        boost::circular_buffer< double > getBPMYPVBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getBPMXBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getBPMYBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getBPMQBuffer( const std::string & bpmName );
@@ -104,6 +106,8 @@ class beamPositionMonitorController : public controller
         boost::python::list getTimeStamps_Py( const std::string & bpmName );
         boost::python::list getStrTimeStamps_Py( const std::string & bpmName );
         boost::python::list getBPMRawDataBuffer_Py( const std::string & bpmName );
+        boost::python::list getBPMXPVBuffer_Py( const std::string & bpmName );
+        boost::python::list getBPMYPVBuffer_Py( const std::string & bpmName );
         boost::python::list getBPMXBuffer_Py( const std::string & bpmName );
         boost::python::list getBPMYBuffer_Py( const std::string & bpmName );
         boost::python::list getBPMQBuffer_Py( const std::string & bpmName );

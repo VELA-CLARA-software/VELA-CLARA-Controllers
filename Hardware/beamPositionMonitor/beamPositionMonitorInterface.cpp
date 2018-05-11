@@ -405,8 +405,8 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     bpmdo->c2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 7 ];
     bpmdo->p2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 8 ];
 
-    bpmdo->xVec[ bpmdo->shotCount ] = calcX( bpmdo->name, bpmdo->pu1[ bpmdo->shotCount ], bpmdo->pu2[ bpmdo->shotCount ], bpmdo->c1[ bpmdo->shotCount ], bpmdo->p1[ bpmdo->shotCount ], bpmdo->mn, bpmdo->xn );
-    bpmdo->yVec[ bpmdo->shotCount ] = calcY( bpmdo->name, bpmdo->pu3[ bpmdo->shotCount ], bpmdo->pu4[ bpmdo->shotCount ], bpmdo->c2[ bpmdo->shotCount ], bpmdo->p2[ bpmdo->shotCount ], bpmdo->mn, bpmdo->yn );
+    bpmdo->xVec[ bpmdo->shotCount ] = calcX( bpmdo->name, bpmdo->pu3[ bpmdo->shotCount ], bpmdo->pu4[ bpmdo->shotCount ], bpmdo->c2[ bpmdo->shotCount ], bpmdo->p2[ bpmdo->shotCount ], bpmdo->mn, bpmdo->xn );
+    bpmdo->yVec[ bpmdo->shotCount ] = calcY( bpmdo->name, bpmdo->pu1[ bpmdo->shotCount ], bpmdo->pu2[ bpmdo->shotCount ], bpmdo->c1[ bpmdo->shotCount ], bpmdo->p1[ bpmdo->shotCount ], bpmdo->mn, bpmdo->yn );
     bpmdo->qVec[ bpmdo->shotCount ] = calcQ( bpmdo->name, bpmdo->rawBPMData[ bpmdo -> shotCount ], bpmdo->att1cal, bpmdo->att2cal, bpmdo->v1cal, bpmdo->v2cal, bpmdo->qcal );
 
     bpmdo->xBuffer.push_back(bpmdo->xVec.back());
@@ -461,12 +461,12 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
         {
             bpmdo->xPV = *( &p -> value );
-//            bpmdo->xPVBuffer.push_back( bpmdo->xPV );
+            bpmdo->xPVBuffer.push_back( bpmdo->xPV );
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
         {
             bpmdo->yPV = *( &p -> value );
-//            bpmdo->yPVBuffer.push_back( bpmdo->yPV );
+            bpmdo->yPVBuffer.push_back( bpmdo->yPV );
         }
     }
 
@@ -941,6 +941,24 @@ boost::circular_buffer< double > beamPositionMonitorInterface::getBPMYBuffer( co
     boost::circular_buffer< double > r;
     if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).yBuffer.size() != 0 )
         return bpmObj.dataObjects.at( bpmName ).yBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorInterface::getBPMXPVBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< double > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).xPVBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).xPVBuffer;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorInterface::getBPMYPVBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< double > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).yPVBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).yPVBuffer;
     else
         return r;
 }
