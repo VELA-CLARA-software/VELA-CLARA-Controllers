@@ -34,36 +34,17 @@ pilaserController::pilaserController(
     const std::string& name,
     const std::string& pilaserConf,
     const std::string& vcAnalysisConf,
-    const std::string& piLaserMirrorConf,
-    const std::string& piLaserShutterConf
+    const std::string& piLaserMirrorConf
     ):
 controller(show_messages,show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::PI_LASER),
 localMirrorName("LASER_MIRROR_CONTROLLER"),
-localShutterName("LASER_SHUTTER_CONTROLLER"),
 localVirtualCathodeName("VIRTUAL_CATHODE_ANALYSIS_CONTROLLER"),
-//localMirror(show_messages,
-//                        show_debug_messages,
-//                        startVirtualMachine,
-//                        shouldStartEPICs,
-//                        piLaserMirrorConf,
-//                        localMirrorName),
-localShutter(show_messages,
-             show_debug_messages,
-             startVirtualMachine,
-             shouldStartEPICs,
-             piLaserShutterConf,
-             localShutterName),
-localVirtualCathode(show_messages,
-                    show_debug_messages,
-                    startVirtualMachine,
-                    shouldStartEPICs,
-                    vcAnalysisConf,
-                    piLaserMirrorConf,
-                    localVirtualCathodeName),
 localInterface(show_messages,
                show_debug_messages,
                startVirtualMachine,
                shouldStartEPICs,
+               vcAnalysisConf,
+               piLaserMirrorConf,
                pilaserConf),
 name(name)
 {
@@ -80,8 +61,6 @@ name(name)
 //______________________________________________________________________________
 pilaserController::~pilaserController()
 {}    //dtor
-
-//
 //______________________________________________________________________________
 void  pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
 {
@@ -165,89 +144,114 @@ bool pilaserController::enableStabilisation()
     return localInterface.enableStabilisation();
 }
 //______________________________________________________________________________
-const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() const
+std::deque<double> pilaserController::getXBuffer() const
 {
-    return localInterface.getPILObjConstRef();
+    return localInterface.getXBuffer();
 }
 //______________________________________________________________________________
+std::deque<double> pilaserController::getYBuffer()const
+{
+    return localInterface.getYBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getSigXBuffer()const
+{
+    return localInterface.getSigXBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getSigYBuffer()const
+{
+    return localInterface.getSigYBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getSigXYBuffer()const
+{
+    return localInterface.getSigXYBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getXPixBuffer()const
+{
+    return localInterface.getXPixBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getYPixBuffer()const
+{
+    return localInterface.getYPixBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getSigXPixBuffer()const
+{
+    return localInterface.getSigXPixBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getSigYPixBuffer()const
+{
+    return localInterface.getSigYPixBuffer();
+}
+//______________________________________________________________________________
+std::deque<double> pilaserController::getSigXYPixBuffer()const
+{
+    return localInterface.getSigXYPixBuffer();
+}
+//______________________________________________________________________________
+#ifdef BUILD_DLL
+boost::python::list pilaserController::getXBuffer_Py()const
+{
+    return toPythonList(getXBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getYBuffer_Py()const
+{
+    return toPythonList(getYBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getSigXBuffer_Py()const
+{
+    return toPythonList(getSigXBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getSigYBuffer_Py()const
+{
+    return toPythonList(getSigYBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getSigXYBuffer_Py()const
+{
+    return toPythonList(getSigXYBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getXPixBuffer_Py()const
+{
+    return toPythonList(getXPixBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getYPixBuffer_Py()const
+{
+    return toPythonList(getYPixBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getSigXPixBuffer_Py()const
+{
+    return toPythonList(getSigXPixBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getSigYPixBuffer_Py()const
+{
+    return toPythonList(getSigYPixBuffer());
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getSigXYPixBuffer_Py()const
+{
+    return toPythonList(getSigXYPixBuffer());
+}
+//______________________________________________________________________________
+#endif // BUILD_DLL
 
 
 
 
 
 
-
-
-//
-//   _________.__            __    __
-//  /   _____/|  |__  __ ___/  |__/  |_  ___________
-//  \_____  \ |  |  \|  |  \   __\   __\/ __ \_  __ \
-//  /        \|   Y  \  |  /|  |  |  | \  ___/|  | \/
-// /_______  /|___|  /____/ |__|  |__|  \___  >__|
-//         \/      \/                       \/
-//
-//
-//
-
-////______________________________________________________________________________
-//void pilaserController::open(const std::string& name)
-//{
-//    localShutter.open(name);
-//}
-////______________________________________________________________________________
-//void pilaserController::close(const std::string& name)
-//{
-//    localShutter.close(name);
-//}
-////______________________________________________________________________________
-//bool pilaserController::isOpen(const std::string& name ) const
-//{
-//    return localShutter.isOpen(name );
-//}
-////______________________________________________________________________________
-//bool pilaserController::isClosed(const std::string& name )const
-//{
-//    return localShutter.isClosed(name );
-//}
-////______________________________________________________________________________
-//bool pilaserController::openAndWait(const std::string& name, const time_t waitTime )
-//{
-//    return localShutter.openAndWait(name, waitTime);
-//}
-////______________________________________________________________________________
-//bool pilaserController::closeAndWait(const std::string & name, const time_t waitTime )
-//{
-//    return localShutter.closeAndWait(name,waitTime);
-//}
-////______________________________________________________________________________
-//const shutterStructs::shutterObject&
-//pilaserController::getShutterObjConstRef(const std::string& name )const
-//{
-//    return localShutter.getShutterObjConstRef(name);
-//}
-////______________________________________________________________________________
-//shutterStructs::SHUTTER_STATE pilaserController::getShutterState(const std::string& name)
-//{
-//    return localShutter.getShutterState(name);
-//}
-////______________________________________________________________________________
-//std::string pilaserController::getShutterStateStr(const std::string& name )
-//{
-//    return localShutter.getShutterStateStr(name);
-//}
-////______________________________________________________________________________
-//std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
-//    pilaserController::getILockStates(const std::string& name)const
-//{
-//    return localShutter.getILockStates(name);
-//}
-////______________________________________________________________________________
-//
-//std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-//    pilaserController::getILockStatesStr(const std::string& name)const
-//{
-//    return localShutter.getILockStatesStr(name);
-//}
 
 
 //
@@ -265,76 +269,83 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
 
 
 
-//
-//
-////______________________________________________________________________________
-//double pilaserController::getHpos() const
-//{
-//    return localMirror.getHpos();
-//}
-////______________________________________________________________________________
-//double pilaserController::getVpos() const
-//{
-//    return localMirror.getVpos();
-//}
-////______________________________________________________________________________
-//bool pilaserController::setHpos(double value)
-//{
-//     return localMirror.setHpos(value);
-//}
-////______________________________________________________________________________
+
+
+//______________________________________________________________________________
+double pilaserController::getHpos() const
+{
+    return localInterface.getHpos();
+}
+//______________________________________________________________________________
+double pilaserController::getVpos() const
+{
+    return localInterface.getVpos();
+}
+//______________________________________________________________________________
+bool pilaserController::setHpos(double value)
+{
+     return localInterface.setHpos(value);
+}
+//______________________________________________________________________________
 //bool pilaserController::setHpos(int value)
 //{
-//    return localMirror.setHpos(value);
+//    return localInterface.setHpos(value);
 //}
-////______________________________________________________________________________
-//bool pilaserController::setVpos(double value)
-//{
-//    return localMirror.setVpos(value);
-//}
-////______________________________________________________________________________
+//______________________________________________________________________________
+bool pilaserController::setVpos(double value)
+{
+    return localInterface.setVpos(value);
+}
+//______________________________________________________________________________
 //bool pilaserController::setVpos(int value)
 //{
-//    return localMirror.setVpos(value);
+//    return localInterface.setVpos(value);
 //}
-////______________________________________________________________________________
-//double pilaserController::getHstep() const
-//{
-//    return localMirror.getHstep();
-//}
-////______________________________________________________________________________
-//double pilaserController::getVstep() const
-//{
-//    return localMirror.getVstep();
-//}
-////______________________________________________________________________________
-//bool pilaserController::setHstep(double value)
-//{
-//    return localMirror.setHstep(value);
-//}
-////______________________________________________________________________________
-//bool pilaserController::setVstep(double value)
-//{
-//    return localMirror.setVstep(value);
-//}
-////______________________________________________________________________________
-//bool pilaserController::moveH()
-//{
-//    return localMirror.moveH();
-//}
-////______________________________________________________________________________
-//bool pilaserController::moveV()
-//{
-//    return localMirror.moveV();
-//}
-////______________________________________________________________________________
-//const pilaserMirrorStructs::pilMirrorObject& pilaserController::getpilMirrorObjConstRef() const
-//{
-//    return localMirror.getpilMirrorObjConstRef();
-//}
-
-
-
+//______________________________________________________________________________
+double pilaserController::getHstep() const
+{
+    return localInterface.getHstep();
+}
+//______________________________________________________________________________
+double pilaserController::getVstep() const
+{
+    return localInterface.getVstep();
+}
+//______________________________________________________________________________
+bool pilaserController::setHstep(double value)
+{
+    return localInterface.setHstep(value);
+}
+//______________________________________________________________________________
+bool pilaserController::setVstep(double value)
+{
+    return localInterface.setVstep(value);
+}
+//______________________________________________________________________________
+bool pilaserController::moveH()
+{
+    return localInterface.moveH();
+}
+//______________________________________________________________________________
+bool pilaserController::moveV()
+{
+    return localInterface.moveV();
+}
+//______________________________________________________________________________
+const pilaserStructs::pilMirrorObject& pilaserController::getpilMirrorObjConstRef() const
+{
+    return localInterface.getpilMirrorObjConstRef();
+}
+//______________________________________________________________________________
+const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() const
+{
+    return localInterface.getPILObjConstRef();
+}
+//______________________________________________________________________________
+const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjConstRef() const
+{
+    return localInterface.getVCDataObjConstRef();
+}
 ////______________________________________________________________________________
 //#ifdef BUILD_DLL
 ////____________________________________________________________________________________________
@@ -388,7 +399,7 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
 //    return localInterface.getPILObjConstRef();
 //}
 ////____________________________________________________________________________________________
-
+//
 ////_____________________________________________________________________________________________
 //void pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
 //{
@@ -404,30 +415,117 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
 //{
 //    return localInterface.getILockStatesStr(name);
 //}
+//______________________________________________________________________________
+//boost::python::dict pilaserController::getILockStatesStr_Py(std::string magName )
+//{
+//    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
+//}
 ////______________________________________________________________________________
-////boost::python::dict pilaserController::getILockStatesStr_Py(std::string magName )
-////{
-////    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
-////}
-//////______________________________________________________________________________
-////boost::python::dict pilaserController::getILockStates_Py(std::string magName )
-////{
-////    return enumMapToPythonDict(getILockStates(magName ) );
-////}
-//////______________________________________________________________________________
-////boost::python::dict pilaserController::getMagPSUStateDefinition()
-////{
-////    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
-////
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-////    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
-////
-////    return enumStringMapToPythonDict(m );
-////}
+//boost::python::dict pilaserController::getILockStates_Py(std::string magName )
+//{
+//    return enumMapToPythonDict(getILockStates(magName ) );
+//}
 ////______________________________________________________________________________
-//#endif // BUILD_DLL
+//boost::python::dict pilaserController::getMagPSUStateDefinition()
+//{
+//    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
 //
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
+//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
+//
+//    return enumStringMapToPythonDict(m );
+//}
+//______________________________________________________________________________
+//#endif // BUILD_DLL
+
+
+
+
+
+
+
+
+
+//
+//   _________.__            __    __
+//  /   _____/|  |__  __ ___/  |__/  |_  ___________
+//  \_____  \ |  |  \|  |  \   __\   __\/ __ \_  __ \
+//  /        \|   Y  \  |  /|  |  |  | \  ___/|  | \/
+// /_______  /|___|  /____/ |__|  |__|  \___  >__|
+//         \/      \/                       \/
+//
+//
+//
+//
+////______________________________________________________________________________
+//void pilaserController::open(const std::string& name)
+//{
+//    localShutter.open(name);
+//}
+////______________________________________________________________________________
+//void pilaserController::close(const std::string& name)
+//{
+//    localShutter.close(name);
+//}
+////______________________________________________________________________________
+//bool pilaserController::isOpen(const std::string& name ) const
+//{
+//    return localShutter.isOpen(name );
+//}
+////______________________________________________________________________________
+//bool pilaserController::isClosed(const std::string& name )const
+//{
+//    return localShutter.isClosed(name );
+//}
+////______________________________________________________________________________
+//bool pilaserController::openAndWait(const std::string& name, const time_t waitTime )
+//{
+//    return localShutter.openAndWait(name, waitTime);
+//}
+////______________________________________________________________________________
+//bool pilaserController::closeAndWait(const std::string & name, const time_t waitTime )
+//{
+//    return localShutter.closeAndWait(name,waitTime);
+//}
+////______________________________________________________________________________
+//const shutterStructs::shutterObject&
+//pilaserController::getShutterObjConstRef(const std::string& name )const
+//{
+//    return localShutter.getShutterObjConstRef(name);
+//}
+////______________________________________________________________________________
+//shutterStructs::SHUTTER_STATE pilaserController::getShutterState(const std::string& name)
+//{
+//    return localShutter.getShutterState(name);
+//}
+////______________________________________________________________________________
+//std::string pilaserController::getShutterStateStr(const std::string& name )
+//{
+//    return localShutter.getShutterStateStr(name);
+//}
+////______________________________________________________________________________
+//std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
+//    pilaserController::getILockStates(const std::string& name)const
+//{
+//    return localShutter.getILockStates(name);
+//}
+////______________________________________________________________________________
+//std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
+//    pilaserController::getILockStatesStr(const std::string& name)const
+//{
+//    return localShutter.getILockStatesStr(name);
+//}
+////______________________________________________________________________________
+//bool pilaserController::areAllOpen()
+//{
+//    return localShutter.areAllOpen();
+//}
+////______________________________________________________________________________
+//bool pilaserController::areAllClosed()
+//{
+//    return localShutter.areAllClosed();
+//}
 

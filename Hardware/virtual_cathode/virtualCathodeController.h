@@ -52,8 +52,8 @@ class virtualCathodeController : public controller
                                 bool& show_debug_messages,
                                 const bool startVirtualMachine,
                                 const bool shouldStartEPICs,
-                                const std::string& vcMirrorConfig,
                                 const std::string& vcDataConfig,
+                                const std::string& vcMirrorConfig,
                                 const std::string& name
                                );
 

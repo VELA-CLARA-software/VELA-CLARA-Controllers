@@ -27,6 +27,7 @@
 #include "pilaserStructs.h"
 #include "structs.h"
 #include "pilaserConfigReader.h"
+#include "virtualCathodeConfigReader.h"
 //stl
 #include <vector>
 #include <string>
@@ -45,11 +46,13 @@ class pilaserInterface : public interface
 
         //pilaserInterface::pilaserInterface();
         pilaserInterface(bool& show_messages,
-                          bool& show_debug_messages,
-                          const bool startVirtualMachine,
-                          const bool shouldStartEPICs,
-                          const std::string& configFile
-                          );
+                         bool& show_debug_messages,
+                         const bool startVirtualMachine,
+                         const bool shouldStartEPICs,
+                         const std::string& vcMirrorConfig,
+                         const std::string& vcDataConfig,
+                         const std::string& pilaserConfig
+                         );
         pilaserInterface& pilaserInterface::operator= ( const pilaserInterface& other ) = delete;
         ~pilaserInterface();
 
@@ -68,14 +71,44 @@ class pilaserInterface : public interface
         bool isStabilisationOn() const;
         bool disableStabilisation();
         bool enableStabilisation();
-        const pilaserStructs::pilaserObject& getPILObjConstRef() const;
 
-//        /// These are pure virtual methods, so need to have some implmentation in derived classes
-//        IlockMap1 getILockStates(const std::string & name   ){ IlockMap1 r;return r; }
-//        IlockMap2 getILockStatesStr(const std::string & name){ IlockMap2 r;return r; }
+        const pilaserStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
+        const pilaserStructs::pilaserObject&   getPILObjConstRef() const;
+        const pilaserStructs::virtualCathodeDataObject&   getVCDataObjConstRef() const;
+
+        double getHpos() const;
+        double getVpos() const;
+
+        std::deque<double> getXBuffer()const;
+        std::deque<double> getYBuffer()const;
+        std::deque<double> getSigXBuffer()const;
+        std::deque<double> getSigYBuffer()const;
+        std::deque<double> getSigXYBuffer()const;
+        std::deque<double> getXPixBuffer()const;
+        std::deque<double> getYPixBuffer()const;
+        std::deque<double> getSigXPixBuffer()const;
+        std::deque<double> getSigYPixBuffer()const;
+        std::deque<double> getSigXYPixBuffer()const;
 
 
 
+
+        bool setHpos(const double value);
+        bool setVpos(const double value);
+
+        double getHstep() const;
+        double getVstep() const;
+        bool setHstep(const double value);
+        bool setVstep(const double value);
+
+        bool moveH();
+        bool moveV();
+
+        void setBufferSize(const size_t s);
+        size_t getBufferSize(size_t s);
+        void clearBuffer();
+
+        bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
     private:
 
         void initialise();
@@ -83,18 +116,35 @@ class pilaserInterface : public interface
         void initChids();
         void addChannel(const std::string& pvRoot, pilaserStructs::pvStruct& pv);
         void startMonitors();
-//        // all client set functions route to here
-        bool setValue(pilaserStructs::pvStruct& pvs, const double value);
 
         void killMonitor(pilaserStructs::monitorStruct* ms);
 //
 //
         std::vector<pilaserStructs::monitorStruct*> continuousMonitorStructs;
 //        // all EPICS callbacks route here
-        static void staticEntryPILMonitor(const event_handler_args args);
+        void addToContinuousMonitorStructs(const pilaserStructs::PILASER_PV_TYPE pv, const pilaserStructs::pvStruct& st);
+        static void staticEntryMonitor(const event_handler_args args);
+        void updateValue(const event_handler_args args,pilaserStructs::PILASER_PV_TYPE pv);
 
         pilaserStructs::pilaserObject pilaser;
         pilaserConfigReader configReader;
+
+        virtualCathodeConfigReader vcConfigReader;
+
+        void updateAnalysisBuffers();
+
+        void addToBuffer(const double val,std::deque<double>& buffer);
+        void updatePixelResults(const event_handler_args& args);
+
+        //bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
+
+        /*
+            all client mirrro set functions route to here
+        */
+        bool setValue(pilaserStructs::pvStruct& pvs,const double value);
+
+        bool move(chtype& cht, chid& chi,const char* m1,const char* m2);
+
 };
 //______________________________________________________________________________
 #endif // _PI_LASER_INTERFACE_H

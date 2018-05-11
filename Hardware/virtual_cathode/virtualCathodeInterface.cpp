@@ -45,7 +45,6 @@ interface(show_messages,show_debug_messages,shouldStartEPICs,startVirtualMachine
 {
     message("Constructing a virtualCathodeInterface");
     initialise();
-    initialise();
 }
 //______________________________________________________________________________
 virtualCathodeInterface::~virtualCathodeInterface()
@@ -130,7 +129,7 @@ bool virtualCathodeInterface::initObjects()
     vcObject.pixel_values[vcObject.y_sigma_name] = UTL::DUMMY_DOUBLE;
     vcObject.pixel_values[vcObject.cov_name] = UTL::DUMMY_DOUBLE;
 
-    vcObject.pix_values.resize(5); //MAGIC_NUMBER
+    vcObject.pix_values.resize(vcObject.results_count); //MAGIC_NUMBER
 
     return ans;
 }
@@ -142,19 +141,26 @@ void virtualCathodeInterface::initChids()
     {
         addChannel(it.second);
     }
-    // currently there are no command only PVs for the PIL
+    for(auto &&it:vcObject.pvComStructs)
+    {
+        addChannel(it.second);
+    }
     int status = sendToEpics("ca_create_channel",
                              "Found VirtualCathodeData ChIds.",
                              "!!TIMEOUT!! Not all VirtualCathodeData ChIds found.");
     if(status == ECA_TIMEOUT)
     {
-        UTL::PAUSE_500;
+        pause_500();
         message("\n", "Checking VirtualCathodeData ChIds ");
         for(auto && it : vcObject.pvMonStructs)
         {
             checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
         }
-        UTL::STANDARD_PAUSE;
+        for(auto && it : vcObject.pvComStructs)
+        {
+            checkCHIDState(it.second.CHID, ENUM_TO_STRING(it.first));
+        }
+        pause_500();
     }
     else if (status == ECA_NORMAL)
     {
@@ -165,13 +171,13 @@ void virtualCathodeInterface::initChids()
 void virtualCathodeInterface::addChannel(virtualCathodeStructs::pvStruct & pv)
 {
     std::string s;
-    if(isVCData_PV(pv.pvType))
+    if(isVCMirror_PV(pv.pvType))
     {
-        s = vcObject.pvRoot + pv.pvSuffix;
+        s = vcObject.mirror.pvRoot + pv.pvSuffix;
     }
     else
     {
-        s = vcObject.mirror.pvRoot + pv.pvSuffix;
+        s = vcObject.pvRoot + pv.pvSuffix;
     }
     ca_create_channel(s.c_str(), nullptr, nullptr, UTL::PRIORITY_0, &pv.CHID);
     message("Create channel to ", s);
@@ -195,6 +201,8 @@ void virtualCathodeInterface::startMonitors()
                                virtualCathodeInterface::staticEntryMonitor,
                                (void*)continuousMonitorStructs.back(),
                                &continuousMonitorStructs.back() -> EVID);
+
+        message(ENUM_TO_STRING(it.first)," it.second.CHTYPE, ", it.second.CHTYPE);
     }
     int status = sendToEpics("ca_create_subscription",
                              "Succesfully Subscribed to VirtualCathodeData Monitors",
@@ -291,30 +299,68 @@ void virtualCathodeInterface::updateValue(const event_handler_args args,
 //____________________________________________________________________________________________
 void virtualCathodeInterface::updatePixelResults(const event_handler_args& args)
 {
-    const dbr_double_t * pValue;
-    pValue = (dbr_double_t*)args.dbr;
-
-    /*
-        copy array to vcObject.pix_values, assumes array is of correct size?!
-    */
-    std::copy(pValue, pValue+args.count, vcObject.pix_values.begin());
-    /*
-        update map
-    */
-    for(auto&&it:vcObject.pix_values)
+    const double * pValue;
+    /* if time _type get time and set where pValue points to */
+    if(isTimeType(args.type))
     {
-        message(it);
+        const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
+        pValue = &p->value;
+        //updateTime(trace.etime, trace.time, trace.timeStr);
+
+        /* for hints look in epicsTime.h */
+        char timeString[UTL::BUFFER_36];
+        epicsTimeToStrftime(timeString, sizeof(timeString),
+                            "%a %b %d %Y %H:%M:%S.%f", &p->stamp);
+        /*
+            prove it works
+            std::cout <<std::setprecision(15) <<std::showpoint<<  val <<std::endl;
+        */
+        vcObject.pix_values_time = timeString;
+        std::copy(pValue, pValue + vcObject.pix_values.size(), vcObject.pix_values.begin());
+
+    }
+    else /* set where pValue points to */
+    {
+        pValue = (dbr_double_t*)args.dbr;
     }
 
-    for(auto&& it:vcObject.pixel_values_pos)
-    {
-        vcObject.pixel_values.at(it.second) = vcObject.pix_values[it.first];
-        message(it.second, " = ", vcObject.pixel_values.at(it.second));
-    }
-#ifdef BUILD_DLL
-    vcObject.pixel_values_dict = toPythonDict(vcObject.pixel_values);
-#endif // BUILD_DLL
+    /*
+        Now we have the neew values, update Buffers
+    */
+    updateAnalysisBuffers();
 }
+//____________________________________________________________________________________________
+void virtualCathodeInterface::updateAnalysisBuffers()
+{
+
+}
+//____________________________________________________________________________________________
+void virtualCathodeInterface::setBufferSize(const size_t s)
+{
+    vcObject.buffer_size = s;
+}
+//____________________________________________________________________________________________
+size_t virtualCathodeInterface::getBufferSize(size_t s)
+{
+    return vcObject.buffer_size;
+}
+//____________________________________________________________________________________________
+size_t virtualCathodeInterface::clearBuffer()
+{
+    return vcObject.buffer_size;
+}
+
+
+
+//    for(auto&& it:vcObject.pixel_values_pos)
+//    {
+//        vcObject.pixel_values.at(it.second) = (double)vcObject.pix_values_epics[it.first];
+//        message(it.second, " = ", vcObject.pixel_values.at(it.second));
+//    }
+//#ifdef BUILD_DLL
+//    vcObject.pixel_values_dict = toPythonDict(vcObject.pixel_values);
+//#endif // BUILD_DLL
+//}
 //____________________________________________________________________________________________
 double virtualCathodeInterface::getHstep() const
 {
@@ -433,7 +479,7 @@ const virtualCathodeStructs::pilMirrorObject& virtualCathodeInterface::getpilMir
     return vcObject.mirror;
 }
 //______________________________________________________________________________
-bool virtualCathodeInterface::isVCData_PV(const virtualCathodeStructs::VC_PV_TYPE& pv)const
+bool virtualCathodeInterface::isVCMirror_PV(const virtualCathodeStructs::VC_PV_TYPE& pv)const
 {
     using namespace virtualCathodeStructs;
     switch(pv)
@@ -456,8 +502,12 @@ bool virtualCathodeInterface::isVCData_PV(const virtualCathodeStructs::VC_PV_TYP
             return true;
         case VC_PV_TYPE::POS_UPDATE:
             return true;
+        case VC_PV_TYPE::H_MREL:
+            return true;
+        case VC_PV_TYPE::V_MREL:
+            return true;
         case VC_PV_TYPE::UNKNOWN:
-            message("isVCData_PV passed UNKNOWN pv");
+            message("isVCMirror_PV passed UNKNOWN pv");
             break;
         default:
             return false;

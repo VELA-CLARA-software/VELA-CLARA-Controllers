@@ -48,7 +48,7 @@ class VCpilaser : public VCbase
         pilaserController* offline_pilaser_Controller_Obj ;
 
         const std::string pilaserConf, vcAnalysisConf,
-                          piLaserMirrorConf,piLaserShutterConf;
+                          piLaserMirrorConf;
 
         pilaserController& getpilaserController(pilaserController*& cont,
                                                 const std::string & name,
@@ -56,8 +56,8 @@ class VCpilaser : public VCbase
                                                 const bool shouldEPICS,
                                                 const std::string& pilaserConf,
                                                 const std::string& vcAnalysisConf,
-                                                const std::string& piLaserMirrorConf,
-                                                const std::string& piLaserShutterConf);
+                                                const std::string& piLaserMirrorConf
+                                                );
 
         /*
             map of showmessage showdebugmessage states
@@ -124,17 +124,18 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     */
     using namespace UTL;
     using namespace boost::python;
+    using namespace boost;
 
-    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
-    const char* closeAndWait_doc = "closeAndWait_doc.";
-    const char* openAndWait_doc = "openAndWait_doc.";
-    const char* isClosed_doc = "isClosed_doc.";
-    const char* isOpen_doc = "isOpen_doc.";
-    const char* close_doc = "close_doc.";
-    const char* open_doc = "open_doc.";
-    const char* name_doc = "name_doc.";
-    const char* getState_doc = "getState_doc.";
-
+//    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
+//    const char* closeAndWait_doc = "closeAndWait_doc.";
+//    const char* openAndWait_doc = "openAndWait_doc.";
+//    const char* isClosed_doc = "isClosed_doc.";
+//    const char* isOpen_doc = "isOpen_doc.";
+//    const char* close_doc = "close_doc.";
+//    const char* open_doc = "open_doc.";
+//    const char* name_doc = "name_doc.";
+//    const char* getState_doc = "getState_doc.";
+//
     const char* getIntensity_doc = "getIntensity_doc.";
     const char* setCharge_doc = "setCharge_doc.";
     const char* setIntensity_doc = "getIntensity_doc.";
@@ -148,33 +149,49 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* enableStabilisation_doc = "isStabilisationOff_doc.";
     const char* getHWP_doc = "getHWP_doc.";
     const char* setHWP_doc = "setHWP_doc.";
+    const char* areAllOpen_doc = "areAllOpen_doc.";
+    const char* areAllClosed_doc = "areAllClosed_doc.";
+    const char* getShutterNames_doc = "getShutterNames_doc.";
 
-    class_<pilaserController, bases<controller>,boost::noncopyable>
+    class_<pilaserController, bases<controller>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
         .def("setHWP",&pilaserController::setHWP,(VALUE_ARG),setHWP_doc)
-//        .def("setCharge",&pilaserController::setCharge,setCharge_doc)
-//        .def("setIntensity",&pilaserController::setIntensity,setIntensity_doc)
-//        .def("getIntensity",&pilaserController::getIntensity,getIntensity_doc)
-//        .def("getStatus",&pilaserController::getStatus,getStatus_doc)
-//        .def("getStabilisationStatus",&pilaserController::getStabilisationStatus,getStabilisationStatus_doc)
-//        .def("isOn",&pilaserController::isOn,isOn_doc)
-//        .def("isOff",&pilaserController::isOff,isOff_doc)
-//        .def("isStabilisationOff",&pilaserController::isStabilisationOff,isStabilisationOff_doc)
-//        .def("isStabilisationOn",&pilaserController::isStabilisationOn,isStabilisationOn_doc)
-//        .def("disableStabilisation",&pilaserController::disableStabilisation,disableStabilisation_doc)
-//        .def("enableStabilisation",&pilaserController::enableStabilisation,enableStabilisation_doc)
+        .def("setCharge",&pilaserController::setCharge,setCharge_doc)
+        .def("setIntensity",&pilaserController::setIntensity,setIntensity_doc)
+        .def("getIntensity",&pilaserController::getIntensity,getIntensity_doc)
+        .def("getStatus",&pilaserController::getStatus,getStatus_doc)
+        .def("getStabilisationStatus",&pilaserController::getStabilisationStatus,getStabilisationStatus_doc)
+        .def("isOn",&pilaserController::isOn,isOn_doc)
+        .def("isOff",&pilaserController::isOff,isOff_doc)
+        .def("isStabilisationOff",&pilaserController::isStabilisationOff,isStabilisationOff_doc)
+        .def("isStabilisationOn",&pilaserController::isStabilisationOn,isStabilisationOn_doc)
+        .def("disableStabilisation",&pilaserController::disableStabilisation,disableStabilisation_doc)
+        .def("enableStabilisation",&pilaserController::enableStabilisation,enableStabilisation_doc)
+        .def("getHpos", &pilaserController::getHpos,enableStabilisation_doc)
+        .def("getVpos", &pilaserController::getVpos,enableStabilisation_doc)
+        .def("setHpos", &pilaserController::setHpos,enableStabilisation_doc)
+        .def("setVpos", &pilaserController::setVpos,enableStabilisation_doc)
+        .def("getHstep",&pilaserController::getHstep,enableStabilisation_doc)
+        .def("getVstep",&pilaserController::getVstep,enableStabilisation_doc)
+        .def("setHstep",&pilaserController::setHstep,enableStabilisation_doc)
+        .def("setVstep",&pilaserController::setVstep,enableStabilisation_doc)
+        .def("moveH",   &pilaserController::moveH,enableStabilisation_doc)
+        .def("moveV",   &pilaserController::moveV,enableStabilisation_doc)
 
-        //.def("getName",&pilaserController::getName,name_doc)
-        //.def("state",&pilaserController::getState,getState_doc)
-//        .def("closeAndWait",&pilaserController::closeAndWait,closeAndWait_doc)
-//        .def("openAndWait",&pilaserController::openAndWait,openAndWait_doc)
-//        .def("isClosed",&pilaserController::isClosed,isClosed_doc)
-//        .def("isOpen",&pilaserController::isOpen,isOpen_doc)
-//        .def("close",&pilaserController::close,close_doc)
-//        .def("open",&pilaserController::open,open_doc)
-//        .def("getShutterNames",&pilaserController::getShutterNames,getShutterNames_doc)
+
+        .def("getXBuffer",   &pilaserController::getXBuffer_Py,enableStabilisation_doc)
+        .def("getYBuffer",   &pilaserController::getYBuffer_Py,enableStabilisation_doc)
+        .def("getSigXBuffer",   &pilaserController::getSigXBuffer_Py,enableStabilisation_doc)
+        .def("getSigYBuffer",   &pilaserController::getSigYBuffer_Py,enableStabilisation_doc)
+        .def("getSigXYBuffer",   &pilaserController::getSigXYBuffer_Py,enableStabilisation_doc)
+        .def("getXPixBuffer",   &pilaserController::getXPixBuffer_Py,enableStabilisation_doc)
+        .def("getYPixBuffer",   &pilaserController::getYPixBuffer_Py,enableStabilisation_doc)
+        .def("getSigXPixBuffer",   &pilaserController::getSigXPixBuffer_Py,enableStabilisation_doc)
+        .def("getSigYPixBuffer",   &pilaserController::getSigYPixBuffer_Py,enableStabilisation_doc)
+        .def("getSigXYPixBuffer",   &pilaserController::getSigXYPixBuffer_Py,enableStabilisation_doc)
         ;
+
 //
 //    const char* hPos_doc
 //        = "horizontal Mirror Position (not available as of April 2018)";
