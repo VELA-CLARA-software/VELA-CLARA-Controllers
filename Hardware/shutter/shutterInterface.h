@@ -33,8 +33,8 @@
 class shutterInterface : public interface
 {
     public:
-        shutterInterface(bool& show_messages,
-                         bool& show_debug_messages,
+        shutterInterface(const bool& show_messages,
+                         const bool& show_debug_messages,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
                          const std::string& configFile
@@ -48,6 +48,10 @@ class shutterInterface : public interface
         bool isOpen  (const std::string& name) const;
         void close(const std::string& name);
         void open (const std::string& name);
+
+        bool areAllOpen();
+        bool areAllClosed();
+
 
         std::vector<std::string> getShutterNames()const;
         shutterStructs::shutterObject* getShutterObject(const std::string& name);

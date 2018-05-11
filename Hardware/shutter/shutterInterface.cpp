@@ -34,8 +34,8 @@ using namespace shutterStructs;
 // \__,  |  \__/ |  \ /   |__/  |  \__/ |  \
 //
 //______________________________________________________________________________
-shutterInterface::shutterInterface(bool& show_messages,
-                                   bool& show_debug_messages,
+shutterInterface::shutterInterface(const bool& show_messages,
+                                   const bool& show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
                                    const std::string& configFile
@@ -319,6 +319,26 @@ bool shutterInterface::is_in_state(const std::string & name, SHUTTER_STATE sta) 
         }
     }
     return ret;
+}
+//______________________________________________________________________________
+bool shutterInterface::areAllOpen()
+{
+    for(auto&&it:allShutterData)
+    {
+        if(it.second.state != SHUTTER_STATE::OPEN )
+            return false;
+    }
+    return true;
+}
+//______________________________________________________________________________
+bool shutterInterface::areAllClosed()
+{
+    for(auto&&it:allShutterData)
+    {
+        if(it.second.state != SHUTTER_STATE::CLOSED )
+            return false;
+    }
+    return true;
 }
 //______________________________________________________________________________
 bool shutterInterface::openAndWait(const std::string& name, const time_t waitTime)

@@ -15,7 +15,7 @@
 //
 //  Author:      DJS
 //  Last edit:   29-03-2018
-//  FileName:    VCpilaser.cpp
+//  FileName:    VCshutter.cpp
 //  Description:
 //
 //

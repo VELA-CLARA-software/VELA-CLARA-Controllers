@@ -49,6 +49,10 @@ class shutterController : public controller
         bool openAndWait (const std::string& name, const time_t waitTime);
         bool isClosed(const std::string& name) const;
         bool isOpen  (const std::string& name) const;
+
+        bool areAllOpen();
+        bool areAllClosed();
+
         void close(const std::string& name);
         void open (const std::string& name);
 
@@ -63,6 +67,10 @@ class shutterController : public controller
             getILockStates(const std::string& name)const;
         std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
             getILockStatesStr(const std::string& name)const;
+
+#ifdef BUILD_DLL
+        boost::python::list getShutterNames_Py();
+#endif
 
 //
 //        bool openAndWaitShutter1 (const time_t waitTime = 2 );
