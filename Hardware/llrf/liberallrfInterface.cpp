@@ -520,7 +520,7 @@ void liberallrfInterface::updateValues(const event_handler_args& args, llrfStruc
     /* this function actually gets the new values from EPICS and adds them to the trace.value vector
        all LLRF traces should be updated using this function
 
-    /* pointer to array we are expecting depenss on type channel */
+    /* pointer to array we are expecting depends on type channel */
     const dbr_double_t * pValue;
     /* if time _type get time and set where pValue points to */
     if(isTimeType(args.type))
