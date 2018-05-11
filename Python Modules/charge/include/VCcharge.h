@@ -14,18 +14,18 @@
 #include <utility>
 #include <list>
 //boost
-//#include <boost/python/detail/wrap_python.hpp>
-//#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
-//#define BOOST_LIB_DIAGNOSTIC
-//#include <boost/config.hpp>
-//#include <boost/python.hpp>
-//#include <boost/python/class.hpp>
-//#include <boost/python/module.hpp>
-//#include <boost/python/def.hpp>
-//#include <boost/python/object/function.hpp>
-//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-//#include <boost/python/docstring_options.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+#define BOOST_LIB_DIAGNOSTIC
+#include <boost/config.hpp>
+#include <boost/python.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/object/function.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/docstring_options.hpp>
 //______________________________________________________________________________
 class VCcharge : public VCbase
 {
@@ -159,41 +159,41 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
             .def("getChargeDataStruct",         &chargeController::getChargeDataStruct, (arg("name")), getChargeDataStructDocString, return_value_policy<reference_existing_object>() )
             .def("get_CA_PEND_IO_TIMEOUT",      &chargeController::get_CA_PEND_IO_TIMEOUT                                                   )
             .def("set_CA_PEND_IO_TIMEOUT",      &chargeController::set_CA_PEND_IO_TIMEOUT                                                   )
-            .def("setBufferSize",               &chargeController::setBufferSize, (arg("size_t")), setBufferSizeDocString                   )
-            .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
-            .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
-//            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
-            .def("getBufferSize",               &chargeController::getBufferSize, (arg("name")), getBufferSizeDocString                     )
-            .def("getDiagType",                 &chargeController::getDiagType, (arg("name")), getDiagTypeDocString                         )
-            .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (arg("name")), getDiagTypeStrDocString                   )
-            .def("getChargeVector",             &chargeController::getChargeVector_Py, (arg("name")), getChargeVectorDocString              )
-            .def("getVoltageVector",            &chargeController::getVoltageVector_Py, (arg("name")), getVoltageVectorDocString             )
-            .def("getWCMChargeVector",          &chargeController::getWCMChargeVector_Py, getWCMChargeVectorDocString                             )
-            .def("getWCMVoltageVector",         &chargeController::getWCMVoltageVector_Py, getWCMVoltageVectorDocString                            )
-            .def("getS02FCUPChargeVector",      &chargeController::getS02FCUPChargeVector_Py, getS02FCUPChargeVectorDocString                     )
-            .def("getS02FCUPVoltageVector",     &chargeController::getS02FCUPVoltageVector_Py, getS02FCUPVoltageVectorDocString                    )
-            .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (arg("name")), getChargeBufferDocString              )
-            .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (arg("name")), getVoltageBufferDocString             )
-            .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                             )
-            .def("getWCMVoltageBuffer",         &chargeController::getWCMVoltageBuffer_Py, getWCMVoltageBufferDocString                            )
-            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString                     )
-            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString                    )
-            .def("getTimeStamps",               &chargeController::getTimeStamps_Py, (arg("name")), getTimeStampsDocString                  )
-            .def("getStrTimeStamps",            &chargeController::getStrTimeStamps_Py, (arg("name")), getStrTimeStampsDocString            )
-            .def("getChargeDiagnosticNames",    &chargeController::getChargeDiagnosticNames_Py, getChargeDiagnosticNamesDocString           )
-            .def("getChargePVs",                &chargeController::getChargePVs_Py, getChargePVsDocString                                   )
-            .def("getCharge",                   &chargeController::getCharge, (arg("name")), getChargeDocString                             )
-            .def("getVoltage",                  &chargeController::getCharge, (arg("name")), getVoltageDocString                            )
-            .def("getWCMCharge",                &chargeController::getWCMCharge, getWCMChargeDocString                                      )
-            .def("getWCMVoltage",               &chargeController::getWCMCharge, getWCMVoltageDocString                                     )
-            .def("getS02FCUPCharge",            &chargeController::getS02FCUPCharge, getS02FCUPChargeDocString                              )
-            .def("getS02FCUPVoltage",           &chargeController::getS02FCUPCharge, getS02FCUPVoltageDocString                             )
-            .def("isMonitoringCharge",          &chargeController::isMonitoringCharge, (arg("name")), isMonitoringChargeDocString           )
-            .def("isNotMonitoringCharge",       &chargeController::isNotMonitoringCharge, (arg("name")), isNotMonitoringChargeDocString     )
-            .def("isMonitoringWCM",             &chargeController::isMonitoringWCM, isMonitoringWCMDocString                                )
-            .def("isNotMonitoringWCM",          &chargeController::isNotMonitoringWCM, isNotMonitoringWCMDocString                          )
-            .def("isMonitoringS02FCUP",         &chargeController::isMonitoringS02FCUP, isMonitoringS02FCUPDocString                        )
-            .def("isNotMonitoringS02FCUP",      &chargeController::isNotMonitoringS02FCUP, isNotMonitoringS02FCUPDocString                  )
+//            .def("setBufferSize",               &chargeController::setBufferSize, (arg("size_t")), setBufferSizeDocString                   )
+//            .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
+//            .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
+////            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
+//            .def("getBufferSize",               &chargeController::getBufferSize, (arg("name")), getBufferSizeDocString                     )
+//            .def("getDiagType",                 &chargeController::getDiagType, (arg("name")), getDiagTypeDocString                         )
+//            .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (arg("name")), getDiagTypeStrDocString                   )
+//            .def("getChargeVector",             &chargeController::getChargeVector_Py, (arg("name")), getChargeVectorDocString              )
+//            .def("getVoltageVector",            &chargeController::getVoltageVector_Py, (arg("name")), getVoltageVectorDocString            )
+//            .def("getWCMChargeVector",          &chargeController::getWCMChargeVector_Py, getWCMChargeVectorDocString                       )
+//            .def("getWCMVoltageVector",         &chargeController::getWCMVoltageVector_Py, getWCMVoltageVectorDocString                     )
+//            .def("getS02FCUPChargeVector",      &chargeController::getS02FCUPChargeVector_Py, getS02FCUPChargeVectorDocString               )
+//            .def("getS02FCUPVoltageVector",     &chargeController::getS02FCUPVoltageVector_Py, getS02FCUPVoltageVectorDocString             )
+//            .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (arg("name")), getChargeBufferDocString              )
+//            .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (arg("name")), getVoltageBufferDocString            )
+//            .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                       )
+//            .def("getWCMVoltageBuffer",         &chargeController::getWCMVoltageBuffer_Py, getWCMVoltageBufferDocString                     )
+//            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString               )
+//            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString             )
+//            .def("getTimeStamps",               &chargeController::getTimeStamps_Py, (arg("name")), getTimeStampsDocString                  )
+//            .def("getStrTimeStamps",            &chargeController::getStrTimeStamps_Py, (arg("name")), getStrTimeStampsDocString            )
+//            .def("getChargeDiagnosticNames",    &chargeController::getChargeDiagnosticNames_Py, getChargeDiagnosticNamesDocString           )
+//            .def("getChargePVs",                &chargeController::getChargePVs_Py, getChargePVsDocString                                   )
+//            .def("getCharge",                   &chargeController::getCharge, (arg("name")), getChargeDocString                             )
+//            .def("getVoltage",                  &chargeController::getCharge, (arg("name")), getVoltageDocString                            )
+//            .def("getWCMCharge",                &chargeController::getWCMCharge, getWCMChargeDocString                                      )
+//            .def("getWCMVoltage",               &chargeController::getWCMCharge, getWCMVoltageDocString                                     )
+//            .def("getS02FCUPCharge",            &chargeController::getS02FCUPCharge, getS02FCUPChargeDocString                              )
+//            .def("getS02FCUPVoltage",           &chargeController::getS02FCUPCharge, getS02FCUPVoltageDocString                             )
+//            .def("isMonitoringCharge",          &chargeController::isMonitoringCharge, (arg("name")), isMonitoringChargeDocString           )
+//            .def("isNotMonitoringCharge",       &chargeController::isNotMonitoringCharge, (arg("name")), isNotMonitoringChargeDocString     )
+//            .def("isMonitoringWCM",             &chargeController::isMonitoringWCM, isMonitoringWCMDocString                                )
+//            .def("isNotMonitoringWCM",          &chargeController::isNotMonitoringWCM, isNotMonitoringWCMDocString                          )
+//            .def("isMonitoringS02FCUP",         &chargeController::isMonitoringS02FCUP, isMonitoringS02FCUPDocString                        )
+//            .def("isNotMonitoringS02FCUP",      &chargeController::isNotMonitoringS02FCUP, isNotMonitoringS02FCUPDocString                  )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",            &chargeController::debugMessagesOff                       )
             .def("debugMessagesOn",             &chargeController::debugMessagesOn                        )

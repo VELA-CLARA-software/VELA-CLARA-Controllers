@@ -202,6 +202,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getTimeStampsDocString = "Returns a vector containing the timestamps as doubles for str(bpmName) - these are defined in the config file.\n"
                                          "To be used in conjunction with function monitorDataForNShots.";
+    char const* getXPVBufferDocString = "Returns a buffer of the last (buffer) X values for the X PV for str(bpmName) - these are defined in the config file.";
+    char const* getYPVBufferDocString = "Returns a buffer of the last (buffer) Y values for the Y PV for str(bpmName) - these are defined in the config file.";
     char const* getXBufferDocString = "Returns a buffer of the last (buffer) X values for str(bpmName) - these are defined in the config file.";
     char const* getYBufferDocString = "Returns a buffer of the last (buffer) Y values for str(bpmName) - these are defined in the config file.";
     char const* getQBufferDocString = "Returns a buffer of the last (buffer) Q values for str(bpmName) - these are defined in the config file.";
@@ -244,6 +246,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("getTimeStamps",                   &beamPositionMonitorController::getTimeStamps_Py, getTimeStampsDocString             )
             .def("getStrTimeStamps",                &beamPositionMonitorController::getStrTimeStamps_Py, getStrTimeStampsDocString       )
             .def("getBPMRawData",                   &beamPositionMonitorController::getBPMRawData_Py, getBPMRawDataDocString             )
+            .def("getBPMXPVBuffer",                 &beamPositionMonitorController::getBPMXPVBuffer_Py, getXPVBufferDocString            )
+            .def("getBPMYPVBuffer",                 &beamPositionMonitorController::getBPMYPVBuffer_Py, getYPVBufferDocString            )
             .def("getBPMXBuffer",                   &beamPositionMonitorController::getBPMXBuffer_Py, getXBufferDocString                )
             .def("getBPMYBuffer",                   &beamPositionMonitorController::getBPMYBuffer_Py, getYBufferDocString                )
             .def("getBPMQBuffer",                   &beamPositionMonitorController::getBPMQBuffer_Py, getQBufferDocString                )

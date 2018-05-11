@@ -80,6 +80,16 @@ boost::circular_buffer< std::vector< double > > beamPositionMonitorController::g
     return localInterface.getBPMRawDataBuffer( name );
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorController::getBPMXPVBuffer( const std::string & name )
+{
+    return localInterface.getBPMXPVBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > beamPositionMonitorController::getBPMYPVBuffer( const std::string & name )
+{
+    return localInterface.getBPMYPVBuffer( name );
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > beamPositionMonitorController::getBPMXBuffer( const std::string & name )
 {
     return localInterface.getBPMXBuffer( name );
@@ -294,6 +304,16 @@ boost::python::list beamPositionMonitorController::getBPMXBuffer_Py( const std::
 boost::python::list beamPositionMonitorController::getBPMYBuffer_Py( const std::string & name )
 {
     return toPythonList(getBPMYBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMXPVBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBPMXPVBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getBPMYPVBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBPMYPVBuffer( name ));
 }
 //______________________________________________________________________________
 boost::python::list beamPositionMonitorController::getBPMQBuffer_Py( const std::string & name )
