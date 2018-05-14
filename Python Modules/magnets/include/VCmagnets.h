@@ -26,6 +26,7 @@ class VCmagnets : public VCbase
         ~VCmagnets();
 
 
+
         magnetController& virtual_CLARA_PH1_Magnet_Controller();
         magnetController& offline_CLARA_PH1_Magnet_Controller();
         magnetController& physical_CLARA_PH1_Magnet_Controller();
@@ -41,6 +42,14 @@ class VCmagnets : public VCbase
         magnetController& virtual_VELA_BA2_Magnet_Controller();
         magnetController& offline_VELA_BA2_Magnet_Controller();
         magnetController& physical_VELA_BA2_Magnet_Controller();
+
+        magnetController& virtual_CB1_Magnet_Controller();
+        magnetController& offline_CB1_Magnet_Controller();
+        magnetController& physical_CB1_Magnet_Controller();
+
+        magnetController& virtual_CB2_Magnet_Controller();
+        magnetController& offline_CB2_Magnet_Controller();
+        magnetController& physical_CB2_Magnet_Controller();
 
         magnetController& getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area);
 
@@ -70,9 +79,25 @@ class VCmagnets : public VCbase
         magnetController* offline_CLARA_PH1_Magnet_Controller_Obj;
         magnetController* physical_CLARA_PH1_Magnet_Controller_Obj;
 
+        magnetController* offline_CLARA_BA1_Magnet_Controller_Obj;
+        magnetController* physical_CLARA_BA1_Magnet_Controller_Obj;
+        magnetController* virtual_CLARA_BA1_Magnet_Controller_Obj;
+
+        magnetController* offline_CLARA_BA2_Magnet_Controller_Obj;
+        magnetController* physical_CLARA_BA2_Magnet_Controller_Obj;
+        magnetController* virtual_CLARA_BA2_Magnet_Controller_Obj;
+
         magnetController* virtual_VELA_INJ_Magnet_Controller_Obj;
         magnetController* offline_VELA_INJ_Magnet_Controller_Obj;
         magnetController* physical_VELA_INJ_Magnet_Controller_Obj;
+
+        magnetController* virtual_CB1_Magnet_Controller_Obj;
+        magnetController* offline_CB1_Magnet_Controller_Obj;
+        magnetController* physical_CB1_Magnet_Controller_Obj;
+
+        magnetController* virtual_CB2_Magnet_Controller_Obj;
+        magnetController* offline_CB2_Magnet_Controller_Obj;
+        magnetController* physical_CB2_Magnet_Controller_Obj;
 
         magnetController* virtual_USER_Magnet_Controller_Obj;
         magnetController* offline_USER_Magnet_Controller_Obj;
@@ -101,7 +126,9 @@ class VCmagnets : public VCbase
         const std::string CLARA_PH1_CONFIG,
                           VELA_INJ_MAG_CONFIG,
                           VELA_BA1_MAG_CONFIG,
-                          VELA_BA2_MAG_CONFIG;
+                          VELA_BA2_MAG_CONFIG,
+                          CB1_MAG_CONFIG,
+                          CB2_MAG_CONFIG;
 };
 
 typedef double doub;
@@ -463,10 +490,19 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
              return_value_policy<reference_existing_object>())
         .def("getMagnetController",  &VCmagnets::getMagnetController,
              return_value_policy<reference_existing_object>())
-//        .def("setQuiet",         &VCmagnets::setQuiet  )
-//        .def("setVerbose",       &VCmagnets::setVerbose)
-//        .def("setMessage",       &VCmagnets::setMessage)
-//        .def("setDebugMessage",  &VCmagnets::setDebugMessage)
+
+        .def("virtual_CB1_Magnet_Controller",  &VCmagnets::virtual_CB1_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_CB1_Magnet_Controller",  &VCmagnets::offline_CB1_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_CB1_Magnet_Controller",  &VCmagnets::physical_CB1_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("virtual_CB2_Magnet_Controller",  &VCmagnets::virtual_CB2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_CB2_Magnet_Controller",  &VCmagnets::offline_CB2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_CB2_Magnet_Controller",  &VCmagnets::physical_CB2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
         ;
 }
 

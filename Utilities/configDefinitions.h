@@ -244,11 +244,13 @@ namespace UTL
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
     const std::string PV_SUFFIX_GUN_MOD_RESET         = "PV_SUFFIX_GUN_MOD_RESET";
 /// Magnets
-    const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
-    const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
-    const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
-    const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";// not going to use
-    const std::string CLARA_PH1_MAG_CONFIG             = "claraPH1Magnets.config";
+    const std::string VELA_INJ_MAG_CONFIG  = "velaINJMagnets.config";
+    const std::string VELA_BA1_MAG_CONFIG  = "velaBA1Magnets.config";
+    const std::string VELA_BA2_MAG_CONFIG  = "velaBA2Magnets.config";
+    const std::string CLARA_INJ_MAG_CONFIG = "claraINJMagnets.config";// not going to use
+    const std::string CLARA_PH1_MAG_CONFIG = "claraPH1Magnets.config";
+    const std::string CB1_MAG_CONFIG       = "CB1Magnets.config";
+    const std::string CB2_MAG_CONFIG       = "CB2Magnets.config";
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
     const std::string VELA_BA1_SCREENS_CONFIG  = "velaBA1Screens.config";
