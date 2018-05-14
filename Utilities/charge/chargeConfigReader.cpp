@@ -63,7 +63,7 @@ bool chargeConfigReader::readConfigFiles()
     chargeObjects.clear();
     chargeMonStructs.clear();
     chargeComStructs.clear();
-    bool numSuccess = readConfig( *this,  chargeConf1, &chargeConfigReader::addToChargeObjectsV1,nullptr, &chargeConfigReader::addToChargeMonStructsV1 );
+    bool numSuccess = readConfig( *this,  chargeConf1, &chargeConfigReader::addToChargeObjectsV1, &chargeConfigReader::addToChargeComStructsV1, &chargeConfigReader::addToChargeMonStructsV1 );
     if( !numSuccess )
         success = false;
 //    if( numObjs == chargeTraceDataObject.size() )

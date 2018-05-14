@@ -103,13 +103,25 @@ chargeController& VCcharge::getController(chargeController*& cont,
         switch(myMachineArea)
         {
             case HWC_ENUM::MACHINE_AREA::VELA_INJ:
-                cont = new chargeController(conf1,
-                                            messageStates.at(cont).first,
-                                            messageStates.at(cont).second,
-                                            shouldEPICS,
-                                            shouldVM,
-                                            myMachineArea);
-                break;
+                {
+                    cont = new chargeController(conf1,
+                                                messageStates.at(cont).first,
+                                                messageStates.at(cont).second,
+                                                shouldEPICS,
+                                                shouldVM,
+                                                myMachineArea);
+                    break;
+                }
+            case HWC_ENUM::MACHINE_AREA::CLARA_PH1:
+                {
+                    cont = new chargeController(conf1,
+                                                messageStates.at(cont).first,
+                                                messageStates.at(cont).second,
+                                                shouldEPICS,
+                                                shouldVM,
+                                                myMachineArea);
+                    break;
+                }
             default:
                 std::cout << name  <<" can't be created just yet," <<std::endl;
 

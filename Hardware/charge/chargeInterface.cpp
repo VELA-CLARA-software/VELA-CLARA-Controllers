@@ -315,409 +315,405 @@ void chargeInterface::clearContinuousMonitorStructs()
 //    }
 //}
 //______________________________________________________________________________
-//void chargeInterface::monitorForNShots( const std::string chargeName, size_t N )
-//{
-//    if( isNotMonitoringCharge( chargeName ) )
+void chargeInterface::monitorForNShots( const std::string chargeName, size_t N )
+{
+    if( isNotMonitoringCharge( chargeName ) )
+    {
+        chargeMonitorStructs.clear();
+        clearContinuousMonitorStructs();
+        debugMessage( "Starting charge Monitor for ", chargeName );
+//        resetATraceVector( trace, channel, N );
+        resetAChargeVector( chargeName, N );
+        debugMessage( "Vector ", chargeName, " Reset" );
+        chargeObj.dataObjects.at( chargeName ).numShots = N;
+        chargeObj.dataObjects.at( chargeName ).isAContinuousMonitorStruct = false;
+        chargeObj.dataObjects.at( chargeName ).isATemporaryMonitorStruct = true;
+        chargeObj.dataObjects.at( chargeName ).isMonitoring = true;
+        for( auto && it2 : chargeObj.dataObjects.at( chargeName ).pvMonStructs )
+        {
+            addToMonitorStructs( chargeMonitorStructs, it2.second, &chargeObj.dataObjects.at( chargeName )  );
+        }
+        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Trace Monitors failed" );
+    }
+    else
+    {
+        message( "Already Monitoring Traces " ); /// make more useful
+    }
+}
+//______________________________________________________________________________
+void chargeInterface::resetChargeVectors( size_t N )
+{
+    chargeMonitorStructs.clear();
+    for( auto && it : chargeObj.dataObjects )
+    {
+        it.second.chargeVec.clear();
+        it.second.chargeVec.resize( N );
+        it.second.chargeBuffer.clear();
+        it.second.chargeBuffer.resize( N );
+        it.second.voltageVec.clear();
+        it.second.voltageVec.resize( N );
+        it.second.voltageBuffer.clear();
+        it.second.voltageBuffer.resize( N );
+        it.second.timeStamps.clear();
+        it.second.timeStamps.resize( N );
+        it.second.strTimeStamps.clear();
+        it.second.strTimeStamps.resize( N );
+        it.second.shotCounts = 0;
+    }
+}
+//______________________________________________________________________________
+void chargeInterface::resetAChargeVector( const std::string chargeName, size_t N )
+{
+//    chargeMonitorStructs.at( chargeName ).clear();
+    chargeObj.dataObjects.at( chargeName ).chargeVec.clear();
+    chargeObj.dataObjects.at( chargeName ).chargeVec.resize( N );
+    chargeObj.dataObjects.at( chargeName ).chargeBuffer.clear();
+    chargeObj.dataObjects.at( chargeName ).chargeBuffer.resize( N );
+    chargeObj.dataObjects.at( chargeName ).timeStamps.clear();
+    chargeObj.dataObjects.at( chargeName ).timeStamps.resize( N );
+    chargeObj.dataObjects.at( chargeName ).strTimeStamps.clear();
+    chargeObj.dataObjects.at( chargeName ).strTimeStamps.resize( N );
+    chargeObj.dataObjects.at( chargeName ).shotCounts = 0;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isMonitoringCharge( const std::string & chargeName )
+{
+    if( chargeObj.dataObjects.at( chargeName ).isMonitoring == true )
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isMonitoringWCM()
+{
+    if( chargeObj.dataObjects.at( UTL::WCM ).isMonitoring == true )
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isNotMonitoringWCM()
+{
+    if( chargeObj.dataObjects.at( UTL::WCM ).isMonitoring == false )
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isMonitoringS02FCUP()
+{
+    if( chargeObj.dataObjects.at( UTL::S02_FCUP ).isMonitoring == true )
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isNotMonitoringS02FCUP()
+{
+    if( chargeObj.dataObjects.at( UTL::S02_FCUP ).isMonitoring == false )
+        return true;
+    else
+        return false;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isNotMonitoringCharge( const std::string & chargeName )
+{
+    return !isMonitoringCharge( chargeName );
+}
+//______________________________________________________________________________
+const chargeStructs::dataObject & chargeInterface::getChargeDataStruct( const std::string & chargeName )
+{
+    if( entryExists( chargeObj.dataObjects, chargeName ) )
+    {
+        return chargeObj.dataObjects.at( chargeName );
+    }
+}
+//______________________________________________________________________________
+size_t chargeInterface::getBufferSize( const std::string & chargeName )
+{
+    if( entryExists( chargeObj.dataObjects, chargeName ) )
+    {
+        return chargeObj.dataObjects.at( chargeName ).buffer;
+    }
+    else
+    {
+        message("ERROR!!!!! charge not defined in config file!!!!");
+        return UTL::DUMMY_SIZET;
+    }
+}
+//______________________________________________________________________________
+const chargeStructs::CHARGE_DIAG_TYPE chargeInterface::getDiagType( const std::string & chargeName )
+{
+    if( entryExists( chargeObj.dataObjects, chargeName ) )
+    {
+        return chargeObj.dataObjects.at( chargeName ).diagType;
+    }
+    else
+    {
+        message("ERROR!!!!! charge not defined in config file!!!!");
+        return chargeStructs::CHARGE_DIAG_TYPE::UNKNOWN_CHARGE_DIAG;
+    }
+}
+//______________________________________________________________________________
+const std::string chargeInterface::getDiagTypeStr( const std::string & chargeName )
+{
+    return ENUM_TO_STRING(getDiagType( chargeName ));
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getChargeVector( const std::string & name )
+{
+    return chargeObj.dataObjects.at( name ).chargeVec;
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getVoltageVector( const std::string & name )
+{
+    return chargeObj.dataObjects.at( name ).voltageVec;
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getWCMVoltageVector()
+{
+    std::vector< double > wcmQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
+    {
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
+            {
+                wcmQ = it.second.voltageVec;
+            }
+    }
+//    if( wcmQ == UTL::DUMMY_DOUBLE )
 //    {
-//        chargeMonitorStructs.clear();
-//        clearContinuousMonitorStructs();
-//        debugMessage( "Starting charge Monitor for ", chargeName );
-////        resetATraceVector( trace, channel, N );
-//        resetAChargeVector( chargeName, N );
-//        debugMessage( "Vector ", chargeName, " Reset" );
-//        chargeObj.dataObjects.at( chargeName ).numShots = N;
-//        chargeObj.dataObjects.at( chargeName ).isAContinuousMonitorStruct = false;
-//        chargeObj.dataObjects.at( chargeName ).isATemporaryMonitorStruct = true;
-//        chargeObj.dataObjects.at( chargeName ).isMonitoring = true;
-//        for( auto && it2 : chargeObj.dataObjects.at( chargeName ).pvMonStructs )
-//        {
-//            addToMonitorStructs( chargeMonitorStructs, it2.second, &chargeObj.dataObjects.at( chargeName )  );
-//        }
-//        int status = sendToEpics( "ca_create_subscription", "", "!!TIMEOUT!! Subscription to charge Trace Monitors failed" );
+//        message("DID NOT FIND WCM, IS IT DEFINED IN THE CONFIG FILE????");
 //    }
-//    else
+    return wcmQ;
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getS02FCUPVoltageVector()
+{
+    std::vector< double > fcupQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
+    {
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+            {
+                fcupQ = it.second.voltageVec;
+            }
+    }
+//    if( fcupQ == UTL::DUMMY_DOUBLE )
 //    {
-//        message( "Already Monitoring Traces " ); /// make more useful
+//        message("DID NOT FIND S02-FCUP, IS IT DEFINED IN THE CONFIG FILE????");
 //    }
-//}
-////______________________________________________________________________________
-//void chargeInterface::resetChargeVectors( size_t N )
-//{
-//    chargeMonitorStructs.clear();
-//    for( auto && it : chargeObj.dataObjects )
+    return fcupQ;
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getWCMChargeVector()
+{
+    std::vector< double > wcmQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
+    {
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
+            {
+                wcmQ = it.second.chargeVec;
+            }
+    }
+//    if( wcmQ == UTL::DUMMY_DOUBLE )
 //    {
-//        it.second.chargeVec.clear();
-//        it.second.chargeVec.resize( N );
-//        it.second.chargeBuffer.clear();
-//        it.second.chargeBuffer.resize( N );
-//        it.second.voltageVec.clear();
-//        it.second.voltageVec.resize( N );
-//        it.second.voltageBuffer.clear();
-//        it.second.voltageBuffer.resize( N );
-//        it.second.timeStamps.clear();
-//        it.second.timeStamps.resize( N );
-//        it.second.strTimeStamps.clear();
-//        it.second.strTimeStamps.resize( N );
-//        it.second.shotCounts = 0;
+//        message("DID NOT FIND WCM, IS IT DEFINED IN THE CONFIG FILE????");
 //    }
-//}
-////______________________________________________________________________________
-//void chargeInterface::resetAChargeVector( const std::string chargeName, size_t N )
-//{
-////    chargeMonitorStructs.at( chargeName ).clear();
-//    chargeObj.dataObjects.at( chargeName ).chargeVec.clear();
-//    chargeObj.dataObjects.at( chargeName ).chargeVec.resize( N );
-//    chargeObj.dataObjects.at( chargeName ).chargeBuffer.clear();
-//    chargeObj.dataObjects.at( chargeName ).chargeBuffer.resize( N );
-//    chargeObj.dataObjects.at( chargeName ).timeStamps.clear();
-//    chargeObj.dataObjects.at( chargeName ).timeStamps.resize( N );
-//    chargeObj.dataObjects.at( chargeName ).strTimeStamps.clear();
-//    chargeObj.dataObjects.at( chargeName ).strTimeStamps.resize( N );
-//    chargeObj.dataObjects.at( chargeName ).shotCounts = 0;
-//}
-////______________________________________________________________________________
-//const bool chargeInterface::isMonitoringCharge( const std::string & chargeName )
-//{
-//    if( chargeObj.dataObjects.at( chargeName ).isMonitoring == true )
-//        return true;
-//    else
-//        return false;
-//}
-////______________________________________________________________________________
-//const bool chargeInterface::isMonitoringWCM()
-//{
-//    if( chargeObj.dataObjects.at( UTL::WCM ).isMonitoring == true )
-//        return true;
-//    else
-//        return false;
-//}
-////______________________________________________________________________________
-//const bool chargeInterface::isNotMonitoringWCM()
-//{
-//    if( chargeObj.dataObjects.at( UTL::WCM ).isMonitoring == false )
-//        return true;
-//    else
-//        return false;
-//}
-////______________________________________________________________________________
-//const bool chargeInterface::isMonitoringS02FCUP()
-//{
-//    if( chargeObj.dataObjects.at( UTL::S02_FCUP ).isMonitoring == true )
-//        return true;
-//    else
-//        return false;
-//}
-////______________________________________________________________________________
-//const bool chargeInterface::isNotMonitoringS02FCUP()
-//{
-//    if( chargeObj.dataObjects.at( UTL::S02_FCUP ).isMonitoring == false )
-//        return true;
-//    else
-//        return false;
-//}
-////______________________________________________________________________________
-//const bool chargeInterface::isNotMonitoringCharge( const std::string & chargeName )
-//{
-//    return !isMonitoringCharge( chargeName );
-//}
-////______________________________________________________________________________
-//const chargeStructs::dataObject & chargeInterface::getChargeDataStruct( const std::string & chargeName )
-//{
-//    if( entryExists( chargeObj.dataObjects, chargeName ) )
+    return wcmQ;
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getS02FCUPChargeVector()
+{
+    std::vector< double > fcupQ;
+    double minVal;
+    for( auto && it : chargeObj.dataObjects )
+    {
+            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+            {
+                fcupQ = it.second.chargeVec;
+            }
+    }
+//    if( fcupQ == UTL::DUMMY_DOUBLE )
 //    {
-//        return chargeObj.dataObjects.at( chargeName );
+//        message("DID NOT FIND S02-FCUP, IS IT DEFINED IN THE CONFIG FILE????");
 //    }
-//}
-////______________________________________________________________________________
-//size_t chargeInterface::getBufferSize( const std::string & chargeName )
-//{
-//    if( entryExists( chargeObj.dataObjects, chargeName ) )
-//    {
-//        return chargeObj.dataObjects.at( chargeName ).buffer;
-//    }
-//    else
-//    {
-//        message("ERROR!!!!! charge not defined in config file!!!!");
-//        return UTL::DUMMY_SIZET;
-//    }
-//}
-////______________________________________________________________________________
-//const chargeStructs::CHARGE_DIAG_TYPE chargeInterface::getDiagType( const std::string & chargeName )
-//{
-//    if( entryExists( chargeObj.dataObjects, chargeName ) )
-//    {
-//        return chargeObj.dataObjects.at( chargeName ).diagType;
-//    }
-//    else
-//    {
-//        message("ERROR!!!!! charge not defined in config file!!!!");
-//        return chargeStructs::CHARGE_DIAG_TYPE::UNKNOWN_CHARGE_DIAG;
-//    }
-//}
-////______________________________________________________________________________
-//const std::string chargeInterface::getDiagTypeStr( const std::string & chargeName )
-//{
-//    return ENUM_TO_STRING(getDiagType( chargeName ));
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getChargeVector( const std::string & name )
-//{
-//    return chargeObj.dataObjects.at( name ).chargeVec;
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getVoltageVector( const std::string & name )
-//{
-//    return chargeObj.dataObjects.at( name ).voltageVec;
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getWCMVoltageVector()
-//{
-//    std::vector< double > wcmQ;
-//    double minVal;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
-//            {
-//                wcmQ = it.second.voltageVec;
-//            }
-//    }
-////    if( wcmQ == UTL::DUMMY_DOUBLE )
-////    {
-////        message("DID NOT FIND WCM, IS IT DEFINED IN THE CONFIG FILE????");
-////    }
-//    return wcmQ;
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getS02FCUPVoltageVector()
-//{
-//    std::vector< double > fcupQ;
-//    double minVal;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
-//            {
-//                fcupQ = it.second.voltageVec;
-//            }
-//    }
-////    if( fcupQ == UTL::DUMMY_DOUBLE )
-////    {
-////        message("DID NOT FIND S02-FCUP, IS IT DEFINED IN THE CONFIG FILE????");
-////    }
-//    return fcupQ;
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getWCMChargeVector()
-//{
-//    std::vector< double > wcmQ;
-//    double minVal;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
-//            {
-//                wcmQ = it.second.chargeVec;
-//            }
-//    }
-////    if( wcmQ == UTL::DUMMY_DOUBLE )
-////    {
-////        message("DID NOT FIND WCM, IS IT DEFINED IN THE CONFIG FILE????");
-////    }
-//    return wcmQ;
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getS02FCUPChargeVector()
-//{
-//    std::vector< double > fcupQ;
-//    double minVal;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//            if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
-//            {
-//                fcupQ = it.second.chargeVec;
-//            }
-//    }
-////    if( fcupQ == UTL::DUMMY_DOUBLE )
-////    {
-////        message("DID NOT FIND S02-FCUP, IS IT DEFINED IN THE CONFIG FILE????");
-////    }
-//    return fcupQ;
-//}
-////______________________________________________________________________________
-//std::vector< double > chargeInterface::getTimeStamps( const std::string & name )
-//{
-//    return chargeObj.dataObjects.at( name ).timeStamps;
-//}
-////______________________________________________________________________________
-//std::vector< std::string > chargeInterface::getStrTimeStamps( const std::string & name )
-//{
-//    return chargeObj.dataObjects.at( name ).strTimeStamps;
-//}
-////______________________________________________________________________________
-//double chargeInterface::getCharge( const std::string & name )
-//{
-//    return chargeObj.dataObjects.at( name ).chargeVec.back();
-//}
-////______________________________________________________________________________
-//double chargeInterface::getVoltage( const std::string & name )
-//{
-//    return chargeObj.dataObjects.at( name ).voltageVec.back();
-//}
-////______________________________________________________________________________
-//double chargeInterface::getWCMVoltage()
-//{
-//    return 0.0;
-////    return getWCMVoltageVector().back();
-//}
-////______________________________________________________________________________
-//double chargeInterface::getS02FCUPVoltage()
-//{
-//    return 0.0;
-////    return getS02FCUPVoltageVector().back();
-//}
-////______________________________________________________________________________
-//double chargeInterface::getWCMCharge()
-//{
-//    return 0.0;
-////    return getWCMChargeVector().back();
-//}
-////______________________________________________________________________________
-//double chargeInterface::getS02FCUPCharge()
-//{
-//    return 0.0;
-////    return getS02FCUPChargeVector().back();
-//}
-////______________________________________________________________________________
-//void chargeInterface::setBufferSize( size_t bufferSize )
-//{
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//        it.second.chargeBuffer.clear();
-//        it.second.chargeBuffer.resize( bufferSize );
-//        it.second.voltageBuffer.clear();
-//        it.second.voltageBuffer.resize( bufferSize );
-//        it.second.buffer = bufferSize;
-//    }
-//}
-////______________________________________________________________________________
-//void chargeInterface::restartContinuousMonitoring()
-//{
-//    monitorCharges();
-//}
-////______________________________________________________________________________
-//boost::circular_buffer< double > chargeInterface::getChargeBuffer( const std::string & name )
-//{
-//    if( entryExists( chargeObj.dataObjects, name ) )
-//    {
-//        return chargeObj.dataObjects.at( name ).chargeBuffer;
-//    }
-//}
-////______________________________________________________________________________
-//boost::circular_buffer< double > chargeInterface::getVoltageBuffer( const std::string & name )
-//{
-//    if( entryExists( chargeObj.dataObjects, name ) )
-//    {
-//        return chargeObj.dataObjects.at( name ).voltageBuffer;
-//    }
-//}
-////______________________________________________________________________________
-//boost::circular_buffer< double > chargeInterface::getWCMVoltageBuffer()
-//{
-//    boost::circular_buffer< double > wcmQ;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
-//        {
-//            wcmQ = it.second.voltageBuffer;
-//        }
-//    }
-//    return wcmQ;
-//}
-////______________________________________________________________________________
-//boost::circular_buffer< double > chargeInterface::getS02FCUPVoltageBuffer()
-//{
-//    boost::circular_buffer< double > fcupQ;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
-//        {
-//            fcupQ = it.second.voltageBuffer;
-//        }
-//    }
-//    return fcupQ;
-//}
-////______________________________________________________________________________
-//boost::circular_buffer< double > chargeInterface::getWCMChargeBuffer()
-//{
-//    boost::circular_buffer< double > wcmQ;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
-//        {
-//            wcmQ = it.second.chargeBuffer;
-//        }
-//    }
-//    return wcmQ;
-//}
-////______________________________________________________________________________
-//boost::circular_buffer< double > chargeInterface::getS02FCUPChargeBuffer()
-//{
-//    boost::circular_buffer< double > fcupQ;
-//    for( auto && it : chargeObj.dataObjects )
-//    {
-//        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
-//        {
-//            fcupQ = it.second.chargeBuffer;
-//        }
-//    }
-//    return fcupQ;
-//}
-////______________________________________________________________________________
-//void chargeInterface::killCallBack( chargeStructs::monitorStruct * ms )
-//{
-//    int status = ca_clear_subscription( ms -> EVID );
-//    if( status == ECA_NORMAL)
-//    {
-//        delete ms;
-//        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
-//    }
-//    else
-//    {
-//        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->chargeObject );
-//    }
-//}
-////______________________________________________________________________________
-//std::vector< std::string > chargeInterface::getChargeDiagnosticNames()
-//{
-//    std::vector< std::string > chargeNames;
-//    for( auto && iter : chargeObj.dataObjects )
-//    {
-//        message( "charge Name ", iter.first );
-//        chargeNames.push_back( iter.first );
-//    }
-//    return chargeNames;
-//}
-////______________________________________________________________________________
-//std::vector< std::string > chargeInterface::getChargePVs()
-//{
-//    std::vector< std::string > chargeNames;
-//    for( auto && iter : chargeObj.dataObjects )
-//    {
-//        for( auto && iter2 : iter.second.pvMonStructs )
-//        {
-//            std::stringstream s;
-//            message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
-//            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
-//            chargeNames.push_back( s.str() );
-//        }
-//        for( auto && iter2 : iter.second.pvComStructs )
-//        {
-//            std::stringstream s;
-//            message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
-//            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
-//            chargeNames.push_back( s.str() );
-//        }
-//    }
-//    return chargeNames;
-//}
+    return fcupQ;
+}
+//______________________________________________________________________________
+std::vector< double > chargeInterface::getTimeStamps( const std::string & name )
+{
+    return chargeObj.dataObjects.at( name ).timeStamps;
+}
+//______________________________________________________________________________
+std::vector< std::string > chargeInterface::getStrTimeStamps( const std::string & name )
+{
+    return chargeObj.dataObjects.at( name ).strTimeStamps;
+}
+//______________________________________________________________________________
+double chargeInterface::getCharge( const std::string & name )
+{
+    return chargeObj.dataObjects.at( name ).chargeVec.back();
+}
+//______________________________________________________________________________
+double chargeInterface::getVoltage( const std::string & name )
+{
+    return chargeObj.dataObjects.at( name ).voltageVec.back();
+}
+//______________________________________________________________________________
+double chargeInterface::getWCMVoltage()
+{
+    return getWCMVoltageBuffer().back();
+}
+//______________________________________________________________________________
+double chargeInterface::getS02FCUPVoltage()
+{
+    return getS02FCUPVoltageBuffer().back();
+}
+//______________________________________________________________________________
+double chargeInterface::getWCMCharge()
+{
+    return getWCMChargeBuffer().back();
+}
+//______________________________________________________________________________
+double chargeInterface::getS02FCUPCharge()
+{
+    return getS02FCUPChargeBuffer().back();
+}
+//______________________________________________________________________________
+void chargeInterface::setBufferSize( size_t bufferSize )
+{
+    for( auto && it : chargeObj.dataObjects )
+    {
+        it.second.chargeBuffer.clear();
+        it.second.chargeBuffer.resize( bufferSize );
+        it.second.voltageBuffer.clear();
+        it.second.voltageBuffer.resize( bufferSize );
+        it.second.buffer = bufferSize;
+    }
+}
+//______________________________________________________________________________
+void chargeInterface::restartContinuousMonitoring()
+{
+    monitorCharges();
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getChargeBuffer( const std::string & name )
+{
+    if( entryExists( chargeObj.dataObjects, name ) )
+    {
+        return chargeObj.dataObjects.at( name ).chargeBuffer;
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getVoltageBuffer( const std::string & name )
+{
+    if( entryExists( chargeObj.dataObjects, name ) )
+    {
+        return chargeObj.dataObjects.at( name ).voltageBuffer;
+    }
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getWCMVoltageBuffer()
+{
+    boost::circular_buffer< double > wcmQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
+        {
+            wcmQ = it.second.voltageBuffer;
+        }
+    }
+    return wcmQ;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getS02FCUPVoltageBuffer()
+{
+    boost::circular_buffer< double > fcupQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+        {
+            fcupQ = it.second.voltageBuffer;
+        }
+    }
+    return fcupQ;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getWCMChargeBuffer()
+{
+    boost::circular_buffer< double > wcmQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::WCM )
+        {
+            wcmQ = it.second.chargeBuffer;
+        }
+    }
+    return wcmQ;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getS02FCUPChargeBuffer()
+{
+    boost::circular_buffer< double > fcupQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+        {
+            fcupQ = it.second.chargeBuffer;
+        }
+    }
+    return fcupQ;
+}
+//______________________________________________________________________________
+void chargeInterface::killCallBack( chargeStructs::monitorStruct * ms )
+{
+    int status = ca_clear_subscription( ms -> EVID );
+    if( status == ECA_NORMAL)
+    {
+        delete ms;
+        debugMessage("killed callback to ",ENUM_TO_STRING(ms->monType));
+    }
+    else
+    {
+        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->chargeObject );
+    }
+}
+//______________________________________________________________________________
+std::vector< std::string > chargeInterface::getChargeDiagnosticNames()
+{
+    std::vector< std::string > chargeNames;
+    for( auto && iter : chargeObj.dataObjects )
+    {
+        message( "charge Name ", iter.first );
+        chargeNames.push_back( iter.first );
+    }
+    return chargeNames;
+}
+//______________________________________________________________________________
+std::vector< std::string > chargeInterface::getChargePVs()
+{
+    std::vector< std::string > chargeNames;
+    for( auto && iter : chargeObj.dataObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            std::stringstream s;
+            message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+            chargeNames.push_back( s.str() );
+        }
+        for( auto && iter2 : iter.second.pvComStructs )
+        {
+            std::stringstream s;
+            message( "charge PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+            s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+            chargeNames.push_back( s.str() );
+        }
+    }
+    return chargeNames;
+}
 //______________________________________________________________________________
 std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > chargeInterface::getILockStates( const std::string & objName )const
 {

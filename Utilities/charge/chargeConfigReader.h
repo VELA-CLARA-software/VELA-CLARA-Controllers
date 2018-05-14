@@ -14,9 +14,6 @@
 // me
 #include "configReader.h"
 #include "chargeStructs.h"
-// boost
-#include <boost/circular_buffer.hpp>
-
 
 class chargeConfigReader : public configReader
 {
@@ -32,12 +29,6 @@ class chargeConfigReader : public configReader
         chargeStructs::chargeObject chargeConfigReader::getChargeObject();
 
     private:
-
-
-        /// for RF object there are 3 types of hardware, we should be able to read in
-        /// the conig files with 1 function and function pointers, this can't go in the
-        /// base as the functions addToObjectsV1() etc. are in derived classes
-        /// This seems like a "nice" use of function pointers
 
         const std::string chargeConf1;
         const bool startVirtualMachine;
@@ -63,7 +54,6 @@ class chargeConfigReader : public configReader
         std::vector< double >                           tstamps;
         std::vector< std::string >                      strtstamps;
         std::vector< double >                           vals;
-        boost::circular_buffer< double >                valsbuffer;
         int                                             shotcounts;
         int                                             numshotcounts;
 };
