@@ -197,6 +197,8 @@ namespace BOOST_PYTHON_INCLUDE
             enum_<MACHINE_AREA>(py_name,py_docs)
                 .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
                 .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
+                .value("CLARA_2_BA1", MACHINE_AREA::CLARA_2_BA1  )
+                .value("CLARA_2_BA2", MACHINE_AREA::CLARA_2_BA2  )
                 .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
                 .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
                 .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )
@@ -215,6 +217,8 @@ namespace BOOST_PYTHON_INCLUDE
             enum_<MACHINE_AREA>(py_name,py_docs)
                 .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
                 .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
+                .value("CLARA_2_BA1", MACHINE_AREA::CLARA_2_BA1  )
+                .value("CLARA_2_BA2", MACHINE_AREA::CLARA_2_BA2  )
                 .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
                 .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
                 .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )
@@ -223,7 +227,7 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("VELA_INJ",     MACHINE_AREA::VELA_INJ    )
                 .value("VELA_BA2",     MACHINE_AREA::VELA_BA2    )
                 .value("VELA_BA1",     MACHINE_AREA::VELA_BA1    )
-                .value("RF_GUN",       MACHINE_AREA::RF_GUN      )
+                .value("RF_GUN",       MACHINE_AREA::RF_GUN      )// This is both guns at the  moment !
                 .value("RF_L01",       MACHINE_AREA::RF_L01      )
                 .value("USER",         MACHINE_AREA::USER        )
                 ;
