@@ -421,10 +421,9 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
         }
         if( bpmdo->shotCount == bpmdo->numShots )
         {
-            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo->name );
+            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo -> pvRoot, ENUM_TO_STRING( ms->monType ) );
             ms->interface->killCallBack( ms, bpmdo );//, bpmdo );
             monitoringData = false;
-            bpmdo -> shotCount = 0;
         }
     }
 }
@@ -478,26 +477,11 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
         }
         if( bpmdo->shotCount == bpmdo->numShots )
         {
-            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo -> pvRoot, ":", ENUM_TO_STRING( ms->monType ) );
+            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo -> pvRoot, ENUM_TO_STRING( ms->monType ) );
             bpmdo->isMonitoring = false;
             ms->interface->killCallBack( ms, bpmdo );
         }
     }
-//    *(double*)ms -> val = *(double*)args.dbr;
-//    switch( ms -> monType )
-//    {
-//        message("TESTING OUT BUFFERS ----- CHECK updateValue IF CONTROLLER BREAKS HERE!!!!");
-//        case beamPositionMonitorStructs::BPM_PV_TYPE::X:
-//        {
-//            message("X");
-////            message(ms->bpmObject->dataObjects.at(ms->objName).xPVBuffer.size());
-//            ms->bpmObject->dataObjects.at(ms->objName).xPVBuffer.push_back(*(double*)args.dbr);
-//        }
-//        case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
-//        {
-//            ms->bpmObject->dataObjects.at(ms->objName).yPVBuffer.push_back(*(double*)args.dbr);
-//        }
-//    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
@@ -519,56 +503,40 @@ void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::mon
         bpmdo -> isMonitoring = false;
 
         delete ms;
-        message( bpmdo->name, "callback deleted" );
+        message( bpmdo->name, " callback deleted" );
     }
     else
     {
         message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->bpmObject );
     }
 }
-//______________________________________________________________________________
-void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
-{
-    int status = ca_clear_subscription( ms -> EVID );
-    if( status == ECA_NORMAL)
-    {
-//        debugMessage( ms -> scopeObject, " monitoring = false ");
-
-//        isMonitoringMap[ ms -> bpmObject ] = false;
-        bpmdo -> appendingData = false;
-
-        delete ms;
-        message( bpmdo->name, "callback deleted" );
-    }
-    else
-    {
-        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->bpmObject );
-    }
-}
+////______________________________________________________________________________
+//void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
+//{
+//    int status = ca_clear_subscription( ms -> EVID );
+//    if( status == ECA_NORMAL)
+//    {
+////        debugMessage( ms -> scopeObject, " monitoring = false ");
+//
+////        isMonitoringMap[ ms -> bpmObject ] = false;
+//        bpmdo -> appendingData = false;
+//
+//        delete ms;
+//        message( bpmdo->name, " callback deleted" );
+//    }
+//    else
+//    {
+//        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->bpmObject );
+//    }
+//}
 //______________________________________________________________________________
 void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::string & name  )
 {
-    if( !bpmObj.dataObjects.at( name ).appendingData )
+    if( !monitoringData )
     {
         dataMonitorStructs.clear();
 //        debugMessage( "Starting bpm data Monitor " );
         resetDataVectors( N );
-//        debugMessage( "Vectors Reset" );
-//        for( auto && it1 : bpmObj.dataObjects.at( bpmNames ) )
-//        {
-//            it1.second.numShots = N;
-//            for( auto && it2 : it1.second.pvMonStructs.at( bpmNames ) )
-//            {
-//                if( isADataPV( it2.first ) )
-//                {
-//                    monitoringData = true;
-//                    it1.second.isAContinuousMonitorStruct=false;
-//                    it1.second.isATemporaryMonitorStruct=true;
-//                    addToMonitorStructs( dataMonitorStructs, it2.second, &it1.second  );
-//
-//                }
-//            }
-//        }
         bpmObj.dataObjects.at( name ).numShots = N;
 //                if( isADataPV( bpmObj.dataObjects.at( name ).pvMonStructs.at( name ) ) )
 //                {
