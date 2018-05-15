@@ -32,6 +32,15 @@ physical_CB1_Magnet_Controller_Obj(nullptr),
 virtual_CB2_Magnet_Controller_Obj(nullptr),
 offline_CB2_Magnet_Controller_Obj(nullptr),
 physical_CB2_Magnet_Controller_Obj(nullptr),
+
+virtual_VELA_BA1_Magnet_Controller_Obj(nullptr),
+offline_VELA_BA1_Magnet_Controller_Obj(nullptr),
+physical_VELA_BA1_Magnet_Controller_Obj(nullptr),
+virtual_VELA_BA2_Magnet_Controller_Obj(nullptr),
+offline_VELA_BA2_Magnet_Controller_Obj(nullptr),
+physical_VELA_BA2_Magnet_Controller_Obj(nullptr),
+
+
 CLARA_PH1_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG),
 VELA_INJ_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG),
 VELA_BA1_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG),

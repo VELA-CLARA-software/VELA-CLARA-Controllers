@@ -91,6 +91,15 @@ class VCmagnets : public VCbase
         magnetController* offline_VELA_INJ_Magnet_Controller_Obj;
         magnetController* physical_VELA_INJ_Magnet_Controller_Obj;
 
+        magnetController* virtual_VELA_BA1_Magnet_Controller_Obj;
+        magnetController* offline_VELA_BA1_Magnet_Controller_Obj;
+        magnetController* physical_VELA_BA1_Magnet_Controller_Obj;
+
+        magnetController* virtual_VELA_BA2_Magnet_Controller_Obj;
+        magnetController* offline_VELA_BA2_Magnet_Controller_Obj;
+        magnetController* physical_VELA_BA2_Magnet_Controller_Obj;
+
+
         magnetController* virtual_CB1_Magnet_Controller_Obj;
         magnetController* offline_CB1_Magnet_Controller_Obj;
         magnetController* physical_CB1_Magnet_Controller_Obj;
@@ -111,14 +120,6 @@ class VCmagnets : public VCbase
                                         const HWC_ENUM::MACHINE_AREA myMachineArea);
 
 //        magnetController& getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area);
-
-        magnetController * virtual_VELA_BA1_Magnet_Controller_Obj;
-        magnetController * offline_VELA_BA1_Magnet_Controller_Obj;
-        magnetController * physical_VELA_BA1_Magnet_Controller_Obj;
-
-        magnetController * virtual_VELA_BA2_Magnet_Controller_Obj;
-        magnetController * offline_VELA_BA2_Magnet_Controller_Obj;
-        magnetController * physical_VELA_BA2_Magnet_Controller_Obj;
 
         std::map<magnetController*, std::pair<bool,bool>> messageStates;
         void updateMessageStates();
