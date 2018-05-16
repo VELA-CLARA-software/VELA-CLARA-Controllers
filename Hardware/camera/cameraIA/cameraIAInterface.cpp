@@ -150,6 +150,23 @@ void cameraIAInterface::startMonitors()
                                    &continuousMonitorIAStructs.back()->EVID );
             debugMessage("Adding monitor for ",  it.second.name, " ", ENUM_TO_STRING(it2.first));
         }
+//        for(auto && it2 : it.second.pvComStructs)
+//        {
+//            continuousMonitorIAStructs.push_back(new cameraStructs::monitorIAStruct());
+//            continuousMonitorIAStructs.back()->monType = it2.first;
+//            continuousMonitorIAStructs.back()->objName = it.second.name;
+//            continuousMonitorIAStructs.back()->interface = this;
+//            continuousMonitorIAStructs.back() -> CHTYPE  = it2.second.CHTYPE;
+//            continuousMonitorIAStructs.back() -> EVID  = it2.second.EVID;
+//            ca_create_subscription(it2.second.CHTYPE,
+//                                   it2.second.COUNT,
+//                                   it2.second.CHID,
+//                                   it2.second.MASK,
+//                                   cameraIAInterface::staticEntryIAMonitor,
+//                                   (void*)continuousMonitorIAStructs.back(),
+//                                   &continuousMonitorIAStructs.back()->EVID );
+//            debugMessage("Adding monitor for ",  it.second.name, " ", ENUM_TO_STRING(it2.first));
+//        }
     }
     int status = sendToEpics( "ca_create_subscription",
                              "Succesfully Subscribed to Camera  IA Monitors",
@@ -157,87 +174,113 @@ void cameraIAInterface::startMonitors()
     if ( status == ECA_NORMAL )
         allMonitorsStarted = true; /// interface base class member
 }
+//--------------------------------------------------------------------------------
 void cameraIAInterface::staticEntryIAMonitor(const event_handler_args args)
 {
     monitorIAStruct*ms = static_cast<monitorIAStruct*>(args.usr);
-    switch(ms -> monType)
+    ms->interface->updateVaue(ms->monType,ms->objName,args);
+}
+//--------------------------------------------------------------------------------
+void cameraIAInterface::updateVaue(const CAM_PV_TYPE pv, const std::string& objName, const event_handler_args& args)
+{
+    switch(pv)
     {
+//        case :TEST)(CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
+//        (CAM_FILE_WRITE)(CAM_FILE_WRITE_RBV)(CAM_FILE_WRITE_CHECK)
+//        (CAM_FILE_WRITE_MESSAGE)(CAM_STATUS)(CAM_START_ACQUIRE)(CAM_STOP_ACQUIRE)
+//        (CAM_CAPTURE)(CAM_CAPTURE_RBV)(CAM_ACQUIRE_RBV)(CAM_NUM_CAPTURE)
+//        (CAM_NUM_CAPTURE_RBV)(CAM_NUM_CAPTURED)(CAM_DATA)(CAM_BKGRND_DATA)
+//        (JPG_FILE_NAME) (JPG_FILE_PATH) (JPG_FILE_NUMBER)
+//        (JPG_FILE_WRITE)(JPG_FILE_WRITE_RBV)(JPG_FILE_WRITE_CHECK)
+//        (JPG_FILE_WRITE_MESSAGE)
+//        (JPG_CAPTURE)(JPG_CAPTURE_RBV)(JPG_NUM_CAPTURE)
+//        (JPG_NUM_CAPTURE_RBV)(JPG_NUM_CAPTURED)
+//        (START_IA)(PIX_MM)(STEP_SIZE)(SET_BKGRND)(USE_BKGRND)(USE_NPOINT)
+//        AVG_PIX_INETSITY)
+//        (X_PIX)(Y_PIX)(SIGMA_X_PIX)(SIGMA_Y_PIX)(COV_XY_PIX)
+//        (MASK_X)(MASK_Y)(MASK_X_RAD)(MASK_Y_RAD)(X_CENTER)(Y_CENTER)
+//        (BIT_DEPTH)(UNKNOWN_CAM_PV_TYPE)
+//        (CAM_EXPOSURE_TIME) (CAM_ACQUIRE_PERIOD) (CAM_FREQ) (CAM_SENSOR_TEMP)
+//        (START_IA_RBV) (USE_BKGRND_RBV) (USE_NPOINT_RBV))
+
+
         case CAM_PV_TYPE::X:
-            ms->interface->updateX( *(double*)args.dbr, ms->objName);
+            updateX( *(double*)args.dbr, objName);
             break;
         case CAM_PV_TYPE::Y:
-            ms->interface->updateY( *(double*)args.dbr, ms->objName);
+            updateY( *(double*)args.dbr, objName);
             break;
         case CAM_PV_TYPE::SIGMA_X:
-            ms->interface->updateSigmaX( *(double*)args.dbr, ms->objName );
+            updateSigmaX( *(double*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::SIGMA_Y:
-            ms->interface->updateSigmaY( *(double*)args.dbr, ms->objName );
+            updateSigmaY( *(double*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::COV_XY:
-            ms->interface->updateCovXY( *(double*)args.dbr, ms->objName );
+            updateCovXY( *(double*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::X_PIX:
-            ms->interface->updateXPix( *(double*)args.dbr, ms->objName);
+            updateXPix( *(double*)args.dbr, objName);
             break;
         case CAM_PV_TYPE::Y_PIX:
-            ms->interface->updateYPix( *(double*)args.dbr, ms->objName);
+            updateYPix( *(double*)args.dbr, objName);
             break;
         case CAM_PV_TYPE::SIGMA_X_PIX:
-            ms->interface->updateSigmaXPix( *(double*)args.dbr, ms->objName );
+            updateSigmaXPix( *(double*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::SIGMA_Y_PIX:
-            ms->interface->updateSigmaYPix( *(double*)args.dbr, ms->objName );
+            updateSigmaYPix( *(double*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::COV_XY_PIX:
-            ms->interface->updateCovXYPix( *(double*)args.dbr, ms->objName );
+            updateCovXYPix( *(double*)args.dbr, objName );
             break;
-            /*
         case CAM_PV_TYPE::MASK_X_RAD_RBV:
-            ms->interface->updateXRad( *(unsigned long*)args.dbr, ms->objName );
+            updateXRad( *(unsigned long*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::MASK_Y_RAD_RBV:
-            ms->interface->updateYRad( *(unsigned long*)args.dbr, ms->objName );
+            updateYRad( *(unsigned long*)args.dbr, objName );
             break;
-
         case CAM_PV_TYPE::MASK_X_RBV:
-            ms->interface->updateXMask( *(unsigned long*)args.dbr, ms->objName );
+            updateXMask( *(unsigned long*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::MASK_Y_RBV:
-            ms->interface->updateYMask( *(unsigned long*)args.dbr, ms->objName );
+            updateYMask( *(unsigned long*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::X_CENTER_RBV:
-            ms->interface->updateXCenterPix( *(unsigned long*)args.dbr, ms->objName );
+            updateXCenterPix( *(unsigned long*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::Y_CENTER_RBV:
-            ms->interface->updateYCenterPix( *(unsigned long*)args.dbr, ms->objName );
-            break;*/
+            updateYCenterPix( *(unsigned long*)args.dbr, objName );
+            break;
         case CAM_PV_TYPE::BIT_DEPTH:
-            ms->interface->updateBitDepth( *(unsigned long*)args.dbr, ms->objName );
+            updateBitDepth( *(unsigned long*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::AVG_PIX_INETSITY:
-            ms->interface->updateAverageIntensity( *(double*)args.dbr, ms->objName );
+            updateAverageIntensity( *(double*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::CAM_ACQUIRE_RBV:
-            ms->interface->updateAcquiring( *(unsigned short*)args.dbr, ms->objName );
+            updateAcquiring( *(unsigned short*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::CAM_STATUS:
-            ms->interface->updateState( *(unsigned short*)args.dbr, ms->objName );
+            updateState( *(unsigned short*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::START_IA_RBV:
-            ms->interface->updateAnalyseState( *(unsigned short*)args.dbr, ms->objName );
+            updateAnalyseState( *(unsigned short*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::USE_BKGRND_RBV:
-            ms->interface->updateUseBkgrnd( *(unsigned short*)args.dbr, ms->objName );
+            updateUseBkgrnd( *(unsigned short*)args.dbr, objName );
             break;
         case CAM_PV_TYPE::USE_NPOINT_RBV:
-            ms->interface->updateUseNPoint( *(unsigned short*)args.dbr, ms->objName );
+            updateUseNPoint( *(unsigned short*)args.dbr, objName );
             break;
         default:
-            ms->interface->debugMessage("!!! ERROR !!! Unknown Monitor Type passed to cameraDAQInterface::staticEntryMonitor");
+            debugMessage("!!! ERROR !!! Unknown PV Type passed to cameraDAQInterface::staticEntryMonitor, ", ENUM_TO_STRING(pv));
             break;
     }
 }
+
+
+
 void cameraIAInterface::updateState(const unsigned short value,const std::string&cameraName)
 {
     if(entryExists(allCamData,cameraName))
@@ -330,17 +373,31 @@ void cameraIAInterface::updateCovXYPix(const double value,const std::string&came
     allCamData.at(cameraName).IA.covXYPix = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateXRad(const unsigned long value,const std::string&cameraName)
+
+
+void cameraIAInterface::updateXRad(const unsigned long value,const std::string& cameraName)
 {
     allCamData.at(cameraName).IA.maskXRad = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateYRad(const unsigned long value,const std::string&cameraName)
+void cameraIAInterface::updateYRad(const unsigned long value,const std::string& cameraName)
 {
     allCamData.at(cameraName).IA.maskYRad = value;
     updateSelectedOrVC(cameraName);
 }
-/*
+
+void cameraIAInterface::updateXMask(const unsigned long value,const std::string& cameraName)
+{
+    allCamData.at(cameraName).IA.maskX = value;
+    updateSelectedOrVC(cameraName);
+}
+void cameraIAInterface::updateYMask(const unsigned long value,const std::string& cameraName)
+{
+    allCamData.at(cameraName).IA.maskY = value;
+    updateSelectedOrVC(cameraName);
+}
+
+
 void cameraIAInterface::updateXCenterPix(const unsigned long value,const std::string&cameraName)
 {
     allCamData.at(cameraName).IA.xCenterPix = value;
@@ -351,17 +408,8 @@ void cameraIAInterface::updateYCenterPix(const unsigned long value,const std::st
     allCamData.at(cameraName).IA.yCenterPix = value;
     updateSelectedOrVC(cameraName);
 }
-void cameraIAInterface::updateXMask(const unsigned long value,const std::string&cameraName)
-{
-    allCamData.at(cameraName).IA.maskX = value;
-    updateSelectedOrVC(cameraName);
-}
-void cameraIAInterface::updateYMask(const unsigned long value,const std::string&cameraName)
-{
-    allCamData.at(cameraName).IA.maskY = value;
-    updateSelectedOrVC(cameraName);
-}
-*/
+
+
 
 void cameraIAInterface::updateBitDepth(const unsigned long value,const std::string&cameraName)
 {
@@ -505,8 +553,8 @@ bool cameraIAInterface::setMaskX(const int x)
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::MASK_X));
     ans=shortCaput(comm,S);
 
-    if (ans==true) {selectedCameraObj.IA.maskX=x;}
-    message("Setting mask X center for",
+    //if (ans==true) {selectedCameraObj.IA.maskX=x;}
+    message("Setting mask X center for ",
             selectedCameraObj.name," camera.");
 
     return ans;
@@ -518,7 +566,7 @@ bool cameraIAInterface::setMaskY(const int y)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::MASK_Y));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.maskY=y;}
+    //if (ans==true) {selectedCameraObj.IA.maskY=y;}
     message("Setting mask Y center for",
             selectedCameraObj.name," camera.");
     return ans;
@@ -530,7 +578,7 @@ bool cameraIAInterface::setMaskXRad(const int xRad)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::MASK_X_RAD));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.maskXRad=xRad;}
+    //if (ans==true) {selectedCameraObj.IA.maskXRad=xRad;}
     message("Setting mask X radius for",
             selectedCameraObj.name," camera.");
     return ans;
@@ -542,7 +590,7 @@ bool cameraIAInterface::setMaskYRad(const int yRad)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::MASK_Y_RAD));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.maskYRad=yRad;}
+    //if (ans==true) {selectedCameraObj.IA.maskYRad=yRad;}
     message("Setting mask Y radius for",
             selectedCameraObj.name," camera.");
     return ans;
@@ -554,7 +602,7 @@ bool cameraIAInterface::setCenterXPixel(const int xC)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::X_CENTER));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.xCenterPix=xC;}
+    //if (ans==true) {selectedCameraObj.IA.xCenterPix=xC;}
     message("Setting x pixel center for",
             selectedCameraObj.name," camera.");
     return ans;
@@ -566,7 +614,7 @@ bool cameraIAInterface::setCenterYPixel(const int yC)
 
     pvStruct S(selectedCameraObj.pvComStructs.at(CAM_PV_TYPE::Y_CENTER));
     ans=shortCaput(comm,S);
-    if (ans==true) {selectedCameraObj.IA.yCenterPix=yC;}
+    //if (ans==true) {selectedCameraObj.IA.yCenterPix=yC;}
     message("Setting y pixel center for",
             selectedCameraObj.name," camera.");
     return ans;

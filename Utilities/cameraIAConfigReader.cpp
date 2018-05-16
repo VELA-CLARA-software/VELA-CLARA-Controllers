@@ -187,7 +187,38 @@ void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, 
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_X  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::X_CENTER;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_Y  )
+        {
+            message("Added Y_CENTER in config");
             pvStruct_v.back().pvType = CAM_PV_TYPE::Y_CENTER;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_X_RBV  )
+            pvStruct_v.back().pvType = CAM_PV_TYPE::X_CENTER_RBV;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_Y_RBV  )
+        {
+            message("Added Y_CENTER in config");
+            pvStruct_v.back().pvType = CAM_PV_TYPE::Y_CENTER_RBV;
+        }
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RBV  )
+        {
+            message("Added MASK_X_RBV in config");
+            pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_X_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RBV  )
+        {
+            message("Added MASK_Y_RBV in config");
+            pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_Y_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RAD_RBV  )
+        {
+            message("Added MASK_X_RAD_RBV in config");
+            pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_X_RAD_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RAD_RBV  )
+        {
+            message("Added MASK_Y_RAD_RBV in config");
+            pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_Y_RAD_RBV;
+        }
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_X;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y  )

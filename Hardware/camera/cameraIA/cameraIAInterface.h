@@ -69,7 +69,11 @@ class cameraIAInterface : public cameraInterface
         void initChids();
         void startMonitors();
         void killMonitor( cameraStructs::monitorDAQStruct * ms );
+
         static void staticEntryIAMonitor(const event_handler_args args);
+        void updateVaue(const cameraStructs::CAM_PV_TYPE pv, const std::string& objName,const event_handler_args& args);
+
+
         void updateSelectedOrVC(const std::string cameraName);
 
         void updateState(const unsigned short value,const std::string&cameraName);
@@ -84,15 +88,19 @@ class cameraIAInterface : public cameraInterface
         void updateSigmaXPix(const double value,const std::string& cameraName);
         void updateSigmaYPix(const double value,const std::string& cameraName);
         void updateCovXYPix(const double value,const std::string& cameraName);
+
         void updateXRad(const unsigned long value,const std::string&cameraName);
         void updateYRad(const unsigned long value,const std::string&cameraName);
+        void updateXMask(const unsigned long value,const std::string&cameraName);
+        void updateYMask(const unsigned long value,const std::string&cameraName);
+
         void updateXCenterPix(const unsigned long value,const std::string&cameraName);
         void updateYCenterPix(const unsigned long value,const std::string&cameraName);
         void updateBitDepth(const unsigned long value,const std::string&cameraName);
         //void updateImageWidth(const unsigned long value,const std::string&cameraName);
         //void updateImageHeight(const unsigned long value,const std::string&cameraName);
-        void updateXMask(const unsigned long value,const std::string&cameraName);
-        void updateYMask(const unsigned long value,const std::string&cameraName);
+        //void updateXMask(const unsigned long value,const std::string&cameraName);
+        //void updateYMask(const unsigned long value,const std::string&cameraName);
         void updateAverageIntensity(const unsigned long value,const std::string&cameraName);
         void updateAnalyseState(const unsigned short value,const std::string&cameraName);
         void updateUseBkgrnd(const unsigned short value,const std::string&cameraName);
