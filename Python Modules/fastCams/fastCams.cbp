@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="fastCams" />
+		<Option pch_mode="2" />
+		<Option compiler="ms_visual_c_2012" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/fastCams" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="ms_visual_c_2012" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="/W3" />
+					<Add option="/DBUILD_DLL" />
+					<Add option="/Zi" />
+					<Add option="/D_DEBUG" />
+					<Add option="/MDd" />
+					<Add directory="Utilities/fast_cam" />
+				</Compiler>
+				<Linker>
+					<Add option="/DEBUG" />
+					<Add option="/INCREMENTAL:NO" />
+					<Add library="user32" />
+				</Linker>
+				<ExtraCommands>
+					<Add after='mt.exe /nologo /manifest &quot;bin\Debug\fastCams.dll.manifest&quot; /outputresource:&quot;bin\Debug\fastCams.dll&quot;;2' />
+				</ExtraCommands>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/fastCams" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="ms_visual_c_2012" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="/W3" />
+					<Add option="/DBUILD_DLL" />
+					<Add option="/Ox" />
+					<Add option="/DNDEBUG" />
+					<Add option="/MD" />
+					<Add directory="Utilities/fast_cam" />
+				</Compiler>
+				<Linker>
+					<Add option="/INCREMENTAL:NO" />
+					<Add library="user32" />
+				</Linker>
+				<ExtraCommands>
+					<Add after='mt.exe /nologo /manifest &quot;bin\Release\fastCams.dll.manifest&quot; /outputresource:&quot;bin\Release\fastCams.dll&quot;;2' />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
+		<Unit filename="../../Hardware/VCheader.h" />
+		<Unit filename="../../Hardware/controller.cpp" />
+		<Unit filename="../../Hardware/controller.h" />
+		<Unit filename="../../Hardware/fast_cam/fastCamController.cpp" />
+		<Unit filename="../../Hardware/fast_cam/fastCamController.h" />
+		<Unit filename="../../Hardware/fast_cam/fastCamInterface.cpp" />
+		<Unit filename="../../Hardware/fast_cam/fastCamInterface.h" />
+		<Unit filename="../../Hardware/interface.cpp" />
+		<Unit filename="../../Hardware/interface.h" />
+		<Unit filename="../../Structs/fast_cam/fastCamStructs.h" />
+		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Utilities/baseObject.cpp" />
+		<Unit filename="../../Utilities/baseObject.h" />
+		<Unit filename="../../Utilities/configDefinitions.h" />
+		<Unit filename="../../Utilities/configReader.cpp" />
+		<Unit filename="../../Utilities/configReader.h" />
+		<Unit filename="../../Utilities/fast_cam/fastCamConfigReader.cpp" />
+		<Unit filename="../../Utilities/fast_cam/fastCamConfigReader.h" />
+		<Unit filename="include/VC_fastCam.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
+		<Unit filename="src/VC_fastCam.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
