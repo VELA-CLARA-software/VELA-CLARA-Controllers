@@ -501,12 +501,12 @@ std::vector< std::string > chargeInterface::getStrTimeStamps( const std::string 
 //______________________________________________________________________________
 double chargeInterface::getCharge( const std::string & name )
 {
-    return chargeObj.dataObjects.at( name ).chargeVec.back();
+    return chargeObj.dataObjects.at( name ).chargeBuffer.back();
 }
 //______________________________________________________________________________
 double chargeInterface::getVoltage( const std::string & name )
 {
-    return chargeObj.dataObjects.at( name ).voltageVec.back();
+    return chargeObj.dataObjects.at( name ).voltageBuffer.back();
 }
 //______________________________________________________________________________
 double chargeInterface::getWCMVoltage()

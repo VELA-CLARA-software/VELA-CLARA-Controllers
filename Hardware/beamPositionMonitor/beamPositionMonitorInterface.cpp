@@ -848,6 +848,14 @@ void beamPositionMonitorInterface::setBufferSize( size_t bufferSize )
     }
 }
 //______________________________________________________________________________
+const size_t beamPositionMonitorInterface::getBufferSize()
+{
+    for( auto && it : bpmObj.dataObjects )
+    {
+        return it.second.buffer;
+    }
+}
+//______________________________________________________________________________
 void beamPositionMonitorInterface::clearBuffers()
 {
     for( auto && it : bpmObj.dataObjects )
