@@ -105,6 +105,7 @@ namespace UTL
     const std::chrono::milliseconds PAUSE_2(2);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
     const std::string  UNKNOWN_PVROOT = "UNKNOWN_PVROOT";
+    const std::string  UNKNOWN_PVSUFFIX = "UNKNOWN_PVSUFFIX";
     const std::string  UNKNOWN_NAME   = "UNKNOWN_NAME";
     const std::string  DUMMY_NAME   = "DUMMY_NAME";
     const std::string EMPTY_STRING = "";
@@ -244,11 +245,13 @@ namespace UTL
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
     const std::string PV_SUFFIX_GUN_MOD_RESET         = "PV_SUFFIX_GUN_MOD_RESET";
 /// Magnets
-    const std::string VELA_INJ_MAG_CONFIG              = "velaINJMagnets.config";
-    const std::string VELA_BA1_MAG_CONFIG              = "velaBA1Magnets.config";
-    const std::string VELA_BA2_MAG_CONFIG              = "velaBA2Magnets.config";
-    const std::string CLARA_INJ_MAG_CONFIG             = "claraINJMagnets.config";// not going to use
-    const std::string CLARA_PH1_MAG_CONFIG             = "claraPH1Magnets.config";
+    const std::string VELA_INJ_MAG_CONFIG  = "velaINJMagnets.config";
+    const std::string VELA_BA1_MAG_CONFIG  = "velaBA1Magnets.config";
+    const std::string VELA_BA2_MAG_CONFIG  = "velaBA2Magnets.config";
+    const std::string CLARA_INJ_MAG_CONFIG = "claraINJMagnets.config";// not going to use
+    const std::string CLARA_PH1_MAG_CONFIG = "claraPH1Magnets.config";
+    const std::string CB1_MAG_CONFIG       = "CB1Magnets.config";
+    const std::string CB2_MAG_CONFIG       = "CB2Magnets.config";
 /// Screens
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
     const std::string VELA_BA1_SCREENS_CONFIG  = "velaBA1Screens.config";
@@ -815,15 +818,15 @@ namespace UTL
     const std::string PV_IA_SUFFIX_USE_B            ="PV_IA_SUFFIX_USE_B";
     const std::string PV_IA_SUFFIX_USE_NPOINT       ="PV_IA_SUFFIX_USE_NPOINT";
 
-    const std::string PV_IA_SUFFIX_START_IA_RBV       ="PV_IA_SUFFIX_START_IA_RBV";
+    const std::string PV_IA_SUFFIX_START_IA_RBV    ="PV_IA_SUFFIX_START_IA_RBV";
     const std::string PV_IA_SUFFIX_USE_B_RBV       ="PV_IA_SUFFIX_USE_B_RBV";
-    const std::string PV_IA_SUFFIX_USE_NPOINT_RBV       ="PV_IA_SUFFIX_USE_NPOINT_RBV";
-    const std::string PV_IA_SUFFIX_CENTER_X_RBV         ="PV_IA_SUFFIX_CENTER_X_RBV";
-    const std::string PV_IA_SUFFIX_CENTER_Y_RBV         ="PV_IA_SUFFIX_CENTER_Y_RBV";
-    const std::string PV_IA_SUFFIX_MASK_X_RBV           ="PV_IA_SUFFIX_MASK_X_RBV";
-    const std::string PV_IA_SUFFIX_MASK_Y_RBV           ="PV_IA_SUFFIX_MASK_Y_RBV";
-    const std::string PV_IA_SUFFIX_MASK_X_RAD_RBV       ="PV_IA_SUFFIX_MASK_X_RAD_RBV";
-    const std::string PV_IA_SUFFIX_MASK_Y_RAD_RBV       ="PV_IA_SUFFIX_MASK_Y_RAD_RBV";
+    const std::string PV_IA_SUFFIX_USE_NPOINT_RBV  ="PV_IA_SUFFIX_USE_NPOINT_RBV";
+    const std::string PV_IA_SUFFIX_CENTER_X_RBV    ="PV_IA_SUFFIX_CENTER_X_RBV";
+    const std::string PV_IA_SUFFIX_CENTER_Y_RBV    ="PV_IA_SUFFIX_CENTER_Y_RBV";
+    const std::string PV_IA_SUFFIX_MASK_X_RBV      ="PV_IA_SUFFIX_MASK_X_RBV";
+    const std::string PV_IA_SUFFIX_MASK_Y_RBV      ="PV_IA_SUFFIX_MASK_Y_RBV";
+    const std::string PV_IA_SUFFIX_MASK_X_RAD_RBV  ="PV_IA_SUFFIX_MASK_X_RAD_RBV";
+    const std::string PV_IA_SUFFIX_MASK_Y_RAD_RBV  ="PV_IA_SUFFIX_MASK_Y_RAD_RBV";
 
     const std::string PV_IA_SUFFIX_CENTER_X         ="PV_IA_SUFFIX_CENTER_X";
     const std::string PV_IA_SUFFIX_CENTER_Y         ="PV_IA_SUFFIX_CENTER_Y";

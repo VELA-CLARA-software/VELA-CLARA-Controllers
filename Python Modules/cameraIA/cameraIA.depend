@@ -12,7 +12,7 @@
 	"controller.h"
 	"offlineImageAnalyser.h"
 
-1525093651 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiainterface.h
+1526477224 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiainterface.h
 	<string>
 	<vector>
 	<atomic>
@@ -21,7 +21,7 @@
 	"cameraInterface.h"
 	"cameraIAConfigReader.h"
 
-1525093651 d:\vela\git projects\vela-clara-controllers\structs\camerastructs.h
+1526482357 d:\vela\git projects\vela-clara-controllers\structs\camerastructs.h
 	<vector>
 	<string>
 	<thread>
@@ -30,7 +30,7 @@
 	"structs.h"
 	"configDefinitions.h"
 
-1525093711 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1526290714 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -39,7 +39,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1525093651 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1526482457 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -55,7 +55,7 @@
 	<atomic>
 	<map>
 
-1524865288 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1526052307 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -64,13 +64,14 @@
 	"baseObject.h"
 	"structs.h"
 
-1525029876 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1525973776 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
 	<iostream>
+	<time.h>
 	<deque>
 	<boost/python.hpp>
 	<boost/python/detail/wrap_python.hpp>
@@ -94,7 +95,7 @@
 	"configReader.h"
 	"cameraStructs.h"
 
-1525032480 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+1525377302 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -102,7 +103,7 @@
 	<vector>
 	<cadef.h>
 
-1524850250 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -128,7 +129,7 @@
 	"cameraStructs.h"
 	"baseObject.h"
 
-1525093651 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiainterface.cpp
+1526482312 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameraia\cameraiainterface.cpp
 	"cameraIAInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -147,23 +148,23 @@
 	<chrono>
 	<thread>
 
-1525029310 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1525973840 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1525030369 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1526052203 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
 	<chrono>
 
-1525075904 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1525973726 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
 
-1525093651 source:d:\vela\git projects\vela-clara-controllers\utilities\cameraiaconfigreader.cpp
+1526400271 source:d:\vela\git projects\vela-clara-controllers\utilities\cameraiaconfigreader.cpp
 	"cameraIAConfigReader.h"
 	"configDefinitions.h"
 	<iostream>
@@ -175,7 +176,7 @@
 	<algorithm>
 	<ctype.h>
 
-1525032479 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+1525973903 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<time.h>
@@ -225,11 +226,11 @@
 	"editor.h"
 	"fitter.h"
 
-1525076107 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+1526290104 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
 	"VCbase.h"
 	"configDefinitions.h"
 
-1525076148 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1526290452 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
@@ -564,7 +565,7 @@
 1443796070 c:\root_v5.34.34\include\tfitter.h
 	"TVirtualFitter.h"
 
-1525094402 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\src\offlineimageanalyser.cpp
+1525094874 source:d:\vela\git projects\vela-clara-controllers\python modules\cameraia\src\offlineimageanalyser.cpp
 	<fstream>
 	<iterator>
 	<vector>
@@ -590,7 +591,7 @@
 	"VCbase.h"
 	"VCHeader.h"
 
-1524756151 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1526291526 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"

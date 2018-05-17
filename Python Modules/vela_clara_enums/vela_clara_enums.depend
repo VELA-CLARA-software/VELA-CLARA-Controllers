@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1522170925 source:d:\vela\git projects\vela-clara-controllers\python modules\vela_clara_enums\main.cpp
+1524756162 source:d:\vela\git projects\vela-clara-controllers\python modules\vela_clara_enums\main.cpp
 	"main.h"
 
-1522170925 d:\vela\git projects\vela-clara-controllers\python modules\vela_clara_enums\main.h
+1524756162 d:\vela\git projects\vela-clara-controllers\python modules\vela_clara_enums\main.h
 	"VCheader.h"
 
-1523913367 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1526290714 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -14,7 +14,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1523913367 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1526291526 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -36,14 +36,14 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1521808846 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1526290452 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
 	<map>
 	<utility>
 
-1523914301 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1526289505 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -51,18 +51,20 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1523914301 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1525973776 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
 	<iostream>
+	<time.h>
 	<deque>
 	<boost/python.hpp>
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
 	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
 	<boost/python/args.hpp>
 	<boost/python/class.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -72,7 +74,7 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1523913372 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -80,7 +82,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1523113847 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1526052307 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>

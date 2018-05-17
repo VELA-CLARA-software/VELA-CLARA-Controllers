@@ -23,10 +23,30 @@ physical_VELA_INJ_Magnet_Controller_Obj(nullptr),
 virtual_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 offline_CLARA_PH1_Magnet_Controller_Obj(nullptr),
 physical_CLARA_PH1_Magnet_Controller_Obj(nullptr),
+virtual_CLARA_BA1_Magnet_Controller_Obj(nullptr),
+offline_CLARA_BA1_Magnet_Controller_Obj(nullptr),
+physical_CLARA_BA1_Magnet_Controller_Obj(nullptr),
+virtual_CB1_Magnet_Controller_Obj(nullptr),
+offline_CB1_Magnet_Controller_Obj(nullptr),
+physical_CB1_Magnet_Controller_Obj(nullptr),
+virtual_CB2_Magnet_Controller_Obj(nullptr),
+offline_CB2_Magnet_Controller_Obj(nullptr),
+physical_CB2_Magnet_Controller_Obj(nullptr),
+
+virtual_VELA_BA1_Magnet_Controller_Obj(nullptr),
+offline_VELA_BA1_Magnet_Controller_Obj(nullptr),
+physical_VELA_BA1_Magnet_Controller_Obj(nullptr),
+virtual_VELA_BA2_Magnet_Controller_Obj(nullptr),
+offline_VELA_BA2_Magnet_Controller_Obj(nullptr),
+physical_VELA_BA2_Magnet_Controller_Obj(nullptr),
+
+
 CLARA_PH1_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_MAG_CONFIG),
 VELA_INJ_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG),
 VELA_BA1_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG),
-VELA_BA2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG)
+VELA_BA2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG),
+CB1_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CB1_MAG_CONFIG),
+CB2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CB2_MAG_CONFIG)
 {
     std::cout <<"Instantiated a VCmagnets in Quiet Mode" <<std::endl;
     //ctor
@@ -34,72 +54,89 @@ VELA_BA2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG)
 //______________________________________________________________________________
 VCmagnets::~VCmagnets()
 {
-//    //dtor
-//    if(virtual_VELA_INJ_Magnet_Controller_Obj)
-//    {
-//        delete virtual_VELA_INJ_Magnet_Controller_Obj;
-//               virtual_VELA_INJ_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(offline_VELA_INJ_Magnet_Controller_Obj)
-//    {
-//        delete offline_VELA_INJ_Magnet_Controller_Obj;
-//               offline_VELA_INJ_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(physical_VELA_INJ_Magnet_Controller_Obj)
-//    {
-//        delete physical_VELA_INJ_Magnet_Controller_Obj;
-//               physical_VELA_INJ_Magnet_Controller_Obj = nullptr;
-//    }
-//
-//
-//    if(virtual_VELA_BA1_Magnet_Controller_Obj)
-//    {
-//        delete virtual_VELA_BA1_Magnet_Controller_Obj;
-//               virtual_VELA_BA1_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(offline_VELA_BA2_Magnet_Controller_Obj)
-//    {
-//        delete offline_VELA_BA2_Magnet_Controller_Obj;
-//               offline_VELA_BA2_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(physical_VELA_BA2_Magnet_Controller_Obj)
-//    {
-//        delete physical_VELA_BA2_Magnet_Controller_Obj;
-//               physical_VELA_BA2_Magnet_Controller_Obj = nullptr;
-//    }
-//
-//    if(virtual_CLARA_PH1_Magnet_Controller_Obj)
-//    {
-//        delete virtual_CLARA_PH1_Magnet_Controller_Obj;
-//               virtual_CLARA_PH1_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(offline_CLARA_PH1_Magnet_Controller_Obj)
-//    {
-//        delete offline_CLARA_PH1_Magnet_Controller_Obj;
-//               offline_CLARA_PH1_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(physical_CLARA_PH1_Magnet_Controller_Obj)
-//    {
-//        delete physical_CLARA_PH1_Magnet_Controller_Obj;
-//               physical_CLARA_PH1_Magnet_Controller_Obj = nullptr;
-//    }
-//
-//        if(virtual_VELA_INJ_Magnet_Controller_Obj)
-//    {
-//        delete virtual_VELA_INJ_Magnet_Controller_Obj;
-//               virtual_VELA_INJ_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(offline_VELA_INJ_Magnet_Controller_Obj)
-//    {
-//        delete offline_VELA_INJ_Magnet_Controller_Obj;
-//               offline_VELA_INJ_Magnet_Controller_Obj = nullptr;
-//    }
-//    if(physical_VELA_INJ_Magnet_Controller_Obj)
-//    {
-//        delete physical_VELA_INJ_Magnet_Controller_Obj;
-//               physical_VELA_INJ_Magnet_Controller_Obj = nullptr;
-//    }
+    //dtor
+    if(virtual_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete virtual_VELA_INJ_Magnet_Controller_Obj;
+               virtual_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete offline_VELA_INJ_Magnet_Controller_Obj;
+               offline_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_VELA_INJ_Magnet_Controller_Obj)
+    {
+        delete physical_VELA_INJ_Magnet_Controller_Obj;
+               physical_VELA_INJ_Magnet_Controller_Obj = nullptr;
+    }
+
+
+    if(virtual_VELA_BA1_Magnet_Controller_Obj)
+    {
+        delete virtual_VELA_BA1_Magnet_Controller_Obj;
+               virtual_VELA_BA1_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_VELA_BA2_Magnet_Controller_Obj)
+    {
+        delete offline_VELA_BA2_Magnet_Controller_Obj;
+               offline_VELA_BA2_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_VELA_BA2_Magnet_Controller_Obj)
+    {
+        delete physical_VELA_BA2_Magnet_Controller_Obj;
+               physical_VELA_BA2_Magnet_Controller_Obj = nullptr;
+    }
+
+    if(virtual_CLARA_PH1_Magnet_Controller_Obj)
+    {
+        delete virtual_CLARA_PH1_Magnet_Controller_Obj;
+               virtual_CLARA_PH1_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_CLARA_PH1_Magnet_Controller_Obj)
+    {
+        delete offline_CLARA_PH1_Magnet_Controller_Obj;
+               offline_CLARA_PH1_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_CLARA_PH1_Magnet_Controller_Obj)
+    {
+        delete physical_CLARA_PH1_Magnet_Controller_Obj;
+               physical_CLARA_PH1_Magnet_Controller_Obj = nullptr;
+    }
+
+    if(virtual_CB1_Magnet_Controller_Obj)
+    {
+        delete virtual_CB1_Magnet_Controller_Obj;
+               virtual_CB1_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_CB1_Magnet_Controller_Obj)
+    {
+        delete offline_CB1_Magnet_Controller_Obj;
+               offline_CB1_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_CB1_Magnet_Controller_Obj)
+    {
+        delete physical_CB1_Magnet_Controller_Obj;
+               physical_CB1_Magnet_Controller_Obj = nullptr;
+    }
+
+    if(virtual_CB2_Magnet_Controller_Obj)
+    {
+        delete virtual_CB2_Magnet_Controller_Obj;
+               virtual_CB2_Magnet_Controller_Obj = nullptr;
+    }
+    if(offline_CB2_Magnet_Controller_Obj)
+    {
+        delete offline_CB2_Magnet_Controller_Obj;
+               offline_CB2_Magnet_Controller_Obj = nullptr;
+    }
+    if(physical_CB2_Magnet_Controller_Obj)
+    {
+        delete physical_CB2_Magnet_Controller_Obj;
+               physical_CB2_Magnet_Controller_Obj = nullptr;
+    }
 }
+// PH1
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_CLARA_PH1_Magnet_Controller()
 {
@@ -124,6 +161,7 @@ magnetController& VCmagnets::offline_CLARA_PH1_Magnet_Controller()
                          CLARA_PH1_CONFIG,
                          name,withoutVM,withoutEPICS,CLARA_PH1);
 }
+// VELA_INJ
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_INJ_Magnet_Controller()
 {
@@ -147,6 +185,8 @@ magnetController& VCmagnets::physical_VELA_INJ_Magnet_Controller()
     return getController(physical_VELA_INJ_Magnet_Controller_Obj,
                          VELA_INJ_MAG_CONFIG,name,withoutVM,withEPICS,VELA_INJ);
 }
+//
+// BA1
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_BA1_Magnet_Controller()
 {
@@ -171,6 +211,7 @@ magnetController& VCmagnets::physical_VELA_BA1_Magnet_Controller()
                          VELA_BA1_MAG_CONFIG,
                          name,withoutVM,withEPICS,VELA_BA1);
 }
+// BA2
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_VELA_BA2_Magnet_Controller()
 {
@@ -195,11 +236,12 @@ magnetController& VCmagnets::physical_VELA_BA2_Magnet_Controller()
                          VELA_BA2_MAG_CONFIG,
                          name,withoutVM,withEPICS,VELA_BA2);
 }
+// USER
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_USER_Magnet_Controller(cstr& config_path)
 {
     std::string name  = "virtual_USER_Magnet_Controller_Obj";
-    return getController(physical_USER_Magnet_Controller_Obj,
+    return getController(virtual_USER_Magnet_Controller_Obj,
                          config_path,
                          name,withVM,withEPICS,USER);
 }
@@ -207,7 +249,7 @@ magnetController& VCmagnets::virtual_USER_Magnet_Controller(cstr& config_path)
 magnetController& VCmagnets::offline_USER_Magnet_Controller(cstr& config_path)
 {
     std::string name  = "offline_USER_Magnet_Controller_Obj";
-    return getController(physical_USER_Magnet_Controller_Obj,
+    return getController(offline_USER_Magnet_Controller_Obj,
                          config_path,
                          name,withoutVM,withoutEPICS,USER);
 }
@@ -218,6 +260,54 @@ magnetController& VCmagnets::physical_USER_Magnet_Controller(cstr& config_path)
     return getController(physical_USER_Magnet_Controller_Obj,
                          config_path,
                          name,withoutVM,withEPICS,USER);
+}
+// CB1
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_CB1_Magnet_Controller()
+{
+    std::string name  = "physical_CB1_Magnet_Controller_Obj";
+    return getController(physical_CB1_Magnet_Controller_Obj,
+                         CB1_MAG_CONFIG,
+                         name,withoutVM,withEPICS,USER);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_CB1_Magnet_Controller()
+{
+    std::string name  = "offline_CB1_Magnet_Controller_Obj";
+    return getController(offline_CB1_Magnet_Controller_Obj,
+                         CB1_MAG_CONFIG,
+                         name,withoutVM,withoutEPICS,USER);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::virtual_CB1_Magnet_Controller()
+{
+    std::string name  = "virtual_CB1_Magnet_Controller_Obj";
+    return getController(virtual_CB1_Magnet_Controller_Obj,
+                         CB1_MAG_CONFIG,
+                         name,withVM,withEPICS,USER);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_CB2_Magnet_Controller()
+{
+    std::string name  = "physical_CB2_Magnet_Controller_Obj";
+    return getController(physical_CB2_Magnet_Controller_Obj,
+                         CB2_MAG_CONFIG,
+                         name,withoutVM,withEPICS,CLARA_2_BA2);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_CB2_Magnet_Controller()
+{
+    std::string name  = "offline_CB2_Magnet_Controller_Obj";
+    return getController(offline_CB2_Magnet_Controller_Obj,
+                         CB2_MAG_CONFIG,
+                         name,withoutVM,withoutEPICS,CLARA_2_BA2);
+}//______________________________________________________________________________
+magnetController& VCmagnets::virtual_CB2_Magnet_Controller()
+{
+    std::string name  = "virtual_CB2_Magnet_Controller_Obj";
+    return getController(virtual_CB2_Magnet_Controller_Obj,
+                         CB2_MAG_CONFIG,
+                         name,withVM,withEPICS,CLARA_2_BA2);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::getMagnetController(MACHINE_MODE mode,MACHINE_AREA area)
@@ -244,9 +334,25 @@ magnetController& VCmagnets::getMagnetController(MACHINE_MODE mode,MACHINE_AREA 
         return offline_CLARA_PH1_Magnet_Controller();
     else if(mode == VIRTUAL && area == CLARA_PH1)
         return virtual_CLARA_PH1_Magnet_Controller();
+
     else if(mode == PHYSICAL && area == CLARA_PH1)
         return physical_CLARA_PH1_Magnet_Controller();
 
+
+    else if(mode == PHYSICAL && area == CLARA_2_BA1)
+        return physical_CB1_Magnet_Controller();
+    else if(mode == PHYSICAL && area == CLARA_2_BA2)
+        return physical_CB2_Magnet_Controller();
+
+    else if(mode == VIRTUAL && area == CLARA_2_BA1)
+        return virtual_CB1_Magnet_Controller();
+    else if(mode == VIRTUAL && area == CLARA_2_BA2)
+        return virtual_CB2_Magnet_Controller();
+
+    else if(mode == OFFLINE && area == CLARA_2_BA1)
+        return offline_CB1_Magnet_Controller();
+    else if(mode == OFFLINE && area == CLARA_2_BA2)
+        return offline_CB2_Magnet_Controller();
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::getController(magnetController*& cont,

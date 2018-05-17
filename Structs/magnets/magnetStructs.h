@@ -87,7 +87,7 @@ namespace magnetStructs
     struct pvStruct
     {   // proviude a default constructor
         pvStruct() :
-            pvSuffix("UNKNOWN_PV_SUFFIX"),
+            pvSuffix(UTL::UNKNOWN_PVSUFFIX),
         objName(UTL::UNKNOWN_NAME),COUNT(UTL::ZERO_INT), MASK(UTL::ZERO_INT), pvType(UNKNOWN_MAG_PV_TYPE) {}
         MAG_PV_TYPE   pvType;
         chid          CHID;

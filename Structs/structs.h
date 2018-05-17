@@ -98,6 +98,8 @@ namespace HWC_ENUM
                                                       (CLARA_PH1)
                                                       (CLARA_INJ)
                                                       (CLARA_2_VELA)
+                                                      (CLARA_2_BA1)
+                                                      (CLARA_2_BA2)
                                                       (CLARA_S01)
                                                       (CLARA_S02)
                                                       (CLARA_L01)
