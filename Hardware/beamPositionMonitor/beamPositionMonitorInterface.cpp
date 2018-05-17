@@ -213,68 +213,57 @@ void beamPositionMonitorInterface::addToMonitorStructs( std::vector< beamPositio
     {
         case beamPositionMonitorStructs::BPM_PV_TYPE::SA1:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> sa1 ;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SA2:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> sa2 ;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::DATA:
         {
             // For the traces we can just pass in the powerObject for value, and figure everything out from them in the callback functions
-            msv.back() -> val = (void*) &bpmDataObj;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SD1:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> sd1 ;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::SD2:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> sd2 ;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA1:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> ra1;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RA2:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> ra2;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RD1:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> rd1;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::RD2:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> rd2;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> xPV;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
         {
-            msv.back() -> val = (void*) &bpmDataObj -> yPV;
             msv.back() -> objName = bpmDataObj -> name;
             break;
         }
@@ -331,12 +320,12 @@ void beamPositionMonitorInterface::staticEntryrMonitor( const event_handler_args
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
         {
-            ms->interface->updateValue( ms, args );
+            ms->interface->updateXValue( ms, args );
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
         {
-            ms->interface->updateValue( ms, args );
+            ms->interface->updateYValue( ms, args );
             break;
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::DATA:
@@ -361,6 +350,7 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
         bpmdo->shotCount = 0;
         if( bpmdo->rawBPMData.size() == 0 )
         {
+            setBufferSize(UTL::TEN_SIZET);
             bpmdo->timeStamps.push_back(1);
             bpmdo->strTimeStamps.push_back(UTL::UNKNOWN_STRING);
             bpmdo->rawBPMData.resize(1);
@@ -396,14 +386,14 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     bpmdo->rawBPMDataBuffer.push_back(bpmdo->rawBPMData.back());
     bpmdo->timeStampsBuffer.push_back(bpmdo->timeStamps.back());
 
-    bpmdo->pu1[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 1 ];
-    bpmdo->pu2[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 2 ];
-    bpmdo->c1[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 3 ];
-    bpmdo->p1[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 4 ];
-    bpmdo->pu3[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 5 ];
-    bpmdo->pu4[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 6 ];
-    bpmdo->c2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 7 ];
-    bpmdo->p2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 8 ];
+    bpmdo->pu1[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 5 ];
+    bpmdo->pu2[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 6 ];
+    bpmdo->c1[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 7 ];
+    bpmdo->p1[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 8 ];
+    bpmdo->pu3[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 1 ];
+    bpmdo->pu4[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 2 ];
+    bpmdo->c2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 3 ];
+    bpmdo->p2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 4 ];
 
     bpmdo->xVec[ bpmdo->shotCount ] = calcX( bpmdo->name, bpmdo->pu3[ bpmdo->shotCount ], bpmdo->pu4[ bpmdo->shotCount ], bpmdo->c2[ bpmdo->shotCount ], bpmdo->p2[ bpmdo->shotCount ], bpmdo->mn, bpmdo->xn );
     bpmdo->yVec[ bpmdo->shotCount ] = calcY( bpmdo->name, bpmdo->pu1[ bpmdo->shotCount ], bpmdo->pu2[ bpmdo->shotCount ], bpmdo->c1[ bpmdo->shotCount ], bpmdo->p1[ bpmdo->shotCount ], bpmdo->mn, bpmdo->yn );
@@ -412,6 +402,9 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     bpmdo->xBuffer.push_back(bpmdo->xVec.back());
     bpmdo->yBuffer.push_back(bpmdo->yVec.back());
     bpmdo->qBuffer.push_back(bpmdo->qVec.back());
+
+    bpmdo->x = bpmdo->xBuffer.back();
+    bpmdo->y = bpmdo->yBuffer.back();
 
     if( bpmdo -> isATemporaryMonitorStruct )
     {
@@ -426,15 +419,15 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             monitoringData = false;
         }
     }
+    ++bpmdo->dataShots;
 }
 //______________________________________________________________________________
-void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
+void beamPositionMonitorInterface::updateXValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
 {
     const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
 
 //    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject* > (ms -> val);
     beamPositionMonitorStructs::bpmDataObject * bpmdo = &ms->interface->bpmObj.dataObjects.at( ms->objName );
-
     if( bpmdo->isAContinuousMonitorStruct )
     {
         bpmdo->shotCount = 0;
@@ -444,6 +437,33 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
             bpmdo->strTimeStamps.push_back(UTL::UNKNOWN_STRING);
             bpmdo->xPVBuffer.push_back(UTL::DUMMY_DOUBLE);
             bpmdo->xPVBuffer.resize(bpmdo->buffer);
+        }
+    }
+
+    const dbr_double_t * val = &(p  -> value);
+    size_t i = 0;
+
+    updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ],
+               bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
+
+    bpmdo->xPV = *( &p -> value );
+    bpmdo->xPVBuffer.push_back( bpmdo->xPV );
+    ++bpmdo->xPVShots;
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::updateYValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
+{
+    const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
+
+//    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject* > (ms -> val);
+    beamPositionMonitorStructs::bpmDataObject * bpmdo = &ms->interface->bpmObj.dataObjects.at( ms->objName );
+    if( bpmdo->isAContinuousMonitorStruct )
+    {
+        bpmdo->shotCount = 0;
+        if( bpmdo->timeStamps.size() == 0 )
+        {
+            bpmdo->timeStamps.push_back(1);
+            bpmdo->strTimeStamps.push_back(UTL::UNKNOWN_STRING);
             bpmdo->yPVBuffer.push_back(UTL::DUMMY_DOUBLE);
             bpmdo->yPVBuffer.resize(bpmdo->buffer);
         }
@@ -455,35 +475,9 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
     updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ],
                bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
 
-    switch( ms -> monType )
-    {
-        case beamPositionMonitorStructs::BPM_PV_TYPE::X:
-        {
-            bpmdo->xPV = *( &p -> value );
-            message(bpmdo->xPV,"XXXXXX");
-            bpmdo->xPVBuffer.push_back( bpmdo->xPV );
-        }
-        case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
-        {
-            bpmdo->yPV = *( &p -> value );
-            message(bpmdo->yPV,"YYYYYY");
-            bpmdo->yPVBuffer.push_back( bpmdo->yPV );
-        }
-    }
-
-    if( bpmdo -> isATemporaryMonitorStruct )
-    {
-        if( bpmdo -> numShots > -1 )
-        {
-            ++bpmdo -> shotCount;
-        }
-        if( bpmdo->shotCount == bpmdo->numShots )
-        {
-            message( "Collected ", bpmdo->shotCount, " shots for ", bpmdo -> pvRoot, ENUM_TO_STRING( ms->monType ) );
-            bpmdo->isMonitoring = false;
-            ms->interface->killCallBack( ms, bpmdo );
-        }
-    }
+    bpmdo->yPV = *( &p -> value );
+    bpmdo->yPVBuffer.push_back( bpmdo->yPV );
+    ++bpmdo->yPVShots;
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
@@ -512,25 +506,6 @@ void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::mon
         message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->bpmObject );
     }
 }
-////______________________________________________________________________________
-//void beamPositionMonitorInterface::killCallBack( beamPositionMonitorStructs::monitorStruct * ms, beamPositionMonitorStructs::rawDataStruct * bpmdo )///, beamPositionMonitorStructs::bpmDataObject * bpmdo )
-//{
-//    int status = ca_clear_subscription( ms -> EVID );
-//    if( status == ECA_NORMAL)
-//    {
-////        debugMessage( ms -> scopeObject, " monitoring = false ");
-//
-////        isMonitoringMap[ ms -> bpmObject ] = false;
-//        bpmdo -> appendingData = false;
-//
-//        delete ms;
-//        message( bpmdo->name, " callback deleted" );
-//    }
-//    else
-//    {
-//        message("ERROR: in killCallBack: ca_clear_subscription failed for ", ms->bpmObject );
-//    }
-//}
 //______________________________________________________________________________
 void beamPositionMonitorInterface::monitorDataForNShots( size_t N, const std::string & name  )
 {
@@ -753,21 +728,49 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
     }
 }
 //______________________________________________________________________________
-bool beamPositionMonitorInterface::isMonitoringBPMData( const std::string & name )
+const bool beamPositionMonitorInterface::isDataBufferFull( const std::string & bpmName )
 {
-    if( bpmObj.dataObjects.at( name ).bpmRawData.appendingData == true )
+    bool isFull = false;
+    if( bpmObj.dataObjects.at( bpmName ).dataShots > bpmObj.dataObjects.at( bpmName ).buffer )
     {
-        return true;
+        isFull = true;
     }
-    else
-    {
-        return false;
-    }
+    return isFull;
 }
 //______________________________________________________________________________
-bool beamPositionMonitorInterface::isNotMonitoringBPMData( const std::string & name )
+const bool beamPositionMonitorInterface::isXBufferFull( const std::string & bpmName )
 {
-    return !isMonitoringBPMData( name );
+    bool isFull = false;
+    if( bpmObj.dataObjects.at( bpmName ).xPVShots > bpmObj.dataObjects.at( bpmName ).buffer )
+    {
+        isFull = true;
+    }
+    return isFull;
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorInterface::isYBufferFull( const std::string & bpmName )
+{
+    bool isFull = false;
+    if( bpmObj.dataObjects.at( bpmName ).yPVShots > bpmObj.dataObjects.at( bpmName ).buffer )
+    {
+        isFull = true;
+    }
+    return isFull;
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorInterface::isDataBufferNotFull( const std::string & bpmName )
+{
+    return !isDataBufferFull(bpmName);
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorInterface::isXBufferNotFull( const std::string & bpmName )
+{
+    return !isXBufferFull(bpmName);
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorInterface::isYBufferNotFull( const std::string & bpmName )
+{
+    return !isYBufferFull(bpmName);
 }
 //______________________________________________________________________________
 const beamPositionMonitorStructs::bpmDataObject & beamPositionMonitorInterface::getBPMDataObject( const std::string & bpmName )
@@ -839,7 +842,26 @@ void beamPositionMonitorInterface::setBufferSize( size_t bufferSize )
         it.second.timeStampsBuffer.resize( bufferSize );
         it.second.rawBPMDataBuffer.resize( bufferSize );
         it.second.buffer = bufferSize;
-        it.second.buffer = bufferSize;
+        it.second.dataShots = 0;
+        it.second.xPVShots = 0;
+        it.second.yPVShots = 0;
+    }
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::clearBuffers()
+{
+    for( auto && it : bpmObj.dataObjects )
+    {
+        it.second.xPVBuffer.clear();
+        it.second.yPVBuffer.clear();
+        it.second.xBuffer.clear();
+        it.second.yBuffer.clear();
+        it.second.qBuffer.clear();
+        it.second.timeStampsBuffer.clear();
+        it.second.rawBPMDataBuffer.clear();
+        it.second.dataShots = 0;
+        it.second.xPVShots = 0;
+        it.second.yPVShots = 0;
     }
 }
 //______________________________________________________________________________
@@ -1141,34 +1163,6 @@ void beamPositionMonitorInterface::reCalAttenuation( const std::string & bpmName
         message( "Old SA2 for ", bpmName, " = ", beamPositionMonitorInterface::getRA2( bpmName ) );
     }
 
-}
-//______________________________________________________________________________
-void beamPositionMonitorInterface::setBufferSize( const std::string & bpmName, size_t bufferSize )
-{
-    if( entryExists( bpmObj.dataObjects, bpmName ) )
-    {
-        bpmObj.dataObjects.at(bpmName).xPVBuffer.clear();
-        bpmObj.dataObjects.at(bpmName).yPVBuffer.clear();
-        bpmObj.dataObjects.at(bpmName).xBuffer.clear();
-        bpmObj.dataObjects.at(bpmName).yBuffer.clear();
-        bpmObj.dataObjects.at(bpmName).qBuffer.clear();
-        bpmObj.dataObjects.at(bpmName).timeStampsBuffer.clear();
-        for( auto && it1: bpmObj.dataObjects.at( bpmName ).rawBPMDataBuffer )
-        {
-            it1.clear();
-            it1.resize( bufferSize );
-        }
-//        bpmObj.dataObjects.at(bpmName).rawBPMDataBuffer.clear();
-
-        bpmObj.dataObjects.at(bpmName).xPVBuffer.resize( bufferSize );
-        bpmObj.dataObjects.at(bpmName).yPVBuffer.resize( bufferSize );
-        bpmObj.dataObjects.at(bpmName).xBuffer.resize( bufferSize );
-        bpmObj.dataObjects.at(bpmName).yBuffer.resize( bufferSize );
-        bpmObj.dataObjects.at(bpmName).qBuffer.resize( bufferSize );
-        bpmObj.dataObjects.at(bpmName).timeStampsBuffer.resize( bufferSize );
-//        bpmObj.dataObjects.at(bpmName).rawBPMDataBuffer.resize( bufferSize );
-        bpmObj.dataObjects.at(bpmName).buffer = bufferSize;
-    }
 }
 //______________________________________________________________________________
 std::vector< std::string > beamPositionMonitorInterface::getBPMNames()

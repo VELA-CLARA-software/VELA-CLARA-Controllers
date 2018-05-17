@@ -43,6 +43,12 @@ class beamPositionMonitorInterface : public interface
         bool monitoringData = false;
         bool isMonitoringBPMData( const std::string & bpmName );
         bool isNotMonitoringBPMData( const std::string & bpmName );
+        const bool isDataBufferFull( const std::string & bpmName );
+        const bool isDataBufferNotFull( const std::string & bpmName );
+        const bool isXBufferFull( const std::string & bpmName );
+        const bool isYBufferFull( const std::string & bpmName );
+        const bool isXBufferNotFull( const std::string & bpmName );
+        const bool isYBufferNotFull( const std::string & bpmName );
 
         double calcX( const std::string & bpm, double u11, double u12, double u13, double u14, double mn, double xn );
         double calcY( const std::string & bpm, double u21, double u22, double u23, double u24, double mn, double yn );
@@ -90,6 +96,7 @@ class beamPositionMonitorInterface : public interface
         void monitorDataForNShots( size_t N, const std::vector< std::string > & bpmNames );
         void monitorDataForNShots( size_t N, const std::string & name );
         void setBufferSize( size_t bufferSize );
+        void clearBuffers();
 
         std::vector< std::string > getBPMNames();
         bool hasTrig( const std::string & bpm );
@@ -122,6 +129,8 @@ class beamPositionMonitorInterface : public interface
         void updateLong1( std::string name, long args );
         void updateData( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateXValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateYValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close) the bpm is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members
