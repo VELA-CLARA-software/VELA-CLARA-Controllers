@@ -460,11 +460,13 @@ void beamPositionMonitorInterface::updateValue( beamPositionMonitorStructs::moni
         case beamPositionMonitorStructs::BPM_PV_TYPE::X:
         {
             bpmdo->xPV = *( &p -> value );
+            message(bpmdo->xPV,"XXXXXX");
             bpmdo->xPVBuffer.push_back( bpmdo->xPV );
         }
         case beamPositionMonitorStructs::BPM_PV_TYPE::Y:
         {
             bpmdo->yPV = *( &p -> value );
+            message(bpmdo->yPV,"YYYYYY");
             bpmdo->yPVBuffer.push_back( bpmdo->yPV );
         }
     }

@@ -40,30 +40,35 @@ namespace chargeStructs
         std::string      pvSuffix, objName;
         unsigned long    COUNT, MASK;
         chtype           CHTYPE;
+        evid             EVID;
     };
 
     struct dataObject
     {
-        dataObject() :                   shotCounts( -2 ),
-                                         wcm( UTL::DUMMY_DOUBLE ),
+        dataObject() :                   wcm( UTL::DUMMY_DOUBLE ),
                                          s02FCUP( UTL::DUMMY_DOUBLE ),
                                          numShots( UTL::ZERO_INT ),
-                                         buffer( UTL::BUFFER_TEN ) {}
+                                         buffer( UTL::BUFFER_TEN ),
+                                         chargeShots( UTL::ZERO_INT ),
+                                         voltageShots( UTL::ZERO_INT ) {}
         std::string                      name, pvRoot;
         CHARGE_DIAG_TYPE                 diagType;
         bool                             isAContinuousMonitorStruct, isATemporaryMonitorStruct;
-        bool                             isMonitoring;
+        bool                             isMonitoring, voltComplete, chargeComplete;
         double                           wcm, s02FCUP, charge, voltage;
-        int                              numShots, shotCounts;
+        int                              numShots, chargeShots, voltageShots;//, shotCounts;
         double                           timeStamp;
         size_t                           buffer;
         std::vector< double >            chargeVec, voltageVec;
-        boost::circular_buffer< double > chargeBuffer, voltageBuffer;
+        boost::circular_buffer< double > chargeBuffer, voltageBuffer, timeStampsBuffer;
         std::vector< double >            timeStamps;
         std::vector< std::string >       strTimeStamps;
+        std::map< CHARGE_PV_TYPE, int >  shotCounts;
     #ifndef __CINT__
         std::map< CHARGE_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CHARGE_PV_TYPE, pvStruct > pvComStructs;
+        std::map< CHARGE_PV_TYPE, bool >     isMonitoringMap;
+        std::map< CHARGE_DIAG_TYPE, bool >   isMonitoringDiagnosticMap;
     #endif
     };
 
@@ -78,12 +83,14 @@ namespace chargeStructs
 
     struct monitorStruct /// We use pointers when we wnat acces to the object (data) or... just  make a copy
     {
+        monitorStruct():  monType(UNKNOWN_CHARGE_PV),name("UNKNOWN"),interface(nullptr),EVID(nullptr){}
         CHARGE_PV_TYPE    monType;
         CHARGE_DIAG_TYPE  diagType;
-        chargeObject*     chargeObject;
+//        chargeObject*     chargeObject;
         std::string       name;
         chtype            CHTYPE;
-        void *            val;
+//        void *            val;
+        bool                isCollectingData = false;
         chargeInterface * interface;
         evid              EVID;
     };

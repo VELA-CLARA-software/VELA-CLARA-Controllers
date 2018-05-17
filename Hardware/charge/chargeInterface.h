@@ -38,7 +38,6 @@ class chargeInterface : public interface
                          const bool shouldStartEPICS,
                          const bool startVirtualMachine,
                          const HWC_ENUM::MACHINE_AREA myMachineArea );
-
         ~chargeInterface();
 
         void getChargeNames( std::vector< std::string >  & chargeNames );
@@ -46,19 +45,13 @@ class chargeInterface : public interface
         void setBufferSize( size_t bufferSize );
         void restartContinuousMonitoring();
 //        void monitorForNShots( const std::vector< std::string > charges, size_t N );
-        void monitorForNShots( const std::string charge, size_t N );
+//        void monitorForNShots( const std::string charge, size_t N );
         void cancelDataMonitors();
         size_t getBufferSize( const std::string & chargeName );
         const chargeStructs::CHARGE_DIAG_TYPE getDiagType( const std::string & chargeName );
         const std::string getDiagTypeStr( const std::string & chargeName );
         const chargeStructs::dataObject & getChargeDataStruct( const std::string & chargeName );
         std::vector< std::vector< double > > getChargeData( const std::string & name );
-        std::vector< double > getChargeVector( const std::string & name );
-        std::vector< double > getVoltageVector( const std::string & name );
-        std::vector< double > getWCMChargeVector();
-        std::vector< double > getWCMVoltageVector();
-        std::vector< double > getS02FCUPChargeVector();
-        std::vector< double > getS02FCUPVoltageVector();
         boost::circular_buffer< double > getChargeBuffer( const std::string & name );
         boost::circular_buffer< double > getVoltageBuffer( const std::string & name );
         boost::circular_buffer< double > getWCMChargeBuffer();
@@ -76,17 +69,19 @@ class chargeInterface : public interface
         double getS02FCUPCharge();
         double getS02FCUPVoltage();
         bool monitoringCharge = false;
-        const bool isMonitoringCharge( const std::string & chargeName );
-        const bool isNotMonitoringCharge( const std::string & chargeName );
-        const bool isMonitoringWCM();
-        const bool isNotMonitoringWCM();
-        const bool isMonitoringS02FCUP();
-        const bool isNotMonitoringS02FCUP();
+        const bool isChargeBufferFull( const std::string & chargeName );
+        const bool isChargeBufferNotFull( const std::string & chargeName );
+        const bool isVoltageBufferFull( const std::string & chargeName );
+        const bool isVoltageBufferNotFull( const std::string & chargeName );
+        const bool isWCMBufferFull();
+        const bool isWCMBufferNotFull();
+        const bool isS02FCUPBufferFull();
+        const bool isS02FCUPBufferNotFull();
 
         const chargeStructs::chargeObject getChargeObject( const std::string & chargeName );
 
         void killTraceCallBack( chargeStructs::monitorStruct * ms );
-        void killCallBack( chargeStructs::monitorStruct * ms );
+        void killCallBack( chargeStructs::monitorStruct *& ms );
         bool killTraceMonitors();
 
         /// This is a pure virtual method in the base class and MUST be overwritten in the derived interface...
