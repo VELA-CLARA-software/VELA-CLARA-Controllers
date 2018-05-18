@@ -236,6 +236,8 @@ void magnetInterface::addChannel(const std::string& pvRoot,
     ca_create_channel(s1.c_str(), nullptr, nullptr, UTL::PRIORITY_0,&pv.CHID);
     debugMessage("Create channel to ", s1);
 }
+
+
 //______________________________________________________________________________
 bool magnetInterface::Is_psuRoot_SAME_AS_PV_ROOT(const std::string& root) const
 {

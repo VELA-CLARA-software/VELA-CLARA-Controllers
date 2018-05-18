@@ -200,6 +200,10 @@ magnetStructs::magnetStateStruct dburt::readDBURTv4(const char* fileName, const 
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
                 else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_PH1))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_PH1;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA1))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA1;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA2))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA2;
             }
 
         } // while
@@ -290,6 +294,118 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const 
     return success;
 }
 /// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+/// LEGACY
+
 
 
 //______________________________________________________________________________
@@ -319,6 +435,8 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
         {
             std::stringstream iss(line); /// make a stream of the line and then do some tests
             ++linenumber;
+
+
             if(stringIsSubString(iss.str(), UTL::DBURT_EOF_V3))
             {
                 message("FOUND END OF FILE ");
@@ -352,25 +470,25 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
                     magState.siValues.push_back(getNumD(keyvalue[2]));
                 }
             } // if(readingParameters)_END
-
-            if(stringIsSubString(iss.str(), UTL::DBURT_NUM_MAGNETS_V3) )
+            else if(stringIsSubString(iss.str(), UTL::DBURT_NUM_MAGNETS_V3) )
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
                 keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
                 magState.numMags = getSize(keyvalue[1]);
                 message("FOUND NUM MAGNETS = ",  magState.numMags);
-                message("FOUND NUM MAGNETS = ",  getSize(keyvalue[1]), "   ", keyvalue[1]);
                 readingParameters = true;
             }
-            if(stringIsSubString(iss.str(), UTL::DBURT_PARAMETERS_V1) )
+            else if(stringIsSubString(iss.str(), UTL::DBURT_PARAMETERS_V1) )
             {
                 message("FOUND START OF DATA");
             }
-            if(stringIsSubString(iss.str(), UTL::DBURT_HEADER_AREA) )
+            else if(stringIsSubString(iss.str(), UTL::DBURT_HEADER_AREA) )
             {
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
                 keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
+
+                message(keyvalue[0],",",keyvalue[1]);
 
                 if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_INJ;
@@ -382,7 +500,12 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
                 else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_PH1))
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_PH1;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA1))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA1;
+                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA2))
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA2;
             }
+            message("Line  =  ",iss.str());
 
         } // while
     } // main if
@@ -391,9 +514,6 @@ magnetStructs::magnetStateStruct dburt::readDBURTv3(const char* fileName, const 
 
     return magState;
 }
-
-
-
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct dburt::readDBURTv1(const char* fileName, const std::string & path)
 {
