@@ -268,7 +268,7 @@ magnetController& VCmagnets::physical_CB1_Magnet_Controller()
     std::string name  = "physical_CB1_Magnet_Controller_Obj";
     return getController(physical_CB1_Magnet_Controller_Obj,
                          CB1_MAG_CONFIG,
-                         name,withoutVM,withEPICS,USER);
+                         name,withoutVM,withEPICS,CLARA_2_BA1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::offline_CB1_Magnet_Controller()
@@ -276,7 +276,7 @@ magnetController& VCmagnets::offline_CB1_Magnet_Controller()
     std::string name  = "offline_CB1_Magnet_Controller_Obj";
     return getController(offline_CB1_Magnet_Controller_Obj,
                          CB1_MAG_CONFIG,
-                         name,withoutVM,withoutEPICS,USER);
+                         name,withoutVM,withoutEPICS,CLARA_2_BA1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::virtual_CB1_Magnet_Controller()
@@ -284,7 +284,7 @@ magnetController& VCmagnets::virtual_CB1_Magnet_Controller()
     std::string name  = "virtual_CB1_Magnet_Controller_Obj";
     return getController(virtual_CB1_Magnet_Controller_Obj,
                          CB1_MAG_CONFIG,
-                         name,withVM,withEPICS,USER);
+                         name,withVM,withEPICS,CLARA_2_BA1);
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::physical_CB2_Magnet_Controller()
