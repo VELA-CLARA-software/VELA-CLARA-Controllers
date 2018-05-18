@@ -7,7 +7,7 @@
 		<Option compiler="ms_visual_c_2012" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/fastCams" prefix_auto="1" extension_auto="1" />
+				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_PILaser_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -31,26 +31,33 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/fastCams" prefix_auto="1" extension_auto="1" />
+				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_FastCam_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="/W3" />
-					<Add option="/DBUILD_DLL" />
-					<Add option="/Ox" />
-					<Add option="/DNDEBUG" />
 					<Add option="/MD" />
-					<Add directory="Utilities/fast_cam" />
+					<Add option="/Ox" />
+					<Add option="/W3" />
+					<Add option="/EHsc" />
+					<Add option="/DBUILD_DLL" />
+					<Add option="/DNDEBUG" />
+					<Add directory="../../Structs/fast_cam" />
+					<Add directory="../../Structs" />
+					<Add directory="../../Hardware/fast_cam" />
+					<Add directory="../../Hardware" />
+					<Add directory="../../Utilities/fast_cam" />
+					<Add directory="../../Utilities" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='mt.exe /nologo /manifest &quot;bin\Release\fastCams.dll.manifest&quot; /outputresource:&quot;bin\Release\fastCams.dll&quot;;2' />
+					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
 			</Target>
 		</Build>
@@ -66,7 +73,9 @@
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
 		<Unit filename="../../Structs/fast_cam/fastCamStructs.h" />
-		<Unit filename="../../Structs/structs.h" />
+		<Unit filename="../../Structs/structs.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
@@ -75,8 +84,12 @@
 		<Unit filename="../../Utilities/fast_cam/fastCamConfigReader.cpp" />
 		<Unit filename="../../Utilities/fast_cam/fastCamConfigReader.h" />
 		<Unit filename="include/VC_fastCam.h" />
-		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
+		<Unit filename="main.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="main.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="src/VC_fastCam.cpp" />
 		<Extensions>
 			<code_completion />

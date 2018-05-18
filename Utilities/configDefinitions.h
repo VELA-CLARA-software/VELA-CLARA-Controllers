@@ -296,6 +296,8 @@ namespace UTL
     const std::string STEP_MAX = "STEP_MAX";
 
 /// Cameras
+    const std::string VELA_FAST_CAM_CONFIG  = "velaFastCam.config";
+    const std::string CLARA_FAST_CAM_CONFIG = "claraFastCam.config";
     const std::string DAQ_CAMERA_CONFIG = "cameraDAQ.config";
     const std::string CAMERA_CONFIG     = "camera.config";
     //const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";

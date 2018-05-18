@@ -39,17 +39,17 @@
 
 class fastCamInterface;
 
-namespace cameraStructs
+namespace fastCamStructs
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(FAST_CAM_PV,(UNKNOWN_PV))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,(CAM_ERROR))
-
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,(VELA)(CLARA)(NOT_KNOWN))
 
     struct pvStruct
     {
-        pvStruct() :
-            pvSuffix(UTL::UNKNOWN_PVSUFFIX)
+        pvStruct():
+            pvSuffix(UTL::UNKNOWN_PVSUFFIX),
             COUNT(UTL::ZERO_INT),
             MASK(UTL::ZERO_INT),
             pvType(UNKNOWN_PV)
@@ -64,16 +64,17 @@ namespace cameraStructs
 
     struct fastCameraObject
     {
-        cameraObject() : name(UTL::UNKNOWN_NAME),
-                         pvRoot(UTL::UNKNOWN_PVROOT),
-                         screenName(UTL::UNKNOWN_STRING),
-                         streamingIPAddress(UTL::UNKNOWN_STRING),
-                         state(CAM_ERROR) {}
+        fastCameraObject():name(UTL::UNKNOWN_NAME),
+                           pvRoot(UTL::UNKNOWN_PVROOT),
+                           screenName(UTL::UNKNOWN_STRING),
+                           streamingIPAddress(UTL::UNKNOWN_STRING),
+                           state(CAM_ERROR)
+                           {}
         std::string name, pvRoot, screenName, streamingIPAddress;
         CAM_STATE state;
-        ACQUIRE_STATE acquireState;
-        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        //ACQUIRE_STATE acquireState;
+        std::map<FAST_CAM_PV, pvStruct> pvMonStructs;
+        std::map<FAST_CAM_PV, pvStruct> pvComStructs;
         HWC_ENUM::MACHINE_AREA  machineArea;
         std::vector<double> background;
         std::vector<double> data;
@@ -81,15 +82,27 @@ namespace cameraStructs
 
     struct monitorStruct
     {   // proviude a default constructor
-        monitorStruct():  monType(UNKNOWN_PV),
-                          objName("UNKNOWN"),
-                          interface(nullptr),EVID(nullptr){}
+        monitorStruct():monType(UNKNOWN_PV),
+                        objName("UNKNOWN"),
+                        interface(nullptr)
+                        {}
+        fastCamInterface* interface;
         FAST_CAM_PV       monType;
         std::string       objName;
         chtype            CHTYPE;
-        magnetInterface*  interface;
-        fastCameraObject& fastCamObj;
         evid              EVID;
+    };
+
+    struct fastCamObject
+    {
+        fastCamObject():
+            name(UTL::UNKNOWN_NAME),
+            type(CAM_TYPE::NOT_KNOWN)
+            {}
+        std::string name, pvRoot;
+        CAM_TYPE type;
+        std::map<FAST_CAM_PV, pvStruct> pvMonStructs;
+        std::map<FAST_CAM_PV, pvStruct> pvComStructs;
     };
 
 }

@@ -1,35 +1,62 @@
-#ifndef VELACAMINTERFACE_H
-#define VELACAMINTERFACE_H
-
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   17-05-2018
+//  FileName:    fastCamInterface.h
+//  Description:
+//
+//
+//*/
+#ifndef _FAST_CAM_INTERFACE_H
+#define _FAST_CAM_INTERFACE_H
+// project includes
+#include "interface.h"
+#include "fastCamStructs.h"
+#include "fastCamConfigReader.h"
+// stl includes
 #include <string>
 #include <vector>
 #include <map>
-
-#include "velaCamStructs.h"
-
-class velaCamInterface
+//______________________________________________________________________________
+class fastCamInterface : public interface
 {
     public:
-        static velaCamInterface & getInstance( );
-        virtual ~velaCamInterface();
+        fastCamInterface(const std::string& velaCamConf,
+                         const std::string& claraCamConf,
+                         const bool startVirtualMachine,
+                         const bool& show_messages,
+                         const bool& show_debug_messages,
+                         const bool shouldStartEPICs,
+                         const HWC_ENUM::MACHINE_AREA myMachineArea);
+        ~fastCamInterface();
 
-        void startMonitors();
-        void startMonitors(const std::vector< std::string > & screenName );
+//        void startMonitors();
+//        void startMonitors(const std::vector< std::string > & screenName );
+//
+//        bool getCamDat( const std::string & screenName, size_t numShots, unsigned char * ptrToVecToFill, size_t totNumDataPoints );
+//
+//        int  acquiringData(const std::string & screenName );
+//        bool accquiringData(const std::string & screenName );
+//
+//        void serverON(const std::string & screenName  );
+//
+//        void getActiveCameraServers(std::map< std::string, velaCamStructs::CAM_SERVER_STATE > & activeMap ) ;
+//
+//        std::vector< std::string > getActiveCameraServers( );
 
-        bool getCamDat( const std::string & screenName, size_t numShots, unsigned char * ptrToVecToFill, size_t totNumDataPoints );
-
-        int  acquiringData(const std::string & screenName );
-        bool accquiringData(const std::string & screenName );
-
-        void serverON(const std::string & screenName  );
-
-        void getActiveCameraServers(std::map< std::string, velaCamStructs::CAM_SERVER_STATE > & activeMap ) ;
-
-        std::vector< std::string > getActiveCameraServers( );
-
-    /// If joining from another thread run this to attach to the main context
-
-       void attachContext();
 
     protected:
 
@@ -37,44 +64,35 @@ class velaCamInterface
 
     /// Private constructor for singletons...
 
-        velaCamInterface();
-        static bool instanceFlag;
-        static int SHOTCOUNT; /// meh
-        static velaCamInterface * velaCamInterfaceObject; /// This class is a singleton, see .cpp
+        fastCamInterface();
 
-    #ifndef _OFFLINE_MODE
-        ca_client_context * thisCaContext;
-        chid activeCamera;
-        static void staticEntryCamServerStatusMonitor( struct event_handler_args args ); /// static function that can be called back from epics
-        static void staticEntryCamDataMonitor(struct event_handler_args args);
-    #endif
-
-    /// Set up the magnetObject map, connect to channels
-
-        void initCamObjects();
-        void getCamChIDs();
+        void initialise();
+        bool initObjects();
+        void addDummyElementToAllMAgnetData();
+        void initChids();
 
     /// All the camera data is stored in this map!
 
-        std::map< std::string, velaCamStructs::camObject > allCameraData;
+        std::map<std::string, fastCamStructs::fastCamObject> cameraObjects;
 
     /// vector of monitorStructs to pass along with callback function
 
-        std::vector< velaCamStructs::monitorStuct* > continuousMonitorStructs;
-        bool serverIsNotBeingMonitored( const std::string & screenName );
-        void addContinuousMonitorStructs(const std::string & screenName );
+        std::vector<fastCamStructs::monitorStruct*> continuousMonitorStructs;
+        void addContinuousMonitorStructs(const std::string& screenName );
 
-    /// This is the struct Used for each data acquisition, when multiple cameras become available this will get trickier...
+        const HWC_ENUM::MACHINE_AREA myMachineArea;
 
-        velaCamStructs::monitorStuct dataMonitorStruct;
-        enum velaCamStructs::CAM_SERVER_STATE getState(unsigned short epicsSta);
+        static void staticEntryMonitor(const event_handler_args args);
+        void updateValue(const fastCamStructs::FAST_CAM_PV pv,const event_handler_args& args);
 
-    /// Monitor Server Status
+        fastCamConfigReader configReader;
+        void startMonitors();
+        void addChannel(const std::string& pvRoot,
+                        fastCamStructs::pvStruct& pv);
 
-        void checkServerStatus( const std::vector< std::string > & screenName );
-        void checkServerStatus( const std::string & screenName );
-        void allServerOFF();
+//        void checkServerStatus(const std::vector<std::string>& screenName);
+//        void checkServerStatus(const std::string& screenName);
+//        void allServerOFF();
 
-        void printStatusResult( int status, const char * success, const char* timeout );
 };
-#endif // VELACAMINTERFACE_H
+#endif // _FAST_CAM_INTERFACE_H
