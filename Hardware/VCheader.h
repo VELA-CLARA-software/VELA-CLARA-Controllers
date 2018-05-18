@@ -275,6 +275,7 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("IMG",                    CONTROLLER_TYPE::IMG)
                 .value("BPM",                    CONTROLLER_TYPE::BPM)
                 .value("CHARGE",                 CONTROLLER_TYPE::CHARGE)
+                .value("FAST_CAM",               CONTROLLER_TYPE::FAST_CAM)
                 ;
         }
         else if((*reg3).m_to_python == nullptr)
@@ -296,6 +297,7 @@ namespace BOOST_PYTHON_INCLUDE
                 .value("IMG",                    CONTROLLER_TYPE::IMG)
                 .value("BPM",                    CONTROLLER_TYPE::BPM)
                 .value("CHARGE",                 CONTROLLER_TYPE::CHARGE)
+                .value("FAST_CAM",               CONTROLLER_TYPE::FAST_CAM)
                 ;
         }
 

@@ -143,6 +143,7 @@ class pilaserInterface : public interface
         static void staticEntryMonitor(const event_handler_args args);
         void updateValue(const event_handler_args args,pilaserStructs::PILASER_PV_TYPE pv);
 
+
         pilaserStructs::pilaserObject pilaser;
         pilaserConfigReader configReader;
 
