@@ -71,12 +71,17 @@ namespace beamPositionMonitorStructs
 
     struct bpmDataObject
     {
-        bpmDataObject() : shotCount( 0 ), numShots( 1 ), buffer( UTL::BUFFER_TEN ), xPVBuffer( UTL::BUFFER_TEN ), yPVBuffer( UTL::BUFFER_TEN ) {}
+        bpmDataObject() : shotCount( 0 ),
+                          numShots( 1 ),
+                          buffer( UTL::BUFFER_TEN ),
+                          xPVShots( UTL::ZERO_INT),
+                          yPVShots( UTL::ZERO_INT),
+                          dataShots( UTL::ZERO_INT){}
         std::string name, pvRoot;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
         bool appendingData;
-        int shotCount, numShots; /// we allow -1 values here so NOT a size_t
-        double xPV, yPV;
+        int shotCount, numShots, xPVShots, yPVShots, dataShots; /// we allow -1 values here so NOT a size_t
+        double xPV, yPV, x, y;
         double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn, position;
         double awak, rdy, q;
         size_t buffer;

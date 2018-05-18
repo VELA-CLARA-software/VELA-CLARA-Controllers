@@ -39,6 +39,8 @@ chargeStructs::chargeObject chargeConfigReader::getChargeObject()
         for( auto it2 : chargeMonStructs )
         {
             it.second.pvMonStructs[ it2.pvType ] = it2;
+            it.second.shotCounts[ it2.pvType ] = 1;
+            it.second.isMonitoringMap[ it2.pvType ] = false;
         }
     }
 

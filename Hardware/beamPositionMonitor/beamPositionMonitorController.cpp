@@ -120,14 +120,34 @@ std::vector< std::string > beamPositionMonitorController::getBPMNames()
     return localInterface.getBPMNames();
 }
 //______________________________________________________________________________
-bool beamPositionMonitorController::isMonitoringBPMData( const std::string & name )
+const bool beamPositionMonitorController::isDataBufferFull( const std::string & name )
 {
-    return localInterface.isMonitoringBPMData( name );
+    return localInterface.isDataBufferFull( name );
 }
 //______________________________________________________________________________
-bool beamPositionMonitorController::isNotMonitoringBPMData( const std::string & name )
+const bool beamPositionMonitorController::isDataBufferNotFull( const std::string & name )
 {
-    return localInterface.isNotMonitoringBPMData( name );
+    return localInterface.isDataBufferNotFull( name );
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorController::isXBufferFull( const std::string & name )
+{
+    return localInterface.isXBufferFull( name );
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorController::isYBufferFull( const std::string & name )
+{
+    return localInterface.isYBufferFull( name );
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorController::isXBufferNotFull( const std::string & name )
+{
+    return localInterface.isXBufferNotFull( name );
+}
+//______________________________________________________________________________
+const bool beamPositionMonitorController::isYBufferNotFull( const std::string & name )
+{
+    return localInterface.isYBufferNotFull( name );
 }
 //______________________________________________________________________________
 void beamPositionMonitorController::monitorDataForNShots( size_t N, const std::string & name )
@@ -245,9 +265,19 @@ void beamPositionMonitorController::setX( const std::string & bpmName, double va
     localInterface.setX( bpmName, val );
 }
 //______________________________________________________________________________
-void beamPositionMonitorController::setBufferSize( const std::string & bpmName, size_t buffer )
+const size_t beamPositionMonitorController::getBufferSize()
 {
-    localInterface.setBufferSize( bpmName, buffer );
+    return localInterface.getBufferSize();
+}
+//______________________________________________________________________________
+void beamPositionMonitorController::setBufferSize( size_t buffer )
+{
+    localInterface.setBufferSize( buffer );
+}
+//______________________________________________________________________________
+void beamPositionMonitorController::clearBuffers()
+{
+    localInterface.clearBuffers();
 }
 //______________________________________________________________________________
 void beamPositionMonitorController::setY( const std::string & bpmName, double val )

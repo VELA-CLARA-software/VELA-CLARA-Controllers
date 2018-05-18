@@ -47,11 +47,11 @@ chargeController::~chargeController(){}    //dtor
 //{
 //    localInterface.monitorForNShots( charges, N );
 //}
-//______________________________________________________________________________
-void chargeController::monitorForNShots( const std::string charge, size_t N )
-{
-    localInterface.monitorForNShots( charge, N );
-}
+////______________________________________________________________________________
+//void chargeController::monitorForNShots( const std::string charge, size_t N )
+//{
+//    localInterface.monitorForNShots( charge, N );
+//}
 //______________________________________________________________________________
 void chargeController::setBufferSize( size_t N )
 {
@@ -86,36 +86,6 @@ const std::string chargeController::getDiagTypeStr( const std::string & chargeNa
 const chargeStructs::dataObject & chargeController::getChargeDataStruct( const std::string & chargeName )
 {
     return localInterface.getChargeDataStruct( chargeName );
-}
-//______________________________________________________________________________
-std::vector< double > chargeController::getChargeVector( const std::string & name )
-{
-    return localInterface.getChargeVector( name );
-}
-//______________________________________________________________________________
-std::vector< double > chargeController::getVoltageVector( const std::string & name )
-{
-    return localInterface.getVoltageVector( name );
-}
-//______________________________________________________________________________
-std::vector< double > chargeController::getWCMChargeVector()
-{
-    return localInterface.getWCMChargeVector();
-}
-//______________________________________________________________________________
-std::vector< double > chargeController::getS02FCUPChargeVector()
-{
-    return localInterface.getS02FCUPChargeVector();
-}
-//______________________________________________________________________________
-std::vector< double > chargeController::getWCMVoltageVector()
-{
-    return localInterface.getWCMVoltageVector();
-}
-//______________________________________________________________________________
-std::vector< double > chargeController::getS02FCUPVoltageVector()
-{
-    return localInterface.getS02FCUPVoltageVector();
 }
 //______________________________________________________________________________
 boost::circular_buffer< double > chargeController::getChargeBuffer( const std::string & name )
@@ -168,34 +138,44 @@ std::vector< std::string > chargeController::getChargePVs()
     return localInterface.getChargePVs();
 }
 //______________________________________________________________________________
-const bool chargeController::isMonitoringCharge( const std::string & name )
+const bool chargeController::isChargeBufferFull( const std::string & name )
 {
-    return localInterface.isMonitoringCharge( name );
+    return localInterface.isChargeBufferFull( name );
 }
 //______________________________________________________________________________
-const bool chargeController::isNotMonitoringCharge( const std::string & name )
+const bool chargeController::isChargeBufferNotFull( const std::string & name )
 {
-    return localInterface.isNotMonitoringCharge( name );
+    return localInterface.isChargeBufferNotFull( name );
 }
 //______________________________________________________________________________
-const bool chargeController::isMonitoringWCM()
+const bool chargeController::isVoltageBufferFull( const std::string & name )
 {
-    return localInterface.isMonitoringWCM();
+    return localInterface.isVoltageBufferFull( name );
 }
 //______________________________________________________________________________
-const bool chargeController::isNotMonitoringWCM()
+const bool chargeController::isVoltageBufferNotFull( const std::string & name )
 {
-    return localInterface.isNotMonitoringWCM();
+    return localInterface.isVoltageBufferNotFull( name );
 }
 //______________________________________________________________________________
-const bool chargeController::isMonitoringS02FCUP()
+const bool chargeController::isWCMBufferFull()
 {
-    return localInterface.isMonitoringS02FCUP();
+    return localInterface.isWCMBufferFull();
 }
 //______________________________________________________________________________
-const bool chargeController::isNotMonitoringS02FCUP()
+const bool chargeController::isWCMBufferNotFull()
 {
-    return localInterface.isNotMonitoringS02FCUP();
+    return localInterface.isWCMBufferNotFull();
+}
+//______________________________________________________________________________
+const bool chargeController::isS02FCUPBufferFull()
+{
+    return localInterface.isS02FCUPBufferFull();
+}
+//______________________________________________________________________________
+const bool chargeController::isS02FCUPBufferNotFull()
+{
+    return localInterface.isS02FCUPBufferNotFull();
 }
 //______________________________________________________________________________
 double chargeController::getCharge( const std::string & name )
@@ -229,35 +209,6 @@ double chargeController::getS02FCUPVoltage()
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
-boost::python::list chargeController::getChargeVector_Py( const std::string & name )
-{
-    return toPythonList(getChargeVector( name ));
-}
-//______________________________________________________________________________
-boost::python::list chargeController::getVoltageVector_Py( const std::string & name )
-{
-    return toPythonList(getVoltageVector( name ));
-}
-//______________________________________________________________________________
-boost::python::list chargeController::getWCMChargeVector_Py()
-{
-    return toPythonList(getWCMChargeVector());
-}
-//______________________________________________________________________________
-boost::python::list chargeController::getS02FCUPChargeVector_Py()
-{
-    return toPythonList(getS02FCUPChargeVector());
-}
-//______________________________________________________________________________
-boost::python::list chargeController::getWCMVoltageVector_Py()
-{
-    return toPythonList(getWCMVoltageVector());
-}
-//______________________________________________________________________________
-boost::python::list chargeController::getS02FCUPVoltageVector_Py()
-{
-    return toPythonList(getS02FCUPVoltageVector());
-}
 //______________________________________________________________________________
 boost::python::list chargeController::getChargeBuffer_Py( const std::string & name )
 {

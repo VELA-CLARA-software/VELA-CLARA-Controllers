@@ -51,8 +51,12 @@ class beamPositionMonitorController : public controller
                                        const HWC_ENUM::MACHINE_AREA myMachineArea );
         ~beamPositionMonitorController();
 
-        bool isMonitoringBPMData( const std::string & name );
-        bool isNotMonitoringBPMData( const std::string & name );
+        const bool isDataBufferFull( const std::string & name );
+        const bool isDataBufferNotFull( const std::string & name );
+        const bool isXBufferFull( const std::string & name );
+        const bool isXBufferNotFull( const std::string & name );
+        const bool isYBufferFull( const std::string & name );
+        const bool isYBufferNotFull( const std::string & name );
 
         double getX( const std::string & bpm );
         double getY( const std::string & bpm );
@@ -62,6 +66,7 @@ class beamPositionMonitorController : public controller
         double getYFromPV( const std::string & bpm );
         double getBPMResolution( const std::string & name );
         const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
+        const size_t getBufferSize();
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
         std::vector< double > getBPMXVec( const std::string & bpmName );
         std::vector< double > getBPMYVec( const std::string & bpmName );
@@ -90,7 +95,8 @@ class beamPositionMonitorController : public controller
         void setSD2( const std::string & bpmName, long sd2 );
         void setX( const std::string & bpmName, double val );
         void setY( const std::string & bpmName, double val );
-        void setBufferSize( const std::string & bpmName, size_t bufferSize );
+        void setBufferSize( size_t bufferSize );
+        void clearBuffers();
         void reCalAttenuation( const std::string & bpmName, double qScope );
         void monitorDataForNShots( size_t N, const std::string & name );
         void monitorDataForNShots( size_t N, const std::vector< std::string > & names );

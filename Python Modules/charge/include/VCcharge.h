@@ -147,7 +147,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     char const* getWCMVoltageDocString = "Returns current voltage of WCM";
     char const* getS02FCUPChargeDocString = "Returns current value of S02-FCUP charge";
     char const* getS02FCUPVoltageDocString = "Returns current voltage of S02-FCUP";
-    char const* isMonitoringChargeDocString = "Returns true if str(name) is being monitored";
+    char const* isChargeBufferFullDocString = "Returns true if the charge buffer for str(name) is full";
+    char const* isVoltageBufferFullDocString = "Returns true if the voltage buffer for str(name) is full";
+    char const* isChargeBufferNotFullDocString = "Returns true if the charge buffer for str(name) is not full";
+    char const* isVoltageBufferNotFullDocString = "Returns true if the voltage buffer for str(name) is not full";
+    char const* isWCMBufferFullDocString = "Returns true if the WCM buffer is full";
+    char const* isWCMBufferNotFullDocString = "Returns true if the WCM buffer is not full";
+    char const* isS02FCUPBufferFullDocString = "Returns true if the S02-FCUP buffer is full";
+    char const* isS02FCUPBufferNotFullDocString = "Returns true if the S02-FCUP buffer is not full";
     char const* isNotMonitoringChargeDocString = "Returns true if str(name) is not being monitored";
     char const* isMonitoringWCMDocString = "Returns true if WCM is being monitored";
     char const* isNotMonitoringWCMDocString = "Returns true if WCM is not being monitored";
@@ -160,18 +167,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
             .def("get_CA_PEND_IO_TIMEOUT",      &chargeController::get_CA_PEND_IO_TIMEOUT                                                   )
             .def("set_CA_PEND_IO_TIMEOUT",      &chargeController::set_CA_PEND_IO_TIMEOUT                                                   )
             .def("setBufferSize",               &chargeController::setBufferSize, (arg("size_t")), setBufferSizeDocString                   )
-            .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
-            .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
+//            .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
+//            .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
 //            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
             .def("getBufferSize",               &chargeController::getBufferSize, (arg("name")), getBufferSizeDocString                     )
             .def("getDiagType",                 &chargeController::getDiagType, (arg("name")), getDiagTypeDocString                         )
             .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (arg("name")), getDiagTypeStrDocString                   )
-            .def("getChargeVector",             &chargeController::getChargeVector_Py, (arg("name")), getChargeVectorDocString              )
-            .def("getVoltageVector",            &chargeController::getVoltageVector_Py, (arg("name")), getVoltageVectorDocString            )
-            .def("getWCMChargeVector",          &chargeController::getWCMChargeVector_Py, getWCMChargeVectorDocString                       )
-            .def("getWCMVoltageVector",         &chargeController::getWCMVoltageVector_Py, getWCMVoltageVectorDocString                     )
-            .def("getS02FCUPChargeVector",      &chargeController::getS02FCUPChargeVector_Py, getS02FCUPChargeVectorDocString               )
-            .def("getS02FCUPVoltageVector",     &chargeController::getS02FCUPVoltageVector_Py, getS02FCUPVoltageVectorDocString             )
             .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (arg("name")), getChargeBufferDocString              )
             .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (arg("name")), getVoltageBufferDocString            )
             .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                       )
@@ -188,12 +189,14 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
             .def("getWCMVoltage",               &chargeController::getWCMVoltage, getWCMVoltageDocString                                    )
             .def("getS02FCUPCharge",            &chargeController::getS02FCUPCharge, getS02FCUPChargeDocString                              )
             .def("getS02FCUPVoltage",           &chargeController::getS02FCUPVoltage, getS02FCUPVoltageDocString                            )
-            .def("isMonitoringCharge",          &chargeController::isMonitoringCharge, (arg("name")), isMonitoringChargeDocString           )
-            .def("isNotMonitoringCharge",       &chargeController::isNotMonitoringCharge, (arg("name")), isNotMonitoringChargeDocString     )
-            .def("isMonitoringWCM",             &chargeController::isMonitoringWCM, isMonitoringWCMDocString                                )
-            .def("isNotMonitoringWCM",          &chargeController::isNotMonitoringWCM, isNotMonitoringWCMDocString                          )
-            .def("isMonitoringS02FCUP",         &chargeController::isMonitoringS02FCUP, isMonitoringS02FCUPDocString                        )
-            .def("isNotMonitoringS02FCUP",      &chargeController::isNotMonitoringS02FCUP, isNotMonitoringS02FCUPDocString                  )
+            .def("isChargeBufferFull",          &chargeController::isChargeBufferFull, (arg("name")), isChargeBufferFullDocString           )
+            .def("isVoltageBufferFull",         &chargeController::isVoltageBufferFull, (arg("name")), isVoltageBufferFullDocString           )
+            .def("isChargeBufferNotFull",       &chargeController::isChargeBufferNotFull, (arg("name")), isChargeBufferNotFullDocString     )
+            .def("isVoltageBufferNotFull",      &chargeController::isVoltageBufferNotFull, (arg("name")), isVoltageBufferNotFullDocString     )
+            .def("isWCMBufferFull",             &chargeController::isWCMBufferFull, isMonitoringWCMDocString                                )
+            .def("isWCMBufferNotFull",          &chargeController::isWCMBufferNotFull, isNotMonitoringWCMDocString                          )
+            .def("isS02FCUPBufferFull",         &chargeController::isS02FCUPBufferFull, isMonitoringS02FCUPDocString                        )
+            .def("isS02FCUPBufferNotFull",      &chargeController::isS02FCUPBufferNotFull, isNotMonitoringS02FCUPDocString                  )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",            &chargeController::debugMessagesOff                       )
             .def("debugMessagesOn",             &chargeController::debugMessagesOn                        )

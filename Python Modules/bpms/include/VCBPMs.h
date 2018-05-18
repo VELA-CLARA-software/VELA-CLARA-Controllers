@@ -127,6 +127,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         ("bpmDataObject", "This object contains all of the EPICS PVs for a given bpmName",boost::python::no_init)
         .def_readonly("pvRoot",         &beamPositionMonitorStructs::bpmDataObject::pvRoot       )
         .def_readonly("appendingData",  &beamPositionMonitorStructs::bpmDataObject::appendingData)
+//        .def_readonly("xPVBuffer",      &beamPositionMonitorStructs::bpmDataObject::xPVBuffer    )
+//        .def_readonly("yPVBuffer",      &beamPositionMonitorStructs::bpmDataObject::yPVBuffer    )
+//        .def_readonly("qBuffer",        &beamPositionMonitorStructs::bpmDataObject::qBuffer      )
+//        .def_readonly("xBuffer",        &beamPositionMonitorStructs::bpmDataObject::xBuffer      )
+//        .def_readonly("yBuffer",        &beamPositionMonitorStructs::bpmDataObject::xBuffer      )
+        .def_readonly("x",              &beamPositionMonitorStructs::bpmDataObject::x            )
+        .def_readonly("y",              &beamPositionMonitorStructs::bpmDataObject::y            )
         .def_readonly("xPV",            &beamPositionMonitorStructs::bpmDataObject::xPV          )
         .def_readonly("yPV",            &beamPositionMonitorStructs::bpmDataObject::yPV          )
         .def_readonly("sa1",            &beamPositionMonitorStructs::bpmDataObject::sa1          )
@@ -185,14 +192,20 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* setXDocString = "Allows the user to set EPICS PV of X for str(bpmName) - these are defined in the config file. ONLY FOR THE VIRTUAL MACHINE!!!";
     char const* setYDocString = "Allows the user to set EPICS PV of Y for str(bpmName) - these are defined in the config file. ONLY FOR THE VIRTUAL MACHINE!!!";
     char const* setBufferSizeDocString = "Allows the user to set the size of the buffer to be filled constantly - this will erase any values in the existing buffer";
+    char const* getBufferSizeDocString = "Returns the size of the buffer";
+    char const* clearBuffersDocString = "Clears the buffers";
     char const* monitorSglDocString = "Monitors raw voltages for str(bpmName) - these are defined in the config file. This will fill up a vector of vectors with shot-to-shot raw voltages.\n"
                                       "Data can be accessed using getBPMRawData, getBPMXVec, getBPMYVec, getBPMQVec.\n"
                                       "arg1 is an int, arg2 is a string";
     char const* monitorMulDocString = "Monitors raw voltages for std_vector_string(str(bpmName)) - these are defined in the config file. This will fill up a vector of vectors with shot-to-shot raw voltages.\n"
                                       "Data can be accessed using getBPMRawData, getBPMXVec, getBPMYVec, getBPMQVec.\n"
                                       "arg1 is an int, arg2 is a std_vector_string (in python use VELA_CLARA_BPM_Control.std_vector_string().";
-    char const* isMonitoringDocString = "Returns true if str(bpmName) is being monitored - these are defined in the config file.";
-    char const* isNotMonitoringDocString = "Returns true if str(bpmName) is not being monitored - these are defined in the config file.";
+    char const* isDataBufferFullDocString = "Returns true if the raw data buffer for str(bpmName) is full - these are defined in the config file.";
+    char const* isXBufferFullDocString = "Returns true if the X PV buffer for str(bpmName) is full - these are defined in the config file.";
+    char const* isYBufferFullDocString = "Returns true if the Y PV buffer for str(bpmName) is full - these are defined in the config file.";
+    char const* isDataBufferNotFullDocString = "Returns true if the raw data buffer for str(bpmName) is not full - these are defined in the config file.";
+    char const* isXBufferNotFullDocString = "Returns true if the X PV buffer for str(bpmName) is not full - these are defined in the config file.";
+    char const* isYBufferNotFullDocString = "Returns true if the Y PV buffer for str(bpmName) is not full - these are defined in the config file.";
     char const* getXVecDocString = "Returns a vector containing the X values for str(bpmName) - these are defined in the config file.\n"
                                    "To be used in conjunction with function monitorDataForNShots.";
     char const* getYVecDocString = "Returns a vector containing the Y values for str(bpmName) - these are defined in the config file.\n"
@@ -230,12 +243,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("get_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::get_CA_PEND_IO_TIMEOUT                               )
             .def("set_CA_PEND_IO_TIMEOUT",          &beamPositionMonitorController::set_CA_PEND_IO_TIMEOUT                               )
             .def("getILockStates",                  &beamPositionMonitorController::getILockStates, getILocksDocString                   )
-            .def("isMonitoringBPMData",             &beamPositionMonitorController::isMonitoringBPMData, isMonitoringDocString           )
-            .def("isNotMonitoringBPMData",          &beamPositionMonitorController::isNotMonitoringBPMData, isNotMonitoringDocString     )
+            .def("isDataBufferFull",                &beamPositionMonitorController::isDataBufferFull, isDataBufferFullDocString          )
+            .def("isDataBufferNotFull",             &beamPositionMonitorController::isDataBufferNotFull, isDataBufferNotFullDocString    )
+            .def("isXBufferFull",                   &beamPositionMonitorController::isXBufferFull, isXBufferFullDocString                )
+            .def("isXBufferNotFull",                &beamPositionMonitorController::isXBufferNotFull, isXBufferNotFullDocString          )
+            .def("isYBufferFull",                   &beamPositionMonitorController::isYBufferFull, isYBufferFullDocString                )
+            .def("isYBufferNotFull",                &beamPositionMonitorController::isYBufferNotFull, isYBufferNotFullDocString          )
             .def("getX",                            &beamPositionMonitorController::getX, getXDocString                                  )
             .def("getY",                            &beamPositionMonitorController::getY, getQDocString                                  )
             .def("getQ",                            &beamPositionMonitorController::getQ, getQDocString                                  )
-            .def("getPosition",                     &beamPositionMonitorController::getPosition, getPositionDocString                     )
+            .def("getPosition",                     &beamPositionMonitorController::getPosition, getPositionDocString                    )
             .def("reCalAttenuation",                &beamPositionMonitorController::reCalAttenuation, reCalAttDocString                  )
             .def("getXFromPV",                      &beamPositionMonitorController::getXFromPV, getXPVDocString                          )
             .def("getYFromPV",                      &beamPositionMonitorController::getYFromPV, getYPVDocString                          )
@@ -267,9 +284,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setSD2",                          &beamPositionMonitorController::setSD2, setSD2DocString                              )
             .def("setX",                            &beamPositionMonitorController::setX, setXDocString                                  )
             .def("setY",                            &beamPositionMonitorController::setY, setYDocString                                  )
+            .def("getBufferSize",                   &beamPositionMonitorController::getBufferSize, getBufferSizeDocString                )
             .def("setBufferSize",                   &beamPositionMonitorController::setBufferSize, setBufferSizeDocString                )
-            .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                    )
-            .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                            )
+            .def("clearBuffers",                    &beamPositionMonitorController::clearBuffers, clearBuffersDocString                  )
+//            .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                    )
+//            .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                            )
             .def("getBPMNames",                     &beamPositionMonitorController::getBPMNames_Py, getBPMNamesDocString                 )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &beamPositionMonitorController::debugMessagesOff            )

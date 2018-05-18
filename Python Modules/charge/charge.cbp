@@ -40,6 +40,7 @@
 					<Add option="/MD" />
 					<Add option="/Ox" />
 					<Add option="/W3" />
+					<Add option="/EHsc" />
 					<Add option="/DBUILD_DLL" />
 					<Add option="/DNDEBUG" />
 					<Add directory="include" />
@@ -49,7 +50,7 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='mt.exe /nologo /manifest &quot;bin\Release\charge.dll.manifest&quot; /outputresource:&quot;bin\Release\charge.dll&quot;;2' />
+					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
 			</Target>
 		</Build>

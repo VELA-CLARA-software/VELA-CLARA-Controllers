@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
-	<ActiveTarget name="Debug" />
+	<ActiveTarget name="Release" />
 	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="14259" topLine="238" />
@@ -29,27 +29,27 @@
 	</File>
 	<File name="..\..\Hardware\scope\scopeController.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1822" topLine="0" />
+			<Cursor1 position="2924" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\scope\scopeController.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6371" topLine="66" />
+			<Cursor1 position="6371" topLine="25" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\scope\scopeInterface.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\scope\scopeInterface.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="50657" topLine="1149" />
+			<Cursor1 position="12303" topLine="370" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\scope\scopeInterface.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2179" topLine="105" />
+			<Cursor1 position="5048" topLine="9" />
 		</Cursor>
 	</File>
-	<File name="..\..\Structs\scopeStructs.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Structs\scopeStructs.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3782" topLine="0" />
+			<Cursor1 position="3197" topLine="51" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -57,7 +57,7 @@
 			<Cursor1 position="6615" topLine="89" />
 		</Cursor>
 	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="27150" topLine="447" />
 		</Cursor>
@@ -74,17 +74,17 @@
 	</File>
 	<File name="..\..\Utilities\scopeConfigReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7228" topLine="103" />
+			<Cursor1 position="1669" topLine="36" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\scopeConfigReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="901" topLine="0" />
+			<Cursor1 position="3504" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\VCscopes.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4301" topLine="74" />
+			<Cursor1 position="4301" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -94,8 +94,8 @@
 	</File>
 	<File name="src\VCscopes.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12643" topLine="276" />
+			<Cursor1 position="12643" topLine="0" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="09895a085ae81b80040ce46a00000002=0;charge:..\..\Hardware\charge\chargeInterface.cpp,1;charge:..\..\Hardware\charge\chargeInterface.h,2;charge:src\VCcharge.cpp,3;charge:include\VCcharge.h,4;scopes:..\..\Utilities\configDefinitions.h,5;charge:..\..\Hardware\charge\chargeController.cpp,*6;charge:..\..\Hardware\charge\chargeController.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09895a085ae81b80040ce46a00000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<EditorTabsLayout layout="0a0e2be85afd8b3d0000d11800000002=*0;bpms:..\..\Structs\beamPositionMonitorStructs.h,1;bpms:..\..\Hardware\beamPositionMonitor\beamPositionMonitorInterface.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0a0e2be85afd8b3d0000d11800000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>
