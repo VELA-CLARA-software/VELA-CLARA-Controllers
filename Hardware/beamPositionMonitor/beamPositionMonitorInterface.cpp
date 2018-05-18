@@ -23,6 +23,7 @@
 #include <string>
 #include <cstring>
 #include <cmath>
+#include <math.h>
 #include <stdlib.h>
 #include <epicsTime.h>
 
@@ -362,50 +363,50 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             bpmdo->yBuffer.resize(bpmdo->buffer);
             bpmdo->qVec.push_back(UTL::DUMMY_DOUBLE);
             bpmdo->qBuffer.resize(bpmdo->buffer);
-            bpmdo->pu1.push_back(1);
-            bpmdo->pu2.push_back(1);
-            bpmdo->c1.push_back(1);
-            bpmdo->p1.push_back(1);
-            bpmdo->pu3.push_back(1);
-            bpmdo->pu4.push_back(1);
-            bpmdo->c2.push_back(1);
-            bpmdo->p2.push_back(1);
+            bpmdo->pu1Buffer.resize(bpmdo->buffer);
+            bpmdo->pu2Buffer.resize(bpmdo->buffer);
+            bpmdo->c1Buffer.resize(bpmdo->buffer);
+            bpmdo->p1Buffer.resize(bpmdo->buffer);
+            bpmdo->pu3Buffer.resize(bpmdo->buffer);
+            bpmdo->pu4Buffer.resize(bpmdo->buffer);
+            bpmdo->c2Buffer.resize(bpmdo->buffer);
+            bpmdo->p2Buffer.resize(bpmdo->buffer);
         }
     }
 
     const dbr_double_t * value = &(p  -> value);
     size_t i = 0;
     updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ], bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
-
-    for( auto && it : ms->interface->bpmObj.dataObjects.at( ms->objName ).rawBPMData[ bpmdo->shotCount ] )
+    std::vector< double > rawVectorContainer(9);
+    for( auto && it : rawVectorContainer )
     {
         it = *( &p->value + i);
         ++i;
     }
 
-    bpmdo->rawBPMDataBuffer.push_back(bpmdo->rawBPMData.back());
+    bpmdo->rawBPMDataBuffer.push_back(rawVectorContainer);
     bpmdo->timeStampsBuffer.push_back(bpmdo->timeStamps.back());
 
-    bpmdo->pu1[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 5 ];
-    bpmdo->pu2[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 6 ];
-    bpmdo->c1[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 7 ];
-    bpmdo->p1[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 8 ];
-    bpmdo->pu3[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 1 ];
-    bpmdo->pu4[ bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 2 ];
-    bpmdo->c2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 3 ];
-    bpmdo->p2[  bpmdo->shotCount ] = bpmdo->rawBPMData[ bpmdo->shotCount ][ 4 ];
+    bpmdo->pu1Buffer.push_back(rawVectorContainer[ 1 ]);
+    bpmdo->pu2Buffer.push_back(rawVectorContainer[ 2 ]);
+    bpmdo->c1Buffer.push_back(rawVectorContainer[ 3 ]);
+    bpmdo->p1Buffer.push_back(rawVectorContainer[ 4 ]);
+    bpmdo->pu3Buffer.push_back(rawVectorContainer[ 5 ]);
+    bpmdo->pu4Buffer.push_back(rawVectorContainer[ 6 ]);
+    bpmdo->c2Buffer.push_back(rawVectorContainer[ 7 ]);
+    bpmdo->p2Buffer.push_back(rawVectorContainer[ 8 ]);
 
-    bpmdo->xVec[ bpmdo->shotCount ] = calcX( bpmdo->name, bpmdo->pu3[ bpmdo->shotCount ], bpmdo->pu4[ bpmdo->shotCount ], bpmdo->c2[ bpmdo->shotCount ], bpmdo->p2[ bpmdo->shotCount ], bpmdo->mn, bpmdo->xn );
-    bpmdo->yVec[ bpmdo->shotCount ] = calcY( bpmdo->name, bpmdo->pu1[ bpmdo->shotCount ], bpmdo->pu2[ bpmdo->shotCount ], bpmdo->c1[ bpmdo->shotCount ], bpmdo->p1[ bpmdo->shotCount ], bpmdo->mn, bpmdo->yn );
-    bpmdo->qVec[ bpmdo->shotCount ] = calcQ( bpmdo->name, bpmdo->rawBPMData[ bpmdo -> shotCount ], bpmdo->att1cal, bpmdo->att2cal, bpmdo->v1cal, bpmdo->v2cal, bpmdo->qcal );
+    double x = calcX( bpmdo->name, bpmdo->pu3Buffer.back(), bpmdo->pu4Buffer.back(), bpmdo->c2Buffer.back(), bpmdo->p2Buffer.back(), bpmdo->mn, bpmdo->xn );
+    double y = calcY( bpmdo->name, bpmdo->pu1Buffer.back(), bpmdo->pu2Buffer.back(), bpmdo->c1Buffer.back(), bpmdo->p1Buffer.back(), bpmdo->mn, bpmdo->yn );
+    double q = calcQ( bpmdo->name, bpmdo->rawBPMDataBuffer.back(), bpmdo->att1cal, bpmdo->att2cal, bpmdo->v1cal, bpmdo->v2cal, bpmdo->qcal );
 
-    bpmdo->xBuffer.push_back(bpmdo->xVec.back());
-    bpmdo->yBuffer.push_back(bpmdo->yVec.back());
-    bpmdo->qBuffer.push_back(bpmdo->qVec.back());
+    bpmdo->xBuffer.push_back(x);
+    bpmdo->yBuffer.push_back(y);
+    bpmdo->qBuffer.push_back(q);
 
     bpmdo->x = bpmdo->xBuffer.back();
     bpmdo->y = bpmdo->yBuffer.back();
-
+//    std::cout<<bpmdo->x<<std::endl;
     if( bpmdo -> isATemporaryMonitorStruct )
     {
         if( bpmdo -> numShots > -1 )
@@ -626,12 +627,12 @@ double beamPositionMonitorInterface::calcX( const std::string & name, double u11
     t1 = ( ( u1214 + sqrt( pow( u1214 , 2 ) - ( 4 * u1114 * u1314 ) )  ) / ( 2 * u1114 ) );
 
     v11 = u1114;
-    v12 = u1214;// - ( t1 * u2124 );
+    v12 = u1214 - ( t1 * u1114 );
 
     num = v12 - v11;
     den = v12 + v11;
 
-    x = -1 * ( ( num / den ) * mn ) - xn;
+    x = ( ( u1214 - u1114 ) / ( u1214 + u1114 ) * mn ) - xn;
 
     return x;
 }
@@ -654,7 +655,7 @@ double beamPositionMonitorInterface::calcY( const std::string & name, double u21
     num = v22 - v21;
     den = v22 + v21;
 
-    y = -1 * ( ( num / den ) * mn ) - yn;
+    y = -1 * ( ( u2224 - u2124 ) / ( u2224 + u2124 ) * mn ) - yn;
 
     return y;
 }
@@ -839,8 +840,28 @@ void beamPositionMonitorInterface::setBufferSize( size_t bufferSize )
         it.second.xBuffer.resize( bufferSize );
         it.second.yBuffer.resize( bufferSize );
         it.second.qBuffer.resize( bufferSize );
+        it.second.p1Buffer.clear();
+        it.second.p2Buffer.clear();
+        it.second.pu1Buffer.clear();
+        it.second.pu2Buffer.clear();
+        it.second.pu3Buffer.clear();
+        it.second.pu4Buffer.clear();
+        it.second.c1Buffer.clear();
+        it.second.c2Buffer.clear();
+        it.second.p1Buffer.resize( bufferSize );
+        it.second.p2Buffer.resize( bufferSize );
+        it.second.pu1Buffer.resize( bufferSize );
+        it.second.pu2Buffer.resize( bufferSize );
+        it.second.pu3Buffer.resize( bufferSize );
+        it.second.pu4Buffer.resize( bufferSize );
+        it.second.c1Buffer.resize( bufferSize );
+        it.second.c2Buffer.resize( bufferSize );
         it.second.timeStampsBuffer.resize( bufferSize );
         it.second.rawBPMDataBuffer.resize( bufferSize );
+        for( auto && it2 : it.second.rawBPMDataBuffer )
+        {
+            it2.resize( it.second.pvMonStructs[ beamPositionMonitorStructs::BPM_PV_TYPE::DATA ].COUNT );
+        }
         it.second.buffer = bufferSize;
         it.second.dataShots = 0;
         it.second.xPVShots = 0;
@@ -865,6 +886,14 @@ void beamPositionMonitorInterface::clearBuffers()
         it.second.xBuffer.clear();
         it.second.yBuffer.clear();
         it.second.qBuffer.clear();
+        it.second.pu1Buffer.clear();
+        it.second.pu2Buffer.clear();
+        it.second.pu3Buffer.clear();
+        it.second.pu4Buffer.clear();
+        it.second.p1Buffer.clear();
+        it.second.p2Buffer.clear();
+        it.second.c1Buffer.clear();
+        it.second.c2Buffer.clear();
         it.second.timeStampsBuffer.clear();
         it.second.rawBPMDataBuffer.clear();
         it.second.dataShots = 0;
