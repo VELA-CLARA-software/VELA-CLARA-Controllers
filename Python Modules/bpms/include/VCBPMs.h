@@ -121,6 +121,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
+
+    boost::python::class_< boost::circular_buffer< double > >("Circular buffer definition for python ", boost::python::no_init)
+        .def(vector_indexing_suite< boost::circular_buffer< double > >())
+        ;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>

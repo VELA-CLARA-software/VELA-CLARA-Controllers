@@ -96,7 +96,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
             .value("SP1_FCUP",              chargeStructs::CHARGE_DIAG_TYPE::SP1_FCUP              )
             .value("UNKNOWN_CHARGE_DIAG",   chargeStructs::CHARGE_DIAG_TYPE::UNKNOWN_CHARGE_DIAG   )
             ;
-            ;
+
+    boost::python::class_< boost::circular_buffer< double > >("Circular buffer definition for python ", boost::python::no_init)
+        .def(vector_indexing_suite< boost::circular_buffer< double > >())
+        ;
+
     char const* dataObjectStructString = "This struct contains data a given charge data object.";
     boost::python::class_<chargeStructs::dataObject,boost::noncopyable>
         ("dataObject",dataObjectStructString,boost::python::no_init)
@@ -107,8 +111,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
         .def_readonly("charge",        &chargeStructs::dataObject::charge        )
         .def_readonly("voltage",       &chargeStructs::dataObject::voltage       )
         .def_readonly("timestamp",     &chargeStructs::dataObject::timeStamp     )
-        .def_readonly("chargeVec",     &chargeStructs::dataObject::chargeVec     )
-        .def_readonly("voltageVec",    &chargeStructs::dataObject::voltageVec    )
+//        .def_readonly("chargeVec",     &chargeStructs::dataObject::chargeVec     )
+//        .def_readonly("voltageVec",    &chargeStructs::dataObject::voltageVec    )
         .def_readonly("chargeBuffer",  &chargeStructs::dataObject::chargeBuffer  )
         .def_readonly("voltageBuffer", &chargeStructs::dataObject::voltageBuffer )
         .def_readonly("timeStamps",    &chargeStructs::dataObject::timeStamps    )
