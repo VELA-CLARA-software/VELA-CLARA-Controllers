@@ -32,12 +32,12 @@
 #include <algorithm>
 //______________________________________________________________________________
 fastCamInterface::fastCamInterface(const std::string& velaCamConf,
-                                 const std::string& claraCamConf,
-                                 const bool startVirtualMachine,
-                                 const bool& show_messages,
-                                 const bool& show_debug_messages,
-                                 const bool shouldStartEPICs,
-                                 const HWC_ENUM::MACHINE_AREA myMachineArea):
+                                   const std::string& claraCamConf,
+                                   const bool startVirtualMachine,
+                                   const bool& show_messages,
+                                   const bool& show_debug_messages,
+                                   const bool shouldStartEPICs,
+                                   const HWC_ENUM::MACHINE_AREA myMachineArea):
 configReader(velaCamConf, claraCamConf, startVirtualMachine, show_messages,show_debug_messages),
 interface(show_messages, show_debug_messages,shouldStartEPICs),
 myMachineArea(myMachineArea)

@@ -51,13 +51,32 @@ bool fastCamConfigReader::readConfig()
 
     bool readingVela  = true;
     bool readingClara = false;
-    debugMessage("**** Attempting to read VELA fast Cams ****","\n");
-    bool readVELA = readConfig(configFile1);
+
+    bool readVELA = false;
+    bool shouldReadVELA = true;
+    if(configFile1 !=  UTL::UNKNOWN_STRING )
+    {
+        debugMessage("**** Attempting to read VELA fast Cams ****","\n");
+        readVELA = readConfig(configFile1);
+    }
+    else
+    {
+        shouldReadVELA = false;
+    }
 
     readingVela  = false;
     readingClara = true;
-    debugMessage("**** Attempting to read CLARA fast Cams ****","\n");
-    bool readCLARA = readConfig(configFile2);
+    bool readCLARA = false;
+    bool shouldReadCLARA = true;
+    if(configFile2 !=  UTL::UNKNOWN_STRING )
+    {
+        debugMessage("**** Attempting to read CLARA fast Cams ****","\n");
+        readCLARA = readConfig(configFile1);
+    }
+    else
+    {
+        shouldReadVELA = false;
+    }
 
     if(readVELA && readCLARA)
         return true;
