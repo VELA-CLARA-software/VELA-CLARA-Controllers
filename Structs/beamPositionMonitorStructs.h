@@ -93,6 +93,7 @@ namespace beamPositionMonitorStructs
         std::vector< std::vector< double > > bpmData;
         std::vector< double > p1, p2, pu1, pu2, pu3, pu4, c1, c2, xVec, yVec, qVec;
         boost::circular_buffer< double > xBuffer, yBuffer, qBuffer;
+        boost::circular_buffer< double > p1Buffer, p2Buffer, pu1Buffer, pu2Buffer, pu3Buffer, pu4Buffer, c1Buffer, c2Buffer;
 //        std::vector< double > timeStamps;
         boost::circular_buffer< double > timeStampsBuffer;
         std::vector< std::vector< double > > rawBPMData;
