@@ -119,6 +119,7 @@ namespace UTL
     const char SPACE_C            = ' ';
     const char TAB_C              = '\t';
     const char COMMA_C            = ',';
+    const char SLASH_SLASH_C = '\\';
     // default config paths -
     const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
     const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1.dl.ac.uk\\ControlRoomApps\\Controllers\\Config\\";

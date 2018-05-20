@@ -174,22 +174,7 @@ namespace BOOST_PYTHON_INCLUDE
         // MACHINE_AREA
         py_name = "MACHINE_AREA";
         py_docs = "MACHINE_AREA: an enum for named areas in the machine";
-//        enum_<MACHINE_AREA> ma_def =
-//            enum_<MACHINE_AREA>(py_name,py_docs)
-//                .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
-//                .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
-//                .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
-//                .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
-//                .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )
-//                .value("CLARA_S02",    MACHINE_AREA::CLARA_S02   )
-//                .value("CLARA_L01",    MACHINE_AREA::CLARA_L01   )
-//                .value("VELA_INJ",     MACHINE_AREA::VELA_INJ    )
-//                .value("VELA_BA2",     MACHINE_AREA::VELA_BA2    )
-//                .value("VELA_BA1",     MACHINE_AREA::VELA_BA1    )
-//                .value("RF_GUN",       MACHINE_AREA::RF_GUN      )
-//                .value("RF_L01",       MACHINE_AREA::RF_L01      )
-//                .value("USER",         MACHINE_AREA::USER        )
-//                ;
+
         boost::python::type_info info2 = type_id<MACHINE_AREA>();
         const converter::registration* reg2  = converter::registry::query(info2);
         if(reg2 == nullptr)
@@ -197,8 +182,8 @@ namespace BOOST_PYTHON_INCLUDE
             enum_<MACHINE_AREA>(py_name,py_docs)
                 .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
                 .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
-                .value("CLARA_2_BA1", MACHINE_AREA::CLARA_2_BA1  )
-                .value("CLARA_2_BA2", MACHINE_AREA::CLARA_2_BA2  )
+                .value("CLARA_2_BA1",  MACHINE_AREA::CLARA_2_BA1 )
+                .value("CLARA_2_BA2",  MACHINE_AREA::CLARA_2_BA2 )
                 .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
                 .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
                 .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )
@@ -217,8 +202,8 @@ namespace BOOST_PYTHON_INCLUDE
             enum_<MACHINE_AREA>(py_name,py_docs)
                 .value("UNKNOWN_AREA", MACHINE_AREA::UNKNOWN_AREA)
                 .value("CLARA_2_VELA", MACHINE_AREA::CLARA_2_VELA)
-                .value("CLARA_2_BA1", MACHINE_AREA::CLARA_2_BA1  )
-                .value("CLARA_2_BA2", MACHINE_AREA::CLARA_2_BA2  )
+                .value("CLARA_2_BA1",  MACHINE_AREA::CLARA_2_BA1 )
+                .value("CLARA_2_BA2",  MACHINE_AREA::CLARA_2_BA2 )
                 .value("CLARA_INJ",    MACHINE_AREA::CLARA_INJ   )
                 .value("CLARA_PH1",    MACHINE_AREA::CLARA_PH1   )
                 .value("CLARA_S01",    MACHINE_AREA::CLARA_S01   )

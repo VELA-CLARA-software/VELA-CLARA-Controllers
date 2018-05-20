@@ -38,6 +38,7 @@ namespace UTL
     const std::string DBURT_HEADER_AREA = "BEAM_AREA:";
     const std::string DBURT_HEADER_KEYW = "KEY_WORDS:";
 
+    const std::string VELA_CLARA_DBURT_ALIAS_V1 = "VELA-CLARA DBURT ALIAS FILE v1";
 
     const std::string DBURT_HEADER_V3 = "VELA-CLARA DBURT (MAGNET SAVE FILE) v3";
     const std::string DBURT_HEADER_V4 = "VELA-CLARA DBURT (MAGNET SAVE FILE) v4";

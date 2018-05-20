@@ -1221,7 +1221,10 @@ magnetInterface::vec_s magnetInterface::getMagnetNames()const
 {
     vec_s r;
     for(auto&& it:allMagnetData)
+    {
         r.push_back(it.first);
+        message(it.first);
+    }
     r.erase(std::remove(r.begin(), r.end(), dummyName), r.end());
     return r;
 }
@@ -1393,43 +1396,74 @@ void magnetInterface::applyMagnetStateStruct(const magnetStructs::magnetStateStr
 }
 //______________________________________________________________________________
 using namespace magnetStructs;
-magnetStateStruct magnetInterface::getDBURT(const std::string& fileName)const
+//______________________________________________________________________________
+magnetStateStruct magnetInterface::getDBURT(const std::string& filePath,
+                                            const std::string& fileName)
 {
-    /// create a dburt object
-    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES,myMachineArea);
+    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES, myMachineArea);
+    message("getting DBURT ",filePath," ",fileName);
+    return dbr.readDBURT(filePath,fileName);
+}
+//______________________________________________________________________________
+magnetStateStruct magnetInterface::getDBURT(const std::string& fileName)
+{
+    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES, myMachineArea);
     message("getting DBURT ",fileName);
     return dbr.readDBURT(fileName);
 }
 //______________________________________________________________________________
-magnetStateStruct magnetInterface::getDBURTCorOnly(const std::string& fileName)const
+magnetStateStruct magnetInterface::getDBURTQuadOnly(const std::string& filePath,
+                                                    const std::string& fileName)
 {
-    magnetStructs::magnetStateStruct ms1 = getDBURT(fileName);
-    magnetStructs::magnetStateStruct ms2;
-    ms2.machineArea = ms1.machineArea;
-    size_t i = UTL::ZERO_SIZET;
-    for(auto&& it:ms1.magNames)
+    return filterMagnetStateStruct(getDBURT(filePath,fileName), MAG_TYPE::QUAD);
+}
+//______________________________________________________________________________
+magnetStateStruct magnetInterface::getDBURTCorOnly(const std::string& filePath,
+                                                   const std::string& fileName)
+{
+    return filterMagnetStateStruct(getDBURT(filePath,fileName), MAG_TYPE::CORR);
+}
+//______________________________________________________________________________
+magnetStateStruct magnetInterface::getDBURTQuadOnly(const std::string& fileName)
+{
+    return filterMagnetStateStruct(getDBURT(fileName), MAG_TYPE::QUAD);
+}
+//______________________________________________________________________________
+magnetStateStruct magnetInterface::getDBURTCorOnly(const std::string& fileName)
+{
+    return filterMagnetStateStruct(getDBURT(fileName), MAG_TYPE::CORR);
+}
+//______________________________________________________________________________
+//int (magnetInterface::*isACor_ptr)(void) = &magnetInterface::isACor;
+//int (magnetInterface::*isAQuad_ptr)(void) = &magnetInterface::isAQuad;
+//______________________________________________________________________________
+magnetStateStruct magnetInterface::filterMagnetStateStruct(const magnetStateStruct& ms1, MAG_TYPE type)
+{
+    magnetStateStruct ms2;
+    switch(type)
     {
-        if(isACor(it))
-        {
-            ms2.magNames.push_back(it);
-            ms2.psuStates.push_back(ms1.psuStates[i]);
-            ms2.siValues.push_back(ms1.siValues[i]);
-            ++ms2.numMags;
-        }
-        ++i;
+        case MAG_TYPE::CORR:
+            ms2 = getStateOfType(&magnetInterface::isACor,ms1);
+            break;
+        case MAG_TYPE::QUAD:
+            ms2 = getStateOfType(&magnetInterface::isAQuad,ms1);
+            break;
+        default:
+            ms2 = ms1;
     }
     return ms2;
 }
 //______________________________________________________________________________
-magnetStateStruct magnetInterface::getDBURTQuadOnly(const std::string& fileName)const
+magnetStructs::magnetStateStruct magnetInterface::getStateOfType(functionPtr f,
+                                                                 const magnetStructs::magnetStateStruct& ms1)
 {
-    magnetStructs::magnetStateStruct ms1 = getDBURT(fileName);
-    magnetStructs::magnetStateStruct ms2;
-    ms2.machineArea = ms1.machineArea;
+    magnetStateStruct ms2;
     size_t i = UTL::ZERO_SIZET;
+    ms2.machineArea = ms1.machineArea;
     for(auto&& it:ms1.magNames)
     {
-        if(isAQuad(it))
+        //https://isocpp.org/wiki/faq/pointers-to-members#fnptr-vs-memfnptr-types
+        if( CALL_MEMBER_FN(*this,f)(it) )
         {
             ms2.magNames.push_back(it);
             ms2.psuStates.push_back(ms1.psuStates[i]);

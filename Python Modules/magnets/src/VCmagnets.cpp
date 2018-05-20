@@ -318,41 +318,41 @@ magnetController& VCmagnets::getMagnetController(MACHINE_MODE mode,MACHINE_AREA 
         return virtual_VELA_INJ_Magnet_Controller();
     else if(mode == PHYSICAL && area == VELA_INJ)
         return physical_VELA_INJ_Magnet_Controller();
+
     else if(mode == OFFLINE && area == VELA_BA1)
         return offline_VELA_BA1_Magnet_Controller();
     else if(mode == VIRTUAL && area == VELA_BA1)
         return virtual_VELA_BA1_Magnet_Controller();
     else if(mode == PHYSICAL && area == VELA_BA1)
         return physical_VELA_BA1_Magnet_Controller();
+
     else if(mode == OFFLINE && area == VELA_BA2)
         return offline_VELA_BA2_Magnet_Controller();
     else if(mode == VIRTUAL && area == VELA_BA2)
         return virtual_VELA_BA2_Magnet_Controller();
     else if(mode == PHYSICAL && area == VELA_BA2)
         return physical_VELA_BA2_Magnet_Controller();
+
     else if(mode == OFFLINE && area == CLARA_PH1)
         return offline_CLARA_PH1_Magnet_Controller();
     else if(mode == VIRTUAL && area == CLARA_PH1)
         return virtual_CLARA_PH1_Magnet_Controller();
-
     else if(mode == PHYSICAL && area == CLARA_PH1)
         return physical_CLARA_PH1_Magnet_Controller();
-
 
     else if(mode == PHYSICAL && area == CLARA_2_BA1)
         return physical_CB1_Magnet_Controller();
     else if(mode == PHYSICAL && area == CLARA_2_BA2)
-        return physical_CB2_Magnet_Controller();
-
+        return physical_CB1_Magnet_Controller();
     else if(mode == VIRTUAL && area == CLARA_2_BA1)
         return virtual_CB1_Magnet_Controller();
+
     else if(mode == VIRTUAL && area == CLARA_2_BA2)
         return virtual_CB2_Magnet_Controller();
-
     else if(mode == OFFLINE && area == CLARA_2_BA1)
-        return offline_CB1_Magnet_Controller();
-    else if(mode == OFFLINE && area == CLARA_2_BA2)
         return offline_CB2_Magnet_Controller();
+    else if(mode == OFFLINE && area == CLARA_2_BA2)
+        return physical_CB2_Magnet_Controller();
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::getController(magnetController*& cont,

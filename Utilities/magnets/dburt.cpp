@@ -27,14 +27,40 @@ myMachineArea(myMachineArea)
 //______________________________________________________________________________
 dburt::~dburt(){}
 //______________________________________________________________________________
-magnetStructs::magnetStateStruct dburt::readDBURT(const std::string & fileName)
+magnetStructs::magnetStateStruct dburt::readDBURT(const std::string& filePath,const std::string& fileName)
 {
-    return readDBURT(fileName.c_str());
+    return actuallyReadTheDBURT(filePath,fileName);
 }
 //______________________________________________________________________________
-magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
+magnetStructs::magnetStateStruct dburt::readDBURT(const std::string& fileName)
 {
-    message("\n", "**** Attempting to Read ", UTL::DBURT_PATH+fileName, " ****");
+    return readDBURT(UTL::DBURT_PATH, fileName);
+}
+//______________________________________________________________________________
+std::string dburt::getFilePathFromINputs(const std::string& filePath,
+                                         const std::string& fileName)const
+{
+    std::string pathandfile;
+    if(filePath == "")
+    {
+        pathandfile = UTL::DBURT_PATH + fileName;
+    }
+    else if(filePath.back() == UTL::SLASH_SLASH_C)
+    {
+        pathandfile = filePath + fileName;
+    }
+    else if(filePath.back() != UTL::SLASH_SLASH_C)
+    {
+        pathandfile = filePath + UTL::SLASH_SLASH + pathandfile;
+    }
+    return pathandfile;
+}
+//______________________________________________________________________________
+magnetStructs::magnetStateStruct dburt::actuallyReadTheDBURT(const std::string& filePath,const std::string& fileName)
+{
+    std::string pathandfile = getFilePathFromINputs(filePath,fileName);
+
+    message("\n", "**** Attempting to Read ", pathandfile, " ****");
 
     std::string line, trimmedLine;
 
@@ -42,13 +68,15 @@ magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
 
     configVersion = -1;
 
-    inputFile.open(UTL::DBURT_PATH+fileName, std::ios::in);
+    inputFile.open(pathandfile, std::ios::in);
     if(inputFile)
     {
-        message("File Opened from ",  UTL::DBURT_PATH);
+        message("File Opened from ",  pathandfile);
         while(std::getline(inputFile, line)) /// Go through, reading file line by line
         {
             trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
+
+            message(line);
 
             if(stringIsSubString(line, UTL::VELA_MAGNET_SAVE_FILE_v1))
             {
@@ -70,6 +98,20 @@ magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
                 if(stringIsSubString(trimmedLine, UTL::VERSION))
                     getVersion(trimmedLine);
             }
+            else if(stringIsSubString(line, UTL::VELA_CLARA_DBURT_ALIAS_V1))
+            {
+                message("stringIsSubString(line, UTL::VELA_CLARA_DBURT_ALIAS_V1)");
+                std::getline(inputFile, line);
+                trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
+                std::vector<std::string> keyvalue = getKeyVal(trimmedLine, UTL::EQUALS_SIGN_C);
+
+                message(keyvalue[0]);
+                message(keyvalue[1]);
+                pathandfile = getFilePathFromINputs(trimAllWhiteSpaceExceptBetweenDoubleQuotes(keyvalue[0]),
+                                                    trimAllWhiteSpaceExceptBetweenDoubleQuotes(keyvalue[1]));
+                message(pathandfile);
+                configVersion = 4;
+            }
         }
     }
     debugMessage("Finished preprocessing file");
@@ -79,51 +121,46 @@ magnetStructs::magnetStateStruct dburt::readDBURT(const char* fileName)
     {
         case -1:
             debugMessage("NO DBURT VERSION FOUND EXIT");
-
             break;
 
         case 1:
             debugMessage("VERSION 1 DBURT FOUND");
-            magState = readDBURTv1(fileName);
-
+            //magState = readDBURTv1(filePath);
             break;
-
         case 2:
-            debugMessage("VERSION 2 DBURT FOUND");
+            //debugMessage("VERSION 2 DBURT FOUND");
             break;
         case 3:
             debugMessage("VERSION 3 DBURT FOUND");
-            magState = readDBURTv3(fileName);
+            //magState = readDBURTv3(filePath);
             break;
         case 4:
             debugMessage("VERSION 4 DBURT FOUND");
-            magState = readDBURTv4(fileName);
+            magState = readDBURTv4(pathandfile);
             break;
         default:
             debugMessage("UNEXPECTED DBURT VERSION, ", configVersion, ", FOUND");
 
     }
-
     return magState;
 }
 //______________________________________________________________________________
-magnetStructs::magnetStateStruct dburt::readDBURTv4(const char* fileName, const std::string & path)
+magnetStructs::magnetStateStruct dburt::readDBURTv4(const std::string & pathandfile)
 {
-    std::string pathToDBURT;
-    if(path == "")
-        pathToDBURT =  UTL::DBURT_PATH;
-    else
-        pathToDBURT =  UTL::DBURT_PATH;
+//    std::string pathToDBURT;
+//    if(path == "")
+//        pathToDBURT =  UTL::DBURT_PATH;
+//    else
+//        pathToDBURT =  path;
 
     magnetStructs::magnetStateStruct magState;
-
 
     std::string line, trimmedLine;
     std::ifstream inputFile;
 
     std::vector<std::string> keyvalue;
 
-    inputFile.open(pathToDBURT+fileName, std::ios::in);
+    inputFile.open(pathandfile, std::ios::in);
     if(inputFile)
     {
         bool readingParameters = false;
@@ -190,30 +227,43 @@ magnetStructs::magnetStateStruct dburt::readDBURTv4(const char* fileName, const 
                 trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
                 keyvalue = getKeyVal(trimmedLine, UTL::COLON_C);
 
-                if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
+                if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_INJ))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_INJ;
-                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA1))
+                }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA1))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA1;
-                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA2))
+                }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::VELA_BA2))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::VELA_BA2;
-                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
+                }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_INJ))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_INJ;
-                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_PH1))
+                }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_PH1))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_PH1;
-                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA1))
+                }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA1))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA1;
-                else if(keyvalue[1] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA2))
+                }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA2))
+                {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA2;
+                }
             }
 
         } // while
     } // main if
     else
-        message("ERROR: In importDBURT: failed to open ",  pathToDBURT, fileName);
+        message("ERROR: In importDBURT: failed to open ",  pathandfile);
 
     return magState;
 }
-
 //______________________________________________________________________________
 bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const std::string & fileName, const std::string & comments, const std::string & keywords)
 {

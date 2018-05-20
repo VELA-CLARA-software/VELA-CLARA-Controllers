@@ -47,6 +47,7 @@ namespace magnetStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_TYPE, (QUAD)
                                                   (DIP)
+                                                  (CORR)
                                                   (HCOR)
                                                   (VCOR)
                                                   (BSOL)

@@ -59,25 +59,25 @@ class magnetInterface : public interface
         // /existentital quantifiers, and the like....
         bool isAMagType(const std::string& mag,
                         const magnetStructs::MAG_TYPE t)const;
-        bool isAQuad(const std::string & magName)const;
-        bool isABSol(const std::string & magName)const;
-        bool isAHCor(const std::string & magName)const;
-        bool isAVCor(const std::string & magName)const;
-        bool isADip (const std::string & magName)const;
-        bool isASol (const std::string & magName)const;
-        bool isACor (const std::string & magName)const;
-        bool isDegaussing(const std::string & magName)const;
-        bool isNotDegaussing(const std::string & magName)const;
-        bool entryExistsAndIsDegaussing(const std::string & magName)const;
+        bool isAQuad(const std::string& magName)const;
+        bool isABSol(const std::string& magName)const;
+        bool isAHCor(const std::string& magName)const;
+        bool isAVCor(const std::string& magName)const;
+        bool isADip (const std::string& magName)const;
+        bool isASol (const std::string& magName)const;
+        bool isACor (const std::string& magName)const;
+        bool isNotDegaussing(const std::string& magName)const;
+        bool isDegaussing   (const std::string& magName)const;
         bool entryExistsAndIsNotDegaussing(const std::string & magName)const;
-        bool isON(const std::string &magName)const;
-        bool isOFF(const std::string &magName)const;
-        bool isRIequalVal(const std::string & magName, const  double value, const double tolerance)const;
-        bool isRIequalSI(const std::string & magName)const;
+        bool entryExistsAndIsDegaussing   (const std::string & magName)const;
+        bool isOFF(const std::string& magName)const;
+        bool isON (const std::string& magName)const;
+        bool isRIequalVal(const std::string& magName,const double value,const double tolerance)const;
+        bool isRIequalSI (const std::string& magName)const;
 
         /// RI tolerances set how many decimal places on RI values (irl EPICS has 9 and they are continually changing)
-        void setRITolerance(const std::string & magName, const double val);
-        void setRITolerance(const vec_s & magNames, const vec_d & vals);
+        void setRITolerance(const std::string& magName, const double val);
+        void setRITolerance(const vec_s& magNames, const vec_d& vals);
 
         /// getters for names
         vec_s getMagnetNames()const;
@@ -89,9 +89,13 @@ class magnetInterface : public interface
         /// get the states of the magnets: here in real life
 
         /// and get the states of the magnets: here from a file
-        magnetStructs::magnetStateStruct getDBURT(const std::string & fileName)const;
-        magnetStructs::magnetStateStruct getDBURTCorOnly(const std::string & fileName)const;
-        magnetStructs::magnetStateStruct getDBURTQuadOnly(const std::string & fileName)const;
+        magnetStructs::magnetStateStruct getDBURTQuadOnly(const std::string& fileName);
+        magnetStructs::magnetStateStruct getDBURTCorOnly(const std::string& fileName);
+        magnetStructs::magnetStateStruct getDBURT(const std::string& fileName);
+
+        magnetStructs::magnetStateStruct getDBURTQuadOnly(const std::string& filePath, const std::string& fileName);
+        magnetStructs::magnetStateStruct getDBURTCorOnly(const std::string& filePath, const std::string& fileName);
+        magnetStructs::magnetStateStruct getDBURT(const std::string& filePath, const std::string& fileName);
         // get const refs and pointers to magnetObjects
         // we allow c++ users to have full read access to the entire magnetObject data
         const magnetStructs::magnetObject &getMagObjConstRef(const std::string& magName)const;
@@ -118,6 +122,7 @@ class magnetInterface : public interface
 
         vec_d  getDegValues(const std::string & magName)const;
         vvec_d getDegValues(const std::vector<std::string> & magNames)const;
+
         size_t getNumDegSteps(const std::string & magName) const;
         vec_si getNumDegSteps(const std::vector<std::string> & magNames)const;
 
@@ -254,6 +259,11 @@ class magnetInterface : public interface
         void printFinish()const;
         void printVec(const std::string & p1, const vec_s & v, size_t numPerLine)const;
 //
-        ///message
+        //typedef int (*functionPtr)(int,int);
+        typedef bool (magnetInterface::*functionPtr)(const std::string&)const;
+        magnetStructs::magnetStateStruct filterMagnetStateStruct(const magnetStructs::magnetStateStruct& ms1,
+                                                                 magnetStructs::MAG_TYPE type);
+        magnetStructs::magnetStateStruct getStateOfType(functionPtr f, const magnetStructs::magnetStateStruct& ms1);
+
 };
 #endif // _MAGNET_INTERFACE_H_

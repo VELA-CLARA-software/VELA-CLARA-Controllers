@@ -349,7 +349,7 @@ const magnetStructs::magnetObject* magnetController::getMagObjConstPtr(const std
     return localInterface.getMagObjConstPtr(magName);
 }
 //______________________________________________________________________________
- std::vector<std::string> magnetController::getMagnetNames()
+ std::vector<std::string> magnetController::getMagnetNames()const
 {
     return localInterface.getMagnetNames();
 }

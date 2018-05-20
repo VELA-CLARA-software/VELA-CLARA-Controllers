@@ -82,7 +82,7 @@ class magnetController : public controller
         bool isRIequalVal(const std::string & magName, const  double value, const double tolerance);
         bool isRIequalSI(const std::string & magName);
       /// Magnet Name getters
-        std::vector<std::string> getMagnetNames();
+        std::vector<std::string> getMagnetNames()const;
         std::vector<std::string> getQuadNames();
         std::vector<std::string> getHCorNames();
         std::vector<std::string> getVCorNames();
