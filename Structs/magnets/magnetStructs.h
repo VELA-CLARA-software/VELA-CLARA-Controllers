@@ -128,13 +128,17 @@ namespace magnetStructs
                        psuRoot(SAME_AS_PV_ROOT),
                        SETIequalREADI(false),
                        psuState(ERROR),
-                       interface(nullptr)
+                       interface(nullptr),
+                       isDegaussing(false),
+                       remainingDegaussSteps(UTL::ZERO_INT)
                        {}
         MAG_TYPE magType;           /// dipole, quad etc.
         MAG_PSU_STATE psuState;
         HWC_ENUM::MACHINE_AREA  machineArea;
         MAG_REV_TYPE revType;
         bool SETIequalREADI;
+        bool isDegaussing;
+        int remainingDegaussSteps;
         double siWithPol,    // this is the GETSI (i.e. read-only) value in controls 2017 scheme that is consistent between VELA / CALRA
                setsiWithPol, // use this value in the controller to actually set the SI  (i.e. write-only)
                riWithPol, riTolerance, position, magneticLength, degTolerance, maxI, minI;

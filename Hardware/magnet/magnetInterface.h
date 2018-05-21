@@ -66,14 +66,21 @@ class magnetInterface : public interface
         bool isADip (const std::string& magName)const;
         bool isASol (const std::string& magName)const;
         bool isACor (const std::string& magName)const;
-        bool isNotDegaussing(const std::string& magName)const;
-        bool isDegaussing   (const std::string& magName)const;
-        bool entryExistsAndIsNotDegaussing(const std::string & magName)const;
-        bool entryExistsAndIsDegaussing   (const std::string & magName)const;
+//        bool isNotDegaussing(const std::string& magName)const;
+//        bool isDegaussing   (const std::string& magName)const;
+//        bool entryExistsAndIsNotDegaussing(const std::string & magName)const;
+//        bool entryExistsAndIsDegaussing   (const std::string & magName)const;
         bool isOFF(const std::string& magName)const;
         bool isON (const std::string& magName)const;
         bool isRIequalVal(const std::string& magName,const double value,const double tolerance)const;
         bool isRIequalSI (const std::string& magName)const;
+
+
+        int  getRemainingDegaussSteps(const std::string& magName)const;
+        bool isNotDegaussing(const std::string& magName)const;
+        bool isDegaussing   (const std::string& magName)const;
+        bool entryExistsAndIsNotDegaussing(const std::string & magName)const;
+        bool entryExistsAndIsDegaussing   (const std::string & magName)const;
 
         /// RI tolerances set how many decimal places on RI values (irl EPICS has 9 and they are continually changing)
         void setRITolerance(const std::string& magName, const double val);

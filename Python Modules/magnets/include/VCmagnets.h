@@ -301,12 +301,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
                             &magnetStructs::magnetObject::setSI)
         .add_property("PSU",&magnetStructs::magnetObject::psuState,
                             &magnetStructs::magnetObject::setPSU)
+        .def_readonly("isDegaussing",          &magnetStructs::magnetObject::isDegaussing)
+        .def_readonly("remainingDegaussSteps", &magnetStructs::magnetObject::remainingDegaussSteps)
         .def_readonly("riWithPol",    &magnetStructs::magnetObject::riWithPol)
         .def_readonly("riTolerance",  &magnetStructs::magnetObject::riTolerance)
         .def_readonly("name",         &magnetStructs::magnetObject::name)
         .def_readonly("degValues",    &magnetStructs::magnetObject::degValues)
         .def_readonly("position",     &magnetStructs::magnetObject::position)
-        .def_readonly("fieldIntegralCoefficients1",      &magnetStructs::magnetObject::fieldIntegralCoefficients)
         .def_readonly("fieldIntegralCoefficients",  &magnetStructs::magnetObject::fieldIntegralCoefficients )
         .def_readonly("numDegaussSteps", &magnetStructs::magnetObject::numDegaussSteps)
         .def_readonly("manufacturer",    &magnetStructs::magnetObject::manufacturer)
@@ -371,6 +372,24 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def("getPosition", &magnetController::getPosition_Py)
         .def("getMagnetBranch", &magnetController::getMagnetBranch_Py)
         .def("getMeasurementDataLocation", &magnetController::getMeasurementDataLocation_Py)
+
+
+        .def("getRemainingDegaussSteps", &magnetController::getRemainingDegaussSteps,
+             (boost::python::arg("magnetname")),"Get remiaing stesp in magnetname degaussing, -1 = degaussing failed for some reason, -2 = magnetname does not exist.")
+
+
+        .def("entryExistsAndIsDegaussing", &magnetController::entryExistsAndIsDegaussing,
+             (boost::python::arg("magnetname")),"magnetname exists, and is deaussing.")
+
+        .def("entryExistsAndIsNotDegaussing", &magnetController::entryExistsAndIsNotDegaussing,
+             (boost::python::arg("magnetname")),"magnetname exists, and is NOT deaussing.")
+
+
+        .def("isNotDegaussing", &magnetController::isNotDegaussing,
+             (boost::python::arg("magnetname")),"magnetname is NOT deaussing.")
+
+        .def("isDegaussing", &magnetController::isDegaussing,
+             (boost::python::arg("magnetname")),"magnetname is deaussing.")
 
         .def("setSIZero",  setSIZero_1)
         .def("setSIZero",  setSIZero_2)

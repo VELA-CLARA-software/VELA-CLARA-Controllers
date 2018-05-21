@@ -51,19 +51,13 @@ class fastCamConfigReader : public configReader
 
         bool readConfig(const std::string& file);
 
-
-        // fast cam Objects
-        std::map<std::string, fastCamStructs::fastCamObject> fCamObjects;
+        std::vector<fastCamStructs::fastCamObject> fCamObjects;
         std::vector<fastCamStructs::pvStruct> pvFCamMonStructs;
         std::vector<fastCamStructs::pvStruct> pvFCamComStructs;
 
         void addToObjectsV1(const std::vector<std::string> &keyVal);
-        //void addToMonStructsV1(const std::vector<std::string> &keyVal);
-        //void addToComStructsV1(const std::vector<std::string> &keyVal);
 
-        //void addMagType(const std::vector<std::string> &keyVal);
-
-        //const std::string magConf;
+        fastCamStructs::CAM_TYPE getCamType(const std::string& cam);
 
         void addToPVStruct(std::vector<fastCamStructs::pvStruct> & pvStruct_v, const  std::vector<std::string> &keyVal);
         void addCOUNT_MASK_OR_CHTYPE( std::vector<fastCamStructs::pvStruct>  & pvStruct_v, const std::vector<std::string> &keyVal);

@@ -135,12 +135,12 @@ bool fastCamConfigReader::readConfig(const std::string& file)
                                     {
                                         addToObjectsV1(keyVal);
                                     }
-                                    else if (readingCommandPVs)
+                                    else if(readingCommandPVs)
                                     {
                                         addToPVStruct(pvFCamComStructs,keyVal);
                                     }
 
-                                    else if (readingMonitorPVs)
+                                    else if(readingMonitorPVs)
                                     {
                                         addToPVStruct(pvFCamMonStructs, keyVal);
                                     }
@@ -212,50 +212,108 @@ bool fastCamConfigReader::getCamData(std::map<std::string, fastCamStructs::fastC
 void fastCamConfigReader::addToPVStruct(std::vector<fastCamStructs::pvStruct>& pvStruct_v,
                                         const std::vector<std::string> &keyVal)
 {
-//    if(stringIsSubString(keyVal[0], "SUFFIX"))
-//    {
-//        pvStruct_v.push_back(magnetStructs::pvStruct());    /// Any way to avoid the ladders?
-//        pvStruct_v.back().pvSuffix = keyVal[1];
-//        //GUN  Protection
-//        if(keyVal[0] == UTL::PV_SUFFIX_SPOWER)
-//            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SPOWER;
-//
-//        else if(keyVal[0] == UTL::PV_SUFFIX_RPOWER)
-//            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RPOWER;
-//
-//        else if(keyVal[0] == UTL::PV_SUFFIX_READI)
-//            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::READI;
-//
-//        else if(keyVal[0] == UTL::PV_SUFFIX_SETI)
-//            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SETI;
-//
-//        else if(keyVal[0] == UTL::PV_SUFFIX_RILK)
-//            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RILK;
-//
-//        else if(keyVal[0] == UTL::PV_SUFFIX_GETSETI)
-//            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::GETSETI;
-//
-//         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType)) ;
-//    }
-//    else
-//        addCOUNT_MASK_OR_CHTYPE(pvStruct_v, keyVal);
+    if(stringIsSubString(keyVal[UTL::ZERO_SIZET], "SUFFIX"))
+    {
+        pvStruct_v.push_back(fastCamStructs::pvStruct());    /// Any way to avoid the ladders?
+        pvStruct_v.back().pvSuffix = keyVal[UTL::ONE_SIZET];
+
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_START)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::START;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_STOP)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::STOP;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_GAIN)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::GAIN;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_BLACK)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::BLACK_LEVEL;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::DATA;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_GAIN_RBV)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::GAIN_RBV;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_BLACK_RBV)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::BLACK_LEVEL_RBV;
+        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_CAM_STATE)
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::STATE;
+
+        debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType)) ;
+    }
+    else
+        addCOUNT_MASK_OR_CHTYPE(pvStruct_v, keyVal);
 }
 //______________________________________________________________________________
 void fastCamConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<fastCamStructs::pvStruct>& pvStruct_v,
                                                   const std::vector<std::string>&keyVal)
 {
-//    if(keyVal[0] == UTL::PV_COUNT)
-//        pvStruct_v.back().COUNT = getCOUNT(keyVal[ 1 ]);
-//    else if(keyVal[0] == UTL::PV_MASK)
-//        pvStruct_v.back().MASK = getMASK(keyVal[ 1 ]);
-//    else if(keyVal[0] == UTL::PV_CHTYPE)
-//        pvStruct_v.back().CHTYPE = getCHTYPE(keyVal[ 1 ]);
+    if(keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT)
+        pvStruct_v.back().COUNT = getCOUNT(keyVal[UTL::ONE_SIZET]);
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK)
+        pvStruct_v.back().MASK = getMASK(keyVal[UTL::ONE_SIZET]);
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE)
+        pvStruct_v.back().CHTYPE = getCHTYPE(keyVal[UTL::ONE_SIZET]);
 }
 //______________________________________________________________________________
-void fastCamConfigReader::addToObjectsV1(const std::vector<std::string> &keyVal)
+void fastCamConfigReader::addToObjectsV1(const std::vector<std::string>& keyVal)
 {
+    using namespace UTL;
+    if(keyVal[ZERO_SIZET] == NAME )
+    {
+        fCamObjects.push_back(fastCamStructs::fastCamObject());    /// Any way to avoid the ladders?
+        fCamObjects.back().name      = keyVal[ONE_SIZET];
 
+
+        debugMessage("Added ", fCamObjects.back().name);
+
+        debugMessage("Added vc_dataObject ", fCamObjects.back().name );
+    }
+//    else if(keyVal[ZERO_SIZET] == NUMBER_OF_ILOCKS)
+//    {
+//        fCamObjects.back().numIlocks = getSize(keyVal[ONE_SIZET]);
+//    }
+    else if(keyVal[ZERO_SIZET] == PV_ROOT)
+    {
+        if(useVM )
+            fCamObjects.back().pvRoot =  VM_PREFIX + keyVal[ONE_SIZET];
+        else
+            fCamObjects.back().pvRoot = keyVal[ONE_SIZET];
+    }
+    else if(keyVal[ZERO_SIZET] == CAM_TYPE)
+    {
+        fCamObjects.back().type = getCamType(keyVal[ONE_SIZET]);
+    }
+    else if(keyVal[ZERO_SIZET] == SCREEN)
+    {
+        //fCamObjects.back().y_pos = getSize(keyVal[ONE_SIZET]);
+    }
+    else if(keyVal[ZERO_SIZET] == NUMBER_OF_PIXELS_X)
+    {
+        fCamObjects.back().num_pix_x = getSize(keyVal[ONE_SIZET]);
+    }
+    else if(keyVal[ZERO_SIZET] == NUMBER_OF_PIXELS_Y)
+    {
+        fCamObjects.back().num_pix_y = getSize(keyVal[ONE_SIZET]);
+    }
+    else if(keyVal[ZERO_SIZET] == X_PIX_2_MM)
+    {
+        fCamObjects.back().x_pix_to_mm = getNumD(keyVal[ONE_SIZET]);
+    }
+    else if(keyVal[ZERO_SIZET] == Y_PIX_2_MM)
+    {
+        fCamObjects.back().y_pix_to_mm = getNumD(keyVal[ONE_SIZET]);
+    }
 }
+//______________________________________________________________________________
+fastCamStructs::CAM_TYPE fastCamConfigReader::getCamType(const std::string& cam)
+{
+    if( cam == ENUM_TO_STRING(fastCamStructs::CAM_TYPE::VELA))
+    {
+        return fastCamStructs::CAM_TYPE::VELA;
+    }
+    else if( cam == ENUM_TO_STRING(fastCamStructs::CAM_TYPE::CLARA))
+    {
+        return fastCamStructs::CAM_TYPE::CLARA;
+    }
+    return fastCamStructs::CAM_TYPE::NOT_KNOWN;
+}
+
 
 
 

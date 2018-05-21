@@ -296,6 +296,22 @@ namespace UTL
     const std::string PV_ROOT_Q = "PV_ROOT_Q";
     const std::string STEP_MAX = "STEP_MAX";
 
+/// fast cam
+    const std::string PV_SUFFIX_START     = "PV_SUFFIX_START";
+    //const std::string PV_SUFFIX_STOP      = "PV_SUFFIX_STOP";
+    const std::string PV_SUFFIX_GAIN      = "PV_SUFFIX_GAIN";
+    const std::string PV_SUFFIX_BLACK     = "PV_SUFFIX_BLACK";
+    const std::string PV_SUFFIX_DATA      = "PV_SUFFIX_DATA";
+    const std::string PV_SUFFIX_GAIN_RBV  = "PV_SUFFIX_GAIN_RBV";
+    const std::string PV_SUFFIX_BLACK_RBV = "PV_SUFFIX_BLACK_RBV";
+    const std::string PV_SUFFIX_CAM_STATE = "PV_SUFFIX_CAM_STATE";
+    const std::string CAM_TYPE            = "CAM_TYPE";
+    const std::string SCREEN              = "SCREEN";
+    const std::string X_PIX_2_MM          = "X_PIX_2_MM";
+    const std::string Y_PIX_2_MM          = "Y_PIX_2_MM";
+    const std::string NUMBER_OF_PIXELS_X  = "NUMBER_OF_PIXELS_X";
+    const std::string NUMBER_OF_PIXELS_Y  = "NUMBER_OF_PIXELS_Y";
+
 /// Cameras
     const std::string VELA_FAST_CAM_CONFIG  = "velaFastCam.config";
     const std::string CLARA_FAST_CAM_CONFIG = "claraFastCam.config";

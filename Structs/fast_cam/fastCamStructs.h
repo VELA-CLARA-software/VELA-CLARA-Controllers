@@ -15,7 +15,7 @@
 //
 //  Author:      TP, then DJS
 //  Last edit:   16-05-2018
-//  FileName:    cameraStructs.h
+//  FileName:    fastCamStructs.h
 //  Description:
 //
 //
@@ -29,6 +29,7 @@
 #include <string>
 #include <thread>
 #include <map>
+#include <deque>
 //epics
 #ifndef __CINT__
 #include <cadef.h>
@@ -41,9 +42,16 @@ class fastCamInterface;
 
 namespace fastCamStructs
 {
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(FAST_CAM_PV,(UNKNOWN_PV))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(FAST_CAM_PV,(UNKNOWN_PV)
+                                                    (START)
+                                                    (STOP)
+                                                    (GAIN)
+                                                    (BLACK_LEVEL)
+                                                    (DATA)
+                                                    (GAIN_RBV)
+                                                    (BLACK_LEVEL_RBV)
+                                                    (STATE))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,(CAM_ERROR))
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,(VELA)(CLARA)(NOT_KNOWN))
 
     struct pvStruct
@@ -62,22 +70,38 @@ namespace fastCamStructs
         evid            EVID;
     };
 
-    struct fastCameraObject
+    struct fastCamObject
     {
-        fastCameraObject():name(UTL::UNKNOWN_NAME),
-                           pvRoot(UTL::UNKNOWN_PVROOT),
-                           screenName(UTL::UNKNOWN_STRING),
-                           streamingIPAddress(UTL::UNKNOWN_STRING),
-                           state(CAM_ERROR)
-                           {}
+        fastCamObject():
+            name(UTL::UNKNOWN_NAME),
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            screenName(UTL::UNKNOWN_STRING),
+            streamingIPAddress(UTL::UNKNOWN_STRING),
+            state(HWC_ENUM::UNKNOWN),
+            gain(0),
+            blacklevel(0),
+            buffer_size(1),
+            buffer_count(0),
+            buffer_full(false),
+            num_pix_x(UTL::ZERO_SIZET),
+            num_pix_y(UTL::ZERO_SIZET),
+            x_pix_to_mm(UTL::ZERO_DOUBLE),
+            y_pix_to_mm(UTL::ZERO_DOUBLE),
+            type(CAM_TYPE::NOT_KNOWN)
+            {}
         std::string name, pvRoot, screenName, streamingIPAddress;
-        CAM_STATE state;
-        //ACQUIRE_STATE acquireState;
+        HWC_ENUM::STATE state;
+        size_t buffer_size,buffer_count,num_pix_x,num_pix_y;
+        double x_pix_to_mm,y_pix_to_mm;
+        bool buffer_full;
+        long gain,blacklevel;
         std::map<FAST_CAM_PV, pvStruct> pvMonStructs;
         std::map<FAST_CAM_PV, pvStruct> pvComStructs;
+        CAM_TYPE type;
         HWC_ENUM::MACHINE_AREA  machineArea;
         std::vector<double> background;
         std::vector<double> data;
+        std::deque<std::vector<double>> data_buffer;
     };
 
     struct monitorStruct
@@ -93,17 +117,19 @@ namespace fastCamStructs
         evid              EVID;
     };
 
-    struct fastCamObject
-    {
-        fastCamObject():
-            name(UTL::UNKNOWN_NAME),
-            type(CAM_TYPE::NOT_KNOWN)
-            {}
-        std::string name, pvRoot;
-        CAM_TYPE type;
-        std::map<FAST_CAM_PV, pvStruct> pvMonStructs;
-        std::map<FAST_CAM_PV, pvStruct> pvComStructs;
-    };
+//    struct fastCamObject
+//    {
+//        fastCamObject():
+//            name(UTL::UNKNOWN_NAME),
+//            type(CAM_TYPE::NOT_KNOWN)
+//            {}
+//        std::string name, pvRoot;
+//        CAM_TYPE type;
+//        long gain,blacklevel;
+//        STATE blacklevel;
+//        std::map<FAST_CAM_PV, pvStruct> pvMonStructs;
+//        std::map<FAST_CAM_PV, pvStruct> pvComStructs;
+//    };
 
 }
 #endif // FAST_CAM_STRUCTS_H_

@@ -577,18 +577,18 @@ bool  magnetInterface::togglePSU(const vec_s& magNames,
 // |__/ |___ \__> /~~\ \__/ .__/ .__/
 //
 //______________________________________________________________________________
-bool magnetInterface::isDegaussing(const std::string& magName)const
-{
-    if (entryExists(isDegaussingMap, magName))
-        return (bool)isDegaussingMap.at(magName);
-    else
-        return false;
-}
-//______________________________________________________________________________
-bool magnetInterface::isNotDegaussing(const std::string& magName) const
-{
-    return !isDegaussing(magName);
-}
+//bool magnetInterface::isDegaussing(const std::string& magName)const
+//{
+//    if (entryExists(isDegaussingMap, magName))
+//        return (bool)isDegaussingMap.at(magName);
+//    else
+//        return false;
+//}
+////______________________________________________________________________________
+//bool magnetInterface::isNotDegaussing(const std::string& magName) const
+//{
+//    return !isDegaussing(magName);
+//}
 //______________________________________________________________________________
 bool magnetInterface::entryExistsAndIsDegaussing(const std::string& magName)const
 {
@@ -742,7 +742,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         switch on the magnets that are to be degaussed
     */
     ds.interface->switchONpsu(magToDegOriginal);
-    UTL::STANDARD_PAUSE;
+    ds.interface->pause_2000();
     /*
         now check which magnets have actually switched on
         and add them to the magToDeg
@@ -754,6 +754,9 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         if(ds.interface->isON(it))
         {
             magToDeg.push_back(it);
+            magnetStructs::magnetObject& r = ds.interface->allMagnetData.at(it);
+            r.isDegaussing = true;
+            r.remainingDegaussSteps = r.numDegaussSteps;
         }
         else
         {
@@ -805,9 +808,14 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         /* assign next values */
         for(auto&& it:magToDeg)
         {
+
             values.push_back(ds.interface->allMagnetData.at(it).degValues[j]);
             tolerances.push_back(ds.interface->allMagnetData.at(it).degTolerance);
             ds.interface->message("Setting ",it," to ",values.back()," Amp, with tolerance = ",tolerances.back()," Amp");
+            /*
+                update number of remainingDegaussSteps
+            */
+            ds.interface->allMagnetData.at(it).remainingDegaussSteps -= j;
         }
         //ds.interface->message("get vals");
         /* set th edesired current */
@@ -828,6 +836,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
                                       it,
                                       " lost during degaussing, "
                                       "SI probably did not settle.");
+            ds.interface->allMagnetData.at(it).remainingDegaussSteps = UTL::MINUS_ONE_INT;
             }
         }
         /*
@@ -848,6 +857,8 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
     for(auto&& it:magToDegOriginal)
     {
         ds.interface->isDegaussingMap.at(it) = false;
+        ds.interface->allMagnetData.at(it).remainingDegaussSteps = UTL::ZERO_INT;
+        ds.interface->allMagnetData.at(it).isDegaussing = false;
     }
     /*
         reset to zero if required
@@ -865,7 +876,13 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
     }
     /*
         clean-up, set degaussing bit to false
+        set number of remainingDegaussSteps to zero
     */
+
+
+
+
+
     ds.interface->detachFrom_thisCAContext() ;
 
     /*
@@ -1174,6 +1191,27 @@ std::vector<double> magnetInterface::getRITolerance(const std::vector<std::strin
     for(auto&& it:magNames)
         a.push_back(getRI(it));
     return a;
+}
+//_____________________________________________________________________________
+bool magnetInterface::isDegaussing(const std::string& magName)const
+{
+    bool ans = false;
+    if(entryExists(allMagnetData, magName))
+        return allMagnetData.at(magName).isDegaussing;
+    return false;
+}
+//_____________________________________________________________________________
+bool magnetInterface::isNotDegaussing(const std::string& magName)const
+{
+    return !isDegaussing(magName);
+}
+//_____________________________________________________________________________
+int magnetInterface::getRemainingDegaussSteps(const std::string& magName)const
+{
+    bool ans = false;
+    if(entryExists(allMagnetData, magName))
+        return allMagnetData.at(magName).remainingDegaussSteps;
+    return UTL::MINUS_TWO_INT;
 }
 //_____________________________________________________________________________
 bool magnetInterface::isON(const std::string& magName)const

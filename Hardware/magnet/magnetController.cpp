@@ -237,7 +237,21 @@ bool magnetController::isNotDegaussing(const std::string & magName)
 {
     return localInterface.isNotDegaussing(magName);
 }
-
+//______________________________________________________________________________
+int  magnetController::getRemainingDegaussSteps(const std::string& magName)const
+{
+    return localInterface.getRemainingDegaussSteps(magName);
+}
+//______________________________________________________________________________
+bool  magnetController::entryExistsAndIsNotDegaussing(const std::string& magName)const
+{
+    return localInterface.getRemainingDegaussSteps(magName);
+}
+//______________________________________________________________________________
+bool  magnetController::entryExistsAndIsDegaussing(const std::string& magName)const
+{
+    return localInterface.getRemainingDegaussSteps(magName);
+}
 //______________________________________________________________________________
 //void magnetController::showMagRevType()
 //{
