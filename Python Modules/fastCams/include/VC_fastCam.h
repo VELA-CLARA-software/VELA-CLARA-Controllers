@@ -97,6 +97,15 @@ BOOST_PYTHON_MODULE(VELA_CLARA_FastCam_Control)
     /// Include ALL the enums you want to expose to Python
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
+
+    class_<fastCamController, bases<controller>, noncopyable>
+        ("fastCamController","fastCamController Doc String",no_init)
+
+//        .def("getRemainingDegaussSteps", &fastCamController::getRemainingDegaussSteps,
+//             (boost::python::arg("magnetname")),"Get remiaing stesp in magnetname degaussing, -1 = degaussing failed for some reason, -2 = magnetname does not exist.")
+        ;
+
+
     /// Finally the main class that creates all the objects
       class_<VC_fastCam, bases<VCbase>, noncopyable>("init")
         .def("virtual_CLARA_FastCam_Controller",  &VC_fastCam::virtual_CLARA_FastCam_Controller,

@@ -313,8 +313,8 @@ namespace UTL
     const std::string NUMBER_OF_PIXELS_Y  = "NUMBER_OF_PIXELS_Y";
 
 /// Cameras
-    const std::string VELA_FAST_CAM_CONFIG  = "velaFastCam.config";
-    const std::string CLARA_FAST_CAM_CONFIG = "claraFastCam.config";
+    const std::string VELA_FAST_CAM_CONFIG  = "velaFastCamera.config";
+    const std::string CLARA_FAST_CAM_CONFIG = "claraFastCamera.config";
     const std::string DAQ_CAMERA_CONFIG = "cameraDAQ.config";
     const std::string CAMERA_CONFIG     = "camera.config";
     //const std::string VELA_CAMERA_IOC_CONFIG           = "velaCameraIOC.config";
@@ -709,77 +709,6 @@ namespace UTL
     const std::string PV_SUFFIX_ERROR_DESC_19 = "PV_SUFFIX_ERROR_DESC_19";
     const std::string PV_SUFFIX_ERROR_DESC_20 = "PV_SUFFIX_ERROR_DESC_20";
 
-
-//
-//    /// RF_GUN Keywords
-//
-//    const std::string RF_GUN_PyOW_OBJ_START  = "RF_GUN_PyOW_OBJ_START";
-//    const std::string RF_GUN_MOD_OBJ_START  = "RF_GUN_MOD_OBJ_START";
-//    const std::string RF_GUN_OBJ_START      = "RF_GUN_OBJ_START";
-//    const std::string PV_PyOW_MONITORS_START = "PV_PyOW_MONITORS_START";
-//
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_REV   = "RF_GUN_PyOW_PyV_SUFFIX_REV";
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_FWD   = "RF_GUN_PyOW_PyV_SUFFIX_FWD";
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_REVT  = "RF_GUN_PyOW_PyV_SUFFIX_REVT";
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_FWDT  = "RF_GUN_PyOW_PyV_SUFFIX_FWDT";
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_REVTM = "RF_GUN_PyOW_PyV_SUFFIX_REVTM";
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_FWDTM = "RF_GUN_PyOW_PyV_SUFFIX_FWDTM";
-//    const std::string RF_GUN_PyOW_PyV_SUFFIX_RATIO = "RF_GUN_PyOW_PyV_SUFFIX_RATIO";
-//
-//    const std::string RFGUNPWR    = "RFGUNPWR";
-//    const std::string RFGUNKLYPWR = "RFGUNKLYPWR";
-//
-//    const std::string PV_RF_GUN_MOD_STATESET  = "PV_RF_GUN_MOD_STATESET";
-//    const std::string PV_RF_GUN_MOD_STATEREAD = "PV_RF_GUN_MOD_STATEREAD";
-//    const std::string PV_RF_GUN_MOD_ERR_STATE  = "PV_RF_GUN_MOD_ERR_STATE";
-//    const std::string PV_RF_GUN_MOD_WARMUPT   = "PV_RF_GUN_MOD_WARMUPT";
-//    const std::string PV_RF_GUN_RESET     = "PV_RF_GUN_RESET";
-//
-//    const std::string REV_TRACE_SIZE = "REV_TRACE_SIZE";
-//    const std::string FWD_TRACE_SIZE = "FWD_TRACE_SIZE";
-//
-//    const std::string PV_RF_GUN_FWD       = "PV_RF_GUN_FWD";
-//    const std::string PV_RF_GUN_REV       = "PV_RF_GUN_REV";
-//    const std::string PV_RF_GUN_KLY_FWD   = "PV_RF_GUN_KLY_FWD";
-//    const std::string PV_RF_GUN_KLY_REV   = "PV_RF_GUN_KLY_REV";
-//    const std::string PV_RF_GUN_PyHI       = "PV_RF_GUN_PyHI";
-//    const std::string PV_RF_GUN_AMP_WRITE = "PV_RF_GUN_AMP_WRITE";
-//    const std::string PV_RF_GUN_AMP_READ  = "PV_RF_GUN_AMP_READ";
-//    const std::string PV_RF_GUN_RATIO     = "PV_RF_GUN_RATIO";
-//    const std::string RF_GUN_SAFE_AMP     = "RF_GUN_SAFE_AMP";
-//
-//    /// MAGNETS
-//
-//    const std::string INJ_MAG_MONITORS_PyV_START = "INJ_MAG_MONITORS_PyV_START";
-//    const std::string INJ_MAG_PyV_START          = "INJ_MAG_PyV_START";
-//    const std::string NR_PyV_MONITORS_START      = "NR_PyV_MONITORS_START";
-//    const std::string NR_PyV_START               = "NR_PyV_START";
-//    const std::string INJ_MAG_PyV_SUFFIX_SI      = "INJ_MAG_PyV_SUFFIX_SI";
-//    const std::string INJ_MAG_PyV_SUFFIX_RI      = "INJ_MAG_PyV_SUFFIX_RI";
-//
-//    const std::string MAG_TYPE   = "MAG_TYPE";
-//
-
-//
-//    const std::string MAG_REV_TYPE            = "MAG_REV_TYPE";
-//    const std::string MAG_REV_TYPE_NR         = "NR";
-//    const std::string MAG_REV_TYPE_NR_BIPOLAR = "BIPOLAR";
-//    const std::string MAG_REV_TYPE_NR_GANGED  = "NR_GANGED";
-//    const std::string MAG_REV_TYPE_PyOS        = "POS";
-//    const std::string PARENT_MAGNET           = "PARENT_MAGNET";
-//    const std::string MAG_PySU_ROOT            = "MAG_PySU_ROOT";
-//    const std::string MAG_GANG_MEMBER         = "MAG_GANG_MEMBER";
-//
-//    const std::string BSOL_DEGAUSS_VALUES  = "BSOL_DEGAUSS_VALUES";
-//    const std::string DIP_DEGAUSS_VALUES   = "DIP_DEGAUSS_VALUES";
-//    const std::string SOL_DEGAUSS_VALUES   = "SOL_DEGAUSS_VALUES";
-//    const std::string QUAD_DEGAUSS_VALUES  = "QUAD_DEGAUSS_VALUES";
-//
-//    const std::string QUAD_DEGAUSS_TOLERANCE = "QUAD_DEGAUSS_TOLERANCE";
-//    const std::string BSOL_DEGAUSS_TOLERANCE = "BSOL_DEGAUSS_TOLERANCE";
-//    const std::string DIP_DEGAUSS_TOLERANCE  = "DIP_DEGAUSS_TOLERANCE";
-//    const std::string SOL_DEGAUSS_TOLERANCE  = "SOL_DEGAUSS_TOLERANCE";
-
    //Cameras
 
     const std::string PV_DAQ_MONITORS_START = "PV_DAQ_MONITORS_START";
@@ -826,6 +755,11 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_WRITE_CHECK_J   ="PV_DAQ_SUFFIX_WRITE_CHECK_J";
     const std::string PV_DAQ_SUFFIX_WRITE_RBV_J     ="PV_DAQ_SUFFIX_WRITE_RBV_J";
     const std::string PV_DAQ_SUFFIX_WRITE_MESSAGE_J ="PV_DAQ_SUFFIX_WRITE_MESSAGE_J";
+
+    const std::string AD_NUM_PIX_X  = "AD_NUM_PIX_X";
+    const std::string AD_NUM_PIX_Y  = "AD_NUM_PIX_Y";
+    const std::string AD_X_PIX_2_MM = "AD_X_PIX_2_MM";
+    const std::string AD_Y_PIX_2_MM = "AD_Y_PIX_2_MM";
 
     ///IA///
     const std::string PV_IA_SUFFIX_CAM_STATE        ="PV_IA_SUFFIX_CAM_STATE";

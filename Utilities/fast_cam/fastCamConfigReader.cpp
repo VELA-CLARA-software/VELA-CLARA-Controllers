@@ -32,7 +32,9 @@ fastCamConfigReader::fastCamConfigReader(const std::string& velaConfig,
                                          const bool startVirtualMachine,
                                          const bool& show_messages,
                                          const bool& show_debug_messages):
-configReader(velaConfig, claraConfig, show_messages, show_debug_messages, startVirtualMachine)
+configReader(velaConfig, claraConfig, show_messages, show_debug_messages, startVirtualMachine),
+readingVela(false),
+readingClara(false)
 {
     //ctor
 }
@@ -49,11 +51,12 @@ bool fastCamConfigReader::readConfig()
     else
         debugMessage("**** Using PHYSICAL Machine  ****","\n");
 
-    bool readingVela  = true;
-    bool readingClara = false;
+    readingVela  = true;
+    readingClara = false;
 
     bool readVELA = false;
     bool shouldReadVELA = true;
+
     if(configFile1 !=  UTL::UNKNOWN_STRING )
     {
         debugMessage("**** Attempting to read VELA fast Cams ****","\n");
@@ -71,15 +74,37 @@ bool fastCamConfigReader::readConfig()
     if(configFile2 !=  UTL::UNKNOWN_STRING )
     {
         debugMessage("**** Attempting to read CLARA fast Cams ****","\n");
-        readCLARA = readConfig(configFile1);
+        readCLARA = readConfig(configFile2);
     }
     else
     {
-        shouldReadVELA = false;
+        shouldReadCLARA = false;
     }
-
-    if(readVELA && readCLARA)
-        return true;
+    /*
+        What to return?
+    */
+    if(shouldReadVELA && shouldReadCLARA )
+    {
+        if(readVELA && readCLARA )
+            return true;
+        else
+            return false;
+    }
+    if(shouldReadVELA && !shouldReadCLARA )
+    {
+        if(readVELA)
+            return true;
+        else
+            return false;
+    }
+    if(!shouldReadVELA && shouldReadCLARA )
+    {
+        if(readCLARA)
+            return true;
+        else
+            return false;
+    }
+    // something unexpected
     return false;
 }
 //______________________________________________________________________________
@@ -105,6 +130,9 @@ bool fastCamConfigReader::readConfig(const std::string& file)
             //trimmedLine = trimAllWhiteSpaceExceptBetweenDoubleQuotes(trimToDelimiter(line, UTL::END_OF_LINE));
             if(trimmedLine.size()> UTL::ZERO_SIZET)
             {
+
+                //message("trimmedLine = ", trimmedLine);
+
                 if(stringIsSubString(line, UTL::END_OF_DATA))
                 {
                     debugMessage("Found END_OF_DATA");
@@ -137,12 +165,25 @@ bool fastCamConfigReader::readConfig(const std::string& file)
                                     }
                                     else if(readingCommandPVs)
                                     {
-                                        addToPVStruct(pvFCamComStructs,keyVal);
+                                        if( readingVela )
+                                        {
+                                            addToPVStruct(pvFCamComStructs_VELA,keyVal);
+                                        }
+                                        else if(readingClara)
+                                        {
+                                            addToPVStruct(pvFCamComStructs_CLARA,keyVal);
+                                        }
                                     }
-
                                     else if(readingMonitorPVs)
                                     {
-                                        addToPVStruct(pvFCamMonStructs, keyVal);
+                                        if( readingVela )
+                                        {
+                                            addToPVStruct(pvFCamMonStructs_VELA,keyVal);
+                                        }
+                                        else if(readingClara)
+                                        {
+                                            addToPVStruct(pvFCamMonStructs_CLARA,keyVal);
+                                        }
                                     }
                                 }
                                 break;
@@ -202,10 +243,44 @@ bool fastCamConfigReader::readConfig(const std::string& file)
     return success;
 }
 //______________________________________________________________________________
-bool fastCamConfigReader::getCamData(std::map<std::string, fastCamStructs::fastCamObject> & mapToFill)
+bool fastCamConfigReader::getCamData(std::map<std::string, fastCamStructs::fastCamObject>& mapToFill)
 {
-
-    return false;
+    for(auto&&it:fCamObjects)
+    {
+        mapToFill[it.name] = it;
+    }
+    for(auto&&it:mapToFill)
+    {
+        if(it.second.type == fastCamStructs::CAM_TYPE::CLARA)
+        {
+            for(auto&&it2:pvFCamMonStructs_CLARA)
+            {
+                message(ENUM_TO_STRING(it2.pvType));
+                it.second.pvMonStructs[it2.pvType] = it2;
+            }
+            for(auto&&it2:pvFCamComStructs_CLARA)
+            {
+                message(ENUM_TO_STRING(it2.pvType));
+                it.second.pvComStructs[it2.pvType] = it2;
+            }
+        }
+        else if(it.second.type == fastCamStructs::CAM_TYPE::VELA)
+        {
+            for(auto&&it2:pvFCamMonStructs_VELA)
+            {
+                message(ENUM_TO_STRING(it2.pvType));
+                it.second.pvMonStructs[it2.pvType] = it2;
+            }
+            for(auto&&it2:pvFCamComStructs_VELA)
+            {
+                message(ENUM_TO_STRING(it2.pvType));
+                it.second.pvComStructs[it2.pvType] = it2;
+            }
+        }
+        else
+            message("ERROR expected camera type of VELA or CLARA for ",it.second.name);
+    }
+    return true;
 }
 
 //______________________________________________________________________________
@@ -219,20 +294,119 @@ void fastCamConfigReader::addToPVStruct(std::vector<fastCamStructs::pvStruct>& p
 
         if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_START)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::START;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_STOP)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_STOP)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::STOP;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_GAIN)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_GAIN)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::GAIN;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_BLACK)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_BLACK)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::BLACK_LEVEL;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::DATA;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_GAIN_RBV)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_GAIN_RBV)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::GAIN_RBV;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_BLACK_RBV)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_BLACK_RBV)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::BLACK_LEVEL_RBV;
-        if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_CAM_STATE)
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_CAM_STATE)
             pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::STATE;
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_X  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::X;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_Y  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::Y;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_SIGMA_X  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::SIGMA_X;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_SIGMA_Y  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::SIGMA_Y;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_COV_XY  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::COV_XY;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_X_PIX  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::X_PIX;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_Y_PIX  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::Y_PIX;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_SIGMA_X_PIX  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::SIGMA_X_PIX;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_SIGMA_Y_PIX  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::SIGMA_Y_PIX;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_COV_XY_PIX  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::COV_XY_PIX;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_AV_PIX_INTENSITY  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::AVG_PIX_INETSITY;
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_START_IA  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::START_IA;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_X  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::X_CENTER;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_Y  )
+        {
+            message("Added Y_CENTER in config");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::Y_CENTER;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_X_RBV  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::X_CENTER_RBV;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CENTER_Y_RBV  )
+        {
+            message("Added Y_CENTER in config");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::Y_CENTER_RBV;
+        }
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RBV  )
+        {
+            message("Added MASK_X_RBV in config");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_X_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RBV  )
+        {
+            message("Added MASK_Y_RBV in config");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_Y_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RAD_RBV  )
+        {
+            message("Added MASK_X_RAD_RBV in config");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_X_RAD_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RAD_RBV  )
+        {
+            message("Added MASK_Y_RAD_RBV in config");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_Y_RAD_RBV;
+        }
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_X;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_Y;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RAD  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_X_RAD;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RAD  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::MASK_Y_RAD;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_PIX_MM  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::PIX_MM;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_STEP_SIZE  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::STEP_SIZE;
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_SET_B  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::SET_BKGRND;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_B  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::USE_BKGRND;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_NPOINT  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::USE_NPOINT;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_START_ACQUIRE  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::CAM_START_ACQUIRE;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_STOP_ACQUIRE  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::CAM_STOP_ACQUIRE;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_ACQUIRE_RBV  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::CAM_ACQUIRE_RBV;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_CAM_STATE  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::CAM_STATUS;
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_START_IA_RBV  ){
+            //message("HELLO");
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::START_IA_RBV;
+        }
+
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_B_RBV  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::USE_BKGRND_RBV;
+        else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_NPOINT_RBV  )
+            pvStruct_v.back().pvType = fastCamStructs::FAST_CAM_PV::USE_NPOINT_RBV;
+
 
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType)) ;
     }
@@ -258,16 +432,8 @@ void fastCamConfigReader::addToObjectsV1(const std::vector<std::string>& keyVal)
     {
         fCamObjects.push_back(fastCamStructs::fastCamObject());    /// Any way to avoid the ladders?
         fCamObjects.back().name      = keyVal[ONE_SIZET];
-
-
         debugMessage("Added ", fCamObjects.back().name);
-
-        debugMessage("Added vc_dataObject ", fCamObjects.back().name );
     }
-//    else if(keyVal[ZERO_SIZET] == NUMBER_OF_ILOCKS)
-//    {
-//        fCamObjects.back().numIlocks = getSize(keyVal[ONE_SIZET]);
-//    }
     else if(keyVal[ZERO_SIZET] == PV_ROOT)
     {
         if(useVM )
@@ -281,7 +447,7 @@ void fastCamConfigReader::addToObjectsV1(const std::vector<std::string>& keyVal)
     }
     else if(keyVal[ZERO_SIZET] == SCREEN)
     {
-        //fCamObjects.back().y_pos = getSize(keyVal[ONE_SIZET]);
+        fCamObjects.back().screen = keyVal[ONE_SIZET];
     }
     else if(keyVal[ZERO_SIZET] == NUMBER_OF_PIXELS_X)
     {
@@ -303,11 +469,11 @@ void fastCamConfigReader::addToObjectsV1(const std::vector<std::string>& keyVal)
 //______________________________________________________________________________
 fastCamStructs::CAM_TYPE fastCamConfigReader::getCamType(const std::string& cam)
 {
-    if( cam == ENUM_TO_STRING(fastCamStructs::CAM_TYPE::VELA))
+    if(cam == ENUM_TO_STRING(fastCamStructs::CAM_TYPE::VELA))
     {
         return fastCamStructs::CAM_TYPE::VELA;
     }
-    else if( cam == ENUM_TO_STRING(fastCamStructs::CAM_TYPE::CLARA))
+    else if(cam == ENUM_TO_STRING(fastCamStructs::CAM_TYPE::CLARA))
     {
         return fastCamStructs::CAM_TYPE::CLARA;
     }

@@ -170,7 +170,8 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
-		<Unit filename="../../Structs/cameraStructs.h" />
+		<Unit filename="../../Structs/clara_cam/cameraStructs.cpp" />
+		<Unit filename="../../Structs/clara_cam/cameraStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />

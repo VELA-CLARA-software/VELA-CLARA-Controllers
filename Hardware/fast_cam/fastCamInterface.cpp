@@ -59,7 +59,7 @@ void fastCamInterface::initialise()
     if(configFileRead)
     {
         message("The fastCamInterface has read the config file, "
-                "cquiring objects");
+                "acquiring objects");
         /* initialise the objects based on what is read from the config file */
         bool getDataSuccess = initObjects();
         if(getDataSuccess)
@@ -84,7 +84,7 @@ void fastCamInterface::initialise()
         else
         {
             message("!!!The fastCamInterface received an error while "
-                    "getting magnet data!!!");
+                    "getting camera  data!!!");
         }
     }
     else
@@ -102,19 +102,20 @@ bool fastCamInterface::initObjects()
     /* set the machine area on each magent,
        this allows for flavour switching functions, such as switchON etc..
     */
-//    for(auto&& it:allMagnetData)
-//    {
-//        it.second.machineArea = myMachineArea;
-//        it.second.interface   = this;
-//    }
+    for(auto&& it:cameraObjects)
+    {
+        it.second.machineArea = myMachineArea;
+        //it.second.interface   = this;1
+    }
     return success;
 }
 //______________________________________________________________________________
 void fastCamInterface::initChids()
 {
-    message("\n", "Searching for Magnet chids...");
+    message("\n", "Searching for FastCam chids...");
     for(auto&& obj:cameraObjects)
     {
+        message("chids for ", obj.first);
         for(auto&& it2:obj.second.pvComStructs)
         {
             addChannel(obj.second.pvRoot, it2.second);
@@ -125,8 +126,8 @@ void fastCamInterface::initChids()
         }
     }
     int status = sendToEpics("ca_create_channel",
-                             "Found Magnet ChIds.",
-                             "!!TIMEOUT!! Not all Magnet ChIds found.");
+                             "Found FastCam ChIds.",
+                             "!!TIMEOUT!! Not all FastCam ChIds found.");
     if(status == ECA_TIMEOUT)
     {
         pause_300();
@@ -185,14 +186,100 @@ void fastCamInterface::staticEntryMonitor(const event_handler_args args)
 {
     fastCamStructs::monitorStruct*ms =
     static_cast<fastCamStructs::monitorStruct *>(args.usr);
-    ms->interface->updateValue(ms->monType,args);
+    ms->interface->updateValue(ms->monType,ms->objName,args);
 }
 //______________________________________________________________________________
-void fastCamInterface::updateValue(const fastCamStructs::FAST_CAM_PV pv,const event_handler_args& args)
+void fastCamInterface::updateValue(const fastCamStructs::FAST_CAM_PV pv,
+                                   const std::string& name,
+                                   const event_handler_args& args)
 {
-
+    using namespace fastCamStructs;
+    switch(pv)
+    {
+        case FAST_CAM_PV::START:
+            break;
+        case FAST_CAM_PV::STATE:
+            break;
+        case FAST_CAM_PV::X:
+            break;
+        case FAST_CAM_PV::Y:
+            break;
+        case FAST_CAM_PV::SIGMA_X:
+            break;
+        case FAST_CAM_PV::SIGMA_Y:
+            break;
+        case FAST_CAM_PV::COV_XY:
+            break;
+        case FAST_CAM_PV::X_PIX:
+            break;
+        case FAST_CAM_PV::Y_PIX:
+            break;
+        case FAST_CAM_PV::SIGMA_X_PIX:
+            break;
+        case FAST_CAM_PV::SIGMA_Y_PIX:
+            break;
+        case FAST_CAM_PV::COV_XY_PIX:
+            break;
+        case FAST_CAM_PV::AVG_PIX_INETSITY:
+            break;
+        case FAST_CAM_PV::START_IA:
+            break;
+        case FAST_CAM_PV::X_CENTER:
+            break;
+        case FAST_CAM_PV::Y_CENTER:
+            break;
+        case FAST_CAM_PV::X_CENTER_RBV:
+            break;
+        case FAST_CAM_PV::Y_CENTER_RBV:
+            break;
+        case FAST_CAM_PV::MASK_X_RBV:
+            cameraObjects.at(name).mask.x;
+            break;
+        case FAST_CAM_PV::MASK_Y_RBV:
+            cameraObjects.at(name).mask.y;
+            break;
+        case FAST_CAM_PV::MASK_X_RAD_RBV:
+            cameraObjects.at(name).mask.x_rad;
+            break;
+        case FAST_CAM_PV::MASK_Y_RAD_RBV:
+            cameraObjects.at(name).mask.y_rad;
+            break;
+//        case FAST_CAM_PV::MASK_X:
+//            break;
+//        case FAST_CAM_PV::MASK_Y:
+//            break;
+//        case FAST_CAM_PV::MASK_X_RAD:
+//            break;
+//        case FAST_CAM_PV::MASK_Y_RAD:
+//            break;
+        case FAST_CAM_PV::PIX_MM:
+            break;
+        case FAST_CAM_PV::STEP_SIZE:
+            break;
+        case FAST_CAM_PV::SET_BKGRND:
+            break;
+        case FAST_CAM_PV::USE_BKGRND:
+            break;
+        case FAST_CAM_PV::USE_NPOINT:
+            break;
+        case FAST_CAM_PV::CAM_START_ACQUIRE:
+            break;
+        case FAST_CAM_PV::CAM_STOP_ACQUIRE:
+            break;
+        case FAST_CAM_PV::CAM_ACQUIRE_RBV:
+            break;
+        case FAST_CAM_PV::CAM_STATUS:
+            break;
+        case FAST_CAM_PV::START_IA_RBV:
+            break;
+        case FAST_CAM_PV::USE_BKGRND_RBV:
+            break;
+        case FAST_CAM_PV::USE_NPOINT_RBV:
+            break;
+    }
 }
 
+setMaskX(const)
 
 
 

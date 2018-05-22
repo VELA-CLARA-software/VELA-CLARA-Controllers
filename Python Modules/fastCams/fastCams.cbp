@@ -72,6 +72,7 @@
 		<Unit filename="../../Hardware/fast_cam/fastCamInterface.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
+		<Unit filename="../../Structs/fast_cam/fastCamStructs.cpp" />
 		<Unit filename="../../Structs/fast_cam/fastCamStructs.h" />
 		<Unit filename="../../Structs/structs.h">
 			<Option target="Debug" />

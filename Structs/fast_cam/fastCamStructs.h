@@ -50,7 +50,43 @@ namespace fastCamStructs
                                                     (DATA)
                                                     (GAIN_RBV)
                                                     (BLACK_LEVEL_RBV)
-                                                    (STATE))
+                                                    (STATE)
+                                                    (X)
+                                                    (Y)
+                                                    (SIGMA_X)
+                                                    (SIGMA_Y)
+                                                    (COV_XY)
+                                                    (X_PIX)
+                                                    (Y_PIX)
+                                                    (SIGMA_X_PIX)
+                                                    (SIGMA_Y_PIX)
+                                                    (COV_XY_PIX)
+                                                    (AVG_PIX_INETSITY)
+                                                    (START_IA)
+                                                    (X_CENTER)
+                                                    (Y_CENTER)
+                                                    (X_CENTER_RBV)
+                                                    (Y_CENTER_RBV)
+                                                    (MASK_X_RBV)
+                                                    (MASK_Y_RBV)
+                                                    (MASK_X_RAD_RBV)
+                                                    (MASK_Y_RAD_RBV)
+                                                    (MASK_X)
+                                                    (MASK_Y)
+                                                    (MASK_X_RAD)
+                                                    (MASK_Y_RAD)
+                                                    (PIX_MM)
+                                                    (STEP_SIZE)
+                                                    (SET_BKGRND)
+                                                    (USE_BKGRND)
+                                                    (USE_NPOINT)
+                                                    (CAM_START_ACQUIRE)
+                                                    (CAM_STOP_ACQUIRE)
+                                                    (CAM_ACQUIRE_RBV)
+                                                    (CAM_STATUS)
+                                                    (START_IA_RBV)
+                                                    (USE_BKGRND_RBV)
+                                                    (USE_NPOINT_RBV))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,(VELA)(CLARA)(NOT_KNOWN))
 
@@ -70,12 +106,23 @@ namespace fastCamStructs
         evid            EVID;
     };
 
+    struct mask_struct
+    {
+        mask_struct():
+            x(UTL::DUMMY_DOUBLE),
+            y(UTL::DUMMY_DOUBLE),
+            x_rad(UTL::DUMMY_DOUBLE),
+            y_rad(UTL::DUMMY_DOUBLE)
+            {}
+        double x,y,x_rad,y_rad;
+    };
+
     struct fastCamObject
     {
         fastCamObject():
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
-            screenName(UTL::UNKNOWN_STRING),
+            screen(UTL::UNKNOWN_STRING),
             streamingIPAddress(UTL::UNKNOWN_STRING),
             state(HWC_ENUM::UNKNOWN),
             gain(0),
@@ -89,7 +136,7 @@ namespace fastCamStructs
             y_pix_to_mm(UTL::ZERO_DOUBLE),
             type(CAM_TYPE::NOT_KNOWN)
             {}
-        std::string name, pvRoot, screenName, streamingIPAddress;
+        std::string name, pvRoot, screen, streamingIPAddress;
         HWC_ENUM::STATE state;
         size_t buffer_size,buffer_count,num_pix_x,num_pix_y;
         double x_pix_to_mm,y_pix_to_mm;
@@ -99,6 +146,18 @@ namespace fastCamStructs
         std::map<FAST_CAM_PV, pvStruct> pvComStructs;
         CAM_TYPE type;
         HWC_ENUM::MACHINE_AREA  machineArea;
+        mask_struct mask;
+        fastCamInterface* interface;
+//        bool setMASK(const double x,
+//                     const double y,
+//                     const double x_rad,
+//                     const double y_rad,
+//                     );
+//        bool setMASKX(const double v);
+//        bool setMASKY(const double v);
+//        bool setMASKX_RAD(const double v);
+//        bool setMASKY_RAD(const double v);
+
         std::vector<double> background;
         std::vector<double> data;
         std::deque<std::vector<double>> data_buffer;

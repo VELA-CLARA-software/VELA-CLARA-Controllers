@@ -83,7 +83,9 @@ class fastCamInterface : public interface
         const HWC_ENUM::MACHINE_AREA myMachineArea;
 
         static void staticEntryMonitor(const event_handler_args args);
-        void updateValue(const fastCamStructs::FAST_CAM_PV pv,const event_handler_args& args);
+        void updateValue(const fastCamStructs::FAST_CAM_PV pv,
+                         const std::string& name,
+                         const event_handler_args& args);
 
         fastCamConfigReader configReader;
         void startMonitors();

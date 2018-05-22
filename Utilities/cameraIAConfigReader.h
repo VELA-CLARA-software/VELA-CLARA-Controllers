@@ -54,7 +54,6 @@ class cameraIAConfigReader : public configReader
         std::vector< pvStruct > pvCameraMonStructs;
         std::vector< pvStruct > pvCameraComStructs;
 
-
          const std::string camConfig;
          const bool usingVirtualMachine;
 

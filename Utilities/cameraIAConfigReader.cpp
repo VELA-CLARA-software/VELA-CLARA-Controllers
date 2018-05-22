@@ -251,7 +251,6 @@ void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, 
             //message("HELLO");
             pvStruct_v.back().pvType = CAM_PV_TYPE::START_IA_RBV;
         }
-
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_B_RBV  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::USE_BKGRND_RBV;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_NPOINT_RBV  )
@@ -316,6 +315,26 @@ void cameraIAConfigReader::addToCameraObjects(const std::vector<std::string> & k
     {
         camObject.back().IA.pix2mm  = getNumD(value);
     }
+    else if(keyVal[0] == UTL::AD_NUM_PIX_X)
+    {
+        camObject.back().IA.array_data_num_pix_x  = getSize(value);
+    }
+    else if(keyVal[0] == UTL::AD_NUM_PIX_Y)
+    {
+        camObject.back().IA.array_data_num_pix_y  = getSize(value);
+    }
+    else if(keyVal[0] == UTL::AD_X_PIX_2_MM)
+    {
+        camObject.back().IA.array_data_x_pix_to_mm  = getNumD(value);
+    }
+    else if(keyVal[0] == UTL::AD_Y_PIX_2_MM)
+    {
+        camObject.back().IA.array_data_y_pix_to_mm  = getNumD(value);
+    }
+
+
+
+
 }
 void cameraIAConfigReader::addToCameraMonitorStructs( const std::vector<std::string> &keyVal )
 {
