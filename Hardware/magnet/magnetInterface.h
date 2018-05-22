@@ -76,7 +76,7 @@ class magnetInterface : public interface
         bool isRIequalSI (const std::string& magName)const;
 
 
-        int  getRemainingDegaussSteps(const std::string& magName)const;
+        int  getRemainingDegaussSteps(const std::string& magName);
         bool isNotDegaussing(const std::string& magName)const;
         bool isDegaussing   (const std::string& magName)const;
         bool entryExistsAndIsNotDegaussing(const std::string & magName)const;
@@ -271,6 +271,10 @@ class magnetInterface : public interface
         magnetStructs::magnetStateStruct filterMagnetStateStruct(const magnetStructs::magnetStateStruct& ms1,
                                                                  magnetStructs::MAG_TYPE type);
         magnetStructs::magnetStateStruct getStateOfType(functionPtr f, const magnetStructs::magnetStateStruct& ms1);
+
+
+        void setRemainingDegaussSteps(const std::string& magName,const int val);
+
 
 };
 #endif // _MAGNET_INTERFACE_H_

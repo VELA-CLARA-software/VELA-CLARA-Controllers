@@ -620,8 +620,6 @@ size_t magnetInterface::deGauss(const std::string& mag, bool resetToZero)
 //______________________________________________________________________________
 size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
 {
-    message("2");
-
     killFinishedDegaussThreads();
     vec_s magToDegChecked;
     for(auto&& it:mag)
@@ -631,7 +629,6 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
         {
             /*/// it is a real magnet that is or has been degaussed  */
             //message(it, " exists");
-
             if(entryExists(isDegaussingMap, it))
             {
                 //message(it, " exists");
@@ -660,7 +657,6 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
             message("ERROR: in deGauss", it, " name not known, can't degauss.");
         }
     }
-    message("2AA");
 
     if(magToDegChecked.size()> UTL::ZERO_SIZET)//MAGIC_NUMBER
     {
@@ -717,6 +713,14 @@ http://stackoverflow.com/questions/13893060/i-want-to-kill-a-stdthread-using-its
     */
 }
 //______________________________________________________________________________
+void magnetInterface::setRemainingDegaussSteps(const std::string& magName,const int val)
+{
+    if(entryExists(allMagnetData, magName))
+    {
+        allMagnetData.at(magName).remainingDegaussSteps = val;
+    }
+}
+//______________________________________________________________________________
 void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
 {
     /*
@@ -754,9 +758,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         if(ds.interface->isON(it))
         {
             magToDeg.push_back(it);
-            magnetStructs::magnetObject& r = ds.interface->allMagnetData.at(it);
-            r.isDegaussing = true;
-            r.remainingDegaussSteps = r.numDegaussSteps;
+            //magnetStructs::magnetObject& r = ds.interface->allMagnetData.at(it);
         }
         else
         {
@@ -791,6 +793,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
     */
     vec_s magToDegOLD = ds.magsToDeguass;
     vec_d values, tolerances;
+    int j_max = (int) ds.interface->allMagnetData.at(magToDeg.front()).numDegaussSteps;
 	for(size_t j = UTL::ZERO_SIZET;
                j <ds.interface->allMagnetData.at(magToDeg.front()).numDegaussSteps;
                ++j)
@@ -808,20 +811,22 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         /* assign next values */
         for(auto&& it:magToDeg)
         {
+            /*
+                update number of remainingDegaussSteps
+            */
+            ds.interface->allMagnetData.at(it).isDegaussing = true;
+            ds.interface->setRemainingDegaussSteps(it, j_max - (int)j);
+
 
             values.push_back(ds.interface->allMagnetData.at(it).degValues[j]);
             tolerances.push_back(ds.interface->allMagnetData.at(it).degTolerance);
             ds.interface->message("Setting ",it," to ",values.back()," Amp, with tolerance = ",tolerances.back()," Amp");
-            /*
-                update number of remainingDegaussSteps
-            */
-            ds.interface->allMagnetData.at(it).remainingDegaussSteps -= j;
+            ds.interface->message("remaining steps = ",ds.interface->allMagnetData.at(it).remainingDegaussSteps);
         }
-        //ds.interface->message("get vals");
-        /* set th edesired current */
+        /* set the desired current */
         ds.interface->setSI_MAIN(magToDeg, values);
 
-        /* wait fo rth emagnets to settle */
+        /* wait for the magnets to settle */
         magToDeg = ds.interface->waitForMagnetsToSettle(magToDeg,
                                                         values,
                                                         tolerances,
@@ -836,7 +841,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
                                       it,
                                       " lost during degaussing, "
                                       "SI probably did not settle.");
-            ds.interface->allMagnetData.at(it).remainingDegaussSteps = UTL::MINUS_ONE_INT;
+                ds.interface->setRemainingDegaussSteps(it, UTL::MINUS_ONE_INT);
             }
         }
         /*
@@ -859,6 +864,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         ds.interface->isDegaussingMap.at(it) = false;
         ds.interface->allMagnetData.at(it).remainingDegaussSteps = UTL::ZERO_INT;
         ds.interface->allMagnetData.at(it).isDegaussing = false;
+        ds.interface->message(it, " isDegaussing = ",ds.interface->allMagnetData.at(it).isDegaussing);
     }
     /*
         reset to zero if required
@@ -878,9 +884,6 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         clean-up, set degaussing bit to false
         set number of remainingDegaussSteps to zero
     */
-
-
-
 
 
     ds.interface->detachFrom_thisCAContext() ;
@@ -1206,7 +1209,7 @@ bool magnetInterface::isNotDegaussing(const std::string& magName)const
     return !isDegaussing(magName);
 }
 //_____________________________________________________________________________
-int magnetInterface::getRemainingDegaussSteps(const std::string& magName)const
+int magnetInterface::getRemainingDegaussSteps(const std::string& magName)
 {
     bool ans = false;
     if(entryExists(allMagnetData, magName))

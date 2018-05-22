@@ -76,7 +76,7 @@ class magnetController : public controller
         bool isOFF     (const std::string & magName);
         bool isON      (const std::string & magName);
 
-        int  getRemainingDegaussSteps(const std::string& magName)const;
+        int  getRemainingDegaussSteps(const std::string& magName);
         bool entryExistsAndIsDegaussing(const std::string& magName)const;
         bool entryExistsAndIsNotDegaussing(const std::string& magName)const;
 
