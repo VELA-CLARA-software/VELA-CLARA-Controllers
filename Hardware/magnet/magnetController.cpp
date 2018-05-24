@@ -308,7 +308,7 @@ magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState()
     return localInterface.getCurrentMagnetState();
 }
 //______________________________________________________________________________
-void magnetController::applyMagnetStateStruct(const magnetStructs::magnetStateStruct & ms )
+bool magnetController::applyMagnetStateStruct(const magnetStructs::magnetStateStruct & ms )
 {
     return localInterface.applyMagnetStateStruct(ms);
 }
@@ -328,17 +328,17 @@ magnetStructs::magnetStateStruct magnetController::getDBURTQuadOnly(const std::s
     return localInterface.getDBURTQuadOnly(fileName);
 }
 //______________________________________________________________________________
-void magnetController::applyDBURT(const std::string & fileName)
+bool magnetController::applyDBURT(const std::string & fileName)
 {
     return localInterface.applyDBURT(fileName);
 }
 //______________________________________________________________________________
-void magnetController::applyDBURTCorOnly(const std::string & fileName)
+bool magnetController::applyDBURTCorOnly(const std::string & fileName)
 {
     return localInterface.applyDBURTCorOnly(fileName);
 }
 //______________________________________________________________________________
-void magnetController::applyDBURTQuadOnly(const std::string & fileName)
+bool magnetController::applyDBURTQuadOnly(const std::string & fileName)
 {
     return localInterface.applyDBURTQuadOnly(fileName);
 }

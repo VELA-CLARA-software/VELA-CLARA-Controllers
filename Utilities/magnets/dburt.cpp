@@ -255,6 +255,10 @@ magnetStructs::magnetStateStruct dburt::readDBURTv4(const std::string & pathandf
                 {
                     magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA2;
                 }
+                else if(keyvalue[UTL::ONE_SIZET] == ENUM_TO_STRING(HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2))
+                {
+                    magState.machineArea = HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2;
+                }
             }
 
         } // while
@@ -265,7 +269,10 @@ magnetStructs::magnetStateStruct dburt::readDBURTv4(const std::string & pathandf
     return magState;
 }
 //______________________________________________________________________________
-bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const std::string & fileName, const std::string & comments, const std::string & keywords)
+bool dburt::writeDBURT(const magnetStructs::magnetStateStruct& magState,
+                       const std::string& fileName,
+                       const std::string& comments,
+                       const std::string& keywords)
 {
     bool success = false;
 
@@ -298,8 +305,6 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct & magState, const 
         outputFile << UTL::START_OF_DATA << UTL::END_OF_LINE << std::endl;
 
         outputFile <<UTL::NUMBER_OF_OBJECTS << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
-        //outputFile <<UTL::NUMBER_OF_OBJECTS    << UTL::COLON_C << magState.numMags << UTL::END_OF_LINE << std::endl;
-        //outputFile <<UTL::DBURT_PARAMETERS_V1  << UTL::END_OF_LINE << std::endl;
         for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)//MAGIC_NUMBER
         {
             outputFile <<magState.magNames[i] <<UTL::COLON_C;

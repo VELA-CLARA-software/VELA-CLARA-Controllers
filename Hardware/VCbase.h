@@ -55,6 +55,7 @@ class VCbase
         static HWC_ENUM::MACHINE_AREA VELA_INJ,VELA_BA1,VELA_BA2,CLARA_PH1,
                                      UNKNOWN_AREA,USER,CLARA_INJ,
                                      CLARA_2_BA1,CLARA_2_BA2,
+                                     CLARA_2_BA1_BA2,
                                      CLARA_2_VELA,CLARA_S01,CLARA_S02,
                                      CLARA_L01,RF_GUN,RF_L01,VELA,CLARA;
         static HWC_ENUM::MACHINE_MODE OFFLINE,VIRTUAL,PHYSICAL,

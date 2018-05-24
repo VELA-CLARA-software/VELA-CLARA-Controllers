@@ -139,10 +139,10 @@ class magnetController : public controller
         magnetStructs::magnetStateStruct getDBURTQuadOnly(const std::string & fileName);
 
       /// apply DBURT  / magnetStateStruct
-        void applyMagnetStateStruct(const magnetStructs::magnetStateStruct & ms );
-        void applyDBURT(const std::string & fileName);
-        void applyDBURTCorOnly(const std::string & fileName);
-        void applyDBURTQuadOnly(const std::string & fileName);
+        bool applyMagnetStateStruct(const magnetStructs::magnetStateStruct & ms );
+        bool applyDBURT(const std::string & fileName);
+        bool applyDBURTCorOnly(const std::string & fileName);
+        bool applyDBURTQuadOnly(const std::string & fileName);
 
       /// get objectdata
 

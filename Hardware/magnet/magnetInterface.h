@@ -74,6 +74,7 @@ class magnetInterface : public interface
         bool isON (const std::string& magName)const;
         bool isRIequalVal(const std::string& magName,const double value,const double tolerance)const;
         bool isRIequalSI (const std::string& magName)const;
+        bool is_si_same_as_magnetStateStruct(const magnetStructs::magnetStateStruct& magState);
 
 
         int  getRemainingDegaussSteps(const std::string& magName);
@@ -178,22 +179,15 @@ class magnetInterface : public interface
 
 
         /// apply a state struct to the machine
-        void applyMagnetStateStruct(const magnetStructs::magnetStateStruct & ms );
+        bool applyMagnetStateStruct(const magnetStructs::magnetStateStruct & ms );
         /// applyt a DBURT to the machine
-        void applyDBURT(const std::string & fileName);
-        void applyDBURTCorOnly(const std::string & fileName);
-        void applyDBURTQuadOnly(const std::string & fileName);
+        bool applyDBURT(const std::string & fileName);
+        bool applyDBURTCorOnly(const std::string & fileName);
+        bool applyDBURTQuadOnly(const std::string & fileName);
 
         /// Write a DBURT
         bool writeDBURT(const magnetStructs::magnetStateStruct & ms, const std::string & fileName = "", const std::string & comments = ""  ,const std::string & keywords = "");
         bool writeDBURT(const std::string &fileName = "",const std::string &comments="",const std::string & keywords="");
-
-
-//      /// Reverse types
-//        magnetStructs::MAG_REV_TYPE                  getMagRevType(const std::string & magName);
-//        std::vector< magnetStructs::MAG_REV_TYPE>  getMagRevType(const std::vector<std::string> & magNames);
-//      ///
-
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
         IlockMap1 getILockStates(const std::string & name  )const{ IlockMap1 r;return r; }

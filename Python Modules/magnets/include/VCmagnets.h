@@ -51,6 +51,11 @@ class VCmagnets : public VCbase
         magnetController& offline_CB2_Magnet_Controller();
         magnetController& physical_CB2_Magnet_Controller();
 
+        magnetController& virtual_C2B_Magnet_Controller();
+        magnetController& offline_C2B_Magnet_Controller();
+        magnetController& physical_C2B_Magnet_Controller();
+
+
         magnetController& getMagnetController(HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area);
 
         magnetController& virtual_USER_Magnet_Controller(const std::string & config_path);
@@ -112,6 +117,11 @@ class VCmagnets : public VCbase
         magnetController* offline_USER_Magnet_Controller_Obj;
         magnetController* physical_USER_Magnet_Controller_Obj;
 
+        magnetController* physical_C2B_Magnet_Controller_Obj;
+        magnetController* offline_C2B_Magnet_Controller_Obj;
+        magnetController* virtual_C2B_Magnet_Controller_Obj;
+
+
         magnetController& getController(magnetController*& cont,
                                         const std::string& conf,
                                         const std::string & name,
@@ -129,7 +139,8 @@ class VCmagnets : public VCbase
                           VELA_BA1_MAG_CONFIG,
                           VELA_BA2_MAG_CONFIG,
                           CB1_MAG_CONFIG,
-                          CB2_MAG_CONFIG;
+                          CB2_MAG_CONFIG,
+                          C2B_MAG_CONFIG;
 };
 
 typedef double doub;
@@ -522,6 +533,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def("offline_CB2_Magnet_Controller",  &VCmagnets::offline_CB2_Magnet_Controller,
              return_value_policy<reference_existing_object>())
         .def("physical_CB2_Magnet_Controller",  &VCmagnets::physical_CB2_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+
+        .def("virtual_C2B_Magnet_Controller",  &VCmagnets::virtual_C2B_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_C2B_Magnet_Controller",  &VCmagnets::offline_C2B_Magnet_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_C2B_Magnet_Controller",  &VCmagnets::physical_C2B_Magnet_Controller,
              return_value_policy<reference_existing_object>())
         ;
 }

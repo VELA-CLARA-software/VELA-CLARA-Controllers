@@ -46,7 +46,8 @@ VELA_INJ_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_MAG_CONFIG),
 VELA_BA1_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_MAG_CONFIG),
 VELA_BA2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_MAG_CONFIG),
 CB1_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CB1_MAG_CONFIG),
-CB2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CB2_MAG_CONFIG)
+CB2_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::CB2_MAG_CONFIG),
+C2B_MAG_CONFIG(UTL::APCLARA1_CONFIG_PATH + UTL::C2B_MAG_CONFIG)
 {
     std::cout <<"Instantiated a VCmagnets in Quiet Mode" <<std::endl;
     //ctor
@@ -310,8 +311,37 @@ magnetController& VCmagnets::virtual_CB2_Magnet_Controller()
                          name,withVM,withEPICS,CLARA_2_BA2);
 }
 //______________________________________________________________________________
+magnetController& VCmagnets::virtual_C2B_Magnet_Controller()
+{
+    std::string name  = "virtual_C2B_Magnet_Controller";
+    return getController(virtual_CB2_Magnet_Controller_Obj,
+                         C2B_MAG_CONFIG,
+                         name,withVM,withEPICS,CLARA_2_BA1_BA2);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::offline_C2B_Magnet_Controller()
+{
+    std::string name  = "offline_C2B_Magnet_Controller";
+    return getController(offline_CB2_Magnet_Controller_Obj,
+                         C2B_MAG_CONFIG,
+                         name,withoutVM,withoutEPICS,CLARA_2_BA1_BA2);
+}
+//______________________________________________________________________________
+magnetController& VCmagnets::physical_C2B_Magnet_Controller()
+{
+    std::string name  = "physical_C2B_Magnet_Controller";
+    return getController(physical_CB2_Magnet_Controller_Obj,
+                         C2B_MAG_CONFIG,
+                         name,withoutVM,withEPICS,CLARA_2_BA1_BA2);
+}
+//______________________________________________________________________________
 magnetController& VCmagnets::getMagnetController(MACHINE_MODE mode,MACHINE_AREA area)
 {
+
+    std::cout << ENUM_TO_STRING(area) << std::endl;
+    std::cout << ENUM_TO_STRING(area) << std::endl;
+    std::cout << ENUM_TO_STRING(area) << std::endl;
+
     if(mode == OFFLINE && area == VELA_INJ)
         return offline_VELA_INJ_Magnet_Controller();
     else if(mode == VIRTUAL && area == VELA_INJ)
@@ -353,6 +383,14 @@ magnetController& VCmagnets::getMagnetController(MACHINE_MODE mode,MACHINE_AREA 
         return offline_CB2_Magnet_Controller();
     else if(mode == OFFLINE && area == CLARA_2_BA2)
         return physical_CB2_Magnet_Controller();
+
+    else if(mode == VIRTUAL && area == CLARA_2_BA1_BA2)
+        return virtual_C2B_Magnet_Controller();
+    else if(mode == OFFLINE && area == CLARA_2_BA1_BA2)
+        return offline_C2B_Magnet_Controller();
+    else if(mode == PHYSICAL && area == CLARA_2_BA1_BA2)
+        return physical_C2B_Magnet_Controller();
+
 }
 //______________________________________________________________________________
 magnetController& VCmagnets::getController(magnetController*& cont,

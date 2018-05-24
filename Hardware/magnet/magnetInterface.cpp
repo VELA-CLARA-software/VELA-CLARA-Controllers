@@ -1391,49 +1391,75 @@ magnetStructs::magnetStateStruct magnetInterface::getCurrentMagnetState(const ve
     return ret;
 }
 //______________________________________________________________________________
-void magnetInterface::applyMagnetStateStruct(const magnetStructs::magnetStateStruct& magState)
+bool magnetInterface::applyMagnetStateStruct(const magnetStructs::magnetStateStruct& magState)
 {
     if(shouldStartEPICs)
     {
-        if(magState.machineArea == myMachineArea)
+        if(magState.machineArea != myMachineArea)
         {
-            message("applyMagnetStateStruct");
-            vec_s magsToSwitchOn, magsToSwitchOff;
-            for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)
+             message("!!WARNING!! this is a ",ENUM_TO_STRING(myMachineArea),
+            " magnet controller and the magnet settings are for ",
+            ENUM_TO_STRING(magState.machineArea), " so this may not work ... ");
+        }
+        message("applyMagnetStateStruct");
+        vec_s magsToSwitchOn, magsToSwitchOff;
+        for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)
+        {
+            message("Found ", magState.magNames[i]);
+            if(magState.psuStates[i] == magnetStructs::MAG_PSU_STATE::OFF)
             {
-                message("Found ", magState.magNames[i]);
-                if(magState.psuStates[i] == magnetStructs::MAG_PSU_STATE::OFF)
-                {
-                    message("Switching Off ",magState.magNames[i]);
-                    magsToSwitchOff.push_back(magState.magNames[i]);
-                }
-                else if(magState.psuStates[i]  == magnetStructs::MAG_PSU_STATE::ON)
-                {
-                    message("Switching ON ",magState.magNames[i]);
-                    magsToSwitchOn.push_back(magState.magNames[i]);
-                }
-                else
-                {
-                    message("ERROR in PSU setting for ", magState.magNames[i]);
-                }
-
+                message("Switching Off ",magState.magNames[i]);
+                magsToSwitchOff.push_back(magState.magNames[i]);
             }
-            switchONpsu(magsToSwitchOn);
-            switchOFFpsu(magsToSwitchOff);
-            setSI(magState.magNames, magState.siValues);
+            else if(magState.psuStates[i]  == magnetStructs::MAG_PSU_STATE::ON)
+            {
+                message("Switching ON ",magState.magNames[i]);
+                magsToSwitchOn.push_back(magState.magNames[i]);
+            }
+            else
+            {
+                message("ERROR in PSU setting for ", magState.magNames[i]);
+            }
+
         }
-        else
-        {
-            message("Can't apply magnet settings, this is a ",
-                    ENUM_TO_STRING(myMachineArea),
-                    " magnet controller and the magnet settings are for  ",
-                    ENUM_TO_STRING(magState.machineArea));
-        }
+        switchONpsu(magsToSwitchOn);
+        switchOFFpsu(magsToSwitchOff);
+        setSI(magState.magNames, magState.siValues);
     }
     else
     {
         message("Can't apply magnet settings - we are in offline mode");
     }
+    pause_2000();
+    return is_si_same_as_magnetStateStruct(magState);
+}
+//______________________________________________________________________________
+bool magnetInterface::is_si_same_as_magnetStateStruct(const magnetStructs::magnetStateStruct& magState)
+{
+//    bool si_match = true;
+//    for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)
+//    {
+//        if(magState.psuStates == getMagPSUState(magState.magNames))
+//        {
+//            message("PSU STATES MATCH");
+//            psu_match  = false;
+//        }
+//        else
+//        {
+//            message("PSU STATES DO NOT MATCH");
+//        }
+
+        if(magState.siValues == getSI(magState.magNames))
+        {
+            message("SI MATCH");
+            return true;
+        }
+        else
+        {
+            message("SI DO NOT MATCH");
+            return false;
+        }
+//    }
 }
 //______________________________________________________________________________
 using namespace magnetStructs;
@@ -1516,19 +1542,19 @@ magnetStructs::magnetStateStruct magnetInterface::getStateOfType(functionPtr f,
     return ms2;
 }
 //______________________________________________________________________________
-void magnetInterface::applyDBURT(const std::string& fileName)
+bool magnetInterface::applyDBURT(const std::string& fileName)
 {
-    applyMagnetStateStruct(getDBURT(fileName));
+    return applyMagnetStateStruct(getDBURT(fileName));
 }
 //______________________________________________________________________________
-void magnetInterface::applyDBURTCorOnly(const std::string& fileName)
+bool magnetInterface::applyDBURTCorOnly(const std::string& fileName)
 {
-    applyMagnetStateStruct(getDBURTCorOnly(fileName));
+    return applyMagnetStateStruct(getDBURTCorOnly(fileName));
 }
 //______________________________________________________________________________
-void magnetInterface::applyDBURTQuadOnly(const std::string& fileName)
+bool magnetInterface::applyDBURTQuadOnly(const std::string& fileName)
 {
-    applyMagnetStateStruct(getDBURTQuadOnly(fileName));
+    return applyMagnetStateStruct(getDBURTQuadOnly(fileName));
 }
 ////______________________________________________________________________________
 bool magnetInterface::writeDBURT(const magnetStructs::magnetStateStruct& ms,
@@ -1537,8 +1563,9 @@ bool magnetInterface::writeDBURT(const magnetStructs::magnetStateStruct& ms,
                                  const std::string& keywords)
 {
     // create a dburt object
-    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES,myMachineArea);
+    dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES, myMachineArea);
     // write the file with the dburt  and return the result
+    message("myMachineArea =  ", ms.machineArea);
     return dbr.writeDBURT(ms, fileName, comments);
 }
 //______________________________________________________________________________
