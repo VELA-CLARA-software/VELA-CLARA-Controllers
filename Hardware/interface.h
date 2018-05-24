@@ -220,6 +220,8 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
             ca_put(TYPE, CHID,&com);
             return sendToEpics("ca_put", mess1, mess2);
         }
+
+
     private:
 
 };

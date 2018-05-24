@@ -75,3 +75,15 @@ void fastCamController::set_CA_PEND_IO_TIMEOUT(double val)
 
 }
 //______________________________________________________________________________
+std::vector<double> fastCamController::getFastImage(const std::string& name)
+{
+    return localInterface.getFastImage(name);
+}
+//______________________________________________________________________________
+boost::python::list fastCamController::getFastImage_Py(const std::string& name)
+{
+    return toPythonList(getFastImage(name));
+}
+
+
+

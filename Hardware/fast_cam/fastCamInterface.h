@@ -43,6 +43,8 @@ class fastCamInterface : public interface
                          const HWC_ENUM::MACHINE_AREA myMachineArea);
         ~fastCamInterface();
 
+        std::vector<double> getFastImage(const std::string& name);
+
 //        void startMonitors();
 //        void startMonitors(const std::vector< std::string > & screenName );
 //
@@ -91,6 +93,9 @@ class fastCamInterface : public interface
         void startMonitors();
         void addChannel(const std::string& pvRoot,
                         fastCamStructs::pvStruct& pv);
+
+        void updateCamData(const std::string& name,const event_handler_args& args);
+        void addToBuffer(const double val,std::deque<double>& buffer);
 
 //        void checkServerStatus(const std::vector<std::string>& screenName);
 //        void checkServerStatus(const std::string& screenName);

@@ -62,6 +62,10 @@ class fastCamController : public controller
         double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val);
 
+        std::vector<double> getFastImage(const std::string& name);
+
+        boost::python::list getFastImage_Py(const std::string& name);
+
         //void startMonitors();
         //void startMonitors( const std::vector< std::string > & screenName );
 

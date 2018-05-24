@@ -102,9 +102,16 @@ bool fastCamInterface::initObjects()
     /* set the machine area on each magent,
        this allows for flavour switching functions, such as switchON etc..
     */
+    fastCamStructs::FAST_CAM_PV cd = fastCamStructs::FAST_CAM_PV::CAM_DATA;
     for(auto&& it:cameraObjects)
     {
         it.second.machineArea = myMachineArea;
+
+        if( entryExists(it.second.pvComStructs,cd) )
+        {
+            it.second.data.resize( it.second.pvComStructs.at(fastCamStructs::FAST_CAM_PV::CAM_DATA).COUNT );
+            message("Updated ",it.first," datasize to ",it.second.data.size());
+        }
         //it.second.interface   = this;1
     }
     return success;
@@ -194,6 +201,7 @@ void fastCamInterface::updateValue(const fastCamStructs::FAST_CAM_PV pv,
                                    const event_handler_args& args)
 {
     using namespace fastCamStructs;
+    //message("updateValue ",ENUM_TO_STRING(pv)," ",name);
     switch(pv)
     {
         case FAST_CAM_PV::START:
@@ -233,17 +241,19 @@ void fastCamInterface::updateValue(const fastCamStructs::FAST_CAM_PV pv,
         case FAST_CAM_PV::Y_CENTER_RBV:
             break;
         case FAST_CAM_PV::MASK_X_RBV:
-            cameraObjects.at(name).mask.x;
+            cameraObjects.at(name).mask.x = getDBRint(args);
             break;
         case FAST_CAM_PV::MASK_Y_RBV:
-            cameraObjects.at(name).mask.y;
+            cameraObjects.at(name).mask.y = getDBRint(args);;
             break;
         case FAST_CAM_PV::MASK_X_RAD_RBV:
-            cameraObjects.at(name).mask.x_rad;
+            cameraObjects.at(name).mask.x_rad = getDBRint(args);
             break;
         case FAST_CAM_PV::MASK_Y_RAD_RBV:
-            cameraObjects.at(name).mask.y_rad;
+            cameraObjects.at(name).mask.y_rad = getDBRint(args);;
             break;
+        case FAST_CAM_PV::CAM_DATA:
+            updateCamData(name,args);
 //        case FAST_CAM_PV::MASK_X:
 //            break;
 //        case FAST_CAM_PV::MASK_Y:
@@ -278,10 +288,80 @@ void fastCamInterface::updateValue(const fastCamStructs::FAST_CAM_PV pv,
             break;
     }
 }
+//--------------------------------------------------------------------
+void fastCamInterface::updateCamData(const std::string & name,const event_handler_args& args)
+{
+    const double* pValue;
+    /* if time _type get time and set where pValue points to */
+    if(isTimeType(args.type))
+    {
+        const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
+        pValue = &p->value;
+        //updateTime(trace.etime, trace.time, trace.timeStr);
 
-setMaskX(const)
+        /* for hints look in epicsTime.h */
+        char timeString[UTL::BUFFER_36];
+        epicsTimeToStrftime(timeString, sizeof(timeString),
+                            "%a %b %d %Y %H:%M:%S.%f", &p->stamp);
+        /*
+            prove it works
+            std::cout <<std::setprecision(15) <<std::showpoint<<  val <<std::endl;
+        */
+        cameraObjects.at(name).data_time = timeString;
 
+        std::copy(pValue, pValue + cameraObjects.at(name).data.size(), cameraObjects.at(name).data.begin());
+    }
+    else /* set where pValue points to */
+    {
+        pValue = (dbr_double_t*)args.dbr;
+    }
+    /*
+        Now we have the new values, update Buffers
+    */
+    message("buffer updated ", name);
+}
+//------------------------------------------------------------------------------------------------
+void fastCamInterface::addToBuffer(const double val,std::deque<double>& buffer)
+{
+//    buffer.push_back(val);
+//    pilaser.vcData.buffer_count += UTL::ONE_SIZET;
+//    if(buffer.size() > pilaser.vcData.buffer_size )
+//    {
+//        buffer.pop_front();
+//        pilaser.vcData.buffer_full = true;
+//        //message("BUFFER FULL!!! ");
+//        pilaser.vcData.buffer_count -= UTL::ONE_SIZET;
+//    }
+//    else
+//    {
+//        pilaser.vcData.buffer_full = false;
+//    }
+}
 
+std::vector<double> fastCamInterface::getFastImage(const std::string& name)
+{
+    if(entryExists(cameraObjects,name))
+    {
+        message(name," exists");
+        fastCamStructs::FAST_CAM_PV cd = fastCamStructs::FAST_CAM_PV::CAM_DATA;
+        if(entryExists(cameraObjects.at(name).pvComStructs,cd))
+        {
+            message(ENUM_TO_STRING(cd)," exists");
+            ca_get(cameraObjects.at(name).pvComStructs.at(cd).CHTYPE,
+                   cameraObjects.at(name).pvComStructs.at(cd).CHID,
+                   &cameraObjects.at(name).data[0]);
+            int a = sendToEpics("ca_get","","");
+            if(a==ECA_NORMAL)
+            {
+                message("caget fine");
+                return cameraObjects.at(name).data;
+            }
+
+        }
+    }
+    std::vector<double> dummy;
+    return dummy;
+}
 
 
 

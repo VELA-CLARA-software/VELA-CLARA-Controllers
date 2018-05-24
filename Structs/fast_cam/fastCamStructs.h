@@ -86,7 +86,8 @@ namespace fastCamStructs
                                                     (CAM_STATUS)
                                                     (START_IA_RBV)
                                                     (USE_BKGRND_RBV)
-                                                    (USE_NPOINT_RBV))
+                                                    (USE_NPOINT_RBV)
+                                                    (CAM_DATA))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,(VELA)(CLARA)(NOT_KNOWN))
 
@@ -109,12 +110,12 @@ namespace fastCamStructs
     struct mask_struct
     {
         mask_struct():
-            x(UTL::DUMMY_DOUBLE),
-            y(UTL::DUMMY_DOUBLE),
-            x_rad(UTL::DUMMY_DOUBLE),
-            y_rad(UTL::DUMMY_DOUBLE)
+            x(UTL::DUMMY_INT),
+            y(UTL::DUMMY_INT),
+            x_rad(UTL::DUMMY_INT),
+            y_rad(UTL::DUMMY_INT)
             {}
-        double x,y,x_rad,y_rad;
+        int x,y,x_rad,y_rad;
     };
 
     struct fastCamObject
@@ -160,6 +161,7 @@ namespace fastCamStructs
 
         std::vector<double> background;
         std::vector<double> data;
+        std::string data_time;
         std::deque<std::vector<double>> data_buffer;
     };
 

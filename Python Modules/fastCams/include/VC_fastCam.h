@@ -100,6 +100,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_FastCam_Control)
 
     class_<fastCamController, bases<controller>, noncopyable>
         ("fastCamController","fastCamController Doc String",no_init)
+        .def("getFastImage",&fastCamController::getFastImage_Py,"get FastCma image")
 
 //        .def("getRemainingDegaussSteps", &fastCamController::getRemainingDegaussSteps,
 //             (boost::python::arg("magnetname")),"Get remiaing stesp in magnetname degaussing, -1 = degaussing failed for some reason, -2 = magnetname does not exist.")
