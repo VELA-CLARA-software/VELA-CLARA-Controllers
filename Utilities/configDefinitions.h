@@ -99,6 +99,7 @@ namespace UTL
     const time_t TIMET_45 = 45;
 
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
+    const std::chrono::milliseconds PAUSE_1000(1000);
     const std::chrono::milliseconds PAUSE_300(300);
     const std::chrono::milliseconds PAUSE_500(500);
     const std::chrono::milliseconds PAUSE_1(1);
@@ -251,6 +252,7 @@ namespace UTL
     const std::string VELA_BA2_MAG_CONFIG  = "velaBA2Magnets.config";
     const std::string CLARA_INJ_MAG_CONFIG = "claraINJMagnets.config";// not going to use
     const std::string CLARA_PH1_MAG_CONFIG = "claraPH1Magnets.config";
+    const std::string C2B_MAG_CONFIG       = "C2BMagnets.config";
     const std::string CB1_MAG_CONFIG       = "CB1Magnets.config";
     const std::string CB2_MAG_CONFIG       = "CB2Magnets.config";
 /// Screens

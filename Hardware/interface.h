@@ -177,6 +177,7 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
         void pause_x(std::chrono::milliseconds x) const;
         void standard_pause() const;
         void pause_2000() const;
+        void pause_1000() const;
         void pause_300()  const;
         void pause_500()  const;
         void pause_2()    const;
