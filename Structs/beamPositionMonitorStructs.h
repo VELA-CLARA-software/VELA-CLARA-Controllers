@@ -77,7 +77,7 @@ namespace beamPositionMonitorStructs
                           xPVShots( UTL::ZERO_INT),
                           yPVShots( UTL::ZERO_INT),
                           dataShots( UTL::ZERO_INT){}
-        std::string name, pvRoot;
+        std::string name, pvRoot, xytype;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
         bool appendingData;
         int shotCount, numShots, xPVShots, yPVShots, dataShots; /// we allow -1 values here so NOT a size_t
