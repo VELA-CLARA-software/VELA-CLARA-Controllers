@@ -561,7 +561,10 @@ bool cameraDAQInterface::collectAndSaveJPG()
     new std::thread(&cameraDAQInterface::staticCollectAndSaveJPG,this,selectedCameraObj,dummy);//MAGIG NUMBE ONLY ALLOWING THIS FUNCTION TO TAKE ONE JPG!!!!!
     return true;
 }
-bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & numbOfShots)
+
+//bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & numbOfShots)
+//bool cameraDAQInterface::staticCollectAndSave(cameraObject& camera, const int & numbOfShots)
+bool cameraDAQInterface::staticCollectAndSave(cameraObject& camera, const int & numbOfShots)
 {
     this->attachTo_thisCAContext();
     bool success = false;
@@ -576,6 +579,7 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & n
         collecting=this->isCollecting(camera.name);;
     }
 
+    //std::cout << "makeANewDirectoryAndName  " << std::endl;
     makeANewDirectoryAndName(camera,numbOfShots);
     ///std::this_thread::sleep_for(std::chrono::milliseconds( 100 )); //MAGIC_NUMBER
 
@@ -691,10 +695,10 @@ bool cameraDAQInterface::killCollectAndSaveJPG()///can only kill while saving.
 
     return killed;
 }
-std::string cameraDAQInterface::getlatestDirectory()
-{
-    return selectedCameraObj.DAQ.latestDirectory;
-}
+//std::string cameraDAQInterface::getlatestDirectory()
+//{
+//    return selectedCameraObj.latestDirectory;
+//}
 const cameraObject &cameraDAQInterface::getCamDAQObjConstRef(const std::string &cam)///THIS NEEDS FIXING  at "NOPE"
 {
     std::string cameraName = useCameraFrom(cam);
@@ -721,10 +725,51 @@ const cameraObject &cameraDAQInterface::getVCDAQRef()
 {
     return vcCameraObj;
 }
-
-///Useful Functions for the Class///
-bool cameraDAQInterface::makeANewDirectoryAndName(cameraObject &camera,const int &numbOfShots)///YUCK (make it look nice)
+//-----------------------------------------------------------------
+std::string cameraDAQInterface::getLatestDirectory(const std::string& name) const
 {
+    if(entryExists(allCamData,name))
+    {
+        return allCamData.at(name).DAQ.latestDirectory;
+    }
+    return UTL::UNKNOWN_NAME;
+}
+//-----------------------------------------------------------------
+std::string cameraDAQInterface::getLatestFilename(const std::string& name) const
+{
+    if(entryExists(allCamData,name))
+    {
+        return allCamData.at(name).DAQ.latestFilename;
+    }
+    return UTL::UNKNOWN_NAME;
+}
+//-----------------------------------------------------------------
+std::string cameraDAQInterface::getLatestDirectory() const
+{
+    return selectedCameraObj.DAQ.latestDirectory;
+}
+//-----------------------------------------------------------------
+std::string cameraDAQInterface::getLatestFilename() const
+{
+    return selectedCameraObj.DAQ.latestFilename;
+}
+//-----------------------------------------------------------------
+std::string cameraDAQInterface::getLatestDirectoryVC() const
+{
+    return vcCameraObj.DAQ.latestDirectory;
+}
+//-----------------------------------------------------------------
+std::string cameraDAQInterface::getLatestFilenameVC() const
+{
+    return vcCameraObj.DAQ.latestFilename;
+}
+
+//-----------------------------------------------------------------
+///Useful Functions for the Class///
+bool cameraDAQInterface::makeANewDirectoryAndName(cameraObject& camera,const int &numbOfShots)///YUCK (make it look nice)
+{
+//    std::cout << "makeANewDirectoryAndName CALLED  " << std::endl;
+
     bool ans=false;
     std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(p);
@@ -768,7 +813,13 @@ bool cameraDAQInterface::makeANewDirectoryAndName(cameraObject &camera,const int
     {
         ans = true;
         camera.DAQ.latestDirectory = newPath;
-        message("New path set to ",newPath," on ",camera.name," camera.");
+        camera.DAQ.latestFilename  = newName;
+
+        allCamData.at(camera.name).DAQ.latestDirectory = newPath;
+        allCamData.at(camera.name).DAQ.latestFilename = newName;
+
+        message("New latestDirectory set to ",newPath," on ",camera.name," camera.");
+        message("New latestFilename set to  ",newName," on ",camera.name," camera.");
     }
 
     return ans;
@@ -878,3 +929,31 @@ void cameraDAQInterface::updateSelectedOrVC(const std::string cameraName)
 
 }
 
+//------------------------------------------------------------------------
+bool cameraDAQInterface::isCollectingOrSaving()const
+{
+    if(selectedCameraObj.DAQ.captureState == 1 )
+        return true;
+    if (selectedCameraObj.DAQ.writeState == 1 )
+        return true;
+    return false;
+}
+//------------------------------------------------------------------------
+bool cameraDAQInterface::isCollectingOrSavingVC()const
+{
+    if(vcCameraObj.DAQ.captureState == 1 )
+        return true;
+    if(vcCameraObj.DAQ.writeState == 1 )
+        return true;
+    return false;
+}
+//------------------------------------------------------------------------
+bool cameraDAQInterface::isCollectingOrSaving(const std::string&cameraName)
+{
+    if(isCollecting(cameraName))
+        return true;
+    if(isSaving(cameraName))
+        return true;
+    return false;
+}
+//------------------------------------------------------------------------

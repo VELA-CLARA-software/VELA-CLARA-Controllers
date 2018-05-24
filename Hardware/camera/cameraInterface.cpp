@@ -178,6 +178,7 @@ bool cameraInterface::isSaving(const std::string&cameraName)
         debugMessage("Problem with isSaving() function.");
     return ans;
 }
+
 bool cameraInterface::isCollectingJPG(const std::string&cameraName)
 {
     bool ans = false;

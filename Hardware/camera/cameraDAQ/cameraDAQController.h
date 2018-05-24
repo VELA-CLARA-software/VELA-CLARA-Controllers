@@ -69,8 +69,22 @@ class cameraDAQController  : public controller
         const cameraObject &getCamDAQObjConstRef(const std::string &camName);
         const cameraObject &getSelectedDAQRef();
         const cameraObject &getVCDAQRef();
-        std::string getlatestDirectory();
+        //std::string getlatestDirectory();
         std::vector<std::string> getCameraNames();
+
+
+        std::string getLatestDirectory(const std::string& name) const;
+        std::string getLatestFilename(const std::string& name) const;
+
+        std::string getLatestDirectory() const;
+        std::string getLatestFilename() const;
+        std::string getLatestDirectoryVC() const;
+        std::string getLatestFilenameVC() const;
+
+        bool isCollectingOrSaving(const std::string&cameraName);
+        bool isCollectingOrSaving()const;
+        bool isCollectingOrSavingVC()const;
+
     protected:
     private:
         // The interface to EPICS

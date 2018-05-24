@@ -75,6 +75,19 @@ class VCcameraDAQ : public VCbase
 
         void updateMessageStates();
 };
+
+// Funciton pointers for overloaded functions
+//
+bool(cameraDAQController::*isCollectingOrSaving_1)(const std::string&) = &cameraDAQController::isCollectingOrSaving;
+bool(cameraDAQController::*isCollectingOrSaving_2)()const = &cameraDAQController::isCollectingOrSaving;
+
+std::string(cameraDAQController::*getLatestDirectory_1)(const std::string&)const = &cameraDAQController::getLatestDirectory;
+std::string(cameraDAQController::*getLatestDirectory_2)()const = &cameraDAQController::getLatestDirectory;
+
+std::string(cameraDAQController::*getLatestFilename_1)(const std::string&)const = &cameraDAQController::getLatestFilename;
+std::string(cameraDAQController::*getLatestFilename_2)()const = &cameraDAQController::getLatestFilename;
+
+
 ///Expose Relevant Classes, Vectors and Enums to Python///
 using namespace boost::python;
 BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
@@ -201,6 +214,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def_readonly("latestDirectory",
                       &cameraStructs::cameraDAQObject::latestDirectory,
                       "Latest directory images were saved to.")
+        .def_readonly("latestFilename",
+                      &cameraStructs::cameraDAQObject::latestFilename,
+                      "Latest filename images were saved to.")
         ;
 
     class_<cameraDAQController, bases<controller>, boost::noncopyable>
@@ -213,6 +229,48 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
              &cameraDAQController::collectAndSave,
              (arg("Number of Shots")),
              "Collects and saves images from selected camera in a thread")
+
+        .def("getLatestDirectory",
+             getLatestDirectory_1,(
+                        boost::python::arg("name")),
+             "Returns The latest directory that camera 'name' has written to")
+
+        .def("getLatestFilename",
+             getLatestFilename_1,(
+             boost::python::arg("name")),
+             "Returns The latest filename that camera 'name' has written to")
+
+
+
+        .def("getLatestDirectory",
+             getLatestDirectory_2,
+             "Returns The latest directory that the selected camera has written to")
+        .def("getLatestFilename",
+             getLatestFilename_2,
+             "Returns The latest filename that the selected camera has written to")
+
+        .def("getLatestDirectoryVC",
+             &cameraDAQController::getLatestDirectoryVC,
+             "Returns The latest directory that the VC Camera has written to")
+        .def("getLatestFilenameVC",
+             &cameraDAQController::getLatestFilenameVC,
+             "Returns The latest filename that the VC Camera has written to")
+
+        .def("isCollectingOrSaving", isCollectingOrSaving_1,(
+                        boost::python::arg("name")),
+             "Returns True if Camera 'name' is collecting or saving data")
+
+
+        .def("isCollectingOrSaving",
+             isCollectingOrSaving_2,
+             "Returns True if the selected Camera is collecting or saving data")
+
+        .def("isCollectingOrSavingVC",
+             &cameraDAQController::isCollectingOrSavingVC,
+             "Returns True if the VC Camera is collecting or saving data")
+
+
+
         .def("killCollectAndSave",
              &cameraDAQController::killCollectAndSave,
              "Returns True if stopped the selected camera collectAndSave process")
@@ -277,9 +335,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_DAQ_Control )
         .def("stopVCAcquiring",
              &cameraDAQController::stopVCAcquiring,
              "Stops VC Camera acquiring and returns True if successful")
-         .def("getlatestDirectory",
-             &cameraDAQController::getlatestDirectory,
-             "Returns a string indicating directory selected camers last saved images to.")
+//         .def("getlatestDirectory",
+//             &cameraDAQController::getlatestDirectory,
+//             "Returns a string indicating directory selected camers last saved images to.")
         .def("getCameraNames",
              &cameraDAQController::getCameraNames,
              "Returns a list of all the camera names.")

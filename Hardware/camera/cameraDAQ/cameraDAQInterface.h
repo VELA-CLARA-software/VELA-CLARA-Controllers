@@ -43,7 +43,7 @@ class cameraDAQInterface : public cameraInterface
         bool collectAndSave (const int & numbOfShots);
         bool collectAndSaveJPG ();
         bool collectAndSaveVC (const int & numbOfShots);
-        bool staticCollectAndSave(cameraObject camera,const int & numbOfShots);
+        bool staticCollectAndSave(cameraObject& camera,const int & numbOfShots);
         bool staticCollectAndSaveJPG(cameraObject camera,const int & numbOfShots);
         bool killCollectAndSave();
         bool killCollectAndSaveJPG();
@@ -52,7 +52,19 @@ class cameraDAQInterface : public cameraInterface
         bool save(cameraObject camera,unsigned short &comm);
         bool collectJPG(cameraObject camera,unsigned short &comm,const int & numbOfShots);
         bool saveJPG(cameraObject camera,unsigned short &comm);
-        std::string getlatestDirectory();
+        //std::string getlatestDirectory();
+
+        std::string getLatestDirectory(const std::string& name) const;
+        std::string getLatestFilename(const std::string& name) const;
+
+        std::string getLatestDirectory() const;
+        std::string getLatestFilename() const;
+        std::string getLatestDirectoryVC() const;
+        std::string getLatestFilenameVC() const;
+
+        bool isCollectingOrSaving(const std::string&cameraName);
+        bool isCollectingOrSaving()const;
+        bool isCollectingOrSavingVC()const;
 
         const cameraObject &getCamDAQObjConstRef(const std::string &cam);
         const cameraObject &getSelectedDAQRef();

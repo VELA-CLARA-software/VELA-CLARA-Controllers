@@ -517,6 +517,11 @@ void interface::standard_pause() const
     pause_2000();
 }
 //______________________________________________________________________________
+void interface::pause_1000() const
+{
+    pause_x(UTL::PAUSE_1000);
+}
+//______________________________________________________________________________
 void interface::pause_2000() const
 {
     pause_x(UTL::STANDARD_PAUSE);

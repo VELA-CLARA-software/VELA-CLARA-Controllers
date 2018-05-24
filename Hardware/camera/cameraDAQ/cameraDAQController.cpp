@@ -49,8 +49,54 @@ void   cameraDAQController::set_CA_PEND_IO_TIMEOUT( double val )
 {
     localInterface.set_CA_PEND_IO_TIMEOUT( val );
 }
-
+//-----------------------------------------------------------------
 ///Functions Accessible to Python Controller///
+//-----------------------------------------------------------------
+std::string cameraDAQController::getLatestDirectory(const std::string& name) const
+{
+    return localInterface.getLatestDirectory(name);
+}
+//-----------------------------------------------------------------
+std::string cameraDAQController::getLatestFilename(const std::string& name) const
+{
+    return localInterface.getLatestFilename(name);
+}
+//-----------------------------------------------------------------
+std::string cameraDAQController::getLatestDirectory()const
+{
+    return localInterface.getLatestDirectory();
+}
+//-----------------------------------------------------------------
+std::string cameraDAQController::getLatestFilename()const
+{
+    return localInterface.getLatestFilename();
+}
+//-----------------------------------------------------------------
+std::string cameraDAQController::getLatestDirectoryVC()const
+{
+    return localInterface.getLatestDirectoryVC();
+}
+//-----------------------------------------------------------------
+std::string cameraDAQController::getLatestFilenameVC()const
+{
+    return localInterface.getLatestFilenameVC();
+}
+//-----------------------------------------------------------------
+bool cameraDAQController::isCollectingOrSaving(const std::string&cameraName)
+{
+    return localInterface.isCollectingOrSaving(cameraName);
+}
+//-----------------------------------------------------------------
+bool cameraDAQController::isCollectingOrSaving()const
+{
+    return localInterface.isCollectingOrSaving();
+}
+//-----------------------------------------------------------------
+bool cameraDAQController::isCollectingOrSavingVC()const
+{
+    return localInterface.isCollectingOrSavingVC();
+}
+//-----------------------------------------------------------------
 //Generic Functions
 bool cameraDAQController::isON (const std::string &cam)
 {
@@ -130,10 +176,10 @@ const cameraObject& cameraDAQController::getVCDAQRef()
 {
     return localInterface.getVCDAQRef();
 }
-std::string cameraDAQController::getlatestDirectory()
-{
-    return localInterface.getlatestDirectory();
-}
+//std::string cameraDAQController::getlatestDirectory()
+//{
+//    return localInterface.getlatestDirectory();
+//}
  std::vector<std::string> cameraDAQController::getCameraNames()
 {
     return localInterface.getCameraNames();

@@ -191,7 +191,11 @@ namespace cameraStructs
                             shotsTakenJPG(UTL::DUMMY_INT),
                             numberOfShotsJPG(UTL::DUMMY_INT),
                             frequency(UTL::DUMMY_DOUBLE),
-                            exposureTime(UTL::DUMMY_DOUBLE) {}
+                            exposureTime(UTL::DUMMY_DOUBLE),
+                            latestDirectory(UTL::UNKNOWN_STRING),
+                            latestFilename(UTL::UNKNOWN_STRING),
+                            writeErrorMessage(UTL::UNKNOWN_STRING)
+                            {}
         //ID
         std::string name, pvRoot, screenName;
         //On/Off
@@ -205,7 +209,7 @@ namespace cameraStructs
         // write check is whether the last write was succesful
         WRITE_CHECK writeCheck;
         // If error this string will get updated
-        std::string writeErrorMessage, latestDirectory;
+        std::string writeErrorMessage, latestDirectory, latestFilename;
         int shotsTaken, numberOfShots, maxShots, shotsTakenJPG, numberOfShotsJPG;
         double frequency,exposureTime,acquisitionPeriod, sensorTemp;
         // doesn't exist for CLARA

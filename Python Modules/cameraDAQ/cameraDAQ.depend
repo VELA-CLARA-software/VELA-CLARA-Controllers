@@ -231,3 +231,237 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
+1527161402 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerainterface.cpp
+	"cameraInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<iomanip>
+	<sstream>
+	<chrono>
+	<thread>
+
+1527161193 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerainterface.h
+	"cameraStructs.h"
+	"interface.h"
+	<string>
+	<vector>
+	<atomic>
+	<map>
+
+1527158833 d:\vela\git projects\vela-clara-controllers\structs\camerastructs.h
+	<vector>
+	<string>
+	<thread>
+	<map>
+	<cadef.h>
+	"structs.h"
+	"configDefinitions.h"
+
+1527092941 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1527099517 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1527100066 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1525973776 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1524756163 source:d:\vela\git projects\vela-clara-controllers\utilities\cameradaqconfigreader.cpp
+	"cameraDAQConfigReader.h"
+	"configDefinitions.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1524756163 d:\vela\git projects\vela-clara-controllers\utilities\cameradaqconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"cameraStructs.h"
+
+1525377302 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1524756153 source:d:\vela\git projects\vela-clara-controllers\python modules\cameradaq\main.cpp
+	"main.h"
+
+1524756153 d:\vela\git projects\vela-clara-controllers\python modules\cameradaq\main.h
+	<windows.h>
+
+1524756154 source:d:\vela\git projects\vela-clara-controllers\python modules\cameradaq\src\vccameradaq.cpp
+	"VCcameraDAQ.h"
+	<iostream>
+	<string>
+
+1527171336 d:\vela\git projects\vela-clara-controllers\python modules\cameradaq\include\vccameradaq.h
+	"cameraDAQController.h"
+	"VCbase.h"
+	"VCHeader.h"
+
+1527170251 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameradaq\\cameradaqcontroller.h
+	<string>
+	<vector>
+	<map>
+	"cameraDAQInterface.h"
+	"structs.h"
+	"cameraStructs.h"
+	"controller.h"
+
+1527170305 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameradaq\\cameradaqinterface.h
+	<string>
+	<vector>
+	<atomic>
+	<map>
+	"cameraStructs.h"
+	"cameraInterface.h"
+	"cameraDAQConfigReader.h"
+
+1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1527092951 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1527096048 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1527171395 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameradaq\cameradaqcontroller.cpp
+	"cameraDAQController.h"
+
+1527170251 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameradaq\cameradaqcontroller.h
+	<string>
+	<vector>
+	<map>
+	"cameraDAQInterface.h"
+	"structs.h"
+	"cameraStructs.h"
+	"controller.h"
+
+1527170305 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameradaq\cameradaqinterface.h
+	<string>
+	<vector>
+	<atomic>
+	<map>
+	"cameraStructs.h"
+	"cameraInterface.h"
+	"cameraDAQConfigReader.h"
+
+1527171205 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameradaq\cameradaqinterface.cpp
+	"cameraDAQInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<iomanip>
+	<sstream>
+	<chrono>
+	<ctime>
+	<thread>
+
+1525973840 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1527099491 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1527092959 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1525973726 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	"configDefinitions.h"
+	<time.h>
+
+1525973903 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+

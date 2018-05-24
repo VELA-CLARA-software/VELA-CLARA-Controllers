@@ -80,6 +80,8 @@ class cameraInterface : public interface
         ///Useful Functions for the Controller///
         bool isCollecting(const std::string&cameraName);
         bool isSaving(const std::string&cameraName);
+
+
         bool isCollectingJPG(const std::string&cameraName);
         bool isSavingJPG(const std::string&cameraName);
         std::string useCameraFrom(const std::string camOrScreen);
