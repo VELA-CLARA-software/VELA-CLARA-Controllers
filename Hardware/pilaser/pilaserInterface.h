@@ -94,6 +94,9 @@ class pilaserInterface : public interface
         std::vector<double> getPixelValues()const;
         std::deque<std::vector<double>> getPixelValuesBuffer()const;
 
+        std::vector<double> pilaserInterface::getFastImage();
+
+
         bool isBufferFull();
         bool isBufferNotFull();
 

@@ -37,8 +37,8 @@ pilaserController::pilaserController(
     const std::string& piLaserMirrorConf
     ):
 controller(show_messages,show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::PI_LASER),
-localMirrorName("LASER_MIRROR_CONTROLLER"),
-localVirtualCathodeName("VIRTUAL_CATHODE_ANALYSIS_CONTROLLER"),
+//localMirrorName("LASER_MIRROR_CONTROLLER"),
+//localVirtualCathodeName("VIRTUAL_CATHODE_ANALYSIS_CONTROLLER"),
 localInterface(show_messages,
                show_debug_messages,
                startVirtualMachine,
@@ -461,6 +461,23 @@ const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjC
 {
     return localInterface.getVCDataObjConstRef();
 }
+//______________________________________________________________________________
+std::vector<double> pilaserController::getFastImage()
+{
+    return localInterface.getFastImage();
+}
+//______________________________________________________________________________
+boost::python::list pilaserController::getFastImage_Py()
+{
+    return toPythonList(getFastImage());
+}
+//______________________________________________________________________________
+
+
+
+
+
+
 ////______________________________________________________________________________
 //#ifdef BUILD_DLL
 ////____________________________________________________________________________________________

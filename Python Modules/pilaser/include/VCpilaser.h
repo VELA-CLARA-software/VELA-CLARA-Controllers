@@ -199,6 +199,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* getBufferCount_doc = "getBufferCount_doc";
 
 
+    const char* getFastImage_doc    = "getFastImage_doc   ";
+
+
     class_<pilaserController, bases<controller>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
@@ -224,6 +227,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("setVstep",&pilaserController::setVstep,setHstep_doc)
         .def("moveH",   &pilaserController::moveH,   moveH_doc   )
         .def("moveV",   &pilaserController::moveV,   moveV_doc   )
+
+
+        .def("getFastImage",   &pilaserController::getFastImage_Py,   getFastImage_doc   )
 
         .def("getX",        &pilaserController::getX,    getX_doc    )
         .def("getY",        &pilaserController::getY,    getY_doc    )

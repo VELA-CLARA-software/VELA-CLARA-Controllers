@@ -114,7 +114,15 @@ bool pilaserInterface::initObjects()
 {
     bool gotobj = configReader.getpilaserObject(pilaser);
     if(gotobj)
+    {
         gotobj = vcConfigReader.getVirtualCathodeObject(pilaser.vcData);
+        pilaserStructs::PILASER_PV_TYPE cd = pilaserStructs::PILASER_PV_TYPE::ARRAY_DATA;
+        if(entryExists(pilaser.vcData.pvComStructs,cd))
+        {
+            message("ARRAY_DATA EXISTS, size = ", pilaser.vcData.pvComStructs.at(cd).COUNT);
+            pilaser.vcData.array_data.resize(pilaser.vcData.pvComStructs.at(cd).COUNT);
+        }
+    }
     return gotobj;
 }
 //______________________________________________________________________________
@@ -344,7 +352,7 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
             addToBuffer(pilaser.Q,pilaser.Q_buf);
             break;
         default:
-            message("ERROR nkown PV passed to pilaserInterface::updateValue, ",pv);
+            //message("ERROR nkown PV passed to pilaserInterface::updateValue, ",pv);
             break;
     }
 }
@@ -832,7 +840,27 @@ bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* 
 }
 //______________________________________________________________________________
 
-
+std::vector<double> pilaserInterface::getFastImage()
+{
+    pilaserStructs::PILASER_PV_TYPE cd = pilaserStructs::PILASER_PV_TYPE::ARRAY_DATA;
+    if(entryExists(pilaser.vcData.pvComStructs,cd))
+    {
+        message(ENUM_TO_STRING(cd)," exists");
+        ca_get(pilaser.vcData.pvComStructs.at(cd).CHTYPE,
+               pilaser.vcData.pvComStructs.at(cd).CHID,
+               &pilaser.vcData.array_data[0]);
+        int a = sendToEpics("ca_get","","");
+        if(a==ECA_NORMAL)
+        {
+            message("caget fine");
+            return pilaser.vcData.array_data;
+        }
+        else
+            message("caget not fine");
+    }
+    std::vector<double> dummy;
+    return dummy;
+}
 //____________________________________________________________________________________________
 //double pilaserInterface::getVstep() const
 //{
@@ -846,7 +874,7 @@ bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* 
 //    {
 //        bool s = setValue(
 //            pilaser.vcData.pvMonStructs.at(pilaserStructs::PILASER_PV_TYPE::H_STEP),value);
-//    }
+//    }pilaser.vcData.pvComStructs.at(cd).COUNT
 //    pilaser.vcData.mirror.hStep = value;
 //    return s;
 //}

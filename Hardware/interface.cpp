@@ -394,7 +394,7 @@ bool interface::isTimeType(const long type) const
         case DBR_TIME_LONG:
             r = true;
             break;
-        case  DBR_TIME_FLOAT:
+        case DBR_TIME_FLOAT:
             r = true;
             break;
         case DBR_TIME_ENUM:

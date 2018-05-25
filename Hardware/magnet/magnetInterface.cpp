@@ -999,8 +999,8 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
      As there are NO guarantees that RI will get close to SI,
      we have to check if RI is changing.
      Also, we have to check if RI is supposed to be zero,
-      because sometimes we hang around at zero while flipping
-      before setting the SI value we actually want
+     because sometimes we hang around at zero while flipping
+     before setting the SI value we actually want
      I've done the conditional flags very verbose
      just to make sure i follow what I'm doing
     */
@@ -1449,7 +1449,7 @@ bool magnetInterface::is_si_same_as_magnetStateStruct(const magnetStructs::magne
 //            message("PSU STATES DO NOT MATCH");
 //        }
 
-        if(magState.siValues == getSI(magState.magNames))
+        if(areSame(magState.siValues,getSI(magState.magNames),0.001))//Magic Number
         {
             message("SI MATCH");
             return true;

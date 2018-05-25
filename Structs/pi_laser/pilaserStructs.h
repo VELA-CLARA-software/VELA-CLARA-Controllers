@@ -76,6 +76,7 @@ namespace pilaserStructs
                                                         (POS_UPDATE)
                                                         (UNKNOWN)
                                                         (WCM_Q)
+                                                        (ARRAY_DATA)
                                         )
     struct monitorStruct
     {
@@ -169,6 +170,10 @@ namespace pilaserStructs
         std::vector<double> pix_values;
         std::deque<std::vector<double>> pix_values_buffer;
         std::string pix_values_time;
+
+        std::vector<double> array_data;
+        //std::deque<std::vector<double>> pix_values_buffer;
+
         /*
             this map is defined in the config file
             and tells us which element is which

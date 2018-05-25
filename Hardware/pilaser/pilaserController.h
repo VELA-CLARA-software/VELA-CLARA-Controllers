@@ -69,6 +69,9 @@ class pilaserController : public controller
         bool disableStabilisation();
         bool enableStabilisation();
 
+        std::vector<double> getFastImage();
+        boost::python::list getFastImage_Py();
+
         // laser mirror functions
         double getHpos() const;
         double getVpos() const;

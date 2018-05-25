@@ -296,6 +296,10 @@ void virtualCathodeConfigReader::addToPVCommandMapV1(const std::vector<std::stri
             {
                 addToPVStruct(pvComStructs, PILASER_PV_TYPE::V_MOVE,keyVal[ONE_SIZET]);
             }
+            else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
+            }
             //debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
         }
         /*

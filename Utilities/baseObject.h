@@ -159,6 +159,29 @@ class baseObject
         }
 
         template<typename T = int>
+        bool areSame(const std::vector<T> a, const std::vector<T> b, const T epsilon = 0) const
+        {
+            if(a.size() != b.size() )
+                return false;
+            for(auto&& it1 = a.begin(), it2 = b.begin();
+                it1 < a.end() && it2 < b.end();
+                ++it1, ++it2 )
+            {
+                if(std::abs(it1 - it2) <epsilon)
+                {
+
+                }
+                else
+                {
+                    return false;
+                }
+
+           }
+           return true;
+        }
+
+
+        template<typename T = int>
         bool areSame(const T a, const T b, const T epsilon = 0) const
         {
             if(a == b)
