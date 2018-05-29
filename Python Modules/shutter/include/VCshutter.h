@@ -81,6 +81,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Shutter_Control)
     using namespace boost::python;
     using namespace boost;
 
+    enum_<SHUTTER_STATE>("SHUTTER_STATE","State of shutters")
+        .value("OPEN", SHUTTER_STATE::OPEN)
+        .value("CLOSED",  SHUTTER_STATE::CLOSED )
+        .value("TIMING",  SHUTTER_STATE::TIMING )
+        .value("ERROR",  SHUTTER_STATE::ERROR )
+        ;
+
 //    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
 //    const char* closeAndWait_doc = "closeAndWait_doc.";
 //    const char* openAndWait_doc = "openAndWait_doc.";
