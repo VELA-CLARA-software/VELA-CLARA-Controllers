@@ -657,6 +657,18 @@ bool cameraIAInterface::stopAnalysis()
     }
     return ans;
 }
+
+const cameraIAObject &cameraIAInterface::getCameraIAObjConstRef(const std::string &cam)///THIS NEEDS FIXING  at "NOPE"
+{
+    std::string cameraName = useCameraFrom(cam);
+    if(entryExists(allCamData, cameraName))
+    {
+        return allCamData.at(cameraName).IA;
+    }
+    std::string dummyName("NOPE");
+    return allCamData.at(dummyName).IA;
+}
+
 const cameraObject &cameraIAInterface::getCamIAObjConstRef(const std::string &cam)///THIS NEEDS FIXING  at "NOPE"
 {
     std::string cameraName = useCameraFrom(cam);
