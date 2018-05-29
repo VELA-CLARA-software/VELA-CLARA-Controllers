@@ -203,18 +203,22 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_IA_Control )
         .def_readonly("yCenterPix",
                       &cameraStructs::cameraIAObject::yCenterPix,
                       "Vertical calibrated center of pipe (0 of ideal trajectory) in pixels.")
+
         .def_readonly("maskXRad",
-                      &cameraStructs::cameraIAObject::maskXRad,
+                      &cameraStructs::cameraIAObject::maskXRad_RBV,
                       "Horizontal radius of mask used in image analysis in pixels.")
         .def_readonly("maskYRad",
-                      &cameraStructs::cameraIAObject::maskYRad,
+                      &cameraStructs::cameraIAObject::maskYRad_RBV,
                       "Vertical radius of mask used in image analysis in pixels.")
         .def_readonly("maskX",
-                      &cameraStructs::cameraIAObject::maskX,
+                      &cameraStructs::cameraIAObject::maskX_RBV,
                       "X position of mask used in image analysis in pixels.")
         .def_readonly("maskY",
-                      &cameraStructs::cameraIAObject::maskY,
+                      &cameraStructs::cameraIAObject::maskY_RBV,
                       "Y position of mask used in image analysis in pixels.")
+
+
+
         .def_readonly("bitDepth",
                       &cameraStructs::cameraIAObject::bitDepth,
                       "Bit depth of image. ")
