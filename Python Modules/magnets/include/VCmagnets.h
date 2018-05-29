@@ -351,6 +351,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def("setSI", setSI_4)
         .def("setSI", &magnetController::setSI_Py1)
         .def("setSI", &magnetController::setSI_Py2)
+        .def("getLastFailedSet", &magnetController::getLastFailedSet_Py,"Returns magnets that failed to be set [[m1,req_SI,read_si],[m2,..,..]...]")
 
         .def("getILockStates", &magnetController::getILockStates_Py)
         .def("getILockStatesStr", &magnetController::getILockStatesStr_Py)
