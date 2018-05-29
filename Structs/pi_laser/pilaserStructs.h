@@ -25,6 +25,7 @@
 //
 #include "structs.h"
 #include "configDefinitions.h"
+#include "running_stat.h"
 //stl
 #include <string>
 #include <map>
@@ -32,6 +33,14 @@
 //epics
 #ifndef __CINT__
 #include <cadef.h>
+#endif
+
+#ifdef BUILD_DLL
+#include <boost/python.hpp>
+//#include <boost/python/class.hpp>
+//#include <boost/python/module.hpp>
+//#include <boost/python/def.hpp>
+//#include <boost/python/scope.hpp>
 #endif
 
 class pilaserInterface;
@@ -171,8 +180,35 @@ namespace pilaserStructs
         std::deque<std::vector<double>> pix_values_buffer;
         std::string pix_values_time;
 
-        std::vector<double> array_data;
+        std::vector<int> array_data;
         //std::deque<std::vector<double>> pix_values_buffer;
+        runningStat x_rs,y_rs,sig_x_rs,sig_y_rs,sig_xy_rs,x_pix_rs,y_pix_rs,sig_x_pix_rs,sig_y_pix_rs,sig_xy_pix_rs;
+
+        double x_mean();
+        double y_mean();
+        double sig_x_mean();
+        double sig_y_mean();
+        double sig_xy_mean();
+
+        double x_pix_mean();
+        double y_pix_mean();
+        double sig_x_pix_mean();
+        double sig_y_pix_mean();
+        double sig_xy_pix_mean();
+
+        double x_sd();
+        double y_sd();
+        double sig_x_sd();
+        double sig_y_sd();
+        double sig_xy_sd();
+
+        double x_pix_sd();
+        double y_pix_sd();
+        double sig_x_pix_sd();
+        double sig_y_pix_sd();
+        double sig_xy_pix_sd();
+
+
 
         /*
             this map is defined in the config file

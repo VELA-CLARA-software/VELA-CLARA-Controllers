@@ -136,6 +136,40 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //    const char* name_doc = "name_doc.";
 //    const char* getState_doc = "getState_doc.";
 //
+
+
+    using namespace pilaserStructs;
+    class_<virtualCathodeDataObject,boost::noncopyable>
+        ("virtualCathodeDataObject","virtualCathodeDataObject Doc String", boost::python::no_init)
+        .def_readonly("x",       &virtualCathodeDataObject::x)
+        .def_readonly("y",       &virtualCathodeDataObject::y)
+        .def_readonly("sig_x",   &virtualCathodeDataObject::sig_x)
+        .def_readonly("sig_y",   &virtualCathodeDataObject::sig_y)
+        .def_readonly("sig_xy",   &virtualCathodeDataObject::sig_xy)
+        .def_readonly("x_pix",  &virtualCathodeDataObject::x_pix)
+        .def_readonly("sig_x_pix",  &virtualCathodeDataObject::sig_x_pix)
+        .def_readonly("sig_y_pix",  &virtualCathodeDataObject::sig_y_pix)
+        .def_readonly("sig_xy_pix",  &virtualCathodeDataObject::sig_xy_pix)
+        .def_readonly("x_mean",         &virtualCathodeDataObject::x_mean)
+        .def_readonly("y_mean",         &virtualCathodeDataObject::y_mean)
+        .def_readonly("sig_x_mean",     &virtualCathodeDataObject::sig_x_mean)
+        .def_readonly("sig_y_mean",     &virtualCathodeDataObject::sig_y_mean)
+        .def_readonly("sig_xy_mean",     &virtualCathodeDataObject::sig_xy_mean)
+        .def_readonly("x_pix_mean",     &virtualCathodeDataObject::x_pix_mean)
+        .def_readonly("sig_x_pix_mean", &virtualCathodeDataObject::sig_x_pix_mean)
+        .def_readonly("sig_y_pix_mean", &virtualCathodeDataObject::sig_y_pix_mean)
+        .def_readonly("sig_xy_pix_mean",&virtualCathodeDataObject::sig_xy_pix_mean)
+        .def_readonly("x_sd",       &virtualCathodeDataObject::x_sd)
+        .def_readonly("y_sd",       &virtualCathodeDataObject::y_sd)
+        .def_readonly("sig_x_sd",   &virtualCathodeDataObject::sig_x_sd)
+        .def_readonly("sig_y_sd",   &virtualCathodeDataObject::sig_y_sd)
+        .def_readonly("sig_xy_sd",   &virtualCathodeDataObject::sig_xy_sd)
+        .def_readonly("x_pix_sd",  &virtualCathodeDataObject::x_pix_sd)
+        .def_readonly("sig_x_pix_sd",  &virtualCathodeDataObject::sig_x_pix_sd)
+        .def_readonly("sig_y_pix_sd",  &virtualCathodeDataObject::sig_y_pix_sd)
+        .def_readonly("sig_xy_pix_sd",  &virtualCathodeDataObject::sig_xy_pix_sd)
+        ;
+
     const char* getIntensity_doc = "getIntensity_doc.";
     const char* setCharge_doc = "setCharge_doc.";
     const char* setIntensity_doc = "getIntensity_doc.";
@@ -227,7 +261,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("setVstep",&pilaserController::setVstep,setHstep_doc)
         .def("moveH",   &pilaserController::moveH,   moveH_doc   )
         .def("moveV",   &pilaserController::moveV,   moveV_doc   )
-
+        .def("clearRunningValues",   &pilaserController::clearRunningValues,   "clearRunningValues"   )
 
         .def("getFastImage",   &pilaserController::getFastImage_Py,   getFastImage_doc   )
 
@@ -263,6 +297,11 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("getSigYPixBuffer",  &pilaserController::getSigYPixBuffer_Py,  getSigYPixBuffer_doc)
         .def("getSigXYPixBuffer", &pilaserController::getSigXYPixBuffer_Py, getSigXYPixBuffer_doc)
         .def("getQBuffer",        &pilaserController::getQBuffer_Py,        getQBuffer_doc)
+
+
+        .def("getVCDataObjConstRef",        &pilaserController::getVCDataObjConstRef, "",return_value_policy<reference_existing_object>())
+
+
         ;
 
 //
@@ -291,7 +330,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //    const char* status_doc  = "Status (ON/OFF) of laser system.";
 //    const char* setCharge_doc2 = "Charge (pc) set point.";
 
-//    class_<pilaserStructs::pilaserObject,noncopyable>
+//    class_<virtualCathodeDataObject::pilaserObject,noncopyable>
 //        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
 //        .def_readonly("status",&pilaserStructs::pilaserObject::status,status_doc)
 ////        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)

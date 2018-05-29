@@ -279,42 +279,53 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
         case PILASER_PV_TYPE::X_RBV:
             getDBRdouble_timestamp(args,pilaser.vcData.x );
             addToBuffer(pilaser.vcData.x,pilaser.vcData.x_buf);
+            pilaser.vcData.x_rs.Push(pilaser.vcData.x);
             break;
         case PILASER_PV_TYPE::Y_RBV:
             getDBRdouble_timestamp(args,pilaser.vcData.y );
             addToBuffer(pilaser.vcData.y,pilaser.vcData.y_buf);
+            pilaser.vcData.y_rs.Push(pilaser.vcData.y);
             break;
         case PILASER_PV_TYPE::SIGMA_X_RBV:
             getDBRdouble_timestamp(args,pilaser.vcData.sig_x);
             addToBuffer(pilaser.vcData.sig_x,pilaser.vcData.sig_x_buf);
+            pilaser.vcData.sig_x_rs.Push(pilaser.vcData.sig_x);
             break;
         case PILASER_PV_TYPE::SIGMA_Y_RBV:
             getDBRdouble_timestamp(args,pilaser.vcData.sig_y);
             addToBuffer(pilaser.vcData.sig_y,pilaser.vcData.sig_y_buf);
+            pilaser.vcData.sig_y_rs.Push(pilaser.vcData.sig_y);
             break;
         case PILASER_PV_TYPE::COV_XY_RBV:
             getDBRdouble_timestamp(args,pilaser.vcData.sig_xy);
             addToBuffer(pilaser.vcData.sig_xy,pilaser.vcData.sig_xy_buf);
+            pilaser.vcData.sig_xy_rs.Push(pilaser.vcData.sig_xy);
             break;
+
         case PILASER_PV_TYPE::X_PIX:
             getDBRdouble_timestamp(args,pilaser.vcData.x_pix);
             addToBuffer(pilaser.vcData.x_pix,pilaser.vcData.x_pix_buf);
+            pilaser.vcData.x_pix_rs.Push(pilaser.vcData.x_pix);
             break;
         case PILASER_PV_TYPE::Y_PIX:
             getDBRdouble_timestamp(args,pilaser.vcData.y_pix);
             addToBuffer(pilaser.vcData.y_pix,pilaser.vcData.y_pix_buf);
+            pilaser.vcData.y_pix_rs.Push(pilaser.vcData.y_pix);
             break;
         case PILASER_PV_TYPE::SIGMA_X_PIX:
             getDBRdouble_timestamp(args,pilaser.vcData.sig_x_pix);
             addToBuffer(pilaser.vcData.sig_x_pix,pilaser.vcData.sig_x_pix_buf);
+            pilaser.vcData.sig_x_pix_rs.Push(pilaser.vcData.sig_x_pix);
             break;
         case PILASER_PV_TYPE::SIGMA_Y_PIX:
             getDBRdouble_timestamp(args,pilaser.vcData.sig_y_pix);
             addToBuffer(pilaser.vcData.sig_y_pix,pilaser.vcData.sig_y_pix_buf);
+            pilaser.vcData.sig_y_pix_rs.Push(pilaser.vcData.sig_y_pix);
             break;
         case PILASER_PV_TYPE::COV_XY_PIX:
             getDBRdouble_timestamp(args,pilaser.vcData.sig_xy_pix);
             addToBuffer(pilaser.vcData.sig_xy_pix,pilaser.vcData.sig_xy_pix_buf);
+            pilaser.vcData.sig_xy_pix_rs.Push(pilaser.vcData.sig_xy_pix);
             break;
         case PILASER_PV_TYPE::VC_INTENSITY:
             break;
@@ -839,26 +850,52 @@ bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* 
     return false;
 }
 //______________________________________________________________________________
-
-std::vector<double> pilaserInterface::getFastImage()
+void pilaserInterface::clearRunningValues()
+{
+    pilaser.vcData.x_rs.Clear();
+    pilaser.vcData.y_rs.Clear();
+    pilaser.vcData.sig_x_rs.Clear();
+    pilaser.vcData.sig_y_rs.Clear();
+    pilaser.vcData.sig_xy_rs.Clear();
+    pilaser.vcData.x_pix_rs.Clear();
+    pilaser.vcData.y_pix_rs.Clear();
+    pilaser.vcData.sig_x_pix_rs.Clear();
+    pilaser.vcData.sig_y_pix_rs.Clear();
+    pilaser.vcData.sig_xy_pix_rs.Clear();
+}
+//______________________________________________________________________________
+std::vector<int> pilaserInterface::getFastImage()
 {
     pilaserStructs::PILASER_PV_TYPE cd = pilaserStructs::PILASER_PV_TYPE::ARRAY_DATA;
     if(entryExists(pilaser.vcData.pvComStructs,cd))
     {
-        message(ENUM_TO_STRING(cd)," exists");
-        ca_get(pilaser.vcData.pvComStructs.at(cd).CHTYPE,
+        //message(ENUM_TO_STRING(cd)," exists");
+        ca_array_get(pilaser.vcData.pvComStructs.at(cd).CHTYPE,
+                pilaser.vcData.pvComStructs.at(cd).COUNT,
                pilaser.vcData.pvComStructs.at(cd).CHID,
+               //(void*)&pilaser.vcData.array_data[0]);
                &pilaser.vcData.array_data[0]);
         int a = sendToEpics("ca_get","","");
         if(a==ECA_NORMAL)
         {
-            message("caget fine");
+//            int max = 0;
+//            for(auto&& it: pilaser.vcData.array_data)
+//            {
+//                std::cout << it << " ";
+//                if(it > max)
+//                {
+//                    max = it;
+//                }
+//            }
+//            message("max = ", max);
+//
+//            message("caget fine");
             return pilaser.vcData.array_data;
         }
         else
             message("caget not fine");
     }
-    std::vector<double> dummy;
+    std::vector<int> dummy;
     return dummy;
 }
 //____________________________________________________________________________________________
@@ -914,3 +951,11 @@ std::vector<double> pilaserInterface::getFastImage()
 //    return false;
 //}
 ////____________________________________________________________________________________________
+
+
+
+
+
+
+
+

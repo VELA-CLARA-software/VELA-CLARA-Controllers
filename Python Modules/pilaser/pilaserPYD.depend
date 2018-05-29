@@ -81,7 +81,7 @@
 	<vector>
 	<cadef.h>
 
-1527099517 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1527581646 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -89,10 +89,10 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1527271388 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
+1527604390 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
 	"pilaserController.h"
 
-1527271384 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
+1527604390 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
 	<string>
 	<vector>
 	<map>
@@ -100,7 +100,7 @@
 	"pilaserInterface.h"
 	"controller.h"
 
-1527271288 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
+1527604317 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
 	"interface.h"
 	"pilaserStructs.h"
 	"structs.h"
@@ -125,7 +125,7 @@
 	"configReader.h"
 	"pilaserStructs.h"
 
-1526631991 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
+1527591119 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
 	"pilaserInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -196,7 +196,7 @@
 	"VCpilaser.h"
 	<iostream>
 
-1527271426 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
+1527604390 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
 	<string>
 	"pilaserController.h"
 	"VCheader.h"
@@ -304,13 +304,15 @@
 	<atomic>
 	<map>
 
-1527270755 d:\vela\git projects\vela-clara-controllers\structs\pi_laser\pilaserstructs.h
+1527600045 d:\vela\git projects\vela-clara-controllers\structs\pi_laser\pilaserstructs.h
 	"structs.h"
 	"configDefinitions.h"
+	"running_stat.h"
 	<string>
 	<map>
 	<deque>
 	<cadef.h>
+	<boost/python.hpp>
 
 1525425629 d:\vela\git projects\vela-clara-controllers\utilities\pi_laser\pilaserconfigreader.h
 	<string>
@@ -661,4 +663,9 @@
 	<string>
 	<map>
 	<utility>
+
+1527590870 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
+
+1527603308 source:d:\vela\git projects\vela-clara-controllers\structs\pi_laser\pilaserstructs.cpp
+	"pilaserStructs.h"
 

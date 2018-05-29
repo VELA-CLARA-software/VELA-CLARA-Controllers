@@ -462,18 +462,22 @@ const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjC
     return localInterface.getVCDataObjConstRef();
 }
 //______________________________________________________________________________
-std::vector<double> pilaserController::getFastImage()
+std::vector<int> pilaserController::getFastImage()
 {
     return localInterface.getFastImage();
 }
+#ifdef BUILD_DLL
 //______________________________________________________________________________
 boost::python::list pilaserController::getFastImage_Py()
 {
     return toPythonList(getFastImage());
 }
 //______________________________________________________________________________
-
-
+#endif
+void pilaserController::clearRunningValues()
+{
+    return localInterface.clearRunningValues();
+}
 
 
 
