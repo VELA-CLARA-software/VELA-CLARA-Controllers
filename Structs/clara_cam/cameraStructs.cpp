@@ -364,6 +364,8 @@ namespace cameraStructs
         std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
         std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
         HWC_ENUM::MACHINE_AREA  machineArea;
+        size_t array_data_num_pix_x,array_data_num_pix_y;
+        double array_data_x_pix_to_mm,array_data_y_pix_to_mm;
         cameraDAQObject DAQ;
         cameraIAObject IA;
     };

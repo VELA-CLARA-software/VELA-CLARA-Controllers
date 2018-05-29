@@ -41,6 +41,7 @@ namespace UTL
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
     const double TEN_POWER_MINUS_NINE  = 0.000000001;
+    const double TEN_POWER_MINUS_THREE  = 0.001;
     const double ZERO_DOUBLE  = 0.0;
     const double TEN_DOUBLE   = 10.0;
     const double FIVE_DOUBLE  = 5.0;
