@@ -167,6 +167,13 @@ const cameraObject &cameraIAController::getCamIAObjConstRef(const std::string &c
 {
     return localInterface.getCamIAObjConstRef(camName);
 }
+
+const cameraIAObject &cameraIAController::getCameraIAObjConstRef(const std::string &cam)
+{
+    return localInterface.getCameraIAObjConstRef(cam);
+
+}
+
 const cameraObject &cameraIAController::getSelectedIARef()
 {
     return localInterface.getSelectedIARef();

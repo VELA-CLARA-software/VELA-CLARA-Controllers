@@ -79,6 +79,7 @@ class cameraIAController  : public controller
         bool useNPoint(const bool run);
 
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
+        const cameraIAObject &getCameraIAObjConstRef(const std::string &cam);
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();
 

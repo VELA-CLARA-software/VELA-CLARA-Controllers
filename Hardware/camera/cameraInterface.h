@@ -88,6 +88,8 @@ class cameraInterface : public interface
         bool shortCaput(const unsigned short &comm, pvStruct &S);
         bool doubleCaput(const double &comm, pvStruct& S);
 
+        //std::vector<std::string> getCamNames();
+
     protected:
         void addChannel(const std::string &pvRoot, pvStruct &pv);
 

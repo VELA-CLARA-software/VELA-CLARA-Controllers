@@ -55,6 +55,7 @@ class cameraIAInterface : public cameraInterface
         bool startAnalysis();
         bool stopAnalysis();
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
+        const cameraIAObject &cameraIAInterface::getCameraIAObjConstRef(const std::string &cam);
         const cameraObject &getSelectedIARef();
         const cameraObject &getVCIARef();
 
