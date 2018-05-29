@@ -257,6 +257,11 @@ bool  magnetController::entryExistsAndIsDegaussing(const std::string& magName)co
 //{
 //    localInterface.showMagRevType();
 //}
+////____________________________________________________________________________
+magnetStructs::magnetsNotSetCorrectly magnetController::getLastFailedSet()const
+{
+    return localInterface.getLastFailedSet();
+}
 //______________________________________________________________________________
 double magnetController::getRI(const std::string & magName)
 {
@@ -596,6 +601,20 @@ boost::python::list magnetController::getDipNames_Py()
 boost::python::list magnetController::getSolNames_Py()
 {
     return toPythonList(getSolNames());
+}
+//______________________________________________________________________________
+boost::python::list magnetController::getLastFailedSet_Py()const
+{
+    magnetStructs::magnetsNotSetCorrectly ms = getLastFailedSet();
+    boost::python::list r;
+    for(auto&& i = 0; i< ms.magNames.size();++i)
+    {
+        r.append(ms.magNames[i]);
+        r.append(ms.requested_SI[i]);
+        r.append(ms.actual_SI[i]);
+//        temp.clear();
+    }
+    return r;
 }
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetController::getCurrentMagnetState_Py(const boost::python::list& s)

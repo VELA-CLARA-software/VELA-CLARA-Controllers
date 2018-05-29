@@ -106,6 +106,13 @@ namespace magnetStructs
 
     //struct  magnetObject
 
+    struct  magnetsNotSetCorrectly
+    {
+        std::vector<std::string> magNames;
+        std::vector<double> requested_SI;
+        std::vector<double> actual_SI;
+    };
+
     struct  magnetObject
     {
         magnetObject():magType(MAG_TYPE::UNKNOWN_MAGNET_TYPE),

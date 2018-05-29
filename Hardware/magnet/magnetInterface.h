@@ -94,6 +94,9 @@ class magnetInterface : public interface
         vec_s getVCorNames()const;
         vec_s getDipNames()const;
         vec_s getSolNames()const;
+
+        magnetStructs::magnetsNotSetCorrectly getLastFailedSet()const;
+
         /// get the states of the magnets: here in real life
 
         /// and get the states of the magnets: here from a file
@@ -155,7 +158,11 @@ class magnetInterface : public interface
         std::string               getMeasurementDataLocation(const std::string & magName)const;
         vec_s  getMeasurementDataLocation(const std::vector<std::string> & magName)const;
 
-
+        /*
+            contains magnets that failed to set last time
+            is_si_same_as_magnetStateStruct was evaluated
+        */
+        magnetStructs::magnetsNotSetCorrectly lastFailedSet;
 
         /// setters for magnet current, in different flavours
         bool setSI(const std::string & magName,const double value);

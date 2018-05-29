@@ -330,6 +330,9 @@ void magnetInterface::updateRI(const double value,const std::string& magName)
 void magnetInterface::updateGetSI(const double value,const std::string&magName)
 {
     allMagnetData.at(magName).siWithPol = value;
+
+//    if(isACor(magName))
+//        message("update ", magName, " SI  = ", value);
 }
 //______________________________________________________________________________
 void magnetInterface::updateRILK(const unsigned short value,const std::string&magName)
@@ -1258,6 +1261,11 @@ bool magnetInterface::isRIequalSI(const std::string& magName)const
 /////  \__> |___  |   |  |___ |  \ .__/
 /////
 ////____________________________________________________________________________
+magnetStructs::magnetsNotSetCorrectly magnetInterface::getLastFailedSet()const
+{
+    return lastFailedSet;
+}
+////____________________________________________________________________________
 magnetInterface::vec_s magnetInterface::getMagnetNames()const
 {
     vec_s r;
@@ -1424,42 +1432,60 @@ bool magnetInterface::applyMagnetStateStruct(const magnetStructs::magnetStateStr
         }
         switchONpsu(magsToSwitchOn);
         switchOFFpsu(magsToSwitchOff);
-        setSI(magState.magNames, magState.siValues);
+        /*
+            slow this down ....
+        */
+        for(auto&& i = 0 ; i <magState.magNames.size(); ++i)
+        {
+            setSI(magState.magNames[i], magState.siValues[i]);
+        }
     }
     else
     {
         message("Can't apply magnet settings - we are in offline mode");
     }
-    pause_2000();
+    /*
+        YES it cna take many second sto apply magnet settings in real life ...
+    */
+    if(startVirtualMachine)
+    {
+
+    }
+    else
+    {
+        pause_2000();
+        pause_2000();
+    }
     return is_si_same_as_magnetStateStruct(magState);
 }
 //______________________________________________________________________________
 bool magnetInterface::is_si_same_as_magnetStateStruct(const magnetStructs::magnetStateStruct& magState)
 {
-//    bool si_match = true;
-//    for(size_t i = UTL::ZERO_SIZET; i <magState.numMags; ++i)
-//    {
-//        if(magState.psuStates == getMagPSUState(magState.magNames))
-//        {
-//            message("PSU STATES MATCH");
-//            psu_match  = false;
-//        }
-//        else
-//        {
-//            message("PSU STATES DO NOT MATCH");
-//        }
+    bool r = true;
+    std::vector<double> sinow = getSI(magState.magNames);
 
-        if(areSame(magState.siValues,getSI(magState.magNames),0.001))//Magic Number
+    lastFailedSet.magNames.clear();
+    lastFailedSet.requested_SI.clear();
+    lastFailedSet.actual_SI.clear();
+
+    for(auto&& i = 0; i< sinow.size(); ++i)
+    {
+        if(areSame(sinow[i],magState.siValues[i],UTL::TEN_POWER_MINUS_THREE))
         {
-            message("SI MATCH");
-            return true;
+
         }
         else
         {
-            message("SI DO NOT MATCH");
-            return false;
+            message(magState.magNames[i], " req SI = ", magState.siValues[i]," read SI = ", sinow[i]," ARE NOT SAME (TO 0.001) ",
+                    areSame(sinow[i],magState.siValues[i],UTL::TEN_POWER_MINUS_THREE));
+
+            lastFailedSet.magNames.push_back(magState.magNames[i]);
+            lastFailedSet.requested_SI.push_back(magState.siValues[i]);
+            lastFailedSet.actual_SI.push_back(sinow[i]);
+            r = false;
         }
-//    }
+    }
+    return r;
 }
 //______________________________________________________________________________
 using namespace magnetStructs;

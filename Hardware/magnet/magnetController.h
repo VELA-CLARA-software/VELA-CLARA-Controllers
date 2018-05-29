@@ -93,6 +93,7 @@ class magnetController : public controller
         std::vector<std::string> getVCorNames();
         std::vector<std::string> getDipNames();
         std::vector<std::string> getSolNames();
+        magnetStructs::magnetsNotSetCorrectly getLastFailedSet()const;
 
       /// Get Magnet Data
       /// For c++ we allow access to the raw data objects, Python read-only acces
@@ -213,6 +214,9 @@ class magnetController : public controller
         boost::python::list getVCorNames_Py();
         boost::python::list getDipNames_Py();
         boost::python::list getSolNames_Py();
+
+
+        boost::python::list getLastFailedSet_Py()const;
 
 
         magnetStructs::magnetStateStruct getCurrentMagnetState_Py(const boost::python::list& s);
