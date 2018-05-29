@@ -59,7 +59,7 @@ class screenController : public controller
         double getJDiff(const std::string & name);
         double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
         double getPosition(const std::string & name);
-        boost::python::list getScreenNames_Py();
+        //boost::python::list getScreenNames_Py();
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void insertYAG( const std::string & name );
@@ -72,6 +72,7 @@ class screenController : public controller
         bool setScreenTrigger(const std::string & name );
 
 #ifdef BUILD_DLL
+        boost::python::list getScreenNames_Py();
         boost::python::dict getILockStatesStr_Py(std::string& name);
         boost::python::dict getILockStates_Py   (std::string& name);
         boost::python::dict get_SCREEN_STATE_Definition();

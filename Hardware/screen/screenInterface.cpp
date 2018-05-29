@@ -156,7 +156,7 @@ void screenInterface::monitorScreens()
         // iterate over the velaINJscreenObject PvMon
         for( auto && it2 : it1.second.pvMonStructs )
         {
-            std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
+            //std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
 
             addScreenObjectMonitors( it2.second,  it1.second );
 
@@ -825,7 +825,7 @@ bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExi
         return entryExists(allScreentData,name);
 }
 //___________________________________________________________________________________________________________
-std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & name)
+std::vector<bool> screenInterface::c(const std::vector<std::string> & name)
 {
     std::vector<bool> r;
     for( auto && it : name )
@@ -1119,37 +1119,51 @@ void screenInterface::moveScreenTo( const std::string & name, const screenStruct
 //___________________________________________________________________________________________________________
 void screenInterface::insertYAG( const std::string & name )
 {
-    if( isMover(name) )
+    if(entryExists(allScreentData,name))
     {
-        setScreenSDEV( name, screenStructs::SCREEN_STATE::V_YAG );
+        if( isMover(name) )
+        {
+            setScreenSDEV( name, screenStructs::SCREEN_STATE::V_YAG );
+        }
+        else if ( isPneumatic(name) )
+        {
+            setScreenSDEV( name, screenStructs::SCREEN_STATE::YAG );
+        }
+        setScreenTrigger( name );
     }
-    else if ( isPneumatic(name) )
-    {
-        setScreenSDEV( name, screenStructs::SCREEN_STATE::YAG );
-    }
-    setScreenTrigger( name );
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
 }
 //___________________________________________________________________________________________________________
 void screenInterface::moveScreenOut( const std::string & name )
 {
-    if( isMover(name ) )
+    if(entryExists(allScreentData,name))
     {
-        if( allScreentData.at(name).screenHState != screenStructs::SCREEN_STATE::H_RETRACTED )
+        if( isMover(name ) )
         {
-            setScreenSDEV( name, screenStructs::SCREEN_STATE::H_RETRACTED );
-            setScreenTrigger( name, screenStructs::SCREEN_STATE::H_RETRACTED );
+            if( allScreentData.at(name).screenHState  != screenStructs::SCREEN_STATE::UNKNOWN_POSITION)
+            {
+                if( allScreentData.at(name).screenHState != screenStructs::SCREEN_STATE::H_RETRACTED )
+                {
+                    setScreenSDEV( name, screenStructs::SCREEN_STATE::H_RETRACTED );
+                    setScreenTrigger( name, screenStructs::SCREEN_STATE::H_RETRACTED );
+                }
+
+            }
+            else if( allScreentData.at(name).screenVState != screenStructs::SCREEN_STATE::V_RETRACTED )
+            {
+                setScreenSDEV( name, screenStructs::SCREEN_STATE::V_RETRACTED );
+                setScreenTrigger( name, screenStructs::SCREEN_STATE::V_RETRACTED );
+            }
         }
-        else if( allScreentData.at(name).screenVState != screenStructs::SCREEN_STATE::V_RETRACTED )
+        else if( isPneumatic(name) && allScreentData.at(name).screenPState != screenStructs::SCREEN_STATE::RETRACTED )
         {
-            setScreenSDEV( name, screenStructs::SCREEN_STATE::V_RETRACTED );
-            setScreenTrigger( name, screenStructs::SCREEN_STATE::V_RETRACTED );
+            setScreenSDEV( name, screenStructs::SCREEN_STATE::RETRACTED );
+            setScreenTrigger( name, screenStructs::SCREEN_STATE::RETRACTED );
         }
+
     }
-    else if( isPneumatic(name) && allScreentData.at(name).screenPState != screenStructs::SCREEN_STATE::RETRACTED )
-    {
-        setScreenSDEV( name, screenStructs::SCREEN_STATE::RETRACTED );
-        setScreenTrigger( name, screenStructs::SCREEN_STATE::RETRACTED );
-    }
+
 }
 //___________________________________________________________________________________________________________
 void screenInterface::resetPosition( const std::string & name )
