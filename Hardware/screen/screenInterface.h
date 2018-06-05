@@ -41,6 +41,8 @@ class screenInterface: public interface
         bool isHIn(const std::string & name);
         bool isVIn(const std::string & name);
         bool isMover(const std::string & name);
+        bool isVMover(const std::string & name);
+        bool isHVMover(const std::string & name);
         bool isPneumatic(const std::string & name);
         bool is_HandV_OUT(const std::string & name);
         bool isScreenIn(const std::string & name);

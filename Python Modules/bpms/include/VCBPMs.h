@@ -150,6 +150,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("rd2",            &beamPositionMonitorStructs::bpmDataObject::rd2          )
         .def_readonly("q",              &beamPositionMonitorStructs::bpmDataObject::q            )
         .def_readonly("position",       &beamPositionMonitorStructs::bpmDataObject::position     )
+        .def_readonly("xytype",         &beamPositionMonitorStructs::bpmDataObject::xytype       )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>

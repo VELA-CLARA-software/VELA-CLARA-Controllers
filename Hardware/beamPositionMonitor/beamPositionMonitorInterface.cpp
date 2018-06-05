@@ -387,14 +387,28 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     bpmdo->rawBPMDataBuffer.push_back(rawVectorContainer);
     bpmdo->timeStampsBuffer.push_back(bpmdo->timeStamps.back());
 
-    bpmdo->pu1Buffer.push_back(rawVectorContainer[ 1 ]);
-    bpmdo->pu2Buffer.push_back(rawVectorContainer[ 2 ]);
-    bpmdo->c1Buffer.push_back(rawVectorContainer[ 3 ]);
-    bpmdo->p1Buffer.push_back(rawVectorContainer[ 4 ]);
-    bpmdo->pu3Buffer.push_back(rawVectorContainer[ 5 ]);
-    bpmdo->pu4Buffer.push_back(rawVectorContainer[ 6 ]);
-    bpmdo->c2Buffer.push_back(rawVectorContainer[ 7 ]);
-    bpmdo->p2Buffer.push_back(rawVectorContainer[ 8 ]);
+    if( bpmdo->xytype == UTL::Y_FIRST )
+    {
+        bpmdo->pu1Buffer.push_back(rawVectorContainer[ 1 ]);
+        bpmdo->pu2Buffer.push_back(rawVectorContainer[ 2 ]);
+        bpmdo->c1Buffer.push_back(rawVectorContainer[ 3 ]);
+        bpmdo->p1Buffer.push_back(rawVectorContainer[ 4 ]);
+        bpmdo->pu3Buffer.push_back(rawVectorContainer[ 5 ]);
+        bpmdo->pu4Buffer.push_back(rawVectorContainer[ 6 ]);
+        bpmdo->c2Buffer.push_back(rawVectorContainer[ 7 ]);
+        bpmdo->p2Buffer.push_back(rawVectorContainer[ 8 ]);
+    }
+    else if( bpmdo->xytype == UTL::X_FIRST )
+    {
+        bpmdo->pu1Buffer.push_back(rawVectorContainer[ 5 ]);
+        bpmdo->pu2Buffer.push_back(rawVectorContainer[ 6 ]);
+        bpmdo->c1Buffer.push_back(rawVectorContainer[ 7 ]);
+        bpmdo->p1Buffer.push_back(rawVectorContainer[ 8 ]);
+        bpmdo->pu3Buffer.push_back(rawVectorContainer[ 1 ]);
+        bpmdo->pu4Buffer.push_back(rawVectorContainer[ 2 ]);
+        bpmdo->c2Buffer.push_back(rawVectorContainer[ 3 ]);
+        bpmdo->p2Buffer.push_back(rawVectorContainer[ 4 ]);
+    }
 
     double x = calcX( bpmdo->name, bpmdo->pu3Buffer.back(), bpmdo->pu4Buffer.back(), bpmdo->c2Buffer.back(), bpmdo->p2Buffer.back(), bpmdo->mn, bpmdo->xn );
     double y = calcY( bpmdo->name, bpmdo->pu1Buffer.back(), bpmdo->pu2Buffer.back(), bpmdo->c1Buffer.back(), bpmdo->p1Buffer.back(), bpmdo->mn, bpmdo->yn );

@@ -105,6 +105,11 @@ void beamPositionMonitorConfigReader::addToBPMDataObjectsV1( const std::vector<s
             bpmDataObjects.back().pvRoot = keyVal[ 1 ];
     }
 
+    else if( keyVal[0] == UTL::XY_TYPE )
+    {
+        bpmDataObjects.back().xytype = keyVal[ 1 ];
+    }
+
     else if( keyVal[0] == UTL::ATT1CAL )
     {
         bpmDataObjects.back().att1cal = getNumD( keyVal[ 1 ] );
