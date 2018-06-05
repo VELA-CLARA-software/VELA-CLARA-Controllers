@@ -73,6 +73,7 @@ bool vacuumValveConfigReader::readConfig( vacuumValveConfigReader & obj, const s
             trimmedLine = trimAllWhiteSpace( trimToDelimiter( line, UTL::END_OF_LINE ) );
             if( trimmedLine.size() > 0 )
             {
+                //message("trimmedLine = ", trimmedLine);
                 if( stringIsSubString( line, UTL::END_OF_DATA ) )
                 {
                     debugMessage( "Found END_OF_DATA" );
@@ -202,6 +203,7 @@ void vacuumValveConfigReader::addPVStruct( std::vector< vacuumValveStructs::pvSt
 //______________________________________________________________________________
 void vacuumValveConfigReader::addToVacValveObjectsV1( const std::vector<std::string> &keyVal   )
 {
+    //std::cout << "addToVacValveObjectsV1 called " <<std::endl;
     if( keyVal[0] == UTL::NAME )
     {
         /// http://stackoverflow.com/questions/5914422/proper-way-to-initialize-c-structs

@@ -278,10 +278,17 @@ bool vacuumValveController::closeAndWaitValve7( const time_t waitTime )
     return ret;
 }
 //______________________________________________________________________________
-std::vector< std::string > vacuumValveController::getVacValveNames()
+std::vector<std::string> vacuumValveController::getVacValveNames()
 {
     return localInterface.getVacValveNames();
 }
+//______________________________________________________________________________
+#ifdef BUILD_DLL
+boost::python::list vacuumValveController::getVacValveNames_Py()
+{
+    return toPythonList(getVacValveNames());
+}
+#endif
 //______________________________________________________________________________
 double vacuumValveController::get_CA_PEND_IO_TIMEOUT()const
 {

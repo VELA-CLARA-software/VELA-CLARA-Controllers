@@ -47,6 +47,9 @@ class vacuumValveController : public controller
         bool openAndWait( const std::string & vacValveName, const time_t waitTime = 2);
         bool closeAndWait ( const std::string & vacValveName, const time_t waitTime = 2);
         std::vector< std::string > getVacValveNames();
+#ifdef BUILD_DLL
+        boost::python::list getVacValveNames_Py();
+#endif
 
         /// write a method that returns string version of enums using ENUM_TO_STRING
 

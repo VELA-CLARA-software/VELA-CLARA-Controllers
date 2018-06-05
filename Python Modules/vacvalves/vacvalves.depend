@@ -287,17 +287,17 @@
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 	<boost/python/docstring_options.hpp>
 
-1523914300 source:d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\main.cpp
+1524756162 source:d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\main.cpp
 	"main.h"
 
-1523914300 d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\main.h
+1524756162 d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\main.h
 	<windows.h>
 
-1523914301 source:d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\src\vcvacvalves.cpp
+1528112938 source:d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\src\vcvacvalves.cpp
 	"VCvacValves.h"
 	<iostream>
 
-1523914300 d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\include\vcvacvalves.h
+1528198425 d:\vela\git projects\vela-clara-controllers\python modules\vacvalves\include\vcvacvalves.h
 	"vacuumValveController.h"
 	"vacuumValveStructs.h"
 	"VCheader.h"
@@ -308,7 +308,7 @@
 	<map>
 	<list>
 
-1523914290 d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.h
+1528197360 d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.h
 	"vacuumValveStructs.h"
 	"vacuumValveInterface.h"
 	"controller.h"
@@ -316,13 +316,13 @@
 	<string>
 	<vector>
 
-1523914301 d:\vela\git projects\vela-clara-controllers\structs\vacuumvalvestructs.h
+1524756163 d:\vela\git projects\vela-clara-controllers\structs\vacuumvalvestructs.h
 	"structs.h"
 	<string>
 	<map>
 	<cadef.h>
 
-1523913367 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1528111077 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -331,14 +331,14 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1523914290 d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.h
+1528197298 d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.h
 	"interface.h"
 	"vacuumValveStructs.h"
 	"vacuumValveConfigReader.h"
 	<vector>
 	<string>
 
-1523113847 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1527182727 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -347,18 +347,20 @@
 	"baseObject.h"
 	"structs.h"
 
-1523914301 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1527265572 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
 	<iostream>
+	<time.h>
 	<deque>
 	<boost/python.hpp>
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
 	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
 	<boost/python/args.hpp>
 	<boost/python/class.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -368,14 +370,14 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1523914301 d:\vela\git projects\vela-clara-controllers\utilities\vacuumvalveconfigreader.h
+1524756163 d:\vela\git projects\vela-clara-controllers\utilities\vacuumvalveconfigreader.h
 	<string>
 	<vector>
 	<map>
 	"configReader.h"
 	"vacuumValveStructs.h"
 
-1523914301 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+1525377302 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -383,7 +385,7 @@
 	<vector>
 	<cadef.h>
 
-1523913373 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1528111364 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -391,7 +393,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1523913372 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -399,28 +401,28 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1523913372 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1525973840 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1523113847 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1527272331 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
 	<chrono>
 
-1523914290 source:d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
+1528197451 source:d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
 	"vacuumValveController.h"
 	<iostream>
 	"vacuumValveInterface.h"
 
-1523914301 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1525973726 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
 
-1523914301 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+1525973903 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<time.h>
@@ -429,7 +431,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1523914301 source:d:\vela\git projects\vela-clara-controllers\utilities\vacuumvalveconfigreader.cpp
+1524756163 source:d:\vela\git projects\vela-clara-controllers\utilities\vacuumvalveconfigreader.cpp
 	"vacuumValveConfigReader.h"
 	"vacuumValveStructs.h"
 	<iostream>
@@ -441,7 +443,7 @@
 	<algorithm>
 	<ctype.h>
 
-1523914290 source:d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
+1524756152 source:d:\vela\git projects\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
 	"vacuumValveInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -460,7 +462,7 @@
 	<map>
 	<utility>
 
-1523913367 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1527096048 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -482,10 +484,14 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1521808846 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1527092951 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
 	<map>
 	<utility>
+
+1527092959 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
 

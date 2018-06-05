@@ -41,6 +41,8 @@ class vacuumValveInterface : public interface
         void findVacValveNames( std::vector< std::string >  & vacValveNames );
         std::vector< std::string > getVacValveNames();
 
+
+
         void openVacValve( const  std::string & vacValve );
         void closeVacValve( const std::string & vacValve );
         bool isOpen( const std::string & vacValve );

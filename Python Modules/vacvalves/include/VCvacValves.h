@@ -52,6 +52,13 @@ class VCvacValves : public VCbase
         vacuumValveController & offline_CLARA_PH1_Vac_Valve_Controller();
         vacuumValveController & physical_CLARA_PH1_Vac_Valve_Controller();
 
+
+        ///ALL_VELA_CLARA
+        vacuumValveController & virtual_Vac_Valve_Controller();
+        vacuumValveController & offline_Vac_Valve_Controller();
+        vacuumValveController & physical_Vac_Valve_Controller();
+
+
         vacuumValveController & getVacValveController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
     protected:
@@ -83,6 +90,11 @@ class VCvacValves : public VCbase
         vacuumValveController * virtual_CLARA_PH1_Vac_Valve_Controller_Obj;
         vacuumValveController * offline_CLARA_PH1_Vac_Valve_Controller_Obj;
         vacuumValveController * physical_CLARA_PH1_Vac_Valve_Controller_Obj;
+        ///ALL_VELA_CLARA
+        vacuumValveController * virtual_Vac_Valve_Controller_Obj;
+        vacuumValveController * offline_Vac_Valve_Controller_Obj;
+        vacuumValveController * physical_Vac_Valve_Controller_Obj;
+
 };
 
 //#ifdef BUILD_DLL
@@ -126,6 +138,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .def_readonly("name",   &vacuumValveStructs::vacValveObject::name   ,  "valve name")
         .def_readonly("pvRoot", &vacuumValveStructs::vacValveObject::pvRoot,"valve pvRoot")
         .def_readonly("vacValveState",  &vacuumValveStructs::vacValveObject::vacValveState, "valve state")
+        .def_readonly("state",  &vacuumValveStructs::vacValveObject::vacValveState, "valve state")
         .def_readonly("numIlocks",   &vacuumValveStructs::vacValveObject::numIlocks,  "numIlocks")
         ;
 
@@ -154,6 +167,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .def("getVacValveStateStr",             &vacuumValveController::getVacValveStateStr, getVacValveStateString            )
             .def("getILockStates",                  &vacuumValveController::getILockStates, getILockStates              )
             .def("closeVacValve",                   &vacuumValveController::closeVacValve, closeValveString               )
+            .def("close",                           &vacuumValveController::closeVacValve, closeValveString               )
             .def("closeValve1",                     &vacuumValveController::closeValve1                 )
             .def("closeValve2",                     &vacuumValveController::closeValve2                 )
             .def("closeValve3",                     &vacuumValveController::closeValve3                 )
@@ -162,6 +176,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .def("closeValve6",                     &vacuumValveController::closeValve6                 )
             .def("closeValve7",                     &vacuumValveController::closeValve7                 )
             .def("openVacValve",                    &vacuumValveController::openVacValve, openValveString                )
+            .def("open",                            &vacuumValveController::openVacValve, openValveString                )
             .def("openValve1",                      &vacuumValveController::openValve1                  )
             .def("openValve2",                      &vacuumValveController::openValve2                  )
             .def("openValve3",                      &vacuumValveController::openValve3                  )
@@ -185,7 +200,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
             .def("openAndWaitValve5",               &vacuumValveController::openAndWaitValve5           )
             .def("openAndWaitValve6",               &vacuumValveController::openAndWaitValve6           )
             .def("openAndWaitValve7",               &vacuumValveController::openAndWaitValve7           )
-            .def("getVacValveNames",                &vacuumValveController::getVacValveNames, getVacValveNamesString            )
+            .def("getVacValveNames",                &vacuumValveController::getVacValveNames_Py, getVacValveNamesString            )
+            .def("getNames",                        &vacuumValveController::getVacValveNames_Py, getVacValveNamesString            )
 //            .def("closeAndWait",                    &velaVacuumValveController::closeAndWait_Py , vvvc_overloads1()      )
 //            .def("openAndWait",                     &velaVacuumValveController::openAndWait_Py  , vvvc_overloads2()      )
             .def("isClosed",                        &vacuumValveController::isClosed, isClosedString                    )//, boost::python::args("name") )
@@ -212,6 +228,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Vac_Valve_Control )
         .def("virtual_CLARA_PH1_Vac_Valve_Controller",  &VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Vac_Valve_Controller",  &VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Vac_Valve_Controller", &VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+
+
+        .def("virtual_Vac_Valve_Controller", &VCvacValves::virtual_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_Vac_Valve_Controller", &VCvacValves::offline_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_Vac_Valve_Controller", &VCvacValves::physical_Vac_Valve_Controller, return_value_policy<reference_existing_object>())
+
+
         .def("getVacValveController",                   &VCvacValves::getVacValveController, return_value_policy<reference_existing_object>())
         ;
 };

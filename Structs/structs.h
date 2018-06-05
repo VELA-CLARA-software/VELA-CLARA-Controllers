@@ -110,6 +110,7 @@ namespace HWC_ENUM
                                                       (RF_GUN)
                                                       (RF_L01)
                                                       (USER)
+                                                      (ALL_VELA_CLARA)
                                         )
     /* Controller type, defined in controller derived class */
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CONTROLLER_TYPE,(MAGNET)

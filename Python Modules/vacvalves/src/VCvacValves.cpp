@@ -15,7 +15,10 @@ offline_VELA_BA2_Vac_Valve_Controller_Obj(nullptr),
 physical_VELA_BA2_Vac_Valve_Controller_Obj(nullptr),
 virtual_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr),
 offline_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr),
-physical_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr)
+physical_CLARA_PH1_Vac_Valve_Controller_Obj(nullptr),
+virtual_Vac_Valve_Controller_Obj(nullptr),
+offline_Vac_Valve_Controller_Obj(nullptr),
+physical_Vac_Valve_Controller_Obj(nullptr)
 {
     //ctor
 }
@@ -102,6 +105,27 @@ VCvacValves::~VCvacValves()
         delete physical_CLARA_PH1_Vac_Valve_Controller_Obj;
                physical_CLARA_PH1_Vac_Valve_Controller_Obj = nullptr;
     }
+
+/// ALL_VELA_CLARA
+    if(virtual_Vac_Valve_Controller_Obj)
+    {
+        std::cout << "Destructor for physical_Vac_Valve_Controller_Obj called" << std::endl;
+        delete virtual_Vac_Valve_Controller_Obj;
+               virtual_Vac_Valve_Controller_Obj = nullptr;
+    }
+    if(offline_Vac_Valve_Controller_Obj)
+    {
+        std::cout << "Destructor for offline_Vac_Valve_Controller_Obj called" << std::endl;
+        delete offline_Vac_Valve_Controller_Obj;
+               offline_Vac_Valve_Controller_Obj = nullptr;
+    }
+    if(physical_Vac_Valve_Controller_Obj)
+    {
+//        THIS IS THE CULPRIT - ASK DUNCAN ABOUT DESTRUCTORS
+        std::cout << "Destructor for physical_Vac_Valve_Controller_Obj called" << std::endl;
+        delete physical_Vac_Valve_Controller_Obj;
+               physical_Vac_Valve_Controller_Obj = nullptr;
+    }
 }    //dtor
 //______________________________________________________________________________
 vacuumValveController& VCvacValves::getController(vacuumValveController*& cont,
@@ -130,6 +154,14 @@ vacuumValveController& VCvacValves::getController(vacuumValveController*& cont,
                                                  shouldVM,
                                                  myMachineArea);
             case HWC_ENUM::MACHINE_AREA::CLARA_PH1:
+                cont = new vacuumValveController(conf1,
+                                                 messageStates.at(cont).first,
+                                                 messageStates.at(cont).second,
+                                                 shouldEPICS,
+                                                 shouldVM,
+                                                 myMachineArea);
+                break;
+            case HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA:
                 cont = new vacuumValveController(conf1,
                                                  messageStates.at(cont).first,
                                                  messageStates.at(cont).second,
@@ -287,6 +319,43 @@ vacuumValveController& VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller()
                          withoutVM,
                          withEPICS,
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
+}
+//______________________________________________________________________________
+//______________________________________________________________________________
+vacuumValveController& VCvacValves::virtual_Vac_Valve_Controller()
+{
+    std::string name  = "virtual_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    return getController(virtual_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA);
+}
+//______________________________________________________________________________
+vacuumValveController& VCvacValves::offline_Vac_Valve_Controller()
+{
+    std::string name  = "offline_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    return getController(offline_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA);
+}
+//______________________________________________________________________________
+vacuumValveController& VCvacValves::physical_Vac_Valve_Controller()
+{
+    std::string name  = "physical_Vac_Valve_Controller";
+    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    return getController(physical_Vac_Valve_Controller_Obj,
+                         conf1,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA);
 }
 //______________________________________________________________________________
 vacuumValveController & VCvacValves::getVacValveController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
