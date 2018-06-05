@@ -2,6 +2,26 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
+	<File name="..\..\Hardware\vacuumValve\vacuumValveController.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1408" topLine="5" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveController.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1842" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2121" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2193" topLine="30" />
+		</Cursor>
+	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="5676" topLine="85" />
@@ -47,24 +67,5 @@
 			<Cursor1 position="5306" topLine="426" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveController.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1408" topLine="5" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveController.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1842" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2121" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3449" topLine="15" />
-		</Cursor>
-	</File>
+	<EditorTabsLayout layout="0b6506585b1519700000568200000002=*0;screenPYD:..\..\Hardware\screen\screenInterface.cpp,1;screenPYD:..\..\Hardware\screen\screenController.cpp,2;screenPYD:..\..\Hardware\screen\screenInterface.h,3;screenPYD:..\..\Structs\screenStructs.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0b6506585b1519700000568200000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

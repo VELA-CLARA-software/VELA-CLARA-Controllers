@@ -694,6 +694,32 @@ bool screenInterface::isMover(const std::string & name)
     }
 }
 //_________________________________________________________________________________________________________________
+bool screenInterface::isVMover(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) && getScreenType(name) == screenStructs::SCREEN_TYPE::CLARA_V_MOVER )
+    {
+        return true;
+    }
+    else
+    {
+        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+        return false;
+    }
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isHVMover(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) && getScreenType(name) == screenStructs::SCREEN_TYPE::CLARA_HV_MOVER || getScreenType(name) == screenStructs::SCREEN_TYPE::VELA_HV_MOVER )
+    {
+        return true;
+    }
+    else
+    {
+        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+        return false;
+    }
+}
+//_________________________________________________________________________________________________________________
 bool screenInterface::isPneumatic(const std::string & name)
 {
     if( entryExists( allScreentData, name ) && getScreenType(name) == screenStructs::SCREEN_TYPE::VELA_PNEUMATIC  )
