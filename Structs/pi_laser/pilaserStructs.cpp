@@ -1,4 +1,6 @@
+
 #include "pilaserStructs.h"
+#include "pilaserInterface.h"
 //#include <iostream>
 //______________________________________________________________________________
 double pilaserStructs::virtualCathodeDataObject::x_mean()
@@ -51,9 +53,29 @@ double pilaserStructs::virtualCathodeDataObject::sig_xy_sd()
 {
     return sig_xy_rs.StandardDeviation();
 }
+//______________________________________________________________________________
 
 
-
+void pilaserStructs::virtualCathodeDataObject::maskX(const unsigned short  v)
+{
+    interface->setMaskX(v);
+}
+//______________________________________________________________________________
+void pilaserStructs::virtualCathodeDataObject::maskY(const unsigned short  v)
+{
+    interface->setMaskY(v);
+}
+//______________________________________________________________________________
+void pilaserStructs::virtualCathodeDataObject::maskXrad(const unsigned short  v)
+{
+    interface->setMaskXrad(v);
+}
+//______________________________________________________________________________
+void pilaserStructs::virtualCathodeDataObject::maskYrad(const unsigned short  v)
+{
+    interface->setMaskYrad(v);
+}
+//______________________________________________________________________________
 
 
 

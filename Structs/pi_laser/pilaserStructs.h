@@ -86,7 +86,19 @@ namespace pilaserStructs
                                                         (UNKNOWN)
                                                         (WCM_Q)
                                                         (ARRAY_DATA)
-                                        )
+                                                        // VC data
+                                                        (MASK_X)(MASK_Y)(MASK_X_RAD)(MASK_Y_RAD)
+                                                        (X_CENTER_RBV)(Y_CENTER_RBV)
+                                                        (X_CENTER)(Y_CENTER)
+                                                        (MASK_X_RBV)(MASK_Y_RBV)(MASK_X_RAD_RBV)(MASK_Y_RAD_RBV)
+                                                        (STEP_SIZE)
+                                                        (SET_BKGRND)(USE_BKGRND)(USE_NPOINT)
+                                                        (CAM_ACQUIRE_RBV)
+                                                        (CAM_STATUS)
+                                                        (CAM_START_ACQUIRE)
+                                                        (CAM_STOP_ACQUIRE)
+                                                        (PIX_MM)
+                                               )
     struct monitorStruct
     {
         monitorStruct():
@@ -165,7 +177,13 @@ namespace pilaserStructs
             y_pix(UTL::DUMMY_DOUBLE),
             sig_x_pix(UTL::DUMMY_DOUBLE),
             sig_y_pix(UTL::DUMMY_DOUBLE),
-            sig_xy_pix(UTL::DUMMY_DOUBLE)
+            sig_xy_pix(UTL::DUMMY_DOUBLE),
+            mask_x(UTL::ZERO_U_SHORT),
+            mask_y(UTL::ZERO_U_SHORT),
+            mask_x_rad(UTL::ZERO_U_SHORT),
+            mask_y_rad(UTL::ZERO_U_SHORT),
+            pix_2_mm(UTL::DUMMY_DOUBLE),
+            interface(nullptr)
             {};
         double hPos, vPos, hStep, vStep;
         std::string name, pvRoot, x_name, y_name, x_sigma_name, y_sigma_name, cov_name;
@@ -183,6 +201,18 @@ namespace pilaserStructs
         std::vector<int> array_data;
         //std::deque<std::vector<double>> pix_values_buffer;
         runningStat x_rs,y_rs,sig_x_rs,sig_y_rs,sig_xy_rs,x_pix_rs,y_pix_rs,sig_x_pix_rs,sig_y_pix_rs,sig_xy_pix_rs;
+
+
+        double pix_2_mm;
+
+        unsigned short  mask_x,mask_y,mask_x_rad,mask_y_rad;
+
+        void maskX(const unsigned short  v);
+        void maskY(const unsigned short  v);
+        void maskXrad(const unsigned short  v);
+        void maskYrad(const unsigned short  v);
+
+        pilaserInterface* interface;
 
         double x_mean();
         double y_mean();

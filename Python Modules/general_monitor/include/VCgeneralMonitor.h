@@ -1,23 +1,35 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   06-06-2018
+//  FileName:    VCgeneralMonitor.h
+//  Description:
+//
+//
+//*/
 #ifndef _VC_GENERAL_MONITOR_H
-#define _VCgeneralMonitor_H
-// djs part of VELA_CLARA_CONTROLLERS
+#define _VC_GENERAL_MONITOR_H
 //stl
 #include <string>
-#include <vector>
 //
-#include "controller.h"
-#include "structs.h"
+#include "VCheader.h"
+#include "VCbase.h"
 #include "gmStructs.h"
-
-#ifdef BUILD_DLL
-#include <boost/python/detail/wrap_python.hpp>
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/return_value_policy.hpp>
-#endif
-
-class VCgeneralMonitor : public controller// inherits controller for messaging
+//______________________________________________________________________________
+class VCgeneralMonitor : public controller,  public  VCbase// inherits controller for messaging
 {
         // this class allows a user to connect and monitor to a PVname purely by name
         // it is to cover all the cases where a generic hardware controller is not required
@@ -26,13 +38,13 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         // no, i have no plans to do that at the moment
 
     public:
-        VCgeneralMonitor(const bool shouldShowMessage,const bool  shouldShowDebugMessage);
+        VCgeneralMonitor(const bool showmess = false,const bool  showdebug = false);
         ~VCgeneralMonitor();
         // should be base class functions?
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+//        void setQuiet();
+//        void setVerbose();
+//        void setMessage();
+//        void setDebugMessage();
 
         std::string connectPV(const std::string & PVName);
         std::string connectPV(const std::string & PVName,const std::string & PYType );
@@ -40,8 +52,24 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool disconnectPV(const std::string & id );
         size_t getCounter(const std::string& id );
 
+        void clearRunningValues(const std::string& id );
+        bool isRunningStatComplete(const std::string& id);
+        bool isRunningStatNotComplete(const std::string& id);
+
+        void   setRunningStatCountMax(const std::string& id, const size_t value );
+        size_t getRunningStatCountMax(const std::string & id);
+
+
+        size_t getRunningStatCount(const std::string & id);
+
+
 #ifdef BUILD_DLL
         boost::python::object getValue(const std::string& id );
+        boost::python::object getRunningMean(const std::string& id );
+        boost::python::object getRunningStandardDeviation(const std::string& id );
+        boost::python::object getRunningVariance(const std::string& id );
+
+
         boost::python::dict getValue(const boost::python::list& ids);
         //boost::python::dict getValue(const std::vector<std::string>& ids);
         boost::python::object getTotalValue(const std::string& id );
@@ -68,10 +96,10 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
         bool isArrayPV(const std::string& id);
         bool isValidID(const std::string& id);
       /// These are pure virtual methods, so need to have some implmentation in derived classes
-        double get_CA_PEND_IO_TIMEOUT();
+        double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(double val );
-        std::map< VELA_ENUM::ILOCK_NUMBER, VELA_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
-        std::map< VELA_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
+        std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE >  getILockStates( const std::string & name );
+        std::map< HWC_ENUM::ILOCK_NUMBER, std::string  >  getILockStatesStr( const std::string & name );
 
     protected:
 
@@ -158,6 +186,10 @@ class VCgeneralMonitor : public controller// inherits controller for messaging
 
         template<typename T, size_t size>
         size_t GetArrLength(T(&)[size]){ return size; }
+
+        //virtual
+        void updateMessageStates(){};
+
 };//VCgeneralMonitor
 
 #ifdef BUILD_DLL
@@ -245,50 +277,110 @@ const char *isMonitoring_docstring =
     "return true if id is monitoring.";
 const char *disconnectPV_docstring =
     "disconnect ID and cancel EPICS subscriptions.";
+
+const char * clearRunningValues_docstring =
+    "Clear the running mean, variance and standard deviation (automatically re-starts calculating running values";
+const char * getRunningMean_docstring =
+    "Get the running mean value for this id ";
+const char * getRunningStandardDeviation_docstring =
+    "Get the running standard devaition for this id ";
+const char * getRunningVariance_docstring =
+    "Get the running variance for this id ";
+
+
+const char * isRunningStatComplete_docstring =
+   "Returns true if this 'id' has reached the shot count requested for the Running-Statistics calculation.";
+
+const char * isRunningStatNotComplete_docstring =
+   "Returns tyrue if this 'id' has NOT yet reached the shot count requested for the Running-Statistics calculation.";
+
+const char * setRunningStatShotCount_docstring =
+   "Sets the number of shots to include in for the running stats calcualtion for this 'id'";
+const char * getRunningStatCountMax_doc =
+ "Get the running stat. shot count for this id";
+const char * getRunningStatCount_doc =
+ "Get the running stat. maximum number of shots for this id";
+
+
 using namespace boost::python;
 BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
 {
-    // disable c++ signatures from docstrings...
-    docstring_options local_docstring_options(true, true, false);
+    //using namespace boost::python;
+    docstring_options doc_options(true, false, false);
+    doc_options.disable_cpp_signatures();
+    /*
+        Things that you want to use in python muct be exposed:
+        containers
+    */
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
+    /*
+        // IF WE BUILD INDIVIDUAL CONTRLLER S FOR EACH SUB-HARDWRAE SYSTEM
+        // THEN THE DEFINITIONS NEED TO MOVE TO THOSE CLASSES
+        // I.E A VClasermirror.pyd
+        // we can then use pre-processor commands to include thwe desired defintions
+        // similar to   BOOST_PYTHON_INCLUDE::export_BaseObjects();
+    */
+    using namespace UTL;
+    using namespace boost::python;
+    using namespace boost;
 
-    class_<baseObject, boost::noncopyable>("baseObject", no_init)
-        ;
-    // we have to tell boost.python about pure virtual methods in abstract base classes
-    class_<controller,bases<baseObject>,boost::noncopyable>
-        ("controller", no_init) /// force Python to not construct (init) this object
-        .def("get_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT))
-        .def("set_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT))
-        .def("getILockStatesStr",      pure_virtual(&controller::getILockStatesStr)     )
-        .def("getILockStates",         pure_virtual(&controller::getILockStates)        )
-        .def("isSilent",         &controller::isSilent)
-        .def("isVerbose",        &controller::isVerbose)
-        .def("isMessageOn",      &controller::isMessageOn)
-        .def("isDebugMessageOn", &controller::isDebugMessageOn)
-        ;
     /// The main class that creates all the controller obejcts
     //class_<VCgeneralMonitor,boost::noncopyable> ("init")
-    class_<VCgeneralMonitor,bases<controller>, boost::noncopyable> ("init")
-        .def("setDebugMessage", &VCgeneralMonitor::setDebugMessage, setDebugMessage_docstring )
-        .def("setVerbose",      &VCgeneralMonitor::setVerbose,      setVerbose_docstring )
-        .def("setMessage",      &VCgeneralMonitor::setMessage,      setMessage_docstring )
-        .def("setQuiet",        &VCgeneralMonitor::setQuiet,        setQuiet_docstring   )
+    class_<VCgeneralMonitor,bases<controller,VCbase>, boost::noncopyable> ("init")
+
+        .def("getRunningStatCount",  &VCgeneralMonitor::getRunningStatCount,
+                    (ID_ARG,
+                    getRunningStatCountMax_doc))
+
+        .def("getRunningStatCountMax",  &VCgeneralMonitor::getRunningStatCountMax,
+                    (ID_ARG,
+                    getRunningStatCountMax_doc))
+
+        .def("setRunningStatCountMax",  &VCgeneralMonitor::setRunningStatCountMax,
+                        (ID_ARG,VALUE_ARG,
+                        setRunningStatShotCount_docstring))
+
+
+
+        .def("isRunningStatComplete",  &VCgeneralMonitor::isRunningStatComplete,
+                          (ID_ARG,
+                          isRunningStatComplete_docstring))
+        .def("isRunningStatNotComplete",  &VCgeneralMonitor::isRunningStatNotComplete,
+                          (ID_ARG,
+                          isRunningStatNotComplete_docstring))
+
+        .def("clearRunningValues",  &VCgeneralMonitor::clearRunningValues,
+                          (ID_ARG,
+                          clearRunningValues_docstring))
+
+        .def("getRunningMean",  &VCgeneralMonitor::getRunningMean,
+                          (ID_ARG,
+                          getRunningMean_docstring))
+
+        .def("getRunningStandardDeviation",  &VCgeneralMonitor::getRunningStandardDeviation,
+                          (ID_ARG,
+                          getRunningStandardDeviation_docstring))
+
+        .def("getRunningVariance",  &VCgeneralMonitor::getRunningVariance,
+                          (ID_ARG,
+                          getRunningVariance_docstring))
 
         .def("getValue",  getValue_3,
-                          (boost::python::arg("id"),boost::python::arg("start_index"),
+                          (ID_ARG,boost::python::arg("start_index"),
                           boost::python::arg("end_index")),
                           getValue_3_docstring)
 
         .def("getValue",  getValue_2,
-                          (boost::python::arg("id"),boost::python::arg("index")),
+                          (ID_ARG,boost::python::arg("index")),
                           getValue_2_docstring)
 
         .def("getValue",  getValue_4,
-                          (boost::python::arg("ids")),
+                          (IDS_ARG),
                           getValue_4_docstring)
 
         .def("getValue",  getValue_1,
-                          (boost::python::arg("id"),
+                          (ID_ARG,
                           getValue_1_docstring))
 
         .def("connectPV", connectPV_1,
@@ -300,78 +392,78 @@ BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
                           connectPV_2_docstring )
 
         .def("getCounterAndValue", getCounterAndValue_1,
-                                   (boost::python::arg("id"),
+                                   (ID_ARG,
                                    getCounterAndValue_1_docstring))
 
         .def("getCounterAndValue", getCounterAndValue_2,
-                                   (boost::python::arg("ids"),
+                                   (IDS_ARG,
                                    getCounterAndValue_2_docstring))
 
         .def("getPVCount", &VCgeneralMonitor::getPVCount,
-                           (boost::python::arg("id")),
+                           (ID_ARG),
                            getPVCount_docstring)
 
         .def("getTotalValue", &VCgeneralMonitor::getTotalValue,
-                              (boost::python::arg("id"),
+                              (ID_ARG,
                               getTotalValue_docstring))
 
         .def("getCounter", &VCgeneralMonitor::getCounter,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            getCount_docstring))
 
         .def("getCounterAndTotalValue", &VCgeneralMonitor::getCounterAndTotalValue,
-                                        (boost::python::arg("id"),
+                                        (ID_ARG,
                                         getCounterAndTotalValue_docstring))
 
         .def("isStringPV", &VCgeneralMonitor::isStringPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isStringPV_docstring))
 
         .def("isIntPV",    &VCgeneralMonitor::isIntPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isIntPV_docstring))
 
         .def("isFloatPV",  &VCgeneralMonitor::isFloatPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isFloatPV_docstring))
 
         .def("isEnumPV",   &VCgeneralMonitor::isEnumPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isEnumPV_docstring))
 
 
         .def("isCharPV",   &VCgeneralMonitor::isCharPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isCharPV_docstring))
 
         .def("isLongPV",   &VCgeneralMonitor::isLongPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isLongPV_docstring))
 
         .def("isDoublePV", &VCgeneralMonitor::isDoublePV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isDoublePV_docstring))
 
         .def("isArrayPV",  &VCgeneralMonitor::isArrayPV,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isArrayPV_docstring))
 
         .def("isConnected",&VCgeneralMonitor::isConnected,
-                           (boost::python::arg("id"),
+                           (ID_ARG,
                            isConnected_docstring))
 
         .def("isMonitoring",&VCgeneralMonitor::isMonitoring,
-                            (boost::python::arg("id"),
+                            (ID_ARG,
                             isMonitoring_docstring))
 
         .def("disconnectPV",&VCgeneralMonitor::disconnectPV,
-                            (boost::python::arg("id"),
+                            (ID_ARG,
                             disconnectPV_docstring))
 
-        .def("get_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
+        .def("get_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::get_CA_PEND_IO_TIMEOUT) )
 
-        .def("set_CA_PEND_IO_TIMEOUT", boost::python::pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
+        .def("set_CA_PEND_IO_TIMEOUT", pure_virtual(&controller::set_CA_PEND_IO_TIMEOUT) )
         ;
 }
 #endif //#ifdef BUILD_DLL
-#endif // _VCgeneralMonitor_H
+#endif // _VC_GENERAL_MONITOR_H

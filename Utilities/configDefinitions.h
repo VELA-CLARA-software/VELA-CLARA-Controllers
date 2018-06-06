@@ -82,6 +82,7 @@ namespace UTL
     const int    MINUS_ONE_INT= -1;
     const int    MINUS_TWO_INT= -2;
     const unsigned   ONE_UINT = 1;
+    const unsigned short   ZERO_U_SHORT = 0;
 
     const capri PRIORITY_0  = 0;
     const capri PRIORITY_99 = 99;
@@ -970,6 +971,8 @@ namespace UTL
     const boost::python::arg TIME_ARG = boost::python::arg("time");
     const boost::python::arg AREA_ARG = boost::python::arg("mode");
     const boost::python::arg MODE_ARG = boost::python::arg("area");
+    const boost::python::arg ID_ARG   = boost::python::arg("id");
+    const boost::python::arg IDS_ARG   = boost::python::arg("ids");
 #endif //BUILD_DLL
 
 

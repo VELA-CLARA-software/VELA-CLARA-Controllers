@@ -1,8 +1,9 @@
-#ifndef _VELA_CLARA_PIL_STRUCTS_H_
-#define _VELA_CLARA_PIL_STRUCTS_H_
+#ifndef _VELA_CLARA_GM_STRUCTS_H_
+#define _VELA_CLARA_GM_STRUCTS_H_
 //
 #include "structs.h"
 #include "configDefinitions.h"
+#include "running_stat.h"
 //stl
 #include <string>
 #include <vector>
@@ -34,11 +35,21 @@ namespace gmStructs
     };
     template <typename T>
     struct dataEntry
-    {   dataEntry():c(0){}
+    {   dataEntry():
+            c(0),
+            rs_count(0),
+            rs_count_max(0),
+            rs_complete(false)
+        {}
         epicsTimeStamp t; // epics timestamp for value
         double         s; // epics timestamp doncerted into nano-sec
         size_t         c; // count, how mnay times has epics updated this value
         T              v; // the actual value EPICS is to update
+        runningStat    rs; //running_stat
+        size_t         rs_count; //running_stat
+        size_t         rs_count_max; //running_stat
+        bool           rs_complete;
+
     };
     // monType could be used to switch in the staticCallbackFunction
     // For the shutter this is basically redundant, there is only one monitor: "Sta"

@@ -227,6 +227,8 @@ void cameraIAConfigReader::addToPVStruct( std::vector< pvStruct > & pvStruct_v, 
             pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_X_RAD;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RAD  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::MASK_Y_RAD;
+
+
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_PIX_MM  )
             pvStruct_v.back().pvType = CAM_PV_TYPE::PIX_MM;
         else if( keyVal[0] == UTL::PV_IA_SUFFIX_STEP_SIZE  )

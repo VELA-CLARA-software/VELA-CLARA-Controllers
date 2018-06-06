@@ -48,6 +48,11 @@ class pilaserConfigReader:public configReader
         std::vector<pilaserStructs::pvStruct> pvComStructs;
         void addCOUNT_MASK_OR_CHTYPE(std::vector<pilaserStructs::pvStruct>& pvStruct_v,
                                      const std::vector<std::string>& keyVal);
+
+        void addPVStruct(std::vector< pilaserStructs::pvStruct>& pvs,
+                                      pilaserStructs::PILASER_PV_TYPE pvType,
+                                      const std::string& pvSuffix);
+
         void addPVStruct(std::vector< pilaserStructs::pvStruct>& pvs,
                          const std::vector<std::string>& keyVal);
         void addTopilaserObjectsV1(const std::vector<std::string>& keyVal);

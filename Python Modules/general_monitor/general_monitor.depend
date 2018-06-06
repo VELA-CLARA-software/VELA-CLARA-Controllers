@@ -1,20 +1,23 @@
 # depslib dependency file v1.0
-1503047352 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1525973726 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
+	"configDefinitions.h"
 	<time.h>
 
-1503323828 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1527265572 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
 	<iostream>
+	<time.h>
 	<deque>
 	<boost/python.hpp>
 	<boost/python/detail/wrap_python.hpp>
 	<boost/python.hpp>
 	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
 	<boost/python/args.hpp>
 	<boost/python/class.hpp>
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -22,13 +25,14 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
 
-1503044142 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1525973840 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1503048297 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -36,20 +40,25 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1499099270 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1527182727 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
+	<chrono>
+	<thread>
 	"baseObject.h"
 	"structs.h"
 
-1499161166 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1528111077 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
 	<string>
 	<vector>
+	<map>
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1503064272 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
+1528287692 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
 	<iostream>
 	<iomanip>
 	<numeric>
@@ -59,29 +68,62 @@
 	<epicsTime.h>
 	"VCgeneralMonitor.h"
 
-1504093320 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
+1528288037 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
 	<string>
-	<vector>
-	"controller.h"
-	"structs.h"
+	"VCheader.h"
+	"VCbase.h"
 	"gmStructs.h"
-	<boost/python/detail/wrap_python.hpp>
-	<boost/python.hpp>
-	<boost/python/suite/indexing/vector_indexing_suite.hpp>
-	<boost/python/suite/indexing/map_indexing_suite.hpp>
-	<boost/python/return_value_policy.hpp>
 
-1499099638 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
+1528286483 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
 	"structs.h"
 	"configDefinitions.h"
+	"running_stat.h"
 	<string>
 	<vector>
 	<map>
 	<cadef.h>
 	<epicsTime.h>
 
-1503485875 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1528286734 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1527092959 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1527092951 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1527096048 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1527590870 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
 

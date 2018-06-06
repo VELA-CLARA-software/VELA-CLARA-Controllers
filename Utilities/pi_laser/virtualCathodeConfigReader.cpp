@@ -14,7 +14,7 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   29-03-2018
+//  Last edit:   05-06-2018
 //  FileName:    virtualCathodeConfigReader.h
 //  Description:
 //
@@ -241,6 +241,22 @@ void virtualCathodeConfigReader::addToPVMonitorMapV1(const std::vector<std::stri
             {
                  addToPVStruct(pvMonStructs,PILASER_PV_TYPE::H_POS,keyVal[ONE_SIZET]);
             }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RBV  )
+            {
+                addToPVStruct(pvMonStructs, PILASER_PV_TYPE::MASK_X_RBV,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RBV)
+            {
+                addToPVStruct(pvMonStructs, PILASER_PV_TYPE::MASK_Y_RBV,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RAD_RBV)
+            {
+                addToPVStruct(pvMonStructs, PILASER_PV_TYPE::MASK_X_RAD_RBV,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RAD_RBV)
+            {
+                addToPVStruct(pvMonStructs, PILASER_PV_TYPE::MASK_Y_RAD_RBV,keyVal[ONE_SIZET]);
+            }
         }
         /*
             we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
@@ -300,6 +316,51 @@ void virtualCathodeConfigReader::addToPVCommandMapV1(const std::vector<std::stri
             {
                 addToPVStruct(pvComStructs, PILASER_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
             }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X  )
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::MASK_X,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y  )
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::MASK_Y,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_X_RAD  )
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::MASK_X_RAD,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_MASK_Y_RAD  )
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::MASK_Y_RAD,keyVal[ONE_SIZET]);
+            }
+
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_PIX_MM  )
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::PIX_MM,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_STEP_SIZE  )
+            {
+                addToPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::STEP_SIZE,keyVal[ONE_SIZET]);
+            }
+
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_SET_B  )
+            {
+                addToPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::SET_BKGRND,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_B  )
+            {
+                addToPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::USE_BKGRND,keyVal[ONE_SIZET]);
+            }
+            else if( keyVal[0] == UTL::PV_IA_SUFFIX_USE_NPOINT  )
+            {
+                addToPVStruct(pvComStructs, PILASER_PV_TYPE::USE_NPOINT,keyVal[ONE_SIZET]);
+            }
+
+
+//            else if( keyVal[0] == UTL::PV_IA_SUFFIX_PIX_MM  )
+//            {
+//                addToPVStruct(pvComStructs, PILASER_PV_TYPE::STEP_SIZE,keyVal[ONE_SIZET]);
+//            }
+
             //debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
         }
         /*
@@ -310,7 +371,7 @@ void virtualCathodeConfigReader::addToPVCommandMapV1(const std::vector<std::stri
             we can actually get EPICS to fill in these values for us
         */
         else
-            addCOUNT_MASK_OR_CHTYPE(pvComStructs, keyVal );
+            addCOUNT_MASK_OR_CHTYPE(pvComStructs, keyVal);
     }// close not using vm
 }
 //______________________________________________________________________________
