@@ -176,7 +176,10 @@
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/cameraIAConfigReader.cpp" />
-		<Unit filename="../../Utilities/cameraIAConfigReader.h" />
+		<Unit filename="../../Utilities/camera/cameraDAQConfigReader.cpp" />
+		<Unit filename="../../Utilities/camera/cameraDAQConfigReader.h" />
+		<Unit filename="../../Utilities/camera/cameraIAConfigReader.cpp" />
+		<Unit filename="../../Utilities/camera/cameraIAConfigReader.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />

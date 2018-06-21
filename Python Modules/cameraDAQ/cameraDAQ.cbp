@@ -58,6 +58,7 @@
 					<Add directory="../../Config" />
 					<Add directory="../../Hardware/camera" />
 					<Add directory="../../Hardware/camera/cameraDAQ/" />
+					<Add directory="../../Utilities/camera" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -81,12 +82,14 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
-		<Unit filename="../../Structs/cameraStructs.h" />
+		<Unit filename="../../Structs/cameraStructs_OLD.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/cameraDAQConfigReader.cpp" />
 		<Unit filename="../../Utilities/cameraDAQConfigReader.h" />
+		<Unit filename="../../Utilities/camera/cameraDAQConfigReader.cpp" />
+		<Unit filename="../../Utilities/camera/cameraDAQConfigReader.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
