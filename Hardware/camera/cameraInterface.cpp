@@ -28,7 +28,6 @@ cameraInterface::cameraInterface(bool& show_messages_ptr,
 interface(show_messages_ptr, show_debug_messages_ptr),
 selectedCameraRef(selectedCameraObj),
 vcCameraRef(vcCameraObj)
-
 {
 }
 cameraInterface::~cameraInterface()
@@ -40,6 +39,7 @@ void cameraInterface::addChannel( const std::string & pvRoot, pvStruct & pv )
     ca_create_channel( s1.c_str(), 0, 0, 0, &pv.CHID );
     debugMessage( "Create channel to ", s1 );
 }
+
 ///Functions Accessible to Python Controller///
 bool cameraInterface::isON ( const std::string & cam )
 {

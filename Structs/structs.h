@@ -131,6 +131,7 @@ namespace HWC_ENUM
                                                         (IMG)
                                                         (RF_MOD)
                                                         (RF_PROT)
+                                                        (CAMERA)
                                                         (UNKNOWN_CONTROLLER_TYPE)
                                         )
     /* INTERLOCK STATES (LEGACY FROM WHEN WE THOUGHT HARDWARE WAS HARMONISED*/

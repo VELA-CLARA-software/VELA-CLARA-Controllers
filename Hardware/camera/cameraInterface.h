@@ -15,7 +15,7 @@
 #ifndef CAM_INTERFACE_H
 #define CAM_INTERFACE_H
 //tp
-#include "cameraStructs.h"
+#include "cameraStructs_OLD.h"
 #include "interface.h"
 //stl
 #include <string>
@@ -77,13 +77,15 @@ class cameraInterface : public interface
         bool stopVCAcquiring();
         vec_s getCameraNames();
 
+
+
+        //bool setCamera(const std::string &cam);
         ///Useful Functions for the Controller///
         bool isCollecting(const std::string&cameraName);
         bool isSaving(const std::string&cameraName);
-
-
         bool isCollectingJPG(const std::string&cameraName);
         bool isSavingJPG(const std::string&cameraName);
+
         std::string useCameraFrom(const std::string camOrScreen);
         bool shortCaput(const unsigned short &comm, pvStruct &S);
         bool doubleCaput(const double &comm, pvStruct& S);

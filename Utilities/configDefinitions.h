@@ -104,6 +104,7 @@ namespace UTL
     const std::chrono::milliseconds PAUSE_1000(1000);
     const std::chrono::milliseconds PAUSE_300(300);
     const std::chrono::milliseconds PAUSE_500(500);
+    const std::chrono::milliseconds PAUSE_50(50);
     const std::chrono::milliseconds PAUSE_1(1);
     const std::chrono::milliseconds PAUSE_2(2);
     const std::string  UNKNOWN_STRING = "UNKNOWN";
@@ -268,8 +269,9 @@ namespace UTL
 /// PI Laser
     /// PI Laser configs
     const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
-    const std::string VIRTUAL_CATHODE_ANALYSIS = "virtualCathodeData.config";
-    const std::string PIL_MIRROR_CONFIG        = "photoInjectorLaserMirror.config";
+    const std::string CLARA_IMAGE_DATA_CONFIG  = "claraCam.config";
+    const std::string CLARA_CAMERA_CONFIG  = "claraCam.config";
+    const std::string PIL_MIRROR_CONFIG        = "laserTransportMirrorConfigReader.config";
     const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
     // laser PVs
     const std::string PV_SUFFIX_PIL_STABILISATION = "PV_SUFFIX_PIL_STABILISATION";
@@ -289,21 +291,19 @@ namespace UTL
     const std::string PV_SUFFIX_WCM_CHARGE = "PV_SUFFIX_WCM_CHARGE";
 
 
-    const std::string X_POS = "X_POS";
-    const std::string Y_POS = "Y_POS";
-    const std::string X_SIGMA_POS = "X_SIGMA_POS";
-    const std::string Y_SIGMA_POS = "Y_SIGMA_POS";
-    const std::string COV_POS = "COV_POS";
-    const std::string X_NAME = "X_NAME";
-    const std::string Y_NAME = "Y_NAME";
-    const std::string X_SIGMA_NAME = "X_SIGMA_NAME";
-    const std::string Y_SIGMA_NAME = "Y_SIGMA_NAME";
-    const std::string COV_NAME = "COV_NAME";
+    const std::string X = "X";
+    const std::string Y = "Y";
+    const std::string X_SIGMA = "X_SIGMA";
+    const std::string Y_SIGMA = "Y_SIGMA";
+    const std::string XY_SIGMA = "XY_SIGMA";
+
+    const std::string CAM_TYPE = "CAM_TYPE";
+
     const std::string RESULTS_COUNT = "RESULTS_COUNT";
     const std::string PV_ROOT_Q = "PV_ROOT_Q";
     const std::string STEP_MAX = "STEP_MAX";
 
-/// fast cam
+/// camera
     const std::string PV_SUFFIX_START     = "PV_SUFFIX_START";
     //const std::string PV_SUFFIX_STOP      = "PV_SUFFIX_STOP";
     const std::string PV_SUFFIX_GAIN      = "PV_SUFFIX_GAIN";
@@ -312,7 +312,6 @@ namespace UTL
     const std::string PV_SUFFIX_GAIN_RBV  = "PV_SUFFIX_GAIN_RBV";
     const std::string PV_SUFFIX_BLACK_RBV = "PV_SUFFIX_BLACK_RBV";
     const std::string PV_SUFFIX_CAM_STATE = "PV_SUFFIX_CAM_STATE";
-    const std::string CAM_TYPE            = "CAM_TYPE";
     const std::string SCREEN              = "SCREEN";
     const std::string X_PIX_2_MM          = "X_PIX_2_MM";
     const std::string Y_PIX_2_MM          = "Y_PIX_2_MM";
@@ -734,11 +733,11 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_CAPTURE_RBV     ="PV_DAQ_SUFFIX_CAPTURE_RBV";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE     ="PV_DAQ_SUFFIX_NUM_CAPTURE";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_RBV ="PV_DAQ_SUFFIX_NUM_CAPTURE_RBV";
-    const std::string PV_DAQ_SUFFIX_NUM_CAPTURED    ="PV_DAQ_SUFFIX_NUM_CAPTURED";
-    const std::string PV_DAQ_SUFFIX_WRITE_CHECK     ="PV_DAQ_SUFFIX_WRITE_CHECK";
-    const std::string PV_DAQ_SUFFIX_WRITE_MESSAGE   ="PV_DAQ_SUFFIX_WRITE_MESSAGE";
-    const std::string PV_DAQ_SUFFIX_WRITE           ="PV_DAQ_SUFFIX_WRITE";
-    const std::string PV_DAQ_SUFFIX_WRITE_RBV       ="PV_DAQ_SUFFIX_WRITE_RBV";
+    const std::string PV_DAQ_SUFFIX_NUM_CAPTURED_RBV="PV_DAQ_SUFFIX_NUM_CAPTURED";
+    const std::string PV_DAQ_SUFFIX_SAVE_CHECK     ="PV_DAQ_SUFFIX_SAVE_CHECK";
+    const std::string PV_DAQ_SUFFIX_SAVE_MESSAGE   ="PV_DAQ_SUFFIX_SAVE_MESSAGE";
+    const std::string PV_DAQ_SUFFIX_SAVE           ="PV_DAQ_SUFFIX_SAVE";
+    const std::string PV_DAQ_SUFFIX_SAVE_RBV       ="PV_DAQ_SUFFIX_SAVE_RBV";
     const std::string PV_DAQ_SUFFIX_DATA            ="PV_DAQ_SUFFIX_DATA";
     const std::string PV_DAQ_SUFFIX_BKGRND_DATA     ="PV_DAQ_SUFFIX_BKGRND_DATA";
     const std::string PV_DAQ_SUFFIX_FILE_PATH       ="PV_DAQ_SUFFIX_FILE_PATH";
@@ -754,20 +753,16 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_FILE_NAME_J     ="PV_DAQ_SUFFIX_FILE_NAME_J";
     const std::string PV_DAQ_SUFFIX_CAPTURE_J       ="PV_DAQ_SUFFIX_CAPTURE_J";
     const std::string PV_DAQ_SUFFIX_FILE_NUMBER_J   ="PV_DAQ_SUFFIX_FILE_NUMBER_J";
-    const std::string PV_DAQ_SUFFIX_WRITE_J         ="PV_DAQ_SUFFIX_WRITE_J";
+    const std::string PV_DAQ_SUFFIX_SAVE_J         ="PV_DAQ_SUFFIX_SAVE_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_J   ="PV_DAQ_SUFFIX_NUM_CAPTURE_J";
 
     const std::string PV_DAQ_SUFFIX_CAPTURE_RBV_J   ="PV_DAQ_SUFFIX_CAPTURE_RBV_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURED_J  ="PV_DAQ_SUFFIX_NUM_CAPTURED_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J="PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J";
-    const std::string PV_DAQ_SUFFIX_WRITE_CHECK_J   ="PV_DAQ_SUFFIX_WRITE_CHECK_J";
-    const std::string PV_DAQ_SUFFIX_WRITE_RBV_J     ="PV_DAQ_SUFFIX_WRITE_RBV_J";
-    const std::string PV_DAQ_SUFFIX_WRITE_MESSAGE_J ="PV_DAQ_SUFFIX_WRITE_MESSAGE_J";
+    const std::string PV_DAQ_SUFFIX_SAVE_CHECK_J   ="PV_DAQ_SUFFIX_SAVE_CHECK_J";
+    const std::string PV_DAQ_SUFFIX_SAVE_RBV_J     ="PV_DAQ_SUFFIX_SAVE_RBV_J";
+    const std::string PV_DAQ_SUFFIX_SAVE_MESSAGE_J ="PV_DAQ_SUFFIX_SAVE_MESSAGE_J";
 
-    const std::string AD_NUM_PIX_X  = "AD_NUM_PIX_X";
-    const std::string AD_NUM_PIX_Y  = "AD_NUM_PIX_Y";
-    const std::string AD_X_PIX_2_MM = "AD_X_PIX_2_MM";
-    const std::string AD_Y_PIX_2_MM = "AD_Y_PIX_2_MM";
 
     ///IA///
     const std::string PV_IA_SUFFIX_CAM_STATE        ="PV_IA_SUFFIX_CAM_STATE";
@@ -782,44 +777,78 @@ namespace UTL
     const std::string PV_IA_SUFFIX_START_IA_RBV    ="PV_IA_SUFFIX_START_IA_RBV";
     const std::string PV_IA_SUFFIX_USE_B_RBV       ="PV_IA_SUFFIX_USE_B_RBV";
     const std::string PV_IA_SUFFIX_USE_NPOINT_RBV  ="PV_IA_SUFFIX_USE_NPOINT_RBV";
+
+
+    // image dimensions read then set
     const std::string PV_IA_SUFFIX_CENTER_X_RBV    ="PV_IA_SUFFIX_CENTER_X_RBV";
     const std::string PV_IA_SUFFIX_CENTER_Y_RBV    ="PV_IA_SUFFIX_CENTER_Y_RBV";
+    const std::string PV_IA_SUFFIX_PIX_MM_RBV      ="PV_IA_SUFFIX_PIX_MM_RBV";
+    const std::string PV_IA_SUFFIX_CENTER_X         ="PV_IA_SUFFIX_CENTER_X";
+    const std::string PV_IA_SUFFIX_CENTER_Y         ="PV_IA_SUFFIX_CENTER_Y";
+    const std::string PV_IA_SUFFIX_PIX_MM           ="PV_IA_SUFFIX_PIX_MM";
+
+
+    // mask read
     const std::string PV_IA_SUFFIX_MASK_X_RBV      ="PV_IA_SUFFIX_MASK_X_RBV";
     const std::string PV_IA_SUFFIX_MASK_Y_RBV      ="PV_IA_SUFFIX_MASK_Y_RBV";
     const std::string PV_IA_SUFFIX_MASK_X_RAD_RBV  ="PV_IA_SUFFIX_MASK_X_RAD_RBV";
     const std::string PV_IA_SUFFIX_MASK_Y_RAD_RBV  ="PV_IA_SUFFIX_MASK_Y_RAD_RBV";
-
-    const std::string PV_IA_SUFFIX_CENTER_X         ="PV_IA_SUFFIX_CENTER_X";
-    const std::string PV_IA_SUFFIX_CENTER_Y         ="PV_IA_SUFFIX_CENTER_Y";
+    // mask setters
     const std::string PV_IA_SUFFIX_MASK_X           ="PV_IA_SUFFIX_MASK_X";
     const std::string PV_IA_SUFFIX_MASK_Y           ="PV_IA_SUFFIX_MASK_Y";
     const std::string PV_IA_SUFFIX_MASK_X_RAD       ="PV_IA_SUFFIX_MASK_X_RAD";
     const std::string PV_IA_SUFFIX_MASK_Y_RAD       ="PV_IA_SUFFIX_MASK_Y_RAD";
-    const std::string PV_IA_SUFFIX_PIX_MM           ="PV_IA_SUFFIX_PIX_MM";
-    const std::string PV_IA_SUFFIX_STEP_SIZE        ="PV_IA_SUFFIX_STEP_SIZE";
 
-    const std::string PV_IA_SUFFIX_X                ="PV_IA_SUFFIX_X";
-    const std::string PV_IA_SUFFIX_Y                ="PV_IA_SUFFIX_Y" ;
-    const std::string PV_IA_SUFFIX_SIGMA_X          ="PV_IA_SUFFIX_SIGMA_X";
-    const std::string PV_IA_SUFFIX_SIGMA_Y          ="PV_IA_SUFFIX_SIGMA_Y";
-    const std::string PV_IA_SUFFIX_COV_XY           ="PV_IA_SUFFIX_COV_XY";
-    const std::string PV_IA_SUFFIX_X_PIX            ="PV_IA_SUFFIX_X_PIX";
-    const std::string PV_IA_SUFFIX_Y_PIX            ="PV_IA_SUFFIX_Y_PIX";
-    const std::string PV_IA_SUFFIX_SIGMA_X_PIX      ="PV_IA_SUFFIX_SIGMA_X_PIX";
-    const std::string PV_IA_SUFFIX_SIGMA_Y_PIX      ="PV_IA_SUFFIX_SIGMA_Y_PIX";
-    const std::string PV_IA_SUFFIX_COV_XY_PIX       ="PV_IA_SUFFIX_COV_XY_PIX";
-    const std::string PV_IA_SUFFIX_AV_PIX_INTENSITY ="PV_IA_SUFFIX_AV_PIX_INTENSITY";
-    const std::string PV_IA_SUFFIX_PIXEL_RESULTS    ="PV_IA_SUFFIX_PIXEL_RESULTS";
+    // stepsize
+    const std::string PV_IA_SUFFIX_STEP_SIZE        = "PV_IA_SUFFIX_STEP_SIZE";
+    const std::string PV_IA_SUFFIX_STEP_SIZE_RBV    = "PV_IA_SUFFIX_STEP_SIZE_RBV";
+
+    // analysis answers
+    const std::string PV_IA_SUFFIX_X_RBV                ="PV_IA_SUFFIX_X_RBV";
+    const std::string PV_IA_SUFFIX_Y_RBV                ="PV_IA_SUFFIX_Y_RBV" ;
+    const std::string PV_IA_SUFFIX_SIGMA_X_RBV          ="PV_IA_SUFFIX_SIGMA_X_RBV";
+    const std::string PV_IA_SUFFIX_SIGMA_Y_RBV          ="PV_IA_SUFFIX_SIGMA_Y_RBV";
+    const std::string PV_IA_SUFFIX_COV_XY_RBV           ="PV_IA_SUFFIX_COV_XY_RBV";
+    // ans in pixel
+    const std::string PV_IA_SUFFIX_X_PIX_RBV            ="PV_IA_SUFFIX_X_PIX_RBV";
+    const std::string PV_IA_SUFFIX_Y_PIX_RBV            ="PV_IA_SUFFIX_Y_PIX_RBV";
+    const std::string PV_IA_SUFFIX_SIGMA_X_PIX_RBV      ="PV_IA_SUFFIX_SIGMA_X_PIX_RBV";
+    const std::string PV_IA_SUFFIX_SIGMA_Y_PIX_RBV      ="PV_IA_SUFFIX_SIGMA_Y_PIX_RBV";
+    const std::string PV_IA_SUFFIX_COV_XY_PIX_RBV       ="PV_IA_SUFFIX_COV_XY_PIX_RBV";
+    // intensity
+    const std::string PV_IA_SUFFIX_AV_PIX_INTENSITY_RBV ="PV_IA_SUFFIX_AV_PIX_INTENSITY_RBV";
+    const std::string PV_IA_SUFFIX_SUM_PIX_INTENSITY_RBV    ="PV_IA_SUFFIX_SUM_PIX_INTENSITY_RBV";
+    // array of all answers
+    const std::string PV_IA_SUFFIX_PIXEL_RESULTS_RBV    ="PV_IA_SUFFIX_PIXEL_RESULTS_RBV";
+
 
     // Camera Object Components
     const std::string SCREEN_NAME               ="SCREEN_NAME";
-    const std::string X_MASK_RAD                ="X_MASK_RAD";
-    const std::string Y_MASK_RAD                ="Y_MASK_RAD";
-    const std::string X_MASK                    ="X_MASK";
-    const std::string Y_MASK                    ="Y_MASK";
-    const std::string X_CENTER                  ="X_CENTER";
-    const std::string Y_CENTER                  ="Y_CENTER";
-    const std::string PIX_2_MM_RATIO            ="PIX_2_MM_RATIO";
+    const std::string X_MASK_RAD_DEF                ="X_MASK_RAD_DEF";
+    const std::string Y_MASK_RAD_DEF                ="Y_MASK_RAD_DEF";
+    const std::string X_MASK_DEF                    ="X_MASK_DEF";
+    const std::string Y_MASK_DEF                    ="Y_MASK_DEF";
+    const std::string X_CENTER_DEF                  ="X_CENTER_DEF";
+    const std::string Y_CENTER_DEF                  ="Y_CENTER_DEF";
+    const std::string PIX_2_MM_RATIO_DEF            ="PIX_2_MM_RATIO_DEF";
+
+    const std::string ARRAY_DATA_NUM_PIX_X  = "ARRAY_DATA_NUM_PIX_X";
+    const std::string ARRAY_DATA_NUM_PIX_Y  = "ARRAY_DATA_NUM_PIX_Y";
+    const std::string ARRAY_DATA_X_PIX_2_MM  = "ARRAY_DATA_X_PIX_2_MM";
+    const std::string ARRAY_DATA_Y_PIX_2_MM  = "ARRAY_DATA_Y_PIX_2_MM";
+
+    const std::string SENSOR_MAX_TEMP = "SENSOR_MAX_TEMP";
+    const std::string SENSOR_MIN_TEMP = "SENSOR_MIN_TEMP";
+
+    /*
+        the VIRTUAL_CATHODE name is hardcoded, due to it being so
+        fundamnetal to camera images and becauise its on a seperate
+        system that is always running the naem in the config file
+        is changed some VC specific function smay not work
+    */
+    const std::string VIRTUAL_CATHODE = "VIRTUAL_CATHODE";
+
+
     const std::string MAX_SHOTS_NUMBER          ="MAX_SHOTS_NUMBER";
     const std::string IP_ADDRESS_STREAM         ="IP_ADDRESS_STREAM";
 

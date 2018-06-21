@@ -46,7 +46,7 @@ class editor;
 
 class offlineImageAnalyser;
 
-namespace cameraStructs
+namespace cameraStructs_TP
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_PV_TYPE,
         (TEST)(CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
@@ -369,6 +369,30 @@ namespace cameraStructs
         cameraDAQObject DAQ;
         cameraIAObject IA;
     };
+
+
+    struct cameraObject
+    {
+        cameraObject() : name(UTL::UNKNOWN_NAME),
+                         pvRoot(UTL::UNKNOWN_PVROOT),
+                         screenName(UTL::UNKNOWN_STRING),
+                         streamingIPAddress(UTL::UNKNOWN_STRING),
+                         state(CAM_ERROR) {}
+        std::string name, pvRoot, screenName, streamingIPAddress;
+        CAM_STATE state;
+        // Rolling acquire
+        ACQUIRE_STATE acquireState;
+        //std::vector<camDataType> rawData;
+        //std::vector<camDataType> rawBackgroundData;
+        std::map< CAM_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< CAM_PV_TYPE, pvStruct > pvComStructs;
+        HWC_ENUM::MACHINE_AREA  machineArea;
+        size_t array_data_num_pix_x,array_data_num_pix_y;
+        double array_data_x_pix_to_mm,array_data_y_pix_to_mm;
+        cameraDAQObject DAQ;
+        cameraIAObject IA;
+    };
+
 
 
 }

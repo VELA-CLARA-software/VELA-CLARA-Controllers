@@ -109,7 +109,7 @@ baseObject(show_messages, show_debug_messages,"from config"),
 useVM(usingVM)
 {
     counter += UTL::ONE_SIZET;
-    message("configReader base constructed, cont  = ",counter );
+    //message("configReader base constructed, cont  = ",counter );
 }
 //______________________________________________________________________________
 configReader::~configReader(){}

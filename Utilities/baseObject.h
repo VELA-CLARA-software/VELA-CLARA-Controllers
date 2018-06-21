@@ -46,6 +46,7 @@
 #include <boost/python/overloads.hpp>
 #include <boost/python/stl_iterator.hpp>
 #include <boost/circular_buffer.hpp>
+#include <boost/python/numpy.hpp>
 #endif
 //______________________________________________________________________________
 class baseObject
@@ -61,10 +62,7 @@ class baseObject
         baseObject(const bool& show_messages,
                    const bool& show_debug_messages,const std::string& message);
         baseObject& baseObject::operator= ( const baseObject& other ) = delete;
-        /*  protected destructor to make sure this class is never instantiated
-            the compiler won't let us call delete on any base class pointers */
-   protected:
-        ~baseObject();
+
 
         static size_t basecount;
 
@@ -102,7 +100,7 @@ class baseObject
                  typename D = std::string, typename E = std::string,
                  typename F = std::string, typename G = std::string,
                  typename H = std::string
-                 >
+                >
         void debugMessage(const T p1,
                           const U p2  = "", const V p3 = "", const W p4  = "",
                           const X p5  = "", const Y p6 = "", const Z p7  = "",
@@ -123,7 +121,7 @@ class baseObject
                  typename D = std::string,typename E = std::string,
                  typename F = std::string,typename G = std::string,
                  typename H = std::string
-                 >
+                >
         void message(const T p1,
                      const U p2  = "", const V p3 = "", const W p4  = "",
                      const X p5  = "", const Y p6 = "", const Z p7  = "",
@@ -144,7 +142,7 @@ class baseObject
                  typename D = std::string,typename E = std::string,
                  typename F = std::string,typename G = std::string,
                  typename H = std::string
-                 >
+                >
         void printMessage(const T p1,
                           const U p2  = "", const V p3 = "", const W p4  = "",
                           const X p5  = "", const Y p6 = "", const Z p7  = "",
@@ -155,7 +153,7 @@ class baseObject
         {
             std::stringstream ss;
             ss<<p1<<p2<<p3<<p4<<p5<<p6<<p7<<p8<<p9<<p10<<p11<<p12<<p13<<p14<<p15;
-            std::cout << ss.str() << std::endl;
+            std::cout <<ss.str() <<std::endl;
         }
 
         template<typename T = int>
@@ -164,7 +162,7 @@ class baseObject
             if(a.size() != b.size() )
                 return false;
             for(auto&& it1 = a.begin(), it2 = b.begin();
-                it1 < a.end() && it2 < b.end();
+                it1 <a.end() && it2 <b.end();
                 ++it1, ++it2 )
             {
                 if(std::abs(it1 - it2) <epsilon)
@@ -179,6 +177,9 @@ class baseObject
            }
            return true;
         }
+
+        bool isDummyName(const std::string& name )const;
+        bool isNotDummyName(const std::string& name )const;
 
 
         template<typename T = int>
@@ -256,7 +257,7 @@ class baseObject
         }
 
         template<class T,  class U>
-        boost::python::dict toPythonDict(std::map<T, U> m) const
+        boost::python::dict toPythonDict(std::map<T, U> m)
         {
             boost::python::dict dictionary;
             for(auto&&it:m)
@@ -267,15 +268,16 @@ class baseObject
         }
 
         template<class T>
-        boost::python::dict enumStringMapToPythonDict(std::map<T,std::string> m) const
+        boost::python::dict enumStringMapToPythonDict(const std::map<T,std::string>& m) const
         {
             boost::python::dict dictionary;
             for(auto&& it : m)
                 dictionary[(int)it.first] = it.second;
             return dictionary;
         }
+
         template <class T>
-        boost::python::list toPythonList(std::vector<std::vector<T>> vector) const
+        boost::python::list toPythonList(const std::vector<std::vector<T>>& vector) const
         {
             typename std::vector<std::vector<T>>::iterator iter;
             typename std::vector<T>::iterator iter2;
@@ -292,30 +294,71 @@ class baseObject
             }
             return list;
         }
+
+
         template <class T>
-        boost::python::list toPythonList(std::vector<T> vector) const
+        boost::python::list toPythonList2D(const std::vector<T>& vec,const size_t num_row, const size_t num_col) const
         {
-            typename std::vector<T>::iterator iter;
             boost::python::list list;
-            for (iter = vector.begin(); iter != vector.end(); ++iter)
+            if(vec.size() == num_row *num_col )
+            {
+                boost::python::list list2;
+                size_t counter = UTL::ZERO_SIZET;
+                for(auto&& it: vec)
+                {
+                    list2.append(it);
+                    counter +=  UTL::ONE_SIZET;
+                    if( counter  == num_col )
+                    {
+                        list.append(list2);
+                        //list2[boost::python::slice()]);
+                        list2();
+                        counter = UTL::ZERO_SIZET;
+
+//                    del(mylist[slice()]);
+                    }
+                }
+            }
+            return list;
+        }
+
+        template<class T>
+        std::vector<T> deque_to_vector(const std::deque<T>& d)const
+        {
+            std::vector<T> v(d.size());
+            //std::copy(v.begin(), v.end(), std::back_inserter(d));
+            return v;
+        }
+        template <class T>
+        boost::python::list toPythonList(const std::vector<T>& v)const
+        {
+            typename std::vector<T>::const_iterator iter;
+            boost::python::list list;
+            for(iter = v.begin(); iter != v.end(); ++iter)
             {
                 list.append(*iter);
             }
             return list;
         }
         template <class T>
-        boost::python::list toPythonList(std::deque<T> deque) const
+        boost::python::list toPythonList(const std::deque<std::vector<T>>& d)const
         {
-            typename std::deque<T>::iterator iter;
             boost::python::list list;
-            for (iter = deque.begin(); iter != deque.end(); ++iter)
+            for (auto it = d.cbegin(); it != d.cend(); ++it)
             {
-                list.append(*iter);
+                list.append(toPythonList<T>(*it));
             }
             return list;
         }
+
+
         template <class T>
-        boost::python::list toPythonList(boost::circular_buffer<T> circular_buffer) const
+        boost::python::list toPythonList(const std::deque<T>& d)const
+        {
+            return toPythonList<T>( deque_to_vector<T>(d));
+        }
+        template <class T>
+        boost::python::list toPythonList(const boost::circular_buffer<T>& circular_buffer)const
         {
             typename boost::circular_buffer<T>::iterator iter;
             boost::python::list list;
@@ -325,7 +368,37 @@ class baseObject
             }
             return list;
         }
+        /*
+            https://stackoverflow.com/questions/10701514/how-to-return-numpy-array-from-boostpython
+            had real troubl etemplating these so roll your own for each type :(
+
+            the answer is probably in here:
+            https://www.boost.org/doc/libs/1_63_0/libs/python/doc/html/numpy/tutorial/ndarray.html
+        */
+        template <class T>
+        boost::python::numpy::ndarray toNumPyArray(const std::vector<T> & v )const
+        {
+            namespace p = boost::python;
+            namespace np = boost::python::numpy;
+            p::object own;
+            p::tuple shape = p::make_tuple(v.size());
+            p::tuple stride = p::make_tuple(sizeof(T));
+            np::dtype dt = np::dtype::get_builtin<T>();
+            return np::from_data(&v[0], dt, shape, stride, own);
+            //boost::python::numpy::ndarray r;
+            //return r;
+        }
+        template <class T>
+        boost::python::numpy::ndarray toNumPyArray(const std::deque<T> & d)const
+        {
+            return toNumPyArray<T>(deque_to_vector<T>(d));
+        }
+
 #endif
-    private:
+        /*  protected destructor to make sure this class is never instantiated
+            the compiler won't let us call delete on any base class pointers */
+   protected:
+        ~baseObject();
+        private:
 };
 #endif //BASE_OBJECT_H

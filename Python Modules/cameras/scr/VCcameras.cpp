@@ -1,23 +1,36 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   18-06-2018
+//  FileName:    VCcameras.cpp
+//  Description:
+//
+//
+//*/
 #include "VCcameras.h"
 //stl
 #include <iostream>
 #include <string>
 
 VCcameras::VCcameras():
+VCbase("VCcameras"),
 virtual_Camera_Controller_Obj(nullptr),
 offline_Camera_Controller_Obj(nullptr),
 physical_Camera_Controller_Obj(nullptr),
-withEPICS(true),
-withoutEPICS(false),
-withoutVM(false),
-withVM(true),
-VELA_INJ ( VELA_ENUM::MACHINE_AREA::VELA_INJ ),
-VELA_BA1 ( VELA_ENUM::MACHINE_AREA::VELA_BA1 ),
-VELA_BA2 ( VELA_ENUM::MACHINE_AREA::VELA_BA2 ),
-CLARA_PH1( VELA_ENUM::MACHINE_AREA::CLARA_PH1),
-UNKNOWN_AREA(VELA_ENUM::MACHINE_AREA::UNKNOWN_AREA),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is show messages!!
+claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 {
     std::cout << "Instantiated a VCcameras in Quiet Mode" << std::endl;
     //ctor
@@ -25,67 +38,85 @@ shouldShowMessage(false)//default is show messages!!
 //______________________________________________________________________________
 VCcameras::~VCcameras()
 {
+    //dtor
+    if(virtual_Camera_Controller_Obj)
+    {
+        delete virtual_Camera_Controller_Obj;
+               virtual_Camera_Controller_Obj = nullptr;
+    }
+    if(offline_Camera_Controller_Obj)
+    {
+        delete offline_Camera_Controller_Obj;
+               offline_Camera_Controller_Obj = nullptr;
+    }
+    if(physical_Camera_Controller_Obj)
+    {
+        delete physical_Camera_Controller_Obj;
+               physical_Camera_Controller_Obj = nullptr;
+    }
 }
 //______________________________________________________________________________
-void VCcameras::setQuiet()
+cameraControllerBase& VCcameras::physical_Camera_Controller()
 {
-    std::cout << "VCcameras Quiet Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = false;
+    std::string name = "physical_Camera_Controller";
+    std::cout <<"physical_Camera_Controller" <<std::endl;
+    return getController(physical_Camera_Controller_Obj,
+                         name,
+                         withoutVM,
+                         withEPICS);
 }
 //______________________________________________________________________________
-void VCcameras::setVerbose()
+cameraControllerBase& VCcameras::virtual_Camera_Controller()
 {
-    std::cout << "VCcameras Verbose Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = true;
+    std::string name = "virtual_Camera_Controller";
+    std::cout <<"virtual_Camera_Controller" <<std::endl;
+    return getController(virtual_Camera_Controller_Obj,
+                         name,
+                         withVM,
+                         withEPICS);
 }
 //______________________________________________________________________________
-void VCcameras::setMessage()
+cameraControllerBase& VCcameras::offline_Camera_Controller()
 {
-    std::cout << "VCcameras Message Mode Set." << std::endl;
-    shouldShowDebugMessage = false;
-    shouldShowMessage = true;
+    std::string name = "offline_CLARA_Camera_Controller";
+    std::cout <<"offline_CLARA_Camera_Controller" <<std::endl;
+    return getController(offline_Camera_Controller_Obj,
+                         name,
+                         withoutVM,
+                         withoutEPICS);
 }
 //______________________________________________________________________________
-void VCcameras::setDebugMessage()
-{
-    std::cout << "VCcameras DebugMessage Mode Set." << std::endl;
-    shouldShowDebugMessage = true;
-    shouldShowMessage = false;
-}
-//______________________________________________________________________________
-cameraController& VCcameras::physical_CLARA_Camera_Controller()
-{
-    std::string cconf = UTL::CONFIG_PATH + UTL::CAMERA_CONFIG;
-    std::string name  = "physical_CLARA_Camera_Controller";
-    return getController(physical_Camera_Controller_Obj,cconf,name,withoutVM,withEPICS,CLARA_PH1);
-}
-//______________________________________________________________________________
-cameraController& VCcameras::virtual_CLARA_Camera_Controller()
-{
-    std::string mconf = UTL::CONFIG_PATH + UTL::CAMERA_CONFIG;
-    std::string name  = "virtual_CLARA_Camera_Controller";
-    return getController(virtual_Camera_Controller_Obj,mconf,name,withVM,withEPICS,CLARA_PH1);
-}
-//______________________________________________________________________________
-cameraController& VCcameras::offline_CLARA_Camera_Controller()
-{
-    std::string mconf = UTL::CONFIG_PATH + UTL::CAMERA_CONFIG;
-    std::string name  = "offline_CLARA_Camera_Controller";
-    return getController(offline_Camera_Controller_Obj,mconf,name,withoutVM,withoutEPICS,CLARA_PH1);
-}
-//______________________________________________________________________________
-cameraController& VCcameras::getController(cameraController * cont,const std::string& conf,const std::string & name, const bool shouldVM, const bool shouldEPICS, const VELA_ENUM::MACHINE_AREA myMachineArea )
+cameraControllerBase& VCcameras::getController(cameraControllerBase*& cont,
+                                           const std::string& name,
+                                           const bool shouldVM,
+                                           const bool shouldEPICS)
 {
     if(cont)
     {
-        std::cout << name  << " object already exists," << std::endl;
+        std::cout <<name <<" object already exists," <<std::endl;
     }
     else
     {
-        std::cout << "Creating " << name << " object" << std::endl;
-        cont = new cameraController(shouldShowMessage, shouldShowDebugMessage, conf, shouldVM, shouldEPICS, myMachineArea);
+        messageStates[cont].first     = shouldShowMessage;
+        messageStates.at(cont).second = shouldShowDebugMessage;
+        std::cout << "Creating " << name << " object" <<std::endl;
+        cont = new cameraControllerBase(messageStates.at(cont).first,
+                                        messageStates.at(cont).second,
+                                        shouldVM,
+                                        shouldEPICS,
+                                        name,
+                                        claraCamConfig,
+                                        HWC_ENUM::CONTROLLER_TYPE::CAMERA,
+                                        false);
     }
     return *cont;
+}
+//______________________________________________________________________________
+void VCcameras::updateMessageStates()
+{
+    for(auto&& it:messageStates)
+    {
+        it.second.first  = shouldShowMessage;
+        it.second.second = shouldShowDebugMessage;
+    }
 }
