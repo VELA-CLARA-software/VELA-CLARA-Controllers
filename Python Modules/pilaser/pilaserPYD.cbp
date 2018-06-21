@@ -20,6 +20,7 @@
 					<Add option="/D_DEBUG" />
 					<Add option="/MDd" />
 					<Add directory="include" />
+					<Add directory="Hardware/camera" />
 				</Compiler>
 				<Linker>
 					<Add option="/debug" />
@@ -43,6 +44,7 @@
 					<Add option="/W3" />
 					<Add option="/EHsc" />
 					<Add option="/DBUILD_DLL" />
+					<Add option="/D__INCLUDE_CAMERA_BASE__" />
 					<Add option="/DNDEBUG" />
 					<Add directory="include" />
 					<Add directory="../../Hardware" />
@@ -63,10 +65,14 @@
 					<Add directory="../../Hardware/pilaser_mirror" />
 					<Add directory="../../Structs/pi_laser" />
 					<Add directory="../../Utilities/pi_laser" />
+					<Add directory="Hardware/camera" />
+					<Add directory="../../Structs/camera" />
+					<Add directory="../../Utilities/camera" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
 					<Add library="user32" />
+					<Add library="C:/boost/boost_1_63_0/stage/lib/libboost_numpy-vc120-mt-1_63.lib" />
 				</Linker>
 				<ExtraCommands>
 					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
@@ -78,6 +84,10 @@
 		<Unit filename="../../Hardware/VCheader.h">
 			<Option target="Debug" />
 		</Unit>
+		<Unit filename="../../Hardware/camera/cameraBase.cpp" />
+		<Unit filename="../../Hardware/camera/cameraBase.h" />
+		<Unit filename="../../Hardware/camera/cameraControllerBase.cpp" />
+		<Unit filename="../../Hardware/camera/cameraControllerBase.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
@@ -86,34 +96,27 @@
 		<Unit filename="../../Hardware/pilaser/pilaserController.h" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.cpp" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.h" />
-		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeController.cpp">
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeController.h">
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeInterface.cpp">
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="../../Hardware/virtual_cathode/virtualCathodeInterface.h">
-			<Option target="Debug" />
-		</Unit>
+		<Unit filename="../../Structs/camera/cameraStructs.cpp" />
+		<Unit filename="../../Structs/camera/cameraStructs.h" />
+		<Unit filename="../../Structs/pi_laser/pilaserStructs.cpp" />
 		<Unit filename="../../Structs/pi_laser/pilaserStructs.h" />
-		<Unit filename="../../Structs/pi_laser/virtualCathodeStructs.h" />
 		<Unit filename="../../Structs/structs.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
+		<Unit filename="../../Utilities/camera/claraCameraConfigReader.cpp" />
+		<Unit filename="../../Utilities/camera/claraCameraConfigReader.h" />
 		<Unit filename="../../Utilities/configDefinitions.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
+		<Unit filename="../../Utilities/pi_laser/laserTransportMirrorConfigReader.cpp" />
+		<Unit filename="../../Utilities/pi_laser/laserTransportMirrorConfigReader.h" />
 		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.cpp" />
 		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.h" />
-		<Unit filename="../../Utilities/pi_laser/virtualCathodeConfigReader.cpp" />
-		<Unit filename="../../Utilities/pi_laser/virtualCathodeConfigReader.h" />
+		<Unit filename="../../Utilities/running_stat.h" />
 		<Unit filename="include/VCpilaser.h" />
 		<Unit filename="src/VCpilaser.cpp" />
 		<Extensions>

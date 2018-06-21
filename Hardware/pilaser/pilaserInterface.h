@@ -25,36 +25,37 @@
 // djs
 #include "interface.h"
 #include "pilaserStructs.h"
+#include "cameraStructs.h"
 #include "structs.h"
 #include "pilaserConfigReader.h"
-#include "virtualCathodeConfigReader.h"
+#include "laserTransportMirrorConfigReader.h"
+
+#include "cameraBase.h"
+
 //stl
 #include <vector>
 #include <string>
 #include <atomic>
 #include <map>
 //______________________________________________________________________________
-class pilaserInterface : public interface
+class pilaserInterface : public cameraBase
 {
     public:
 
-        typedef std::vector<bool> vec_b;
-        typedef std::vector< std::string > vec_s;
-        typedef std::vector<double> vec_d;
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
-        typedef std::map<HWC_ENUM::ILOCK_NUMBER,std::string> IlockMap2;
-
-        //pilaserInterface::pilaserInterface();
         pilaserInterface(bool& show_messages,
                          bool& show_debug_messages,
                          const bool startVirtualMachine,
                          const bool shouldStartEPICs,
-                         const std::string& vcMirrorConfig,
-                         const std::string& vcDataConfig,
-                         const std::string& pilaserConfig
+                            const std::string& pilaserConf,
+                            const std::string& claraCamConfig,
+                            const std::string& piLaserMirrorConf,
+                            const std::string& imageDataConfig
                          );
         pilaserInterface& pilaserInterface::operator= ( const pilaserInterface& other ) = delete;
         ~pilaserInterface();
+
+
+
 
         int  setHWP(const double value);
         double getHWP();
@@ -72,47 +73,18 @@ class pilaserInterface : public interface
         bool disableStabilisation();
         bool enableStabilisation();
 
-        const pilaserStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
-        const pilaserStructs::pilaserObject&   getPILObjConstRef() const;
-        const pilaserStructs::virtualCathodeDataObject&   getVCDataObjConstRef() const;
+        const pilaserStructs::pilMirrorObject&  getpilMirrorObjConstRef() const;
+        const pilaserStructs::pilaserObject&    getPILObjConstRef() const;
+
+
+        //const cameraStructs::analysis_data& getVCDataObjConstRef() const;
 
         double getHpos() const;
         double getVpos() const;
 
-        std::deque<double> getXBuffer()const;
-        std::deque<double> getYBuffer()const;
-        std::deque<double> getSigXBuffer()const;
-        std::deque<double> getSigYBuffer()const;
-        std::deque<double> getSigXYBuffer()const;
-        std::deque<double> getXPixBuffer()const;
-        std::deque<double> getYPixBuffer()const;
-        std::deque<double> getSigXPixBuffer()const;
-        std::deque<double> getSigYPixBuffer()const;
-        std::deque<double> getSigXYPixBuffer()const;
-        std::deque<double> getQBuffer()const;
 
-        std::vector<double> getPixelValues()const;
-        std::deque<std::vector<double>> getPixelValuesBuffer()const;
-
-        std::vector<int> getFastImage();
-
-
-        void clearRunningValues();
-
-        bool isBufferFull();
-        bool isBufferNotFull();
-
-        double getX()const;
-        double getY()const;
-        double getSigX()const;
-        double getSigY()const;
-        double getSigXY()const;
-        double getXPix()const;
-        double getYPix()const;
-        double getSigXPix()const;
-        double getSigYPix()const;
-        double getSigXYPix()const;
         double getQ()const;
+        std::vector<double> getQBuffer()const;
 
         bool setHpos(const double value);
         bool setVpos(const double value);
@@ -125,10 +97,8 @@ class pilaserInterface : public interface
         bool moveH();
         bool moveV();
 
-        void setBufferSize(const size_t s);
-        size_t getBufferCount();
-        size_t getBufferSize();
-        void clearBuffer();
+
+
 
         bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
     private:
@@ -140,7 +110,9 @@ class pilaserInterface : public interface
         void startMonitors();
 
         void killMonitor(pilaserStructs::monitorStruct* ms);
-//
+
+        bool shortCaput(unsigned short comm, pilaserStructs::pvStruct& S);
+
 //
         std::vector<pilaserStructs::monitorStruct*> continuousMonitorStructs;
 //        // all EPICS callbacks route here
@@ -150,13 +122,16 @@ class pilaserInterface : public interface
 
 
         pilaserStructs::pilaserObject pilaser;
-        pilaserConfigReader configReader;
 
-        virtualCathodeConfigReader vcConfigReader;
+        pilaserConfigReader configReader;
+        laserTransportMirrorConfigReader ltMirrorConfigReader;
+
+        //cameraStructs::cameraObject  vcCamObj;
+        //cameraStructs::cameraObject& vcCamObjRef;
 
         void updateAnalysisBuffers();
 
-        void addToBuffer(const double val,std::deque<double>& buffer);
+        void addToBuffer(const double val,std::vector<double>& buffer);
         void updatePixelResults(const event_handler_args& args);
 
         //bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;

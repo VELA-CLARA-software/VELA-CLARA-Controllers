@@ -25,11 +25,12 @@
 //
 #include "structs.h"
 #include "configDefinitions.h"
+#include "cameraStructs.h"
 #include "running_stat.h"
 //stl
 #include <string>
 #include <map>
-#include <deque>
+#include <vector>
 //epics
 #ifndef __CINT__
 #include <cadef.h>
@@ -37,13 +38,12 @@
 
 #ifdef BUILD_DLL
 #include <boost/python.hpp>
-//#include <boost/python/class.hpp>
-//#include <boost/python/module.hpp>
-//#include <boost/python/def.hpp>
-//#include <boost/python/scope.hpp>
 #endif
 
+
+// forward declare classes/structs to avoid circular dependency
 class pilaserInterface;
+//https://stackoverflow.com/questions/2059665/why-cant-i-forward-declare-a-class-in-a-namespace-using-double-colons
 
 namespace pilaserStructs
 {
@@ -60,18 +60,7 @@ namespace pilaserStructs
                                                         (STATUS)
                                                         (HALF_WAVE_PLATE_SET)
                                                         (HALF_WAVE_PLATE_READ)
-                                                        (X_RBV)
-                                                        (Y_RBV)
-                                                        (SIGMA_X_RBV)
-                                                        (SIGMA_Y_RBV)
-                                                        (COV_XY_RBV)
-                                                        (X_PIX)
-                                                        (Y_PIX)
-                                                        (SIGMA_X_PIX)
-                                                        (SIGMA_Y_PIX)
-                                                        (COV_XY_PIX)
                                                         (VC_INTENSITY)
-                                                        (PIXEL_RESULTS)
                                                         (H_POS)
                                                         (V_POS)
                                                         (H_MREL)
@@ -83,26 +72,13 @@ namespace pilaserStructs
                                                         (H_STOP)
                                                         (V_STOP)
                                                         (POS_UPDATE)
-                                                        (UNKNOWN)
                                                         (WCM_Q)
-                                                        (ARRAY_DATA)
-                                                        // VC data
-                                                        (MASK_X)(MASK_Y)(MASK_X_RAD)(MASK_Y_RAD)
-                                                        (X_CENTER_RBV)(Y_CENTER_RBV)
-                                                        (X_CENTER)(Y_CENTER)
-                                                        (MASK_X_RBV)(MASK_Y_RBV)(MASK_X_RAD_RBV)(MASK_Y_RAD_RBV)
-                                                        (STEP_SIZE)
-                                                        (SET_BKGRND)(USE_BKGRND)(USE_NPOINT)
-                                                        (CAM_ACQUIRE_RBV)
-                                                        (CAM_STATUS)
-                                                        (CAM_START_ACQUIRE)
-                                                        (CAM_STOP_ACQUIRE)
-                                                        (PIX_MM)
+                                                        (UNKNOWN_PILASER_PV_TYPE)
                                                )
     struct monitorStruct
     {
         monitorStruct():
-            monType(UNKNOWN),
+            monType(PILASER_PV_TYPE::UNKNOWN_PILASER_PV_TYPE),
             interface(nullptr),
             EVID(nullptr),
             object(nullptr)
@@ -125,7 +101,7 @@ namespace pilaserStructs
             pvSuffix(UTL::UNKNOWN_STRING),
             COUNT(UTL::ZERO_UL),
             MASK(UTL::ZERO_UL),
-            pvType(UNKNOWN)
+            pvType(PILASER_PV_TYPE::UNKNOWN_PILASER_PV_TYPE)
             {}
         PILASER_PV_TYPE    pvType;
         chid          CHID;
@@ -151,111 +127,6 @@ namespace pilaserStructs
     };
 
     // The main hardware object holds ...
-    struct virtualCathodeDataObject
-    {
-        virtualCathodeDataObject():
-            name(UTL::UNKNOWN_NAME),
-            pvRoot(UTL::UNKNOWN_PVROOT),
-            buffer_size(UTL::BUFFER_HUNDRED),
-            x_pos(UTL::DUMMY_SIZET),
-            y_pos(UTL::DUMMY_SIZET),
-            x_sigma_pos(UTL::DUMMY_SIZET),
-            y_sigma_pos(UTL::DUMMY_SIZET),
-            cov_pos(UTL::DUMMY_SIZET),
-            x_name(UTL::UNKNOWN_NAME),
-            y_name(UTL::UNKNOWN_NAME),
-            x_sigma_name(UTL::UNKNOWN_NAME),
-            y_sigma_name(UTL::UNKNOWN_NAME),
-            cov_name(UTL::UNKNOWN_NAME),
-            buffer_full(false),
-            x(UTL::DUMMY_DOUBLE),
-            y(UTL::DUMMY_DOUBLE),
-            sig_x(UTL::DUMMY_DOUBLE),
-            sig_y(UTL::DUMMY_DOUBLE),
-            sig_xy(UTL::DUMMY_DOUBLE),
-            x_pix(UTL::DUMMY_DOUBLE),
-            y_pix(UTL::DUMMY_DOUBLE),
-            sig_x_pix(UTL::DUMMY_DOUBLE),
-            sig_y_pix(UTL::DUMMY_DOUBLE),
-            sig_xy_pix(UTL::DUMMY_DOUBLE),
-            mask_x(UTL::ZERO_U_SHORT),
-            mask_y(UTL::ZERO_U_SHORT),
-            mask_x_rad(UTL::ZERO_U_SHORT),
-            mask_y_rad(UTL::ZERO_U_SHORT),
-            pix_2_mm(UTL::DUMMY_DOUBLE),
-            interface(nullptr)
-            {};
-        double hPos, vPos, hStep, vStep;
-        std::string name, pvRoot, x_name, y_name, x_sigma_name, y_sigma_name, cov_name;
-        size_t buffer_size, buffer_count, x_pos, y_pos, x_sigma_pos, y_sigma_pos, cov_pos,results_count;
-        double x,y,sig_x,sig_y,sig_xy,x_pix,y_pix,sig_x_pix,sig_y_pix,sig_xy_pix;
-        std::deque<double> x_buf,y_buf,sig_x_buf,sig_y_buf,sig_xy_buf,x_pix_buf,y_pix_buf,sig_x_pix_buf,sig_y_pix_buf,sig_xy_pix_buf;
-        bool buffer_full;
-        /*
-            time stamped pixel array readback
-        */
-        std::vector<double> pix_values;
-        std::deque<std::vector<double>> pix_values_buffer;
-        std::string pix_values_time;
-
-        std::vector<int> array_data;
-        //std::deque<std::vector<double>> pix_values_buffer;
-        runningStat x_rs,y_rs,sig_x_rs,sig_y_rs,sig_xy_rs,x_pix_rs,y_pix_rs,sig_x_pix_rs,sig_y_pix_rs,sig_xy_pix_rs;
-
-
-        double pix_2_mm;
-
-        unsigned short  mask_x,mask_y,mask_x_rad,mask_y_rad;
-
-        void maskX(const unsigned short  v);
-        void maskY(const unsigned short  v);
-        void maskXrad(const unsigned short  v);
-        void maskYrad(const unsigned short  v);
-
-        pilaserInterface* interface;
-
-        double x_mean();
-        double y_mean();
-        double sig_x_mean();
-        double sig_y_mean();
-        double sig_xy_mean();
-
-        double x_pix_mean();
-        double y_pix_mean();
-        double sig_x_pix_mean();
-        double sig_y_pix_mean();
-        double sig_xy_pix_mean();
-
-        double x_sd();
-        double y_sd();
-        double sig_x_sd();
-        double sig_y_sd();
-        double sig_xy_sd();
-
-        double x_pix_sd();
-        double y_pix_sd();
-        double sig_x_pix_sd();
-        double sig_y_pix_sd();
-        double sig_xy_pix_sd();
-
-
-
-        /*
-            this map is defined in the config file
-            and tells us which element is which
-            analysis data for the pixel array RBV
-        */
-        std::map<size_t, std::string> pixel_values_pos;
-        std::map<std::string, double> pixel_values;
-#ifdef BUILD_DLL
-        boost::python::dict pixel_values_dict;
-#endif
-        pilMirrorObject mirror;
-        std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
-        std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
-    };
-
-    // The main hardware object holds ...
     struct pilaserObject
     {
         pilaserObject():
@@ -269,9 +140,10 @@ namespace pilaserStructs
             pvRoot(UTL::UNKNOWN_PVROOT)
             {};
         std::string name, pvRoot,pvRootQ;
+        cameraStructs::cameraObject vcCam;
         double intensity,setCharge,HWP,Q;
-        std::deque<double> Q_buf;
-        virtualCathodeDataObject vcData;
+        std::vector<double> Q_buf;
+        pilMirrorObject             mirror;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;

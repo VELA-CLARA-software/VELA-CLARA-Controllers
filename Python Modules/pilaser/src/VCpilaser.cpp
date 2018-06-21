@@ -29,10 +29,11 @@ virtual_pilaser_Controller_Obj(nullptr),
 offline_pilaser_Controller_Obj(nullptr),
 physical_pilaser_Controller_Obj(nullptr),
 pilaserConf(UTL::APCLARA1_CONFIG_PATH + UTL::PI_LASER_CONFIG),
-vcAnalysisConf(UTL::APCLARA1_CONFIG_PATH + UTL::VIRTUAL_CATHODE_ANALYSIS),
-piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG)
+imageDataConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_IMAGE_DATA_CONFIG),
+piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG),
+claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 {
-    std::cout << "Instantiated a VCpilaser in Quiet Mode" << std::endl;
+    std::cout <<"Instantiated a VCpilaser in Quiet Mode" <<std::endl;
     //ctor
 }
 //______________________________________________________________________________
@@ -59,71 +60,72 @@ VCpilaser::~VCpilaser()
 pilaserController&  VCpilaser::virtual_PILaser_Controller()
 {
     std::string name = "virtual_pilaser_Controller";
-    std::cout << "virtual_pilaser_Controller" << std::endl;
+    std::cout <<"virtual_pilaser_Controller" <<std::endl;
     return getpilaserController(virtual_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
-                                withEPICS,
-                                pilaserConf,
-                                vcAnalysisConf,
-                                piLaserMirrorConf
+                                withEPICS
+//                                pilaserConf,
+//                                vcAnalysisConf,
+//                                piLaserMirrorConf
                                 );
 }
 //______________________________________________________________________________
 pilaserController& VCpilaser::offline_PILaser_Controller()
 {
     std::string name = "offline_pilaser_Controller";
-    std::cout << "offline_pilaser_Controller" << std::endl;
+    std::cout <<"offline_pilaser_Controller" <<std::endl;
     return getpilaserController(offline_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
-                                withEPICS,
-                                pilaserConf,
-                                vcAnalysisConf,
-                                piLaserMirrorConf
+                                withEPICS
+//                                pilaserConf,
+//                                vcAnalysisConf,
+//                                piLaserMirrorConf
                                 );
 }
 //______________________________________________________________________________
 pilaserController& VCpilaser::physical_PILaser_Controller()
 {
     std::string name = "physical_PILaser_Controller";
-    std::cout << "physical_PILaser_Controller" << std::endl;
+    std::cout <<"physical_PILaser_Controller" <<std::endl;
     return getpilaserController(physical_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
-                                withEPICS,
-                                pilaserConf,
-                                vcAnalysisConf,
-                                piLaserMirrorConf
+                                withEPICS
+//                                pilaserConf,
+//                                vcAnalysisConf,
+//                                piLaserMirrorConf
                                 );
 }
 //______________________________________________________________________________
 pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
                                            const std::string& name,
                                            const bool shouldVM,
-                                           const bool shouldEPICS,
-                                           const std::string& pilaserConf,
-                                           const std::string& vcAnalysisConf,
-                                           const std::string& piLaserMirrorConf
+                                           const bool shouldEPICS
+//                                           const std::string& pilaserConf,
+//                                           const std::string& vcAnalysisConf,
+//                                           const std::string& piLaserMirrorConf
                                         )
 {
     if(cont)
     {
-        std::cout << name << " object already exists," <<std::endl;
+        std::cout <<name <<" object already exists," <<std::endl;
     }
     else
     {
         messageStates[cont].first     = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
-        std::cout << "Creating " << name << " object" <<std::endl;
+        std::cout <<"Creating " <<name <<" object" <<std::endl;
         cont = new pilaserController(messageStates.at(cont).first,
                                      messageStates.at(cont).second,
                                      shouldVM,
                                      shouldEPICS,
                                      name,
                                      pilaserConf,
-                                     vcAnalysisConf,
-                                     piLaserMirrorConf
+                                     claraCamConfig,
+                                     piLaserMirrorConf,
+                                     imageDataConfig
                                     );
 
     }

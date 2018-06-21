@@ -33,30 +33,26 @@ pilaserController::pilaserController(
     const bool shouldStartEPICs,
     const std::string& name,
     const std::string& pilaserConf,
-    const std::string& vcAnalysisConf,
-    const std::string& piLaserMirrorConf
+    const std::string& claraCamConfig,
+    const std::string& piLaserMirrorConf,
+    const std::string& imageDataConfig
     ):
-controller(show_messages,show_debug_messages, HWC_ENUM::CONTROLLER_TYPE::PI_LASER),
-//localMirrorName("LASER_MIRROR_CONTROLLER"),
-//localVirtualCathodeName("VIRTUAL_CATHODE_ANALYSIS_CONTROLLER"),
 localInterface(show_messages,
                show_debug_messages,
                startVirtualMachine,
                shouldStartEPICs,
-               vcAnalysisConf,
-               piLaserMirrorConf,
-               pilaserConf),
-name(name)
+     pilaserConf,
+     claraCamConfig,
+     piLaserMirrorConf,
+     imageDataConfig),
+name(name),
+cameraControllerBase(show_messages,show_debug_messages, name, HWC_ENUM::CONTROLLER_TYPE::PI_LASER, &localInterface)
 {
-//    if(localInterface.interfaceInitReport(shouldStartEPICs))
-//    {
-//        if(localShutter.interfaceInitReport())
-//        {
-//            if(localMirror.interfaceInitReport())
-//                message("pilaserController instantiation success.");
-//        }
-//    }
-    message("pilaserController constructed");
+    if(localInterface.interfaceInitReport(shouldStartEPICs))
+    {
+        camBase = &localInterface;
+        message("pilaserController instantiation success.");
+    }
 }
 //______________________________________________________________________________
 pilaserController::~pilaserController()
@@ -64,14 +60,12 @@ pilaserController::~pilaserController()
 //______________________________________________________________________________
 void  pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
 {
-//    localShutter.set_CA_PEND_IO_TIMEOUT(val);
+    localInterface.set_CA_PEND_IO_TIMEOUT(val);
 }
-//______________________________________________________________________________
 //______________________________________________________________________________
 double pilaserController::get_CA_PEND_IO_TIMEOUT()const
 {
-    //return localShutter.get_CA_PEND_IO_TIMEOUT();
-    return 1.0;
+    return localInterface.get_CA_PEND_IO_TIMEOUT();
 }
 //______________________________________________________________________________
 int  pilaserController::setHWP(const double value)
@@ -114,12 +108,12 @@ double pilaserController::getStabilisationStatus() const
     return localInterface.getStabilisationStatus();
 }
 //______________________________________________________________________________
-bool pilaserController::isOn() const
+bool pilaserController::isOn()
 {
     return localInterface.isOn();
 }
 //______________________________________________________________________________
-bool pilaserController::isOff() const
+bool pilaserController::isOff()
 {
     return localInterface.isOff();
 }
@@ -139,54 +133,9 @@ bool pilaserController::disableStabilisation()
     return localInterface.disableStabilisation();
 }
 //______________________________________________________________________________
-double pilaserController::getX()const
+bool pilaserController::enableStabilisation()
 {
-    return localInterface.getX();
-}
-//______________________________________________________________________________
-double pilaserController::getY()const
-{
-    return localInterface.getY();
-}
-//______________________________________________________________________________
-double pilaserController::getSigX()const
-{
-    return localInterface.getSigX();
-}
-//______________________________________________________________________________
-double pilaserController::getSigY()const
-{
-    return localInterface.getSigY();
-}
-//______________________________________________________________________________
-double pilaserController::getSigXY()const
-{
-    return localInterface.getSigXY();
-}
-//______________________________________________________________________________
-double pilaserController::getXPix()const
-{
-    return localInterface.getXPix();
-}
-//______________________________________________________________________________
-double pilaserController::getYPix()const
-{
-    return localInterface.getYPix();
-}
-//______________________________________________________________________________
-double pilaserController::getSigXPix()const
-{
-    return localInterface.getSigXPix();
-}
-//______________________________________________________________________________
-double pilaserController::getSigYPix()const
-{
-    return localInterface.getSigYPix();
-}
-//______________________________________________________________________________
-double pilaserController::getSigXYPix()const
-{
-    return localInterface.getSigXYPix();
+    return localInterface.enableStabilisation();
 }
 //______________________________________________________________________________
 double pilaserController::getQ()const
@@ -194,181 +143,18 @@ double pilaserController::getQ()const
     return localInterface.getQ();
 }
 //______________________________________________________________________________
-bool pilaserController::enableStabilisation()
-{
-    return localInterface.enableStabilisation();
-}
-//______________________________________________________________________________
-void pilaserController::clearBuffer()
-{
-    localInterface.clearBuffer();
-}
-//______________________________________________________________________________
-bool pilaserController::isBufferFull()
-{
-    return localInterface.isBufferFull();
-}
-//______________________________________________________________________________
-bool pilaserController::isBufferNotFull()
-{
-    return localInterface.isBufferNotFull();
-}
-//______________________________________________________________________________
-void pilaserController::setBufferSize(const size_t s)
-{
-    localInterface.setBufferSize(s);
-}
-//______________________________________________________________________________
-size_t pilaserController::getBufferCount()
-{
-    return localInterface.getBufferCount();
-}
-//______________________________________________________________________________
-size_t pilaserController::getBufferSize()
-{
-    return localInterface.getBufferSize();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getXBuffer() const
-{
-    return localInterface.getXBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getYBuffer()const
-{
-    return localInterface.getYBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getSigXBuffer()const
-{
-    return localInterface.getSigXBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getSigYBuffer()const
-{
-    return localInterface.getSigYBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getSigXYBuffer()const
-{
-    return localInterface.getSigXYBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getXPixBuffer()const
-{
-    return localInterface.getXPixBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getYPixBuffer()const
-{
-    return localInterface.getYPixBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getSigXPixBuffer()const
-{
-    return localInterface.getSigXPixBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getSigYPixBuffer()const
-{
-    return localInterface.getSigYPixBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getSigXYPixBuffer()const
-{
-    return localInterface.getSigXYPixBuffer();
-}
-//______________________________________________________________________________
-std::deque<double> pilaserController::getQBuffer()const
+std::vector<double> pilaserController::getQBuffer()const
 {
     return localInterface.getQBuffer();
 }
 //______________________________________________________________________________
-std::vector<double> pilaserController::getPixelValues()const
-{
-    return localInterface.getPixelValues();
-}
-//______________________________________________________________________________
-std::deque<std::vector<double>> pilaserController::getPixelValuesBuffer()const
-{
-    return localInterface.getPixelValuesBuffer();
-}
-//______________________________________________________________________________
 #ifdef BUILD_DLL
-boost::python::list pilaserController::getPixelValues_Py()const
-{
-    return toPythonList(getPixelValues());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getPixelValuesBuffer_Py()const
-{
-    return toPythonList(getPixelValuesBuffer());
-}
-//______________________________________________________________________________
 boost::python::list pilaserController::getQBuffer_Py()const
 {
     return toPythonList(getQBuffer());
 }
-//______________________________________________________________________________
-boost::python::list pilaserController::getXBuffer_Py()const
-{
-    return toPythonList(getXBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getYBuffer_Py()const
-{
-    return toPythonList(getYBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getSigXBuffer_Py()const
-{
-    return toPythonList(getSigXBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getSigYBuffer_Py()const
-{
-    return toPythonList(getSigYBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getSigXYBuffer_Py()const
-{
-    return toPythonList(getSigXYBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getXPixBuffer_Py()const
-{
-    return toPythonList(getXPixBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getYPixBuffer_Py()const
-{
-    return toPythonList(getYPixBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getSigXPixBuffer_Py()const
-{
-    return toPythonList(getSigXPixBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getSigYPixBuffer_Py()const
-{
-    return toPythonList(getSigYPixBuffer());
-}
-//______________________________________________________________________________
-boost::python::list pilaserController::getSigXYPixBuffer_Py()const
-{
-    return toPythonList(getSigXYPixBuffer());
-}
-//______________________________________________________________________________
 #endif // BUILD_DLL
-
-
-
-
-
-
-
-
+//______________________________________________________________________________
 //
 //   _____  .__
 //  /     \ |__|_____________  ___________
@@ -377,15 +163,6 @@ boost::python::list pilaserController::getSigXYPixBuffer_Py()const
 //\____|__  /__||__|   |__|   \____/|__|
 //        \/
 //
-//
-//
-//
-
-
-
-
-
-
 //______________________________________________________________________________
 double pilaserController::getHpos() const
 {
@@ -402,20 +179,10 @@ bool pilaserController::setHpos(double value)
      return localInterface.setHpos(value);
 }
 //______________________________________________________________________________
-//bool pilaserController::setHpos(int value)
-//{
-//    return localInterface.setHpos(value);
-//}
-//______________________________________________________________________________
 bool pilaserController::setVpos(double value)
 {
     return localInterface.setVpos(value);
 }
-//______________________________________________________________________________
-//bool pilaserController::setVpos(int value)
-//{
-//    return localInterface.setVpos(value);
-//}
 //______________________________________________________________________________
 double pilaserController::getHstep() const
 {
@@ -457,211 +224,8 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
     return localInterface.getPILObjConstRef();
 }
 //______________________________________________________________________________
-const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjConstRef() const
-{
-    return localInterface.getVCDataObjConstRef();
-}
-//______________________________________________________________________________
-std::vector<int> pilaserController::getFastImage()
-{
-    return localInterface.getFastImage();
-}
-#ifdef BUILD_DLL
-//______________________________________________________________________________
-boost::python::list pilaserController::getFastImage_Py()
-{
-    return toPythonList(getFastImage());
-}
-//______________________________________________________________________________
-#endif
-void pilaserController::clearRunningValues()
-{
-    return localInterface.clearRunningValues();
-}
-
-
-
-
-////______________________________________________________________________________
-//#ifdef BUILD_DLL
-////____________________________________________________________________________________________
-//double pilaserController::getHpos()
+//const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjConstRef() const
 //{
-//    return localShutter.getHpos();
-//}
-////____________________________________________________________________________________________
-//double pilaserController::getVpos()
-//{
-//    return localInterface.getVpos();
-//}
-////____________________________________________________________________________________________
-//double pilaserController::getIntensity()
-//{
-//    return localInterface.getIntensity();
-//}
-////____________________________________________________________________________________________
-//bool pilaserController::setHpos(double value)
-//{
-//    return localInterface.setHpos(value );
-//}
-////____________________________________________________________________________________________
-//bool pilaserController::setHpos(int value)
-//{
-//    return localInterface.setHpos(value );
-//}
-////____________________________________________________________________________________________
-//bool pilaserController::setVpos(double value)
-//{
-//    return localInterface.setVpos(value );
-//}
-////____________________________________________________________________________________________
-//bool pilaserController::setVpos(int value)
-//{
-//    return localInterface.setVpos(value );
-//}
-////____________________________________________________________________________________________
-//bool pilaserController::setIntensity(double value)
-//{
-//    return localInterface.setIntensity(value );
-//}
-////____________________________________________________________________________________________
-//bool pilaserController::setIntensity(int value)
-//{
-//    return localInterface.setIntensity(value );
-//}
-////____________________________________________________________________________________________
-//const pilaserStructs::pilaserObject &pilaserController::getPILObjConstRef()
-//{
-//    return localInterface.getPILObjConstRef();
-//}
-////____________________________________________________________________________________________
-//
-////_____________________________________________________________________________________________
-//void pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
-//{
-//    //localInterface.set_CA_PEND_IO_TIMEOUT(val);
-//}
-////______________________________________________________________________________________________
-//std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > pilaserController::getILockStates(const std::string& name)
-//{
-//    return localInterface.getILockStates(name);
-//}
-////______________________________________________________________________________________________
-//std::map<HWC_ENUM::ILOCK_NUMBER,std::string> pilaserController::getILockStatesStr(const std::string& name)
-//{
-//    return localInterface.getILockStatesStr(name);
-//}
-//______________________________________________________________________________
-//boost::python::dict pilaserController::getILockStatesStr_Py(std::string magName )
-//{
-//    return enumStringMapToPythonDict(getILockStatesStr(magName ) );
-//}
-////______________________________________________________________________________
-//boost::python::dict pilaserController::getILockStates_Py(std::string magName )
-//{
-//    return enumMapToPythonDict(getILockStates(magName ) );
-//}
-////______________________________________________________________________________
-//boost::python::dict pilaserController::getMagPSUStateDefinition()
-//{
-//    std::map< HWC_ENUM::MAG_PSU_STATE,  std::string  > m;
-//
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_OFF ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ON ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_TIMING ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_ERROR ); // ENUM_TO_STRING MACRO in velaStructs.h
-//    m[HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE] = ENUM_TO_STRING(HWC_ENUM::MAG_PSU_STATE::MAG_PSU_NONE ); // ENUM_TO_STRING MACRO in velaStructs.h
-//
-//    return enumStringMapToPythonDict(m );
-//}
-//______________________________________________________________________________
-//#endif // BUILD_DLL
-
-
-
-
-
-
-
-
-
-//
-//   _________.__            __    __
-//  /   _____/|  |__  __ ___/  |__/  |_  ___________
-//  \_____  \ |  |  \|  |  \   __\   __\/ __ \_  __ \
-//  /        \|   Y  \  |  /|  |  |  | \  ___/|  | \/
-// /_______  /|___|  /____/ |__|  |__|  \___  >__|
-//         \/      \/                       \/
-//
-//
-//
-//
-////______________________________________________________________________________
-//void pilaserController::open(const std::string& name)
-//{
-//    localShutter.open(name);
-//}
-////______________________________________________________________________________
-//void pilaserController::close(const std::string& name)
-//{
-//    localShutter.close(name);
-//}
-////______________________________________________________________________________
-//bool pilaserController::isOpen(const std::string& name ) const
-//{
-//    return localShutter.isOpen(name );
-//}
-////______________________________________________________________________________
-//bool pilaserController::isClosed(const std::string& name )const
-//{
-//    return localShutter.isClosed(name );
-//}
-////______________________________________________________________________________
-//bool pilaserController::openAndWait(const std::string& name, const time_t waitTime )
-//{
-//    return localShutter.openAndWait(name, waitTime);
-//}
-////______________________________________________________________________________
-//bool pilaserController::closeAndWait(const std::string & name, const time_t waitTime )
-//{
-//    return localShutter.closeAndWait(name,waitTime);
-//}
-////______________________________________________________________________________
-//const shutterStructs::shutterObject&
-//pilaserController::getShutterObjConstRef(const std::string& name )const
-//{
-//    return localShutter.getShutterObjConstRef(name);
-//}
-////______________________________________________________________________________
-//shutterStructs::SHUTTER_STATE pilaserController::getShutterState(const std::string& name)
-//{
-//    return localShutter.getShutterState(name);
-//}
-////______________________________________________________________________________
-//std::string pilaserController::getShutterStateStr(const std::string& name )
-//{
-//    return localShutter.getShutterStateStr(name);
-//}
-////______________________________________________________________________________
-//std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>
-//    pilaserController::getILockStates(const std::string& name)const
-//{
-//    return localShutter.getILockStates(name);
-//}
-////______________________________________________________________________________
-//std::map<HWC_ENUM::ILOCK_NUMBER, std::string>
-//    pilaserController::getILockStatesStr(const std::string& name)const
-//{
-//    return localShutter.getILockStatesStr(name);
-//}
-////______________________________________________________________________________
-//bool pilaserController::areAllOpen()
-//{
-//    return localShutter.areAllOpen();
-//}
-////______________________________________________________________________________
-//bool pilaserController::areAllClosed()
-//{
-//    return localShutter.areAllClosed();
+//    return localInterface.getVCDataObjConstRef();
 //}
 

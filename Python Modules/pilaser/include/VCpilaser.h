@@ -24,6 +24,7 @@
 #define _VC_PILASER_H_
 //stl
 #include <string>
+#include <map>
 //
 #include "pilaserController.h"
 #include "VCheader.h"
@@ -39,7 +40,6 @@ class VCpilaser : public VCbase
         pilaserController& physical_PILaser_Controller();
         pilaserController& offline_PILaser_Controller();
 
-
     protected:
     private:
         /* object names */
@@ -47,18 +47,14 @@ class VCpilaser : public VCbase
         pilaserController* physical_pilaser_Controller_Obj;
         pilaserController* offline_pilaser_Controller_Obj ;
 
-        const std::string pilaserConf, vcAnalysisConf,
-                          piLaserMirrorConf;
+        const std::string pilaserConf, claraCamConfig,
+                          piLaserMirrorConf,imageDataConfig;
 
         pilaserController& getpilaserController(pilaserController*& cont,
                                                 const std::string & name,
                                                 const bool shouldVM,
-                                                const bool shouldEPICS,
-                                                const std::string& pilaserConf,
-                                                const std::string& vcAnalysisConf,
-                                                const std::string& piLaserMirrorConf
+                                                const bool shouldEPICS
                                                 );
-
         /*
             map of showmessage showdebugmessage states
             pointers to these bools are passed down the class
@@ -67,43 +63,7 @@ class VCpilaser : public VCbase
         std::map<const pilaserController*, std::pair<bool,bool>> messageStates;
         void updateMessageStates();
 };
-///// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
-///// Create a load of different function pointers and use them in the bindings
-///// !!! OR !!! You may be able to use this macro, BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS
-///// http://www.boost.org/doc/libs/1_59_0/libs/python/doc/tutorial/doc/html/python/functions.html
-///// I'm going to do it the function pointer way here...
-///// The other alternative is to create lots of different function names in the c++ class
-///// just to make the function pointer overloading neater, let's make some typedefs, generally i don't like doing this
-//typedef double doub;
-//typedef const double cdou;
-//typedef std::vector<double> vecd;
-//typedef std::vector<std::vector<double>> vvcd;
-//typedef const std::vector<double> cved;
-//typedef const size_t csiz;
-//typedef size_t size;
-//typedef std::vector<size_t> vsiz;
-//typedef std::string stri;
-//typedef const std::string cstr;
-//typedef std::vector<std::string> vecs;
-//typedef const std::vector<std::string> cves;
-//typedef std::vector<bool> vecb;
-/////
-////bool(pilaserController::*screenIN_1)  (cstr& = &pilaserController::screenIN;
-//
-//bool(pilaserController::*setHpos_1)(doub) = &pilaserController::setHpos;
-//bool(pilaserController::*setHpos_2)(int = &pilaserController::setHpos;
-//bool(pilaserController::*setVpos_1)(doub) = &pilaserController::setVpos;
-//bool(pilaserController::*setVpos_2)(int = &pilaserController::setVpos;
-//bool(pilaserController::*setIntensity_1)(doub) = &pilaserController::setIntensity;
-//bool(pilaserController::*setIntensity_2)(int) = &pilaserController::setIntensity;
-//
-//______________________________________________________________________________
 
-////using namespace virtualCathodeStructs;
-////using namespace pilaserMirrorStructs;
-////using namespace pilaserStructs;
-////using namespace shutterStructs;
-//using namespace UTL;
 BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 {
     //using namespace boost::python;
@@ -136,40 +96,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //    const char* name_doc = "name_doc.";
 //    const char* getState_doc = "getState_doc.";
 //
-
-
-    using namespace pilaserStructs;
-    class_<virtualCathodeDataObject,boost::noncopyable>
-        ("virtualCathodeDataObject","virtualCathodeDataObject Doc String", boost::python::no_init)
-        .def_readonly("x",       &virtualCathodeDataObject::x)
-        .def_readonly("y",       &virtualCathodeDataObject::y)
-        .def_readonly("sig_x",   &virtualCathodeDataObject::sig_x)
-        .def_readonly("sig_y",   &virtualCathodeDataObject::sig_y)
-        .def_readonly("sig_xy",   &virtualCathodeDataObject::sig_xy)
-        .def_readonly("x_pix",  &virtualCathodeDataObject::x_pix)
-        .def_readonly("sig_x_pix",  &virtualCathodeDataObject::sig_x_pix)
-        .def_readonly("sig_y_pix",  &virtualCathodeDataObject::sig_y_pix)
-        .def_readonly("sig_xy_pix",  &virtualCathodeDataObject::sig_xy_pix)
-        .def_readonly("x_mean",         &virtualCathodeDataObject::x_mean)
-        .def_readonly("y_mean",         &virtualCathodeDataObject::y_mean)
-        .def_readonly("sig_x_mean",     &virtualCathodeDataObject::sig_x_mean)
-        .def_readonly("sig_y_mean",     &virtualCathodeDataObject::sig_y_mean)
-        .def_readonly("sig_xy_mean",     &virtualCathodeDataObject::sig_xy_mean)
-        .def_readonly("x_pix_mean",     &virtualCathodeDataObject::x_pix_mean)
-        .def_readonly("sig_x_pix_mean", &virtualCathodeDataObject::sig_x_pix_mean)
-        .def_readonly("sig_y_pix_mean", &virtualCathodeDataObject::sig_y_pix_mean)
-        .def_readonly("sig_xy_pix_mean",&virtualCathodeDataObject::sig_xy_pix_mean)
-        .def_readonly("x_sd",       &virtualCathodeDataObject::x_sd)
-        .def_readonly("y_sd",       &virtualCathodeDataObject::y_sd)
-        .def_readonly("sig_x_sd",   &virtualCathodeDataObject::sig_x_sd)
-        .def_readonly("sig_y_sd",   &virtualCathodeDataObject::sig_y_sd)
-        .def_readonly("sig_xy_sd",   &virtualCathodeDataObject::sig_xy_sd)
-        .def_readonly("x_pix_sd",  &virtualCathodeDataObject::x_pix_sd)
-        .def_readonly("sig_x_pix_sd",  &virtualCathodeDataObject::sig_x_pix_sd)
-        .def_readonly("sig_y_pix_sd",  &virtualCathodeDataObject::sig_y_pix_sd)
-        .def_readonly("sig_xy_pix_sd",  &virtualCathodeDataObject::sig_xy_pix_sd)
-        ;
-
     const char* getIntensity_doc = "getIntensity_doc.";
     const char* setCharge_doc = "setCharge_doc.";
     const char* setIntensity_doc = "getIntensity_doc.";
@@ -187,56 +113,36 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* areAllClosed_doc = "areAllClosed_doc.";
     const char* getShutterNames_doc = "getShutterNames_doc.";
 
+    const char* getHpos_doc
+        = "horizontal Mirror Position (not available as of April 2018)";
+    const char* getVpos_doc
+        = "vertical Mirror Position (not available as of April 2018)";
 
+    const char* setHpos_doc
+        = "horizontal Mirror Position (not available as of April 2018)";
+    const char* setVpos_doc        = "vertical Mirror Position (not available as of April 2018)";
 
-    const char* getHpos_doc  = "getHpos_doc.";
-    const char* getVpos_doc  = "getVpos_doc.";
-    const char* setHpos_doc  = "setHpos_doc.";
-    const char* setVpos_doc  = "setVpos_doc.";
-    const char* getHstep_doc = "getHstep_doc.";
-    const char* getVstep_doc = "getVstep_doc.";
-    const char* setVstep_doc = "setVstep_doc.";
-    const char* setHstep_doc = "setHstep_doc.";
-    const char* moveH_doc    = "moveH_doc.";
-    const char* moveV_doc    = "moveV_doc.";
-    const char* getXBuffer_doc    = "getXBuffer_doc.";
-    const char* getYBuffer_doc    = "getYBuffer_doc.";
-    const char* getSigXBuffer_doc = "getSigXBuffer_doc.";
-    const char* getSigYBuffer_doc = "getSigYBuffer_doc.";
-    const char* getSigXYBuffer_doc= "getSigXYBuffer_doc.";
-    const char* getXPixBuffer_doc = "getXPixBuffer_doc.";
-    const char* getYPixBuffer_doc = "getYPixBuffer_doc.";
-    const char* getSigXPixBuffer_doc  = "getSigXPixBuffer_doc.";
-    const char* getSigYPixBuffer_doc  = "getSigYPixBuffer_doc.";
-    const char* getSigXYPixBuffer_doc = "getSigXYPixBuffer_doc.";
-    const char* getQBuffer_doc        = "getQBuffer_doc.";
+    const char* getHstep_doc = "horizontal Mirror step size ";
+    const char* getVstep_doc = "vertical   Mirror step size ";
 
-    const char* getX_doc    = "getX_doc.";
-    const char* getY_doc    = "getY_doc.";
-    const char* getSigX_doc = "getSigX_doc.";
-    const char* getSigY_doc = "getSigY_doc.";
-    const char* getSigXY_doc= "getSigXY_doc.";
-    const char* getXPix_doc = "getXPix_doc.";
-    const char* getYPix_doc = "getYPix_doc.";
-    const char* getSigXPix_doc  = "getSigXPix_doc.";
-    const char* getSigYPix_doc  = "getSigYPix_doc.";
-    const char* getSigXYPix_doc = "getSigXYP_doc.";
+    const char* setHstep_doc = "set horizontal Mirror step size ";
+    const char* setVstep_doc = "set vertical   Mirror step size ";
+
+    const char* moveH_doc = "set horizontal Mirror step size ";
+    const char* moveV_doc = "set vertical   Mirror step size ";
+
+    const char* stabilisation_status_doc
+        = "Status (ON/OFF) of laser transport system stabilisation system.";
+    const char* intensity_doc
+        = "Laser intensity set-point (AU) add more detail when we have it.";
+    const char* status_doc  = "Status (ON/OFF) of laser system.";
+    const char* setCharge_doc2 = "Charge (pc) set point.";
+
     const char* getQ_doc        = "getQ_doc.";
-
-    const char* clearBuffer_doc = "clearBuffer_doc.";
-    const char* isBufferFull_doc = "isBufferFull_doc.";
-    const char* isBufferNotFull_doc = "isBufferNotFull_doc.";
-    const char* setBufferSize_doc = "setBufferSize_doc.";
-    const char* getBufferSize_doc = "getBufferSize_doc";
-    const char* getPixelValues_doc = "getPixelValues_doc";
-    const char* getPixelValuesBuffer_doc = "getPixelValuesBuffer_doc";
-    const char* getBufferCount_doc = "getBufferCount_doc";
+    const char* getQBuffer_doc  = "getQBuffer_doc.";
 
 
-    const char* getFastImage_doc    = "getFastImage_doc   ";
-
-
-    class_<pilaserController, bases<controller>, noncopyable>
+    class_<pilaserController, bases<cameraControllerBase>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
         .def("setHWP",&pilaserController::setHWP,(VALUE_ARG),setHWP_doc)
@@ -261,57 +167,14 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("setVstep",&pilaserController::setVstep,setHstep_doc)
         .def("moveH",   &pilaserController::moveH,   moveH_doc   )
         .def("moveV",   &pilaserController::moveV,   moveV_doc   )
-        .def("clearRunningValues",   &pilaserController::clearRunningValues,   "clearRunningValues"   )
+        //.def("clearRunningValues",   &pilaserController::clearRunningValues,   "clearRunningValues"   )
 
-        .def("getFastImage",   &pilaserController::getFastImage_Py,   getFastImage_doc   )
-
-        .def("getX",        &pilaserController::getX,    getX_doc    )
-        .def("getY",        &pilaserController::getY,    getY_doc    )
-        .def("getSigX",     &pilaserController::getSigX, getSigX_doc )
-        .def("getSigY",     &pilaserController::getSigY, getSigY_doc )
-        .def("getSigXY",    &pilaserController::getSigXY,getSigXY_doc )
-        .def("getXPix",     &pilaserController::getXPix, getXPix_doc )
-        .def("getYPix",     &pilaserController::getYPix, getYPix_doc )
-        .def("getSigXPix",  &pilaserController::getSigXPix,  getSigXPix_doc)
-        .def("getSigYPix",  &pilaserController::getSigYPix,  getSigYPix_doc)
-        .def("getSigXYPix", &pilaserController::getSigXYPix, getSigXYPix_doc)
-        .def("getQ",        &pilaserController::getQ,        getQ_doc)
-
-        .def("getBufferCount",     &pilaserController::getBufferCount,           getBufferCount_doc)
-        .def("clearBuffer",        &pilaserController::clearBuffer,              clearBuffer_doc)
-        .def("isBufferFull",       &pilaserController::isBufferFull,             isBufferFull_doc)
-        .def("isBufferNotFull",    &pilaserController::isBufferNotFull,          isBufferNotFull_doc)
-        .def("setBufferSize",      &pilaserController::setBufferSize,            setBufferSize_doc)
-        .def("getBufferSize",      &pilaserController::getBufferSize,            getBufferSize_doc)
-        .def("getPixelValues",     &pilaserController::getPixelValues_Py,        getPixelValues_doc)
-        .def("getPixelValuesBuffer",&pilaserController::getPixelValuesBuffer_Py, getPixelValuesBuffer_doc)
-
-        .def("getXBuffer",        &pilaserController::getXBuffer_Py,    getXBuffer_doc    )
-        .def("getYBuffer",        &pilaserController::getYBuffer_Py,    getYBuffer_doc    )
-        .def("getSigXBuffer",     &pilaserController::getSigXBuffer_Py, getSigXBuffer_doc )
-        .def("getSigYBuffer",     &pilaserController::getSigYBuffer_Py, getSigYBuffer_doc )
-        .def("getSigXYBuffer",    &pilaserController::getSigXYBuffer_Py,getSigXYBuffer_doc )
-        .def("getXPixBuffer",     &pilaserController::getXPixBuffer_Py, getXPixBuffer_doc )
-        .def("getYPixBuffer",     &pilaserController::getYPixBuffer_Py, getYPixBuffer_doc )
-        .def("getSigXPixBuffer",  &pilaserController::getSigXPixBuffer_Py,  getSigXPixBuffer_doc)
-        .def("getSigYPixBuffer",  &pilaserController::getSigYPixBuffer_Py,  getSigYPixBuffer_doc)
-        .def("getSigXYPixBuffer", &pilaserController::getSigXYPixBuffer_Py, getSigXYPixBuffer_doc)
-        .def("getQBuffer",        &pilaserController::getQBuffer_Py,        getQBuffer_doc)
-
-
-        .def("getVCDataObjConstRef",        &pilaserController::getVCDataObjConstRef, "",return_value_policy<reference_existing_object>())
+        .def("getQ",        &pilaserController::getQ,          getQ_doc)
+        .def("getQBuffer",  &pilaserController::getQBuffer_Py, getQBuffer_doc)
+        .def("getVCDataObjConstRef",        &cameraControllerBase::getAnalysisObj_VC, "",return_value_policy<reference_existing_object>())
 
 
         ;
-
-//
-//    const char* hPos_doc
-//        = "horizontal Mirror Position (not available as of April 2018)";
-//    const char* vPos_doc
-//        = "vertical Mirror Position (not available as of April 2018)";
-//    const char* hStep_doc = "horizontal Mirror step size ";
-//    const char* vStep_doc = "vertical   Mirror step size ";
-//                name_doc  = "object name";
 
 
 //    class_<pilaserMirrorStructs::pilMirrorObject,noncopyable>
@@ -323,12 +186,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 ////        .def_readonly("name", &pilMirrorObject::name,name_doc)
 //        ;
 
-//    const char* stabilisation_status_doc
-//        = "Status (ON/OFF) of laser transport system stabilisation system.";
-//    const char* intensity_doc
-//        = "Laser intensity set-point (AU) add more detail when we have it.";
-//    const char* status_doc  = "Status (ON/OFF) of laser system.";
-//    const char* setCharge_doc2 = "Charge (pc) set point.";
+
 
 //    class_<virtualCathodeDataObject::pilaserObject,noncopyable>
 //        ("pilaserObject","pilaserObject member variables (read access only)", no_init)

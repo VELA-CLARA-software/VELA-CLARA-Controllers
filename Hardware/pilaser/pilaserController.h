@@ -25,28 +25,24 @@
 // stl includes
 #include <string>
 #include <vector>
-#include <map>
 // project includes
-//#include "shutterController.h"
-//#include "pilaserMirrorController.h"
-#include "virtualCathodeController.h"
 #include "pilaserInterface.h"
-#include "controller.h"
-// boost.python
+#include "cameraControllerBase.h"
+#include "cameraStructs.h"
 //______________________________________________________________________________
-class pilaserController : public controller
+class pilaserController : public cameraControllerBase
 {
     public:
-        //pilaserController();
         pilaserController(bool& show_messages,
-                          bool& show_debug_messages,
-                          const bool startVirtualMachine,
-                          const bool shouldStartEPICs,
-                          const std::string& name,
-                          const std::string& pilaserConf,
-                          const std::string& vcAnalysisConf,
-                          const std::string& piLaserMirrorConf
-                         );
+                            bool& show_debug_messages,
+                            const bool startVirtualMachine,
+                            const bool shouldStartEPICs,
+                            const std::string& name,
+                            const std::string& pilaserConf,
+                            const std::string& claraCamConfig,
+                            const std::string& piLaserMirrorConf,
+                            const std::string& imageDataConfig);
+
         pilaserController& pilaserController::operator= ( const pilaserController& other ) = delete;
         ~pilaserController();
       // These are pure virtual methods, so need to have some implmentation in derived classes
@@ -62,16 +58,12 @@ class pilaserController : public controller
         std::string getName() const;
         HWC_ENUM::STATE getStatus() const;
         double getStabilisationStatus() const;
-        bool isOn() const;
-        bool isOff() const;
+        bool isOn() ;
+        bool isOff();
         bool isStabilisationOff() const;
         bool isStabilisationOn() const;
         bool disableStabilisation();
         bool enableStabilisation();
-
-        void clearRunningValues();
-        std::vector<int> getFastImage();
-        boost::python::list getFastImage_Py();
 
         // laser mirror functions
         double getHpos() const;
@@ -87,66 +79,24 @@ class pilaserController : public controller
         bool moveH();
         bool moveV();
 
-        double getX()const;
-        double getY()const;
-        double getSigX()const;
-        double getSigY()const;
-        double getSigXY()const;
-        double getXPix()const;
-        double getYPix()const;
-        double getSigXPix()const;
-        double getSigYPix()const;
-        double getSigXYPix()const;
+        //void clearRunningValues();
         double getQ()const;
+        std::vector<double> getQBuffer()const;
 
-        std::deque<double> getXBuffer()const;
-        std::deque<double> getYBuffer()const;
-        std::deque<double> getSigXBuffer()const;
-        std::deque<double> getSigYBuffer()const;
-        std::deque<double> getSigXYBuffer()const;
-        std::deque<double> getXPixBuffer()const;
-        std::deque<double> getYPixBuffer()const;
-        std::deque<double> getSigXPixBuffer()const;
-        std::deque<double> getSigYPixBuffer()const;
-        std::deque<double> getSigXYPixBuffer()const;
-        std::deque<double> getQBuffer()const;
-
-        std::vector<double> getPixelValues()const;
-        std::deque<std::vector<double>> getPixelValuesBuffer()const;
-
-        void clearBuffer();
-        bool isBufferFull();
-        bool isBufferNotFull();
-        void setBufferSize(const size_t s);
-        size_t getBufferSize();
-        size_t getBufferCount();
-
-    #ifdef BUILD_DLL
-        boost::python::list getPixelValues_Py()const;
-        boost::python::list getPixelValuesBuffer_Py()const;
-        boost::python::list getXBuffer_Py()const;
-        boost::python::list getYBuffer_Py()const;
-        boost::python::list getSigXBuffer_Py()const;
-        boost::python::list getSigYBuffer_Py()const;
-        boost::python::list getSigXYBuffer_Py()const;
-        boost::python::list getXPixBuffer_Py()const;
-        boost::python::list getYPixBuffer_Py()const;
-        boost::python::list getSigXPixBuffer_Py()const;
-        boost::python::list getSigYPixBuffer_Py()const;
-        boost::python::list getSigXYPixBuffer_Py()const;
+#ifdef BUILD_DLL
         boost::python::list getQBuffer_Py()const;
-    #endif // BUILD_DLL
+#endif
 
-
-        const pilaserStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
-        const pilaserStructs::pilaserObject&   getPILObjConstRef() const;
-        const pilaserStructs::virtualCathodeDataObject&   getVCDataObjConstRef() const;
+        const pilaserStructs::pilMirrorObject&  getpilMirrorObjConstRef() const;
+        const pilaserStructs::pilaserObject&    getPILObjConstRef() const;
+        //const cameraStructs::camera_image_data& getVCDataObjConstRef() const;
 
     protected:
     private:
         pilaserInterface  localInterface;
-        const std::string name, localMirrorName, localInterfaceName,
-                          localVirtualCathodeName;
+        const std::string name;
+//        localMirrorName, localInterfaceName,
+//                          localVirtualCathodeName;
 };
 //______________________________________________________________________________
 #endif // _PI_LASER_CONTROLLER_H_

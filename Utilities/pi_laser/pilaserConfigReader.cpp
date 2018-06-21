@@ -67,7 +67,7 @@ bool pilaserConfigReader::readConfig()
         while(std::getline(inputFile, line)) /// Go through, reading file line by line
         {
             trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-            if(trimmedLine.size() > UTL::ZERO_SIZET )
+            if(trimmedLine.size()> UTL::ZERO_SIZET )
             {
                 if(stringIsSubString(line, UTL::END_OF_DATA ) )
                 {
@@ -167,14 +167,14 @@ void pilaserConfigReader::addToPVMonitorMapV1(const std::vector<std::string>& ke
         {
             addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::WCM_Q, keyVal[ONE_SIZET]);
         }
-        else if( keyVal[0] == PV_IA_SUFFIX_ACQUIRE_RBV  )
-        {
-            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::CAM_ACQUIRE_RBV, keyVal[ONE_SIZET]);
-        }
-        else if( keyVal[0] == PV_IA_SUFFIX_CAM_STATE  )
-        {
-            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::CAM_STATUS, keyVal[ONE_SIZET]);
-        }
+//        else if( keyVal[0] == PV_IA_SUFFIX_ACQUIRE_RBV  )
+//        {
+//            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::CAM_ACQUIRE_RBV, keyVal[ONE_SIZET]);
+//        }
+//        else if( keyVal[0] == PV_IA_SUFFIX_CAM_STATE  )
+//        {
+//            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::CAM_STATUS, keyVal[ONE_SIZET]);
+//        }
     }
     else
         addCOUNT_MASK_OR_CHTYPE(pvMonStructs, keyVal);
@@ -208,21 +208,21 @@ void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &k
         {
             addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_SET, keyVal[ONE_SIZET]);
         }
-        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_START_ACQUIRE  )
-        {
-            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::CAM_START_ACQUIRE,keyVal[ONE_SIZET]);
-        }
-        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_STOP_ACQUIRE  )
-        {
-            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::CAM_STOP_ACQUIRE,keyVal[ONE_SIZET]);
-        }
-        //debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
+//        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_START_ACQUIRE  )
+//        {
+//            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::CAM_START_ACQUIRE,keyVal[ONE_SIZET]);
+//        }
+//        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_STOP_ACQUIRE  )
+//        {
+//            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::CAM_STOP_ACQUIRE,keyVal[ONE_SIZET]);
+//        }
+//        debugMessage("Added ", pvComStructs.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvComStructs.back().pvType) ) ;
     }
     else
         addCOUNT_MASK_OR_CHTYPE(pvComStructs, keyVal );
 }
 //______________________________________________________________________________
-void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pvs,
+void pilaserConfigReader::addPVStruct(std::vector<pilaserStructs::pvStruct>& pvs,
                                       pilaserStructs::PILASER_PV_TYPE pvType,
                                       const std::string& pvSuffix)
 {
@@ -236,45 +236,45 @@ void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pv
                  " suffix for ", ENUM_TO_STRING(pvs.back().pvType));
 }
 //______________________________________________________________________________
-void pilaserConfigReader::addPVStruct(std::vector< pilaserStructs::pvStruct>& pvs,
-                                      const std::vector<std::string>& keyVal)
-{
-    pvs.push_back(pilaserStructs::pvStruct() );
-    pvs.back().pvSuffix = keyVal[UTL::ONE_SIZET];
-    if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY)
-    {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::INTENSITY;
-    }
-    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STABILISATION)
-    {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::STABILISATION;
-    }
-    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STATUS)
-    {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::STATUS;
-    }
-    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
-    {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_SET;
-    }
-    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ)
-    {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_READ;
-    }
-    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_WCM_CHARGE)
-    {
-        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::WCM_Q;
-    }
-    /*
-        we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
-        so you can store a ref to which vector to update with that info.
-        (this does make sense)
-        //lastPVStruct = &pvs;
-        we can actually get EPICS to fill in these values for us
-    */
-    debugMessage("Added ", pvs.back().pvSuffix,
-                 " suffix for ", ENUM_TO_STRING(pvs.back().pvType));
-}
+//void pilaserConfigReader::addPVStruct(std::vector<pilaserStructs::pvStruct>& pvs,
+//                                      const std::vector<std::string>& keyVal)
+//{
+//    pvs.push_back(pilaserStructs::pvStruct() );
+//    pvs.back().pvSuffix = keyVal[UTL::ONE_SIZET];
+//    if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_INTENSITY)
+//    {
+//        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::INTENSITY;
+//    }
+//    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STABILISATION)
+//    {
+//        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::STABILISATION;
+//    }
+//    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_STATUS)
+//    {
+//        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::STATUS;
+//    }
+//    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
+//    {
+//        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_SET;
+//    }
+//    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ)
+//    {
+//        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_READ;
+//    }
+//    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_WCM_CHARGE)
+//    {
+//        pvs.back().pvType = pilaserStructs::PILASER_PV_TYPE::WCM_Q;
+//    }
+//    /*
+//        we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
+//        so you can store a ref to which vector to update with that info.
+//        (this does make sense)
+//        //lastPVStruct = &pvs;
+//        we can actually get EPICS to fill in these values for us
+//    */
+//    debugMessage("Added ", pvs.back().pvSuffix,
+//                 " suffix for ", ENUM_TO_STRING(pvs.back().pvType));
+//}
 //______________________________________________________________________________
 void pilaserConfigReader::addTopilaserObjectsV1(const std::vector<std::string>& keyVal)
 {
