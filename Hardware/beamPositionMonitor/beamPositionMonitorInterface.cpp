@@ -26,6 +26,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <epicsTime.h>
+#include <boost/circular_buffer.hpp>
 
 beamPositionMonitorInterface::beamPositionMonitorInterface( const std::string & configFileLocation,
                                                             const bool& show_messages_ptr,
@@ -710,30 +711,35 @@ double beamPositionMonitorInterface::getBPMResolution( const std::string & bpmNa
 {
     double res;
     double u11, u12, u13, u14, u21, u22, u23, u24, v11, v12, v21, v22;
-    std::vector< double > rmsVals;
-    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).rawBPMData.size() != 0 )
+    boost::circular_buffer< double > u11Buffer = bpmObj.dataObjects.at( bpmName ).pu1Buffer;
+    boost::circular_buffer< double > u12Buffer = bpmObj.dataObjects.at( bpmName ).pu2Buffer;
+    boost::circular_buffer< double > u13Buffer = bpmObj.dataObjects.at( bpmName ).c1Buffer;
+    boost::circular_buffer< double > u14Buffer = bpmObj.dataObjects.at( bpmName ).p1Buffer;
+    boost::circular_buffer< double > u21Buffer = bpmObj.dataObjects.at( bpmName ).pu3Buffer;
+    boost::circular_buffer< double > u22Buffer = bpmObj.dataObjects.at( bpmName ).pu4Buffer;
+    boost::circular_buffer< double > u23Buffer = bpmObj.dataObjects.at( bpmName ).c2Buffer;
+    boost::circular_buffer< double > u24Buffer = bpmObj.dataObjects.at( bpmName ).p2Buffer;
+    double rmsVals;
+    if( entryExists( bpmObj.dataObjects, bpmName ) )
     {
-        for( unsigned int i = 0; i < bpmObj.dataObjects.at( bpmName ).rawBPMData.size(); i++ )
+        u11 = std::accumulate( u11Buffer.begin(), u11Buffer.end(), 0.0)/u11Buffer.size();
+        u12 = std::accumulate( u12Buffer.begin(), u12Buffer.end(), 0.0)/u12Buffer.size();
+        u13 = std::accumulate( u13Buffer.begin(), u13Buffer.end(), 0.0)/u13Buffer.size();
+        u14 = std::accumulate( u14Buffer.begin(), u14Buffer.end(), 0.0)/u14Buffer.size();
+        u21 = std::accumulate( u21Buffer.begin(), u21Buffer.end(), 0.0)/u21Buffer.size();
+        u22 = std::accumulate( u22Buffer.begin(), u22Buffer.end(), 0.0)/u22Buffer.size();
+        u23 = std::accumulate( u23Buffer.begin(), u23Buffer.end(), 0.0)/u23Buffer.size();
+        u24 = std::accumulate( u24Buffer.begin(), u24Buffer.end(), 0.0)/u24Buffer.size();
+        v11 = u11 - u14;
+        v12 = u12 - u14;
+        v21 = u21 - u24;
+        v22 = u22 - u24;
+        if( v11 && v12 && v21 && v22 != 0 )
         {
-            u11 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 1 ];
-            u12 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 2 ];
-            u13 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 3 ];
-            u14 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 4 ];
-            u21 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 5 ];
-            u22 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 6 ];
-            u23 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 7 ];
-            u24 = bpmObj.dataObjects.at( bpmName ).rawBPMData[ i ][ 8 ];
-            v11 = u11 - u14;
-            v12 = u12 - u14;
-            v21 = u21 - u24;
-            v22 = u22 - u24;
-            if( v11 && v12 && v21 && v22 != 0 )
-            {
-                rmsVals.push_back( ( ( v11 + v12 ) - ( v21 + v22 ) ) / ( ( v11 + v12 ) + ( v21 + v22 ) ) );
-            }
+            rmsVals = ( ( v11 + v12 ) - ( v21 + v22 ) ) / ( ( v11 + v12 ) + ( v21 + v22 ) );
         }
-        double rms = sqrt( ( std::inner_product( rmsVals.begin(), rmsVals.end(), rmsVals.begin(), 0 ) ) / static_cast<double>( rmsVals.size() ) );
-        res = rms * sqrt( 2 ) * bpmObj.dataObjects.at( bpmName ).mn;
+        message(rmsVals);
+        res = rmsVals * sqrt( 2 ) * ( 0.001 * bpmObj.dataObjects.at( bpmName ).mn );
         return res;
     }
     else
