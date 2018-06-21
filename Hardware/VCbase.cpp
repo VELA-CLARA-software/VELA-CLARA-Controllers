@@ -89,7 +89,7 @@ VCbase::~VCbase()
 //______________________________________________________________________________
 void VCbase::setQuiet()
 {
-    std::cout << my_name << " Quiet Mode Set." << std::endl;
+    std::cout <<my_name <<" Quiet Mode Set." <<std::endl;
     shouldShowDebugMessage = false;
     shouldShowMessage = false;
     updateMessageStates();
@@ -97,7 +97,7 @@ void VCbase::setQuiet()
 //______________________________________________________________________________
 void VCbase::setVerbose()
 {
-    std::cout << my_name << " Verbose Mode Set." << std::endl;
+    std::cout <<my_name <<" Verbose Mode Set." <<std::endl;
     shouldShowDebugMessage = true;
     shouldShowMessage = true;
     updateMessageStates();
@@ -105,7 +105,7 @@ void VCbase::setVerbose()
 //______________________________________________________________________________
 void VCbase::setMessage()
 {
-    std::cout << my_name << " Messages Only Mode Set." << std::endl;
+    std::cout <<my_name <<" Messages Only Mode Set." <<std::endl;
     shouldShowDebugMessage = false;
     shouldShowMessage = true;
     updateMessageStates();
@@ -113,7 +113,7 @@ void VCbase::setMessage()
 //______________________________________________________________________________
 void VCbase::setDebugMessage()
 {
-    std::cout << my_name << " DebugMessages Only Mode Set." << std::endl;
+    std::cout <<my_name <<" DebugMessages Only Mode Set." <<std::endl;
     shouldShowDebugMessage = true;
     shouldShowMessage = false;
     updateMessageStates();
