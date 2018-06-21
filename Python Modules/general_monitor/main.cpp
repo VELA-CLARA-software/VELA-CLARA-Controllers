@@ -1,11 +1,11 @@
 #include "VCgeneralMonitor.h"
-
-main()
-{
-    cout << "Hello World!";
-    return 0;
-}
-
+//
+//main()
+//{
+//    cout << "Hello World!";
+//    return 0;
+//}
+//
 
 
 //#include "main.h"
