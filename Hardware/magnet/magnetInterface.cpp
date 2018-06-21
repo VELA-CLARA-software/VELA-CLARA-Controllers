@@ -671,8 +671,7 @@ size_t magnetInterface::deGauss(const  vec_s& mag, bool resetToZero)
         degaussStructsMap[degaussNum].thread        =
             new std::thread(staticEntryDeGauss, std::ref(degaussStructsMap[degaussNum]));
         ++degaussNum;
-        message("3B");
-
+        //message("3B");
     }
     return degaussNum;
 }
