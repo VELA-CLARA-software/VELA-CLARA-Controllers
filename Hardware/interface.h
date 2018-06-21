@@ -100,7 +100,7 @@ class interface : public baseObject
            Other constant numbers could go here if needed
         */
         const bool shouldStartEPICs, startVirtualMachine;
-        const unsigned short EPICS_ACTIVATE, EPICS_SEND, EPICS_RESET;
+        unsigned short EPICS_ACTIVATE, EPICS_SEND, EPICS_RESET;
         const double DBL_ERR_NUM;
         bool configFileRead, allChidsInitialised, allMonitorsStarted;
         double CA_PEND_IO_TIMEOUT;
@@ -128,6 +128,7 @@ class interface : public baseObject
         static unsigned short getDBRunsignedShort(const event_handler_args& args);
         static unsigned long  getDBRunsignedLong (const event_handler_args& args);
         static std::string    getDBRstring       (const event_handler_args& args);
+        static size_t         getDBRsizet        (const event_handler_args& args);
         static double         getDBRdouble       (const event_handler_args& args);
         static long           getDBRlong         (const event_handler_args& args);
         static int            getDBRint          (const event_handler_args& args);
@@ -180,6 +181,7 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
         void pause_1000() const;
         void pause_300()  const;
         void pause_500()  const;
+        void pause_50()   const;
         void pause_2()    const;
         void pause_1()    const;
         /*
@@ -195,8 +197,17 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
                     ret = true;
             return ret;
         }
+        template<class T>
+        bool entryExists(const std::map<std::string,T>& m,std::string& name)const
+        {
+            bool ret = false;
+            auto it = m.find(name);
+                if(it != m.end())
+                    ret = true;
+            return ret;
+        }
         template<class T, class U>
-        bool entryExists(const std::map<U,T>& m,U& name)const
+        bool entryExists(const std::map<U,T>& m, const U& name)const
         {
             bool ret = false;
             auto it = m.find(name);
@@ -208,10 +219,34 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
             some caput templates...
             more often than not roll your own
         */
+//        template<class T, class U>
+//        int caput(U TYPE,chid& CHID,T& com,const char* mess1,const char* mess2)const
+//        {
+//            message("caput called");
+//            ca_put(TYPE, CHID,&com);
+//            message("send to epics");
+//
+//            return sendToEpics("ca_put", mess1, mess2);
+//        }
+//        template<class T, class U>
+//        int caput(U TYPE, chid& CHID,const T& com,const char* mess1,const char* mess2)
+//        {
+//            ca_put(TYPE, CHID,&com);
+//            return sendToEpics("ca_put", mess1, mess2);
+//        }
+
+//        template<class T>
+//        int caput(chtype TYPE, chid& CHID, T com,const char* mess1,const char* mess2)const
+//        {
+//            message("caput21 called, TYPE = ",TYPE,", CHID = ",CHID, ", comm  = ",com);
+//            ca_put(TYPE, CHID,&com);
+//            message("send1 to epics");
+//            return sendToEpics("ca_put", mess1, mess2);
+//        }
         template<class T, class U>
         int caput(U TYPE, chid& CHID,T& com,const char* mess1,const char* mess2)
         {
-            ca_put(TYPE, CHID,&com);
+            ca_put(DBR_LONG, CHID,&com);
             return sendToEpics("ca_put", mess1, mess2);
         }
         template<class T, class U>
@@ -220,8 +255,6 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
             ca_put(TYPE, CHID,&com);
             return sendToEpics("ca_put", mess1, mess2);
         }
-
-
     private:
 
 };

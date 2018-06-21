@@ -76,7 +76,7 @@ name(name)
     {
         debugMessagesOff();
     }
-    message(ENUM_TO_STRING(type)," controller base created");
+    //message(ENUM_TO_STRING(type)," controller base created");
 }
 //______________________________________________________________________________
 
@@ -85,31 +85,31 @@ controller::~controller(){}
 //______________________________________________________________________________
 void controller::debugMessagesOn()
 {
-    std::cout << "debugMessages On" << std::endl;
+    std::cout <<"debugMessages On" <<std::endl;
     SHOW_DEBUG_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::debugMessagesOff()
 {
-    std::cout << "debugMessages Off" <<std::endl;
+    std::cout <<"debugMessages Off" <<std::endl;
     SHOW_DEBUG_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::messagesOn()
 {
-    std::cout << "messages On" <<std::endl;
+    std::cout <<"messages On" <<std::endl;
     SHOW_MESSAGES = true;
 }
 //______________________________________________________________________________
 void controller::messagesOff()
 {
-    std::cout << "messages Off" <<std::endl;
+    std::cout <<"messages Off" <<std::endl;
     SHOW_MESSAGES = false;
 }
 //______________________________________________________________________________
 void controller::silence()
 {
-    std::cout << "silence" <<std::endl;
+    std::cout <<"silence" <<std::endl;
     SHOW_DEBUG_MESSAGES = false;
     SHOW_MESSAGES = false;
 }

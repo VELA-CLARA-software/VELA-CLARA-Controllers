@@ -61,7 +61,7 @@ baseObject(show_messages, show_debug_messages,"from int")
         use it to join from new threads with ca_attach_context
         you need to attach to this context if multi-threading
     */
-    message("Interface base constructor.");
+    //message("Interface base constructor.");
     ca_context_create(ca_enable_preemptive_callback);
     thisCaContext = ca_current_context();
 }
@@ -130,7 +130,7 @@ void interface::addILockChannels(const int numIlocks,
                                  const std::string& objName,
                                  map_ilck_pvstruct& iLockPVStructs)
 {
-  for(int i = UTL::ONE_INT; i < numIlocks + UTL::ONE_INT; ++i)
+  for(int i = UTL::ONE_INT; i <numIlocks + UTL::ONE_INT; ++i)
     {
         switch(i)
         {
@@ -421,7 +421,7 @@ void interface::updateTime(const epicsTimeStamp& stamp, double& val, std::string
     val = ((double)stamp.nsec * UTL::TEN_POWER_MINUS_NINE) +
           (double)stamp.secPastEpoch;
     /*  prove it works
-        std::cout <<std::setprecision(15) <<std::showpoint<<  val <<std::endl;
+        std::cout <<std::setprecision(15) <<std::showpoint<< val <<std::endl;
     */
     str = timeString;
 }
@@ -458,6 +458,11 @@ std::string interface::getDBRstring(const event_handler_args& args)
     return s1;
 }
 //______________________________________________________________________________
+size_t interface::getDBRsizet(const event_handler_args& args)
+{
+    return *(size_t*)args.dbr;
+}
+//______________________________________________________________________________
 double interface::getDBRdouble(const event_handler_args& args)
 {
     return *(double*)args.dbr;
@@ -487,6 +492,46 @@ bool interface::getDBRbool(const event_handler_args& args)
 {
     return *(bool*)args.dbr;
 }
+////______________________________________________________________________________
+//int8_t interface::getDBR_CHAR(const event_handler_args& args)
+//{
+//    return *(int8_t*)args.dbr;
+//}
+////______________________________________________________________________________
+//int16_t interface::getDBR_SHORT(const event_handler_args& args)
+//{
+//    return *(int16_t*)args.dbr;
+//}
+////______________________________________________________________________________
+//int32_t interface::getDBR_LONG(const event_handler_args& args)
+//{
+//    return *(int32_t*)args.dbr;
+//}
+////______________________________________________________________________________
+//int32_t interface::getDBR_ENUM(const event_handler_args& args)
+//{
+//    return *(int32_t*)args.dbr;
+//}
+////______________________________________________________________________________
+//int32_t interface::getDBR_FLOAT(const event_handler_args& args)
+//{
+//    return *(int32_t*)args.dbr;
+//}
+////______________________________________________________________________________
+// interface::getDBR_DOUBLE(const event_handler_args& args)
+//{
+//    return *(int32_t*)args.dbr;
+//}
+//
+//
+//DBR_CHAR	dbr_char_t	8 bit character
+//DBR_SHORT	dbr_short_t	16 bit integer
+//DBR_ENUM	dbr_enum_t	16 bit unsigned integer
+//DBR_LONG	dbr_long_t	32 bit signed integer
+//DBR_FLOAT	dbr_float_t	32 bit IEEE floating point
+//DBR_DOUBLE dbr_double_t 64 bit IEEE floating point
+
+
 //______________________________________________________________________________
 void interface::getDBRdouble_timestamp(const event_handler_args& args,
                                        HWC_ENUM::epics_timestamp& ts,
@@ -535,6 +580,11 @@ void interface::pause_300() const
 void interface::pause_500() const
 {
     pause_x(UTL::PAUSE_500);
+}
+//______________________________________________________________________________
+void interface::pause_50() const
+{
+    pause_x(UTL::PAUSE_50);
 }
 //______________________________________________________________________________
 void interface::pause_2() const
