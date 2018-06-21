@@ -45,7 +45,7 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/VELA_CLARA_Camera_Control" prefix_auto="1" extension_auto="1" />
+				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_Camera_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -57,22 +57,16 @@
 					<Add option="/W3" />
 					<Add option="/EHsc" />
 					<Add option="/DBUILD_DLL" />
+					<Add option="/D__INCLUDE_CAMERA_BASE__" />
 					<Add option="/DNDEBUG" />
 					<Add directory="include" />
 					<Add directory="../../Hardware" />
 					<Add directory="../../Utilities" />
 					<Add directory="../../Structs" />
 					<Add directory="../../Config" />
-					<Add directory="../../Hardware/magnet" />
-					<Add directory="../../Hardware/screen" />
-					<Add directory="../../Hardware/scope" />
-					<Add directory="../../Hardware/gun_prot" />
-					<Add directory="../../Hardware/vacuumValve" />
 					<Add directory="../../Hardware/camera" />
-					<Add directory="../../Hardware/beamPositionMonitor" />
-					<Add directory="../../Hardware/invertedMagnetronGauge" />
-					<Add directory="../../Hardware/shutter" />
-					<Add directory="../../Hardware/pilaser" />
+					<Add directory="../../Utilities/camera" />
+					<Add directory="../../Structs/camera" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -83,20 +77,24 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
-		<Unit filename="../../Hardware/camera/cameraController.cpp" />
-		<Unit filename="../../Hardware/camera/cameraController.h" />
-		<Unit filename="../../Hardware/camera/cameraInterface.cpp" />
-		<Unit filename="../../Hardware/camera/cameraInterface.h" />
+		<Unit filename="../../Hardware/VCbase.cpp" />
+		<Unit filename="../../Hardware/VCbase.h" />
+		<Unit filename="../../Hardware/VCheader.h" />
+		<Unit filename="../../Hardware/camera/cameraBase.cpp" />
+		<Unit filename="../../Hardware/camera/cameraBase.h" />
+		<Unit filename="../../Hardware/camera/cameraControllerBase.cpp" />
+		<Unit filename="../../Hardware/camera/cameraControllerBase.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
-		<Unit filename="../../Structs/cameraStructs.h" />
+		<Unit filename="../../Structs/camera/cameraStructs.cpp" />
+		<Unit filename="../../Structs/camera/cameraStructs.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/baseObject.cpp" />
 		<Unit filename="../../Utilities/baseObject.h" />
-		<Unit filename="../../Utilities/cameraConfigReader.cpp" />
-		<Unit filename="../../Utilities/cameraConfigReader.h" />
+		<Unit filename="../../Utilities/camera/claraCameraConfigReader.cpp" />
+		<Unit filename="../../Utilities/camera/claraCameraConfigReader.h" />
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
