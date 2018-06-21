@@ -20,7 +20,7 @@
 #include <atomic>
 #include <map>
 
-#include "cameraStructs.h"
+#include "cameraStructs_OLD.h"
 #include "cameraInterface.h"
 #include "cameraDAQConfigReader.h"
 
@@ -69,6 +69,8 @@ class cameraDAQInterface : public cameraInterface
         const cameraObject &getCamDAQObjConstRef(const std::string &cam);
         const cameraObject &getSelectedDAQRef();
         const cameraObject &getVCDAQRef();
+
+
 
     protected:
     private:

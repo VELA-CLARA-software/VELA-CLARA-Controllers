@@ -223,7 +223,7 @@ void cameraDAQInterface::staticEntryDAQMonitor(const event_handler_args args)
             ms->interface->updateWriteErrorMessageJPG(args.dbr, ms->objName );
             break;
         default:
-            ms->interface->debugMessage("!!! ERROR !!! Unknown Monitor Type passed to cameraDAQInterface::staticEntryMonitor");
+            ms->interface->debugMessage("!!! WARNING !!! Unknown Monitor Type passed to cameraDAQInterface::staticEntryMonitor, ", ENUM_TO_STRING(ms -> monType));
             break;
     }
 }
@@ -561,9 +561,6 @@ bool cameraDAQInterface::collectAndSaveJPG()
     new std::thread(&cameraDAQInterface::staticCollectAndSaveJPG,this,selectedCameraObj,dummy);//MAGIG NUMBE ONLY ALLOWING THIS FUNCTION TO TAKE ONE JPG!!!!!
     return true;
 }
-
-//bool cameraDAQInterface::staticCollectAndSave(cameraObject camera, const int & numbOfShots)
-//bool cameraDAQInterface::staticCollectAndSave(cameraObject& camera, const int & numbOfShots)
 bool cameraDAQInterface::staticCollectAndSave(cameraObject& camera, const int & numbOfShots)
 {
     this->attachTo_thisCAContext();
@@ -603,6 +600,12 @@ bool cameraDAQInterface::staticCollectAndSave(cameraObject& camera, const int & 
     return success;
 
 }
+
+
+
+
+
+
 bool cameraDAQInterface::staticCollectAndSaveJPG(cameraObject camera, const int & numbOfShots)
 {
     this->attachTo_thisCAContext();

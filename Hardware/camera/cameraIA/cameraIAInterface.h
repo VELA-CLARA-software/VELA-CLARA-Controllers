@@ -40,20 +40,24 @@ class cameraIAInterface : public cameraInterface
         ~cameraIAInterface();
 
         ///Functions Accessible to Python Controller///
-        bool setBackground();
-        bool useBackground(const bool run);
-        bool setStepSize(const int step);
+
         bool setMask(const int xCenter,const int yCenter,const int xRadius,const int yRadius);
         bool setMaskX(const int x);
         bool setMaskY(const int y);
         bool setMaskXRad(const int xRad);
         bool setMaskYRad(const int yRad);
+
+        bool setBackground();
+        bool useBackground(const bool run);
+        bool setStepSize(const int step);
         bool setCenterXPixel(const int xC);
         bool setCenterYPixel(const int yC);
         bool setPixMM(const double pmm);
         bool useNPoint(const bool run);
         bool startAnalysis();
         bool stopAnalysis();
+
+
         const cameraObject &getCamIAObjConstRef(const std::string &camName);
         const cameraIAObject &cameraIAInterface::getCameraIAObjConstRef(const std::string &cam);
         const cameraObject &getSelectedIARef();

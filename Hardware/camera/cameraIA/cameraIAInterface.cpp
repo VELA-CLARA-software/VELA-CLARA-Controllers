@@ -492,6 +492,7 @@ bool cameraIAInterface::useNPoint(const bool run)
     }
     return ans;
 }
+
 bool cameraIAInterface::setBackground()
 {
     bool ans=false;
@@ -611,6 +612,8 @@ bool cameraIAInterface::setPixMM(const double pmm)
             selectedCameraObj.name," camera.");
     return ans;
 }
+
+
 bool cameraIAInterface::useBackground(const bool run)
 {
     bool ans=false;

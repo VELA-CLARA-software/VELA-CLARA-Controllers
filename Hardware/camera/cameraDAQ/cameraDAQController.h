@@ -21,7 +21,7 @@
 // djs
 #include "cameraDAQInterface.h"
 #include "structs.h"
-#include "cameraStructs.h"
+#include "cameraStructs_OLD.h"
 #include "controller.h"
 
 using namespace cameraStructs;
@@ -71,7 +71,6 @@ class cameraDAQController  : public controller
         const cameraObject &getVCDAQRef();
         //std::string getlatestDirectory();
         std::vector<std::string> getCameraNames();
-
 
         std::string getLatestDirectory(const std::string& name) const;
         std::string getLatestFilename(const std::string& name) const;
