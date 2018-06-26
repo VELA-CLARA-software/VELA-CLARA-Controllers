@@ -287,7 +287,8 @@ int interface::sendToEpics(const char* ca,
     return status;
 }
 //______________________________________________________________________________
-int interface::sendToEpics(const std::string& ca,const std::string& mess1,
+int interface::sendToEpics(const std::string& ca,
+                           const std::string& mess1,
                            const std::string& mess2) const
 {
     int status = ca_pend_io(CA_PEND_IO_TIMEOUT);
@@ -493,6 +494,10 @@ bool interface::getDBRbool(const event_handler_args& args)
     return *(bool*)args.dbr;
 }
 ////______________________________________________________________________________
+
+
+
+////______________________________________________________________________________
 //int8_t interface::getDBR_CHAR(const event_handler_args& args)
 //{
 //    return *(int8_t*)args.dbr;
@@ -530,8 +535,12 @@ bool interface::getDBRbool(const event_handler_args& args)
 //DBR_LONG	dbr_long_t	32 bit signed integer
 //DBR_FLOAT	dbr_float_t	32 bit IEEE floating point
 //DBR_DOUBLE dbr_double_t 64 bit IEEE floating point
-
-
+//______________________________________________________________________________
+void interface::setChannelCountandType(const chid& CHID, chtype& CHTYPE, unsigned long& COUNT)
+{
+    CHTYPE = ca_field_type(CHID);
+    COUNT  = ca_element_count(CHID);
+}
 //______________________________________________________________________________
 void interface::getDBRdouble_timestamp(const event_handler_args& args,
                                        HWC_ENUM::epics_timestamp& ts,

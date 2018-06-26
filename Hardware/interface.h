@@ -139,6 +139,11 @@ class interface : public baseObject
         void getDBRdouble_timestamp(const event_handler_args& args, double& val);
         void updateBoolState(const event_handler_args& args, bool& parameter);
 
+
+        void setChannelCountandType(const chid& CHID,
+                                    chtype& CHTYPE,
+                                    unsigned long& COUNT);
+
         void checkCHIDState(const chid& CHID, const std::string& name);
         int sendToEpics2(const char* ca,const char* mess1,const char* mess2) const;
         int sendToEpics (const char* ca,const char* mess1,const char* mess2) const;
@@ -187,6 +192,7 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
         /*
             We often check if entries exist in maps,
             use these functions to do it safely
+            be careful to pick the correct one!
         */
         template<class T>
         bool entryExists(const std::map<std::string,T>& m,const std::string& name)const
@@ -219,30 +225,6 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
             some caput templates...
             more often than not roll your own
         */
-//        template<class T, class U>
-//        int caput(U TYPE,chid& CHID,T& com,const char* mess1,const char* mess2)const
-//        {
-//            message("caput called");
-//            ca_put(TYPE, CHID,&com);
-//            message("send to epics");
-//
-//            return sendToEpics("ca_put", mess1, mess2);
-//        }
-//        template<class T, class U>
-//        int caput(U TYPE, chid& CHID,const T& com,const char* mess1,const char* mess2)
-//        {
-//            ca_put(TYPE, CHID,&com);
-//            return sendToEpics("ca_put", mess1, mess2);
-//        }
-
-//        template<class T>
-//        int caput(chtype TYPE, chid& CHID, T com,const char* mess1,const char* mess2)const
-//        {
-//            message("caput21 called, TYPE = ",TYPE,", CHID = ",CHID, ", comm  = ",com);
-//            ca_put(TYPE, CHID,&com);
-//            message("send1 to epics");
-//            return sendToEpics("ca_put", mess1, mess2);
-//        }
         template<class T, class U>
         int caput(U TYPE, chid& CHID,T& com,const char* mess1,const char* mess2)
         {
@@ -258,5 +240,10 @@ http://stackoverflow.com/questions/24085931/is-using-stdvector-stdshared-ptrcons
     private:
 
 };
+//______________________________________________________________________________
+
+
+
+
 //______________________________________________________________________________
 #endif // _INTERFACE_BASE_H

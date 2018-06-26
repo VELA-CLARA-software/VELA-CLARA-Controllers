@@ -505,6 +505,12 @@ class cameraBase : public interface
         */
         static void staticEntryCamMonitor(const event_handler_args args);
         void updateCamValue(const cameraStructs::CAM_PV_TYPE pv, const std::string& objName, const event_handler_args& args);
+
+        /*
+            update  is the camera switched ON / OFF
+        */
+        void updateChannelCountandType(cameraStructs::pvStruct& pv);
+
         void addCamChannel(const std::string& pvRoot,cameraStructs::pvStruct& pv);
         /*
             update  is the camera switched ON / OFF

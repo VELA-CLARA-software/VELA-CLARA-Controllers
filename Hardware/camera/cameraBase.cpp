@@ -164,7 +164,12 @@ bool cameraBase::getCamObjects()
         {
             s = (size_t)it.second.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT;
             it.second.data.image.array_data.clear();
+
             it.second.data.image.array_data.resize(s);
+
+            message("Resizing camera ",it.first,
+                    " array_data to ",
+                    it.second.data.image.array_data.size());
         }
         /*
             set names of objects to match camera/screen name
@@ -278,6 +283,19 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
         }
         else if (status == ECA_NORMAL)
         {
+            for(auto&& it:allCamData)
+            {
+                debugMessage("\ncameraBase Create channel to monitor PVs\n");
+                for(auto&& mon_it: it.second.pvMonStructs)
+                {
+                    updateChannelCountandType(mon_it.second);
+                }
+                debugMessage("\ncameraBase Create channel to command PVs\n");
+                for(auto&& com_it: it.second.pvComStructs)
+                {
+                    updateChannelCountandType(com_it.second);
+                }
+            }
             allChidsInitialised = true;  /// interface base class member
         }
     }
@@ -295,6 +313,21 @@ void cameraBase::addCamChannel(const std::string& pvRoot, pvStruct& pv)
     //pv.CHTYPE = ca_field_type(pv.CHID);
     //pv.COUNT  = ca_element_count(pv.CHID);
     debugMessage("Create channel to ", s);
+}
+//---------------------------------------------------------------------------------
+void cameraBase::updateChannelCountandType(pvStruct& pv)
+{
+    auto ch = pv.CHTYPE;
+    auto co = pv.COUNT;
+    setChannelCountandType(pv.CHID, pv.CHTYPE, pv.COUNT);
+    if(ch != pv.CHTYPE)
+    {
+        if(co != pv.COUNT)
+        {
+            message(ENUM_TO_STRING(pv.pvType)," ",ch," ", co);
+            message(ENUM_TO_STRING(pv.pvType)," ",pv.CHTYPE," ", pv.COUNT);
+        }
+    }
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::startCamMonitors(bool sendToEPICS = false)
@@ -1360,7 +1393,6 @@ bool cameraBase::setBackground()
     return setBackground(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-
 ///
 ///  __  ___      ___  ___     __                 ___    ___    __       ___    __
 /// /__`  |   /\   |  |__     /  \ |  |  /\  |\ |  |  | |__  | /  `  /\   |  | /  \ |\ |
@@ -2307,7 +2339,7 @@ std::vector<int> cameraBase::getFastImage(cameraObject& cam)
         {
             /* add to sum */
             cam.data.image.array_data_sum += (size_t)n;
-            /* set min an dmax values */
+            /* set min and max values */
             if(n > cam.data.image.array_data_max)
                 cam.data.image.array_data_max = n;
             if(n < cam.data.image.array_data_min)
@@ -2328,15 +2360,32 @@ bool cameraBase::cagetFastImage(const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::cagetFastImage(cameraObject& cam)
 {
-    ca_array_get(
-           cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHTYPE,
-           cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT,
-           cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHID,
-           (void*)&(cam.data.image.array_data[UTL::ZERO_SIZET]));
-    int a = sendToEpics("ca_get","","");
-    if(a == ECA_NORMAL)
+    if(isAcquiring(cam))
     {
-        return true;
+        int a = ca_array_get(
+                    cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHTYPE,
+                    cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT,
+                    cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHID,
+                    (void*)&(cam.data.image.array_data[UTL::ZERO_SIZET]));
+        SEVCHK ( a, "ca_array_get()" );
+
+        if(a == ECA_NORMAL)
+        {
+            a = sendToEpics("ca_array_get","","");
+            if(a == ECA_NORMAL)
+            {
+                message("ca_array_get success");
+                return true;
+            }
+        }
+        else
+        {
+            message("ca_array_get did not return ECA_NORMAL");
+        }
+    }
+    else
+    {
+        message(cam.name," is not acquiring");
     }
     return false;
 }
