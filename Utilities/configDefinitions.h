@@ -509,6 +509,7 @@ namespace UTL
     const std::string DIAG_TYPE       = "DIAG_TYPE";
     const std::string WCM             = "WCM";
     const std::string S02_FCUP        = "S02_FCUP";
+    const std::string SP1_FCUP        = "SP1_FCUP";
     const std::string ICT1            = "ICT1";
     const std::string ICT2            = "ICT2";
     const std::string FCUP            = "FCUP";

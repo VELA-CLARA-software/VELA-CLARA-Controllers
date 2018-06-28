@@ -58,6 +58,8 @@ class chargeInterface : public interface
         boost::circular_buffer< double > getWCMVoltageBuffer();
         boost::circular_buffer< double > getS02FCUPChargeBuffer();
         boost::circular_buffer< double > getS02FCUPVoltageBuffer();
+        boost::circular_buffer< double > getSP1FCUPChargeBuffer();
+        boost::circular_buffer< double > getSP1FCUPVoltageBuffer();
         std::vector< double > getTimeStamps( const std::string & name );
         std::vector< std::string > getStrTimeStamps( const std::string & name );
         std::vector< std::string > getChargeDiagnosticNames();
@@ -68,6 +70,8 @@ class chargeInterface : public interface
         double getWCMVoltage();
         double getS02FCUPCharge();
         double getS02FCUPVoltage();
+        double getSP1FCUPCharge();
+        double getSP1FCUPVoltage();
         bool monitoringCharge = false;
         const bool isChargeBufferFull( const std::string & chargeName );
         const bool isChargeBufferNotFull( const std::string & chargeName );
@@ -77,6 +81,8 @@ class chargeInterface : public interface
         const bool isWCMBufferNotFull();
         const bool isS02FCUPBufferFull();
         const bool isS02FCUPBufferNotFull();
+        const bool isSP1FCUPBufferFull();
+        const bool isSP1FCUPBufferNotFull();
 
         const chargeStructs::chargeObject getChargeObject( const std::string & chargeName );
 
