@@ -120,6 +120,16 @@ class cameraBase : public interface
 // .__/  |  /~~\  |  |___    \__X \__/ /~~\ | \|  |  | |    | \__, /~~\  |  | \__/ | \|
 //
 //-----------------------------------------------------------------------------------------
+        bool isBusy_VC()const;
+        bool isBusy(const cameraStructs::cameraObject& cam)const;
+        bool isBusy(const std::string& cam)const;
+        bool isBusy()const;
+        bool isNotBusy_VC()const;
+        bool isNotBusy(const cameraStructs::cameraObject& cam)const;
+        bool isNotBusy(const std::string& cam)const;
+        bool isNotBusy()const;
+
+
         bool isUsingBackground(const std::string& cam)const;
         bool isUsingBackground()const;
         bool isUsingBackground_VC()const;
@@ -345,12 +355,15 @@ class cameraBase : public interface
         std::deque<double> getAvgIntensityBuffer(const std::string& cam)const;
         std::deque<double> getAvgIntensityBuffer(const cameraStructs::cameraObject& cam)const;
         std::deque<double> getAvgIntensityBuffer()const;
-        std::vector<int> getFastImage_VC();
-        std::vector<int> getFastImage(const std::string& cam);
-        std::vector<int> getFastImage();
-        std::vector<int> getFastImage(cameraStructs::cameraObject& cam);
-        bool cagetFastImage(cameraStructs::cameraObject& cam);
-        bool cagetFastImage(const std::string& cam);
+        std::vector<int> getFastImage_VC()const;
+        std::vector<int> getFastImage(const std::string& cam)const;
+        std::vector<int> getFastImage()const;
+        std::vector<int> getFastImage(const cameraStructs::cameraObject& cam)const;
+
+        bool takeFastImage(cameraStructs::cameraObject& cam);
+        bool takeFastImage(const std::string& cam);
+        bool takeFastImage_VC();
+        bool takeFastImage();
 #ifdef BUILD_DLL
         boost::python::list getFastImage2D_VC();
         boost::python::list getFastImage2D(const std::string& cam);
@@ -522,7 +535,7 @@ class cameraBase : public interface
         void updateAcquiring(const event_handler_args& args, cameraStructs::ACQUIRE_STATE& s);
         void updateCollectingState (const event_handler_args& args, cameraStructs::COLLECTING_STATE& s);
         void updateWriteState(const event_handler_args& args, cameraStructs::SAVE_STATE& s);
-        void updateWriteCheck(const event_handler_args& args, cameraStructs::SAVE_CHECK& w);
+        void updateWriteCheck(const event_handler_args& args, cameraStructs::WRITE_CHECK& w);
         void updateWriteErrorMessage(const event_handler_args& args, std::string& w);
         void updateSensorTemp(const event_handler_args& args, cameraStructs::cameraObject& cam);
         void updateSelectedCamRef(cameraStructs::cameraObject& cam);

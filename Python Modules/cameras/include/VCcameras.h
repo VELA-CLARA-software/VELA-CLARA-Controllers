@@ -42,6 +42,7 @@ class VCcameras : public VCbase
         cameraControllerBase& offline_Camera_Controller();
         cameraControllerBase& physical_Camera_Controller();
 
+        cameraControllerBase& getController(const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area);
 
     protected:
 
@@ -82,13 +83,19 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_Control )
     class_<VCcameras,bases<VCbase>,boost::noncopyable> ("init","Doc string")
         .def("virtual_Camera_Controller",  &VCcameras::virtual_Camera_Controller,
              return_value_policy<reference_existing_object>(),
-             "returns a reference to the virtual PI laser object.")
+             "returns a reference to the virtual camera object.")
         .def("offline_Camera_Controller",  &VCcameras::offline_Camera_Controller,
              return_value_policy<reference_existing_object>(),
-            "returns a reference to the physical PI laser object.")
+            "returns a reference to the offline camera object.")
         .def("physical_Camera_Controller",  &VCcameras::physical_Camera_Controller,
              return_value_policy<reference_existing_object>(),
-             "returns a reference to the offline PI laser object.")
+             "returns a reference to the physical camera object.")
+//        .def("getController",  &VCcameras::getController,
+//             return_value_policy<reference_existing_object>(),
+//             "returns a reference to the camera object defined by 'mode' and 'area'")
+//        .def("getController",  &VCcameras::getController,
+//             return_value_policy<reference_existing_object>(),(UTL::MODE_ARG,UTL::AREA_ARG),
+//             "returns a reference to the camera object defined by 'mode' and 'area'")
         ;
 
 }

@@ -340,49 +340,55 @@ size_t analysis_data::sum_pix_n()
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
-void fast_image::array_data_Py()
-{
-    if(fast_image_interface)
-    {
-        if(fast_image_interface->cagetFastImage(name))
-        {
-            data = fast_image_interface->toPythonList<int>(array_data);
-        }
-    }
-}
-//______________________________________________________________________________
-void fast_image::array_data2D_Py()
-{
-    if(fast_image_interface)
-    {
-        if(fast_image_interface->cagetFastImage(name))
-        {
-            data2D = fast_image_interface->toPythonList2D<int>(array_data,num_pix_x,num_pix_y);
-        }
-    }
-}
-//______________________________________________________________________________
-boost::python::list fast_image::background_data_Py()
-{
-    if(fast_image_interface)
-        return fast_image_interface->toPythonList<int>(background_array);
-    else
-    {
-        boost::python::list l(UTL::DUMMY_DOUBLE);
-        return l;
-    }
-}
-//______________________________________________________________________________
-boost::python::list fast_image::background_data_2D_Py()
-{
-    if(fast_image_interface)
-        return fast_image_interface->toPythonList2D<int>(background_array,
-                                                         num_pix_x,
-                                                         num_pix_y);
-    else
-    {
-        boost::python::list l(UTL::DUMMY_DOUBLE);
-        return l;
-    }
-}
+//void fast_image::array_data_Py()
+//{
+//    if(fast_image_interface)
+//    {
+////        if(fast_image_interface->takeFastImage(name))
+////        {
+//            data = fast_image_interface->toPythonList<int>(array_data);
+//            return data;
+////        }
+//    }
+//    boost::python::list l(UTL::DUMMY_DOUBLE);
+//    return l;
+//}
+////______________________________________________________________________________
+//void fast_image::array_data2D_Py()
+//{
+//    if(fast_image_interface)
+//    {
+//        //if(fast_image_interface->takeFastImage(name))
+//        //{
+//            data2D = fast_image_interface->toPythonList2D<int>(array_data,num_pix_x,num_pix_y);
+//        //}
+//            return data2D;
+//    }
+//    boost::python::list l(UTL::DUMMY_DOUBLE);
+//    return l;
+//}
+////______________________________________________________________________________
+//boost::python::list fast_image::background_data_Py()
+//{
+//    if(fast_image_interface)
+//        return fast_image_interface->toPythonList<int>(background_array);
+//    else
+//    {
+//        boost::python::list l(UTL::DUMMY_DOUBLE);
+//        return l;
+//    }
+//}
+////______________________________________________________________________________
+//boost::python::list fast_image::background_data_2D_Py()
+//{
+//    if(fast_image_interface)
+//        return fast_image_interface->toPythonList2D<int>(background_array,
+//                                                         num_pix_x,
+//                                                         num_pix_y);
+//    else
+//    {
+//        boost::python::list l(UTL::DUMMY_DOUBLE);
+//        return l;
+//    }
+//}
 #endif

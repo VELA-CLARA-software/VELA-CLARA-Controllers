@@ -86,6 +86,21 @@ double cameraControllerBase::get_CA_PEND_IO_TIMEOUT()const
 // \__, \__/  |  |  |  | /~~\ | \| |__/ .__/
 //
 //-----------------------------------------------------------------------------------------
+bool cameraControllerBase::takeFastImage(const std::string& cam)
+{
+    return camBase->takeFastImage(cam);
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::takeFastImage_VC()
+{
+    return camBase->takeFastImage_VC();
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::takeFastImage()
+{
+    return camBase->takeFastImage();
+}
+//-----------------------------------------------------------------------------------------
 bool cameraControllerBase::startAcquiring_VC()
 {
     return camBase->startAcquiring_VC();
@@ -125,8 +140,6 @@ bool cameraControllerBase::stopAllAcquiringExceptVC()
 {
     return camBase->stopAllAcquiringExceptVC();
 }
-//---------------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::startAnalysing_VC()
 {
@@ -202,6 +215,36 @@ bool cameraControllerBase::startAcquireAndAnalysis()
 // /__`  |   /\   |  |__     /  \ |  |  /\  |\ |  |  | |__  | /  `  /\   |  | /  \ |\ |
 // .__/  |  /~~\  |  |___    \__X \__/ /~~\ | \|  |  | |    | \__, /~~\  |  | \__/ | \|
 //
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::isBusy_VC()const
+{
+    return camBase->isBusy_VC();
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::isBusy(const std::string& cam)const
+{
+    return camBase->isBusy(cam);
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::isBusy()const
+{
+    return camBase->isBusy();
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::isNotBusy_VC()const
+{
+    return camBase->isNotBusy_VC();
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::isNotBusy(const std::string& cam)const
+{
+    return camBase->isNotBusy(cam);
+}
+//-----------------------------------------------------------------------------------------
+bool cameraControllerBase::isNotBusy()const
+{
+    return camBase->isNotBusy();
+}
 //-----------------------------------------------------------------------------------------
 bool cameraControllerBase::isON_VC()const
 {

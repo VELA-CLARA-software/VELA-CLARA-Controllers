@@ -56,6 +56,16 @@ VCcameras::~VCcameras()
     }
 }
 //______________________________________________________________________________
+cameraControllerBase& VCcameras::getController(const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area)
+{
+    if( mode == HWC_ENUM::OFFLINE)
+        return offline_Camera_Controller();
+    else if( mode == HWC_ENUM::VIRTUAL)
+        return virtual_Camera_Controller();
+    else if( mode == HWC_ENUM::PHYSICAL)
+        return physical_Camera_Controller();
+}
+//______________________________________________________________________________
 cameraControllerBase& VCcameras::physical_Camera_Controller()
 {
     std::string name = "physical_Camera_Controller";

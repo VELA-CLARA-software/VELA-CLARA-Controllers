@@ -733,11 +733,11 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_CAPTURE_RBV     ="PV_DAQ_SUFFIX_CAPTURE_RBV";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE     ="PV_DAQ_SUFFIX_NUM_CAPTURE";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_RBV ="PV_DAQ_SUFFIX_NUM_CAPTURE_RBV";
-    const std::string PV_DAQ_SUFFIX_NUM_CAPTURED_RBV="PV_DAQ_SUFFIX_NUM_CAPTURED";
-    const std::string PV_DAQ_SUFFIX_SAVE_CHECK     ="PV_DAQ_SUFFIX_SAVE_CHECK";
-    const std::string PV_DAQ_SUFFIX_SAVE_MESSAGE   ="PV_DAQ_SUFFIX_SAVE_MESSAGE";
-    const std::string PV_DAQ_SUFFIX_SAVE           ="PV_DAQ_SUFFIX_SAVE";
-    const std::string PV_DAQ_SUFFIX_SAVE_RBV       ="PV_DAQ_SUFFIX_SAVE_RBV";
+    const std::string PV_DAQ_SUFFIX_NUM_CAPTURED_RBV="PV_DAQ_SUFFIX_NUM_CAPTURED_RBV";
+    const std::string PV_DAQ_SUFFIX_WRITE_STATUS     ="PV_DAQ_SUFFIX_WRITE_STATUS";
+    const std::string PV_DAQ_SUFFIX_WRITE_MESSAGE   ="PV_DAQ_SUFFIX_WRITE_MESSAGE";
+    const std::string PV_DAQ_SUFFIX_WRITE           ="PV_DAQ_SUFFIX_WRITE";
+    const std::string PV_DAQ_SUFFIX_WRITE_FILE_RBV       ="PV_DAQ_SUFFIX_WRITE_FILE_RBV";
     const std::string PV_DAQ_SUFFIX_DATA            ="PV_DAQ_SUFFIX_DATA";
     const std::string PV_DAQ_SUFFIX_BKGRND_DATA     ="PV_DAQ_SUFFIX_BKGRND_DATA";
     const std::string PV_DAQ_SUFFIX_FILE_PATH       ="PV_DAQ_SUFFIX_FILE_PATH";
@@ -753,15 +753,15 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_FILE_NAME_J     ="PV_DAQ_SUFFIX_FILE_NAME_J";
     const std::string PV_DAQ_SUFFIX_CAPTURE_J       ="PV_DAQ_SUFFIX_CAPTURE_J";
     const std::string PV_DAQ_SUFFIX_FILE_NUMBER_J   ="PV_DAQ_SUFFIX_FILE_NUMBER_J";
-    const std::string PV_DAQ_SUFFIX_SAVE_J         ="PV_DAQ_SUFFIX_SAVE_J";
+    const std::string PV_DAQ_SUFFIX_WRITE_J         ="PV_DAQ_SUFFIX_WRITE_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_J   ="PV_DAQ_SUFFIX_NUM_CAPTURE_J";
 
     const std::string PV_DAQ_SUFFIX_CAPTURE_RBV_J   ="PV_DAQ_SUFFIX_CAPTURE_RBV_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURED_J  ="PV_DAQ_SUFFIX_NUM_CAPTURED_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J="PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J";
-    const std::string PV_DAQ_SUFFIX_SAVE_CHECK_J   ="PV_DAQ_SUFFIX_SAVE_CHECK_J";
-    const std::string PV_DAQ_SUFFIX_SAVE_RBV_J     ="PV_DAQ_SUFFIX_SAVE_RBV_J";
-    const std::string PV_DAQ_SUFFIX_SAVE_MESSAGE_J ="PV_DAQ_SUFFIX_SAVE_MESSAGE_J";
+    const std::string PV_DAQ_SUFFIX_WRITE_CHECK_J   ="PV_DAQ_SUFFIX_WRITE_CHECK_J";
+    const std::string PV_DAQ_SUFFIX_WRITE_RBV_J     ="PV_DAQ_SUFFIX_WRITE_RBV_J";
+    const std::string PV_DAQ_SUFFIX_WRITE_MESSAGE_J ="PV_DAQ_SUFFIX_WRITE_MESSAGE_J";
 
 
     ///IA///
@@ -998,8 +998,8 @@ namespace UTL
     const boost::python::arg VALUE_ARG  = boost::python::arg("value");
     const boost::python::arg VALUES_ARG = boost::python::arg("values");
     const boost::python::arg TIME_ARG = boost::python::arg("time");
-    const boost::python::arg AREA_ARG = boost::python::arg("mode");
-    const boost::python::arg MODE_ARG = boost::python::arg("area");
+    const boost::python::arg AREA_ARG = boost::python::arg("area");
+    const boost::python::arg MODE_ARG = boost::python::arg("mode");
     const boost::python::arg ID_ARG   = boost::python::arg("id");
     const boost::python::arg IDS_ARG   = boost::python::arg("ids");
 #endif //BUILD_DLL

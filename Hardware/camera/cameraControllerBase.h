@@ -68,6 +68,9 @@ class cameraControllerBase : public controller
 // \__, \__/  |  |  |  | /~~\ | \| |__/ .__/
 //
 //-----------------------------------------------------------------------------------------
+        bool takeFastImage(const std::string& cam);
+        bool takeFastImage_VC();
+        bool takeFastImage();
         bool startAnalysis_VC();
         bool startAnalysis(const std::string& cam);
         bool startAnalysis();
@@ -117,6 +120,12 @@ class cameraControllerBase : public controller
 // .__/  |  /~~\  |  |___    \__X \__/ /~~\ | \|  |  | |    | \__, /~~\  |  | \__/ | \|
 //
 //-----------------------------------------------------------------------------------------
+        bool isBusy_VC()const;
+        bool isBusy(const std::string& cam)const;
+        bool isBusy()const;
+        bool isNotBusy_VC()const;
+        bool isNotBusy(const std::string& cam)const;
+        bool isNotBusy()const;
         bool isNotCollectingOrSaving(const std::string& cam)const;
         bool isNotUsingBackground(const std::string& cam)const;
         bool isCollectingOrSaving(const std::string& cam)const;

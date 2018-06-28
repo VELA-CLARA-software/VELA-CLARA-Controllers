@@ -59,8 +59,8 @@ namespace cameraStructs
             (TEST)// ??
 
             (CAM_FILE_PATH)(CAM_FILE_NAME)(CAM_FILE_NUMBER)(CAM_FILE_TEMPLATE)
-            (CAM_FILE_SAVE)(CAM_FILE_SAVE_RBV)(CAM_FILE_SAVE_CHECK)
-            (CAM_FILE_SAVE_ERROR_MESSAGE_RBV)(CAM_STATUS)(CAM_START_ACQUIRE)(CAM_STOP_ACQUIRE)
+            (CAM_FILE_WRITE)(CAM_WRITE_FILE_RBV)(CAM_FILE_WRITE_STATUS)
+            (CAM_FILE_WRITE_ERROR_MESSAGE_RBV)(CAM_STATUS)(CAM_START_ACQUIRE)(CAM_STOP_ACQUIRE)
 
             (CAM_NUM_CAPTURED_RBV)
 
@@ -69,10 +69,10 @@ namespace cameraStructs
 
 
             (JPG_FILE_NAME) (JPG_FILE_PATH) (JPG_FILE_NUMBER)
-            (JPG_CAPTURE)(JPG_FILE_SAVE)(JPG_NUM_CAPTURED)
+            (JPG_CAPTURE)(JPG_FILE_WRITE)(JPG_NUM_CAPTURED)
 
-            (JPG_FILE_SAVE_RBV)(JPG_FILE_SAVE_CHECK)
-            (JPG_FILE_SAVE_MESSAGE)
+            (JPG_FILE_WRITE_RBV)(JPG_FILE_WRITE_CHECK)
+            (JPG_FILE_WRITE_MESSAGE)
             (JPG_CAPTURE_RBV)(JPG_NUM_CAPTURE)
             (JPG_NUM_CAPTURE_RBV)
 
@@ -121,8 +121,8 @@ namespace cameraStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(SAVE_STATE,
                                         (NOT_SAVING)(SAVING)(SAVING_ERROR))
     // not sure yet ...
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(SAVE_CHECK,
-                                        (SAVE_CHECK_OK) (SAVE_CHECK_ERROR))
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(WRITE_CHECK,
+                                        (WRITE_CHECK_OK) (WRITE_CHECK_ERROR))
 
 
     struct pvStruct
@@ -423,11 +423,11 @@ namespace cameraStructs
         */
         std::vector<int> array_data, background_array;
         #ifdef BUILD_DLL
-            void array_data_Py();
-            void array_data2D_Py();
-            boost::python::list background_data_Py();
-            boost::python::list background_data_2D_Py();
-            boost::python::list data,data2D;
+//            boost::python::list array_data_Py();
+//            boost::python::list array_data2D_Py();
+//            boost::python::list background_data_Py();
+//            boost::python::list background_data_2D_Py();
+            boost::python::list data,data2D,background,background2D;
         #endif
         cameraBase*    fast_image_interface;
         size_t array_data_sum, background_data_sum;
@@ -458,7 +458,7 @@ namespace cameraStructs
             /*
                 writing error message goes here
             */
-            writeCheck(SAVE_CHECK_ERROR),
+            writeCheck(WRITE_CHECK_ERROR),
             /*
                 shotsTaken - how many 'shots'(images) acquired
                 numberOfShots - how many 'shots'(images) to acquire
@@ -472,7 +472,7 @@ namespace cameraStructs
             */
             collectingStateJPG(COLLECTING_ERROR),
             writeStateJPG(SAVING_ERROR),
-            writeCheckJPG(SAVE_CHECK_ERROR),
+            writeCheckJPG(WRITE_CHECK_ERROR),
             shotsTakenJPG(UTL::DUMMY_INT),
             numberOfShotsJPG(UTL::DUMMY_INT),
             /*
@@ -501,7 +501,7 @@ namespace cameraStructs
         // write state indicates if saving to disc / or
         SAVE_STATE writeState;
         // write check is whether the last write was succesful
-        SAVE_CHECK writeCheck;
+        WRITE_CHECK writeCheck;
         // If error this string will get updated
         std::string writeErrorMessage;
         int shotsTaken, numberOfShots, maxShots, shotsTakenJPG, numberOfShotsJPG;
@@ -516,7 +516,7 @@ namespace cameraStructs
         // not implemented yet???
         COLLECTING_STATE collectingStateJPG;
         SAVE_STATE writeStateJPG;
-        SAVE_CHECK writeCheckJPG;
+        WRITE_CHECK writeCheckJPG;
         std::string writeErrorMessageJPG,latestFilename,latestDirectory;
     };
 

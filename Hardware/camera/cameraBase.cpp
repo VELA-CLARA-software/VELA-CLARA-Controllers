@@ -387,15 +387,15 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 /*
             CLARA CAMER STATES, ON/OFF, ACQUIRING, ANALYSING
 */
-        case CAM_PV_TYPE::CAM_FILE_SAVE_RBV:
+        case CAM_PV_TYPE::CAM_WRITE_FILE_RBV:
             updateWriteState(args, camObj.daq.writeState);
             message(camObj.name, ": Write Status is ", ENUM_TO_STRING(camObj.daq.writeState));
             break;
-        case CAM_PV_TYPE::CAM_FILE_SAVE_CHECK:
+        case CAM_PV_TYPE::CAM_FILE_WRITE_STATUS:
             updateWriteCheck(args, camObj.daq.writeCheck);
-            message(camObj.name, ": Write Check is ", ENUM_TO_STRING(camObj.daq.writeCheck));
+            message(camObj.name, ": Write Status is ", ENUM_TO_STRING(camObj.daq.writeCheck));
             break;
-        case CAM_PV_TYPE::CAM_FILE_SAVE_ERROR_MESSAGE_RBV:
+        case CAM_PV_TYPE::CAM_FILE_WRITE_ERROR_MESSAGE_RBV:
             updateWriteErrorMessage(args, camObj.daq.writeErrorMessage);
             message(camObj.name,": Write Error message is: ", camObj.daq.writeErrorMessage);
             break;
@@ -439,20 +439,20 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 //        case CAM_PV_TYPE::JPG_CAPTURE:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
-//        case CAM_PV_TYPE::JPG_FILE_SAVE:
+//        case CAM_PV_TYPE::JPG_FILE_WRITE:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
 //        case CAM_PV_TYPE::JPG_NUM_CAPTURED:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
-//        case CAM_PV_TYPE::JPG_FILE_SAVE_RBV:
+//        case CAM_PV_TYPE::JPG_FILE_WRITE_RBV:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
 //
-//        case CAM_PV_TYPE::JPG_FILE_SAVE_CHECK:
+//        case CAM_PV_TYPE::JPG_FILE_WRITE_CHECK:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
-//        case CAM_PV_TYPE::JPG_FILE_SAVE_MESSAGE:
+//        case CAM_PV_TYPE::JPG_FILE_WRITE_MESSAGE:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
 //        case CAM_PV_TYPE::JPG_CAPTURE_RBV:
@@ -573,11 +573,14 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.avg_pix_buf,
                                   camObj.data.analysis.avg_pix_rs,
                                   camObj.data.analysis);
+            //message(camObj.name,", avg_pix = ", camObj.data.analysis.avg_pix);
             break;
         case CAM_PV_TYPE::SUM_PIX_INTENSITY_RBV:
-            updateAnalysislResult(args,camObj.data.analysis.sum_pix,camObj.data.analysis.sum_pix_buf,
+            updateAnalysislResult(args,camObj.data.analysis.sum_pix,
+                                  camObj.data.analysis.sum_pix_buf,
                                   camObj.data.analysis.sum_pix_rs,
                                   camObj.data.analysis);
+            //message(camObj.name,", sum_pix = ", camObj.data.analysis.sum_pix);
             break;
         case CAM_PV_TYPE::PIXEL_RESULTS_RBV:
             updatePixelResults(args,camObj.data.analysis);
@@ -600,7 +603,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
             break;
         case CAM_PV_TYPE::MASK_Y_RAD_RBV:
             camObj.data.mask.mask_y_rad = getDBRunsignedShort(args);
-            message(camObj.name," mask_y_rad = ",camObj.data.mask.mask_y_rad, " ", getDBRunsignedShort(args) );
+            //message(camObj.name," mask_y_rad = ",camObj.data.mask.mask_y_rad, " ", getDBRunsignedShort(args) );
             break;
 /*
             IMAGE CENTRE AND PIXEL TO MM
@@ -641,18 +644,18 @@ void cameraBase::updateCamState(const event_handler_args& args, CAM_STATE& s)
     }
 }
 //--------------------------------------------------------------------------------------------------
-void cameraBase::updateWriteCheck(const event_handler_args& args, SAVE_CHECK& w)
+void cameraBase::updateWriteCheck(const event_handler_args& args, WRITE_CHECK& w)
 {
     switch(getDBRunsignedShort(args))
     {
         case UTL::ZERO_US:
-            w = SAVE_CHECK::SAVE_CHECK_OK;
+            w = WRITE_CHECK::WRITE_CHECK_OK;
             break;
         case UTL::ONE_US:
-            w = SAVE_CHECK::SAVE_CHECK_ERROR;
+            w = WRITE_CHECK::WRITE_CHECK_ERROR;
             break;
         default:
-            w = SAVE_CHECK::SAVE_CHECK_ERROR;
+            w = WRITE_CHECK::WRITE_CHECK_ERROR;
     }
 }
 //--------------------------------------------------------------------------------------------------
@@ -767,7 +770,15 @@ void cameraBase::updateAnalysislResult(const event_handler_args& args,
                                        runningStat& rs_to_update,
                                        analysis_data& data)
 {
-    getDBRdouble_timestamp(args, value_to_update);
+    if(args.type == DBR_TIME_DOUBLE)
+    {
+        getDBRdouble_timestamp(args, value_to_update);
+    }
+    else if(args.type == DBR_DOUBLE)
+    {
+        value_to_update = getDBRdouble(args);
+    }
+    //getDBRdouble_timestamp(args, value_to_update);
     addToBuffer(value_to_update, buffer_to_update, data);
     rs_to_update.Push(value_to_update);
 }
@@ -822,8 +833,6 @@ void cameraBase::updatePixelResults(const event_handler_args& args, analysis_dat
         pValue = (dbr_double_t*)args.dbr;
     }
 }
-
-
 // for all getters and setters we need three versions
 // one where you pass a name,
 // one for the 'selected' camera
@@ -846,13 +855,6 @@ bool cameraBase::setCamera(const std::string &cam)
     }
     return ans;
 }
-
-
-
-
-
-
-
 //
 //  __   __             ___  __  ___               __      __             ___                  __   ___
 // /  ` /  \ |    |    |__  /  `  |      /\  |\ | |  \    /__`  /\  \  / |__     |  |\/|  /\  / _` |__
@@ -862,8 +864,6 @@ bool cameraBase::setCamera(const std::string &cam)
 //-------------------------------------------------------------------------------------------------------
 //
 //
-
-// These are the functions that are exposed to Python
 bool cameraBase::collectAndSave_VC(const int numbOfShots)
 {
     message("collectAndSave_VC passed ",vcCamPtr->name," shots = ",numbOfShots);
@@ -879,8 +879,8 @@ bool cameraBase::collectAndSave(const int numbOfShots)
     else
     {
         message(selectedCamPtr->name," is not acquiring, can't collectAndSave");
-
     }
+    return false;
 }
 //-------------------------------------------------------------------------------------------------------
 bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
@@ -932,7 +932,9 @@ bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
 //-------------------------------------------------------------------------------------------------------
 void cameraBase::staticEntryImageCollectAndSave(imageCollectStruct& ics)
 {
+    ics.camInterface -> attachTo_thisCAContext();
     ics.camInterface -> imageCollectAndSave(ics);
+    ics.camInterface -> detachFrom_thisCAContext();
 }
 //-------------------------------------------------------------------------------------------------------
 void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
@@ -951,7 +953,7 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
             }
             if(makeANewDirectoryAndName(cam, ics.numShots))
             {
-                pause_50();
+                pause_500();
                 if(write(cam))
                 {
                     while( isSaving(cam))   //wait until saving is done...
@@ -961,7 +963,7 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
                     // pause and wait for EPICS to UPDATE
                     pause_500();
                     //check status of save/write
-                    if (cam.daq.writeCheck == SAVE_CHECK::SAVE_CHECK_OK)
+                    if (cam.daq.writeCheck == WRITE_CHECK::WRITE_CHECK_OK)
                     {
                         ics.success = true;//this->message("Successful wrote image to disk.");
                     }
@@ -973,12 +975,21 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
                     ics.isBusy = false;
 
                 }//if(write(cam))
+                else
+                {
+                    message("!!!ERROR WRITING DATA!!! ",cam.name," ");
+                }
 
             }//if(makeANewDirectoryAndName(cam, ics.numShots);
 
         }//if(collect(cam))
+        else
+        {
+            message("!!!ERROR COLLECTING DATA!!! ",cam.name," ");
+        }
 
     }//(setNumberOfShots(cam, ics.numShots))
+
 }
 //-------------------------------------------------------------------------------------------------------
 bool cameraBase::setNumberOfCapture(cameraObject& cam, int numberOfShots)
@@ -1066,7 +1077,7 @@ bool cameraBase::write(cameraObject& cam)
     if(isNotCollecting(cam))
     {
         unsigned short c = 1;
-        ans = cam_caput( cam, c, CAM_PV_TYPE::CAM_FILE_SAVE);
+        ans = cam_caput( cam, c, CAM_PV_TYPE::CAM_FILE_WRITE);
         message("WriteFile set to 1 on camera = ",cam.name);
     }
     else
@@ -1159,7 +1170,7 @@ bool cameraBase::saveJPG(cameraObject camera, unsigned short &comm)
 {
     bool ans=false;
 //    int startNumber(1);// MAGIC_NUMBER
-//    pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_SAVE));
+//    pvStruct S(camera.pvComStructs.at(CAM_PV_TYPE::JPG_FILE_WRITE));
 //
 //    //setStartFileNumberJPG(startNumber);
 //
@@ -1205,7 +1216,6 @@ bool cameraBase::useNPoint_VC(bool v)
 //---------------------------------------------------------------------------------
 bool cameraBase::useNPoint(bool v,const std::string& cam)
 {
-
     return useNPoint(v,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
@@ -1222,7 +1232,6 @@ bool cameraBase::useNPoint(bool v)
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskX_VC(int x)
 {
-
     return setMaskX(x,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
@@ -1400,6 +1409,51 @@ bool cameraBase::setBackground()
 ///
 ///
 ///
+//---------------------------------------------------------------------------------
+bool cameraBase::isBusy_VC()const
+{
+    return isBusy(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isBusy(const cameraStructs::cameraObject& cam)const
+{
+    if(entryExists(imageCollectStructs,cam.name))
+        return imageCollectStructs.at(cam.name).isBusy;
+    return false;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isBusy(const std::string& cam)const
+{
+    return isBusy(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isBusy()const
+{
+    return isBusy(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isNotBusy_VC()const
+{
+    return isNotBusy(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isNotBusy(const cameraStructs::cameraObject& cam)const
+{
+    if(entryExists(imageCollectStructs,cam.name))
+        return !imageCollectStructs.at(cam.name).isBusy;
+    return false;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isNotBusy(const std::string& cam)const
+{
+    return isNotBusy(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isNotBusy()const
+{
+    return isNotBusy(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
 bool cameraBase::isUsingBackground(const std::string& cam)const
 {
     return isUsingBackground(getCamObj(cam));
@@ -1437,7 +1491,7 @@ bool cameraBase::isNotUsingBackground_VC()const
 //---------------------------------------------------------------------------------
 bool cameraBase::isNotUsingBackground(const cameraStructs::cameraObject& cam)const
 {
-    return !isNotUsingBackground(cam);
+    return !isUsingBackground(cam);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isUsingNPoint(const std::string& cam)const
@@ -2313,52 +2367,42 @@ std::deque<std::vector<double>> cameraBase::getPixelValuesBuffer(const cameraObj
 ///
 /// get pixel values buffer
 ///
-std::vector<int> cameraBase::getFastImage_VC()
+std::vector<int> cameraBase::getFastImage_VC()const
 {
     return getFastImage(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-std::vector<int> cameraBase::getFastImage(const std::string& cam)
+std::vector<int> cameraBase::getFastImage(const std::string& cam)const
 {
     return getFastImage(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-std::vector<int> cameraBase::getFastImage()
+std::vector<int> cameraBase::getFastImage()const
 {
     return getFastImage(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-std::vector<int> cameraBase::getFastImage(cameraObject& cam)
+std::vector<int> cameraBase::getFastImage(const cameraObject& cam)const
 {
-    if(cagetFastImage(cam))
-    {
-        cam.data.image.array_data_sum = UTL::ZERO_SIZET;
-        cam.data.image.array_data_max = std::numeric_limits<int>::min();
-        cam.data.image.array_data_min = std::numeric_limits<int>::max();
-        for(auto&& n : cam.data.image.array_data)
-        {
-            /* add to sum */
-            cam.data.image.array_data_sum += (size_t)n;
-            /* set min and max values */
-            if(n > cam.data.image.array_data_max)
-                cam.data.image.array_data_max = n;
-            if(n < cam.data.image.array_data_min)
-                cam.data.image.array_data_min = n;
-        }
-        return  cam.data.image.array_data;
-    }
-    else
-        message("caget not fine");
-    std::vector<int> dummy;
-    return dummy;
+    return  cam.data.image.array_data;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::cagetFastImage(const std::string& cam)
+bool cameraBase::takeFastImage_VC()
 {
-    return cagetFastImage(getCamObj(cam));
+    return takeFastImage(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::cagetFastImage(cameraObject& cam)
+bool cameraBase::takeFastImage()
+{
+    return takeFastImage(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::takeFastImage(const std::string& cam)
+{
+    return takeFastImage(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::takeFastImage(cameraObject& cam)
 {
     if(isAcquiring(cam))
     {
@@ -2367,14 +2411,40 @@ bool cameraBase::cagetFastImage(cameraObject& cam)
                     cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT,
                     cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHID,
                     (void*)&(cam.data.image.array_data[UTL::ZERO_SIZET]));
-        SEVCHK ( a, "ca_array_get()" );
+        SEVCHK( a, "ca_array_get()" );
 
         if(a == ECA_NORMAL)
         {
             a = sendToEpics("ca_array_get","","");
             if(a == ECA_NORMAL)
             {
-                message("ca_array_get success");
+                /*
+                    update the local version of min/max pixel values etc
+                */
+                cam.data.image.array_data_sum = UTL::ZERO_SIZET;
+                cam.data.image.array_data_max = std::numeric_limits<int>::min();
+                cam.data.image.array_data_min = std::numeric_limits<int>::max();
+                for(auto&& n : cam.data.image.array_data)
+                {
+                    /* add to sum */
+                    cam.data.image.array_data_sum += (size_t)n;
+                    /* set min and max values */
+                    if(n > cam.data.image.array_data_max)
+                        cam.data.image.array_data_max = n;
+                    if(n < cam.data.image.array_data_min)
+                        cam.data.image.array_data_min = n;
+                }
+
+#ifdef BUILD_DLL
+                cam.data.image.data   = toPythonList(cam.data.image.array_data);
+
+                // toPythonList2D does not work yet!!!
+                cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
+                                                            cam.data.image.num_pix_x,
+                                                            cam.data.image.num_pix_y);
+            //boost::python::list data,data2D;
+#endif
+//                message("ca_array_get success");
                 return true;
             }
         }
@@ -2408,7 +2478,7 @@ boost::python::list cameraBase::getFastImage2D()
 //---------------------------------------------------------------------------------
 boost::python::list cameraBase::getFastImage2D(cameraStructs::cameraObject& cam)
 {
-    if(cagetFastImage(cam))
+    if(takeFastImage(cam))
     {
         cam.data.image.data = toPythonList(cam.data.image.array_data);
         cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,

@@ -124,6 +124,7 @@ namespace BOOST_PYTHON_INCLUDE
             .value("RF_GUN",          MACHINE_AREA::RF_GUN      )
             .value("RF_L01",          MACHINE_AREA::RF_L01      )
             .value("USER",            MACHINE_AREA::USER        )
+            .value("PIL",             MACHINE_AREA::PIL         )
             ;
     }
 //______________________________________________________________________________
@@ -174,6 +175,7 @@ namespace BOOST_PYTHON_INCLUDE
             .value("CLOSED", STATE::CLOSED )
             ;
     }
+#ifndef __VC_ENUM_ONLY__
 //______________________________________________________________________________
     void reg_vec_string(const char* py_name, const char* py_docs)
     {
@@ -247,6 +249,7 @@ namespace BOOST_PYTHON_INCLUDE
            .def("setQuiet",        &VCbase::setQuiet,setQuiet_doc        )
            ;
     }
+#endif
 //______________________________________________________________________________
 #ifdef __INCLUDE_CAMERA_BASE__
     void reg_analysis_mask(const char* py_name, const char* py_docs)
@@ -459,17 +462,17 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("num_pix_y",           &fast_image::num_pix_y,num_pix_x_ds)
             .def_readonly("bit_depth",           &fast_image::bit_depth,bit_depth_ds)
             .def_readonly("x_pix_to_mm",         &fast_image::x_pix_to_mm,x_pix_to_mm_ds)
-            .def_readonly("y_pix_to_mm",         &fast_image::array_data_Py,y_pix_to_mm_ds)
-            .add_property("data",          &fast_image::data,data_ds)
-            .add_property("data2D",          &fast_image::data2D,data2D_ds)
-            .def_readonly("array_data",          &fast_image::array_data_Py,array_data_Py_ds)
-            .def_readonly("array_data_2D",       &fast_image::array_data2D_Py,array_data2D_Py_ds)
-            .def_readonly("array_data_sum",      &fast_image::array_data_sum,array_data_sum_ds)
-            .def_readonly("array_data_max",      &fast_image::array_data_max,array_data_max_ds)
-            .def_readonly("array_data_min",      &fast_image::array_data_min,array_data_min_ds)
-            .def_readonly("background_data",     &fast_image::background_data_Py,     background_data_Py_ds)
-            .def_readonly("background_data_2D",  &fast_image::background_data_2D_Py,  background_data_2D_Py_ds)
-            .def_readonly("background_data_sum", &fast_image::background_data_sum,background_data_sum_ds)
+            .def_readonly("y_pix_to_mm",         &fast_image::y_pix_to_mm,y_pix_to_mm_ds)
+
+            .def_readonly("data",                &fast_image::data,data_ds)
+            .def_readonly("data2D",              &fast_image::data2D,data2D_ds)
+            .def_readonly("data_sum",            &fast_image::array_data_sum,array_data_sum_ds)
+            .def_readonly("data_max",            &fast_image::array_data_max,array_data_max_ds)
+            .def_readonly("data_min",            &fast_image::array_data_min,array_data_min_ds)
+
+//            .def_readonly("background_data",     &fast_image::background_data_Py,     background_data_Py_ds)
+//            .def_readonly("background_data_2D",  &fast_image::background_data_2D_Py,  background_data_2D_Py_ds)
+//            .def_readonly("background_data_sum", &fast_image::background_data_sum,background_data_sum_ds)
             ;
     }
     void reg_camera_state(const char* py_name,const char*  py_docs)
@@ -610,18 +613,12 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isNotAcquiring_VC_ds = "";
         const char* isNotAcquiring_ds_1 = "";
         const char* isNotAcquiring_ds_2 = "";
-
-
         const char* stopAcquireAndAnalysis_VC_ds = "";
         const char* stopAcquireAndAnalysis_ds1 = "";
         const char* stopAcquireAndAnalysis_ds2 = "";
-
         const char* startAcquireAndAnalysis_VC_ds = "";
         const char* startAcquireAndAnalysis_ds1 = "";
         const char* startAcquireAndAnalysis_ds2 = "";
-
-
-
         const char* latestCollectAndSaveSuccess_VC_ds = "";
         const char* latestCollectAndSaveSuccess_ds = "";
         const char* startAnalysing_VC_ds = "";
@@ -638,27 +635,27 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isNotAnalysing_VC_ds = "";
         const char* isNotAnalysing_ds_1 = "";
         const char* isNotAnalysing_ds_2 = "";
-
-
         const char* isNotCollectingOrSaving_VC_ds = "";
         const char* isNotCollectingOrSaving_ds1 = "";
         const char* isNotCollectingOrSaving_ds2 = "";
-
         const char* isUsingBackground_VC_ds     = "";
         const char* isUsingBackground_ds1       = "";
         const char* isUsingBackground_ds2       = "";
         const char* isNotUsingBackground_VC_ds= "";
         const char* isNotUsingBackground_ds1  = "";
         const char* isNotUsingBackground_ds2  = "";
-
         const char* isUsingNPoint_VC_ds     = "";
         const char* isUsingNPoint_ds1       = "";
         const char* isUsingNPoint_ds2       = "";
         const char* isNotUsingNPoint_VC_ds = "";
         const char* isNotUsingNPoint_ds1   = "";
         const char* isNotUsingNPoint_ds2   = "";
-
-
+        const char* isBusy_VC_ds = "";
+        const char* isBusy_ds1 = "";
+        const char* isBusy_ds2 = "";
+        const char* isNotBusy_VC_ds = "";
+        const char* isNotBusy_ds1 = "";
+        const char* isNotBusy_ds2 = "";
         const char* isON_VC_ds = "";
         const char* isON_ds_1 = "";
         const char* isON_ds_2 = "";
@@ -907,12 +904,12 @@ namespace BOOST_PYTHON_INCLUDE
         const char* getCameraObj_VC_ds = "";
         const char* getCameraObj_ds1 = "";
         const char* getCameraObj_ds2 = "";
-
         const char* getStepSize_VC_ds = "";
         const char* getStepSize_ds1 = "";
         const char* getStepSize_ds2 = "";
-
-
+        const char* takeFastImage_VC_ds = "";
+        const char* takeFastImage_ds1 = "";
+        const char* takeFastImage_ds2 = "";
         /*
             function pointers for overloads to expose to Python...
         */
@@ -928,6 +925,10 @@ namespace BOOST_PYTHON_INCLUDE
         const cameraStructs::clara_DAQ&(cameraControllerBase::*getClaraDAQObj_2)()     const= &cameraControllerBase::getClaraDAQObj;
         const cameraStructs::cameraObject&(cameraControllerBase::*getCameraObj_1)(cstr&)const= &cameraControllerBase::getCameraObj;
         const cameraStructs::cameraObject&(cameraControllerBase::*getCameraObj_2)()     const= &cameraControllerBase::getCameraObj;
+
+        bool(cameraControllerBase::*takeFastImage_1)(cstr&)       = &cameraControllerBase::takeFastImage;
+        bool(cameraControllerBase::*takeFastImage_2)()= &cameraControllerBase::takeFastImage;
+
 
         bool(cameraControllerBase::*useNPoint_1)(bool,cstr&)       = &cameraControllerBase::useNPoint;
         bool(cameraControllerBase::*useNPoint_2)(bool)= &cameraControllerBase::useNPoint;
@@ -954,6 +955,10 @@ namespace BOOST_PYTHON_INCLUDE
         void(cameraControllerBase::*clearRunningValues_1)()                            = &cameraControllerBase::clearRunningValues;
         void(cameraControllerBase::*clearRunningValues_2)()                            = &cameraControllerBase::clearRunningValues;
 
+        bool(cameraControllerBase::*isBusy_1)(cstr&)const = &cameraControllerBase::isBusy;
+        bool(cameraControllerBase::*isBusy_2)(     )const = &cameraControllerBase::isBusy;
+        bool(cameraControllerBase::*isNotBusy_1)(cstr&)const = &cameraControllerBase::isNotBusy;
+        bool(cameraControllerBase::*isNotBusy_2)(     )const = &cameraControllerBase::isNotBusy;
 
         bool(cameraControllerBase::*isUsingBackground_1)(cstr&)const = &cameraControllerBase::isUsingBackground;
         bool(cameraControllerBase::*isUsingBackground_2)(     )const = &cameraControllerBase::isUsingBackground;
@@ -1018,7 +1023,6 @@ namespace BOOST_PYTHON_INCLUDE
         bool(cameraControllerBase::*setCenterYPixel_2)(cus) = &cameraControllerBase::setCenterYPixel;
         bool(cameraControllerBase::*setPixMM_1)(const double,cstr&)      = &cameraControllerBase::setPixMM;
         bool(cameraControllerBase::*setPixMM_2)(const double)            = &cameraControllerBase::setPixMM;
-
         int (cameraControllerBase::*getStepSize_1)(cstr& )const  = &cameraControllerBase::getStepSize;
         int (cameraControllerBase::*getStepSize_2)()const        = &cameraControllerBase::getStepSize;
         int (cameraControllerBase::*getMaskX_1)(cstr& )  const= &cameraControllerBase::getMaskX;
@@ -1093,17 +1097,21 @@ namespace BOOST_PYTHON_INCLUDE
         .def("startAnalysing",                 startAnalysing_1                          , startAnalysing_ds_1)
         .def("startAnalysing",                 startAnalysing_2                          , startAnalysing_ds_2)
 
+        .def("takeFastImage_VC", &cameraControllerBase::takeFastImage_VC, takeFastImage_VC_ds)
+        .def("takeFastImage",    takeFastImage_1                        , takeFastImage_ds1)
+        .def("takeFastImage",    takeFastImage_2                        , takeFastImage_ds2)
+
 
         .def("stopAcquireAndAnalysis_VC",  &cameraControllerBase::stopAcquireAndAnalysis_VC  , stopAcquireAndAnalysis_VC_ds)
         .def("stopAcquireAndAnalysis",     stopAcquireAndAnalysis_1                          , stopAcquireAndAnalysis_ds1)
         .def("stopAcquireAndAnalysis",     stopAcquireAndAnalysis_2                          , stopAcquireAndAnalysis_ds2)
         .def("startAcquireAndAnalysis_VC", &cameraControllerBase::startAcquireAndAnalysis_VC  ,startAcquireAndAnalysis_VC_ds)
-        .def("startAcquireAndAnalysis",                 startAcquireAndAnalysis_1 , startAcquireAndAnalysis_ds1)
-        .def("startAcquireAndAnalysis",                 startAcquireAndAnalysis_2 , startAcquireAndAnalysis_ds2)
+        .def("startAcquireAndAnalysis",    startAcquireAndAnalysis_1 , startAcquireAndAnalysis_ds1)
+        .def("startAcquireAndAnalysis",    startAcquireAndAnalysis_2 , startAcquireAndAnalysis_ds2)
 
-        .def("isNotCollectingOrSaving_VC", &cameraControllerBase::isNotCollectingOrSaving_VC  ,isNotCollectingOrSaving_VC_ds)
-        .def("isNotCollectingOrSaving",     isNotCollectingOrSaving_1 , isNotCollectingOrSaving_ds1)
-        .def("isNotCollectingOrSaving",                 isNotCollectingOrSaving_2 , isNotCollectingOrSaving_ds2)
+        .def("isNotCollectingOrSaving_VC", &cameraControllerBase::isNotCollectingOrSaving_VC, isNotCollectingOrSaving_VC_ds)
+        .def("isNotCollectingOrSaving",    isNotCollectingOrSaving_1, isNotCollectingOrSaving_ds1)
+        .def("isNotCollectingOrSaving",    isNotCollectingOrSaving_2, isNotCollectingOrSaving_ds2)
 
         .def("isUsingBackground_VC",    &cameraControllerBase::isUsingBackground_VC     , isUsingBackground_VC_ds)
         .def("isUsingBackground",       isUsingBackground_1                             , isUsingBackground_ds1)
@@ -1114,10 +1122,16 @@ namespace BOOST_PYTHON_INCLUDE
         .def("isUsingNPoint_VC",        &cameraControllerBase::isUsingNPoint_VC         , isUsingNPoint_VC_ds)
         .def("isUsingNPoint",           isUsingNPoint_1                                 , isUsingNPoint_ds1)
         .def("isUsingNPoint",           isUsingNPoint_2                                 , isUsingNPoint_ds2)
-        .def("isNotUsingNPoint_VC",     &cameraControllerBase::isNotUsingNPoint_VC      , isNotUsingNPoint_VC_ds)
+        .def("ivc_data2sNotUsingNPoint_VC",     &cameraControllerBase::isNotUsingNPoint_VC      , isNotUsingNPoint_VC_ds)
         .def("isNotUsingNPoint",        isNotUsingNPoint_1                              , isNotUsingNPoint_ds1)
         .def("isNotUsingNPoint",        isNotUsingNPoint_2                              , isNotUsingNPoint_ds2)
 
+        .def("isBusy_VC",                 &cameraControllerBase::isBusy_VC     , isBusy_VC_ds)
+        .def("isBusy",                      isBusy_1            ,                                  isBusy_ds1)
+        .def("isBusy",                      isBusy_2            ,                                  isBusy_ds2)
+        .def("isNotBusy_VC",              &cameraControllerBase::isNotBusy_VC , isNotBusy_VC_ds)
+        .def("isNotBusy",                 isNotBusy_1                         , isNotBusy_ds1)
+        .def("isNotBusy",                 isNotBusy_2                         , isNotBusy_ds2)
 
 
         .def("isAnalysing_VC",                 &cameraControllerBase::isAnalysing_VC     , isAnalysing_VC_ds)
