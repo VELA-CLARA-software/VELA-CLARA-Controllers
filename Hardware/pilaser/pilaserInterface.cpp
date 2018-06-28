@@ -152,7 +152,7 @@ void pilaserInterface::initChids()
     */
     std::string s;
     // init chids
-    debugMessage("\pilaserInterface Create channel to monitor PVs\n");
+    debugMessage("\npilaserInterface Create channel to monitor PVs\n");
     for(auto&& it:pilaser.pvMonStructs)
     {
         if(it.first == pilaserStructs::PILASER_PV_TYPE::WCM_Q)
@@ -166,7 +166,7 @@ void pilaserInterface::initChids()
             s = pilaser.pvRoot;
         addChannel(s, it.second);
     }
-    debugMessage("\pilaserInterface Create channel to command PVs\n");
+    debugMessage("\npilaserInterface Create channel to command PVs\n");
     for(auto&& it:pilaser.pvComStructs)
     {
         if(it.first == pilaserStructs::PILASER_PV_TYPE::WCM_Q)
@@ -293,6 +293,7 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
 
         case PILASER_PV_TYPE::WCM_Q:
             pilaser.Q = getDBRdouble(args);
+            pilaser.Q_rs.Push(pilaser.Q);
             addToBuffer(pilaser.Q,pilaser.Q_buf);
             break;
         default:

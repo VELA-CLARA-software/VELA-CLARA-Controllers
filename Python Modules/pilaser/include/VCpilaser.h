@@ -76,7 +76,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
     /*
-        // IF WE BUILD INDIVIDUAL CONTRLLER S FOR EACH SUB-HARDWRAE SYSTEM
+        // IF WE BUILD INDIVIDUAL CONTRLLERS FOR EACH SUB-HARDWARE SYSTEM
         // THEN THE DEFINITIONS NEED TO MOVE TO THOSE CLASSES
         // I.E A VClasermirror.pyd
         // we can then use pre-processor commands to include thwe desired defintions
@@ -85,6 +85,57 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     using namespace UTL;
     using namespace boost::python;
     using namespace boost;
+    using namespace pilaserStructs;
+
+    const char* hPos_ds = "";
+    const char* vPos_ds = "";
+    const char* hStep_ds = "";
+    const char* vStep_ds = "";
+    const char* STEP_MAX_ds = "";
+
+    class_<pilMirrorObject,noncopyable>
+        ("pilMirrorObject","pilMirrorObject member variables (read access only)", no_init)
+        .def_readonly("hPos",    &pilMirrorObject::hPos,hPos_ds)
+        .def_readonly("vPos",    &pilMirrorObject::vPos,vPos_ds)
+        .def_readonly("hStep",   &pilMirrorObject::hStep,hStep_ds)
+        .def_readonly("vStep",   &pilMirrorObject::vStep,vStep_ds)
+        .def_readonly("STEP_MAX",&pilMirrorObject::STEP_MAX,STEP_MAX_ds)
+        ;
+
+    const char* Q_ds= "";
+    const char* Q_mean_ds= "";
+    const char* Q_n_ds= "";
+    const char* Q_sd_ds= "";
+    const char* Q_clear_ds= "";
+
+    const char* intensity_ds= "";
+    const char* intensity_mean_ds= "";
+    const char* intensity_n_ds= "";
+    const char* intensity_sd_ds= "";
+    const char* intensity_clear_ds= "";
+    const char* status_ds= "";
+    const char* HWP_ds= "";
+    const char* setCharge_ds= "";
+
+
+    class_<pilaserObject,noncopyable>
+        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
+        .def_readonly("HWP",            &pilaserObject::HWP,    HWP_ds)
+        .def_readonly("Q",         &pilaserObject::Q, Q_ds)
+        .def_readonly("Q_mean",         &pilaserObject::Q_mean, Q_mean_ds)
+        .def_readonly("Q_n",            &pilaserObject::Q_n,    Q_n_ds)
+        .def_readonly("Q_sd",           &pilaserObject::Q_sd,   Q_sd_ds)
+        .def_readonly("Q_clear",        &pilaserObject::Q_clear, Q_clear_ds)
+        .def_readonly("intensity",  &pilaserObject::intensity,    intensity_ds)
+        .def_readonly("intensity_mean",  &pilaserObject::intensity_mean,    intensity_mean_ds)
+        .def_readonly("intensity_n",    &pilaserObject::intensity_n,        intensity_n_ds)
+        .def_readonly("intensity_sd",   &pilaserObject::intensity_sd,       intensity_sd_ds)
+        .def_readonly("intensity_clear",  &pilaserObject::intensity_clear,  intensity_clear_ds)
+        .def_readonly("status",         &pilaserObject::status,             status_ds)
+        .def_readonly("setCharge",  &pilaserObject::setCharge,          setCharge_ds)
+        ;
+
+
 
 //    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
 //    const char* closeAndWait_doc = "closeAndWait_doc.";
@@ -171,47 +222,11 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
         .def("getQ",        &pilaserController::getQ,          getQ_doc)
         .def("getQBuffer",  &pilaserController::getQBuffer_Py, getQBuffer_doc)
-        .def("getVCDataObjConstRef",        &cameraControllerBase::getAnalysisObj_VC, "",return_value_policy<reference_existing_object>())
 
-
+        .def("getVCDataObjConstRef",     &cameraControllerBase::getAnalysisObj_VC, "",return_value_policy<reference_existing_object>())
+        .def("getpilMirrorObjConstRef",  &pilaserController::getpilMirrorObjConstRef, "",return_value_policy<reference_existing_object>())
+        .def("getPILObjConstRef",        &pilaserController::getPILObjConstRef, "",return_value_policy<reference_existing_object>())
         ;
-
-
-//    class_<pilaserMirrorStructs::pilMirrorObject,noncopyable>
-//        ("pilMirrorObject","pilMirrorObject member variables (read access only)",no_init)
-//        .def_readonly("hStep",&pilaserMirrorStructs::pilMirrorObject::hStep,hStep_doc)
-////        .def_readonly("vStep",&pilMirrorObject::vStep,vStep_doc)
-////        .def_readonly("hPos", &pilMirrorObject::hPos,hPos_doc)
-////        .def_readonly("vPos", &pilMirrorObject::vPos,vPos_doc)
-////        .def_readonly("name", &pilMirrorObject::name,name_doc)
-//        ;
-
-
-
-//    class_<virtualCathodeDataObject::pilaserObject,noncopyable>
-//        ("pilaserObject","pilaserObject member variables (read access only)", no_init)
-//        .def_readonly("status",&pilaserStructs::pilaserObject::status,status_doc)
-////        .def_readonly("stabilisation_status",&pilaserObject::stabilisation_status,stabilisation_status_doc)
-////        .def_readonly("intensity", &pilaserObject::intensity,intensity_doc)
-////        .def_readonly("setCharge", &pilaserObject::setCharge,setCharge_doc)
-////        .def_readonly("name", &pilaserObject::name,name_doc)
-//        ;
-
-//    class_<virtualCathodeStructs::virtualCathodeDataObject,noncopyable>
-//        ("virtualCathodeDataObject",
-//            "virtualCathodeDataObject member variables (read access only) "
-//            "we are waiting to see what this will look like"
-//            , no_init)
-//        .def("buffer_size",&virtualCathodeStructs::virtualCathodeDataObject::buffer_size)
-//        ;
-
-//    const char* state_doc = "State (OPEN/CLOSED) of Shutter.";
-
-//    class_<shutterStructs::shutterObject,noncopyable>
-//        ("shutterObject","shutterObject member variables (read access only)", no_init)
-//        .def_readonly("state",&shutterStructs::shutterObject::state,state_doc)
-//        ;
-
 
     /// The main class that creates all the controller obejcts
     class_<VCpilaser,bases<VCbase>,boost::noncopyable> ("init","Doc string")

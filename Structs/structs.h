@@ -110,6 +110,7 @@ namespace HWC_ENUM
                                                       (RF_GUN)
                                                       (RF_L01)
                                                       (USER)
+                                                      (PIL)
                                                       (ALL_VELA_CLARA)
                                         )
     /* Controller type, defined in controller derived class */

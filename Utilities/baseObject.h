@@ -311,8 +311,8 @@ class baseObject
                     if( counter  == num_col )
                     {
                         list.append(list2);
-                        //list2[boost::python::slice()]);
-                        list2();
+                        list2[boost::python::slice()];
+                        //list2();
                         counter = UTL::ZERO_SIZET;
 
 //                    del(mylist[slice()]);

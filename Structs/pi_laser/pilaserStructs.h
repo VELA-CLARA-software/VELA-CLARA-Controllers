@@ -14,8 +14,8 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   29-03-2018
-//  FileName:    shutterConfigReader.cpp
+//  Last edit:   29-06-2018
+//  FileName:    pilaserStructs.cpp
 //  Description:
 //
 //
@@ -137,17 +137,36 @@ namespace pilaserStructs
             HWP(UTL::DUMMY_DOUBLE),
             Q(UTL::DUMMY_DOUBLE),
             name(UTL::UNKNOWN_NAME),
-            pvRoot(UTL::UNKNOWN_PVROOT)
+            pvRoot(UTL::UNKNOWN_PVROOT),
+            max_buffer_count(UTL::TEN_SIZET),
+            buffer_count(UTL::ZERO_SIZET),
+            buffer_full(false)
             {};
+        /*
+            buffers for pixel values
+        */
+        size_t max_buffer_count,buffer_count;
+        bool buffer_full;
         std::string name, pvRoot,pvRootQ;
         cameraStructs::cameraObject vcCam;
         double intensity,setCharge,HWP,Q;
         std::vector<double> Q_buf;
+        runningStat Q_rs,intensity_rs;
         pilMirrorObject             mirror;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
+
+
+        void Q_clear();
+        void intensity_clear();
+        double Q_mean();
+        double intensity_mean();
+        double Q_sd();
+        double intensity_sd();
+        size_t Q_n();
+        size_t intensity_n();
     };
 }
 #endif
