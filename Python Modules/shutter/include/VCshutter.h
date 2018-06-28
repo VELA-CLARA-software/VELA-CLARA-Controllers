@@ -64,8 +64,6 @@ class VCshutter : public VCbase
         void updateMessageStates();
 };
 //______________________________________________________________________________
-using namespace shutterStructs;
-using namespace UTL;
 BOOST_PYTHON_MODULE(VELA_CLARA_Shutter_Control)
 {
     //using namespace boost::python;
@@ -80,6 +78,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Shutter_Control)
     using namespace UTL;
     using namespace boost::python;
     using namespace boost;
+    using namespace shutterStructs;
 
     enum_<SHUTTER_STATE>("SHUTTER_STATE","State of shutters")
         .value("OPEN", SHUTTER_STATE::OPEN)

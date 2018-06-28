@@ -851,7 +851,7 @@ bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExi
         return entryExists(allScreentData,name);
 }
 //___________________________________________________________________________________________________________
-std::vector<bool> screenInterface::c(const std::vector<std::string> & name)
+std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & name)
 {
     std::vector<bool> r;
     for( auto && it : name )
