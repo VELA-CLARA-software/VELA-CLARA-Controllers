@@ -450,6 +450,21 @@ const bool chargeInterface::isS02FCUPBufferNotFull()
     return !isS02FCUPBufferFull();
 }
 //______________________________________________________________________________
+const bool chargeInterface::isSP1FCUPBufferFull()
+{
+    bool isFull = false;
+    if( chargeObj.dataObjects.at(UTL::SP1_FCUP).chargeShots > chargeObj.dataObjects.at(UTL::SP1_FCUP).buffer && chargeObj.dataObjects.at(UTL::SP1_FCUP).voltageShots > chargeObj.dataObjects.at(UTL::SP1_FCUP).buffer )
+    {
+        isFull = true;
+    }
+    return isFull;
+}
+//______________________________________________________________________________
+const bool chargeInterface::isSP1FCUPBufferNotFull()
+{
+    return !isSP1FCUPBufferFull();
+}
+//______________________________________________________________________________
 const chargeStructs::dataObject & chargeInterface::getChargeDataStruct( const std::string & chargeName )
 {
     if( entryExists( chargeObj.dataObjects, chargeName ) )
@@ -519,6 +534,11 @@ double chargeInterface::getS02FCUPVoltage()
     return getS02FCUPVoltageBuffer().back();
 }
 //______________________________________________________________________________
+double chargeInterface::getSP1FCUPVoltage()
+{
+    return getSP1FCUPVoltageBuffer().back();
+}
+//______________________________________________________________________________
 double chargeInterface::getWCMCharge()
 {
     return getWCMChargeBuffer().back();
@@ -527,6 +547,11 @@ double chargeInterface::getWCMCharge()
 double chargeInterface::getS02FCUPCharge()
 {
     return getS02FCUPChargeBuffer().back();
+}
+//______________________________________________________________________________
+double chargeInterface::getSP1FCUPCharge()
+{
+    return getSP1FCUPChargeBuffer().back();
 }
 //______________________________________________________________________________
 void chargeInterface::setBufferSize( size_t bufferSize )
@@ -592,6 +617,19 @@ boost::circular_buffer< double > chargeInterface::getS02FCUPVoltageBuffer()
     return fcupQ;
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getSP1FCUPVoltageBuffer()
+{
+    boost::circular_buffer< double > fcupQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::SP1_FCUP )
+        {
+            fcupQ = it.second.voltageBuffer;
+        }
+    }
+    return fcupQ;
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > chargeInterface::getWCMChargeBuffer()
 {
     boost::circular_buffer< double > wcmQ;
@@ -611,6 +649,19 @@ boost::circular_buffer< double > chargeInterface::getS02FCUPChargeBuffer()
     for( auto && it : chargeObj.dataObjects )
     {
         if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::S02_FCUP )
+        {
+            fcupQ = it.second.chargeBuffer;
+        }
+    }
+    return fcupQ;
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeInterface::getSP1FCUPChargeBuffer()
+{
+    boost::circular_buffer< double > fcupQ;
+    for( auto && it : chargeObj.dataObjects )
+    {
+        if( it.second.diagType == chargeStructs::CHARGE_DIAG_TYPE::SP1_FCUP )
         {
             fcupQ = it.second.chargeBuffer;
         }

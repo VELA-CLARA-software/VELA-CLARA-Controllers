@@ -360,9 +360,8 @@ class baseObject
         template <class T>
         boost::python::list toPythonList(const boost::circular_buffer<T>& circular_buffer)const
         {
-            typename boost::circular_buffer<T>::iterator iter;
             boost::python::list list;
-            for (iter = circular_buffer.begin(); iter != circular_buffer.end(); ++iter)
+            for (auto iter = circular_buffer.begin(); iter != circular_buffer.end(); ++iter)
             {
                 list.append(*iter);
             }

@@ -59,6 +59,8 @@ class chargeController : public controller
         boost::circular_buffer< double > getWCMVoltageBuffer();
         boost::circular_buffer< double > getS02FCUPChargeBuffer();
         boost::circular_buffer< double > getS02FCUPVoltageBuffer();
+        boost::circular_buffer< double > getSP1FCUPChargeBuffer();
+        boost::circular_buffer< double > getSP1FCUPVoltageBuffer();
         std::vector< double > getTimeStamps( const std::string & name );
         std::vector< std::string > getStrTimeStamps( const std::string & name );
         std::vector< std::string > getChargeDiagnosticNames();
@@ -69,6 +71,8 @@ class chargeController : public controller
         double getWCMVoltage();
         double getS02FCUPCharge();
         double getS02FCUPVoltage();
+        double getSP1FCUPCharge();
+        double getSP1FCUPVoltage();
         bool monitoringCharge = false;
         const bool isChargeBufferFull( const std::string & chargeName );
         const bool isChargeBufferNotFull( const std::string & chargeName );
@@ -78,6 +82,8 @@ class chargeController : public controller
         const bool isWCMBufferNotFull();
         const bool isS02FCUPBufferFull();
         const bool isS02FCUPBufferNotFull();
+        const bool isSP1FCUPBufferFull();
+        const bool isSP1FCUPBufferNotFull();
 
         #ifdef BUILD_DLL
         boost::python::list getChargeBuffer_Py( const std::string & name );
@@ -86,6 +92,8 @@ class chargeController : public controller
         boost::python::list getWCMVoltageBuffer_Py();
         boost::python::list getS02FCUPChargeBuffer_Py();
         boost::python::list getS02FCUPVoltageBuffer_Py();
+        boost::python::list getSP1FCUPChargeBuffer_Py();
+        boost::python::list getSP1FCUPVoltageBuffer_Py();
         boost::python::list getTimeStamps_Py( const std::string & name );
         boost::python::list getStrTimeStamps_Py( const std::string & name );
         boost::python::list getChargeDiagnosticNames_Py();

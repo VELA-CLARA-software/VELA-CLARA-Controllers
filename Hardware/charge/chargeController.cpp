@@ -108,6 +108,11 @@ boost::circular_buffer< double > chargeController::getS02FCUPChargeBuffer()
     return localInterface.getS02FCUPChargeBuffer();
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > chargeController::getSP1FCUPChargeBuffer()
+{
+    return localInterface.getSP1FCUPChargeBuffer();
+}
+//______________________________________________________________________________
 boost::circular_buffer< double > chargeController::getWCMVoltageBuffer()
 {
     return localInterface.getWCMVoltageBuffer();
@@ -116,6 +121,11 @@ boost::circular_buffer< double > chargeController::getWCMVoltageBuffer()
 boost::circular_buffer< double > chargeController::getS02FCUPVoltageBuffer()
 {
     return localInterface.getS02FCUPVoltageBuffer();
+}
+//______________________________________________________________________________
+boost::circular_buffer< double > chargeController::getSP1FCUPVoltageBuffer()
+{
+    return localInterface.getSP1FCUPVoltageBuffer();
 }
 //______________________________________________________________________________
 std::vector< double > chargeController::getTimeStamps( const std::string & name )
@@ -178,6 +188,16 @@ const bool chargeController::isS02FCUPBufferNotFull()
     return localInterface.isS02FCUPBufferNotFull();
 }
 //______________________________________________________________________________
+const bool chargeController::isSP1FCUPBufferFull()
+{
+    return localInterface.isSP1FCUPBufferFull();
+}
+//______________________________________________________________________________
+const bool chargeController::isSP1FCUPBufferNotFull()
+{
+    return localInterface.isSP1FCUPBufferNotFull();
+}
+//______________________________________________________________________________
 double chargeController::getCharge( const std::string & name )
 {
     return localInterface.getCharge( name );
@@ -198,6 +218,11 @@ double chargeController::getS02FCUPCharge()
     return localInterface.getS02FCUPCharge();
 }
 //______________________________________________________________________________
+double chargeController::getSP1FCUPCharge()
+{
+    return localInterface.getSP1FCUPCharge();
+}
+//______________________________________________________________________________
 double chargeController::getWCMVoltage()
 {
     return localInterface.getWCMVoltage();
@@ -206,6 +231,11 @@ double chargeController::getWCMVoltage()
 double chargeController::getS02FCUPVoltage()
 {
     return localInterface.getS02FCUPVoltage();
+}
+//______________________________________________________________________________
+double chargeController::getSP1FCUPVoltage()
+{
+    return localInterface.getSP1FCUPVoltage();
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
@@ -225,6 +255,11 @@ boost::python::list chargeController::getS02FCUPChargeBuffer_Py()
     return toPythonList(getS02FCUPChargeBuffer());
 }
 //______________________________________________________________________________
+boost::python::list chargeController::getSP1FCUPChargeBuffer_Py()
+{
+    return toPythonList(getSP1FCUPChargeBuffer());
+}
+//______________________________________________________________________________
 boost::python::list chargeController::getVoltageBuffer_Py( const std::string & name )
 {
     return toPythonList(getVoltageBuffer( name ));
@@ -238,6 +273,11 @@ boost::python::list chargeController::getWCMVoltageBuffer_Py()
 boost::python::list chargeController::getS02FCUPVoltageBuffer_Py()
 {
     return toPythonList(getS02FCUPVoltageBuffer());
+}
+//______________________________________________________________________________
+boost::python::list chargeController::getSP1FCUPVoltageBuffer_Py()
+{
+    return toPythonList(getSP1FCUPVoltageBuffer());
 }
 //______________________________________________________________________________
 boost::python::list chargeController::getTimeStamps_Py( const std::string & name )
