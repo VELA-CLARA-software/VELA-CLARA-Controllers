@@ -508,12 +508,9 @@ namespace cameraStructs
         double frequency,exposureTime,acquisitionPeriod,
                sensorTemp,sensorMaxTemp,sensorMinTemp;
         // we're going to store a background image array in a PV
-
         //HWC_ENUM::MACHINE_AREA  machineArea;
         //std::map<CAM_PV_TYPE, pvStruct> pvMonStructs;
         //std::map<CAM_PV_TYPE, pvStruct> pvComStructs;
-        bool use_npoint,use_background;
-        // not implemented yet???
         COLLECTING_STATE collectingStateJPG;
         SAVE_STATE writeStateJPG;
         WRITE_CHECK writeCheckJPG;

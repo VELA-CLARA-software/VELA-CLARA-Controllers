@@ -476,6 +476,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
             break;
         case CAM_PV_TYPE::USE_BKGRND_RBV:
             camObj.state.use_background = (bool)getDBRunsignedShort(args);
+            message(camObj.name  ," use_background = ", camObj.state.use_background );
             break;
         case CAM_PV_TYPE::USE_NPOINT_RBV:
             camObj.state.use_npoint = (bool)getDBRunsignedShort(args);
@@ -1471,7 +1472,7 @@ bool cameraBase::isUsingBackground_VC()const
 //---------------------------------------------------------------------------------
 bool cameraBase::isUsingBackground(const cameraStructs::cameraObject& cam)const
 {
-    return cam.daq.use_background;
+    return cam.state.use_background;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isNotUsingBackground(const std::string& cam)const
@@ -1511,7 +1512,7 @@ bool cameraBase::isUsingNPoint_VC()const
 //---------------------------------------------------------------------------------
 bool cameraBase::isUsingNPoint(const cameraStructs::cameraObject& cam)const
 {
-    return cam.daq.use_npoint;
+    return cam.state.use_npoint;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isNotUsingNPoint(const std::string& cam)const

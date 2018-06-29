@@ -116,8 +116,8 @@ namespace pilaserStructs
         pilMirrorObject():
             hPos(UTL::DUMMY_DOUBLE),
             vPos(UTL::DUMMY_DOUBLE),
-            hStep(UTL::DUMMY_DOUBLE),
-            vStep(UTL::DUMMY_DOUBLE),
+            hStep(UTL::TEN_DOUBLE),
+            vStep(UTL::TEN_DOUBLE),
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
             STEP_MAX(UTL::ZERO_DOUBLE)
