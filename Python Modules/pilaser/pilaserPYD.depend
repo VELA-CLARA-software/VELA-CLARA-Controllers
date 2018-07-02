@@ -205,7 +205,7 @@
 	"VCheader.h"
 	"VCbase.h"
 
-1530192366 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1530517984 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -676,7 +676,7 @@
 1530199009 source:d:\vela\git projects\vela-clara-controllers\structs\pi_laser\pilaserstructs.cpp
 	"pilaserStructs.h"
 
-1530192360 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.cpp
+1530274744 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.cpp
 	"cameraBase.h"
 	<limits>
 
