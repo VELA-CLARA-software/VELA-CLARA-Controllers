@@ -296,6 +296,8 @@ namespace UTL
     const std::string X_SIGMA = "X_SIGMA";
     const std::string Y_SIGMA = "Y_SIGMA";
     const std::string XY_SIGMA = "XY_SIGMA";
+    const std::string X_PIX_SCALE_FACTOR = "X_PIX_SCALE_FACTOR";
+    const std::string Y_PIX_SCALE_FACTOR = "Y_PIX_SCALE_FACTOR";
 
     const std::string CAM_TYPE = "CAM_TYPE";
 

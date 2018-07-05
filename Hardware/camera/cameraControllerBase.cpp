@@ -1780,9 +1780,9 @@ const clara_DAQ& cameraControllerBase::getClaraDAQObj(const std::string& name)co
     return camBase->getClaraDAQObj(name);
 }
 //---------------------------------------------------------------------------------
-const clara_DAQ& cameraControllerBase::getClaraDAQ_VC()const
+const clara_DAQ& cameraControllerBase::getClaraDAQObj_VC()const
 {
-    return camBase->getClaraDAQ_VC();
+    return camBase->getClaraDAQObj_VC();
 }
 //---------------------------------------------------------------------------------
 const clara_DAQ& cameraControllerBase::getClaraDAQObj()const
@@ -1805,6 +1805,25 @@ const cameraObject& cameraControllerBase::getCameraObj()const
     return camBase->getCameraObj();
 }
 //---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraControllerBase::getStateObj(const std::string& name)const
+{
+    return camBase->getStateObj();
+}
+//---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraControllerBase::getStateObj_VC()const
+{
+    return camBase->getStateObj_VC();
+}
+//---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraControllerBase::getStateObj()const
+{
+    return camBase->getStateObj();
+}
+//---------------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------------
 int cameraControllerBase::getStepSize_VC()const
 {
     return camBase->getStepSize_VC();
@@ -1820,6 +1839,7 @@ int cameraControllerBase::getStepSize()const
     return camBase->getStepSize();
 }
 //---------------------------------------------------------------------------------
+
 
 
 

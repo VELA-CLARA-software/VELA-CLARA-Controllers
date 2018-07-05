@@ -544,6 +544,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.x_pix_buf,
                                   camObj.data.analysis.x_pix_rs,
                                   camObj.data.analysis);
+            //message("new x_pix = ",camObj.data.analysis.x_pix);
             break;
         case CAM_PV_TYPE::Y_PIX_RBV:
             updateAnalysislResult(args,camObj.data.analysis.y_pix,
@@ -3291,123 +3292,149 @@ void cameraBase::clearBuffer()
 ///
 ///
 /// MASK OBJECTS
-const analysis_mask& cameraBase::getMaskObj(const std::string& name)
+const analysis_mask& cameraBase::getMaskObj(const std::string& name)const
 {
     return getMaskObj(getCamObj(name));
 }
 //---------------------------------------------------------------------------------
-const analysis_mask& cameraBase::getMaskObj_VC()
+const analysis_mask& cameraBase::getMaskObj_VC()const
 {
     return getMaskObj(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-const analysis_mask& cameraBase::getMaskObj()
+const analysis_mask& cameraBase::getMaskObj()const
 {
     return getMaskObj(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-const analysis_mask& cameraBase::getMaskObj(const cameraStructs::cameraObject& cam)
+const analysis_mask& cameraBase::getMaskObj(const cameraStructs::cameraObject& cam)const
 {
     return cam.data.mask;
 }
 //---------------------------------------------------------------------------------
 /// ANALYSIS DATA OBJECTS
-const analysis_data& cameraBase::getAnalysisObj(const std::string& name)
+const analysis_data& cameraBase::getAnalysisObj(const std::string& name)const
 {
     return getAnalysisObj(getCamObj(name));
 }
 //---------------------------------------------------------------------------------
-const analysis_data& cameraBase::getAnalysisObj_VC()
+const analysis_data& cameraBase::getAnalysisObj_VC()const
 {
     return getAnalysisObj(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-const analysis_data& cameraBase::getAnalysisObj()
+const analysis_data& cameraBase::getAnalysisObj()const
 {
     return getAnalysisObj(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-const analysis_data& cameraBase::getAnalysisObj(const cameraStructs::cameraObject& cam)
+const analysis_data& cameraBase::getAnalysisObj(const cameraStructs::cameraObject& cam)const
 {
     return cam.data.analysis;
 }
 //---------------------------------------------------------------------------------
 /// FAST IMAGE OBJECTS
-const fast_image& cameraBase::getImageObj(const std::string& name)
+const fast_image& cameraBase::getImageObj(const std::string& name)const
 {
     return getImageObj(getCamObj(name));
 }
 //---------------------------------------------------------------------------------
-const fast_image& cameraBase::getImageObj_VC()
+const fast_image& cameraBase::getImageObj_VC()const
 {
     return getImageObj(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-const fast_image& cameraBase::getImageObj()
+const fast_image& cameraBase::getImageObj()const
 {
     return getImageObj(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-const fast_image& cameraBase::getImageObj(const cameraStructs::cameraObject& cam)
+const fast_image& cameraBase::getImageObj(const cameraStructs::cameraObject& cam)const
 {
     return cam.data.image;
 }
 //---------------------------------------------------------------------------------
 /// camera_image_data OBJECTS
-const camera_image_data& cameraBase::getImageDataObj(const std::string& name)
+const camera_image_data& cameraBase::getImageDataObj(const std::string& name)const
 {
     return getImageDataObj(getCamObj(name));
 }
 //---------------------------------------------------------------------------------
-const camera_image_data& cameraBase::getImageDataObj_VC()
+const camera_image_data& cameraBase::getImageDataObj_VC()const
 {
     return getImageDataObj(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-const camera_image_data& cameraBase::getImageDataObj()
+const camera_image_data& cameraBase::getImageDataObj()const
 {
     return getImageDataObj(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-const camera_image_data& cameraBase::getImageDataObj(const cameraStructs::cameraObject& cam)
+const camera_image_data& cameraBase::getImageDataObj(const cameraStructs::cameraObject& cam)const
 {
     return cam.data;
 }
 //---------------------------------------------------------------------------------
 /// clara_DAQ OBJECTS
-const clara_DAQ& cameraBase::getClaraDAQObj(const std::string& name)
+const clara_DAQ& cameraBase::getClaraDAQObj(const std::string& name)const
 {
     return getClaraDAQObj(getCamObj(name));
 }
 //---------------------------------------------------------------------------------
-const clara_DAQ& cameraBase::getClaraDAQ_VC()
+const clara_DAQ& cameraBase::getClaraDAQObj_VC()const
 {
     return getClaraDAQObj(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-const clara_DAQ& cameraBase::getClaraDAQObj()
+const clara_DAQ& cameraBase::getClaraDAQObj()const
 {
     return getClaraDAQObj(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-const clara_DAQ& cameraBase::getClaraDAQObj(const cameraStructs::cameraObject& cam)
+const clara_DAQ& cameraBase::getClaraDAQObj(const cameraStructs::cameraObject& cam)const
 {
     return cam.daq;
 }
 //---------------------------------------------------------------------------------
 /// cameraObject OBJECTS
-const cameraObject& cameraBase::getCameraObj(const std::string& name)
+const cameraObject& cameraBase::getCameraObj(const std::string& name)const
 {
-    return getCamObj(name);
+    return getCameraObj(getCamObj(name));
 }
 //---------------------------------------------------------------------------------
-const cameraObject& cameraBase::getCameraObj_VC()
+const cameraObject& cameraBase::getCameraObj_VC()const
 {
     return *vcCamPtr;
 }
 //---------------------------------------------------------------------------------
-const cameraObject& cameraBase::getCameraObj()
+const cameraObject& cameraBase::getCameraObj()const
 {
     return *selectedCamPtr;
 }
 //---------------------------------------------------------------------------------
+const cameraObject& cameraBase::getCameraObj(const cameraStructs::cameraObject& cam)const
+{
+    return cam;
+}
+//---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraBase::getStateObj(const std::string& name)const
+{
+    return getStateObj(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraBase::getStateObj_VC()const
+{
+    return getStateObj(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraBase::getStateObj()const
+{
+    return getStateObj(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+const cameraStructs::camera_state& cameraBase::getStateObj(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state;
+}
+//---------------------------------------------------------------------------------
+

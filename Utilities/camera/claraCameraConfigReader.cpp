@@ -570,11 +570,11 @@ void claraCameraConfigReader::addToCameraImageDataObjects(const std::vector<std:
     }
     else if(keyVal[ZERO_SIZET] == X_CENTER_DEF)
     {
-        camObjects.back().data.analysis.x_centre_def  = getNum(value);
+        camObjects.back().data.analysis.x_centre_def  = getSize(value);
     }
     else if(keyVal[ZERO_SIZET] == Y_CENTER_DEF)
     {
-        camObjects.back().data.analysis.x_centre_def  = getNum(value);
+        camObjects.back().data.analysis.x_centre_def  = getSize(value);
     }
     else if(keyVal[ZERO_SIZET] == PIX_2_MM_RATIO_DEF)
     {
@@ -582,19 +582,19 @@ void claraCameraConfigReader::addToCameraImageDataObjects(const std::vector<std:
     }
     else if(keyVal[ZERO_SIZET] == ARRAY_DATA_NUM_PIX_X)
     {
-        camObjects.back().data.image.num_pix_x  = getNum(value);
+        camObjects.back().data.image.num_pix_x  = getSize(value);
     }
     else if(keyVal[ZERO_SIZET] == ARRAY_DATA_NUM_PIX_Y)
     {
-        camObjects.back().data.image.num_pix_y = getNum(value);
+        camObjects.back().data.image.num_pix_y = getSize(value);
     }
     else if(keyVal[ZERO_SIZET] == ARRAY_DATA_X_PIX_2_MM)
     {
-        camObjects.back().data.image.x_pix_to_mm  = getNum(value);
+        camObjects.back().data.image.x_pix_to_mm  = getSize(value);
     }
     else if(keyVal[ZERO_SIZET] == ARRAY_DATA_Y_PIX_2_MM)
     {
-        camObjects.back().data.image.y_pix_to_mm = getNumD(value);
+        camObjects.back().data.image.y_pix_to_mm = getSize(value);
     }
     else if(keyVal[ZERO_SIZET] == IP_ADDRESS_STREAM)
     {
@@ -614,28 +614,39 @@ void claraCameraConfigReader::addToCameraImageDataObjects(const std::vector<std:
     }
     else if(keyVal[ZERO_SIZET] == X)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getNum(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
     }
     else if(keyVal[ZERO_SIZET] == Y)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getNum(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
     }
     else if(keyVal[ZERO_SIZET] == X_SIGMA)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getNum(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
     }
     else if(keyVal[ZERO_SIZET] == Y_SIGMA)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getNum(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
     }
     else if(keyVal[ZERO_SIZET] == XY_SIGMA)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getNum(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
     }
     else if(keyVal[ZERO_SIZET] == UTL::CAM_TYPE)
     {
         camObjects.back().type = getCameType(keyVal[ZERO_SIZET]);
     }
+    else if(keyVal[ZERO_SIZET] == UTL::X_PIX_SCALE_FACTOR)
+    {
+        camObjects.back().data.image.x_pix_scale_factor = getSize(keyVal[ZERO_SIZET]);
+    }
+    else if(keyVal[ZERO_SIZET] == UTL::Y_PIX_SCALE_FACTOR)
+    {
+        camObjects.back().data.image.y_pix_scale_factor = getSize(keyVal[ZERO_SIZET]);
+    }
+
+
+
 }
 //______________________________________________________________________________
 cameraStructs::CAM_TYPE claraCameraConfigReader::getCameType(const std::string& value)

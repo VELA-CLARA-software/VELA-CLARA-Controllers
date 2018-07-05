@@ -410,12 +410,14 @@ namespace cameraStructs
             y_pix_to_mm(UTL::DUMMY_DOUBLE),
             array_data_sum(UTL::ZERO_SIZET),
             bit_depth(UTL::ZERO_SIZET),
+            x_pix_scale_factor(UTL::ZERO_SIZET),
+            y_pix_scale_factor(UTL::ZERO_SIZET),
             fast_image_interface(nullptr),
             array_data_min(UTL::DUMMY_INT),
             array_data_max(UTL::DUMMY_INT)
             {}
         std::string name;
-        size_t num_pix_x,num_pix_y, bit_depth;
+        size_t num_pix_x,num_pix_y, bit_depth,x_pix_scale_factor,y_pix_scale_factor;
         // not sure if these are ever used ...
         double x_pix_to_mm,y_pix_to_mm;
         /*

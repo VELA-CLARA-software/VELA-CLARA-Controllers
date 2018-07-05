@@ -82,7 +82,7 @@
 	<vector>
 	<cadef.h>
 
-1530203171 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1530779913 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -205,7 +205,7 @@
 	"VCheader.h"
 	"VCbase.h"
 
-1530517984 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1530798886 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -676,11 +676,11 @@
 1530199009 source:d:\vela\git projects\vela-clara-controllers\structs\pi_laser\pilaserstructs.cpp
 	"pilaserStructs.h"
 
-1530274744 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.cpp
+1530542309 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.cpp
 	"cameraBase.h"
 	<limits>
 
-1530183455 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+1530799026 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"interface.h"
@@ -706,7 +706,7 @@
 	"configReader.h"
 	"pilaserStructs.h"
 
-1530274612 d:\vela\git projects\vela-clara-controllers\structs\camera\camerastructs.h
+1530780211 d:\vela\git projects\vela-clara-controllers\structs\camera\camerastructs.h
 	<vector>
 	<string>
 	<thread>
@@ -791,7 +791,7 @@
 	"configReader.h"
 	"cameraStructs.h"
 
-1530177795 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\claracameraconfigreader.cpp
+1530780509 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\claracameraconfigreader.cpp
 	"claraCameraConfigReader.h"
 	"configDefinitions.h"
 	<iostream>
@@ -813,12 +813,12 @@
 	<algorithm>
 	<ctype.h>
 
-1530183547 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1530799027 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1530183538 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.cpp
+1530798990 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.cpp
 	"cameraControllerBase.h"
 

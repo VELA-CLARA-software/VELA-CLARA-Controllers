@@ -360,11 +360,14 @@ class cameraControllerBase : public controller
         const cameraStructs::camera_image_data& getImageDataObj_VC()const;
         const cameraStructs::camera_image_data& getImageDataObj()const;
         const cameraStructs::clara_DAQ& getClaraDAQObj(const std::string& name)const;
-        const cameraStructs::clara_DAQ& getClaraDAQ_VC()const;
+        const cameraStructs::clara_DAQ& getClaraDAQObj_VC()const;
         const cameraStructs::clara_DAQ& getClaraDAQObj()const;
         const cameraStructs::cameraObject& getCameraObj(const std::string& name)const;
         const cameraStructs::cameraObject& getCameraObj_VC()const;
         const cameraStructs::cameraObject& getCameraObj()const;
+        const cameraStructs::camera_state& getStateObj(const std::string& name)const;
+        const cameraStructs::camera_state& getStateObj_VC()const;
+        const cameraStructs::camera_state& getStateObj()const;
 //-----------------------------------------------------------------------------------------
 //  __   ___ ___ ___  ___  __   __
 // /__` |__   |   |  |__  |__) /__`

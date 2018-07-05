@@ -445,30 +445,34 @@ class cameraBase : public interface
 // \__/ |__) \__/ |___ \__,  |     \__, \__/ | \| .__/  |     |  \ |___ |    .__/
 //
 //--------------------------------------------------------------------------------------------------------------------
-        const cameraStructs::analysis_mask& getMaskObj(const std::string& name);
-        const cameraStructs::analysis_mask& getMaskObj_VC();
-        const cameraStructs::analysis_mask& getMaskObj();
-        const cameraStructs::analysis_mask& getMaskObj(const cameraStructs::cameraObject& cam);
-        const cameraStructs::analysis_data& getAnalysisObj(const std::string& name);
-        const cameraStructs::analysis_data& getAnalysisObj_VC();
-        const cameraStructs::analysis_data& getAnalysisObj();
-        const cameraStructs::analysis_data& getAnalysisObj(const cameraStructs::cameraObject& cam);
-        const cameraStructs::fast_image& getImageObj(const std::string& name);
-        const cameraStructs::fast_image& getImageObj_VC();
-        const cameraStructs::fast_image& getImageObj();
-        const cameraStructs::fast_image& getImageObj(const cameraStructs::cameraObject& cam);
-        const cameraStructs::camera_image_data& getImageDataObj(const std::string& name);
-        const cameraStructs::camera_image_data& getImageDataObj_VC();
-        const cameraStructs::camera_image_data& getImageDataObj();
-        const cameraStructs::camera_image_data& getImageDataObj(const cameraStructs::cameraObject& cam);
-        const cameraStructs::clara_DAQ& getClaraDAQObj(const std::string& name);
-        const cameraStructs::clara_DAQ& getClaraDAQ_VC();
-        const cameraStructs::clara_DAQ& getClaraDAQObj();
-        const cameraStructs::clara_DAQ& getClaraDAQObj(const cameraStructs::cameraObject& cam);
-        const cameraStructs::cameraObject& getCameraObj(const std::string& name);
-        const cameraStructs::cameraObject& getCameraObj_VC();
-        const cameraStructs::cameraObject& getCameraObj();
-        const cameraStructs::cameraObject& getCameraObj(const cameraStructs::cameraObject& cam);
+        const cameraStructs::analysis_mask& getMaskObj(const std::string& name)const;
+        const cameraStructs::analysis_mask& getMaskObj_VC()const;
+        const cameraStructs::analysis_mask& getMaskObj()const;
+        const cameraStructs::analysis_mask& getMaskObj(const cameraStructs::cameraObject& cam)const;
+        const cameraStructs::analysis_data& getAnalysisObj(const std::string& name)const;
+        const cameraStructs::analysis_data& getAnalysisObj_VC()const;
+        const cameraStructs::analysis_data& getAnalysisObj()const;
+        const cameraStructs::analysis_data& getAnalysisObj(const cameraStructs::cameraObject& cam)const;
+        const cameraStructs::fast_image& getImageObj(const std::string& name)const;
+        const cameraStructs::fast_image& getImageObj_VC()const;
+        const cameraStructs::fast_image& getImageObj()const;
+        const cameraStructs::fast_image& getImageObj(const cameraStructs::cameraObject& cam)const;
+        const cameraStructs::camera_image_data& getImageDataObj(const std::string& name)const;
+        const cameraStructs::camera_image_data& getImageDataObj_VC()const;
+        const cameraStructs::camera_image_data& getImageDataObj()const;
+        const cameraStructs::camera_image_data& getImageDataObj(const cameraStructs::cameraObject& cam)const;
+        const cameraStructs::clara_DAQ& getClaraDAQObj(const std::string& name)const;
+        const cameraStructs::clara_DAQ& getClaraDAQObj_VC()const;
+        const cameraStructs::clara_DAQ& getClaraDAQObj()const;
+        const cameraStructs::clara_DAQ& getClaraDAQObj(const cameraStructs::cameraObject& cam)const;
+        const cameraStructs::cameraObject& getCameraObj(const std::string& name)const;
+        const cameraStructs::cameraObject& getCameraObj_VC()const;
+        const cameraStructs::cameraObject& getCameraObj()const;
+        const cameraStructs::cameraObject& getCameraObj(const cameraStructs::cameraObject& cam)const;
+        const cameraStructs::camera_state& getStateObj(const std::string& name)const;
+        const cameraStructs::camera_state& getStateObj_VC()const;
+        const cameraStructs::camera_state& getStateObj()const;
+        const cameraStructs::camera_state& getStateObj(const cameraStructs::cameraObject& cam)const;
 //______________________________________________________________________________
         /*
             Image Collection functions

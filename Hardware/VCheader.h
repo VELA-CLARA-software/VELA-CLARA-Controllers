@@ -454,6 +454,8 @@ namespace BOOST_PYTHON_INCLUDE
         const char* background_data_2D_Py_ds  = "";
         const char* background_data_sum_ds  = "";
         const char* name_ds  = "";
+        const char* x_pix_scale_factor_ds  = "";
+        const char* y_pix_scale_factor_ds  = "";
 
         using namespace cameraStructs;
         class_<fast_image,noncopyable>(py_name,py_docs, no_init)
@@ -471,10 +473,8 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("data_sum",            &fast_image::array_data_sum,array_data_sum_ds)
             .def_readonly("data_max",            &fast_image::array_data_max,array_data_max_ds)
             .def_readonly("data_min",            &fast_image::array_data_min,array_data_min_ds)
-
-//            .def_readonly("background_data",     &fast_image::background_data_Py,     background_data_Py_ds)
-//            .def_readonly("background_data_2D",  &fast_image::background_data_2D_Py,  background_data_2D_Py_ds)
-//            .def_readonly("background_data_sum", &fast_image::background_data_sum,background_data_sum_ds)
+            .def_readonly("x_pix_scale_factor",  &fast_image::x_pix_scale_factor,x_pix_scale_factor_ds)
+            .def_readonly("y_pix_scale_factor",  &fast_image::y_pix_scale_factor,y_pix_scale_factor_ds)
             ;
     }
     void reg_camera_state(const char* py_name,const char*  py_docs)
@@ -900,7 +900,7 @@ namespace BOOST_PYTHON_INCLUDE
         const char* getImageDataObj_VC_ds = "";
         const char* getImageDataObj_ds1 = "";
         const char* getImageDataObj_ds2 = "";
-        const char* getClaraDAQ_VC_ds = "";
+        const char* getClaraDAQObj_VC_ds = "";
         const char* getClaraDAQObj_ds1 = "";
         const char* getClaraDAQObj_ds2 = "";
         const char* getCameraObj_VC_ds = "";
@@ -912,6 +912,9 @@ namespace BOOST_PYTHON_INCLUDE
         const char* takeFastImage_VC_ds = "";
         const char* takeFastImage_ds1 = "";
         const char* takeFastImage_ds2 = "";
+        const char* getStateObj_VC_ds = "";
+        const char* getStateObj_ds1 = "";
+        const char* getStateObj_ds2 = "";
         /*
             function pointers for overloads to expose to Python...
         */
@@ -927,6 +930,8 @@ namespace BOOST_PYTHON_INCLUDE
         const cameraStructs::clara_DAQ&(cameraControllerBase::*getClaraDAQObj_2)()     const= &cameraControllerBase::getClaraDAQObj;
         const cameraStructs::cameraObject&(cameraControllerBase::*getCameraObj_1)(cstr&)const= &cameraControllerBase::getCameraObj;
         const cameraStructs::cameraObject&(cameraControllerBase::*getCameraObj_2)()     const= &cameraControllerBase::getCameraObj;
+        const cameraStructs::camera_state&(cameraControllerBase::*getStateObj_1)(cstr&)const= &cameraControllerBase::getStateObj;
+        const cameraStructs::camera_state&(cameraControllerBase::*getStateObj_2)()     const= &cameraControllerBase::getStateObj;
 
         bool(cameraControllerBase::*takeFastImage_1)(cstr&)       = &cameraControllerBase::takeFastImage;
         bool(cameraControllerBase::*takeFastImage_2)()= &cameraControllerBase::takeFastImage;
@@ -1082,13 +1087,18 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getImageDataObj",  getImageDataObj_2      , return_value_policy<reference_existing_object>(), getImageDataObj_ds2    )
         .def("getImageDataObj",  getImageDataObj_1      , return_value_policy<reference_existing_object>(), getImageDataObj_ds1    )
 
-        .def("getClaraDAQ_VC",  &cameraControllerBase::getClaraDAQ_VC, return_value_policy<reference_existing_object>(),        getClaraDAQ_VC_ds   )
+        .def("getClaraDAQObj_VC",  &cameraControllerBase::getClaraDAQObj_VC, return_value_policy<reference_existing_object>(),        getClaraDAQObj_VC_ds   )
         .def("getClaraDAQObj",  getClaraDAQObj_1       , return_value_policy<reference_existing_object>(), getClaraDAQObj_ds1  )
         .def("getClaraDAQObj",  getClaraDAQObj_2     , return_value_policy<reference_existing_object>(),   getClaraDAQObj_ds2  )
 
         .def("getCameraObj_VC",  &cameraControllerBase::getCameraObj_VC  , return_value_policy<reference_existing_object>(),getCameraObj_VC_ds )
         .def("getCameraObj",  getCameraObj_1       , return_value_policy<reference_existing_object>(), getCameraObj_ds1 )
         .def("getCameraObj",  getCameraObj_2       , return_value_policy<reference_existing_object>(), getCameraObj_ds2 )
+
+        .def("getCameraObj_VC",  &cameraControllerBase::getStateObj_VC  , return_value_policy<reference_existing_object>(),getStateObj_VC_ds )
+        .def("getCameraObj",  getStateObj_1 , return_value_policy<reference_existing_object>(), getStateObj_ds1 )
+        .def("getCameraObj",  getStateObj_2 , return_value_policy<reference_existing_object>(), getStateObj_ds2)
+
 
         .def("stopAnalysing_VC",  &cameraControllerBase::stopAnalysing_VC ,stopAnalysing_VC_ds )
         .def("stopAnalysing",  stopAnalysing_1       ,  stopAnalysing_ds1 )
