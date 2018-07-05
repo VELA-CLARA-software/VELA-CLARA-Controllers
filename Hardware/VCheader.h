@@ -1095,9 +1095,9 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getCameraObj",  getCameraObj_1       , return_value_policy<reference_existing_object>(), getCameraObj_ds1 )
         .def("getCameraObj",  getCameraObj_2       , return_value_policy<reference_existing_object>(), getCameraObj_ds2 )
 
-        .def("getCameraObj_VC",  &cameraControllerBase::getStateObj_VC  , return_value_policy<reference_existing_object>(),getStateObj_VC_ds )
-        .def("getCameraObj",  getStateObj_1 , return_value_policy<reference_existing_object>(), getStateObj_ds1 )
-        .def("getCameraObj",  getStateObj_2 , return_value_policy<reference_existing_object>(), getStateObj_ds2)
+        .def("getStateObj_VC",  &cameraControllerBase::getStateObj_VC  , return_value_policy<reference_existing_object>(),getStateObj_VC_ds )
+        .def("getStateObj",  getStateObj_1 , return_value_policy<reference_existing_object>(), getStateObj_ds1 )
+        .def("getStateObj",  getStateObj_2 , return_value_policy<reference_existing_object>(), getStateObj_ds2)
 
 
         .def("stopAnalysing_VC",  &cameraControllerBase::stopAnalysing_VC ,stopAnalysing_VC_ds )
