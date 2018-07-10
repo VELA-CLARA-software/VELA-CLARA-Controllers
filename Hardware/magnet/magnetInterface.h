@@ -36,7 +36,9 @@
 class magnetInterface : public interface
 {
     public:
-
+        /*
+            Some typedefs
+        */
         using IlockMap1 = std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE>;
         using IlockMap2 = std::map<HWC_ENUM::ILOCK_NUMBER,std::string>;
         using vvec_d    = std::vector<std::vector<double>>;
@@ -66,16 +68,12 @@ class magnetInterface : public interface
         bool isADip (const std::string& magName)const;
         bool isASol (const std::string& magName)const;
         bool isACor (const std::string& magName)const;
-//        bool isNotDegaussing(const std::string& magName)const;
-//        bool isDegaussing   (const std::string& magName)const;
-//        bool entryExistsAndIsNotDegaussing(const std::string & magName)const;
-//        bool entryExistsAndIsDegaussing   (const std::string & magName)const;
+
         bool isOFF(const std::string& magName)const;
         bool isON (const std::string& magName)const;
         bool isRIequalVal(const std::string& magName,const double value,const double tolerance)const;
         bool isRIequalSI (const std::string& magName)const;
         bool is_si_same_as_magnetStateStruct(const magnetStructs::magnetStateStruct& magState);
-
 
         int  getRemainingDegaussSteps(const std::string& magName);
         bool isNotDegaussing(const std::string& magName)const;
@@ -226,23 +224,17 @@ class magnetInterface : public interface
 
         void addChannel(const std::string& pvRoot,magnetStructs::pvStruct &pv);
         void startMonitors();
-//
-//        magnetStructs::degaussValues degStruct;
+
         std::vector<magnetStructs::monitorStruct*> continuousMonitorStructs; /// vector of monitors to pass along with callback function
 
         static void staticEntryMagnetMonitor(const event_handler_args args);
-//
         void updateRI(const double value,const std::string&magName);
         void updateGetSI(const double value,const std::string&magName);
-//
-//        void updateRI_WithPol(const std::string & magName);
-//        void updateSI_WithPol(const std::string & magName);
+        void updateSET_SETI(const double value,const std::string& magName);
         void updatePSUSta(const unsigned short value,const std::string&magName);
         void updateRILK(const unsigned short value,const std::string&magName);
-
         void updateRPower(const unsigned short value,const std::string&magName);
-//
-//
+
         bool setSI_MAIN(const vec_s & magNames, const vec_d& values);
 
         // THE MAIN TOGGLE PSU function

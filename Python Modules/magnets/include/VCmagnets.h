@@ -210,7 +210,7 @@ vpsu(magnetController::*getMagPSUState_2)(cves&) = &magnetController::getMagPSUS
 vecd (magnetController::*getDegValues_1)(cstr &) = &magnetController::getDegValues;
 vvcd (magnetController::*getDegValues_2)(cves &) = &magnetController::getDegValues;
 //
-size (magnetController::*getNumDegSteps_1)(cstr &) = &magnetController::getNumDegSteps;
+size_t (magnetController::*getNumDegSteps_1)(cstr &) = &magnetController::getNumDegSteps;
 vsiz (magnetController::*getNumDegSteps_2)(cves &) = &magnetController::getNumDegSteps;
 //
 doub (magnetController::*getPosition_1)(cstr &) = &magnetController::getPosition;
@@ -312,6 +312,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
                             &magnetStructs::magnetObject::setSI)
         .add_property("PSU",&magnetStructs::magnetObject::psuState,
                             &magnetStructs::magnetObject::setPSU)
+        .add_property("seti", &magnetStructs::magnetObject::seti,
+                            &magnetStructs::magnetObject::seti_setter)
         .def_readonly("isDegaussing",          &magnetStructs::magnetObject::isDegaussing)
         .def_readonly("remainingDegaussSteps", &magnetStructs::magnetObject::remainingDegaussSteps)
         .def_readonly("riWithPol",    &magnetStructs::magnetObject::riWithPol)
@@ -329,6 +331,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         .def_readonly("SETIequalREADI",    &magnetStructs::magnetObject::SETIequalREADI)
         .def_readonly("maxI",    &magnetStructs::magnetObject::maxI)
         .def_readonly("minI",    &magnetStructs::magnetObject::minI)
+        .def_readonly("readi",    &magnetStructs::magnetObject::siWithPol)
         ;
 
     /// and the class member functions to expose to python,
@@ -405,15 +408,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
 
         .def("setSIZero",  setSIZero_1)
         .def("setSIZero",  setSIZero_2)
-//        .def("switchONpsu", switchONpsu_1(boost::python::arg("magnetname")),"Switch ON magnetname psu.")
-//        .def("switchONpsu", switchONpsu_1(boost::python::arg("magnetname")),"Switch ON magnetname psu.")
         .def("switchONpsu", switchONpsu_1,(boost::python::arg("magnetname")),"Switch ON magnetname psu.")
         .def("switchONpsu", switchONpsu_2)
         .def("switchOFFpsu", switchOFFpsu_1)
         .def("switchOFFpsu", switchOFFpsu_2)
-//        .def("switchONpsu", switchONpsu_2(boost::python::arg("magnetnamea")),"Switch ON magnetnames psu.")
-//        .def("switchOFFpsu",switchOFFpsu_1(boost::python::arg("magnetname")),"Switch OFF magnetname psu.")
-//        .def("switchOFFpsu",switchOFFpsu_2(boost::python::arg("magnetnamea")),"Switch OFF magnetnames psu.")
         .def("degauss", degauss_1,(
                         boost::python::arg("magnetname"),boost::python::arg("degaussToZero")=false),"deguass magnetname (single magnet), if degaussToZero = True then after degaussing the current will be left at zero, if degaussToZero = False the initial current will be reset.")
         .def("degauss", degauss_2,(

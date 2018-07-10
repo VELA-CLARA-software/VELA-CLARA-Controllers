@@ -277,17 +277,17 @@ class baseObject
         }
 
         template <class T>
-        boost::python::list toPythonList(const std::vector<std::vector<T>>& vector) const
+        boost::python::list toPythonList(const std::vector<std::vector<T>>& v) const
         {
-            typename std::vector<std::vector<T>>::iterator iter;
-            typename std::vector<T>::iterator iter2;
+//            typename std::vector<std::vector<T>>::iterator iter;
+//            typename std::vector<T>::iterator iter2;
             boost::python::list list;
             boost::python::list list2;
-            for(iter = vector.begin(); iter != vector.end(); ++iter)
+            for(auto&& it:v)
             {
-                for(iter2 = iter->begin(); iter2 != iter->end(); ++iter2)
+                for(auto&& it2:it)
                 {
-                    list2.append(*iter2);
+                    list2.append(it2);
                 }
                 list.append(list2);
                 list2[boost::python::slice()];

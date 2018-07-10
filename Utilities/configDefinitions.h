@@ -544,6 +544,7 @@ namespace UTL
     const std::string PV_SUFFIX_RPOWER  = "PV_SUFFIX_RPOWER";
     const std::string PV_SUFFIX_READI   = "PV_SUFFIX_READI";
     const std::string PV_SUFFIX_SETI    = "PV_SUFFIX_SETI";
+    const std::string PV_SUFFIX_SET_SETI    = "PV_SUFFIX_SET_SETI";
     const std::string PV_SUFFIX_GETSETI = "PV_SUFFIX_GETSETI";
     const std::string PV_SUFFIX_RILK    = "PV_SUFFIX_RILK";
 

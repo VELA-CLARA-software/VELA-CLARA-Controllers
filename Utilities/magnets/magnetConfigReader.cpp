@@ -283,6 +283,10 @@ void magnetConfigReader::addToPVStruct(std::vector<magnetStructs::pvStruct>  & p
         else if(keyVal[0] == UTL::PV_SUFFIX_SETI)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SETI;
 
+        else if(keyVal[0] == UTL::PV_SUFFIX_SET_SETI)
+            pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::SET_SETI;
+
+
         else if(keyVal[0] == UTL::PV_SUFFIX_RILK)
             pvStruct_v.back().pvType = magnetStructs::MAG_PV_TYPE::RILK;
 

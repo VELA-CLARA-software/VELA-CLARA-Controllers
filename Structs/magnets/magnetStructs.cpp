@@ -18,3 +18,11 @@ bool magnetStructs::magnetObject::setPSU(const MAG_PSU_STATE s)
     }
     return false;
 }
+
+
+//______________________________________________________________________________
+bool magnetStructs::magnetObject::seti_setter(const double v)
+{
+    seti = v;
+    return interface->setSI(name,v);
+}

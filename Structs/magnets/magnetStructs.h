@@ -72,6 +72,7 @@ namespace magnetStructs
                                                      (RPOWER)
                                                      (SPOWER)
                                                      (RILK)
+                                                     (SET_SETI)// a copy of SETI, but this on eis monitored, BJAS request July 2018
                                                      (UNKNOWN_MAG_PV_TYPE))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MAG_PSU_STATE,
@@ -128,6 +129,7 @@ namespace magnetStructs
                        magnetBranch(UNKNOWN_MAGNET_BRANCH),
                        measurementDataLocation(UNKNOWN_MEASUREMENT_DATA_LOCATION),
                        siWithPol(UTL::DUMMY_DOUBLE),
+                       seti(UTL::DUMMY_DOUBLE),
                        riWithPol(UTL::DUMMY_DOUBLE),
                        riTolerance(UTL::DUMMY_DOUBLE),
                        maxI(UTL::DUMMY_DOUBLE),
@@ -147,6 +149,7 @@ namespace magnetStructs
         bool isDegaussing;
         int remainingDegaussSteps;
         double siWithPol,    // this is the GETSI (i.e. read-only) value in controls 2017 scheme that is consistent between VELA / CALRA
+               seti, // this is the 'set' seti, which is now also monitored
                setsiWithPol, // use this value in the controller to actually set the SI  (i.e. write-only)
                riWithPol, riTolerance, position, magneticLength, degTolerance, maxI, minI;
         std::string name, pvRoot, psuRoot, manufacturer, serialNumber, measurementDataLocation,magnetBranch;
@@ -154,6 +157,7 @@ namespace magnetStructs
         size_t numIlocks, numDegaussSteps, maxWaitTime, numDegaussElements;
         MAG_ILOCK_STATE iLock;
         magnetInterface* interface;
+        bool seti_setter(const double v);
         bool setSI(const double v);
         bool setPSU(const MAG_PSU_STATE s);
         std::map<MAG_PV_TYPE, pvStruct> pvMonStructs;

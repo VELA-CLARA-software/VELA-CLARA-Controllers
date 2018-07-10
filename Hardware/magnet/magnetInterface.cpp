@@ -310,6 +310,9 @@ void magnetInterface::staticEntryMagnetMonitor(const event_handler_args args)
         case magnetStructs::MAG_PV_TYPE::RILK:
             ms->interface->updateRILK(getDBRunsignedShort(args), ms->objName);
             break;
+        case magnetStructs::MAG_PV_TYPE::SET_SETI:
+            ms->interface->updateSET_SETI( getDBRdouble(args), ms->objName);
+            break;
         default:
             ms->interface->debugMessage
                             ("!!! ERROR !!! Unknown Monitor Type passed to "
@@ -325,6 +328,11 @@ void magnetInterface::updateRI(const double value,const std::string& magName)
         = areSame(allMagnetData.at(magName).riWithPol,
                   allMagnetData.at(magName).siWithPol,
                   allMagnetData.at(magName).riTolerance);
+}
+//______________________________________________________________________________
+void magnetInterface::updateSET_SETI(const double value,const std::string& magName)
+{
+    allMagnetData.at(magName).siWithPol = value;
 }
 //______________________________________________________________________________
 void magnetInterface::updateGetSI(const double value,const std::string&magName)
@@ -886,8 +894,6 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         clean-up, set degaussing bit to false
         set number of remainingDegaussSteps to zero
     */
-
-
     ds.interface->detachFrom_thisCAContext() ;
 
     /*

@@ -494,7 +494,6 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("use_background",     &camera_state::use_background, use_background_ds)
             ;
     }
-
     void reg_clara_DAQ(const char* py_name,const char*  py_docs)
     {
 
