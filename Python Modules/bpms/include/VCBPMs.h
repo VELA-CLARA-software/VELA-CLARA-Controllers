@@ -127,6 +127,13 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         ;
     /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
+    enum_<beamPositionMonitorStructs::BPM_STATUS>("BPM_STATUS")
+            .value("GOOD",      beamPositionMonitorStructs::BPM_STATUS::GOOD      )
+            .value("BAD",       beamPositionMonitorStructs::BPM_STATUS::BAD       )
+            .value("NONLINEAR", beamPositionMonitorStructs::BPM_STATUS::NONLINEAR )
+            .value("UNKNOWN",   beamPositionMonitorStructs::BPM_STATUS::UNKNOWN   )
+            ;
+
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>
         ("bpmDataObject", "This object contains all of the EPICS PVs for a given bpmName",boost::python::no_init)
         .def_readonly("pvRoot",         &beamPositionMonitorStructs::bpmDataObject::pvRoot       )
@@ -151,6 +158,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("q",              &beamPositionMonitorStructs::bpmDataObject::q            )
         .def_readonly("position",       &beamPositionMonitorStructs::bpmDataObject::position     )
         .def_readonly("xytype",         &beamPositionMonitorStructs::bpmDataObject::xytype       )
+        .def_readonly("status",         &beamPositionMonitorStructs::bpmDataObject::status       )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>
