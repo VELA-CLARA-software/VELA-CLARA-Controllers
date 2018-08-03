@@ -1,17 +1,3 @@
-//djs
-#include "claraCameraConfigReader.h"
-#include "configDefinitions.h"
-//stl
-#include <iostream>
-#include <vector>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <time.h>
-#include <algorithm>
-#include <ctype.h>
-
-
 /*
 //              This file is part of VELA-CLARA-Controllers.                          //
 //------------------------------------------------------------------------------------//
@@ -28,30 +14,27 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   ZERO_SIZET5-06-2018
+//  Last edit:   3-06-2018
 //  FileName:    claraCameraConfigReader.cpp
 //  Description: This class reads in all the analysis PVs for analysing
 //               camera image data
 //
 //
 //*/
-//djs
+// project
 #include "claraCameraConfigReader.h"
 #include "configDefinitions.h"
-//stl
+// stl
 #include <iostream>
-#include <vector>
-#include <string>
 #include <fstream>
 #include <sstream>
-#include <time.h>
-#include <algorithm>
-#include <ctype.h>
+//##include <algorithm>
+//#include <ctype.h>
 
 claraCameraConfigReader::claraCameraConfigReader(const std::string& configFile,
-                                                       const bool& show_messages,
-                                                       const bool& show_debug_messages,
-                                                       const bool usingVM):
+                                                 const bool& show_messages,
+                                                 const bool& show_debug_messages,
+                                                 const bool usingVM):
 configReader(configFile,  show_messages, show_debug_messages,usingVM)
 {
 }
@@ -117,7 +100,7 @@ bool claraCameraConfigReader::readConfig()
                                     std::vector<std::string> keyVal = getKeyVal(trimmedLine);
 
                                     if(readingObjs)
-                                        addToCameraImageDataObjects(keyVal);
+                                        addToCameraObjects(keyVal);
 
                                     else if (readingCommandPVs)
                                         addToPVCommandMapV1(keyVal);
@@ -512,10 +495,11 @@ void claraCameraConfigReader::addPVStruct(std::vector<cameraStructs::pvStruct>& 
 bool claraCameraConfigReader::getCamData(  std::map<std::string, cameraStructs::cameraObject> & mapToFill )
 {
     bool success = true;
-    mapToFill.clear();
-    for(auto&& it : camObjects)
+    // don't clear this map as there are multiple camera types
+    //mapToFill.clear();
+    for(auto&& it:camObjects)
     {
-        mapToFill[ it.name ] = it;
+        mapToFill[it.name] = it;
         for(auto&& it2 : pvMonStructs)
             mapToFill.at(it.name).pvMonStructs[ it2.pvType ] = it2;
 
@@ -525,7 +509,7 @@ bool claraCameraConfigReader::getCamData(  std::map<std::string, cameraStructs::
     return success;
 }
 //______________________________________________________________________________
-void claraCameraConfigReader::addToCameraImageDataObjects(const std::vector<std::string> & keyVal )
+void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> & keyVal )
 {
     using namespace cameraStructs;
     using namespace UTL;

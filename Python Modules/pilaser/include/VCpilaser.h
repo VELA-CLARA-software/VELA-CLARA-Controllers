@@ -191,6 +191,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
     const char* getQ_doc        = "getQ_doc.";
     const char* getQBuffer_doc  = "getQBuffer_doc.";
+    const char* clearLaserRunningValues_doc  = "getQBuffer_doc.";
 
 
     class_<pilaserController, bases<cameraControllerBase>, noncopyable>
@@ -218,7 +219,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("setVstep",&pilaserController::setVstep,setHstep_doc)
         .def("moveH",   &pilaserController::moveH,   moveH_doc   )
         .def("moveV",   &pilaserController::moveV,   moveV_doc   )
-        //.def("clearRunningValues",   &pilaserController::clearRunningValues,   "clearRunningValues"   )
+
+        .def("clearRunningValues",   &pilaserController::clearRunningValues,   clearLaserRunningValues_doc )
 
         .def("getQ",        &pilaserController::getQ,          getQ_doc)
         .def("getQBuffer",  &pilaserController::getQBuffer_Py, getQBuffer_doc)

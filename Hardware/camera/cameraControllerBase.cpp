@@ -29,9 +29,13 @@ cameraControllerBase::cameraControllerBase(
     const bool shouldStartEPICs,
     const std::string& name,
     const std::string& claraCamConfig,
+    const std::string& velaCamConfig,
     HWC_ENUM::CONTROLLER_TYPE type):
-cameraControllerBase(show_messages,show_debug_messages,startVirtualMachine,shouldStartEPICs,
-                     name,claraCamConfig,type,false)
+cameraControllerBase(show_messages, show_debug_messages,
+                     startVirtualMachine, shouldStartEPICs,
+                     name,
+                     claraCamConfig, velaCamConfig,
+                     type, false)
 {}
 //---------------------------------------------------------------------------------
 cameraControllerBase::cameraControllerBase(bool& show_messages,
@@ -40,15 +44,17 @@ cameraControllerBase::cameraControllerBase(bool& show_messages,
                              const bool shouldStartEPICs,
                              const std::string& name,
                              const std::string& claraCamConfig,
+                             const std::string& velaCamConfig,
                              HWC_ENUM::CONTROLLER_TYPE type,
-                     bool vcONly):
+                             bool vcONly):
 controller(show_messages,show_debug_messages, type, name)
 {
     camBase = new cameraBase(show_messages,
                              show_debug_messages,
                              startVirtualMachine,
                              shouldStartEPICs,
-                             claraCamConfig);
+                             claraCamConfig,
+                             velaCamConfig);
     camBase->initialise(vcONly);
     shoudlDeletecamBase = true;
 }
@@ -215,6 +221,37 @@ bool cameraControllerBase::startAcquireAndAnalysis()
 // /__`  |   /\   |  |__     /  \ |  |  /\  |\ |  |  | |__  | /  `  /\   |  | /  \ |\ |
 // .__/  |  /~~\  |  |___    \__X \__/ /~~\ | \|  |  | |    | \__, /~~\  |  | \__/ | \|
 //
+//-----------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isVelaCam_VC()const
+{
+    return camBase->isVelaCam_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isVelaCam(const std::string& cam)const
+{
+    return camBase->isVelaCam(cam);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isVelaCam()const
+{
+    return camBase->isVelaCam();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isClaraCam_VC()const
+{
+    return camBase->isClaraCam_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isClaraCam(const std::string& cam)const
+{
+    return camBase->isClaraCam(cam);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isClaraCam()const
+{
+    return camBase->isClaraCam();
+}
 //-----------------------------------------------------------------------------------------
 bool cameraControllerBase::isBusy_VC()const
 {
@@ -772,8 +809,39 @@ bool cameraControllerBase::setMask_Py2(const boost::python::list v)
     return setMask(to_std_vector<int>(v));
 }
 #endif
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setGain_VC(const long value)
+{
+    return setGain_VC(value);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setGain(const long value, const std::string& cam)
+{
+    return setGain(value, cam);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setGain(const long value)
+{
+    return setGain(value);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setBlacklevel_VC(const long value)
+{
+    return setBlacklevel(value);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setBlacklevel(const long value, const std::string& cam)
+{
+    return setBlacklevel(value, cam);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setBlacklevel(const long value)
+{
+    return setBlacklevel(value);
+}
 
-
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 bool cameraControllerBase::setBackground_VC()
 {
     return camBase->setBackground_VC();
@@ -855,6 +923,13 @@ bool cameraControllerBase::setPixMM(const double pmm)
     return camBase->setPixMM(pmm);
 }
 //---------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 
 bool cameraControllerBase::startAnalysis_VC()
@@ -1820,10 +1895,6 @@ const cameraStructs::camera_state& cameraControllerBase::getStateObj()const
     return camBase->getStateObj();
 }
 //---------------------------------------------------------------------------------
-
-
-
-//---------------------------------------------------------------------------------
 int cameraControllerBase::getStepSize_VC()const
 {
     return camBase->getStepSize_VC();
@@ -1839,9 +1910,36 @@ int cameraControllerBase::getStepSize()const
     return camBase->getStepSize();
 }
 //---------------------------------------------------------------------------------
-
-
-
+int cameraControllerBase::getGain_VC()const
+{
+    return camBase->getGain_VC();
+}
+//---------------------------------------------------------------------------------
+int cameraControllerBase::getGain(const std::string& cam)const
+{
+    return camBase->getGain(cam);
+}
+//---------------------------------------------------------------------------------
+int cameraControllerBase::getGain()const
+{
+    return camBase->getGain();
+}
+//---------------------------------------------------------------------------------
+int cameraControllerBase::getBlacklevel_VC()const
+{
+    return camBase->getBlacklevel_VC();
+}
+//---------------------------------------------------------------------------------
+int cameraControllerBase::getBlacklevel(const std::string& cam)const
+{
+    return camBase->getBlacklevel(cam);
+}
+//---------------------------------------------------------------------------------
+int cameraControllerBase::getBlacklevel()const
+{
+    return camBase->getBlacklevel();
+}
+//---------------------------------------------------------------------------------
 
 
 

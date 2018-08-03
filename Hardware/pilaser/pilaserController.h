@@ -79,7 +79,7 @@ class pilaserController : public cameraControllerBase
         bool moveH();
         bool moveV();
 
-        //void clearRunningValues();
+        void clearRunningValues();
         double getQ()const;
         std::vector<double> getQBuffer()const;
 

@@ -30,7 +30,8 @@ VCbase("VCcameras"),
 virtual_Camera_Controller_Obj(nullptr),
 offline_Camera_Controller_Obj(nullptr),
 physical_Camera_Controller_Obj(nullptr),
-claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
+claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG),
+velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 {
     std::cout << "Instantiated a VCcameras in Quiet Mode" << std::endl;
     //ctor
@@ -56,7 +57,8 @@ VCcameras::~VCcameras()
     }
 }
 //______________________________________________________________________________
-cameraControllerBase& VCcameras::getController(const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area)
+cameraControllerBase& VCcameras::getController(const HWC_ENUM::MACHINE_MODE mode,
+                                               const HWC_ENUM::MACHINE_AREA area)
 {
     if( mode == HWC_ENUM::OFFLINE)
         return offline_Camera_Controller();
@@ -116,6 +118,7 @@ cameraControllerBase& VCcameras::getController(cameraControllerBase*& cont,
                                         shouldEPICS,
                                         name,
                                         claraCamConfig,
+                                        velaCamConfig,
                                         HWC_ENUM::CONTROLLER_TYPE::CAMERA,
                                         false);
     }

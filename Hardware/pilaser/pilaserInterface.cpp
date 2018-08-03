@@ -696,23 +696,11 @@ bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* 
     return false;
 }
 //______________________________________________________________________________
-
-
-//
-//
-//void pilaserInterface::clearRunningValues()
-//{
-////    pilaser.vcData.x_rs.Clear();
-////    pilaser.vcData.y_rs.Clear();
-////    pilaser.vcData.sig_x_rs.Clear();
-////    pilaser.vcData.sig_y_rs.Clear();
-////    pilaser.vcData.sig_xy_rs.Clear();
-////    pilaser.vcData.x_pix_rs.Clear();
-////    pilaser.vcData.y_pix_rs.Clear();
-////    pilaser.vcData.sig_x_pix_rs.Clear();
-////    pilaser.vcData.sig_y_pix_rs.Clear();
-////    pilaser.vcData.sig_xy_pix_rs.Clear();
-//}
+void pilaserInterface::clearRunningValues()
+{
+    pilaser.Q_clear();
+    pilaser.intensity_clear();
+}
 ////______________________________________________________________________________
 //std::vector<int> pilaserInterface::getFastImage()
 //{

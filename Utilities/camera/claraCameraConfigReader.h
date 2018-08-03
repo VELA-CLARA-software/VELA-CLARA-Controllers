@@ -43,14 +43,14 @@ class claraCameraConfigReader : public configReader
         ~claraCameraConfigReader();
 
         bool readConfig();
-        bool getCamData(  std::map<std::string, cameraStructs::cameraObject> & mapToFill );
+        bool getCamData(std::map<std::string, cameraStructs::cameraObject>& mapToFill);
 
     private:
         bool readCameraConfig( );
 
-        void addToPVStruct( std::vector<cameraStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal );
+        void addToPVStruct(std::vector<cameraStructs::pvStruct> & pvStruct_v, const std::vector<std::string> &keyVal );
 
-        void addToCameraImageDataObjects(const std::vector<std::string> & keyVal );
+        void addToCameraObjects(const std::vector<std::string> & keyVal );
         void addToPVMonitorMapV1( const std::vector<std::string> &keyVal  );
         void addToPVCommandMapV1( const std::vector<std::string> &keyVal  );
 

@@ -224,6 +224,12 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
     return localInterface.getPILObjConstRef();
 }
 //______________________________________________________________________________
+void pilaserController::clearRunningValues()
+{
+    localInterface.clearRunningValues();
+    cameraControllerBase::clearRunningValues();
+}
+//______________________________________________________________________________
 //const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjConstRef() const
 //{
 //    return localInterface.getVCDataObjConstRef();

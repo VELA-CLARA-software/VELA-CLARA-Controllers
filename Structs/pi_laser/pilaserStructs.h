@@ -158,7 +158,6 @@ namespace pilaserStructs
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
 
-
         void Q_clear();
         void intensity_clear();
         double Q_mean();

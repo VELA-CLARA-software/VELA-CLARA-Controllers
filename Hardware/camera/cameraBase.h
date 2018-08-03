@@ -17,8 +17,8 @@
 //  Last edit:   07-06-2018
 //  FileName:    cameraBase.h
 //  Description: all classes that use cameras should inherit from this base class
-//               this class just has cmaera functionality it doesn't connect to epics
-//               or set up monitors etc. that should happen in the dervied class
+//               this class just has camera functionality
+//
 //*/
 #ifndef __VC_CAMERABASE_H__
 #define __VC_CAMERABASE_H__
@@ -27,6 +27,7 @@
 #include "cameraStructs.h"
 #include "interface.h"
 #include "claraCameraConfigReader.h"
+#include "velaCameraConfigReader.h"
 // stl
 #include <string>
 #include <vector>
@@ -59,7 +60,6 @@ class cameraBase : public interface
         bool getCamObjects();
         bool vcOnly();
 //-----------------------------------------------------------------------------------------
-
 
         bool startAcquiring_VC();
         bool startAcquiring(const std::string& cam);
@@ -120,6 +120,7 @@ class cameraBase : public interface
 // .__/  |  /~~\  |  |___    \__X \__/ /~~\ | \|  |  | |    | \__, /~~\  |  | \__/ | \|
 //
 //-----------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
         bool isBusy_VC()const;
         bool isBusy(const cameraStructs::cameraObject& cam)const;
         bool isBusy(const std::string& cam)const;
@@ -128,6 +129,19 @@ class cameraBase : public interface
         bool isNotBusy(const cameraStructs::cameraObject& cam)const;
         bool isNotBusy(const std::string& cam)const;
         bool isNotBusy()const;
+
+        bool isVelaCam_VC()const;
+        bool isVelaCam(const cameraStructs::cameraObject& cam)const;
+        bool isVelaCam(const std::string& cam)const;
+        bool isVelaCam()const;
+        bool isClaraCam_VC()const;
+        bool isClaraCam(const cameraStructs::cameraObject& cam)const;
+        bool isClaraCam(const std::string& cam)const;
+        bool isClaraCam()const;
+
+        /* this is used to make sure settings are only sent to the correct camera type*/
+        bool isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)const;
+        bool isAcquiringAndVelaCam(const cameraStructs::cameraObject& cam)const;
 
 
         bool isUsingBackground(const std::string& cam)const;
@@ -370,6 +384,17 @@ class cameraBase : public interface
         boost::python::list getFastImage2D();
         boost::python::list getFastImage2D(cameraStructs::cameraObject& cam);
 #endif
+
+        int getGain_VC()const;
+        int getGain(const std::string& cam)const;
+        int getGain()const;
+        int getGain(const cameraStructs::cameraObject& cam)const;
+        int getBlacklevel_VC()const;
+        int getBlacklevel(const std::string& cam)const;
+        int getBlacklevel()const;
+        int getBlacklevel(const cameraStructs::cameraObject& cam)const;
+
+
         int getStepSize_VC()const;
         int getStepSize(const std::string& cam)const;
         int getStepSize(const cameraStructs::cameraObject& cam)const;
@@ -438,6 +463,15 @@ class cameraBase : public interface
         bool setPixMM(const double pmm,const std::string& cam);
         bool setPixMM(const double pmm,cameraStructs::cameraObject& cam);
         bool setPixMM(const double pmm);
+
+        bool setGain_VC(const long value);
+        bool setGain(const std::string& cam,const long value);
+        bool setGain(const long value);
+        bool setGain(cameraStructs::cameraObject& cam, const long value);
+        bool setBlacklevel_VC(const long value);
+        bool setBlacklevel(const std::string& cam,const long value);
+        bool setBlacklevel(const long value);
+        bool setBlacklevel(cameraStructs::cameraObject& cam, const long value);
 //--------------------------------------------------------------------------------------------------------------------
 //
 //  __   __        ___  __  ___     __   __        __  ___     __   ___  ___  __
@@ -600,6 +634,7 @@ class cameraBase : public interface
                                    cameraStructs::analysis_data& data);
 
         claraCameraConfigReader claraCamConfigReader;
+        velaCameraConfigReader  velaCamConfigReader;
 
         void updateSelectedOrVC(const std::string& cameraName);
     protected:

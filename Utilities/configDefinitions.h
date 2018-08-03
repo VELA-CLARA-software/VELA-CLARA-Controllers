@@ -270,7 +270,6 @@ namespace UTL
     /// PI Laser configs
     const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
     const std::string CLARA_IMAGE_DATA_CONFIG  = "claraCam.config";
-    const std::string CLARA_CAMERA_CONFIG  = "claraCam.config";
     const std::string PIL_MIRROR_CONFIG        = "laserTransportMirrorConfigReader.config";
     const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
     // laser PVs
@@ -305,20 +304,7 @@ namespace UTL
     const std::string PV_ROOT_Q = "PV_ROOT_Q";
     const std::string STEP_MAX = "STEP_MAX";
 
-/// camera
-    const std::string PV_SUFFIX_START     = "PV_SUFFIX_START";
-    //const std::string PV_SUFFIX_STOP      = "PV_SUFFIX_STOP";
-    const std::string PV_SUFFIX_GAIN      = "PV_SUFFIX_GAIN";
-    const std::string PV_SUFFIX_BLACK     = "PV_SUFFIX_BLACK";
-    const std::string PV_SUFFIX_DATA      = "PV_SUFFIX_DATA";
-    const std::string PV_SUFFIX_GAIN_RBV  = "PV_SUFFIX_GAIN_RBV";
-    const std::string PV_SUFFIX_BLACK_RBV = "PV_SUFFIX_BLACK_RBV";
-    const std::string PV_SUFFIX_CAM_STATE = "PV_SUFFIX_CAM_STATE";
-    const std::string SCREEN              = "SCREEN";
-    const std::string X_PIX_2_MM          = "X_PIX_2_MM";
-    const std::string Y_PIX_2_MM          = "Y_PIX_2_MM";
-    const std::string NUMBER_OF_PIXELS_X  = "NUMBER_OF_PIXELS_X";
-    const std::string NUMBER_OF_PIXELS_Y  = "NUMBER_OF_PIXELS_Y";
+
 
 /// Cameras
     const std::string VELA_FAST_CAM_CONFIG  = "velaFastCamera.config";
@@ -721,6 +707,23 @@ namespace UTL
     const std::string PV_SUFFIX_ERROR_DESC_20 = "PV_SUFFIX_ERROR_DESC_20";
 
    //Cameras
+    const std::string CLARA_CAMERA_CONFIG  = "claraCam.config";
+    const std::string VELA_CAMERA_CONFIG  = "velaCam.config";
+
+   /// camera
+    const std::string PV_SUFFIX_START     = "PV_SUFFIX_START";
+    //const std::string PV_SUFFIX_STOP      = "PV_SUFFIX_STOP";
+    const std::string PV_SUFFIX_GAIN      = "PV_SUFFIX_GAIN";
+    const std::string PV_SUFFIX_BLACK_LEVEL     = "PV_SUFFIX_BLACK";
+    const std::string PV_SUFFIX_DATA      = "PV_SUFFIX_DATA";
+    const std::string PV_SUFFIX_GAIN_RBV  = "PV_SUFFIX_GAIN_RBV";
+    const std::string PV_SUFFIX_BLACK_LEVEL_RBV = "PV_SUFFIX_BLACK_LEVEL_RBV";
+    //const std::string PV_SUFFIX_CAM_STATE = "PV_SUFFIX_CAM_STATE";
+    const std::string SCREEN              = "SCREEN";
+    const std::string X_PIX_2_MM          = "X_PIX_2_MM";
+    const std::string Y_PIX_2_MM          = "Y_PIX_2_MM";
+    const std::string NUMBER_OF_PIXELS_X  = "NUMBER_OF_PIXELS_X";
+    const std::string NUMBER_OF_PIXELS_Y  = "NUMBER_OF_PIXELS_Y";
 
     const std::string PV_DAQ_MONITORS_START = "PV_DAQ_MONITORS_START";
     const std::string PV_DAQ_COMMANDS_START = "PV_DAQ_COMMANDS_START";
@@ -846,15 +849,19 @@ namespace UTL
 
     /*
         the VIRTUAL_CATHODE name is hardcoded, due to it being so
-        fundamnetal to camera images and becauise its on a seperate
-        system that is always running the naem in the config file
-        is changed some VC specific function smay not work
+        fundamental to camera images and becauise its on a seperate
+        system that is always running. If the name in the config file
+        is changed some VC specific functions may not work
     */
     const std::string VIRTUAL_CATHODE = "VIRTUAL_CATHODE";
 
 
     const std::string MAX_SHOTS_NUMBER          ="MAX_SHOTS_NUMBER";
     const std::string IP_ADDRESS_STREAM         ="IP_ADDRESS_STREAM";
+
+//______________________________________________________________________________
+
+
 
     /// SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
     const std::string VELA_PNEUMATIC  =  "VELA_PNEUMATIC";

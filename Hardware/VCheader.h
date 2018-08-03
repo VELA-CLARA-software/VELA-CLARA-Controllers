@@ -652,8 +652,8 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isNotUsingNPoint_ds1   = "";
         const char* isNotUsingNPoint_ds2   = "";
         const char* isBusy_VC_ds = "";
-        const char* isBusy_ds1 = "";
-        const char* isBusy_ds2 = "";
+        const char*    isBusy_ds1 = "";
+        const char*    isBusy_ds2 = "";
         const char* isNotBusy_VC_ds = "";
         const char* isNotBusy_ds1 = "";
         const char* isNotBusy_ds2 = "";
@@ -663,6 +663,14 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isOFF_VC_ds = "";
         const char* isOFF_ds_1 = "";
         const char* isOFF_ds_2 = "";
+
+        const char* isVelaCam_VC_ds = "";
+        const char* isVelaCam_ds1 = "";
+        const char* isVelaCam_ds2 = "";
+        const char* isClaraCam_VC_ds = "";
+        const char* isClaraCam_ds1 = "";
+        const char* isClaraCam_ds2 = "";
+
         const char* getMaskX_VC_ds = "";
         const char* getMaskX_ds_1 = "";
         const char* getMaskX_ds_2 = "";
@@ -914,6 +922,19 @@ namespace BOOST_PYTHON_INCLUDE
         const char* getStateObj_VC_ds = "";
         const char* getStateObj_ds1 = "";
         const char* getStateObj_ds2 = "";
+
+        const char* setGain_VC_ds = "";
+        const char* setGain_ds1   = "";
+        const char* setGain_ds2   = "";
+        const char* setBlacklevel_VC_ds = "";
+        const char* setBlacklevel_ds1   = "";
+        const char* setBlacklevel_ds2   = "";
+        const char* getGain_VC_ds = "";
+        const char* getGain_ds1   = "";
+        const char* getGain_ds2   = "";
+        const char* getBlacklevel_VC_ds = "";
+        const char* getBlacklevel_ds1   = "";
+        const char* getBlacklevel_ds2   = "";
         /*
             function pointers for overloads to expose to Python...
         */
@@ -958,7 +979,7 @@ namespace BOOST_PYTHON_INCLUDE
         void(cameraControllerBase::*clearBuffer_2)()                                   = &cameraControllerBase::clearBuffer;
         bool(cameraControllerBase::*collectAndSave_1)(cstr&,const int) = &cameraControllerBase::collectAndSave;
         bool(cameraControllerBase::*collectAndSave_2)(const int)      = &cameraControllerBase::collectAndSave;
-        void(cameraControllerBase::*clearRunningValues_1)()                            = &cameraControllerBase::clearRunningValues;
+        void(cameraControllerBase::*clearRunningValues_1)(cstr&)                            = &cameraControllerBase::clearRunningValues;
         void(cameraControllerBase::*clearRunningValues_2)()                            = &cameraControllerBase::clearRunningValues;
 
         bool(cameraControllerBase::*isBusy_1)(cstr&)const = &cameraControllerBase::isBusy;
@@ -1002,8 +1023,16 @@ namespace BOOST_PYTHON_INCLUDE
         bool(cameraControllerBase::*isCollectingOrSaving_2)()  const= &cameraControllerBase::isCollectingOrSaving;
         bool(cameraControllerBase::*isBufferFull_1)(cstr&)const = &cameraControllerBase::isBufferFull;
         bool(cameraControllerBase::*isBufferFull_2)()     const = &cameraControllerBase::isBufferFull;
+
+
         bool(cameraControllerBase::*isBufferNotFull_1)(cstr&)const = &cameraControllerBase::isBufferNotFull;
         bool(cameraControllerBase::*isBufferNotFull_2)()     const = &cameraControllerBase::isBufferNotFull;
+
+        bool(cameraControllerBase::*isClaraCam_1)(cstr&)const = &cameraControllerBase::isClaraCam;
+        bool(cameraControllerBase::*isClaraCam_2)()     const = &cameraControllerBase::isClaraCam;
+
+        bool(cameraControllerBase::*isVelaCam_1)(cstr&)const = &cameraControllerBase::isVelaCam;
+        bool(cameraControllerBase::*isVelaCam_2)()     const = &cameraControllerBase::isVelaCam;
 
 
         bool(cameraControllerBase::*setMaskX_1)(int,cstr&)            = &cameraControllerBase::setMaskX;
@@ -1066,6 +1095,19 @@ namespace BOOST_PYTHON_INCLUDE
         size_t(cameraControllerBase::*getBufferCount_2)()       const                       = &cameraControllerBase::getBufferCount;
         size_t(cameraControllerBase::*getBufferMaxCount_1)(cstr&)const                      = &cameraControllerBase::getBufferMaxCount;
         size_t(cameraControllerBase::*getBufferMaxCount_2)()     const                      = &cameraControllerBase::getBufferMaxCount;
+
+
+        bool(cameraControllerBase::*setGain_1)(const long, cstr&) = &cameraControllerBase::setGain;
+        bool(cameraControllerBase::*setGain_2)(const long)        = &cameraControllerBase::setGain;
+        bool(cameraControllerBase::*setBlacklevel_1)(const long, cstr&) = &cameraControllerBase::setBlacklevel;
+        bool(cameraControllerBase::*setBlacklevel_2)(const long)        = &cameraControllerBase::setBlacklevel;
+
+        int(cameraControllerBase::*getGain_1)(cstr&)const = &cameraControllerBase::getGain;
+        int(cameraControllerBase::*getGain_2)() const     = &cameraControllerBase::getGain;
+        int(cameraControllerBase::*getBlacklevel_1)(cstr&)const = &cameraControllerBase::getBlacklevel;
+        int(cameraControllerBase::*getBlacklevel_2)()const      = &cameraControllerBase::getBlacklevel;
+
+
         //Py_Initialize();
         //boost::python::numpy::initialize();
 
@@ -1143,6 +1185,15 @@ namespace BOOST_PYTHON_INCLUDE
         .def("isNotBusy_VC",              &cameraControllerBase::isNotBusy_VC , isNotBusy_VC_ds)
         .def("isNotBusy",                 isNotBusy_1                         , isNotBusy_ds1)
         .def("isNotBusy",                 isNotBusy_2                         , isNotBusy_ds2)
+
+        .def("isClaraCam_VC",     &cameraControllerBase::isClaraCam_VC, isClaraCam_VC_ds)
+        .def("isClaraCam",        isClaraCam_1            ,                                  isClaraCam_ds1)
+        .def("isClaraCam",        isClaraCam_2            ,                                  isClaraCam_ds2)
+
+        .def("isVelaCam_VC",     &cameraControllerBase::isVelaCam_VC, isVelaCam_VC_ds)
+        .def("isVelaCam",        isVelaCam_1            ,                                  isVelaCam_ds1)
+        .def("isVelaCam",        isVelaCam_2            ,                                  isVelaCam_ds2)
+
 
 
         .def("isAnalysing_VC",                 &cameraControllerBase::isAnalysing_VC     , isAnalysing_VC_ds)
@@ -1281,6 +1332,22 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getStepSize",    getStepSize_1,getStepSize_ds1)
         .def("getStepSize",    getStepSize_2,getStepSize_ds2)
 
+        .def("getGain_VC", &cameraControllerBase::getGain_VC ,getGain_VC_ds)
+        .def("getGain",    getGain_1,getGain_ds1)
+        .def("getGain",    getGain_2,getGain_ds2)
+
+        .def("setGain_VC", &cameraControllerBase::setGain_VC ,setGain_VC_ds)
+        .def("setGain",    setGain_1,setGain_ds1)
+        .def("setGain",    setGain_2,setGain_ds2)
+
+        .def("getBlacklevel_VC", &cameraControllerBase::getBlacklevel_VC ,getBlacklevel_VC_ds)
+        .def("getBlacklevel",    getBlacklevel_1,getBlacklevel_ds1)
+        .def("getBlacklevel",    getBlacklevel_2,getBlacklevel_ds2)
+
+        .def("setBlacklevel_VC", &cameraControllerBase::setBlacklevel_VC ,setBlacklevel_VC_ds)
+        .def("setBlacklevel",    setBlacklevel_1,setBlacklevel_ds1)
+        .def("setBlacklevel",    setBlacklevel_2,setBlacklevel_ds2)
+
 
 
 //        .def("getXBuffer_VC_NumPy",            &cameraControllerBase::getXBuffer_VC_NumPy            ,                                               getXBuffer_VC_NumPy_ds)
@@ -1338,7 +1405,9 @@ namespace BOOST_PYTHON_INCLUDE
 //        .def("getAvgIntensityBuffer_NumPy", &cameraControllerBase::getAvgIntensityBuffer_NumPy2 , getAvgIntensityBuffer_NumPy2_ds2)
 
 
-        .def("clearRunningValues_VC",          &cameraControllerBase::clearRunningValues_VC          ,                                 clearRunningValues_VC_ds)
+        .def("clearRunningValues_VC", &cameraControllerBase::clearRunningValues_VC , clearRunningValues_VC_ds)
+        .def("clearRunningValues",                           clearRunningValues_1  , clearRunningValues_ds1  )
+        .def("clearRunningValues",                           clearRunningValues_2  , clearRunningValues_ds2  )
         .def("isBufferFull_VC",                &cameraControllerBase::isBufferFull_VC                ,                                 isBufferFull_VC_ds)
         .def("isBufferNotFull_VC",             &cameraControllerBase::isBufferNotFull_VC             ,                                 isBufferNotFull_VC_ds)
         .def("getX_VC",                        &cameraControllerBase::getX_VC                        ,                                 getX_VC_ds)
@@ -1386,8 +1455,6 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getAvgIntensityBuffer",       &cameraControllerBase::getAvgIntensityBuffer_Py1   , getAvgIntensityBuffer_Py1_ds1)
         .def("getAvgIntensityBuffer",       &cameraControllerBase::getAvgIntensityBuffer_Py2   , getAvgIntensityBuffer_Py2_ds2)
 
-        .def("clearRunningValues",                 clearRunningValues_1       ,    clearRunningValues_ds1)
-        .def("clearRunningValues",                 clearRunningValues_2       , clearRunningValues_ds2)
         .def("isBufferFull",                       isBufferFull_1             ,    isBufferFull_ds1)
         .def("isBufferFull",                       isBufferFull_2             ,    isBufferFull_ds2)
         .def("isBufferNotFull",                    isBufferNotFull_1          ,    isBufferNotFull_ds1)

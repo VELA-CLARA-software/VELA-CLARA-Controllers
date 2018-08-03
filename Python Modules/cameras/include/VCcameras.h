@@ -42,7 +42,8 @@ class VCcameras : public VCbase
         cameraControllerBase& offline_Camera_Controller();
         cameraControllerBase& physical_Camera_Controller();
 
-        cameraControllerBase& getController(const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area);
+        cameraControllerBase& getController(const HWC_ENUM::MACHINE_MODE mode,
+                                            const HWC_ENUM::MACHINE_AREA area);
 
     protected:
 
@@ -57,7 +58,7 @@ class VCcameras : public VCbase
                                            const bool shouldVM,
                                            const bool shouldEPICS);
 
-        const std::string claraCamConfig;
+        const std::string claraCamConfig, velaCamConfig;
         /*
             map of showmessage showdebugmessage states
             pointers to these bools are passed down the class
@@ -90,15 +91,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_Control )
         .def("physical_Camera_Controller",  &VCcameras::physical_Camera_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the physical camera object.")
-//        .def("getController",  &VCcameras::getController,
-//             return_value_policy<reference_existing_object>(),
-//             "returns a reference to the camera object defined by 'mode' and 'area'")
-//        .def("getController",  &VCcameras::getController,
-//             return_value_policy<reference_existing_object>(),(UTL::MODE_ARG,UTL::AREA_ARG),
-//             "returns a reference to the camera object defined by 'mode' and 'area'")
         ;
-
 }
-
-
 #endif // VC_CAMERAS_H

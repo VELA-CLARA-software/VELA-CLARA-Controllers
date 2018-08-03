@@ -39,13 +39,16 @@ class cameraControllerBase : public controller
                              const bool shouldStartEPICs,
                              const std::string& name,
                              const std::string& claraCamConfig,
+                             const std::string& velaCamConfig,
                              HWC_ENUM::CONTROLLER_TYPE type);
+
         cameraControllerBase(bool& show_messages,
                              bool& show_debug_messages,
                              const bool startVirtualMachine,
                              const bool shouldStartEPICs,
                              const std::string& name,
                              const std::string& claraCamConfig,
+                             const std::string& velaCamConfig,
                              HWC_ENUM::CONTROLLER_TYPE type,
                              bool vcONly);
 
@@ -120,6 +123,14 @@ class cameraControllerBase : public controller
 // .__/  |  /~~\  |  |___    \__X \__/ /~~\ | \|  |  | |    | \__, /~~\  |  | \__/ | \|
 //
 //-----------------------------------------------------------------------------------------
+
+        bool isVelaCam_VC()const;
+        bool isVelaCam(const std::string& cam)const;
+        bool isVelaCam()const;
+        bool isClaraCam_VC()const;
+        bool isClaraCam(const std::string& cam)const;
+        bool isClaraCam()const;
+
         bool isBusy_VC()const;
         bool isBusy(const std::string& cam)const;
         bool isBusy()const;
@@ -341,6 +352,12 @@ class cameraControllerBase : public controller
         int getStepSize_VC()const;
         int getStepSize(const std::string& cam)const;
         int getStepSize()const;
+        int getGain_VC()const;
+        int getGain(const std::string& cam)const;
+        int getGain()const;
+        int getBlacklevel_VC()const;
+        int getBlacklevel(const std::string& cam)const;
+        int getBlacklevel()const;
 //-----------------------------------------------------------------------------------------
 //  __   ___ ___ ___  ___  __   __
 // / _` |__   |   |  |__  |__) /__`
@@ -397,6 +414,13 @@ class cameraControllerBase : public controller
         bool setMask_Py1(const boost::python::list v,const std::string& cam);
         bool setMask_Py2(const boost::python::list v);
 #endif
+        bool setGain_VC(const long value);
+        bool setGain(const long value, const std::string& cam);
+        bool setGain(const long value);
+        bool setBlacklevel_VC(const long value);
+        bool setBlacklevel(const long value, const std::string& cam);
+        bool setBlacklevel(const long value);
+
         bool setBackground_VC();
         bool setBackground(const std::string& cam);
         bool setBackground();

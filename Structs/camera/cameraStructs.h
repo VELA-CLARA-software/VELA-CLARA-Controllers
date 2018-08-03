@@ -99,7 +99,11 @@ namespace cameraStructs
             (BIT_DEPTH)(UNKNOWN_CAM_PV_TYPE)
 
             (CAM_EXPOSURE_TIME_RBV) (CAM_ACQUIRE_PERIOD_RBV) (CAM_FREQ_RBV) (CAM_SENSOR_TEMP_RBV)
-             )
+
+            // vela cam stuff
+            (Blacklevel) (GAINRAW)
+            (Blacklevel_RBV) (GAINRAW_RBV)
+            )
 
     // so far, two types of camera
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,
@@ -183,7 +187,6 @@ namespace cameraStructs
         bool           isBusy;
         bool           success;
     };
-
     /*
         analysis_mask define an simple ellipse ROI that is used
         for the analysis
@@ -232,7 +235,9 @@ namespace cameraStructs
             use_background(false),
             analysing(false),
             power(CAM_ERROR),
-            acquire(ACQUIRING_ERROR)
+            acquire(ACQUIRING_ERROR),
+            Blacklevel(UTL::DUMMY_INT),
+            gain(UTL::DUMMY_INT)
             {}
         /*
             flags for analysis
@@ -246,11 +251,15 @@ namespace cameraStructs
             is the camera acquiring data
         */
         ACQUIRE_STATE acquire;
+        /*
+            these are vela cam paramters, and i can't think of a
+            better place to put them ...
+        */
+        int Blacklevel, gain;
     };
-
     /*
-        analysis_data, all online analysis goes here, and is buffered and updating in runningStats
-        also
+        analysis_data, all online analysis goes here, and is buffered
+        and updating in runningStats also
     */
     struct analysis_data
     {
@@ -429,7 +438,7 @@ namespace cameraStructs
 //            boost::python::list array_data2D_Py();
 //            boost::python::list background_data_Py();
 //            boost::python::list background_data_2D_Py();
-            boost::python::list data,data2D,background,background2D;
+            boost::python::list data, data2D, background, background2D;
         #endif
         cameraBase*    fast_image_interface;
         size_t array_data_sum, background_data_sum;
@@ -440,7 +449,6 @@ namespace cameraStructs
     */
     struct camera_image_data
     {
-
         fast_image    image;
         analysis_data analysis;
         analysis_mask mask;

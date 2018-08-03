@@ -97,8 +97,7 @@ class pilaserInterface : public cameraBase
         bool moveH();
         bool moveV();
 
-
-
+        void clearRunningValues();
 
         bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
     private:

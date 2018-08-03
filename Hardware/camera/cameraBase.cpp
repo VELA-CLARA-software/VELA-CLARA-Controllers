@@ -31,8 +31,9 @@ cameraBase::cameraBase(bool& show_messages,
                        bool& show_debug_messages,
                        const bool startVirtualMachine,
                        const bool shouldStartEPICs):
-cameraBase(show_messages,show_debug_messages,startVirtualMachine,shouldStartEPICs,
-           UTL::UNKNOWN_STRING,UTL::UNKNOWN_STRING)
+cameraBase(show_messages,show_debug_messages,
+           startVirtualMachine,shouldStartEPICs,
+           UTL::UNKNOWN_STRING, UTL::UNKNOWN_STRING)
 {}
 //---------------------------------------------------------------------------------
 cameraBase::cameraBase(bool& show_messages,
@@ -40,7 +41,8 @@ cameraBase::cameraBase(bool& show_messages,
                        const bool startVirtualMachine,
                        const bool shouldStartEPICs,
                        const std::string& claraCamConfig):
-cameraBase(show_messages,show_debug_messages,startVirtualMachine,shouldStartEPICs,
+cameraBase(show_messages,show_debug_messages,
+           startVirtualMachine,shouldStartEPICs,
            claraCamConfig,UTL::UNKNOWN_STRING)
 {}
 //---------------------------------------------------------------------------------
@@ -52,6 +54,7 @@ cameraBase::cameraBase(bool& show_messages,
                        const std::string& velaCamConfig
                       ):
 claraCamConfigReader(claraCamConfig, show_messages, show_debug_messages,startVirtualMachine),
+velaCamConfigReader(velaCamConfig, show_messages, show_debug_messages, startVirtualMachine),
 interface(show_messages,show_debug_messages, shouldStartEPICs,startVirtualMachine),
 selectedCamPtr(nullptr),
 vcCamPtr(nullptr)
@@ -118,8 +121,8 @@ void cameraBase::initialise(bool VConly = false)
                 pause_500();
             }
             else
-             message("The cameraBase has acquired objects, "
-                     "NOT connecting to EPICS");
+                message("The cameraBase has acquired objects, "
+                        "NOT connecting to EPICS");
         }
         else
             message("!!!The cameraBase received an Error "
@@ -145,6 +148,8 @@ bool cameraBase::getCamObjects()
         copy objects from config reader
     */
     bool ans = claraCamConfigReader.getCamData(allCamData);
+    if(ans)
+        ans = velaCamConfigReader.getCamData(allCamData);
     if(ans)
     {
         /*
@@ -249,12 +254,12 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
     for(auto&& it:allCamData)
     {
         debugMessage("\ncameraBase Create channel to monitor PVs\n");
-        for(auto&& mon_it: it.second.pvMonStructs)
+        for(auto&& mon_it:it.second.pvMonStructs)
         {
             addCamChannel(it.second.pvRoot, mon_it.second);
         }
         debugMessage("\ncameraBase Create channel to command PVs\n");
-        for(auto&& com_it: it.second.pvComStructs)
+        for(auto&& com_it:it.second.pvComStructs)
         {
             addCamChannel(it.second.pvRoot, com_it.second);
         }
@@ -264,10 +269,10 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
         int status = sendToEpics("ca_create_channel",
                                  "Found Camera ChIds.",
                                  "!!TIMEOUT!! Not all Camera ChIds found.");
-        if(status == ECA_TIMEOUT )
+        if(status == ECA_TIMEOUT)
         {
             pause_500();
-            message("\n", "Checking camera ChIds ");
+            message("\n", "Checking camera ChIds.");
             for(auto&& it:allCamData)
             {
                 for(auto&& mon_it:it.second.pvMonStructs)
@@ -464,6 +469,14 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 //        case CAM_PV_TYPE::JPG_NUM_CAPTURE_RBV:
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
+
+        case CAM_PV_TYPE::Blacklevel_RBV:
+            camObj.state.Blacklevel = (int)getDBRlong(args);
+            break;
+
+        case CAM_PV_TYPE::GAINRAW_RBV:
+            camObj.state.gain = (int)getDBRlong(args);
+            break;
 
         case CAM_PV_TYPE::STEP_SIZE_RBV:
             camObj.data.analysis.step_size = getDBRint(args);
@@ -876,7 +889,7 @@ bool cameraBase::collectAndSave(const int numbOfShots)
 {
     message("cameraBase::collectAndSave");
     message("collectAndSave passed ",selectedCamPtr->name," shots = ",numbOfShots);
-    if(isAcquiring(*selectedCamPtr))
+    if(isAcquiringAndClaraCam(*selectedCamPtr))
         return collectAndSave(selectedCamPtr->name, numbOfShots);
     else
     {
@@ -888,6 +901,8 @@ bool cameraBase::collectAndSave(const int numbOfShots)
 bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
 {
     if(isNotAcquiring(n))
+        return false;
+    if(isVelaCam(n))
         return false;
     else
     {
@@ -1002,7 +1017,7 @@ bool cameraBase::setNumberOfCapture(cameraObject& cam, int numberOfShots)
 bool cameraBase::collect(cameraObject& cam)
 {
     bool ans = false;
-    if(isAcquiring(cam))
+    if(isAcquiringAndClaraCam(cam))
     {
         unsigned short c = 1;
         ans = cam_caput( cam, c, CAM_PV_TYPE::CAM_CAPTURE);
@@ -1188,28 +1203,32 @@ bool cameraBase::saveJPG(cameraObject camera, unsigned short &comm)
     return ans;
 }
 //---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 bool cameraBase::useBackground_VC(bool v)
 {
-
-    return setMaskX(v,*vcCamPtr);
+    return useBackground(v,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::useBackground(bool v,const std::string& cam)
 {
-
     return useBackground(v,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::useBackground(bool v,cameraStructs::cameraObject& cam)
 {
-    unsigned short comm = v ? UTL::ONE_US : UTL::ZERO_US;
-    return cam_caput(cam, comm, CAM_PV_TYPE::USE_BKGRND);
+    if(isClaraCam(cam))
+    {
+        unsigned short comm = v ? UTL::ONE_US : UTL::ZERO_US;
+        return cam_caput(cam, comm, CAM_PV_TYPE::USE_BKGRND);
+    }
+    return false;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::useBackground(bool v)
 {
     return useBackground(v,*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::useNPoint_VC(bool v)
 {
@@ -1223,14 +1242,19 @@ bool cameraBase::useNPoint(bool v,const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::useNPoint(bool v,cameraStructs::cameraObject& cam)
 {
-    unsigned short comm = v ? UTL::ONE_US : UTL::ZERO_US;
-    return cam_caput(cam, comm, CAM_PV_TYPE::USE_NPOINT);
+    if(isClaraCam(cam))
+    {
+        unsigned short comm = v ? UTL::ONE_US : UTL::ZERO_US;
+        return cam_caput(cam, comm, CAM_PV_TYPE::USE_NPOINT);
+    }
+    return false;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::useNPoint(bool v)
 {
     return useNPoint(v,*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskX_VC(int x)
 {
@@ -1245,13 +1269,20 @@ using namespace cameraStructs;
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskX(int x,cameraObject& cam)
 {
-    return cam_caput(cam, x,CAM_PV_TYPE::MASK_X);
+    if(isClaraCam(cam))
+        return cam_caput(cam, x, CAM_PV_TYPE::MASK_X);
+    else
+    {
+        cam.data.mask.mask_x = x;
+    }
+    return false;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskX(int x)
 {
     return setMaskX(x,*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskY_VC(int x)
 {
@@ -1265,13 +1296,20 @@ bool cameraBase::setMaskY(int x,const std::string& cam )
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskY(int x,cameraObject& cam)
 {
-    return cam_caput<int>(cam,x,CAM_PV_TYPE::MASK_Y);
+    if(isClaraCam(cam))
+        return cam_caput(cam, x, CAM_PV_TYPE::MASK_Y);
+    else
+    {
+        cam.data.mask.mask_y = x;
+    }
+    return false;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskY(int x)
 {
     return setMaskY(x,*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskXrad_VC(int x)
 {
@@ -1285,13 +1323,20 @@ bool cameraBase::setMaskXrad(int x,const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskXrad(int x,cameraObject& cam)
 {
-    return cam_caput(cam, x,CAM_PV_TYPE::MASK_X_RAD);
+    if(isClaraCam(cam))
+        return cam_caput(cam, x, CAM_PV_TYPE::MASK_X_RAD);
+    else
+    {
+        cam.data.mask.mask_x_rad = x;
+    }
+    return false;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskXrad(int x)
 {
     return setMaskXrad(x,*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskYrad_VC(int x)
 {
@@ -1305,13 +1350,20 @@ bool cameraBase::setMaskYrad(int x,const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskYrad(int x,cameraObject& cam)
 {
-    return cam_caput(cam, x,CAM_PV_TYPE::MASK_Y_RAD);
+    if(isClaraCam(cam))
+        return cam_caput(cam, x, CAM_PV_TYPE::MASK_Y_RAD);
+    else
+    {
+        cam.data.mask.mask_y_rad = x;
+    }
+    return false;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskYrad(int x)
 {
     return setMaskYrad(x,*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::setMask_VC(int x,int y,int xr,int yr)
 {
@@ -1363,6 +1415,7 @@ bool cameraBase::setMask(const std::vector<int>& v)
     return setMask(v,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 bool cameraBase::setBackground_VC()
 {
     return setBackground(*vcCamPtr);
@@ -1375,10 +1428,10 @@ bool cameraBase::setBackground(const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::setBackground(cameraObject& cam)
 {
-    bool ans=false;
+    bool ans = false;
     unsigned short on = 1;
     unsigned short off = 1;
-    if(isAcquiring(cam))
+    if(isAcquiringAndClaraCam(cam))
     {
         ans = cam_caput(cam, off, CAM_PV_TYPE::SET_BKGRND);
         if(ans)
@@ -1404,6 +1457,62 @@ bool cameraBase::setBackground()
     return setBackground(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------------
+bool cameraBase::setGain_VC(const long value)
+{
+    return setGain(*vcCamPtr, value);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setGain(const std::string& cam,const long value)
+{
+    return setGain(getCamObj(cam), value);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setGain(const long value)
+{
+    return setGain(*selectedCamPtr, value);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setGain(cameraStructs::cameraObject& cam, const long value)
+{
+    if(isVelaCam(cam))
+        return cam_caput<const long>(cam, value, CAM_PV_TYPE::GAINRAW);
+    return false;
+}
+//---------------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------------
+bool cameraBase::setBlacklevel_VC(const long value)
+{
+    return setGain(*vcCamPtr, value);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setBlacklevel(const std::string& cam,const long value)
+{
+    return setBlacklevel(getCamObj(cam), value);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setBlacklevel(const long value)
+{
+    return setBlacklevel(*selectedCamPtr, value);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setBlacklevel(cameraStructs::cameraObject& cam, const long value)
+{
+    if(isVelaCam(cam))
+        return cam_caput<const long>(cam, value, CAM_PV_TYPE::Blacklevel);
+    return false;
+}
+//---------------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------------
 ///
 ///  __  ___      ___  ___     __                 ___    ___    __       ___    __
 /// /__`  |   /\   |  |__     /  \ |  |  /\  |\ |  |  | |__  | /  `  /\   |  | /  \ |\ |
@@ -1411,6 +1520,66 @@ bool cameraBase::setBackground()
 ///
 ///
 ///
+//---------------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaCam_VC()const
+{
+    return isVelaCam(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaCam(const cameraStructs::cameraObject& cam)const
+{
+    return cam.type == CAM_TYPE::VELA_CAM;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaCam(const std::string& cam)const
+{
+    return isVelaCam(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaCam()const
+{
+    return isVelaCam(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isClaraCam_VC()const
+{
+    return isClaraCam(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isClaraCam(const cameraStructs::cameraObject& cam)const
+{
+    return cam.type == CAM_TYPE::VELA_CAM;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isClaraCam(const std::string& cam)const
+{
+    return isClaraCam(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isClaraCam()const
+{
+    return isClaraCam(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+bool cameraBase::isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)const
+{
+    if(isAcquiring(cam))
+        if(isClaraCam(cam))
+            return true;
+    return false;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isAcquiringAndVelaCam(const cameraStructs::cameraObject& cam)const
+{
+    if(isAcquiring(cam))
+        if(isVelaCam(cam))
+            return true;
+    return false;
+}
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::isBusy_VC()const
 {
@@ -2779,6 +2948,46 @@ std::vector<std::string> cameraBase::getCameraNames()const
 
 
 
+int cameraBase::getGain_VC()const
+{
+    return getGain(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getGain(const std::string& cam)const
+{
+    return getGain(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getGain()const
+{
+    return getGain(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getGain(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state.gain;
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getBlacklevel_VC()const
+{
+    return getBlacklevel(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getBlacklevel(const std::string& cam)const
+{
+    return getBlacklevel(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getBlacklevel()const
+{
+    return getBlacklevel(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+int cameraBase::getBlacklevel(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state.Blacklevel;
+}
+//---------------------------------------------------------------------------------
 
 
 
