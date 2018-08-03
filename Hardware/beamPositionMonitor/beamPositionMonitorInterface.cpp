@@ -421,6 +421,11 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
 
     bpmdo->x = bpmdo->xBuffer.back();
     bpmdo->y = bpmdo->yBuffer.back();
+    if( abs(bpmdo -> x) > 10 || abs(bpmdo -> y) > 10 )
+    {
+        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
+        message( bpmdo->name, " status is BAD, X or Y > 10!!!!!!!!!!!!!!!!!! " );
+    }
 //    std::cout<<bpmdo->x<<std::endl;
     if( bpmdo -> isATemporaryMonitorStruct )
     {
