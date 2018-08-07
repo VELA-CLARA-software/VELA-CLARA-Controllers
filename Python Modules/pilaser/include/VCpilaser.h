@@ -40,20 +40,34 @@ class VCpilaser : public VCbase
         pilaserController& physical_PILaser_Controller();
         pilaserController& offline_PILaser_Controller();
 
+        pilaserController& virtual_CLARA_PILaser_Controller();
+        pilaserController& physical_CLARA_PILaser_Controller();
+        pilaserController& offline_CLARA_PILaser_Controller();
+
+        pilaserController& virtual_VELA_PILaser_Controller();
+        pilaserController& physical_VELA_PILaser_Controller();
+        pilaserController& offline_VELA_PILaser_Controller();
+
     protected:
     private:
         /* object names */
-        pilaserController* virtual_pilaser_Controller_Obj ;
-        pilaserController* physical_pilaser_Controller_Obj;
-        pilaserController* offline_pilaser_Controller_Obj ;
+        pilaserController* virtual_VELA_pilaser_Controller_Obj ;
+        pilaserController* physical_VELA_pilaser_Controller_Obj;
+        pilaserController* offline_VELA_pilaser_Controller_Obj ;
+
+        pilaserController* virtual_CLARA_pilaser_Controller_Obj ;
+        pilaserController* physical_CLARA_pilaser_Controller_Obj;
+        pilaserController* offline_CLARA_pilaser_Controller_Obj ;
+
 
         const std::string pilaserConf, claraCamConfig,
-                          piLaserMirrorConf,imageDataConfig;
+                          piLaserMirrorConf,velaCamConfig;
 
         pilaserController& getpilaserController(pilaserController*& cont,
                                                 const std::string & name,
                                                 const bool shouldVM,
-                                                const bool shouldEPICS
+                                                const bool shouldEPICS,
+                                                const HWC_ENUM::MACHINE_AREA area
                                                 );
         /*
             map of showmessage showdebugmessage states

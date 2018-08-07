@@ -49,7 +49,8 @@ class pilaserInterface : public cameraBase
                             const std::string& pilaserConf,
                             const std::string& claraCamConfig,
                             const std::string& piLaserMirrorConf,
-                            const std::string& imageDataConfig
+                            const std::string& velaCamConfig,
+                            const HWC_ENUM::MACHINE_AREA area
                          );
         pilaserInterface& pilaserInterface::operator= ( const pilaserInterface& other ) = delete;
         ~pilaserInterface();

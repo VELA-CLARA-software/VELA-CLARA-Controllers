@@ -35,16 +35,18 @@ pilaserController::pilaserController(
     const std::string& pilaserConf,
     const std::string& claraCamConfig,
     const std::string& piLaserMirrorConf,
-    const std::string& imageDataConfig
+    const std::string& velaCamConfig,
+    const HWC_ENUM::MACHINE_AREA area
     ):
 localInterface(show_messages,
                show_debug_messages,
                startVirtualMachine,
                shouldStartEPICs,
-     pilaserConf,
-     claraCamConfig,
-     piLaserMirrorConf,
-     imageDataConfig),
+               pilaserConf,
+               claraCamConfig,
+               piLaserMirrorConf,
+               velaCamConfig,
+               area),
 name(name),
 cameraControllerBase(show_messages,show_debug_messages, name, HWC_ENUM::CONTROLLER_TYPE::PI_LASER, &localInterface)
 {

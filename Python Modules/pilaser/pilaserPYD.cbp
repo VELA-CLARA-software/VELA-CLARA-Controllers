@@ -107,6 +107,8 @@
 		<Unit filename="../../Utilities/baseObject.h" />
 		<Unit filename="../../Utilities/camera/claraCameraConfigReader.cpp" />
 		<Unit filename="../../Utilities/camera/claraCameraConfigReader.h" />
+		<Unit filename="../../Utilities/camera/velaCameraConfigReader.cpp" />
+		<Unit filename="../../Utilities/camera/velaCameraConfigReader.h" />
 		<Unit filename="../../Utilities/configDefinitions.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

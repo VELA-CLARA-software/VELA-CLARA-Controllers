@@ -41,7 +41,9 @@ class pilaserController : public cameraControllerBase
                             const std::string& pilaserConf,
                             const std::string& claraCamConfig,
                             const std::string& piLaserMirrorConf,
-                            const std::string& imageDataConfig);
+                            const std::string& velaCamConfig,
+                            const HWC_ENUM::MACHINE_AREA area
+                            );
 
         pilaserController& pilaserController::operator= ( const pilaserController& other ) = delete;
         ~pilaserController();

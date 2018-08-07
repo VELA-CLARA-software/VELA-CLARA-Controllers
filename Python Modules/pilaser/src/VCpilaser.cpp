@@ -14,7 +14,7 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   29-03-2018
+//  Last edit:   07-08-2018
 //  FileName:    VCpilaser.cpp
 //  Description:
 //
@@ -25,11 +25,14 @@
 
 VCpilaser::VCpilaser():
 VCbase("VCpilaser"),
-virtual_pilaser_Controller_Obj(nullptr),
-offline_pilaser_Controller_Obj(nullptr),
-physical_pilaser_Controller_Obj(nullptr),
+virtual_VELA_pilaser_Controller_Obj(nullptr),
+offline_VELA_pilaser_Controller_Obj(nullptr),
+physical_VELA_pilaser_Controller_Obj(nullptr),
+virtual_CLARA_pilaser_Controller_Obj(nullptr),
+offline_CLARA_pilaser_Controller_Obj(nullptr),
+physical_CLARA_pilaser_Controller_Obj(nullptr),
 pilaserConf(UTL::APCLARA1_CONFIG_PATH + UTL::PI_LASER_CONFIG),
-imageDataConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_IMAGE_DATA_CONFIG),
+velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
 piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG),
 claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 {
@@ -40,69 +43,155 @@ claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 VCpilaser::~VCpilaser()
 {
     //dtor
-    if(virtual_pilaser_Controller_Obj)
+    if(virtual_VELA_pilaser_Controller_Obj)
     {
-        delete virtual_pilaser_Controller_Obj;
-               virtual_pilaser_Controller_Obj = nullptr;
+        delete virtual_VELA_pilaser_Controller_Obj;
+               virtual_VELA_pilaser_Controller_Obj = nullptr;
     }
-    if(offline_pilaser_Controller_Obj)
+    if(offline_VELA_pilaser_Controller_Obj)
     {
-        delete offline_pilaser_Controller_Obj;
-               offline_pilaser_Controller_Obj = nullptr;
+        delete offline_VELA_pilaser_Controller_Obj;
+               offline_VELA_pilaser_Controller_Obj = nullptr;
     }
-    if(physical_pilaser_Controller_Obj)
+    if(physical_VELA_pilaser_Controller_Obj)
     {
-        delete physical_pilaser_Controller_Obj;
-               physical_pilaser_Controller_Obj = nullptr;
+        delete physical_VELA_pilaser_Controller_Obj;
+               physical_VELA_pilaser_Controller_Obj = nullptr;
+    }
+    if(virtual_CLARA_pilaser_Controller_Obj)
+    {
+        delete virtual_CLARA_pilaser_Controller_Obj;
+               virtual_CLARA_pilaser_Controller_Obj = nullptr;
+    }
+    if(offline_CLARA_pilaser_Controller_Obj)
+    {
+        delete offline_CLARA_pilaser_Controller_Obj;
+               offline_CLARA_pilaser_Controller_Obj = nullptr;
+    }
+    if(physical_CLARA_pilaser_Controller_Obj)
+    {
+        delete physical_CLARA_pilaser_Controller_Obj;
+               physical_CLARA_pilaser_Controller_Obj = nullptr;
     }
 }
 //______________________________________________________________________________
 pilaserController&  VCpilaser::virtual_PILaser_Controller()
 {
-    std::string name = "virtual_pilaser_Controller";
+    std::string name = "virtual_CLARA_pilaser_Controller";
     std::cout <<"virtual_pilaser_Controller" <<std::endl;
-    return getpilaserController(virtual_pilaser_Controller_Obj,
+    return getpilaserController(virtual_CLARA_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
-                                withEPICS
-//                                pilaserConf,
-//                                vcAnalysisConf,
-//                                piLaserMirrorConf
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::CLARA
                                 );
 }
 //______________________________________________________________________________
 pilaserController& VCpilaser::offline_PILaser_Controller()
 {
-    std::string name = "offline_pilaser_Controller";
+    std::string name = "offline_CLARA_pilaser_Controller";
     std::cout <<"offline_pilaser_Controller" <<std::endl;
-    return getpilaserController(offline_pilaser_Controller_Obj,
+    return getpilaserController(offline_CLARA_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
-                                withEPICS
-//                                pilaserConf,
-//                                vcAnalysisConf,
-//                                piLaserMirrorConf
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::CLARA
                                 );
 }
 //______________________________________________________________________________
 pilaserController& VCpilaser::physical_PILaser_Controller()
 {
-    std::string name = "physical_PILaser_Controller";
+    std::string name = "physical_CLARA_PILaser_Controller";
     std::cout <<"physical_PILaser_Controller" <<std::endl;
-    return getpilaserController(physical_pilaser_Controller_Obj,
+    return getpilaserController(physical_CLARA_pilaser_Controller_Obj,
                                 name,
                                 withoutVM,
-                                withEPICS
-//                                pilaserConf,
-//                                vcAnalysisConf,
-//                                piLaserMirrorConf
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::CLARA
                                 );
 }
+//______________________________________________________________________________
+pilaserController&  VCpilaser::virtual_CLARA_PILaser_Controller()
+{
+    std::string name = "virtual_CLARA_pilaser_Controller";
+    std::cout <<"virtual_pilaser_Controller" <<std::endl;
+    return getpilaserController(virtual_CLARA_pilaser_Controller_Obj,
+                                name,
+                                withoutVM,
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::CLARA
+                                );
+}
+//______________________________________________________________________________
+pilaserController& VCpilaser::offline_CLARA_PILaser_Controller()
+{
+    std::string name = "offline_CLARA_pilaser_Controller";
+    std::cout <<"offline_pilaser_Controller" <<std::endl;
+    return getpilaserController(offline_CLARA_pilaser_Controller_Obj,
+                                name,
+                                withoutVM,
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::CLARA
+                                );
+}
+//______________________________________________________________________________
+pilaserController& VCpilaser::physical_CLARA_PILaser_Controller()
+{
+    std::string name = "physical_VELA_PILaser_Controller";
+    std::cout <<"physical_PILaser_Controller" <<std::endl;
+    return getpilaserController(physical_CLARA_pilaser_Controller_Obj,
+                                name,
+                                withoutVM,
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::CLARA
+                                );
+}
+
+//______________________________________________________________________________
+pilaserController&  VCpilaser::virtual_VELA_PILaser_Controller()
+{
+    std::string name = "virtual_VELA_pilaser_Controller";
+    std::cout <<"virtual_pilaser_Controller" <<std::endl;
+    return getpilaserController(virtual_VELA_pilaser_Controller_Obj,
+                                name,
+                                withoutVM,
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::VELA
+                                );
+}
+//______________________________________________________________________________
+pilaserController& VCpilaser::offline_VELA_PILaser_Controller()
+{
+    std::string name = "offline_VELA_pilaser_Controller";
+    std::cout <<"offline_VELA_pilaser_Controller" <<std::endl;
+    return getpilaserController(offline_VELA_pilaser_Controller_Obj,
+                                name,
+                                withoutVM,
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::VELA
+                                );
+}
+//______________________________________________________________________________
+pilaserController& VCpilaser::physical_VELA_PILaser_Controller()
+{
+    std::string name = "physical_VELA_PILaser_Controller";
+    std::cout <<"physical_VELA_PILaser_Controller" <<std::endl;
+    return getpilaserController(physical_VELA_pilaser_Controller_Obj,
+                                name,
+                                withoutVM,
+                                withEPICS,
+                                HWC_ENUM::MACHINE_AREA::VELA
+                                );
+}
+
+
+
 //______________________________________________________________________________
 pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
                                            const std::string& name,
                                            const bool shouldVM,
-                                           const bool shouldEPICS
+                                           const bool shouldEPICS,
+                                           const HWC_ENUM::MACHINE_AREA area
 //                                           const std::string& pilaserConf,
 //                                           const std::string& vcAnalysisConf,
 //                                           const std::string& piLaserMirrorConf
@@ -125,7 +214,8 @@ pilaserController& VCpilaser::getpilaserController(pilaserController*& cont,
                                      pilaserConf,
                                      claraCamConfig,
                                      piLaserMirrorConf,
-                                     imageDataConfig
+                                     velaCamConfig,
+                                     area
                                     );
 
     }

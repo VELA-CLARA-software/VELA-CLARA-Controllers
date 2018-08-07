@@ -38,14 +38,15 @@ pilaserInterface::pilaserInterface(bool& show_messages,
                                    bool& show_debug_messages,
                                    const bool startVirtualMachine,
                                    const bool shouldStartEPICs,
-                                  const std::string& pilaserConf,
-                                const std::string& claraCamConfig,
-                                const std::string& piLaserMirrorConf,
-                                const std::string& imageDataConfig
+                                   const std::string& pilaserConf,
+                                   const std::string& claraCamConfig,
+                                   const std::string& piLaserMirrorConf,
+                                   const std::string& velaCamConfig,
+                                   const HWC_ENUM::MACHINE_AREA area
                                   ):
 configReader(pilaserConf,  show_messages, show_debug_messages,startVirtualMachine),
 ltMirrorConfigReader(piLaserMirrorConf, show_messages, show_debug_messages,startVirtualMachine),
-cameraBase(show_messages,show_debug_messages,startVirtualMachine,shouldStartEPICs,claraCamConfig,imageDataConfig)
+cameraBase(show_messages,show_debug_messages,startVirtualMachine,shouldStartEPICs,claraCamConfig,velaCamConfig,area)
 {
     initialise();
     attachTo_thisCAContext();
