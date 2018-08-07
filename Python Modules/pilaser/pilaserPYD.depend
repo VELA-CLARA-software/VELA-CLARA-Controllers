@@ -82,7 +82,7 @@
 	<vector>
 	<cadef.h>
 
-1533290521 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1533648352 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -819,4 +819,11 @@
 	<iostream>
 	"configReader.h"
 	"cameraStructs.h"
+
+1533636769 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\velacameraconfigreader.cpp
+	"velaCameraConfigReader.h"
+	"configDefinitions.h"
+	<iostream>
+	<fstream>
+	<sstream>
 
