@@ -265,12 +265,13 @@ namespace UTL
     const std::string VELA_INJ_SCREENS_CONFIG  = "velaINJScreens.config";
     const std::string VELA_BA1_SCREENS_CONFIG  = "velaBA1Screens.config";
     const std::string VELA_BA2_SCREENS_CONFIG  = "velaBA2Screens.config";
-    const std::string CLARA_PH1_SCREENS_CONFIG  = "claraPH1Screens.config";
+    const std::string CLARA_PH1_SCREENS_CONFIG = "claraPH1Screens.config";
+    const std::string C2B_SCREENS_CONFIG       = "C2BScreens.config";
 /// PI Laser
     /// PI Laser configs
     const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
     const std::string CLARA_IMAGE_DATA_CONFIG  = "claraCam.config";
-    const std::string PIL_MIRROR_CONFIG        = "laserTransportMirrorConfigReader.config";
+    const std::string PIL_MIRROR_CONFIG        = "laserTransportMirror.config";
     const std::string PI_LASER_CONFIG          = "photoInjectorLaser.config";
     // laser PVs
     const std::string PV_SUFFIX_PIL_STABILISATION = "PV_SUFFIX_PIL_STABILISATION";
@@ -288,7 +289,6 @@ namespace UTL
     const std::string PV_SUFFIX_PIL_V_MREL = "PV_SUFFIX_PIL_V_MREL";
     const std::string PV_SUFFIX_PIL_H_MREL = "PV_SUFFIX_PIL_H_MREL";
     const std::string PV_SUFFIX_WCM_CHARGE = "PV_SUFFIX_WCM_CHARGE";
-
 
     const std::string X = "X";
     const std::string Y = "Y";

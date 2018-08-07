@@ -1534,6 +1534,57 @@ namespace BOOST_PYTHON_INCLUDE
         ;
 
     }
+
+//______________________________________________________________________________
+    void reg_COLLECTING_STATE_enum(const char* py_name, const char* py_docs)
+    {
+        enum_<cameraStructs::COLLECTING_STATE>("COLLECTING_STATE")
+            .value("NOT_COLLECTING",     cameraStructs::COLLECTING_STATE::NOT_COLLECTING  )
+            .value("COLLECTING",         cameraStructs::COLLECTING_STATE::COLLECTING      )
+            .value("COLLECTING_ERROR",   cameraStructs::COLLECTING_STATE::COLLECTING_ERROR)
+            ;
+    }
+    void reg_SAVE_STATE_enum(const char* py_name, const char* py_docs)
+    {
+        enum_<cameraStructs::SAVE_STATE>("SAVE_STATE")
+            .value("NOT_SAVING",     cameraStructs::SAVE_STATE::NOT_SAVING  )
+            .value("SAVING",         cameraStructs::SAVE_STATE::SAVING      )
+            .value("SAVING_ERROR",   cameraStructs::SAVE_STATE::SAVING_ERROR)
+            ;
+    }
+    void reg_WRITE_CHECK_enum(const char* py_name, const char* py_docs)
+    {
+        enum_<cameraStructs::WRITE_CHECK>("WRITE_CHECK")
+            .value("WRITE_CHECK_OK",     cameraStructs::WRITE_CHECK::WRITE_CHECK_OK  )
+            .value("WRITE_CHECK_ERROR",  cameraStructs::WRITE_CHECK::WRITE_CHECK_ERROR      )
+            ;
+    }
+
+    void reg_CAM_STATE_enum(const char* py_name, const char* py_docs)
+    {
+        enum_<cameraStructs::CAM_STATE>("CAM_STATE")
+            .value("CAM_OFF",     cameraStructs::CAM_STATE::CAM_OFF  )
+            .value("CAM_ON",      cameraStructs::CAM_STATE::CAM_ON      )
+            .value("CAM_ERROR",   cameraStructs::CAM_STATE::CAM_ERROR)
+            ;
+    }
+    void reg_CAM_TYPE_enum(const char* py_name, const char* py_docs)
+    {
+        enum_<cameraStructs::CAM_TYPE>("CAM_TYPE")
+            .value("VELA_CAM",     cameraStructs::CAM_TYPE::VELA_CAM  )
+            .value("CLARA_CAM",    cameraStructs::CAM_TYPE::CLARA_CAM      )
+            .value("UNKNOWN_CAM",  cameraStructs::CAM_TYPE::UNKNOWN_CAM)
+            ;
+    }
+    void reg_ACQUIRE_STATE_enum(const char* py_name, const char* py_docs)
+    {
+        enum_<cameraStructs::ACQUIRE_STATE>("ACQUIRE_STATE")
+            .value("NOT_ACQUIRING",     cameraStructs::ACQUIRE_STATE::NOT_ACQUIRING  )
+            .value("ACQUIRING",         cameraStructs::ACQUIRE_STATE::ACQUIRING      )
+            .value("ACQUIRING_ERROR",   cameraStructs::ACQUIRE_STATE::ACQUIRING_ERROR)
+            ;
+    }
+
 #endif// __INCLUDE_CAMERA_BASE__
 //______________________________________________________________________________
     void export_BaseObjects()
@@ -1828,6 +1879,92 @@ namespace BOOST_PYTHON_INCLUDE
         {
             reg_cameraControllerBase(py_name, py_docs);
         }
+
+
+
+        py_name = "COLLECTING_STATE object";
+        py_docs = "COLLECTING_STATE of camera";
+        reg1  = converter::registry::query(type_id<COLLECTING_STATE>());
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
+            reg_COLLECTING_STATE_enum(py_name, py_docs);
+        }
+        else if ((*reg1).m_to_python == nullptr)
+        {
+            reg_COLLECTING_STATE_enum(py_name, py_docs);
+        }
+
+        py_name = "SAVE_STATE object";
+        py_docs = "SAVE_STATE of camera";
+        reg1  = converter::registry::query(type_id<SAVE_STATE>());
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
+            reg_SAVE_STATE_enum(py_name, py_docs);
+        }
+        else if ((*reg1).m_to_python == nullptr)
+        {
+            reg_SAVE_STATE_enum(py_name, py_docs);
+        }
+
+
+        py_name = "WRITE_CHECK object";
+        py_docs = "WRITE_CHECK of camera";
+        reg1  = converter::registry::query(type_id<WRITE_CHECK>());
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
+            reg_WRITE_CHECK_enum(py_name, py_docs);
+        }
+        else if ((*reg1).m_to_python == nullptr)
+        {
+            reg_WRITE_CHECK_enum(py_name, py_docs);
+        }
+
+
+        py_name = "CAM_STATE object";
+        py_docs = "CAM_STATE of camera";
+        reg1  = converter::registry::query(type_id<CAM_STATE>());
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
+            reg_CAM_STATE_enum(py_name, py_docs);
+        }
+        else if ((*reg1).m_to_python == nullptr)
+        {
+            reg_CAM_STATE_enum(py_name, py_docs);
+        }
+
+
+
+        py_name = "CAM_TYPE object";
+        py_docs = "CAM_TYPE of camera";
+        reg1  = converter::registry::query(type_id<CAM_TYPE>());
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
+            reg_CAM_TYPE_enum(py_name, py_docs);
+        }
+        else if ((*reg1).m_to_python == nullptr)
+        {
+            reg_CAM_TYPE_enum(py_name, py_docs);
+        }
+
+
+        py_name = "ACQUIRE_STATE object";
+        py_docs = "ACQUIRE_STATE of camera";
+        reg1  = converter::registry::query(type_id<ACQUIRE_STATE>());
+        /*  if the class not been registered, register it */
+        if(reg1 == nullptr)
+        {
+            reg_ACQUIRE_STATE_enum(py_name, py_docs);
+        }
+        else if ((*reg1).m_to_python == nullptr)
+        {
+            reg_ACQUIRE_STATE_enum(py_name, py_docs);
+        }
+
 
 
 

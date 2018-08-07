@@ -1,3 +1,25 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      ADB/DJS
+//  Last edit:   07-08-2018
+//  FileName:    screenStructs.h
+//  Description:
+//
+//
+//*/
 #ifndef _VELA_SCREEN_STRUCTS_H_
 #define _VELA_SCREEN_STRUCTS_H_
 
@@ -13,8 +35,6 @@
 #ifndef __CINT__
 #include <cadef.h>
 #endif // __CINT__
-
-
 
 
 class screenInterface;

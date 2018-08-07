@@ -164,43 +164,43 @@ void screenConfigReader::addToPVStructMain( const std::vector<std::string> &keyV
         /// PNEUMATIC
         if( keyVal[0] == UTL::PV_SUFFIX_MOVING )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::MOVING, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::MOVING, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_READY )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::READY, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::READY, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_GET_DEV )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::GET_DEV, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::GET_DEV, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_DEV_STATE )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::DEV_STATE, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::DEV_STATE, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_MAX_POS )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::MAX_POS, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::MAX_POS, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_DEV_CENT )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::DEV_CENT, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::DEV_CENT, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_ACTPOS )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::ACTPOS, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::ACTPOS, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_EN )
         {
-            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::EN, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrMonPneumaticStructs, screenStructs::SCREEN_PV_TYPE::EN, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_SDEV )
         {
-            addToPVStruct( pvScrComPneumaticStructs, screenStructs::SCREEN_PV_TYPE::SDEV, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrComPneumaticStructs, screenStructs::SCREEN_PV_TYPE::SDEV, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_TRIGGER )
         {
-            addToPVStruct( pvScrComPneumaticStructs, screenStructs::SCREEN_PV_TYPE::TRIGGER, keyVal[1], screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+            addToPVStruct( pvScrComPneumaticStructs, screenStructs::SCREEN_PV_TYPE::TRIGGER, keyVal[1], screenStructs::DRIVER_DIRECTION::PNEUMATIC );
         }
     }
     else // must be a mask, chtype config entry, if the config file follows the rules

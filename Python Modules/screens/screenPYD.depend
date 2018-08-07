@@ -12,7 +12,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1529930362 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1533564262 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -21,7 +21,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1529505777 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1533562221 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -60,12 +60,12 @@
 	<sstream>
 	<chrono>
 
-1527418374 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screencontroller.cpp
+1533657908 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screencontroller.cpp
 	"screenController.h"
 	<iostream>
 	<time.h>
 
-1527432488 d:\vela\git projects\vela-clara-controllers\hardware\screen\screencontroller.h
+1533657860 d:\vela\git projects\vela-clara-controllers\hardware\screen\screencontroller.h
 	"screenStructs.h"
 	"screenInterface.h"
 	"controller.h"
@@ -73,7 +73,7 @@
 	<string>
 	<vector>
 
-1524756163 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
+1533654901 d:\vela\git projects\vela-clara-controllers\structs\screenstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
@@ -81,7 +81,7 @@
 	<thread>
 	<cadef.h>
 
-1528205878 d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.h
+1533657971 d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.h
 	"interface.h"
 	"screenStructs.h"
 	"screenConfigReader.h"
@@ -106,7 +106,7 @@
 	<vector>
 	<cadef.h>
 
-1530116891 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1533648462 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -114,7 +114,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1530120872 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp
+1533659075 source:d:\vela\git projects\vela-clara-controllers\hardware\screen\screeninterface.cpp
 	"screenInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -136,7 +136,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1524756163 source:d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.cpp
+1533659297 source:d:\vela\git projects\vela-clara-controllers\utilities\screenconfigreader.cpp
 	"screenConfigReader.h"
 	"screenStructs.h"
 	<iostream>
@@ -150,11 +150,11 @@
 
 1524756160 source:d:\vela\git projects\vela-clara-controllers\python modules\screens\main.cpp
 
-1524756161 source:d:\vela\git projects\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
+1533654831 source:d:\vela\git projects\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
 	"VCscreens.h"
 	<iostream>
 
-1530120930 d:\vela\git projects\vela-clara-controllers\python modules\screens\include\vcscreens.h
+1533657814 d:\vela\git projects\vela-clara-controllers\python modules\screens\include\vcscreens.h
 	<string>
 	"screenController.h"
 	"VCheader.h"
@@ -495,7 +495,7 @@
 	<map>
 	<utility>
 
-1530107552 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1533651026 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -530,17 +530,19 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
-1529594693 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1533633070 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1529926758 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+1533635026 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
+	"structs.h"
 	"interface.h"
 	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
 	<string>
 	<vector>
 	<map>

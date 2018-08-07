@@ -1,5 +1,28 @@
-#ifndef _VCSCREENS_H
-#define _VCSCREENS_H
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      ADB/DJS
+//  Last edit:   07-08-2018
+//  FileName:    VCscreens.h
+//  Description:
+//
+//
+//*/
+
+#ifndef _VC_SCREENS_H_
+#define _VC_SCREENS_H_
 //stl
 #include <string>
 //
@@ -46,10 +69,14 @@ class VCscreens : public VCbase
         screenController& offline_CLARA_PH1_Screen_Controller();
         screenController& physical_CLARA_PH1_Screen_Controller();
 
-        void setQuiet();
-        void setVerbose();
-        void setMessage();
-        void setDebugMessage();
+        screenController& virtual_C2B_Screen_Controller();
+        screenController& offline_C2B_Screen_Controller();
+        screenController& physical_C2B_Screen_Controller();
+
+//        void setQuiet();
+//        void setVerbose();
+//        void setMessage();
+//        void setDebugMessage();
 
         screenController& getScreenController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
@@ -67,21 +94,26 @@ class VCscreens : public VCbase
                                                      const bool shouldEPICS,
                                                      const HWC_ENUM::MACHINE_AREA myMachineArea);
 
-        screenController * virtual_VELA_INJ_Screen_Controller_Obj ;
-        screenController * physical_VELA_INJ_Screen_Controller_Obj;
-        screenController * offline_VELA_INJ_Screen_Controller_Obj ;
+        screenController* virtual_VELA_INJ_Screen_Controller_Obj ;
+        screenController* physical_VELA_INJ_Screen_Controller_Obj;
+        screenController* offline_VELA_INJ_Screen_Controller_Obj ;
 
-        screenController * virtual_VELA_BA1_Screen_Controller_Obj ;
-        screenController * physical_VELA_BA1_Screen_Controller_Obj;
-        screenController * offline_VELA_BA1_Screen_Controller_Obj ;
+        screenController* virtual_VELA_BA1_Screen_Controller_Obj ;
+        screenController* physical_VELA_BA1_Screen_Controller_Obj;
+        screenController* offline_VELA_BA1_Screen_Controller_Obj ;
 
-        screenController * virtual_VELA_BA2_Screen_Controller_Obj;
-        screenController * offline_VELA_BA2_Screen_Controller_Obj;
-        screenController * physical_VELA_BA2_Screen_Controller_Obj;
+        screenController* virtual_VELA_BA2_Screen_Controller_Obj;
+        screenController* offline_VELA_BA2_Screen_Controller_Obj;
+        screenController* physical_VELA_BA2_Screen_Controller_Obj;
 
-        screenController * virtual_CLARA_PH1_Screen_Controller_Obj;
-        screenController * offline_CLARA_PH1_Screen_Controller_Obj;
-        screenController * physical_CLARA_PH1_Screen_Controller_Obj;
+        screenController* virtual_CLARA_PH1_Screen_Controller_Obj;
+        screenController* offline_CLARA_PH1_Screen_Controller_Obj;
+        screenController* physical_CLARA_PH1_Screen_Controller_Obj;
+
+        screenController* virtual_C2B_Screen_Controller_Obj;
+        screenController* offline_C2B_Screen_Controller_Obj;
+        screenController* physical_C2B_Screen_Controller_Obj;
+
         const HWC_ENUM::MACHINE_AREA  VELA_INJ, VELA_BA1, VELA_BA2, CLARA_PH1, UNKNOWN_AREA;
 };
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
@@ -161,6 +193,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .value("YAG",             screenStructs::SCREEN_STATE::RETRACTED )
         .value("UNKNOWN_POSITION",screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
         ;
+
     enum_<screenStructs::SCREEN_TYPE>("SCREEN_TYPE")
         .value("UNKNOWN_SCREEN_TYPE", screenStructs::SCREEN_TYPE::UNKNOWN_SCREEN_TYPE )
         .value("VELA_HV_MOVER",       screenStructs::SCREEN_TYPE::VELA_HV_MOVER       )
@@ -169,6 +202,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .value("VELA_PNEUMATIC",      screenStructs::SCREEN_TYPE::VELA_PNEUMATIC      )
         .value("CLARA_PNEUMATIC",     screenStructs::SCREEN_TYPE::CLARA_PNEUMATIC     )
         ;
+
     enum_<screenStructs::DRIVER_STATE>("DRIVER_STATE")
         .value("H_DRIVER_MOVING",      screenStructs::DRIVER_STATE::H_DRIVER_MOVING      )
         .value("H_DRIVER_STATIONARY",  screenStructs::DRIVER_STATE::H_DRIVER_STATIONARY  )
@@ -282,6 +316,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* getDevicePosString = "Gets the position of a device SCREEN_STATE state.";
     char const* getPosString = "Gets the position of the screen in the lattice.";
 
+    char const* isClearForBeam_ds = "Are all elements (apart from, maybe,  an RF Cage) removed from the beam axis.";
+
     using namespace boost::python;
     class_<screenController, boost::python::bases<controller>, boost::noncopyable>
         ("screenController","screenController Doc String",boost::python::no_init)
@@ -321,6 +357,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("resetPosition",         &screenController::resetPosition, (boost::python::arg("name")), resetPositionString                  )
         .def("setEX",                 &screenController::setEX, (boost::python::arg("name")), setEXString                                  )
         .def("setPosition",           &screenController::setPosition, (boost::python::arg("name"),boost::python::arg("pos (mm)")), setPositionString      )
+        .def("isClearForBeam",           &screenController::isClearForBeam, (boost::python::arg("name")), isClearForBeam_ds )
         .def("debugMessagesOff",      &screenController::debugMessagesOff                         )
         .def("debugMessagesOn",       &screenController::debugMessagesOn                          )
         .def("messagesOff",           &screenController::messagesOff                              )
@@ -349,12 +386,21 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
              return_value_policy<reference_existing_object>())
         .def("physical_VELA_BA2_Screen_Controller",  &VCscreens::physical_VELA_BA2_Screen_Controller,
              return_value_policy<reference_existing_object>())
+
         .def("virtual_CLARA_PH1_Screen_Controller",  &VCscreens::virtual_CLARA_PH1_Screen_Controller,
              return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Screen_Controller",  &VCscreens::offline_CLARA_PH1_Screen_Controller,
              return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Screen_Controller",  &VCscreens::physical_CLARA_PH1_Screen_Controller,
              return_value_policy<reference_existing_object>())
+
+        .def("virtual_C2B_Screen_Controller",  &VCscreens::virtual_C2B_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_C2B_Screen_Controller",  &VCscreens::offline_C2B_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_C2B_Screen_Controller",  &VCscreens::physical_C2B_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+
         .def("getScreenController",  &VCscreens::getScreenController,
              return_value_policy<reference_existing_object>())
         ;

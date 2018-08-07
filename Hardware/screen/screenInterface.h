@@ -1,5 +1,27 @@
-#ifndef screenInterface_H
-#define screenInterface_H
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      ADB/DJS
+//  Last edit:   07-08-2018
+//  FileName:    screenInterface.cpp
+//  Description:
+//
+//
+//*/
+#ifndef _SCREEN_INTERFACE_H_
+#define _SCREEN_INTERFACE_H_
 //djs
 #include "interface.h"
 #include "screenStructs.h"
@@ -36,6 +58,9 @@ class screenInterface: public interface
         bool isHMoving(screenStructs::screenObject& scr);
         bool isVMoving(screenStructs::screenObject& scr);
         bool isScreenMoving(screenStructs::screenObject& scr);
+        bool isClearForBeam(screenStructs::screenObject& scr);
+
+
         bool isHOut(const std::string & name);
         bool isVOut(const std::string & name);
         bool isHIn(const std::string & name);
@@ -46,6 +71,10 @@ class screenInterface: public interface
         bool isPneumatic(const std::string & name);
         bool is_HandV_OUT(const std::string & name);
         bool isScreenIn(const std::string & name);
+
+        bool isClearForBeam(const std::string & name);
+
+
         bool isHMoving(const std::string & name);
         bool isVMoving(const std::string & name);
         bool isPMoving(const std::string & name);
@@ -163,6 +192,8 @@ class screenInterface: public interface
         bool isHorizontal(screenStructs::DRIVER_DIRECTION dir );
         bool isVertical  (screenStructs::DRIVER_DIRECTION dir );
 
+
+
         // Functions to move VELA_PNEUMATIC Screens to position states
         bool move_VELA_PNEUMATIC_Screens(const std::vector<std::string> & names, const std::vector< screenStructs::SCREEN_STATE > & states  );
         bool send_VELA_PNEUMATIC_Command(const std::vector<chtype*>& CHTYPE,const std::vector<chid*>& CHID,const std::string& m1,const std::string& m2);
@@ -199,4 +230,4 @@ class screenInterface: public interface
 
 
 };
-#endif //VELA_PyIL_SCREEN_INTERFACE_H
+#endif //_SCREEN_INTERFACE__H_

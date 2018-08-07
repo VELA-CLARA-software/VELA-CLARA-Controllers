@@ -54,6 +54,9 @@ class screenController : public controller
         bool isVElement(const std::string & name, const screenStructs::SCREEN_STATE e);
         bool isHEnabled(const std::string & name);
         bool isVEnabled(const std::string & name);
+
+        bool isClearForBeam(const std::string & name);
+
         double getACTPOS(const std::string & name);
         double getDevCent(const std::string & name);
         double getJDiff(const std::string & name);

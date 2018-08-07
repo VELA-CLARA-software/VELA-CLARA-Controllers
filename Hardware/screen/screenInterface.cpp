@@ -1,3 +1,25 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      ADB/DJS
+//  Last edit:   07-08-2018
+//  FileName:    screenInterface.h
+//  Description:
+//
+//
+//*/
 #include "screenInterface.h"
 //djs
 #include "configDefinitions.h"
@@ -108,7 +130,6 @@ void screenInterface::initScreenChids()
         {
             addChannel( scr_IT.second.pvRoot, it2.second );
         }
-
         for( auto && it2 : scr_IT.second.pvMonStructs  )
         {
             addChannel( scr_IT.second.pvRoot, it2.second );
@@ -242,6 +263,37 @@ void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
         case screenStructs::SCREEN_PV_TYPE::V_MOVING:
              ms->interface->updateMoving( ms, *(unsigned short*)args.dbr );
             break;
+
+        case screenStructs::SCREEN_PV_TYPE::DEV_STATE:
+             ms->interface->updateDevState( ms, *(unsigned short*)args.dbr );
+            break;
+
+        case screenStructs::SCREEN_PV_TYPE::MOVING:
+            ms->interface->updateMoving( ms, *(unsigned short*)args.dbr );
+            break;
+
+        case screenStructs::SCREEN_PV_TYPE::READY:
+
+            break;
+        case screenStructs::SCREEN_PV_TYPE::GET_DEV:
+            break;
+
+
+        case screenStructs::SCREEN_PV_TYPE::MAX_POS:
+            break;
+
+        case screenStructs::SCREEN_PV_TYPE::DEV_CENT:
+            ms->interface->updateDevCent( ms, *(double*)args.dbr);
+            break;
+
+        case screenStructs::SCREEN_PV_TYPE::ACTPOS:
+            ms->interface->updateACTPOS( ms, *(double*)args.dbr );
+            break;
+
+        case screenStructs::SCREEN_PV_TYPE::EN:
+
+            break;
+
     }
 }
 //_________________________________________________________________________________________________________________
@@ -642,12 +694,18 @@ bool screenInterface::is_HandV_OUT(screenStructs::screenObject & scr)
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHOut(screenStructs::screenObject & scr)
 {
-    return scr.screenHState == screenStructs::SCREEN_STATE::H_RETRACTED;
+    if( isHVMover(scr.name))
+        return scr.screenHState == screenStructs::SCREEN_STATE::H_RETRACTED;
+    return true;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isVOut(screenStructs::screenObject & scr)
 {
-    return scr.screenVState == screenStructs::SCREEN_STATE::V_RETRACTED;
+    if(isMover(scr.name))
+        return scr.screenVState == screenStructs::SCREEN_STATE::V_RETRACTED;
+    else if( isPneumatic(scr.name))
+        return scr.screenPState == screenStructs::SCREEN_STATE::RETRACTED;
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::is_HandV_OUT(const std::string & name)
@@ -657,28 +715,20 @@ bool screenInterface::is_HandV_OUT(const std::string & name)
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHOut(const std::string & name)
 {
-    if( entryExists( allScreentData, name ) && getScreenType(name) != screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
+    if( entryExists( allScreentData, name ))
     {
-        return allScreentData.at(name).screenHState == screenStructs::SCREEN_STATE::H_RETRACTED;
+        return isHOut(allScreentData.at(name));
     }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isVOut(const std::string & name)
 {
-    if( entryExists( allScreentData, name ) && getScreenType(name) != screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
+    if( entryExists( allScreentData, name ))
     {
-        return allScreentData.at(name).screenHState == screenStructs::SCREEN_STATE::V_RETRACTED;
+        return isVOut(allScreentData.at(name));
     }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isMover(const std::string & name)
@@ -687,11 +737,12 @@ bool screenInterface::isMover(const std::string & name)
     {
         return true;
     }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+//    else
+//    {
+//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+//        return false;
+//    }
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isVMover(const std::string & name)
@@ -700,11 +751,12 @@ bool screenInterface::isVMover(const std::string & name)
     {
         return true;
     }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+//    else
+//    {
+//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+//        return false;
+//    }
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHVMover(const std::string & name)
@@ -713,11 +765,12 @@ bool screenInterface::isHVMover(const std::string & name)
     {
         return true;
     }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+//    else
+//    {
+//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+//        return false;
+//    }
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isPneumatic(const std::string & name)
@@ -726,16 +779,106 @@ bool screenInterface::isPneumatic(const std::string & name)
     {
         return true;
     }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+//    else
+//    {
+//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+//        return false;
+//    }
+    return false;
 }
+//_________________________________________________________________________________________________________________
+
+//_________________________________________________________________________________________________________________
+bool screenInterface::isClearForBeam(const std::string& name)
+{
+    if(entryExists(allScreentData, name))
+        return isClearForBeam(allScreentData.at(name));
+    return false;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isClearForBeam(screenStructs::screenObject & scr)
+{
+    using namespace screenStructs;
+    switch( scr.screenType)
+    {
+        case SCREEN_TYPE::VELA_PNEUMATIC:
+            message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", ENUM_TO_STRING(scr.screenPState) );
+            return scr.screenPState == SCREEN_STATE::RETRACTED;
+            break;
+        case SCREEN_TYPE::CLARA_PNEUMATIC:
+            return scr.screenPState == SCREEN_STATE::RETRACTED;
+            break;
+        case SCREEN_TYPE::VELA_HV_MOVER:
+            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
+            {
+
+                //message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", ENUM_TO_STRING(scr.screenPState) );
+
+                if( scr.screenHState == SCREEN_STATE::H_RETRACTED || scr.screenHState ==  SCREEN_STATE::H_RF)
+                {
+                        //message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", ENUM_TO_STRING(scr.screenPState) );
+
+                    return true;
+                }
+            }
+            break;
+        case SCREEN_TYPE::CLARA_HV_MOVER:
+            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
+            {
+
+                message(scr.name ," is CLARA_HV_MOVER, scr.screenVState  = ", ENUM_TO_STRING(scr.screenVState) );
+
+                if( scr.screenHState == SCREEN_STATE::H_RETRACTED || scr.screenHState ==  SCREEN_STATE::H_RF)
+                {
+                        message(scr.name ," is CLARA_HV_MOVER, scr.screenHState  = ", ENUM_TO_STRING(scr.screenHState) );
+
+                    return true;
+                }
+            }
+            break;
+        case SCREEN_TYPE::CLARA_V_MOVER:
+            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
+                    return true;
+            break;
+        default:
+            return false;
+    }
+    return false;
+}
+
 //_________________________________________________________________________________________________________________
 bool screenInterface::isScreenIn(screenStructs::screenObject & scr)
 {
-    return isHIn(scr) || isVIn(scr);
+    using namespace screenStructs;
+    switch( scr.screenType)
+    {
+        case SCREEN_TYPE::VELA_PNEUMATIC:
+            message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", scr.screenPState );
+            return scr.screenPState == SCREEN_STATE::SCREEN_IN;
+            break;
+        case SCREEN_TYPE::CLARA_PNEUMATIC:
+            return scr.screenPState == SCREEN_STATE::SCREEN_IN;
+            break;
+        case SCREEN_TYPE::VELA_HV_MOVER:
+            if( scr.screenVState == SCREEN_STATE::SCREEN_IN)
+                return true;
+            else if( scr.screenHState == SCREEN_STATE::SCREEN_IN)
+                return true;
+            break;
+        case SCREEN_TYPE::CLARA_HV_MOVER:
+            if( scr.screenVState == SCREEN_STATE::SCREEN_IN)
+                return true;
+            else if( scr.screenHState == SCREEN_STATE::SCREEN_IN)
+                return true;
+            break;
+        case SCREEN_TYPE::CLARA_V_MOVER:
+            if( scr.screenVState == SCREEN_STATE::SCREEN_IN)
+                return true;
+            break;
+        default:
+            return false;
+    }
+    return false;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHIn(screenStructs::screenObject & scr)
