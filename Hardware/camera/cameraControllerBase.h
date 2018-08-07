@@ -40,7 +40,9 @@ class cameraControllerBase : public controller
                              const std::string& name,
                              const std::string& claraCamConfig,
                              const std::string& velaCamConfig,
-                             HWC_ENUM::CONTROLLER_TYPE type);
+                             HWC_ENUM::CONTROLLER_TYPE type
+
+                             );
 
         cameraControllerBase(bool& show_messages,
                              bool& show_debug_messages,
@@ -49,8 +51,9 @@ class cameraControllerBase : public controller
                              const std::string& name,
                              const std::string& claraCamConfig,
                              const std::string& velaCamConfig,
-                             HWC_ENUM::CONTROLLER_TYPE type,
-                             bool vcONly);
+                             const HWC_ENUM::CONTROLLER_TYPE type,
+                             const HWC_ENUM::MACHINE_AREA area,
+                             const bool vcONly);
 
         cameraControllerBase(bool& show_messages,
                              bool& show_debug_messages,
@@ -260,10 +263,19 @@ class cameraControllerBase : public controller
         std::deque<double> getAvgIntensityBuffer_VC()const;
         std::deque<double> getAvgIntensityBuffer(const std::string& cam)const;
         std::deque<double> getAvgIntensityBuffer()const;
+
+
         std::vector<int> getFastImage_VC()const;
         std::vector<int> getFastImage(const std::string& cam)const;
         std::vector<int> getFastImage()const;
+
+
+        std::vector<std::string> getCameraNames()const;
+        std::vector<std::string> getCameraScreenNames()const;
+
 #ifdef BUILD_DLL
+        boost::python::list getCameraNames_Py()const;
+        boost::python::list getCameraScreenNames_Py()const;
         boost::python::list getXBuffer_VC_Py()const;
         boost::python::list getXBuffer_Py1(const std::string& cam)const;
         boost::python::list getXBuffer_Py2()const;
@@ -300,12 +312,31 @@ class cameraControllerBase : public controller
         boost::python::list getPixelValuesBuffer_VC_Py()const;
         boost::python::list getPixelValuesBuffer_Py1(const std::string& cam)const;
         boost::python::list getPixelValuesBuffer_Py2()const;
+
+
+
+
+
+        boost::python::list takeAndGetFastImage2D_VC();
+        boost::python::list takeAndGetFastImage2D(const std::string& cam);
+        boost::python::list takeAndGetFastImage2D();
+        boost::python::list takeAndGetFastImage2D(cameraStructs::cameraObject& cam);
+
+        boost::python::list takeAndGetFastImage_VC();
+        boost::python::list takeAndGetFastImage(const std::string& cam);
+        boost::python::list takeAndGetFastImage();
+        boost::python::list takeAndGetFastImage(cameraStructs::cameraObject& cam);
+
+
+
         boost::python::list getFastImage_VC_Py()const;
         boost::python::list getFastImage_Py1(const std::string& cam)const;
         boost::python::list getFastImage_Py2()const;
         boost::python::list getFastImage2D_VC_Py()const;
         boost::python::list getFastImage2D_Py1(const std::string& cam)const;
         boost::python::list getFastImage2D_Py2()const;
+
+
         boost::python::list getSumIntensityBuffer_VC_Py()const;
         boost::python::list getSumIntensityBuffer_Py1(const std::string& cam)const;
         boost::python::list getSumIntensityBuffer_Py2()const;

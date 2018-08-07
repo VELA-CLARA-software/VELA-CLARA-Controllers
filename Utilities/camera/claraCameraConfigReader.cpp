@@ -492,19 +492,42 @@ void claraCameraConfigReader::addPVStruct(std::vector<cameraStructs::pvStruct>& 
 }
 
 //______________________________________________________________________________
-bool claraCameraConfigReader::getCamData(  std::map<std::string, cameraStructs::cameraObject> & mapToFill )
+bool claraCameraConfigReader::getCamData(std::map<std::string, cameraStructs::cameraObject> & mapToFill,
+                                         const bool no_vc )
 {
     bool success = true;
     // don't clear this map as there are multiple camera types
     //mapToFill.clear();
+    bool addcam;
     for(auto&& it:camObjects)
     {
-        mapToFill[it.name] = it;
-        for(auto&& it2 : pvMonStructs)
-            mapToFill.at(it.name).pvMonStructs[ it2.pvType ] = it2;
+        /*
+            no_vc is a flag to remove or keep the VIRTUAL_CATHODE
+            there are two physical virtual cathodes, ( clara and vela lines)
+            however you can only choose one for a camera controller
+        */
+        addcam = true;
+        if(no_vc)
+        {
+            if(it.screenName == UTL::VIRTUAL_CATHODE)
+            {
+                addcam = false;
+            }
+            if(it.name == UTL::VIRTUAL_CATHODE)
+            {
+                addcam = false;
+            }
 
-        for(auto&& it2 : pvComStructs)
-            mapToFill.at(it.name).pvComStructs[ it2.pvType ] = it2;
+        }
+        if(addcam)
+        {
+            mapToFill[it.name] = it;
+            for(auto&& it2 : pvMonStructs)
+                mapToFill.at(it.name).pvMonStructs[ it2.pvType ] = it2;
+
+            for(auto&& it2 : pvComStructs)
+                mapToFill.at(it.name).pvComStructs[ it2.pvType ] = it2;
+        }
     }
     return success;
 }
@@ -618,7 +641,7 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
     }
     else if(keyVal[ZERO_SIZET] == UTL::CAM_TYPE)
     {
-        camObjects.back().type = getCameType(keyVal[ZERO_SIZET]);
+        camObjects.back().type = getCamType(keyVal[ZERO_SIZET]);
     }
     else if(keyVal[ZERO_SIZET] == UTL::X_PIX_SCALE_FACTOR)
     {
@@ -628,12 +651,9 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
     {
         camObjects.back().data.image.y_pix_scale_factor = getSize(keyVal[ZERO_SIZET]);
     }
-
-
-
 }
 //______________________________________________________________________________
-cameraStructs::CAM_TYPE claraCameraConfigReader::getCameType(const std::string& value)
+cameraStructs::CAM_TYPE claraCameraConfigReader::getCamType(const std::string& value)
 {
     if(value == ENUM_TO_STRING(cameraStructs::CAM_TYPE::VELA_CAM))
        return cameraStructs::CAM_TYPE::VELA_CAM;

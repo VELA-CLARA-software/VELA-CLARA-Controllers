@@ -357,11 +357,6 @@ namespace BOOST_PYTHON_INCLUDE
 
         const char* step_size_ds = "";
 
-
-
-
-
-
         using namespace cameraStructs;
         class_<analysis_data,noncopyable>(py_name,py_docs, no_init)
 //            .add_property("PSU",&magnetStructs::magnetObject::psuState,
@@ -935,6 +930,18 @@ namespace BOOST_PYTHON_INCLUDE
         const char* getBlacklevel_VC_ds = "";
         const char* getBlacklevel_ds1   = "";
         const char* getBlacklevel_ds2   = "";
+
+        const char* getCameraNames_ds = "";
+        const char* getCameraScreenNames_ds = "";
+
+        const char* takeAndGetFastImage2D_VC_ds = "";
+        const char* takeAndGetFastImage2D_ds1   = "";
+        const char* takeAndGetFastImage2D_ds2   = "";
+
+        const char* takeAndGetFastImage_VC_ds  = "";
+        const char* takeAndGetFastImage_ds1    = "";
+        const char* takeAndGetFastImage_ds2    = "";
+
         /*
             function pointers for overloads to expose to Python...
         */
@@ -952,6 +959,9 @@ namespace BOOST_PYTHON_INCLUDE
         const cameraStructs::cameraObject&(cameraControllerBase::*getCameraObj_2)()     const= &cameraControllerBase::getCameraObj;
         const cameraStructs::camera_state&(cameraControllerBase::*getStateObj_1)(cstr&)const= &cameraControllerBase::getStateObj;
         const cameraStructs::camera_state&(cameraControllerBase::*getStateObj_2)()     const= &cameraControllerBase::getStateObj;
+
+
+
 
         bool(cameraControllerBase::*takeFastImage_1)(cstr&)       = &cameraControllerBase::takeFastImage;
         bool(cameraControllerBase::*takeFastImage_2)()= &cameraControllerBase::takeFastImage;
@@ -1108,6 +1118,14 @@ namespace BOOST_PYTHON_INCLUDE
         int(cameraControllerBase::*getBlacklevel_2)()const      = &cameraControllerBase::getBlacklevel;
 
 
+
+        boost::python::list(cameraControllerBase::*takeAndGetFastImage2D_1)(cstr&)= &cameraControllerBase::takeAndGetFastImage2D;
+        boost::python::list(cameraControllerBase::*takeAndGetFastImage2D_2)()     = &cameraControllerBase::takeAndGetFastImage2D;
+
+        boost::python::list(cameraControllerBase::*takeAndGetFastImage_1)(cstr&)  = &cameraControllerBase::takeAndGetFastImage;
+        boost::python::list(cameraControllerBase::*takeAndGetFastImage_2)()       = &cameraControllerBase::takeAndGetFastImage;
+
+
         //Py_Initialize();
         //boost::python::numpy::initialize();
 
@@ -1153,6 +1171,18 @@ namespace BOOST_PYTHON_INCLUDE
         .def("takeFastImage_VC", &cameraControllerBase::takeFastImage_VC, takeFastImage_VC_ds)
         .def("takeFastImage",    takeFastImage_1                        , takeFastImage_ds1)
         .def("takeFastImage",    takeFastImage_2                        , takeFastImage_ds2)
+
+        .def("takeAndGetFastImage_VC", &cameraControllerBase::takeAndGetFastImage_VC, takeAndGetFastImage_VC_ds)
+        .def("takeAndGetFastImage",    takeAndGetFastImage_1                        , takeAndGetFastImage_ds1)
+        .def("takeAndGetFastImage",    takeAndGetFastImage_2                        , takeAndGetFastImage_ds2)
+
+        .def("takeAndGetFastImage2D_VC", &cameraControllerBase::takeAndGetFastImage2D_VC, takeAndGetFastImage2D_VC_ds)
+        .def("takeAndGetFastImage2D",    takeAndGetFastImage2D_1                        , takeAndGetFastImage2D_ds1)
+        .def("takeAndGetFastImage2D",    takeAndGetFastImage2D_2                        , takeAndGetFastImage2D_ds2)
+
+
+        .def("getCameraNames",       &cameraControllerBase::getCameraNames_Py                   , getCameraNames_ds)
+        .def("getCameraScreenNames",    &cameraControllerBase::getCameraScreenNames_Py          , getCameraScreenNames_ds)
 
 
         .def("stopAcquireAndAnalysis_VC",  &cameraControllerBase::stopAcquireAndAnalysis_VC  , stopAcquireAndAnalysis_VC_ds)

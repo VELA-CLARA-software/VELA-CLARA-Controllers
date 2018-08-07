@@ -44,7 +44,7 @@ class velaCameraConfigReader : public configReader
         ~velaCameraConfigReader();
 
         bool readConfig();
-        bool getCamData(std::map<std::string, cameraStructs::cameraObject>& mapToFill);
+        bool getCamData(std::map<std::string, cameraStructs::cameraObject>& mapToFill, const bool no_vc);
 
     private:
         bool readCameraConfig();
@@ -67,9 +67,6 @@ class velaCameraConfigReader : public configReader
         std::vector<cameraStructs::pvStruct> pvMonStructs;
         std::vector<cameraStructs::pvStruct> pvComStructs;
 
-
         cameraStructs::CAM_TYPE getCameType(const std::string& value);
-
 };
-
 #endif // _VELA_CAM_CONFIG_READER_H_

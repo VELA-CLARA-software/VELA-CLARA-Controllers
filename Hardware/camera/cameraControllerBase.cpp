@@ -30,13 +30,31 @@ cameraControllerBase::cameraControllerBase(
     const std::string& name,
     const std::string& claraCamConfig,
     const std::string& velaCamConfig,
-    HWC_ENUM::CONTROLLER_TYPE type):
+    HWC_ENUM::CONTROLLER_TYPE type
+    ):
 cameraControllerBase(show_messages, show_debug_messages,
                      startVirtualMachine, shouldStartEPICs,
                      name,
                      claraCamConfig, velaCamConfig,
-                     type, false)
+                     type)
 {}
+
+//cameraControllerBase::cameraControllerBase(
+//    bool& show_messages,
+//    bool& show_debug_messages,
+//    const bool startVirtualMachine,
+//    const bool shouldStartEPICs,
+//    const std::string& name,
+//    const std::string& claraCamConfig,
+//    const std::string& velaCamConfig,
+//    HWC_ENUM::CONTROLLER_TYPE type,
+//    ):
+//cameraControllerBase(show_messages, show_debug_messages,
+//                     startVirtualMachine, shouldStartEPICs,
+//                     name,
+//                     claraCamConfig, velaCamConfig,
+//                     type, false)
+//{}
 //---------------------------------------------------------------------------------
 cameraControllerBase::cameraControllerBase(bool& show_messages,
                              bool& show_debug_messages,
@@ -45,8 +63,9 @@ cameraControllerBase::cameraControllerBase(bool& show_messages,
                              const std::string& name,
                              const std::string& claraCamConfig,
                              const std::string& velaCamConfig,
-                             HWC_ENUM::CONTROLLER_TYPE type,
-                             bool vcONly):
+                             const HWC_ENUM::CONTROLLER_TYPE type,
+                             const HWC_ENUM::MACHINE_AREA area,
+                             const bool vcONly):
 controller(show_messages,show_debug_messages, type, name)
 {
     camBase = new cameraBase(show_messages,
@@ -54,7 +73,9 @@ controller(show_messages,show_debug_messages, type, name)
                              startVirtualMachine,
                              shouldStartEPICs,
                              claraCamConfig,
-                             velaCamConfig);
+                             velaCamConfig,
+                             area
+                             );
     camBase->initialise(vcONly);
     shoudlDeletecamBase = true;
 }
@@ -1248,10 +1269,28 @@ std::deque<double> cameraControllerBase::getAvgIntensityBuffer()const
 }
 //---------------------------------------------------------------------------------
 
-
-
-
+std::vector<std::string> cameraControllerBase::getCameraNames()const
+{
+    return camBase->getCameraNames();
+}
+//---------------------------------------------------------------------------------
+std::vector<std::string> cameraControllerBase::getCameraScreenNames()const
+{
+    return camBase->getCameraScreenNames();
+}
+//---------------------------------------------------------------------------------
 #ifdef BUILD_DLL
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getCameraNames_Py()const
+{
+    return toPythonList<std::string>(getCameraNames());
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getCameraScreenNames_Py()const
+{
+    return toPythonList<std::string>(getCameraScreenNames());
+}
+//---------------------------------------------------------------------------------
 boost::python::list cameraControllerBase::getXBuffer_VC_Py()const
 {
     return toPythonList<double>(getXBuffer_VC());
@@ -1432,36 +1471,6 @@ boost::python::list cameraControllerBase::getPixelValuesBuffer_Py2()const
     return toPythonList<double>(getPixelValuesBuffer());
 }
 //---------------------------------------------------------------------------------
-boost::python::list cameraControllerBase::getFastImage_VC_Py()const
-{
-    return toPythonList<int>(getFastImage_VC());
-}
-//---------------------------------------------------------------------------------
-boost::python::list cameraControllerBase::getFastImage_Py1(const std::string& cam)const
-{
-    return toPythonList<int>(getFastImage(cam));
-}
-//---------------------------------------------------------------------------------
-boost::python::list cameraControllerBase::getFastImage_Py2()const
-{
-    return toPythonList<int>(getFastImage());
-}
-//---------------------------------------------------------------------------------
-boost::python::list cameraControllerBase::getFastImage2D_VC_Py()const
-{
-    return camBase->getFastImage2D_VC();
-}
-//---------------------------------------------------------------------------------
-boost::python::list cameraControllerBase::getFastImage2D_Py1(const std::string& cam)const
-{
-    return camBase->getFastImage2D(cam);
-}
-//---------------------------------------------------------------------------------
-boost::python::list cameraControllerBase::getFastImage2D_Py2()const
-{
-    return camBase->getFastImage2D();
-}
-//---------------------------------------------------------------------------------
 boost::python::list cameraControllerBase::getSumIntensityBuffer_VC_Py()const
 {
     return toPythonList<double>(getSumIntensityBuffer());
@@ -1491,7 +1500,72 @@ boost::python::list cameraControllerBase::getAvgIntensityBuffer_Py2()const
 {
     return toPythonList<double>(getAvgIntensityBuffer());
 }
+
+
+
 //---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getFastImage_VC_Py()const
+{
+    return camBase->getFastImage_VC_Py();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getFastImage_Py1(const std::string& cam)const
+{
+    return camBase->getFastImage_Py(cam);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getFastImage_Py2()const
+{
+    return camBase->getFastImage_Py();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getFastImage2D_VC_Py()const
+{
+    return camBase->getFastImage2D_VC_Py();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getFastImage2D_Py1(const std::string& cam)const
+{
+    return camBase->getFastImage2D_Py(cam);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::getFastImage2D_Py2()const
+{
+    return camBase->getFastImage2D_Py();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::takeAndGetFastImage2D_VC()
+{
+    return camBase->takeAndGetFastImage2D_VC();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::takeAndGetFastImage2D(const std::string& cam)
+{
+    return camBase->takeAndGetFastImage2D();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::takeAndGetFastImage2D()
+{
+    return camBase->takeAndGetFastImage2D();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::takeAndGetFastImage_VC()
+{
+    return camBase->takeAndGetFastImage_VC();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::takeAndGetFastImage(const std::string& cam)
+{
+    return camBase->takeAndGetFastImage();
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraControllerBase::takeAndGetFastImage()
+{
+    return camBase->takeAndGetFastImage();
+}
+//---------------------------------------------------------------------------------
+
+
 #endif
 
 

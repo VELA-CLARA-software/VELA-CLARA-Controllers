@@ -102,7 +102,7 @@ namespace cameraStructs
 
             // vela cam stuff
             (Blacklevel) (GAINRAW)
-            (Blacklevel_RBV) (GAINRAW_RBV)
+            (BLACKLEVEL_RBV) (GAINRAW_RBV)
             )
 
     // so far, two types of camera
@@ -526,7 +526,6 @@ namespace cameraStructs
         WRITE_CHECK writeCheckJPG;
         std::string writeErrorMessageJPG,latestFilename,latestDirectory;
     };
-
     /*
         This is the main object it needs to
         to contain everything a camera could ...
@@ -551,7 +550,7 @@ namespace cameraStructs
         */
         CAM_TYPE type;
         /*
-            conatins vairous states of the camera
+            contains vairous states of the camera
         */
         camera_state state;
         /*

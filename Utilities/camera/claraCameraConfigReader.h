@@ -43,7 +43,7 @@ class claraCameraConfigReader : public configReader
         ~claraCameraConfigReader();
 
         bool readConfig();
-        bool getCamData(std::map<std::string, cameraStructs::cameraObject>& mapToFill);
+        bool getCamData(std::map<std::string, cameraStructs::cameraObject>& mapToFill, const bool no_vc);
 
     private:
         bool readCameraConfig( );
@@ -65,7 +65,7 @@ class claraCameraConfigReader : public configReader
         std::vector<cameraStructs::pvStruct> pvComStructs;
 
 
-        cameraStructs::CAM_TYPE getCameType(const std::string& value);
+        cameraStructs::CAM_TYPE getCamType(const std::string& value);
 
 
 

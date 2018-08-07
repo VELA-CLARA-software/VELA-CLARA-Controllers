@@ -27,11 +27,14 @@
 
 VCcameras::VCcameras():
 VCbase("VCcameras"),
-virtual_Camera_Controller_Obj(nullptr),
-offline_Camera_Controller_Obj(nullptr),
-physical_Camera_Controller_Obj(nullptr),
+virtual_CLARA_Camera_Controller_Obj(nullptr),
+offline_CLARA_Camera_Controller_Obj(nullptr),
+physical_CLARA_Camera_Controller_Obj(nullptr),
+virtual_VELA_Camera_Controller_Obj(nullptr),
+offline_VELA_Camera_Controller_Obj(nullptr),
+physical_VELA_Camera_Controller_Obj(nullptr),
 claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG),
-velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
+velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG)
 {
     std::cout << "Instantiated a VCcameras in Quiet Mode" << std::endl;
     //ctor
@@ -40,20 +43,35 @@ velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 VCcameras::~VCcameras()
 {
     //dtor
-    if(virtual_Camera_Controller_Obj)
+    if(virtual_CLARA_Camera_Controller_Obj)
     {
-        delete virtual_Camera_Controller_Obj;
-               virtual_Camera_Controller_Obj = nullptr;
+        delete virtual_CLARA_Camera_Controller_Obj;
+               virtual_CLARA_Camera_Controller_Obj = nullptr;
     }
-    if(offline_Camera_Controller_Obj)
+    if(offline_CLARA_Camera_Controller_Obj)
     {
-        delete offline_Camera_Controller_Obj;
-               offline_Camera_Controller_Obj = nullptr;
+        delete offline_CLARA_Camera_Controller_Obj;
+               offline_CLARA_Camera_Controller_Obj = nullptr;
     }
-    if(physical_Camera_Controller_Obj)
+    if(physical_CLARA_Camera_Controller_Obj)
     {
-        delete physical_Camera_Controller_Obj;
-               physical_Camera_Controller_Obj = nullptr;
+        delete physical_CLARA_Camera_Controller_Obj;
+               physical_CLARA_Camera_Controller_Obj = nullptr;
+    }
+    if(virtual_VELA_Camera_Controller_Obj)
+    {
+        delete virtual_VELA_Camera_Controller_Obj;
+               virtual_VELA_Camera_Controller_Obj = nullptr;
+    }
+    if(offline_VELA_Camera_Controller_Obj)
+    {
+        delete offline_VELA_Camera_Controller_Obj;
+               offline_VELA_Camera_Controller_Obj = nullptr;
+    }
+    if(physical_VELA_Camera_Controller_Obj)
+    {
+        delete physical_VELA_Camera_Controller_Obj;
+               physical_VELA_Camera_Controller_Obj = nullptr;
     }
 }
 //______________________________________________________________________________
@@ -70,42 +88,102 @@ cameraControllerBase& VCcameras::getController(const HWC_ENUM::MACHINE_MODE mode
 //______________________________________________________________________________
 cameraControllerBase& VCcameras::physical_Camera_Controller()
 {
-    std::string name = "physical_Camera_Controller";
-    std::cout <<"physical_Camera_Controller" <<std::endl;
-    return getController(physical_Camera_Controller_Obj,
-                         name,
-                         withoutVM,
-                         withEPICS);
+    return physical_CLARA_Camera_Controller();
 }
 //______________________________________________________________________________
 cameraControllerBase& VCcameras::virtual_Camera_Controller()
 {
-    std::string name = "virtual_Camera_Controller";
-    std::cout <<"virtual_Camera_Controller" <<std::endl;
-    return getController(virtual_Camera_Controller_Obj,
-                         name,
-                         withVM,
-                         withEPICS);
+    return virtual_CLARA_Camera_Controller();
 }
 //______________________________________________________________________________
 cameraControllerBase& VCcameras::offline_Camera_Controller()
 {
-    std::string name = "offline_CLARA_Camera_Controller";
-    std::cout <<"offline_CLARA_Camera_Controller" <<std::endl;
-    return getController(offline_Camera_Controller_Obj,
+    return offline_CLARA_Camera_Controller();
+}
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::physical_CLARA_Camera_Controller()
+{
+    std::string name = "physical_CLARA_Camera_Controller";
+    std::cout <<"physical_CLARA_Camera_Controller" <<std::endl;
+    return getController(physical_CLARA_Camera_Controller_Obj,
                          name,
                          withoutVM,
-                         withoutEPICS);
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA
+                         );
+}
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::virtual_CLARA_Camera_Controller()
+{
+    std::string name = "virtual_CLARA_Camera_Controller";
+    std::cout <<"virtual_CLARA_Camera_Controller" <<std::endl;
+    return getController(virtual_CLARA_Camera_Controller_Obj,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA
+                         );
+}
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::offline_CLARA_Camera_Controller()
+{
+    std::string name = "offline_CLARA_Camera_Controller";
+    std::cout <<"offline_CLARA_Camera_Controller" <<std::endl;
+    return getController(offline_CLARA_Camera_Controller_Obj,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA
+                         );
+}
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::virtual_VELA_Camera_Controller()
+{
+    std::string name = "virtual_CLARA_Camera_Controller";
+    std::cout <<"virtual_CLARA_Camera_Controller" <<std::endl;
+    return getController(virtual_CLARA_Camera_Controller_Obj,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA
+                         );
+
+}
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::offline_VELA_Camera_Controller()
+{
+    std::string name = "offline_VELA_Camera_Controller";
+    std::cout <<"offline_VELA_Camera_Controller" << std::endl;
+    return getController(offline_CLARA_Camera_Controller_Obj,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA
+                         );
+}
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::physical_VELA_Camera_Controller()
+{
+    std::string name = "physical_VELA_Camera_Controller";
+    std::cout <<"physical_VELA_Camera_Controller" <<std::endl;
+    return getController(physical_CLARA_Camera_Controller_Obj,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::VELA
+                         );
 }
 //______________________________________________________________________________
 cameraControllerBase& VCcameras::getController(cameraControllerBase*& cont,
-                                           const std::string& name,
-                                           const bool shouldVM,
-                                           const bool shouldEPICS)
+                                               const std::string& name,
+                                               const bool shouldVM,
+                                               const bool shouldEPICS,
+                                               const HWC_ENUM::MACHINE_AREA area
+                                               )
 {
     if(cont)
     {
-        std::cout <<name <<" object already exists," <<std::endl;
+        std::cout << name << " object already exists," <<std::endl;
     }
     else
     {
@@ -120,6 +198,7 @@ cameraControllerBase& VCcameras::getController(cameraControllerBase*& cont,
                                         claraCamConfig,
                                         velaCamConfig,
                                         HWC_ENUM::CONTROLLER_TYPE::CAMERA,
+                                        area,
                                         false);
     }
     return *cont;

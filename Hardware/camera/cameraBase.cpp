@@ -25,6 +25,9 @@
 #include "cameraBase.h"
 // stl includes
 #include <limits>
+#include <iterator>
+#include <set>
+#include <list>
 using namespace cameraStructs;
 //---------------------------------------------------------------------------------
 cameraBase::cameraBase(bool& show_messages,
@@ -33,7 +36,7 @@ cameraBase::cameraBase(bool& show_messages,
                        const bool shouldStartEPICs):
 cameraBase(show_messages,show_debug_messages,
            startVirtualMachine,shouldStartEPICs,
-           UTL::UNKNOWN_STRING, UTL::UNKNOWN_STRING)
+           UTL::UNKNOWN_STRING)
 {}
 //---------------------------------------------------------------------------------
 cameraBase::cameraBase(bool& show_messages,
@@ -43,7 +46,8 @@ cameraBase::cameraBase(bool& show_messages,
                        const std::string& claraCamConfig):
 cameraBase(show_messages,show_debug_messages,
            startVirtualMachine,shouldStartEPICs,
-           claraCamConfig,UTL::UNKNOWN_STRING)
+           claraCamConfig,UTL::UNKNOWN_STRING,
+           HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA)
 {}
 //---------------------------------------------------------------------------------
 cameraBase::cameraBase(bool& show_messages,
@@ -51,13 +55,15 @@ cameraBase::cameraBase(bool& show_messages,
                        const bool startVirtualMachine,
                        const bool shouldStartEPICs,
                        const std::string& claraCamConfig,
-                       const std::string& velaCamConfig
+                       const std::string& velaCamConfig,
+                       const HWC_ENUM::MACHINE_AREA area
                       ):
 claraCamConfigReader(claraCamConfig, show_messages, show_debug_messages,startVirtualMachine),
 velaCamConfigReader(velaCamConfig, show_messages, show_debug_messages, startVirtualMachine),
 interface(show_messages,show_debug_messages, shouldStartEPICs,startVirtualMachine),
 selectedCamPtr(nullptr),
-vcCamPtr(nullptr)
+vcCamPtr(nullptr),
+myarea(area)
 {
     dummyCamObject.name = UTL::DUMMY_NAME;
     attachTo_thisCAContext();
@@ -95,7 +101,7 @@ void cameraBase::initialise(bool VConly = false)
                 message("Set vcCamPtr to camera = ",vcCamPtr->name);
                 /*
                     selectedCamPtr should be set to something so why not VC?
-                    This is a bit dangerous, potntial points to nothing ...
+                    This is a bit dangerous, potentially points to nothing ...
                 */
                 selectedCamPtr = &allCamData.at(cameraName);
             }
@@ -110,14 +116,14 @@ void cameraBase::initialise(bool VConly = false)
                     subscribe to the channel ids
                     true sets flag to send to EPICS
                 */
-
                 initCamChids(true);
-
-                /* start the monitors: set up the callback functions */
-
+                /*
+                    start the monitors: set up the callback functions
+                */
                 startCamMonitors(true);
-
-                /* The pause allows EPICS callbacks to catch up. */
+                /*
+                    The pause allows EPICS callbacks to catch up.
+                */
                 pause_500();
             }
             else
@@ -126,7 +132,7 @@ void cameraBase::initialise(bool VConly = false)
         }
         else
             message("!!!The cameraBase received an Error "
-                    "while getting laser data!!!");
+                    "while getting camera data!!!");
     }
 }
 //---------------------------------------------------------------------------------
@@ -136,7 +142,7 @@ bool cameraBase::readCamConfig()
         read config files, vela cam not yet written
     */
     bool clara_camera_data_read = claraCamConfigReader.readConfig();
-    bool vela_camera_data_read = true;
+    bool vela_camera_data_read = velaCamConfigReader.readConfig();;
     if(clara_camera_data_read && vela_camera_data_read)
         return true;
     return false;
@@ -146,10 +152,26 @@ bool cameraBase::getCamObjects()
 {
     /*
         copy objects from config reader
+        depending on the machine area we kepp on the vela or clara VIRTUAL_CATHODE
     */
-    bool ans = claraCamConfigReader.getCamData(allCamData);
+    bool ans = false;
+    bool cut_vela_vc = false;
+    bool cut_clara_vc = false;
+    if(myarea == HWC_ENUM::MACHINE_AREA::CLARA)
+    {
+        message("Machine Area = CLARA removing VELA VIRTUAL_CATHODE");
+        cut_vela_vc  = true;
+        cut_clara_vc = false;
+    }
+    else if(myarea == HWC_ENUM::MACHINE_AREA::VELA)
+    {
+        message("Machine Area = VELA removing CLARA VIRTUAL_CATHODE");
+        cut_vela_vc  = false;
+        cut_clara_vc = true;
+    }
+    ans = claraCamConfigReader.getCamData(allCamData, cut_clara_vc);
     if(ans)
-        ans = velaCamConfigReader.getCamData(allCamData);
+        ans = velaCamConfigReader.getCamData(allCamData, cut_vela_vc);
     if(ans)
     {
         /*
@@ -185,6 +207,36 @@ bool cameraBase::getCamObjects()
             it.second.data.mask.name = it.first;
             it.second.daq.name   = it.first;
             it.second.daq.screenName = it.second.screenName;
+        }
+        /*
+            check that the screen names are all unique (we tend to refer to cameras
+            using the name of teh screen they display
+        */
+        std::vector<std::string> temp_screen_name,intermediate;
+        for(auto&& it : allCamData)
+        {
+            temp_screen_name.push_back(it.second.screenName);
+        }
+        std::sort(temp_screen_name.begin(), temp_screen_name.end());
+        std::set<std::string> uvec(temp_screen_name.begin(), temp_screen_name.end());
+        std::list<std::string> output;
+        std::set_difference(temp_screen_name.begin(), temp_screen_name.end(),
+                            uvec.begin(), uvec.end(),
+                            std::back_inserter(output));
+
+        message("temp_screen_name.size() =  ",temp_screen_name.size() );
+        message("uvec.size() =  ",uvec.size() );
+        message("output.size() =  ",output.size() );
+
+        if(output.size() != UTL::ZERO_SIZET)
+        {
+            message("!!ERROR!! CONFIG FILES DO NOT HAVE UNIQUE NAMES FOR THE CAMERA SCREENS, STOPPING ");
+            message("Below are the non-unique screen names:");
+            ans = false;
+            for(auto&&it:output)
+            {
+                message(it);
+            }
         }
     }
     return ans;
@@ -275,6 +327,7 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
             message("\n", "Checking camera ChIds.");
             for(auto&& it:allCamData)
             {
+                message("\n", it.first);
                 for(auto&& mon_it:it.second.pvMonStructs)
                 {
                     checkCHIDState(mon_it.second.CHID, ENUM_TO_STRING(mon_it.first));
@@ -286,7 +339,7 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
             }
             pause_2000();
         }
-        else if (status == ECA_NORMAL)
+        else if(status == ECA_NORMAL)
         {
             for(auto&& it:allCamData)
             {
@@ -394,27 +447,27 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 */
         case CAM_PV_TYPE::CAM_WRITE_FILE_RBV:
             updateWriteState(args, camObj.daq.writeState);
-            message(camObj.name, ": Write Status is ", ENUM_TO_STRING(camObj.daq.writeState));
+            message(camObj.name, " (",camObj.screenName, "): Write Status is ", ENUM_TO_STRING(camObj.daq.writeState));
             break;
         case CAM_PV_TYPE::CAM_FILE_WRITE_STATUS:
             updateWriteCheck(args, camObj.daq.writeCheck);
-            message(camObj.name, ": Write Status is ", ENUM_TO_STRING(camObj.daq.writeCheck));
+            message(camObj.name, " (",camObj.screenName, "): Write Status is ", ENUM_TO_STRING(camObj.daq.writeCheck));
             break;
         case CAM_PV_TYPE::CAM_FILE_WRITE_ERROR_MESSAGE_RBV:
             updateWriteErrorMessage(args, camObj.daq.writeErrorMessage);
-            message(camObj.name,": Write Error message is: ", camObj.daq.writeErrorMessage);
+            message(camObj.name, " (",camObj.screenName, "): Write Error message is: ", camObj.daq.writeErrorMessage);
             break;
         case CAM_PV_TYPE::CAM_STATUS:
             updateCamState(args,camObj.state.power);
-            message(camObj.name,": power is ", ENUM_TO_STRING(camObj.state.power));
+            message(camObj.name, " (",camObj.screenName, "): power is ", ENUM_TO_STRING(camObj.state.power));
             break;
         case CAM_PV_TYPE::CAM_CAPTURE_RBV:
             updateCollectingState(args,camObj.daq.collectingState);
-            message(camObj.name, ": Collecting state is ", ENUM_TO_STRING(camObj.daq.collectingState));
+            message(camObj.name, " (",camObj.screenName, "): Collecting state is ", ENUM_TO_STRING(camObj.daq.collectingState));
             break;
         case CAM_PV_TYPE::CAM_ACQUIRE_RBV:
             updateAcquiring(args,camObj.state.acquire);
-            message(camObj.name, ": Aquiring state is ", ENUM_TO_STRING(camObj.state.acquire));
+            message(camObj.name, " (",camObj.screenName, "): Aquiring state is ", ENUM_TO_STRING(camObj.state.acquire));
             if(isAcquiring(camObj))
                 updateSelectedCamRef(camObj);
             break;
@@ -470,7 +523,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 //            //pilaser.HWP = getDBRdouble(args);
 //            break;
 
-        case CAM_PV_TYPE::Blacklevel_RBV:
+        case CAM_PV_TYPE::BLACKLEVEL_RBV:
             camObj.state.Blacklevel = (int)getDBRlong(args);
             break;
 
@@ -487,10 +540,12 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
             message(camObj.name  ," analysing_data = ", camObj.state.analysing);
             //pilaser.HWP = getDBRdouble(args);
             break;
+
         case CAM_PV_TYPE::USE_BKGRND_RBV:
             camObj.state.use_background = (bool)getDBRunsignedShort(args);
             message(camObj.name  ," use_background = ", camObj.state.use_background );
             break;
+
         case CAM_PV_TYPE::USE_NPOINT_RBV:
             camObj.state.use_npoint = (bool)getDBRunsignedShort(args);
             message(camObj.name  ," use_npoint = ", camObj.state.use_npoint );
@@ -718,9 +773,9 @@ void cameraBase::updateSelectedCamRef(cameraObject& cam)
         vcCamPtr = &cam;
     }
     if(selectedCamPtr)
-        message("selectedCamPtr is ", selectedCamPtr->name);
+        message("selectedCamPtr is ", selectedCamPtr->screenName, ", (",selectedCamPtr->name,")");
     if(vcCamPtr)
-        message("vcCamPtr       is ", vcCamPtr->name);
+        message("vcCamPtr       is ", vcCamPtr->screenName, ", (",vcCamPtr->name,")");
 }
 //--------------------------------------------------------------------------------------------------
 void cameraBase::updateCollectingState(const event_handler_args& args, COLLECTING_STATE& s)
@@ -1118,7 +1173,6 @@ void cameraBase::killFinishedImageCollectThreads()
             if(it.second.thread)
             {
                 message(it.first," thread is not nullptr");
-
                 /*
                     join before deleting...
                     http://stackoverflow.com/questions/25397874/deleting-stdthread-pointer-raises-exception-libcabi-dylib-terminating
@@ -1183,6 +1237,7 @@ bool cameraBase::collectJPG(cameraObject camera, unsigned short &comm, const int
 //        }
     return ans;
 }
+
 bool cameraBase::saveJPG(cameraObject camera, unsigned short &comm)
 {
     bool ans=false;
@@ -2061,10 +2116,10 @@ std::string cameraBase::useCameraFrom(const std::string& camOrScreen)const
         bool usingAScreenName = false;
         for (auto && it : allCamData)
         {
-            if (it.second.screenName==camOrScreen)
+            if (it.second.screenName == camOrScreen)
             {
                 cameraName = it.second.name;
-                usingAScreenName=true;
+                usingAScreenName= true;
             }
         }
         if (usingAScreenName == false)
@@ -2632,33 +2687,90 @@ bool cameraBase::takeFastImage(cameraObject& cam)
 }
 //---------------------------------------------------------------------------------
 #ifdef BUILD_DLL
-boost::python::list cameraBase::getFastImage2D_VC()
+boost::python::list cameraBase::takeAndGetFastImage2D_VC()
 {
-    return getFastImage2D(*vcCamPtr);
+    return takeAndGetFastImage2D(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-boost::python::list cameraBase::getFastImage2D(const std::string& cam)
+boost::python::list cameraBase::takeAndGetFastImage2D(const std::string& cam)
 {
-    return getFastImage2D(getCamObj(cam));
+    return takeAndGetFastImage2D(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-boost::python::list cameraBase::getFastImage2D()
+boost::python::list cameraBase::takeAndGetFastImage2D()
 {
-    return getFastImage2D(*selectedCamPtr);
+    return takeAndGetFastImage2D(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-boost::python::list cameraBase::getFastImage2D(cameraStructs::cameraObject& cam)
+boost::python::list cameraBase::takeAndGetFastImage2D(cameraStructs::cameraObject& cam)
 {
-    if(takeFastImage(cam))
-    {
-        cam.data.image.data = toPythonList(cam.data.image.array_data);
-        cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
-                                               cam.data.image.num_pix_y,
-                                               cam.data.image.num_pix_x);
-    }
+    takeFastImage(cam);
     return cam.data.image.data2D;
 }
 //---------------------------------------------------------------------------------
+boost::python::list cameraBase::takeAndGetFastImage_VC()
+{
+    return takeAndGetFastImage(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::takeAndGetFastImage(const std::string& cam)
+{
+    return takeAndGetFastImage(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::takeAndGetFastImage()
+{
+    return takeAndGetFastImage(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::takeAndGetFastImage(cameraStructs::cameraObject& cam)
+{
+    takeFastImage(cam);
+    return cam.data.image.data;
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage_VC_Py()const
+{
+    return getFastImage_Py(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage_Py(const std::string& cam)const
+{
+    return getFastImage_Py(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage_Py()const
+{
+    return getFastImage_Py(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage_Py(const cameraStructs::cameraObject& cam)const
+{
+    return cam.data.image.data;
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage2D_VC_Py()const
+{
+    return getFastImage2D_Py(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage2D_Py(const std::string& cam)const
+{
+    return getFastImage2D_Py(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage2D_Py()const
+{
+    return getFastImage2D_Py(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+boost::python::list cameraBase::getFastImage2D_Py(const cameraStructs::cameraObject& cam)const
+{
+    return cam.data.image.data2D;
+}
+//---------------------------------------------------------------------------------
+
+
 #endif
 ///
 /// get x value
@@ -2944,10 +3056,15 @@ std::vector<std::string> cameraBase::getCameraNames()const
         r.push_back(it.first);
     return r;
 }
-
-
-
-
+//---------------------------------------------------------------------------------
+std::vector<std::string> cameraBase::getCameraScreenNames()const
+{
+    std::vector<std::string> r;
+    for(auto && it:allCamData)
+        r.push_back(it.second.screenName);
+    return r;
+}
+//---------------------------------------------------------------------------------
 int cameraBase::getGain_VC()const
 {
     return getGain(*vcCamPtr);

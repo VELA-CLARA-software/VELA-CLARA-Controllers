@@ -25,6 +25,7 @@
 // project includes
 #include "configDefinitions.h"
 #include "cameraStructs.h"
+#include "structs.h"
 #include "interface.h"
 #include "claraCameraConfigReader.h"
 #include "velaCameraConfigReader.h"
@@ -45,12 +46,15 @@ class cameraBase : public interface
                    const bool startVirtualMachine,
                    const bool shouldStartEPICs,
                    const std::string& claraCamConfig);
+
         cameraBase(bool& show_messages,
                    bool& show_debug_messages,
                    const bool startVirtualMachine,
                    const bool shouldStartEPICs,
                    const std::string& claraCamConfig,
-                   const std::string& velaCamConfig);
+                   const std::string& velaCamConfig,
+                   const HWC_ENUM::MACHINE_AREA area
+                   );
 
         ~cameraBase();
 
@@ -142,7 +146,6 @@ class cameraBase : public interface
         /* this is used to make sure settings are only sent to the correct camera type*/
         bool isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)const;
         bool isAcquiringAndVelaCam(const cameraStructs::cameraObject& cam)const;
-
 
         bool isUsingBackground(const std::string& cam)const;
         bool isUsingBackground()const;
@@ -369,20 +372,39 @@ class cameraBase : public interface
         std::deque<double> getAvgIntensityBuffer(const std::string& cam)const;
         std::deque<double> getAvgIntensityBuffer(const cameraStructs::cameraObject& cam)const;
         std::deque<double> getAvgIntensityBuffer()const;
+
         std::vector<int> getFastImage_VC()const;
         std::vector<int> getFastImage(const std::string& cam)const;
         std::vector<int> getFastImage()const;
         std::vector<int> getFastImage(const cameraStructs::cameraObject& cam)const;
 
+
         bool takeFastImage(cameraStructs::cameraObject& cam);
         bool takeFastImage(const std::string& cam);
         bool takeFastImage_VC();
         bool takeFastImage();
+
 #ifdef BUILD_DLL
-        boost::python::list getFastImage2D_VC();
-        boost::python::list getFastImage2D(const std::string& cam);
-        boost::python::list getFastImage2D();
-        boost::python::list getFastImage2D(cameraStructs::cameraObject& cam);
+        boost::python::list takeAndGetFastImage2D_VC();
+        boost::python::list takeAndGetFastImage2D(const std::string& cam);
+        boost::python::list takeAndGetFastImage2D();
+        boost::python::list takeAndGetFastImage2D(cameraStructs::cameraObject& cam);
+
+        boost::python::list takeAndGetFastImage_VC();
+        boost::python::list takeAndGetFastImage(const std::string& cam);
+        boost::python::list takeAndGetFastImage();
+        boost::python::list takeAndGetFastImage(cameraStructs::cameraObject& cam);
+
+        boost::python::list getFastImage_VC_Py()const;
+        boost::python::list getFastImage_Py(const std::string& cam)const;
+        boost::python::list getFastImage_Py()const;
+        boost::python::list getFastImage_Py(const cameraStructs::cameraObject& cam)const;
+
+        boost::python::list getFastImage2D_VC_Py()const;
+        boost::python::list getFastImage2D_Py(const std::string& cam)const;
+        boost::python::list getFastImage2D_Py()const;
+        boost::python::list getFastImage2D_Py(const cameraStructs::cameraObject& cam)const;
+
 #endif
 
         int getGain_VC()const;
@@ -409,6 +431,7 @@ class cameraBase : public interface
         std::string getLatestFilename()const;
 
         std::vector<std::string> getCameraNames()const;
+        std::vector<std::string> getCameraScreenNames()const;
 //--------------------------------------------------------------------------------------------------------------------
 //  __   ___ ___ ___  ___  __   __
 // /__` |__   |   |  |__  |__) /__`
@@ -639,5 +662,7 @@ class cameraBase : public interface
         void updateSelectedOrVC(const std::string& cameraName);
     protected:
     private:
+
+        const HWC_ENUM::MACHINE_AREA myarea;
 };
 #endif // __VC_CAMERABASE_H__

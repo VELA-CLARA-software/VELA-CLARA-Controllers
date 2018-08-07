@@ -81,14 +81,15 @@ class interface : public baseObject
         bool interfaceInitReport()const;
 
     protected:
-        /* protected destructor to make sure this class is never instantiated
+        /*
+            protected destructor to make sure this class is never instantiated
            the compiler won't let us call delete on any base class pointers
         */
         ~interface();
         // this should be called in the derived interface destructor
         void killILockMonitors();
-
-        /* The below was written back in the days when i assumed operational
+        /*
+            The below was written back in the days when i assumed operational
            consistency:
             some EPICS constants
             send ...1 to enable open / close shutter, screen etc,

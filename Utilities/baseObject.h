@@ -60,10 +60,10 @@ class baseObject
         baseObject(const bool& show_messages,
                    const bool& show_debug_messages);
         baseObject(const bool& show_messages,
-                   const bool& show_debug_messages,const std::string& message);
+                   const bool& show_debug_messages,
+                   const std::string& message);
+
         baseObject& baseObject::operator= ( const baseObject& other ) = delete;
-
-
         static size_t basecount;
 
         /* These are const references set at instantiation.

@@ -167,17 +167,19 @@ void velaCameraConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&
         {
             addPVStruct(pvMonStructs, CAM_PV_TYPE::GAINRAW_RBV, keyVal[ONE_SIZET]);
         }
-        if(keyVal[ZERO_SIZET] == PV_SUFFIX_BLACK_LEVEL_RBV)//1
+        else if(keyVal[ZERO_SIZET] == PV_SUFFIX_BLACK_LEVEL_RBV)//1
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::Blacklevel_RBV, keyVal[ONE_SIZET]);
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::BLACKLEVEL_RBV, keyVal[ONE_SIZET]);
         }
-        if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_ACQUIRE_RBV)//1
+        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_ACQUIRE_RBV)//1
         {
             addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_RBV, keyVal[ONE_SIZET]);
         }
     }
     else
+    {
         addCOUNT_MASK_OR_CHTYPE(pvMonStructs, keyVal);
+    }
 }
 //---------------------------------------------------------------------------------------
 void velaCameraConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<cameraStructs::pvStruct>& pvStruct_v,
@@ -194,6 +196,7 @@ void velaCameraConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<cameraStructs::
 void velaCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &keyVal )
 {
     using namespace UTL;
+    //message("addToPVCommandMapV1, ", keyVal[0]);
     if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX"))
     {
         using namespace cameraStructs;
@@ -201,7 +204,7 @@ void velaCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string>
         {
             addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_START_ACQUIRE, keyVal[ONE_SIZET]);
         }
-        if(keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_STOP_ACQUIRE )//1
+        else if(keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_STOP_ACQUIRE )//1
         {
             addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_STOP_ACQUIRE, keyVal[ONE_SIZET]);
         }
@@ -219,7 +222,9 @@ void velaCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string>
         }
     }
     else
+    {
         addCOUNT_MASK_OR_CHTYPE(pvComStructs, keyVal);
+    }
 }
 //______________________________________________________________________________
 void velaCameraConfigReader::addPVStruct(std::vector<cameraStructs::pvStruct>& pvs,
@@ -232,23 +237,47 @@ void velaCameraConfigReader::addPVStruct(std::vector<cameraStructs::pvStruct>& p
     // we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,
     // so store a ref to which vector to update with that info. (this does make sense)
     //lastPVStruct = &pvs;
-    debugMessage(pvs.size(),": Added ", pvs.back().pvSuffix,
+    message(pvs.size(),": Added ", pvs.back().pvSuffix,
                  " suffix for ", ENUM_TO_STRING(pvs.back().pvType));
 }
 //---------------------------------------------------------------------------------------
-bool velaCameraConfigReader::getCamData( std::map<std::string, cameraStructs::cameraObject> & mapToFill)
+bool velaCameraConfigReader::getCamData(std::map<std::string, cameraStructs::cameraObject>& mapToFill,
+                                        const bool no_vc)
 {
     bool success = true;
+    bool addcam;
     //mapToFill.clear();
     for(auto&& it:camObjects)
     {
-        mapToFill[it.name] = it;
-        for(auto&& it2 : pvMonStructs)
-            mapToFill.at(it.name).pvMonStructs[ it2.pvType ] = it2;
+        /*
+            no_vc is a flag to remove or keep the VIRTUAL_CATHODE
+            there are two physical virtual cathodes, ( clara and vela lines)
+            however you can only choose one for a camera controller
+        */
+        addcam = true;
+        if(no_vc)
+        {
+            if(it.screenName == UTL::VIRTUAL_CATHODE)
+            {
+                addcam = false;
+            }
+            if(it.name == UTL::VIRTUAL_CATHODE)
+            {
+                addcam = false;
+            }
+        }
+        if(addcam)
+        {
+            mapToFill[it.name] = it;
+            for(auto&& it2 : pvMonStructs)
+                mapToFill.at(it.name).pvMonStructs[ it2.pvType ] = it2;
 
-        for(auto&& it2 : pvComStructs)
-            mapToFill.at(it.name).pvComStructs[ it2.pvType ] = it2;
+            for(auto&& it2 : pvComStructs)
+                mapToFill.at(it.name).pvComStructs[ it2.pvType ] = it2;
+        }
     }
+
+
     return success;
 }
 //---------------------------------------------------------------------------------------
