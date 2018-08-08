@@ -84,6 +84,8 @@ class beamPositionMonitorInterface : public interface
         long getSA2( const std::string & bpm );
         long getSD1( const std::string & bpm );
         long getSD2( const std::string & bpm );
+        const beamPositionMonitorStructs::BPM_STATUS getBPMStatus( const std::string & bpm );
+        const std::string getBPMStatusStr( const std::string & bpm );
         void setSA1( const std::string & bpmName, long sa1 );
         void setSA2( const std::string & bpmName, long sa1 );
         void setSD1( const std::string & bpmName, long sa1 );
@@ -132,6 +134,10 @@ class beamPositionMonitorInterface : public interface
         void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateXValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateYValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+
+        void setMonitorVectors( const std::string name );
+        void statusBufferToVector( boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > buf, std::vector< beamPositionMonitorStructs::BPM_STATUS > vec );
+        void doubleBufferToVector( boost::circular_buffer< double > buf, std::vector< double > vec );
 
         /// As an overly complicated example let's try some function pointers. Toggling (open / close) the bpm is now easy
         /// https://isocpp.org/wiki/faq/pointers-to-members

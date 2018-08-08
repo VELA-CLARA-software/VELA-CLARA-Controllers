@@ -285,6 +285,16 @@ void beamPositionMonitorController::setY( const std::string & bpmName, double va
     localInterface.setY( bpmName, val );
 }
 //______________________________________________________________________________
+const beamPositionMonitorStructs::BPM_STATUS beamPositionMonitorController::getBPMStatus( const std::string & name )
+{
+    return localInterface.getBPMStatus( name );
+}
+//______________________________________________________________________________
+const std::string beamPositionMonitorController::getBPMStatusStr( const std::string & name )
+{
+    return localInterface.getBPMStatusStr( name );
+}
+//______________________________________________________________________________
 #ifdef BUILD_DLL
 boost::python::list beamPositionMonitorController::getBPMNames_Py()
 {

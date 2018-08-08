@@ -89,6 +89,8 @@ class beamPositionMonitorController : public controller
         long getSA2( const std::string & bpm );
         long getSD1( const std::string & bpm );
         long getSD2( const std::string & bpm );
+        const beamPositionMonitorStructs::BPM_STATUS getBPMStatus( const std::string & bpm );
+        const std::string getBPMStatusStr( const std::string & bpm );
         void setSA1( const std::string & bpmName, long sa1 );
         void setSA2( const std::string & bpmName, long sa2 );
         void setSD1( const std::string & bpmName, long sd1 );

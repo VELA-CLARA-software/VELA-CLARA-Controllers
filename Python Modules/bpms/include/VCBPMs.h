@@ -125,7 +125,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     boost::python::class_< boost::circular_buffer< double > >("Circular buffer definition for python ", boost::python::no_init)
         .def(vector_indexing_suite< boost::circular_buffer< double > >())
         ;
-    /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
     enum_<beamPositionMonitorStructs::BPM_STATUS>("BPM_STATUS")
             .value("GOOD",      beamPositionMonitorStructs::BPM_STATUS::GOOD      )
@@ -133,6 +132,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .value("NONLINEAR", beamPositionMonitorStructs::BPM_STATUS::NONLINEAR )
             .value("UNKNOWN",   beamPositionMonitorStructs::BPM_STATUS::UNKNOWN   )
             ;
+
+    boost::python::class_< boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > >("Circular buffer definition for python ", boost::python::no_init)
+        .def(vector_indexing_suite< boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > >())
+        ;
+    /// member functiosn to expose to python, remmeber to include enum deifntions as boost::python::dict <int, string>
 
     boost::python::class_<beamPositionMonitorStructs::bpmDataObject, boost::shared_ptr<beamPositionMonitorStructs::bpmDataObject>, boost::noncopyable>
         ("bpmDataObject", "This object contains all of the EPICS PVs for a given bpmName",boost::python::no_init)
@@ -143,6 +147,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("qBuffer",        &beamPositionMonitorStructs::bpmDataObject::qBuffer      )
         .def_readonly("xBuffer",        &beamPositionMonitorStructs::bpmDataObject::xBuffer      )
         .def_readonly("yBuffer",        &beamPositionMonitorStructs::bpmDataObject::yBuffer      )
+        .def_readonly("xPVVec",         &beamPositionMonitorStructs::bpmDataObject::xPVVec       )
+        .def_readonly("yPVVec",         &beamPositionMonitorStructs::bpmDataObject::yPVVec       )
+        .def_readonly("qVec",           &beamPositionMonitorStructs::bpmDataObject::qVec         )
+        .def_readonly("xVec",           &beamPositionMonitorStructs::bpmDataObject::xVec         )
+        .def_readonly("yVec",           &beamPositionMonitorStructs::bpmDataObject::yVec         )
         .def_readonly("x",              &beamPositionMonitorStructs::bpmDataObject::x            )
         .def_readonly("y",              &beamPositionMonitorStructs::bpmDataObject::y            )
         .def_readonly("xPV",            &beamPositionMonitorStructs::bpmDataObject::xPV          )
@@ -159,6 +168,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("position",       &beamPositionMonitorStructs::bpmDataObject::position     )
         .def_readonly("xytype",         &beamPositionMonitorStructs::bpmDataObject::xytype       )
         .def_readonly("status",         &beamPositionMonitorStructs::bpmDataObject::status       )
+        .def_readonly("statusBuffer",   &beamPositionMonitorStructs::bpmDataObject::statusBuffer )
+        .def_readonly("statusVec",      &beamPositionMonitorStructs::bpmDataObject::statusVec    )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>
@@ -249,6 +260,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* getAreaDocString = "Returns, as a HWC_ENUM, the machine area for the controller.";
     char const* getModeDocString = "Returns, as a HWC_ENUM, the machine mode for the controller (OFFLINE, PHYSICAL, VIRTUAL).";
     char const* getILocksDocString = "Why are you here? BPMs don't have interlocks. At least as far as I'm aware. I'm not sure why they would.";
+    char const* getBPMStatusDocString = "Returns the status of the BPM (based on x/y position) -- GOOD, BAD, NONLINEAR or UNKNOWN.";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
             ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
             .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, getBPMDataObjectDocString, return_value_policy<reference_existing_object>()            )
@@ -299,6 +311,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setY",                            &beamPositionMonitorController::setY, setYDocString                                  )
             .def("getBufferSize",                   &beamPositionMonitorController::getBufferSize, getBufferSizeDocString                )
             .def("setBufferSize",                   &beamPositionMonitorController::setBufferSize, setBufferSizeDocString                )
+            .def("getBPMStatus",                    &beamPositionMonitorController::getBPMStatus, getBPMStatusDocString                  )
+            .def("getBPMStatusStr",                 &beamPositionMonitorController::getBPMStatusStr, getBPMStatusDocString               )
             .def("clearBuffers",                    &beamPositionMonitorController::clearBuffers, clearBuffersDocString                  )
 //            .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                    )
 //            .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                            )
