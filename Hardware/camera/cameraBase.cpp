@@ -1827,6 +1827,7 @@ bool cameraBase::isAcquiring_VC()const
 //---------------------------------------------------------------------------------
 bool cameraBase::isAcquiring(const cameraObject& cam)const
 {
+    message("cam.name = ", cam.name );
     return cam.state.acquire == ACQUIRE_STATE::ACQUIRING;
 }
 //---------------------------------------------------------------------------------
@@ -2128,6 +2129,7 @@ std::string cameraBase::useCameraFrom(const std::string& camOrScreen)const
             cameraName = UTL::UNKNOWN_NAME;
         }
     }
+    message("useCameraFrom passed, ",camOrScreen, " returning ",cameraName);
     return cameraName;
 }
 //---------------------------------------------------------------------------------
@@ -3284,7 +3286,10 @@ bool cameraBase::startAcquiring(cameraObject& cam)
     //message("isNotAcquiring(",cam.name,") = ",isNotAcquiring(cam));
     if(isNotAcquiring(cam))
     {
-        stopAllAcquiringExceptVC();
+        if(isNotVC(cam.name))
+        {
+            stopAllAcquiringExceptVC();
+        }
         //message("Try startAcquiring ",cam.name);
         unsigned short c = UTL::ONE_US;
         return cam_caput<unsigned short>(cam, c, CAM_PV_TYPE::CAM_START_ACQUIRE);

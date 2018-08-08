@@ -1956,7 +1956,7 @@ const cameraObject& cameraControllerBase::getCameraObj()const
 //---------------------------------------------------------------------------------
 const cameraStructs::camera_state& cameraControllerBase::getStateObj(const std::string& name)const
 {
-    return camBase->getStateObj();
+    return camBase->getStateObj(name);
 }
 //---------------------------------------------------------------------------------
 const cameraStructs::camera_state& cameraControllerBase::getStateObj_VC()const
