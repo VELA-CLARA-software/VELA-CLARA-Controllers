@@ -16,7 +16,10 @@ offline_VELA_BA2_BPM_Controller_Obj(nullptr),
 physical_VELA_BA2_BPM_Controller_Obj(nullptr),
 virtual_CLARA_PH1_BPM_Controller_Obj(nullptr),
 offline_CLARA_PH1_BPM_Controller_Obj(nullptr),
-physical_CLARA_PH1_BPM_Controller_Obj(nullptr)
+physical_CLARA_PH1_BPM_Controller_Obj(nullptr),
+virtual_C2B_BPM_Controller_Obj(nullptr),
+offline_C2B_BPM_Controller_Obj(nullptr),
+physical_C2B_BPM_Controller_Obj(nullptr)
 {
     //ctor
 }
@@ -82,6 +85,21 @@ VCBPMs::~VCBPMs()
     {
         delete physical_CLARA_PH1_BPM_Controller_Obj;
                physical_CLARA_PH1_BPM_Controller_Obj = nullptr;
+    }
+    if(virtual_C2B_BPM_Controller_Obj)
+    {
+        delete virtual_C2B_BPM_Controller_Obj;
+               virtual_C2B_BPM_Controller_Obj = nullptr;
+    }
+    if(offline_C2B_BPM_Controller_Obj)
+    {
+        delete offline_C2B_BPM_Controller_Obj;
+               offline_C2B_BPM_Controller_Obj = nullptr;
+    }
+    if(physical_C2B_BPM_Controller_Obj)
+    {
+        delete physical_C2B_BPM_Controller_Obj;
+               physical_C2B_BPM_Controller_Obj = nullptr;
     }
 }    //dtor
 //______________________________________________________________________________
@@ -255,6 +273,42 @@ beamPositionMonitorController& VCBPMs::physical_CLARA_PH1_BPM_Controller()
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
+beamPositionMonitorController& VCBPMs::virtual_C2B_BPM_Controller()
+{
+    std::string name  = "virtual_C2B_BPM_Controller";
+    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    return getController(virtual_C2B_BPM_Controller_Obj,
+                         bpmconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
+}
+//______________________________________________________________________________
+beamPositionMonitorController& VCBPMs::offline_C2B_BPM_Controller()
+{
+    std::string name  = "offline_C2B_BPM_Controller";
+    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    return getController(offline_C2B_BPM_Controller_Obj,
+                         bpmconf,
+                         name,
+                         withVM,
+                         withoutEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
+}
+//______________________________________________________________________________
+beamPositionMonitorController& VCBPMs::physical_C2B_BPM_Controller()
+{
+    std::string name  = "physical_C2B_BPM_Controller";
+    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    return getController(physical_C2B_BPM_Controller_Obj,
+                         bpmconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
+}
+//______________________________________________________________________________
 beamPositionMonitorController & VCBPMs::getBPMController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
 {
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
@@ -280,6 +334,12 @@ beamPositionMonitorController & VCBPMs::getBPMController( const HWC_ENUM::MACHIN
     else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_PH1 )
         return virtual_CLARA_PH1_BPM_Controller();
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_PH1 )
+        return physical_CLARA_PH1_BPM_Controller();
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::CLARA_2_BA1_BA2 )
+        return offline_CLARA_PH1_BPM_Controller();
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_2_BA1_BA2 )
+        return virtual_CLARA_PH1_BPM_Controller();
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_2_BA1_BA2 )
         return physical_CLARA_PH1_BPM_Controller();
 }
 //______________________________________________________________________________

@@ -50,6 +50,9 @@ class VCBPMs : public VCbase
         beamPositionMonitorController & virtual_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & offline_CLARA_2_VELA_BPM_Controller();
         beamPositionMonitorController & physical_CLARA_2_VELA_BPM_Controller();
+        beamPositionMonitorController & virtual_C2B_BPM_Controller();
+        beamPositionMonitorController & offline_C2B_BPM_Controller();
+        beamPositionMonitorController & physical_C2B_BPM_Controller();
         beamPositionMonitorController & getBPMController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
 #ifdef BUILD_DLL
@@ -81,6 +84,9 @@ class VCBPMs : public VCbase
         beamPositionMonitorController * virtual_CLARA_PH1_BPM_Controller_Obj;
         beamPositionMonitorController * offline_CLARA_PH1_BPM_Controller_Obj;
         beamPositionMonitorController * physical_CLARA_PH1_BPM_Controller_Obj;
+        beamPositionMonitorController * virtual_C2B_BPM_Controller_Obj;
+        beamPositionMonitorController * offline_C2B_BPM_Controller_Obj;
+        beamPositionMonitorController * physical_C2B_BPM_Controller_Obj;
 };
 
 typedef std::vector<std::string> vecString;
@@ -342,6 +348,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def("virtual_CLARA_PH1_BPM_Controller",  &VCBPMs::virtual_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_BPM_Controller",  &VCBPMs::offline_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_BPM_Controller", &VCBPMs::physical_CLARA_PH1_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_C2B_BPM_Controller",  &VCBPMs::virtual_C2B_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_C2B_BPM_Controller",  &VCBPMs::offline_C2B_BPM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_C2B_BPM_Controller", &VCBPMs::physical_C2B_BPM_Controller, return_value_policy<reference_existing_object>())
         .def("getBPMController", &VCBPMs::getBPMController, getControllerDocString, return_value_policy<reference_existing_object>())
         ;
 };

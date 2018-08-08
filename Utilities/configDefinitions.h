@@ -171,6 +171,7 @@ namespace UTL
     const std::string CLARA_S01_BPM_CONFIG             = "claraS01BeamPositionMonitors.config";
     const std::string CLARA_S02_BPM_CONFIG             = "claraS02BeamPositionMonitors.config";
     const std::string CLARA_PH1_BPM_CONFIG             = "claraPH1BeamPositionMonitors.config";
+    const std::string C2B_BPM_CONFIG                   = "C2BBeamPositionMonitors.config";
     // PVs
     const std::string PV_SUFFIX_BPM_SA1     = "PV_SUFFIX_BPM_SA1";
     const std::string PV_SUFFIX_BPM_SA2     = "PV_SUFFIX_BPM_SA2";
