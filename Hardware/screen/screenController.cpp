@@ -255,11 +255,6 @@ std::vector< std::string > screenController::getScreenNames()
 {
     return localInterface.getScreenNames();
 }
-//______________________________________________________________________________
-boost::python::list screenController::getScreenNames_Py()
-{
-    return toPythonList(getScreenNames());
-}
 ////________________________________________________________________________________
 //bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)
 //{
@@ -286,6 +281,11 @@ boost::python::dict screenController::getILockStatesStr_Py( std::string& name )
 boost::python::dict screenController::getILockStates_Py( std::string& name )
 {
     return enumMapToPythonDict(getILockStates(name) );
+}
+//______________________________________________________________________________
+boost::python::list screenController::getScreenNames_Py()
+{
+    return toPythonList(getScreenNames());
 }
 //______________________________________________________________________________
 boost::python::dict screenController::get_SCREEN_STATE_Definition()

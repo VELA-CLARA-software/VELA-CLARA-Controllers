@@ -80,7 +80,7 @@ namespace screenStructs
                                                       (P_DRIVER_MOVING) (P_DRIVER_STATIONARY) (P_DRIVER_DISABLED) (P_DRIVER_ENABLED)
                                                       (H_DRIVER_ERROR) (V_DRIVER_ERROR) (P_DRIVER_ERROR) (UNKNOWN_DRIVER_STATE) )
     // screen drivers come in two types
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_DIRECTION, (HORIZONTAL) (VERTICAL) (PNEUMATIC) (NONE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(DRIVER_DIRECTION, (HORIZONTAL) (VERTICAL) (PNEUMATIC) (UNKNOWN) (NONE) )
     // turns out this is really useful, but itlooks like cancer
     // it is used by the conifg reader and the interface, so although not a struct it's going to live here
     // ***** ADD TO THIS IF CLARA HAS MORE ELEMENTS *****    const std::string PV_SUFFIX_H_MOVING    = "PV_SUFFIX_H_MOVING";
@@ -133,13 +133,14 @@ namespace screenStructs
                        screenHState(UNKNOWN_POSITION),screenSetHState(UNKNOWN_POSITION),
                        screenVState(UNKNOWN_POSITION),screenSetVState(UNKNOWN_POSITION),
                        screenPState(UNKNOWN_POSITION),screenSetPState(UNKNOWN_POSITION),
-                       screenState(UNKNOWN_POSITION),screenSetState(UNKNOWN_POSITION),
+//                       screenState.first(UNKNOWN), screenSetState.first(UNKNOWN),
+//                       screenState.second(UNKNOWN_POSITION), screenSetState.second(UNKNOWN_POSITION),
                        devCentH(UTL::DUMMY_DOUBLE),devCentV(UTL::DUMMY_DOUBLE), devCentP(UTL::DUMMY_DOUBLE),
                        actPOSH(UTL::DUMMY_DOUBLE),actPOSV(UTL::DUMMY_DOUBLE), actPOSP(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
         SCREEN_TYPE       screenType;
         SCREEN_STATE      screenHState, screenSetHState, screenVState, screenSetVState, screenPState, screenSetPState;
-        SCREEN_STATE      screenState, screenSetState;
+        std::pair< DRIVER_DIRECTION, SCREEN_STATE > screenState, screenSetState;
         double            devCentH, devCentV, devCentP;
         double            actPOSH, actPOSV, actPOSP;
         double            jDiffH, jDiffV;

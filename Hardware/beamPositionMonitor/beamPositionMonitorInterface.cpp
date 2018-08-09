@@ -422,6 +422,7 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
 
     bpmdo->x = bpmdo->xBuffer.back();
     bpmdo->y = bpmdo->yBuffer.back();
+    bpmdo->q = bpmdo->qBuffer.back();
     if( abs(bpmdo -> x) > 10.0 || abs(bpmdo -> y) > 10.0 )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
@@ -1149,28 +1150,37 @@ long beamPositionMonitorInterface::getSD2( const std::string & bpmName )
 double beamPositionMonitorInterface::getX( const std::string & bpmName )
 {
     double r = UTL::DUMMY_DOUBLE;
-    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).xVec.size() != 0 )
-        return bpmObj.dataObjects.at( bpmName ).xVec.back();
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).xBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).x;
     else
+    {
+        message("WARNING!!! x buffer is empty, are BPM values updating??");
         return r;
+    }
 }
 //______________________________________________________________________________
 double beamPositionMonitorInterface::getY( const std::string & bpmName )
 {
     double r = UTL::DUMMY_DOUBLE;
-    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).yVec.size() != 0 )
-        return bpmObj.dataObjects.at( bpmName ).yVec.back();
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).yBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).y;
     else
+    {
+        message("WARNING!!! y buffer is empty, are BPM values updating??");
         return r;
+    }
 }
 //______________________________________________________________________________
 double beamPositionMonitorInterface::getQ( const std::string & bpmName )
 {
     double r = UTL::DUMMY_DOUBLE;
-    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).qVec.size() != 0 )
-        return bpmObj.dataObjects.at( bpmName ).qVec.back();
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).qBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).q;
     else
+    {
+        message("WARNING!!! q buffer is empty, are BPM values updating??");
         return r;
+    }
 }
 //______________________________________________________________________________
 double beamPositionMonitorInterface::getPosition( const std::string & bpmName )

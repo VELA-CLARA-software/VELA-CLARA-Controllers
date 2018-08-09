@@ -241,6 +241,16 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     class_<std::map<std::string,bool>>("std_map_string_bool")
         .def(map_indexing_suite< std::map<std::string, bool> >())
         ;
+    class_<std::pair<screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE>>("std_pair_SCREEN_STATE_DRIVER_DIRECTION")
+        .def(boost::python::init<  std::pair<screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE> >())
+        .def_readonly( "first",  &std::pair< screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE >::first  )
+        .def_readonly( "second", &std::pair< screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE >::second );
+        ;
+//BOOST_PYTHON_MODULE(std_pair){
+//    bp::class_< std::pair< int, int > >( "pair_less__int_comma__int__greater_", "documentation", bp::init< >("documentation") )
+//        .def( bp::init< int const &, int const & >(( bp::arg("__a"),bp::arg("__b") ), "documentation") )
+//        .def_readwrite( "first", &std::pair< int, int >::first,"documentation" )
+//        .def_readwrite( "second", &std::pair< int, int >::second,"documentation" );
     char const* screenObjectString = "This struct contains the screen object - inc. type of screen (HV mover, pneumatic etc.), and horizontal and vertical state.\n"
                                      "It also gives the names of all the devices (positions) for a given screen.";
     boost::python::class_<screenStructs::screenObject,boost::noncopyable>
@@ -248,18 +258,20 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def_readonly("name",             &screenStructs::screenObject::name            )
         .def_readonly("pvRoot",           &screenStructs::screenObject::pvRoot          )
         .def_readonly("screenType",       &screenStructs::screenObject::screenType      )
+        .def_readonly("screenState",      &screenStructs::screenObject::screenState     )
         .def_readonly("screenHState",     &screenStructs::screenObject::screenHState    )
         .def_readonly("screenVState",     &screenStructs::screenObject::screenVState    )
         .def_readonly("screenVState",     &screenStructs::screenObject::screenPState    )
+        .def_readonly("screenSetState",   &screenStructs::screenObject::screenSetState  )
         .def_readonly("screenSetHState",  &screenStructs::screenObject::screenSetHState )
         .def_readonly("screenSetVState",  &screenStructs::screenObject::screenSetVState )
         .def_readonly("screenSetVState",  &screenStructs::screenObject::screenSetPState )
         .def_readonly("devCentH",         &screenStructs::screenObject::devCentH        )
         .def_readonly("devCentV",         &screenStructs::screenObject::devCentV        )
-        .def_readonly("devCentV",         &screenStructs::screenObject::devCentP        )
+        .def_readonly("devCentP",         &screenStructs::screenObject::devCentP        )
         .def_readonly("actPOSH",          &screenStructs::screenObject::actPOSH         )
         .def_readonly("actPOSV",          &screenStructs::screenObject::actPOSV         )
-        .def_readonly("actPOSV",          &screenStructs::screenObject::actPOSP         )
+        .def_readonly("actPOSP",          &screenStructs::screenObject::actPOSP         )
         .def_readonly("hDriverState",     &screenStructs::screenObject::hDriverState    )
         .def_readonly("vDriverState",     &screenStructs::screenObject::vDriverState    )
         .def_readonly("elementExists",    &screenStructs::screenObject::elementExists   )

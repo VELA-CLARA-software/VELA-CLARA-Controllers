@@ -276,6 +276,14 @@ class baseObject
             return dictionary;
         }
 
+        template<class T, class U>
+        boost::python::tuple toPythonTuple(const std::map<T,U>& m) const
+        {
+            boost::python::tuple tupl;
+            boost::python::make_tuple(m.first, m.second);
+            return tupl;
+        }
+
         template <class T>
         boost::python::list toPythonList(const std::vector<std::vector<T>>& v) const
         {

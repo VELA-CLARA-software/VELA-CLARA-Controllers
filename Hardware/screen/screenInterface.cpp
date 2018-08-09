@@ -409,6 +409,7 @@ void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const u
     screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
     //unsigned short value = *(unsigned short*)args.dbr;
     const std::string screenName = obj -> name;
+    allScreentData.at(screenName).screenState.first = ms->dir;
     if( entryExists(allScreentData, screenName ) )
     {
         if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
@@ -811,27 +812,17 @@ bool screenInterface::isClearForBeam(screenStructs::screenObject & scr)
         case SCREEN_TYPE::VELA_HV_MOVER:
             if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
             {
-
-                //message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", ENUM_TO_STRING(scr.screenPState) );
-
                 if( scr.screenHState == SCREEN_STATE::H_RETRACTED || scr.screenHState ==  SCREEN_STATE::H_RF)
                 {
-                        //message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", ENUM_TO_STRING(scr.screenPState) );
-
                     return true;
                 }
             }
             break;
         case SCREEN_TYPE::CLARA_HV_MOVER:
-            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
+            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF )
             {
-
-                message(scr.name ," is CLARA_HV_MOVER, scr.screenVState  = ", ENUM_TO_STRING(scr.screenVState) );
-
                 if( scr.screenHState == SCREEN_STATE::H_RETRACTED || scr.screenHState ==  SCREEN_STATE::H_RF)
                 {
-                        message(scr.name ," is CLARA_HV_MOVER, scr.screenHState  = ", ENUM_TO_STRING(scr.screenHState) );
-
                     return true;
                 }
             }
