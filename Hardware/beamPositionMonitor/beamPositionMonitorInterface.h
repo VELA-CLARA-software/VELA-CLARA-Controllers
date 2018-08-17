@@ -60,6 +60,7 @@ class beamPositionMonitorInterface : public interface
         double getPosition( const std::string & bpm );
         double getXFromPV(  const std::string & bpm  );
         double getYFromPV(  const std::string & bpm  );
+        const beamPositionMonitorStructs::BPM_STATUS getBPMStatus( const std::string & name );
         const beamPositionMonitorStructs::bpmDataObject & getBPMDataObject( const std::string & name );
         const size_t getBufferSize();
         std::vector< std::vector< double > > getBPMRawData( const std::string & bpmName );
@@ -84,7 +85,6 @@ class beamPositionMonitorInterface : public interface
         long getSA2( const std::string & bpm );
         long getSD1( const std::string & bpm );
         long getSD2( const std::string & bpm );
-        const beamPositionMonitorStructs::BPM_STATUS getBPMStatus( const std::string & bpm );
         const std::string getBPMStatusStr( const std::string & bpm );
         void setSA1( const std::string & bpmName, long sa1 );
         void setSA2( const std::string & bpmName, long sa1 );
@@ -136,6 +136,7 @@ class beamPositionMonitorInterface : public interface
         void updateYValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateDBRLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void checkBPMStatus( beamPositionMonitorStructs::bpmDataObject * bpmdo );
+        bool beamPositionMonitorInterface::checkBPMBuffer( boost::circular_buffer< double > buf );
 
         void setMonitorVectors( const std::string name );
         void statusBufferToVector( boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > buf, std::vector< beamPositionMonitorStructs::BPM_STATUS > vec );
