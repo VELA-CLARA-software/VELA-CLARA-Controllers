@@ -901,6 +901,8 @@ void beamPositionMonitorInterface::setBufferSize( size_t bufferSize )
         clearBuffers();
         it.second.xBuffer.resize( bufferSize );
         it.second.yBuffer.resize( bufferSize );
+        it.second.xPVBuffer.resize( bufferSize );
+        it.second.yPVBuffer.resize( bufferSize );
         it.second.qBuffer.resize( bufferSize );
         it.second.p1Buffer.resize( bufferSize );
         it.second.p2Buffer.resize( bufferSize );

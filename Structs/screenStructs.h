@@ -133,18 +133,18 @@ namespace screenStructs
                        screenHState(UNKNOWN_POSITION),screenSetHState(UNKNOWN_POSITION),
                        screenVState(UNKNOWN_POSITION),screenSetVState(UNKNOWN_POSITION),
                        screenPState(UNKNOWN_POSITION),screenSetPState(UNKNOWN_POSITION),
-//                       screenState.first(UNKNOWN), screenSetState.first(UNKNOWN),
+                       screenState(UNKNOWN_POSITION), screenSetState(UNKNOWN_POSITION),
 //                       screenState.second(UNKNOWN_POSITION), screenSetState.second(UNKNOWN_POSITION),
                        devCentH(UTL::DUMMY_DOUBLE),devCentV(UTL::DUMMY_DOUBLE), devCentP(UTL::DUMMY_DOUBLE),
                        actPOSH(UTL::DUMMY_DOUBLE),actPOSV(UTL::DUMMY_DOUBLE), actPOSP(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
         SCREEN_TYPE       screenType;
         SCREEN_STATE      screenHState, screenSetHState, screenVState, screenSetVState, screenPState, screenSetPState;
-        std::pair< DRIVER_DIRECTION, SCREEN_STATE > screenState, screenSetState;
-        double            devCentH, devCentV, devCentP;
+        SCREEN_STATE      screenState, screenSetState;
+        double            devCentH, devCentV, devCentP, devCent;
         double            actPOSH, actPOSV, actPOSP;
         double            jDiffH, jDiffV;
-        bool              hMoving, vMoving, pMoving;
+        bool              hMoving, vMoving, pMoving, moving;
         double            position;
         DRIVER_STATE      hDriverState, vDriverState;
         std::map< SCREEN_STATE, bool >             elementExists;         // holds if an element exists on this cassette(from config)

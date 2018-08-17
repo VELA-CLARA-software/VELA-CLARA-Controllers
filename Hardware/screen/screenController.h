@@ -42,16 +42,18 @@ class screenController : public controller
         bool isVMoving(const std::string & name);
         bool isScreenMoving(const std::string & name);
 //        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
-        const std::string getScreenState( const std::string & name );
+        const std::string getScreenStateStr( const std::string & name );
+        const screenStructs::SCREEN_STATE getScreenState( const std::string & name );
         const std::string getScreenType(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
         std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
         std::vector< std::string > getScreenNames();
+//        std::vector< bool > isScreenIn(const std::vector<std::string> & name );
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
-        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
         bool isHElement(const std::string & name, const screenStructs::SCREEN_STATE e);
         bool isVElement(const std::string & name, const screenStructs::SCREEN_STATE e);
+        bool isPElement(const std::string & name, const screenStructs::SCREEN_STATE e);
         bool isHEnabled(const std::string & name);
         bool isVEnabled(const std::string & name);
 
@@ -76,6 +78,7 @@ class screenController : public controller
 
 #ifdef BUILD_DLL
         boost::python::list getScreenNames_Py();
+//        boost::python::list isScreenIn_Py(const std::vector<std::string> & name);
         boost::python::dict getILockStatesStr_Py(std::string& name);
         boost::python::dict getILockStates_Py   (std::string& name);
         boost::python::dict get_SCREEN_STATE_Definition();

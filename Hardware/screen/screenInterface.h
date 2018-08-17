@@ -70,7 +70,6 @@ class screenInterface: public interface
         bool isHVMover(const std::string & name);
         bool isPneumatic(const std::string & name);
         bool is_HandV_OUT(const std::string & name);
-        bool isScreenIn(const std::string & name);
 
         bool isClearForBeam(const std::string & name);
 
@@ -79,7 +78,7 @@ class screenInterface: public interface
         bool isVMoving(const std::string & name);
         bool isPMoving(const std::string & name);
         bool isScreenMoving(const std::string & name);
-        const std::string getScreenState(const std::string & name);
+        const screenStructs::SCREEN_STATE getScreenState(const std::string & name);
         const screenStructs::SCREEN_TYPE getScreenType(const std::string & name);
         const std::string getScreenTypeStr(const std::string & name);
         std::vector< std::string > getScreenNames();
@@ -87,9 +86,10 @@ class screenInterface: public interface
         std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
         bool isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta);
         bool isYAGIn(const std::string & name);
-        bool isScreenIN(const std::string & name, const bool weKnowEntryExists = false );
+        bool isScreenIn(const std::string & name );
         bool isHElement(const std::string & name, const screenStructs::SCREEN_STATE e);
         bool isVElement(const std::string & name, const screenStructs::SCREEN_STATE e);
+        bool isPElement(const std::string & name, const screenStructs::SCREEN_STATE e);
         bool isHEnabled(const std::string & name);
         bool isVEnabled(const std::string & name);
         double getACTPOS(const std::string & name);
@@ -115,7 +115,7 @@ class screenInterface: public interface
         bool is_CLARA_PNEUMATIC (const std::string & name);
         bool is_CLARA_HV_MOVER (const std::string & name);
         bool is_CLARA_V_MOVER (const std::string & name);
-        std::vector<bool> isScreenIN( const std::vector<std::string> & name );
+        std::vector<bool> isScreenIn( const std::vector<std::string> & name );
         std::vector<bool> isScreenOUT( const std::vector<std::string> & name );
         std::vector<bool> exists_and_isLocked(const std::string& name);
         std::vector<bool> exists_and_isNotLocked(const std::string& name);

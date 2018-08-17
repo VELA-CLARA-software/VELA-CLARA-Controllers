@@ -267,29 +267,21 @@ void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
         case screenStructs::SCREEN_PV_TYPE::DEV_STATE:
              ms->interface->updateDevState( ms, *(unsigned short*)args.dbr );
             break;
-
         case screenStructs::SCREEN_PV_TYPE::MOVING:
             ms->interface->updateMoving( ms, *(unsigned short*)args.dbr );
             break;
-
         case screenStructs::SCREEN_PV_TYPE::READY:
-
             break;
         case screenStructs::SCREEN_PV_TYPE::GET_DEV:
             break;
-
-
         case screenStructs::SCREEN_PV_TYPE::MAX_POS:
             break;
-
         case screenStructs::SCREEN_PV_TYPE::DEV_CENT:
             ms->interface->updateDevCent( ms, *(double*)args.dbr);
             break;
-
         case screenStructs::SCREEN_PV_TYPE::ACTPOS:
             ms->interface->updateACTPOS( ms, *(double*)args.dbr );
             break;
-
         case screenStructs::SCREEN_PV_TYPE::EN:
 
             break;
@@ -306,101 +298,84 @@ void screenInterface::updateGetDev( screenStructs::monitorStruct * ms, const uns
     {
         if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
         {
-            message("horiz");
-            message(args);
             switch( args )
             {
                 case 0:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_RETRACTED;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_RETRACTED;
                     break;
                 case 1:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_MAX;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_MAX;
                     break;
                 case 7:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_SLIT_1;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_SLIT_1;
                     break;
                 case 8:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_SLIT_2;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_SLIT_2;
                     break;
                 case 9:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_SLIT_3;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_SLIT_3;
                     break;
                 case 10:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_APT_1;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_APT_1;
                     break;
                 case 11:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_APT_2;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_APT_2;
                     break;
                 case 12:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::H_APT_3;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::H_APT_3;
                     break;
                 default:
-                    allScreentData.at(screenName).screenSetHState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
         else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
         {
-            message("vert");
-            message(args);
             switch( args )
             {
                 case 0:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_RETRACTED;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_RETRACTED;
                     break;
                 case 1:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_MAX;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_MAX;
                     break;
                 case 2:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_RF;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_RF;
                     break;
                 case 3:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_MIRROR;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_MIRROR;
                     break;
                 case 4:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_YAG;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_YAG;
                     break;
                 case 5:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_GRAT;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_GRAT;
                     break;
                 case 6:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_COL;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_COL;
                     break;
                 case 7:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::V_SLIT_1;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::V_SLIT_1;
                     break;
                 default:
-                    allScreentData.at(screenName).screenSetVState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
         else if( ms->dir == screenStructs::DRIVER_DIRECTION::PNEUMATIC )
         {
-            message("pneu");
-            message(args);
             switch( args )
             {
                 case 0:
-                    allScreentData.at(screenName).screenSetPState = screenStructs::SCREEN_STATE::RETRACTED;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::RETRACTED;
                     break;
                 case 4:
-                    allScreentData.at(screenName).screenSetPState = screenStructs::SCREEN_STATE::YAG;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::YAG;
                     break;
                 default:
-                    allScreentData.at(screenName).screenSetPState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+                    allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
-        // this is also copying the pvstructs maps that we know
-        //will never be used (IS THIS A PROBLEM?)
-        if( isMover(screenName) )
-        {
-            message(screenName,": Set state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenSetVState),
-                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
-            message("and ", ENUM_TO_STRING(allScreentData.at(screenName).screenSetHState),
-                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction");
-        }
-        else if( isPneumatic(screenName) )
-        {
-            message(screenName,": Set state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenSetPState));
-        }
+            message(screenName,": Set state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenSetState),
+                    " in ", ENUM_TO_STRING(ms->dir), " direction,");
     }
 }
 //_________________________________________________________________________________________________________________
@@ -409,7 +384,6 @@ void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const u
     screenStructs::screenObject * obj = reinterpret_cast<screenStructs::screenObject *> (ms->obj);
     //unsigned short value = *(unsigned short*)args.dbr;
     const std::string screenName = obj -> name;
-    allScreentData.at(screenName).screenState.first = ms->dir;
     if( entryExists(allScreentData, screenName ) )
     {
         if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
@@ -417,31 +391,31 @@ void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const u
             switch( args )
             {
                 case 0:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_RETRACTED;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_RETRACTED;
                     break;
                 case 1:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_MAX;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_MAX;
                     break;
                 case 7:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_SLIT_1;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_SLIT_1;
                     break;
                 case 8:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_SLIT_2;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_SLIT_2;
                     break;
                 case 9:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_SLIT_3;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_SLIT_3;
                     break;
                 case 10:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_APT_1;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_1;
                     break;
                 case 11:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_APT_2;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_2;
                     break;
                 case 12:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::H_APT_3;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::H_APT_3;
                     break;
                 default:
-                    allScreentData.at(screenName).screenHState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
         else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
@@ -449,31 +423,31 @@ void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const u
             switch( args )
             {
                 case 0:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_RETRACTED;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_RETRACTED;
                     break;
                 case 1:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_MAX;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_MAX;
                     break;
                 case 2:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_RF;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_RF;
                     break;
                 case 3:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_MIRROR;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_MIRROR;
                     break;
                 case 4:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_YAG;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_YAG;
                     break;
                 case 5:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_GRAT;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_GRAT;
                     break;
                 case 6:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_COL;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_COL;
                     break;
                 case 7:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::V_SLIT_1;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::V_SLIT_1;
                     break;
                 default:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
         else if( ms->dir == screenStructs::DRIVER_DIRECTION::PNEUMATIC )
@@ -481,28 +455,18 @@ void screenInterface::updateDevState( screenStructs::monitorStruct * ms, const u
             switch( args )
             {
                 case 0:
-                    allScreentData.at(screenName).screenPState = screenStructs::SCREEN_STATE::RETRACTED;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::RETRACTED;
                     break;
                 case 4:
-                    allScreentData.at(screenName).screenPState = screenStructs::SCREEN_STATE::YAG;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::YAG;
                     break;
                 default:
-                    allScreentData.at(screenName).screenVState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+                    allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
         // this is also copying the pvstructs maps that we know
         //will never be used (IS THIS A PROBLEM?)
-        if( isMover(screenName) )
-        {
-            message(screenName,": Screen state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenVState),
-                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
-            message("and ", ENUM_TO_STRING(allScreentData.at(screenName).screenHState),
-                    " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction");
-        }
-        else if( isPneumatic(screenName) )
-        {
-            message(screenName,": Screen state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenPState));
-        }
+            message(screenName,": Screen state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenState));
     }
 }
 //_________________________________________________________________________________________________________________
@@ -513,24 +477,11 @@ void screenInterface::updateDevCent( screenStructs::monitorStruct * ms, const do
     const std::string screenName = obj -> name;
     if( entryExists(allScreentData, screenName ) )
     {
-        if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
-        {
-            allScreentData.at(screenName).devCentH = args;
-        }
-        else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
-        {
-            allScreentData.at(screenName).devCentV = args;
-        }
-        else if( ms->dir == screenStructs::DRIVER_DIRECTION::PNEUMATIC )
-        {
-            allScreentData.at(screenName).devCentP = args;
-        }
+            allScreentData.at(screenName).devCent = args;
         // this is also copying the pvstructs maps that we know
         //will never be used (IS THIS A PROBLEM?)
-        message(screenName,": Position of device (mm) is ", allScreentData.at(screenName).devCentV,
-                " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
-        message("and ", allScreentData.at(screenName).devCentH,
-                " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction");
+        message(screenName,": Position of device (mm) is ", allScreentData.at(screenName).devCent,
+                " in ", ENUM_TO_STRING(ms->dir), " direction,");
     }
 }
 //_________________________________________________________________________________________________________________
@@ -643,49 +594,18 @@ void screenInterface::updateMoving( screenStructs::monitorStruct * ms, const uns
     const std::string screenName = obj -> name;
     if( entryExists(allScreentData, screenName ) )
     {
-        if( ms->dir == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
+        switch( args )
         {
-            switch( args )
-            {
-                case 0:
-                    allScreentData.at(screenName).hMoving = false;
-                    break;
-                case 1:
-                    allScreentData.at(screenName).hMoving = true;
-                    break;
-            }
+            case 0:
+                allScreentData.at(screenName).moving = false;
+                break;
+            case 1:
+                allScreentData.at(screenName).moving = true;
+                break;
         }
-        else if( ms->dir == screenStructs::DRIVER_DIRECTION::VERTICAL )
-        {
-            switch( args )
-            {
-                case 0:
-                    allScreentData.at(screenName).vMoving = false;
-                    break;
-                case 1:
-                    allScreentData.at(screenName).vMoving = true;
-                    break;
-            }
-        }
-        else if( ms->dir == screenStructs::DRIVER_DIRECTION::PNEUMATIC )
-        {
-            switch( args )
-            {
-                case 0:
-                    allScreentData.at(screenName).pMoving = false;
-                    break;
-                case 1:
-                    allScreentData.at(screenName).pMoving = true;
-                    break;
-            }
-        }
-        // this is also copying the pvstructs maps that we know
-        //will never be used (IS THIS A PROBLEM?)
-        message(screenName,": Screen moving == ", allScreentData.at(screenName).vMoving,
-                " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::VERTICAL), " direction,");
-        message("and ", allScreentData.at(screenName).hMoving,
-                " in ", ENUM_TO_STRING(screenStructs::DRIVER_DIRECTION::HORIZONTAL), " direction");
     }
+    else
+        std::cout << screenName << " !!ERRROR!! " << screenName <<  " is not a screen!!" << std::endl;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::is_HandV_OUT(screenStructs::screenObject & scr)
@@ -695,17 +615,27 @@ bool screenInterface::is_HandV_OUT(screenStructs::screenObject & scr)
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHOut(screenStructs::screenObject & scr)
 {
-    if( isHVMover(scr.name))
-        return scr.screenHState == screenStructs::SCREEN_STATE::H_RETRACTED;
+    if( entryExists( allScreentData, scr.name ))
+    {
+        if( isHVMover(scr.name))
+            return scr.screenState == screenStructs::SCREEN_STATE::H_RETRACTED;
+    }
+    else
+        std::cout << scr.name << " !!ERRROR!! " << scr.name <<  " is not a screen!!" << std::endl;
     return true;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isVOut(screenStructs::screenObject & scr)
 {
-    if(isMover(scr.name))
-        return scr.screenVState == screenStructs::SCREEN_STATE::V_RETRACTED;
-    else if( isPneumatic(scr.name))
-        return scr.screenPState == screenStructs::SCREEN_STATE::RETRACTED;
+    if( entryExists( allScreentData, scr.name ))
+    {
+        if(isMover(scr.name))
+            return scr.screenState == screenStructs::SCREEN_STATE::V_RETRACTED;
+        else if( isPneumatic(scr.name))
+            return scr.screenState == screenStructs::SCREEN_STATE::RETRACTED;
+    }
+    else
+        std::cout << scr.name << " !!ERRROR!! " << scr.name <<  " is not a screen!!" << std::endl;
     return false;
 }
 //_________________________________________________________________________________________________________________
@@ -716,20 +646,12 @@ bool screenInterface::is_HandV_OUT(const std::string & name)
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHOut(const std::string & name)
 {
-    if( entryExists( allScreentData, name ))
-    {
-        return isHOut(allScreentData.at(name));
-    }
-    return false;
+    return isHOut(allScreentData.at(name));
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isVOut(const std::string & name)
 {
-    if( entryExists( allScreentData, name ))
-    {
-        return isVOut(allScreentData.at(name));
-    }
-    return false;
+    return isVOut(allScreentData.at(name));
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isMover(const std::string & name)
@@ -738,11 +660,10 @@ bool screenInterface::isMover(const std::string & name)
     {
         return true;
     }
-//    else
-//    {
-//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-//        return false;
-//    }
+    else
+    {
+        return false;
+    }
     return false;
 }
 //_________________________________________________________________________________________________________________
@@ -752,11 +673,10 @@ bool screenInterface::isVMover(const std::string & name)
     {
         return true;
     }
-//    else
-//    {
-//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-//        return false;
-//    }
+    else
+    {
+        return false;
+    }
     return false;
 }
 //_________________________________________________________________________________________________________________
@@ -766,11 +686,10 @@ bool screenInterface::isHVMover(const std::string & name)
     {
         return true;
     }
-//    else
-//    {
-//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-//        return false;
-//    }
+    else
+    {
+        return false;
+    }
     return false;
 }
 //_________________________________________________________________________________________________________________
@@ -780,11 +699,10 @@ bool screenInterface::isPneumatic(const std::string & name)
     {
         return true;
     }
-//    else
-//    {
-//        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-//        return false;
-//    }
+    else
+    {
+        return false;
+    }
     return false;
 }
 //_________________________________________________________________________________________________________________
@@ -800,39 +718,46 @@ bool screenInterface::isClearForBeam(const std::string& name)
 bool screenInterface::isClearForBeam(screenStructs::screenObject & scr)
 {
     using namespace screenStructs;
-    switch( scr.screenType)
+    if( entryExists( allScreentData, scr.name ) )
     {
-        case SCREEN_TYPE::VELA_PNEUMATIC:
-            message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", ENUM_TO_STRING(scr.screenPState) );
-            return scr.screenPState == SCREEN_STATE::RETRACTED;
-            break;
-        case SCREEN_TYPE::CLARA_PNEUMATIC:
-            return scr.screenPState == SCREEN_STATE::RETRACTED;
-            break;
-        case SCREEN_TYPE::VELA_HV_MOVER:
-            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
-            {
-                if( scr.screenHState == SCREEN_STATE::H_RETRACTED || scr.screenHState ==  SCREEN_STATE::H_RF)
+        switch( scr.screenType )
+        {
+            case SCREEN_TYPE::VELA_PNEUMATIC:
+                return scr.screenState == SCREEN_STATE::RETRACTED;
+                break;
+            case SCREEN_TYPE::CLARA_PNEUMATIC:
+                return scr.screenState == SCREEN_STATE::RETRACTED;
+                break;
+            case SCREEN_TYPE::VELA_HV_MOVER:
+                if( scr.screenState == SCREEN_STATE::V_RETRACTED || scr.screenState ==  SCREEN_STATE::V_RF)
                 {
-                    return true;
+                    if( scr.screenState == SCREEN_STATE::H_RETRACTED || scr.screenState ==  SCREEN_STATE::H_RF)
+                    {
+                        return true;
+                    }
                 }
-            }
-            break;
-        case SCREEN_TYPE::CLARA_HV_MOVER:
-            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF )
-            {
-                if( scr.screenHState == SCREEN_STATE::H_RETRACTED || scr.screenHState ==  SCREEN_STATE::H_RF)
+                break;
+            case SCREEN_TYPE::CLARA_HV_MOVER:
+                if( scr.screenState == SCREEN_STATE::V_RETRACTED || scr.screenState ==  SCREEN_STATE::V_RF )
                 {
-                    return true;
+                    if( scr.screenState == SCREEN_STATE::H_RETRACTED || scr.screenState ==  SCREEN_STATE::H_RF)
+                    {
+                        return true;
+                    }
                 }
+                break;
+            case SCREEN_TYPE::CLARA_V_MOVER:
+                if( scr.screenState == SCREEN_STATE::V_RETRACTED || scr.screenState ==  SCREEN_STATE::V_RF)
+                        return true;
+                break;
+            default:
+                return false;
             }
-            break;
-        case SCREEN_TYPE::CLARA_V_MOVER:
-            if( scr.screenVState == SCREEN_STATE::V_RETRACTED || scr.screenVState ==  SCREEN_STATE::V_RF)
-                    return true;
-            break;
-        default:
-            return false;
+    }
+    else
+    {
+        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+        return false;
     }
     return false;
 }
@@ -841,33 +766,24 @@ bool screenInterface::isClearForBeam(screenStructs::screenObject & scr)
 bool screenInterface::isScreenIn(screenStructs::screenObject & scr)
 {
     using namespace screenStructs;
-    switch( scr.screenType)
+    if( entryExists( allScreentData, scr.name ) )
     {
-        case SCREEN_TYPE::VELA_PNEUMATIC:
-            message(scr.name ," is VELA_PNEUMATIC, scr.screenPState  = ", scr.screenPState );
-            return scr.screenPState == SCREEN_STATE::SCREEN_IN;
-            break;
-        case SCREEN_TYPE::CLARA_PNEUMATIC:
-            return scr.screenPState == SCREEN_STATE::SCREEN_IN;
-            break;
-        case SCREEN_TYPE::VELA_HV_MOVER:
-            if( scr.screenVState == SCREEN_STATE::SCREEN_IN)
+        switch( scr.screenState )
+        {
+            case SCREEN_STATE::YAG:
                 return true;
-            else if( scr.screenHState == SCREEN_STATE::SCREEN_IN)
+                break;
+            case SCREEN_STATE::V_YAG:
                 return true;
-            break;
-        case SCREEN_TYPE::CLARA_HV_MOVER:
-            if( scr.screenVState == SCREEN_STATE::SCREEN_IN)
-                return true;
-            else if( scr.screenHState == SCREEN_STATE::SCREEN_IN)
-                return true;
-            break;
-        case SCREEN_TYPE::CLARA_V_MOVER:
-            if( scr.screenVState == SCREEN_STATE::SCREEN_IN)
-                return true;
-            break;
-        default:
-            return false;
+                break;
+            default:
+                return false;
+        }
+    }
+    else
+    {
+        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
+        return false;
     }
     return false;
 }
@@ -882,89 +798,33 @@ bool screenInterface::isVIn(screenStructs::screenObject & scr)
     return !isVOut(scr);
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::isHMoving(screenStructs::screenObject & scr)
-{
-    return scr.hMoving == true;
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::isVMoving(screenStructs::screenObject & scr)
-{
-    return scr.vMoving == true;
-}
-//_________________________________________________________________________________________________________________
 bool screenInterface::isScreenMoving(screenStructs::screenObject & scr)
 {
-    if( isMover(scr.name) )
-    {
-        return scr.vMoving == true || scr.hMoving == true;
-    }
-    else if( isPneumatic(scr.name) )
-    {
-        return scr.pMoving == true;
-    }
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::isHMoving(const std::string & name)
-{
-    if( entryExists( allScreentData, name ) )
-    {
-        return allScreentData.at(name).hMoving == true;
-    }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::isVMoving(const std::string & name)
-{
-    if( entryExists( allScreentData, name ) )
-    {
-        return allScreentData.at(name).vMoving == true;
-    }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::isPMoving(const std::string & name)
-{
-    if( entryExists( allScreentData, name ) )
-    {
-        return allScreentData.at(name).pMoving == true;
-    }
-    else
-    {
-        message("ERROR!!!!!!!!! Screen not defined in config file!!!!!");
-        return false;
-    }
+    return scr.moving == true;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isScreenMoving(const std::string & name)
 {
-    if( isMover(name) )
+    bool r = false;
+    if( entryExists( allScreentData, name ) )
     {
-        return isHMoving(name) || isVMoving(name);
+        return allScreentData.at(name).moving == true;
     }
-    else if( isPneumatic(name) )
-    {
-        return isPMoving(name);
-    }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
+    return r;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isScreenIn(const std::string & name)
 {
-    if( isMover(name) )
+    bool r = false;
+    if( entryExists( allScreentData, name ) )
     {
-        return isHIn(name) || isVIn(name);
+        return !isClearForBeam(name);
     }
-    else if( isPneumatic(name) )
-    {
-        return allScreentData.at(name).screenPState != screenStructs::SCREEN_STATE::RETRACTED;
-    }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
+    return r;
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::isHIn(const std::string & name)
@@ -985,11 +845,11 @@ bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExi
         return entryExists(allScreentData,name);
 }
 //___________________________________________________________________________________________________________
-std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & name)
+std::vector<bool> screenInterface::isScreenIn(const std::vector<std::string> & name)
 {
     std::vector<bool> r;
     for( auto && it : name )
-        r.push_back(isScreenIN(it,false));
+        r.push_back(isScreenIn(it));
     return r;
 }
 ////___________________________________________________________________________________________________________
@@ -1000,20 +860,6 @@ std::vector<bool> screenInterface::isScreenIN(const std::vector<std::string> & n
 //        r.push_back(isScreenOUT(it,false));
 //    return r;
 //}
-//___________________________________________________________________________________________________________
-bool screenInterface::isScreenIN(const std::string & name, bool weKnowEntryExists)
-{
-    if( entryExists2( name,weKnowEntryExists ) )
-    {
-        if( allScreentData.at(name).screenVState == screenStructs::SCREEN_STATE::V_RETRACTED )
-            return false;
-        if( allScreentData.at(name).screenHState == screenStructs::SCREEN_STATE::H_RETRACTED )
-            return false;
-        if( allScreentData.at(name).screenPState == screenStructs::SCREEN_STATE::RETRACTED )
-            return false;
-    }
-    return true;
-}
 ////___________________________________________________________________________________________________________
 //bool screenInterface::getScreenState(const std::string & name, const bool weKnowEntryExists)
 //{
@@ -1025,31 +871,14 @@ bool screenInterface::isScreenIN(const std::string & name, bool weKnowEntryExist
 //        return screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
 //}
 //___________________________________________________________________________________________________________
-const std::string screenInterface::getScreenState(const std::string & name)
+const screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::string & name)
 {
     if( entryExists( allScreentData, name ) )
     {
-        if( isHIn(name) )
-        {
-            return ENUM_TO_STRING(allScreentData.at(name).screenHState);
-        }
-        else if( isVIn(name) )
-        {
-            return ENUM_TO_STRING(allScreentData.at(name).screenVState);
-        }
-        else if( is_HandV_OUT(name) )
-        {
-            return ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_OUT);
-        }
-        else if( isPneumatic(name) )
-        {
-            return ENUM_TO_STRING(allScreentData.at(name).screenPState);
-        }
+        allScreentData.at(name).screenState;
     }
     else
-    {
-        return ENUM_TO_STRING(screenStructs::SCREEN_STATE::SCREEN_UNKNOWN);
-    }
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
 }
 //___________________________________________________________________________________________________________
 const screenStructs::screenObject & screenInterface::getScreenObject(const std::string & name)
@@ -1058,6 +887,8 @@ const screenStructs::screenObject & screenInterface::getScreenObject(const std::
     {
         return allScreentData.at(name);
     }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
 }
 //___________________________________________________________________________________________________________
 const screenStructs::SCREEN_TYPE screenInterface::getScreenType(const std::string & name)
@@ -1066,6 +897,8 @@ const screenStructs::SCREEN_TYPE screenInterface::getScreenType(const std::strin
     {
         return allScreentData.at(name).screenType;
     }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
 }
 //___________________________________________________________________________________________________________
 const std::string screenInterface::getScreenTypeStr(const std::string & name)
@@ -1074,6 +907,8 @@ const std::string screenInterface::getScreenTypeStr(const std::string & name)
     {
         return ENUM_TO_STRING(allScreentData.at(name).screenType);
     }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
 }
 //___________________________________________________________________________________________________________
 std::vector< std::string > screenInterface::getScreenNames()
@@ -1091,29 +926,17 @@ bool screenInterface::isScreenInState(const std::string & name, screenStructs::S
     bool r = false;
     if( entryExists( allScreentData, name ) )
     {
-        if( isMover(name) )
-        {
-            if( allScreentData.at(name).elementDirection.at(sta) == screenStructs::DRIVER_DIRECTION::VERTICAL )
-            {
-                r = allScreentData.at(name).screenVState == sta;
-            }
-            else if( allScreentData.at(name).elementDirection.at(sta) == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
-            {
-                r = allScreentData.at(name).screenHState == sta;
-            }
-        }
-        else if( isPneumatic(name) )
-        {
-            r = allScreentData.at(name).screenPState == sta;
-        }
+        return r = allScreentData.at(name).screenState;
     }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
     return r;
 }
 //___________________________________________________________________________________________________________
 bool screenInterface::isHElement(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;
-    if( entryExists( allScreentData, name ) && isMover(name) )
+    if( entryExists( allScreentData, name ) )
     {
         r = allScreentData.at(name).elementDirection.at(sta) == screenStructs::DRIVER_DIRECTION::HORIZONTAL;
     }
@@ -1123,9 +946,19 @@ bool screenInterface::isHElement(const std::string & name, screenStructs::SCREEN
 bool screenInterface::isVElement(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;
-    if( entryExists( allScreentData, name ) && isMover(name) )
+    if( entryExists( allScreentData, name ) )
     {
         r = allScreentData.at(name).elementDirection.at(sta) == screenStructs::DRIVER_DIRECTION::VERTICAL;
+    }
+    return r;
+}
+//___________________________________________________________________________________________________________
+bool screenInterface::isPElement(const std::string & name, screenStructs::SCREEN_STATE sta)
+{
+    bool r = false;
+    if( entryExists( allScreentData, name ) )
+    {
+        r = allScreentData.at(name).elementDirection.at(sta) == screenStructs::DRIVER_DIRECTION::PNEUMATIC;
     }
     return r;
 }
@@ -1135,14 +968,16 @@ bool screenInterface::isYAGIn(const std::string & name)
     bool r = false;
     if( entryExists( allScreentData, name ) )
     {
-        if( isMover(name) && isVIn(name) )
+        if( isMover(name) )
         {
-            r = allScreentData.at(name).screenVState == screenStructs::SCREEN_STATE::V_YAG;
+            message("mover");
+            r = allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::V_YAG;
         }
 
         else if( isPneumatic(name) )
         {
-            r = allScreentData.at(name).screenPState == screenStructs::SCREEN_STATE::YAG;
+            message("pneumatic");
+            r = allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::YAG;
         }
     }
     return r;
@@ -1273,6 +1108,14 @@ std::vector< screenStructs::SCREEN_STATE > screenInterface::getAvailableDevices(
 //___________________________________________________________________________________________________________
 void screenInterface::moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
+//    if( isHElement( name, state ) )
+//    {
+//        setEN( name, screenStructs::DRIVER_DIRECTION::HORIZONTAL );
+//    }
+//    else if( isVElement( name, state ) )
+//    {
+//        setEN( name, screenStructs::DRIVER_DIRECTION::VERTICAL );
+//    }
     setScreenSDEV( name, state );
     setScreenTrigger( name, state );
 }
@@ -1299,31 +1142,21 @@ void screenInterface::moveScreenOut( const std::string & name )
 {
     if(entryExists(allScreentData,name))
     {
-        if( isMover(name ) )
+        if( isHElement( name, allScreentData.at(name).screenState ) )
         {
-            if( allScreentData.at(name).screenHState  != screenStructs::SCREEN_STATE::UNKNOWN_POSITION)
-            {
-                if( allScreentData.at(name).screenHState != screenStructs::SCREEN_STATE::H_RETRACTED )
-                {
-                    setScreenSDEV( name, screenStructs::SCREEN_STATE::H_RETRACTED );
-                    setScreenTrigger( name, screenStructs::SCREEN_STATE::H_RETRACTED );
-                }
-
-            }
-            else if( allScreentData.at(name).screenVState != screenStructs::SCREEN_STATE::V_RETRACTED )
-            {
-                setScreenSDEV( name, screenStructs::SCREEN_STATE::V_RETRACTED );
-                setScreenTrigger( name, screenStructs::SCREEN_STATE::V_RETRACTED );
-            }
+            moveScreenTo( name, screenStructs::SCREEN_STATE::H_RETRACTED );
         }
-        else if( isPneumatic(name) && allScreentData.at(name).screenPState != screenStructs::SCREEN_STATE::RETRACTED )
+        else if( isVElement( name, allScreentData.at(name).screenState ) )
         {
-            setScreenSDEV( name, screenStructs::SCREEN_STATE::RETRACTED );
-            setScreenTrigger( name, screenStructs::SCREEN_STATE::RETRACTED );
+            moveScreenTo( name, screenStructs::SCREEN_STATE::V_RETRACTED );
         }
-
+        else if( isPElement( name, allScreentData.at(name).screenState ) )
+        {
+            moveScreenTo( name, screenStructs::SCREEN_STATE::RETRACTED );
+        }
     }
-
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
 }
 //___________________________________________________________________________________________________________
 void screenInterface::resetPosition( const std::string & name )
@@ -1333,22 +1166,19 @@ void screenInterface::resetPosition( const std::string & name )
 //______________________________________________________________________________
 bool screenInterface::setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
-    if( isMover(name) )
+    if( isVElement( name, state ) )
     {
-        if( allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::VERTICAL )
-        {
-            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHTYPE,
-                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHID,
-                   &allScreentData.at(name).elementPositions.at(state) );
-        }
-        else if( allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
-        {
-            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHTYPE,
-                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHID,
-                   &allScreentData.at(name).elementPositions.at(state) );
-        }
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHID,
+               &allScreentData.at(name).elementPositions.at(state) );
     }
-    else if( isPneumatic(name) && allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::PNEUMATIC )
+    else if( isHElement( name, state ) )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHID,
+               &allScreentData.at(name).elementPositions.at(state) );
+    }
+    else if( isPElement( name, state ) )
     {
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::SDEV).CHTYPE,
                allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::SDEV).CHID,
@@ -1415,22 +1245,19 @@ bool screenInterface::setScreenTrigger( const std::string & name )
 bool screenInterface::setScreenTrigger( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
     unsigned short send = 1;
-    if( isMover(name) )
+    if( isVElement( name, state )  )
     {
-        if( allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::VERTICAL  )
-        {
-            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
-                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
-                   &send );
-        }
-        else if( allScreentData.at(name).elementDirection.at(state) == screenStructs::DRIVER_DIRECTION::HORIZONTAL  )
-        {
-            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
-                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,
-                   &send );
-        }
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
+               &send );
     }
-    else if( isPneumatic(name) )
+    else if( isHElement( name, state ) )
+    {
+        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
+               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,
+               &send );
+    }
+    else if( isPElement( name, state ) )
     {
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::TRIGGER).CHTYPE,
         allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::TRIGGER).CHID,

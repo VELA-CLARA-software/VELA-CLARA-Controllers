@@ -104,7 +104,6 @@ bool screenController::isClearForBeam(const std::string & name)
 {
     return localInterface.isClearForBeam(name);
 }
-
 //________________________________________________________________________________
 bool screenController::isMover(const std::string & name)
 {
@@ -114,16 +113,6 @@ bool screenController::isMover(const std::string & name)
 bool screenController::isPneumatic(const std::string & name)
 {
     return localInterface.isPneumatic(name);
-}
-//________________________________________________________________________________
-bool screenController::isHMoving(const std::string & name)
-{
-    return localInterface.isHMoving(name);
-}
-//________________________________________________________________________________
-bool screenController::isVMoving(const std::string & name)
-{
-    return localInterface.isVMoving(name);
 }
 //________________________________________________________________________________
 bool screenController::isScreenMoving(const std::string & name)
@@ -181,9 +170,14 @@ bool screenController::setEX(const std::string & name )
 //    return localInterface.getScreenState(name, weKnowEntryExists);
 //}
 //________________________________________________________________________________
-const std::string screenController::getScreenState( const std::string & name )
+const screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name )
 {
     return localInterface.getScreenState(name);
+}
+//________________________________________________________________________________
+const std::string screenController::getScreenStateStr( const std::string & name )
+{
+    return ENUM_TO_STRING(localInterface.getScreenState(name));
 }
 //________________________________________________________________________________
 const std::string screenController::getScreenType( const std::string & name )
@@ -226,6 +220,11 @@ bool screenController::isVElement(const std::string & name, const screenStructs:
     return localInterface.isVElement(name, e);
 }
 //________________________________________________________________________________
+bool screenController::isPElement(const std::string & name, const screenStructs::SCREEN_STATE e)
+{
+    return localInterface.isPElement(name, e);
+}
+//________________________________________________________________________________
 double screenController::getACTPOS(const std::string & name)
 {
     return localInterface.getACTPOS(name);
@@ -265,11 +264,11 @@ std::vector< std::string > screenController::getScreenNames()
 //{
 //    return localInterface.isScreenOUT(name, weKnowEntryExists);
 //}
-//________________________________________________________________________________
-bool screenController::isScreenIN(const std::string & name, const bool weKnowEntryExists )
-{
-    return localInterface.isScreenIN(name, weKnowEntryExists);
-}
+////________________________________________________________________________________
+//std::vector< bool > screenController::isScreenIn(const std::vector<std::string> & name )
+//{
+//    return localInterface.isScreenIn(name);
+//}
 //________________________________________________________________________________
 #ifdef BUILD_DLL
 //______________________________________________________________________________
@@ -287,6 +286,11 @@ boost::python::list screenController::getScreenNames_Py()
 {
     return toPythonList(getScreenNames());
 }
+////________________________________________________________________________________
+//boost::python::list screenController::isScreenIn_Py(const std::vector<std::string> & name )
+//{
+//    return toPythonList(isScreenIn(name));
+//}
 //______________________________________________________________________________
 boost::python::dict screenController::get_SCREEN_STATE_Definition()
 {
