@@ -185,6 +185,10 @@ void beamPositionMonitorConfigReader::addToPVStruct( std::vector< beamPositionMo
             pvStruct_v.back().pvType = beamPositionMonitorStructs::BPM_PV_TYPE::Y;
         else if( keyVal[0] == UTL::PV_SUFFIX_BPM_DATA  )
             pvStruct_v.back().pvType = beamPositionMonitorStructs::BPM_PV_TYPE::DATA;
+        else if( keyVal[0] == UTL::PV_SUFFIX_BPM_AWAK  )
+            pvStruct_v.back().pvType = beamPositionMonitorStructs::BPM_PV_TYPE::AWAK;
+        else if( keyVal[0] == UTL::PV_SUFFIX_BPM_RDY  )
+            pvStruct_v.back().pvType = beamPositionMonitorStructs::BPM_PV_TYPE::RDY;
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
     else

@@ -25,7 +25,7 @@ namespace beamPositionMonitorStructs
     struct rawDataStruct;
     struct pvStruct;
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( BPM_PV_TYPE, (SA1) (SA2) (SD1) (SD2) (RA1) (RA2) (RD1) (RD2) (X) (Y) (DATA) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( BPM_PV_TYPE, (SA1) (SA2) (SD1) (SD2) (RA1) (RA2) (RD1) (RD2) (X) (Y) (DATA) (AWAK) (RDY) )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS( BPM_STATUS, (GOOD) (BAD) (NONLINEAR) (UNKNOWN) )
     enum dataCollectionResult {  waiting, collected, timeout };
 
@@ -75,9 +75,13 @@ namespace beamPositionMonitorStructs
         bpmDataObject() : shotCount( 0 ),
                           numShots( 1 ),
                           buffer( UTL::BUFFER_TEN ),
-                          xPVShots( UTL::ZERO_INT),
-                          yPVShots( UTL::ZERO_INT),
-                          dataShots( UTL::ZERO_INT),
+                          xPVShots( UTL::ZERO_INT ),
+                          yPVShots( UTL::ZERO_INT ),
+                          dataShots( UTL::ZERO_INT ),
+                          awak( UTL::DUMMY_INT ),
+                          awakCount( UTL::ZERO_INT ),
+                          rdy( UTL::DUMMY_INT ),
+                          rdyCount( UTL::ZERO_INT ),
                           status( BPM_STATUS::UNKNOWN ){}
         std::string name, pvRoot, xytype;
         bool isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
@@ -86,7 +90,9 @@ namespace beamPositionMonitorStructs
         double xPV, yPV, x, y;
         double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn, position;
         double q;
-        int awak, rdy;
+        int awak, rdy, awakCount, rdyCount;
+        double awakTStamp, rdyTStamp;
+        std::string awakStrTStamp, rdyStrTStamp;
         size_t buffer;
         long sa1, sa2, ra1, ra2, sd1, sd2, rd1, rd2;
         BPM_STATUS status;

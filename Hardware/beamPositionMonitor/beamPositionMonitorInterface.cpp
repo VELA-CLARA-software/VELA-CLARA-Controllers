@@ -335,6 +335,16 @@ void beamPositionMonitorInterface::staticEntryrMonitor( const event_handler_args
             ms->interface->updateData( ms, args );
             break;
         }
+        case beamPositionMonitorStructs::BPM_PV_TYPE::AWAK:
+        {
+            ms->interface->updateDBRLong( ms, args );
+            break;
+        }
+        case beamPositionMonitorStructs::BPM_PV_TYPE::RDY:
+        {
+            ms->interface->updateDBRLong( ms, args );
+            break;
+        }
     }
 }
 //______________________________________________________________________________
@@ -378,16 +388,16 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
 
     const dbr_double_t * value = &(p  -> value);
     size_t i = 0;
-    updateTime( p->stamp, bpmdo->timeStamps[ bpmdo->shotCount ], bpmdo->strTimeStamps[ bpmdo->shotCount ]  );
+    updateTime( p->stamp, bpmdo->timeStamps.back(), bpmdo->strTimeStamps.back() );
     std::vector< double > rawVectorContainer(9);
     for( auto && it : rawVectorContainer )
     {
         it = *( &p->value + i);
         ++i;
     }
-
     bpmdo->rawBPMDataBuffer.push_back(rawVectorContainer);
     bpmdo->timeStampsBuffer.push_back(bpmdo->timeStamps.back());
+    std::cout<<bpmdo->timeStampsBuffer.back()<<std::endl;
 
     if( bpmdo->xytype == UTL::Y_FIRST )
     {
@@ -423,22 +433,8 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
     bpmdo->x = bpmdo->xBuffer.back();
     bpmdo->y = bpmdo->yBuffer.back();
     bpmdo->q = bpmdo->qBuffer.back();
-    if( abs(bpmdo -> x) > 10.0 || abs(bpmdo -> y) > 10.0 )
-    {
-        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
-        bpmdo -> statusBuffer.push_back( bpmdo->status );
-//        message( bpmdo->name, " status is BAD, X or Y > 10!!!!!!!!!!!!!!!!!! " );
-    }
-    else if( abs(bpmdo -> x) < 10.0 || abs(bpmdo -> y) < 10.0 )
-    {
-        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::GOOD;
-        bpmdo -> statusBuffer.push_back( bpmdo->status );
-    }
-    else
-    {
-        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::UNKNOWN;
-        bpmdo -> statusBuffer.push_back( bpmdo->status );
-    }
+
+    checkBPMStatus( bpmdo );
     if( bpmdo -> isATemporaryMonitorStruct )
     {
         if( bpmdo -> numShots > -1 )
@@ -513,6 +509,26 @@ void beamPositionMonitorInterface::updateYValue( beamPositionMonitorStructs::mon
     bpmdo->yPV = *( &p -> value );
     bpmdo->yPVBuffer.push_back( bpmdo->yPV );
     ++bpmdo->yPVShots;
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::updateDBRLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
+{
+    const dbr_time_long * p = ( const struct dbr_time_long * ) args.dbr;
+
+//    beamPositionMonitorStructs::bpmDataObject * bpmdo = reinterpret_cast< beamPositionMonitorStructs::bpmDataObject* > (ms -> val);
+    beamPositionMonitorStructs::bpmDataObject * bpmdo = &ms->interface->bpmObj.dataObjects.at( ms->objName );
+
+    const dbr_long_t * val = &(p  -> value);
+    size_t i = 0;
+    switch( ms->monType )
+    {
+        case beamPositionMonitorStructs::BPM_PV_TYPE::AWAK:
+            updateTime( p->stamp, bpmdo->awakTStamp, bpmdo->awakStrTStamp );
+            bpmdo->awakCount++;
+        case beamPositionMonitorStructs::BPM_PV_TYPE::RDY:
+            updateTime( p->stamp, bpmdo->rdyTStamp, bpmdo->rdyStrTStamp );
+            bpmdo->rdyCount++;
+    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::updateLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args )
@@ -605,6 +621,28 @@ void beamPositionMonitorInterface::setMonitorVectors( const std::string name )
     doubleBufferToVector( bpmObj.dataObjects.at( name ).xPVBuffer, bpmObj.dataObjects.at( name ).xPVVec );
     doubleBufferToVector( bpmObj.dataObjects.at( name ).yPVBuffer, bpmObj.dataObjects.at( name ).yPVVec );
     statusBufferToVector( bpmObj.dataObjects.at( name ).statusBuffer, bpmObj.dataObjects.at( name ).statusVec );
+}
+//______________________________________________________________________________
+void beamPositionMonitorInterface::checkBPMStatus( beamPositionMonitorStructs::bpmDataObject * bpmdo )
+{
+    std::cout.precision(17);
+    std::cout<<bpmdo->timeStampsBuffer[bpmdo->timeStampsBuffer.size()-1]<<std::endl;
+    if( abs(bpmdo -> x) > 10.0 || abs(bpmdo -> y) > 10.0 )
+    {
+        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::NONLINEAR;
+        bpmdo -> statusBuffer.push_back( bpmdo->status );
+//        message( bpmdo->name, " status is BAD, X or Y > 10!!!!!!!!!!!!!!!!!! " );
+    }
+    else if( abs(bpmdo -> x) < 10.0 || abs(bpmdo -> y) < 10.0 )
+    {
+        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::GOOD;
+        bpmdo -> statusBuffer.push_back( bpmdo->status );
+    }
+    else
+    {
+        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::UNKNOWN;
+        bpmdo -> statusBuffer.push_back( bpmdo->status );
+    }
 }
 //______________________________________________________________________________
 void beamPositionMonitorInterface::doubleBufferToVector( boost::circular_buffer< double > buf, std::vector< double > vec )

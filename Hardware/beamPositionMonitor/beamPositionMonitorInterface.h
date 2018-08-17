@@ -134,6 +134,8 @@ class beamPositionMonitorInterface : public interface
         void updateValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateXValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateYValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateDBRLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void checkBPMStatus( beamPositionMonitorStructs::bpmDataObject * bpmdo );
 
         void setMonitorVectors( const std::string name );
         void statusBufferToVector( boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > buf, std::vector< beamPositionMonitorStructs::BPM_STATUS > vec );
