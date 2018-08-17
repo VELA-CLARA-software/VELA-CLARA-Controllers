@@ -85,7 +85,8 @@ namespace beamPositionMonitorStructs
         int shotCount, numShots, xPVShots, yPVShots, dataShots; /// we allow -1 values here so NOT a size_t
         double xPV, yPV, x, y;
         double att1cal, att2cal, v1cal, v2cal, qcal, mn, xn, yn, position;
-        double awak, rdy, q;
+        double q;
+        int awak, rdy;
         size_t buffer;
         long sa1, sa2, ra1, ra2, sd1, sd2, rd1, rd2;
         BPM_STATUS status;

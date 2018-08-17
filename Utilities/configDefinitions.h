@@ -184,6 +184,8 @@ namespace UTL
     const std::string PV_SUFFIX_BPM_X       = "PV_SUFFIX_BPM_X";
     const std::string PV_SUFFIX_BPM_Y       = "PV_SUFFIX_BPM_Y";
     const std::string PV_SUFFIX_BPM_DATA    = "PV_SUFFIX_BPM_DATA";
+    const std::string PV_SUFFIX_BPM_AWAK    = "PV_SUFFIX_BPM_AWAK";
+    const std::string PV_SUFFIX_BPM_RDY     = "PV_SUFFIX_BPM_RDY";
     // BPMobject member variables
     const std::string XY_TYPE               = "XY_TYPE";
     const std::string Y_FIRST               = "Y_FIRST";
