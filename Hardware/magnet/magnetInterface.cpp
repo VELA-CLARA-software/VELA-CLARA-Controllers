@@ -790,6 +790,22 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         ds.interface->message("\n",
                               "\t             :These magnets will not be degaussed.");
     }
+
+
+    ds.interface->message("\n",
+                          "\tDEGAUSS UPDATE: Vectors Initialised Settign Zero before Degaussing",
+                          "\n");
+
+    std::vector<double> values(magToDeg.size(), 0.0);
+    std::vector<double> tolerances(magToDeg.size(), 0.1);
+
+    ds.interface->setSI(magToDeg, values );
+    ds.interface->pause_500();
+    magToDeg = ds.interface->waitForMagnetsToSettle(magToDeg,
+                                                    values,
+                                                    tolerances,
+                                                    ds.interface->wait_time);
+
     ds.interface->message("\n",
                           "\tDEGAUSS UPDATE: Vectors Initialised Starting Degaussing",
                           "\n");
@@ -802,7 +818,7 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
         lost during the degaussing process
     */
     vec_s magToDegOLD = ds.magsToDeguass;
-    vec_d values, tolerances;
+
     int j_max = (int) ds.interface->allMagnetData.at(magToDeg.front()).numDegaussSteps;
 	for(size_t j = UTL::ZERO_SIZET;
                j <ds.interface->allMagnetData.at(magToDeg.front()).numDegaussSteps;
@@ -833,10 +849,17 @@ void magnetInterface::staticEntryDeGauss(const magnetStructs::degaussStruct& ds)
             ds.interface->message("Setting ",it," to ",values.back()," Amp, with tolerance = ",tolerances.back()," Amp");
             ds.interface->message("remaining steps = ",ds.interface->allMagnetData.at(it).remainingDegaussSteps);
         }
-        /* set the desired current */
+        /*
+            set the desired current
+        */
         ds.interface->setSI_MAIN(magToDeg, values);
 
-        /* wait for the magnets to settle */
+        ds.interface->pause_2000();
+        ds.interface->pause_2000();
+
+        /*
+            wait for the magnets to settle
+        */
         magToDeg = ds.interface->waitForMagnetsToSettle(magToDeg,
                                                         values,
                                                         tolerances,
@@ -1050,8 +1073,8 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
                 if(isRIequalVal(mags[i], values[i], tolerances[i])) // The acid test!
                 {
                     magnetSettledState[i] = true;
-//                    debugMessage(mags[i], " RI == val. SETTLED = True."
-//                       , currentRIValues[i], ", ", values[i], ", ", tolerances[i]);
+                    debugMessage(mags[i], " RI == val. SETTLED = True."
+                       , currentRIValues[i], ", ", values[i], ", ", tolerances[i]);
                 }
                 else if(settingZero[i]) // We are supposed to be setting zero....
                 {
@@ -1059,9 +1082,9 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
                     if(areSame(oldRIValues[i], currentRIValues[i], tolerances[i]))
                     {
                         magnetSettledState[i] = true;
-//                        debugMessage(mags[i],
-//                          " is setting 0.0 and RI_new == RI_old. SETTLED = True ",
-//                          currentRIValues[i], ", ", oldRIValues[i], ", ", tolerances[i]);
+                        debugMessage(mags[i],
+                          " is setting 0.0 and RI_new == RI_old. SETTLED = True ",
+                          currentRIValues[i], ", ", oldRIValues[i], ", ", tolerances[i]);
                     }
                 }
                 else // we are not setting zero...
@@ -1078,10 +1101,10 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
                             areNotSame(UTL::ZERO_DOUBLE, currentRIValues[i], tolerances[i]))
                     {
                         magnetSettledState[i] = true;
-//                        debugMessage(mags[i],
-//                          " RI_new != 0.0&& RI_new == RI_old RI. SETTLED = True ",
-//                           currentRIValues[i], ", ", oldRIValues[i],
-//                           ", ", tolerances[i]);
+                        debugMessage(mags[i],
+                          " RI_new != 0.0&& RI_new == RI_old RI. SETTLED = True ",
+                           currentRIValues[i], ", ", oldRIValues[i],
+                           ", ", tolerances[i]);
                     }
                 }
             }
@@ -1102,7 +1125,7 @@ magnetInterface::vec_s magnetInterface::waitForMagnetsToSettle(const vec_s&mags,
 
         if(shouldBreak)
         {
-            //debugMessage("I think the magnets have settled Breaking out of loop.");
+            debugMessage("I think the magnets have settled Breaking out of loop.");
             break;
         }
         /* save current values to see check if settled */
@@ -1169,10 +1192,11 @@ bool magnetInterface::isAVCor(const std::string& magName)const
 //______________________________________________________________________________
 bool magnetInterface::isACor(const std::string& magName)const
 {
-    if(isAVCor(magName) || isAHCor(magName))
+    if(isAVCor(magName))
         return  true;
-    else
-        return false;
+    if(isAHCor(magName))
+        return  true;
+    return false;
 }
 //______________________________________________________________________________
 void magnetInterface::setRITolerance(const std::string& magName, double val)

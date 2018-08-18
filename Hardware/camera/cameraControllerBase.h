@@ -33,16 +33,15 @@
 class cameraControllerBase : public controller
 {
     public:
-        cameraControllerBase(bool& show_messages,
-                             bool& show_debug_messages,
-                             const bool startVirtualMachine,
-                             const bool shouldStartEPICs,
-                             const std::string& name,
-                             const std::string& claraCamConfig,
-                             const std::string& velaCamConfig,
-                             HWC_ENUM::CONTROLLER_TYPE type
-
-                             );
+//        cameraControllerBase(bool& show_messages,
+//                             bool& show_debug_messages,
+//                             const bool startVirtualMachine,
+//                             const bool shouldStartEPICs,
+//                             const std::string& name,
+//                             const std::string& claraCamConfig,
+//                             const std::string& velaCamConfig,
+//                             HWC_ENUM::CONTROLLER_TYPE type
+//                             );
 
         cameraControllerBase(bool& show_messages,
                              bool& show_debug_messages,
@@ -470,6 +469,21 @@ class cameraControllerBase : public controller
         bool setPixMM_VC(const double pmm);
         bool setPixMM(const double pmm,const std::string& cam);
         bool setPixMM(const double pmm);
+
+
+        bool setMaskFeedBackOn_VC();
+         bool setMaskFeedBackOn();
+         bool setMaskFeedBackOn(const std::string& name);
+         bool setMaskFeedBackOff_VC();
+         bool setMaskFeedBackOff();
+         bool setMaskFeedBackOff(const std::string& name);
+         bool isMaskFeedbackOn_VC()const;
+         bool isMaskFeedbackOn()const;
+         bool isMaskFeedbackOn(const std::string& name)const;
+         bool isMaskFeedbackOff_VC()const;
+         bool isMaskFeedbackOff()const;
+         bool isMaskFeedbackOff(const std::string& name)const;
+
         /*
             the main interface is held as a pointer because sometimes
             this class instantiates it

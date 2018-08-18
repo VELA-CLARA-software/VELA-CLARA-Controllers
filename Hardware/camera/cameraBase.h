@@ -495,6 +495,26 @@ class cameraBase : public interface
         bool setBlacklevel(const std::string& cam,const long value);
         bool setBlacklevel(const long value);
         bool setBlacklevel(cameraStructs::cameraObject& cam, const long value);
+
+
+        //---------------------------------------------------------------------------------
+         bool setMaskFeedBackOn_VC();
+         bool setMaskFeedBackOn();
+         bool setMaskFeedBackOn(const std::string& name);
+         bool setMaskFeedBackOn(cameraStructs::cameraObject& cam);
+         bool setMaskFeedBackOff_VC();
+         bool setMaskFeedBackOff();
+         bool setMaskFeedBackOff(const std::string& name);
+         bool setMaskFeedBackOff(cameraStructs::cameraObject& cam);
+         bool isMaskFeedbackOn_VC()const;
+         bool isMaskFeedbackOn()const;
+         bool isMaskFeedbackOn(const std::string& name)const;
+         bool isMaskFeedbackOn(const cameraStructs::cameraObject& cam)const;
+         bool isMaskFeedbackOff_VC()const;
+         bool isMaskFeedbackOff()const;
+         bool isMaskFeedbackOff(const std::string& name)const;
+         bool isMaskFeedbackOff(const cameraStructs::cameraObject& cam)const;
+         void maskFeedBack(cameraStructs::cameraObject& cam);
 //--------------------------------------------------------------------------------------------------------------------
 //
 //  __   __        ___  __  ___     __   __        __  ___     __   ___  ___  __
@@ -662,6 +682,9 @@ class cameraBase : public interface
         void updateSelectedOrVC(const std::string& cameraName);
     protected:
     private:
+
+        static void mask_feedback(int x, int y, int x_rad, int y_rad, const std::string& name, cameraBase* interface);
+
 
         const HWC_ENUM::MACHINE_AREA myarea;
 };

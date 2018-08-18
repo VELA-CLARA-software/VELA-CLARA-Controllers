@@ -73,9 +73,16 @@ myarea(area)
 cameraBase::~cameraBase()
 {}
 //---------------------------------------------------------------------------------
-void cameraBase::initialise(bool VConly = false)
+void cameraBase::initialise(bool VConly)
 {
-    std::cout << "cameraBase::initialise()" << std::endl;
+    if(VConly)
+    {
+        std::cout << "cameraBase::initialise() for Virtual Cathode Camera only " << std::endl;
+    }
+    else
+    {
+        std::cout << "cameraBase::initialise() for All Cameras" << std::endl;
+    }
 
     configFileRead = readCamConfig();
 
@@ -185,6 +192,7 @@ bool cameraBase::getCamObjects()
         }
         /*
             set the "fast" image array size
+            resize pixel_results
         */
         size_t s;
         for(auto&& it : allCamData)
@@ -197,6 +205,20 @@ bool cameraBase::getCamObjects()
             message("Resizing camera ",it.first,
                     " array_data to ",
                     it.second.data.image.array_data.size());
+
+            if(entryExists(it.second.pvMonStructs,CAM_PV_TYPE::PIXEL_RESULTS_RBV))
+            {
+                s = (size_t)it.second.pvMonStructs.at(CAM_PV_TYPE::PIXEL_RESULTS_RBV).COUNT;
+
+                it.second.data.analysis.pix_values.clear();
+
+                it.second.data.analysis.pix_values.resize(s);
+
+                message("Resizing camera ",it.first,
+                        " analsyis pix_values to ",
+                        it.second.data.analysis.pix_values.size());
+            }
+
         }
         /*
             set names of objects to match camera/screen name
@@ -268,7 +290,7 @@ bool cameraBase::vcOnly()
         {
             if( it.first == cameraName)
             {
-                message("Succesfully cut cameraobjects to just ", cameraName);
+                message("Succesfully cut cameraobjects to just ", cameraName, " of camera type: ", ENUM_TO_STRING(allCamData.at(cameraName).type));
                 /*
                     all references must refer to VC
                 */
@@ -581,7 +603,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.x_buf,
                                   camObj.data.analysis.x_rs,
                                   camObj.data.analysis);
-            //message("x = ",camObj.data.analysis.x);
+
             break;
         case CAM_PV_TYPE::Y_RBV:
             updateAnalysislResult(args,camObj.data.analysis.y,
@@ -654,6 +676,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
             break;
         case CAM_PV_TYPE::PIXEL_RESULTS_RBV:
             updatePixelResults(args,camObj.data.analysis);
+            maskFeedBack(camObj);
             break;
 /*
             MASK READ BACK VALUES
@@ -840,16 +863,21 @@ void cameraBase::updateAnalysislResult(const event_handler_args& args,
                                        runningStat& rs_to_update,
                                        analysis_data& data)
 {
+    double d;
     if(args.type == DBR_TIME_DOUBLE)
     {
-        getDBRdouble_timestamp(args, value_to_update);
+        getDBRdouble_timestamp(args, d);
+        value_to_update = d;
     }
     else if(args.type == DBR_DOUBLE)
     {
         value_to_update = getDBRdouble(args);
     }
+
     //getDBRdouble_timestamp(args, value_to_update);
     addToBuffer(value_to_update, buffer_to_update, data);
+
+
     rs_to_update.Push(value_to_update);
 }
 //---------------------------------------------------------------------------------______________
@@ -875,6 +903,7 @@ void cameraBase::updatePixelResults(const event_handler_args& args, analysis_dat
     /* if time _type get time and set where pValue points to */
     if(isTimeType(args.type))
     {
+
         const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
         pValue = &p->value;
         //updateTime(trace.etime, trace.time, trace.timeStr);
@@ -889,6 +918,8 @@ void cameraBase::updatePixelResults(const event_handler_args& args, analysis_dat
         */
         data.pix_values_time = timeString;
         std::copy(pValue, pValue + data.pix_values.size(), data.pix_values.begin());
+
+
         /*
             Now we have the new values, update Buffers
         */
@@ -900,9 +931,102 @@ void cameraBase::updatePixelResults(const event_handler_args& args, analysis_dat
     }
     else /* set where pValue points to */
     {
+        //message("updatePixelResults, args.type is not a time type, ", args.type);
         pValue = (dbr_double_t*)args.dbr;
+
+        std::copy(pValue, pValue + data.pix_values.size(), data.pix_values.begin());
+        /*
+            Now we have the new values, update Buffers
+        */
+        data.pix_values_buf.push_back(data.pix_values);
+        if(data.pix_values_buf.size()> data.max_buffer_count)
+        {
+            data.pix_values_buf.pop_front();
+        }
     }
 }
+//---------------------------------------------------------------------------------
+void cameraBase::maskFeedBack(cameraObject& cam)
+{
+    if(cam.state.mask_feedback)
+    {
+//        message(cam.name," mask feedback on");
+//        message("pix numbers = ", cam.data.analysis.pix_values[0]," ",
+//                cam.data.analysis.pix_values[2] * 5," ",
+//                cam.data.analysis.pix_values[1]    ," ",
+//                cam.data.analysis.pix_values[3] * 5," ",
+//                cam.name
+//                );
+            /*
+                go through each value and compare to
+                X_POS = 0;
+                Y_POS = 1;
+                X_SIGMA_POS = 2;
+                Y_SIGMA_POS = 3
+            */
+            //13.138 392.887 957.832 338.189VIRTUAL_CATHODE
+            bool reset_mask = false;
+
+            using namespace UTL;
+            if( (cam.data.analysis.pix_values[0] - 5.0 * cam.data.analysis.pix_values[2]) < ZERO_DOUBLE)// MAGIC_NUMBER
+            {
+                reset_mask = true;
+            }
+            else if(  (cam.data.analysis.pix_values[0] + 5.0 * cam.data.analysis.pix_values[2]) < cam.data.image.bin_num_pix_x)// MAGIC_NUMBER
+            {
+                reset_mask = true;
+            }
+            else if( (cam.data.analysis.pix_values[1] - 5.0 * cam.data.analysis.pix_values[3]) > ZERO_DOUBLE)// MAGIC_NUMBER
+            {
+                reset_mask = true;
+            }
+            else if(cam.data.analysis.pix_values[1] + 5.0 * cam.data.analysis.pix_values[3] < cam.data.image.bin_num_pix_y)// MAGIC_NUMBER
+            {
+                reset_mask = true;
+            }
+            if(reset_mask)
+            {
+
+                std::thread mask_feedback_thread(mask_feedback, (int)cam.data.analysis.pix_values[0],
+                                                                (int)cam.data.analysis.pix_values[1],
+                                                                (int)cam.data.analysis.pix_values[2] * 5,
+                                                                (int)cam.data.analysis.pix_values[3] * 5,
+                                                 cam.name, this);
+                mask_feedback_thread.join();
+            }
+    }
+}
+//____________________________________________________________________________________________
+void cameraBase::mask_feedback(int x, int y, int x_rad, int y_rad, const std::string& name, cameraBase* interface)
+{
+    interface->message("Feedback function = ",x,", ",y,", ",x_rad,", ",y_rad);
+    interface->setMask(x, y, x_rad, y_rad, name);
+}
+//____________________________________________________________________________________________
+//void cameraBase::kill_finished_setmask_threads()
+//{
+//    for(auto && it = setAmpHP_Threads.cbegin(); it != setAmpHP_Threads.cend() /* not hoisted */; /* no increment */)
+//    {
+//        if(it->can_kill)
+//        {
+//            /// join before deleting...
+//            /// http://stackoverflow.com/questions/25397874/deleting-stdthread-pointer-raises-exception-libcabi-dylib-terminating
+//            //std::cout<< "it->threadit->thread->join" <<std::endl;
+//            it->thread->join();
+//            //std::cout<< "it->thread" <<std::endl;
+//            delete it->thread;
+//            //std::cout<< "delete" <<std::endl;
+//            setAmpHP_Threads.erase(it++);
+//            //std::cout<< "erase" <<std::endl;
+//        }
+//        else
+//        {
+//            ++it;
+//        }
+//    }
+//}
+
+//---------------------------------------------------------------------------------
 // for all getters and setters we need three versions
 // one where you pass a name,
 // one for the 'selected' camera
@@ -983,7 +1107,7 @@ bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
                     imageCollectStructs.at(n).numShots = numbOfShots;
                     imageCollectStructs.at(n).thread
                         = new std::thread(staticEntryImageCollectAndSave, std::ref(imageCollectStructs.at(n)));
-                    message("new imageCollectStruct");
+                    message("new imageCollectStruct created");
 
                     return true;
                 }
@@ -1015,23 +1139,33 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
         steps through each stage of collecting and saving
     */
     cameraObject& cam = *(ics.camObj);
+    message("imageCollectAndSave start for ",cam.name," ");
     if(setNumberOfCapture(cam, ics.numShots))
     {
+        message("imageCollectAndSave Set number of shots success");
         if(collect(cam))
         {
-            while(isCollecting(cam))   //wait until collecting is done...
+            message("imageCollectAndSave is waiting for collection to finish");
+            pause_500();
+            while(isCollecting(cam.name))   //wait until collecting is done...
             {
                 pause_50(); //MAGIC_NUMBER
+                message(cam.name," isCollecting is TRUE");
             }
+            message("imageCollectAndSave ", cam.name," has finished collecting");
+
             if(makeANewDirectoryAndName(cam, ics.numShots))
             {
                 pause_500();
+                message("imageCollectAndSave ",cam.name," is going to write collected data");
                 if(write(cam))
                 {
-                    while( isSaving(cam))   //wait until saving is done...
+                    message("imageCollectAndSave ",cam.name," is waiting for writing to finish");
+                    while( isSaving(cam.name))   //wait until saving is done...
                     {
                         pause_50();
                     }
+                    message("imageCollectAndSave ",cam.name," writing has finished");
                     // pause and wait for EPICS to UPDATE
                     pause_500();
                     //check status of save/write
@@ -1061,7 +1195,10 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
         }
 
     }//(setNumberOfShots(cam, ics.numShots))
-
+    else
+    {
+        message("!!!ERROR SETTING NUMBER OF SHOTS!!! ",cam.name," ");
+    }
 }
 //-------------------------------------------------------------------------------------------------------
 bool cameraBase::setNumberOfCapture(cameraObject& cam, int numberOfShots)
@@ -1077,6 +1214,10 @@ bool cameraBase::collect(cameraObject& cam)
         unsigned short c = 1;
         ans = cam_caput( cam, c, CAM_PV_TYPE::CAM_CAPTURE);
         message("Capture set to 1 on camera ", cam.name);
+    }
+    else
+    {
+        message(cam.name," is not isAcquiringAndClaraCam");
     }
     return ans;
 }
@@ -1184,7 +1325,7 @@ void cameraBase::killFinishedImageCollectThreads()
         }
     }
 }
-
+//-------------------------------------------------------------------------------------------------------
 bool cameraBase::latestCollectAndSaveSuccess_VC()const
 {
     return latestCollectAndSaveSuccess(*vcCamPtr);
@@ -1325,9 +1466,24 @@ using namespace cameraStructs;
 bool cameraBase::setMaskX(int x,cameraObject& cam)
 {
     if(isClaraCam(cam))
+    {
+        /*
+            for now, (i.e may changin in future)
+            we're going to hardcode som elimits on the mask positions
+        */
+        if(x < 0)
+        {
+            return false;
+        }
+        if(x > (int)cam.data.image.bin_num_pix_x)
+        {
+            return false;
+        }
         return cam_caput(cam, x, CAM_PV_TYPE::MASK_X);
+    }
     else
     {
+        message("setMaskX, ", cam.name, " is not CLARA CAM");
         cam.data.mask.mask_x = x;
     }
     return false;
@@ -1351,10 +1507,29 @@ bool cameraBase::setMaskY(int x,const std::string& cam )
 //---------------------------------------------------------------------------------
 bool cameraBase::setMaskY(int x,cameraObject& cam)
 {
+    //message("cameraBase::setMaskY called ", cam.name);
     if(isClaraCam(cam))
+    {
+        /*
+            for now, (i.e may changin in future)
+            we're going to hardcode som elimits on the mask positions
+        */
+        if(x < 0)
+        {
+            //message(x," < ", 0);
+            return false;
+        }
+        if(x > (int)cam.data.image.bin_num_pix_y)
+        {
+            //message(x," > ", (int)cam.data.image.bin_num_pix_y);
+            return false;
+        }
+        //message(cam.name," cam_caput for masky");
         return cam_caput(cam, x, CAM_PV_TYPE::MASK_Y);
+    }
     else
     {
+        //message(cam.name," is not clara cam");
         cam.data.mask.mask_y = x;
     }
     return false;
@@ -1379,7 +1554,21 @@ bool cameraBase::setMaskXrad(int x,const std::string& cam)
 bool cameraBase::setMaskXrad(int x,cameraObject& cam)
 {
     if(isClaraCam(cam))
+    {
+        /*
+            for now, (i.e may changin in future)
+            we're going to hardcode som elimits on the mask positions
+        */
+        if(x < 1)
+        {
+            return false;
+        }
+        if(x > (int)(cam.data.image.bin_num_pix_y/UTL::TWO_SIZET))
+        {
+            return false;
+        }
         return cam_caput(cam, x, CAM_PV_TYPE::MASK_X_RAD);
+    }
     else
     {
         cam.data.mask.mask_x_rad = x;
@@ -1406,7 +1595,21 @@ bool cameraBase::setMaskYrad(int x,const std::string& cam)
 bool cameraBase::setMaskYrad(int x,cameraObject& cam)
 {
     if(isClaraCam(cam))
+    {
+        /*
+            for now, (i.e may changin in future)
+            we're going to hardcode som elimits on the mask positions
+        */
+        if(x < 1)
+        {
+            return false;
+        }
+        else if(x > (int)(cam.data.image.bin_num_pix_y/UTL::TWO_SIZET))
+        {
+            return false;
+        }
         return cam_caput(cam, x, CAM_PV_TYPE::MASK_Y_RAD);
+    }
     else
     {
         cam.data.mask.mask_y_rad = x;
@@ -1422,6 +1625,7 @@ bool cameraBase::setMaskYrad(int x)
 //---------------------------------------------------------------------------------
 bool cameraBase::setMask_VC(int x,int y,int xr,int yr)
 {
+    message("setMask_VC(", x," ", y," ", xr," ", yr,") called ");
     return setMask(x,y,xr,yr,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
@@ -1432,6 +1636,7 @@ bool cameraBase::setMask(int x,int y,int xr,int yr,const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::setMask(int x,int y,int xr,int yr,cameraObject& cam)
 {
+    //message("setMask(int x,int y,int xr,int yr,cameraObject& cam) called ");
     bool x_result  =  setMaskX(x,cam);
     bool y_result  =  setMaskY(y,cam);
     bool xr_result =  setMaskXrad(xr,cam);
@@ -1448,6 +1653,7 @@ bool cameraBase::setMask(int x,int y,int xr,int yr)
 //---------------------------------------------------------------------------------
 bool cameraBase::setMask_VC(const std::vector<int>& v)
 {
+    //message("setMask_VC(int x,int y,int xr,int yr) called ");
     return setMask(v,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
@@ -1469,7 +1675,6 @@ bool cameraBase::setMask(const std::vector<int>& v)
 {
     return setMask(v,*selectedCamPtr);
 }
-//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 bool cameraBase::setBackground_VC()
 {
@@ -1512,9 +1717,6 @@ bool cameraBase::setBackground()
     return setBackground(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-
-
-
 //---------------------------------------------------------------------------------
 bool cameraBase::setGain_VC(const long value)
 {
@@ -1538,10 +1740,6 @@ bool cameraBase::setGain(cameraStructs::cameraObject& cam, const long value)
     return false;
 }
 //---------------------------------------------------------------------------------
-
-
-
-
 //---------------------------------------------------------------------------------
 bool cameraBase::setBlacklevel_VC(const long value)
 {
@@ -1605,7 +1803,7 @@ bool cameraBase::isClaraCam_VC()const
 //---------------------------------------------------------------------------------
 bool cameraBase::isClaraCam(const cameraStructs::cameraObject& cam)const
 {
-    return cam.type == CAM_TYPE::VELA_CAM;
+    return cam.type == CAM_TYPE::CLARA_CAM;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isClaraCam(const std::string& cam)const
@@ -1827,7 +2025,6 @@ bool cameraBase::isAcquiring_VC()const
 //---------------------------------------------------------------------------------
 bool cameraBase::isAcquiring(const cameraObject& cam)const
 {
-    message("cam.name = ", cam.name );
     return cam.state.acquire == ACQUIRE_STATE::ACQUIRING;
 }
 //---------------------------------------------------------------------------------
@@ -1913,6 +2110,14 @@ bool cameraBase::isCollecting(const std::string& cam)const
 //---------------------------------------------------------------------------------
 bool cameraBase::isCollecting(const cameraObject& cam)const
 {
+    if(cam.daq.collectingState == COLLECTING_STATE::COLLECTING)
+    {
+        message("isCollecting ", cam.name, " is TRUE");
+    }
+    else
+    {
+        message("isCollecting ", cam.name, " is FALSE");
+    }
     return cam.daq.collectingState == COLLECTING_STATE::COLLECTING;
 }
 //---------------------------------------------------------------------------------
@@ -2129,7 +2334,6 @@ std::string cameraBase::useCameraFrom(const std::string& camOrScreen)const
             cameraName = UTL::UNKNOWN_NAME;
         }
     }
-    message("useCameraFrom passed, ",camOrScreen, " returning ",cameraName);
     return cameraName;
 }
 //---------------------------------------------------------------------------------
@@ -2771,8 +2975,6 @@ boost::python::list cameraBase::getFastImage2D_Py(const cameraStructs::cameraObj
     return cam.data.image.data2D;
 }
 //---------------------------------------------------------------------------------
-
-
 #endif
 ///
 /// get x value
@@ -3171,9 +3373,6 @@ bool cameraBase::setCenterXPixel(unsigned short  xC)
     return setCenterXPixel(xC,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-
-
-
 bool cameraBase::setCenterYPixel_VC(unsigned short yC)
 {
     return setCenterYPixel(yC,*vcCamPtr);
@@ -3321,7 +3520,7 @@ bool cameraBase::stopAcquiring(cameraStructs::cameraObject& cam)
         dbr_enum_t c = (dbr_enum_t)UTL::ZERO_US;
         return cam_caput<dbr_enum_t>(cam, c, CAM_PV_TYPE::CAM_STOP_ACQUIRE);
     }
-    return false;
+    return true;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::stopAcquiring()
@@ -3356,6 +3555,7 @@ bool cameraBase::stopAllAcquiringExceptVC()
         }
         else
         {
+            message(it.first," Stop Acquiring");
             if(stopAcquiring(it.second))
             {
                 sum += UTL::ONE_INT;
@@ -3366,10 +3566,6 @@ bool cameraBase::stopAllAcquiringExceptVC()
     return ans == sum;
 }
 //---------------------------------------------------------------------------------
-
-
-
-
 bool cameraBase::startAnalysing_VC()
 {
     return startAnalysing(*vcCamPtr);
@@ -3507,14 +3703,6 @@ bool cameraBase::startAcquireAndAnalysis()
     return startAcquireAndAnalysis(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
 //---------------------------------------------------------------------------------
 ///
 /// clear running values
@@ -3551,9 +3739,6 @@ void cameraBase::clearRunningValues(cameraObject& cam)
 }
 //---------------------------------------------------------------------------------
 
-
-
-
 ///
 /// set buffer max count
 ///
@@ -3570,6 +3755,23 @@ void cameraBase::setBufferMaxCount(const size_t s,const std::string& cam)
 void cameraBase::setBufferMaxCount(const size_t s,cameraObject& cam)
 {
     cam.data.analysis.max_buffer_count = s;
+
+    cam.data.analysis.x_rs.setMaxCount(s);
+    cam.data.analysis.y_rs.setMaxCount(s);
+    cam.data.analysis.sig_x_rs.setMaxCount(s);
+    cam.data.analysis.sig_y_rs.setMaxCount(s);
+    cam.data.analysis.sig_xy_rs.setMaxCount(s);
+    cam.data.analysis.x_pix_rs.setMaxCount(s);
+    cam.data.analysis.avg_pix_rs.setMaxCount(s);
+    cam.data.analysis.sum_pix_rs.setMaxCount(s);
+    cam.data.analysis.y_pix_rs.setMaxCount(s);
+    cam.data.analysis.sig_x_pix_rs.setMaxCount(s);
+    cam.data.analysis.sig_y_pix_rs.setMaxCount(s);
+    cam.data.analysis.sig_xy_pix_rs.setMaxCount(s);
+
+    message("Setting rs max counts");
+    clearBuffer(cam);
+    clearRunningValues(cam);
 }
 //---------------------------------------------------------------------------------
 void cameraBase::setBufferMaxCount(const size_t s)
@@ -3613,8 +3815,6 @@ void cameraBase::clearBuffer()
     clearBuffer(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-
-
 //______________________________________________________________________________
 ///
 ///  __   __        ___  __  ___     __   __        __  ___     __   ___  ___  __
@@ -3768,4 +3968,89 @@ const cameraStructs::camera_state& cameraBase::getStateObj(const cameraStructs::
     return cam.state;
 }
 //---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOn_VC()
+{
+    return setMaskFeedBackOn(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOn()
+{
+    return setMaskFeedBackOn(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOn(const std::string& name)
+{
+    return setMaskFeedBackOn(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOn(cameraStructs::cameraObject& cam)
+{
+    message(cam.name," mask feedback on");
+    cam.state.mask_feedback = true;
+    return cam.state.mask_feedback;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOff_VC()
+{
+    return setMaskFeedBackOff(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOff()
+{
+    return setMaskFeedBackOff(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOff(const std::string& name)
+{
+    return setMaskFeedBackOff(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::setMaskFeedBackOff(cameraStructs::cameraObject& cam)
+{
+    cam.state.mask_feedback = false;
+    return cam.state.mask_feedback;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOn_VC()const
+{
+    return isMaskFeedbackOn(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOn()const
+{
+    return isMaskFeedbackOn(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOn(const std::string& name)const
+{
+    return isMaskFeedbackOn(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOn(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state.mask_feedback == true;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOff_VC()const
+{
+    return isMaskFeedbackOn(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOff()const
+{
+    return isMaskFeedbackOn(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOff(const std::string& name)const
+{
+    return isMaskFeedbackOn(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isMaskFeedbackOff(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state.mask_feedback == false;
+}
+//---------------------------------------------------------------------------------
+
+
 

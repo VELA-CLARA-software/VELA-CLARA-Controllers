@@ -22,23 +22,6 @@
 //*/
 #include "cameraControllerBase.h"
 
-cameraControllerBase::cameraControllerBase(
-    bool& show_messages,
-    bool& show_debug_messages,
-    const bool startVirtualMachine,
-    const bool shouldStartEPICs,
-    const std::string& name,
-    const std::string& claraCamConfig,
-    const std::string& velaCamConfig,
-    HWC_ENUM::CONTROLLER_TYPE type
-    ):
-cameraControllerBase(show_messages, show_debug_messages,
-                     startVirtualMachine, shouldStartEPICs,
-                     name,
-                     claraCamConfig, velaCamConfig,
-                     type)
-{}
-
 //cameraControllerBase::cameraControllerBase(
 //    bool& show_messages,
 //    bool& show_debug_messages,
@@ -47,13 +30,13 @@ cameraControllerBase(show_messages, show_debug_messages,
 //    const std::string& name,
 //    const std::string& claraCamConfig,
 //    const std::string& velaCamConfig,
-//    HWC_ENUM::CONTROLLER_TYPE type,
+//    HWC_ENUM::CONTROLLER_TYPE type
 //    ):
 //cameraControllerBase(show_messages, show_debug_messages,
 //                     startVirtualMachine, shouldStartEPICs,
 //                     name,
 //                     claraCamConfig, velaCamConfig,
-//                     type, false)
+//                     type,false)
 //{}
 //---------------------------------------------------------------------------------
 cameraControllerBase::cameraControllerBase(bool& show_messages,
@@ -724,6 +707,7 @@ bool cameraControllerBase::setMaskY_VC(int x)
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setMaskY(int x,const std::string& cam)
 {
+    message("cameraControllerBase::setMaskY called ", cam);
     return camBase->setMaskY(x,cam);
 }
 //---------------------------------------------------------------------------------
@@ -817,6 +801,7 @@ bool cameraControllerBase::collectAndSave_VC(const int numbOfShots)
 #ifdef BUILD_DLL
 bool cameraControllerBase::setMask_VC_Py(const boost::python::list& v)
 {
+    message("setMask_VC_Py called");
     return setMask_VC(to_std_vector<int>(v));
 }
 //---------------------------------------------------------------------------------
@@ -2014,10 +1999,66 @@ int cameraControllerBase::getBlacklevel()const
     return camBase->getBlacklevel();
 }
 //---------------------------------------------------------------------------------
-
-
-
-
+bool cameraControllerBase::setMaskFeedBackOn_VC()
+{
+    return camBase->setMaskFeedBackOn_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setMaskFeedBackOn()
+{
+    return camBase->setMaskFeedBackOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setMaskFeedBackOn(const std::string& name)
+{
+    return camBase->setMaskFeedBackOn(name);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setMaskFeedBackOff_VC()
+{
+    return camBase->setMaskFeedBackOff_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setMaskFeedBackOff()
+{
+    return camBase->setMaskFeedBackOff();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::setMaskFeedBackOff(const std::string& name)
+{
+    return camBase->setMaskFeedBackOff(name);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isMaskFeedbackOn_VC()const
+{
+    return camBase->isMaskFeedbackOn_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isMaskFeedbackOn()const
+{
+    return camBase->isMaskFeedbackOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isMaskFeedbackOn(const std::string& name)const
+{
+    return camBase->isMaskFeedbackOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isMaskFeedbackOff_VC()const
+{
+    return camBase->isMaskFeedbackOff_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isMaskFeedbackOff()const
+{
+    return camBase->isMaskFeedbackOff();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isMaskFeedbackOff(const std::string& name)const
+{
+    return camBase->isMaskFeedbackOff(name);
+}
+//---------------------------------------------------------------------------------
 
 
 

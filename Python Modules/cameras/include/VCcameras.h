@@ -42,6 +42,15 @@ class VCcameras : public VCbase
         cameraControllerBase& offline_Camera_Controller();
         cameraControllerBase& physical_Camera_Controller();
 
+        cameraControllerBase& virtual_CLARA_VC_Camera_Controller();
+        cameraControllerBase& offline_CLARA_VC_Camera_Controller();
+        cameraControllerBase& physical_CLARA_VC_Camera_Controller();
+
+        cameraControllerBase& virtual_VELA_VC_Camera_Controller();
+        cameraControllerBase& offline_VELA_VC_Camera_Controller();
+        cameraControllerBase& physical_VELA_VC_Camera_Controller();
+
+
         cameraControllerBase& virtual_CLARA_Camera_Controller();
         cameraControllerBase& offline_CLARA_Camera_Controller();
         cameraControllerBase& physical_CLARA_Camera_Controller();
@@ -64,6 +73,14 @@ class VCcameras : public VCbase
         cameraControllerBase* virtual_VELA_Camera_Controller_Obj;
         cameraControllerBase* offline_VELA_Camera_Controller_Obj;
         cameraControllerBase* physical_VELA_Camera_Controller_Obj;
+
+        cameraControllerBase* virtual_CLARA_VC_Camera_Controller_Obj;
+        cameraControllerBase* offline_CLARA_VC_Camera_Controller_Obj;
+        cameraControllerBase* physical_CLARA_VC_Camera_Controller_Obj;
+
+        cameraControllerBase* virtual_VELA_VC_Camera_Controller_Obj;
+        cameraControllerBase* offline_VELA_VC_Camera_Controller_Obj;
+        cameraControllerBase* physical_VELA_VC_Camera_Controller_Obj;
 
 
         cameraControllerBase& getController(cameraControllerBase*& cont,
@@ -129,7 +146,24 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_Control )
         .def("physical_VELA_Camera_Controller",  &VCcameras::physical_VELA_Camera_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the physical VELA camera object.")
-
+        .def("virtual_CLARA_VC_Camera_Controller",  &VCcameras::virtual_CLARA_VC_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the virtual CLARA Virtual Cathode camera object.")
+        .def("offline_CLARA_VC_Camera_Controller",  &VCcameras::offline_CLARA_VC_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the offline CLARA Virtual Cathode camera object.")
+        .def("physical_CLARA_VC_Camera_Controller",  &VCcameras::physical_CLARA_VC_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the Physical CLARA Virtual Cathode camera object.")
+        .def("virtual_VELA_VC_Camera_Controller",  &VCcameras::virtual_VELA_VC_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the virtual VELA Virtual Cathode camera object.")
+        .def("offline_VELA_VC_Camera_Controller",  &VCcameras::offline_VELA_VC_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the offline VELA Virtual Cathode camera object.")
+        .def("physical_VELA_VC_Camera_Controller",  &VCcameras::physical_VELA_VC_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the Physical VELA Virtual Cathode camera object.")
         ;
 }
 #endif // VC_CAMERAS_H

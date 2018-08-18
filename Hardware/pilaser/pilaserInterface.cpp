@@ -702,6 +702,72 @@ void pilaserInterface::clearRunningValues()
     pilaser.Q_clear();
     pilaser.intensity_clear();
 }
+//______________________________________________________________________________
+bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
+{
+    bool proceed = true;
+    if(xpos < 0.0) //MAGIC_NUMBER
+    {
+        proceed = false;
+        message("setVCPosition not proceeding xpos too lo, xpos =  ", xpos);
+    }
+    if(ypos < 0.0) //MAGIC_NUMBER
+    {
+        proceed = false;
+        message("setVCPosition not proceeding xpos too lo, ypos =  ", ypos);
+    }
+    if(xpos > 10.0) //MAGIC_NUMBER
+    {
+        proceed = false;
+        message("setVCPosition not proceeding xpos too hi, xpos =  ", xpos);
+    }
+    if(ypos < 10.0) //MAGIC_NUMBER
+    {
+        proceed = false;
+        message("setVCPosition not proceeding ypos too hi, ypos =  ", ypos);
+    }
+
+    if(proceed)
+    {
+        staticEntry_set_VC_xpos
+        return
+
+    }
+    return false;
+}
+
+void staticEntry_set_VC_xpos(const double xpos, const time_t waitTime, pilaserInterface* interface)
+{
+    interface->set_VC_xpos()
+}
+
+set_VC_xpos()
+
+    time_t timeStart = timeNow();
+
+        /* check if time ran out */
+        if(timeNow() - timeStart> waitTime)
+        {
+            timeOut = true;
+        }
+        runningStat& x_mean = cam.data.analysis.x_rs;
+        runningStat& y_mean = cam.data.analysis.y_rs;
+
+        size_t start_buffer_count = getBufferMaxCount_VC();
+
+        setBufferMaxCount_VC(10);//MAGIC_NUMBER
+
+        while( areNotSame(xpos) )
+        {
+
+            message()
+
+        }
+        setBufferMaxCount_VC(start_buffer_count);//MAGIC_NUMBER
+
+
+
+
 ////______________________________________________________________________________
 //std::vector<int> pilaserInterface::getFastImage()
 //{

@@ -101,6 +101,9 @@ class pilaserInterface : public cameraBase
         void clearRunningValues();
 
         bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
+
+        bool setVCPosition(const double xpos, const double ypos);
+
     private:
 
         void initialise();
@@ -112,6 +115,9 @@ class pilaserInterface : public cameraBase
         void killMonitor(pilaserStructs::monitorStruct* ms);
 
         bool shortCaput(unsigned short comm, pilaserStructs::pvStruct& S);
+
+        static void staticEntry_set_VC_xpos(double xpos);
+
 
 //
         std::vector<pilaserStructs::monitorStruct*> continuousMonitorStructs;
@@ -140,6 +146,8 @@ class pilaserInterface : public cameraBase
         */
         bool setValue(pilaserStructs::pvStruct& pvs,const double value);
         bool move(chtype& cht, chid& chi, const double val, const char* m1, const char* m2);
+
+
 };
 //______________________________________________________________________________
 #endif // _PI_LASER_INTERFACE_H

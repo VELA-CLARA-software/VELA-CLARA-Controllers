@@ -93,6 +93,8 @@ namespace HWC_ENUM
                                         )
     /* Which area of the machine is the controller for */
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(MACHINE_AREA, (VELA_INJ)
+                                                      (VELA_VIRTUAL_CATHODE)
+                                                      (CLARA_VIRTUAL_CATHODE)
                                                       (VELA)
                                                       (VELA_BA1)
                                                       (VELA_BA2)

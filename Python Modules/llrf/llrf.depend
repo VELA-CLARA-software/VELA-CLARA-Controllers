@@ -4,7 +4,7 @@
 	<iostream>
 	<sstream>
 
-1525377375 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -12,7 +12,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1525377342 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1533564262 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -21,7 +21,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1525376249 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1533562221 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -43,8 +43,9 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
+	<boost/python/numpy.hpp>
 
-1525093711 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1533816250 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -117,7 +118,7 @@
 	<vector>
 	<cadef.h>
 
-1525450940 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1533891200 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -260,7 +261,7 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1524756152 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+1525796796 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
 	"liberallrfInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -281,13 +282,15 @@
 	<algorithm>
 	<ctype.h>
 
-1525378313 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1533894371 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
 	"controller.h"
 	"interface.h"
 	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
 	<string>
 	<vector>
 	<boost/python.hpp>
@@ -303,7 +306,7 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1525377444 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1527092951 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
@@ -332,9 +335,9 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1520527518 source:d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.cpp
+1524756163 source:d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.cpp
 
-1523913373 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
+1524756163 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
 	"liberallrfConfigReader.h"
 	"llrfStructs.h"
 	<iostream>
@@ -542,4 +545,21 @@
 	<string>
 	<map>
 	<utility>
+
+1533892677 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1533892572 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
 

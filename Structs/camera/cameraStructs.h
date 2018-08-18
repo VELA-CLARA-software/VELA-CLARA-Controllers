@@ -237,7 +237,8 @@ namespace cameraStructs
             power(CAM_ERROR),
             acquire(ACQUIRING_ERROR),
             Blacklevel(UTL::DUMMY_INT),
-            gain(UTL::DUMMY_INT)
+            gain(UTL::DUMMY_INT),
+            mask_feedback(false)
             {}
         /*
             flags for analysis
@@ -251,6 +252,10 @@ namespace cameraStructs
             is the camera acquiring data
         */
         ACQUIRE_STATE acquire;
+        /*
+            mas_feedback updates the mask every shot based on the analysis results
+        */
+        bool mask_feedback;
         /*
             these are vela cam paramters, and i can't think of a
             better place to put them ...
@@ -393,6 +398,7 @@ namespace cameraStructs
         double sig_xy_pix_sd();
         double avg_pix_sd();
         double sum_pix_sd();
+
         size_t x_n();
         size_t y_n();
         size_t sig_x_n();
@@ -405,6 +411,19 @@ namespace cameraStructs
         size_t sig_xy_pix_n();
         size_t avg_pix_n();
         size_t sum_pix_n();
+
+        bool x_full();
+        bool y_full();
+        bool sig_x_full();
+        bool sig_y_full();
+        bool sig_xy_full();
+        bool x_pix_full();
+        bool y_pix_full();
+        bool sig_x_pix_full();
+        bool sig_y_pix_full();
+        bool sig_xy_pix_full();
+        bool avg_pix_full();
+        bool sum_pix_full();
     };
     /*
         fast_image is an VELA pixel array or decimated CLARA pixel array
@@ -413,6 +432,14 @@ namespace cameraStructs
     {
         fast_image():
             name(UTL::UNKNOWN_NAME),
+            /*
+                number of pixels in binary images (i.e saved to disc)
+            */
+            bin_num_pix_x(UTL::ZERO_SIZET),
+            bin_num_pix_y(UTL::ZERO_SIZET),
+            /*
+                number of pixels in array_data (i.e over EPICS )
+            */
             num_pix_x(UTL::ZERO_SIZET),
             num_pix_y(UTL::ZERO_SIZET),
             x_pix_to_mm(UTL::DUMMY_DOUBLE),
@@ -427,6 +454,7 @@ namespace cameraStructs
             {}
         std::string name;
         size_t num_pix_x,num_pix_y, bit_depth,x_pix_scale_factor,y_pix_scale_factor;
+        size_t bin_num_pix_x,bin_num_pix_y;
         // not sure if these are ever used ...
         double x_pix_to_mm,y_pix_to_mm;
         /*

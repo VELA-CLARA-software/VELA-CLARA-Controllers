@@ -74,6 +74,7 @@ using doub = double;
 using cdou = const double;
 using vecd = std::vector<double>;
 using cvus = const std::vector<unsigned short>;
+using cvin = const std::vector<int>;
 using vvcd = std::vector<std::vector<double>>;
 using cved = const std::vector<double>;
 using csiz = const size_t;
@@ -354,6 +355,17 @@ namespace BOOST_PYTHON_INCLUDE
         const char* sum_pix_n_ds = "";
         const char* avg_pix_n_ds = "";
 
+        const char* x_full_ds = "";
+        const char* y_full_ds = "";
+        const char* sig_x_full_ds = "";
+        const char* sig_y_full_ds = "";
+        const char* sig_xy_full_ds = "";
+        const char* x_pix_full_ds = "";
+        const char* sig_x_pix_full_ds = "";
+        const char* sig_y_pix_full_ds = "";
+        const char* sig_xy_pix_full_ds = "";
+        const char* sum_pix_full_ds = "";
+        const char* avg_pix_full_ds = "";
 
         const char* step_size_ds = "";
 
@@ -424,8 +436,19 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sum_pix_n",   &analysis_data::sum_pix_n,sum_pix_n_ds)
             .def_readonly("avg_pix_n",   &analysis_data::avg_pix_n,avg_pix_n_ds)
 
-            .def_readonly("step_size",   &analysis_data::step_size,step_size_ds)
 
+            .def_readonly("y_full",         &analysis_data::y_full, y_full_ds)
+            .def_readonly("sig_x_full",     &analysis_data::sig_x_full, sig_x_full_ds)
+            .def_readonly("sig_y_full",     &analysis_data::sig_y_full,sig_y_full_ds)
+            .def_readonly("sig_xy_full",    &analysis_data::sig_xy_full,sig_xy_full_ds)
+            .def_readonly("x_pix_full",     &analysis_data::x_pix_full,x_pix_full_ds)
+            .def_readonly("sig_x_pix_full", &analysis_data::sig_x_pix_full,sig_x_pix_full_ds)
+            .def_readonly("sig_y_pix_full", &analysis_data::sig_y_pix_full,sig_y_pix_full_ds)
+            .def_readonly("sig_xy_pix_full",&analysis_data::sig_xy_pix_full,sig_xy_pix_full_ds)
+            .def_readonly("sum_pix_full",   &analysis_data::sum_pix_full,sum_pix_full_ds)
+            .def_readonly("avg_pix_full",   &analysis_data::avg_pix_full,avg_pix_full_ds)
+
+            .def_readonly("step_size",   &analysis_data::step_size,step_size_ds)
             ;
     }
     void reg_fast_image(const char* py_name,const char*  py_docs)
@@ -690,10 +713,11 @@ namespace BOOST_PYTHON_INCLUDE
         const char* setMaskYrad_VC_ds = "";
         const char* setMaskYrad_ds_1 = "";
         const char* setMaskYrad_ds_2 = "";
-        const char* setMask_VC_ds = "";
+        const char* setMask_VC_ds1 = "";
+        const char* setMask_VC_ds2 = "";
         const char* setMask_1_ds_1 = "";
         const char* setMask_2_ds_2 = "";
-        const char* setMask_VC_Py = "";
+        const char* setMask_VC_Py_ds = "";
         const char* setMask_Py1_ds = "";
         const char* setMask_Py2_ds = "";
         const char* setBackground_VC_ds = "";
@@ -840,6 +864,10 @@ namespace BOOST_PYTHON_INCLUDE
         const char* isBufferNotFull_VC_ds = "";
         const char* isBufferNotFull_ds1   = "";
         const char* isBufferNotFull_ds2   = "";
+
+        //const char* getSumPix
+
+
         const char* getX_VC_ds= "";
         const char* getX_ds1  = "";
         const char* getX_ds2  = "";
@@ -942,6 +970,20 @@ namespace BOOST_PYTHON_INCLUDE
         const char* takeAndGetFastImage_ds1    = "";
         const char* takeAndGetFastImage_ds2    = "";
 
+
+         const char* setMaskFeedBackOn_VC_ds = "";
+         const char* setMaskFeedBackOn_ds1      = "";
+         const char* setMaskFeedBackOn_ds2      = "";
+         const char* setMaskFeedBackOff_VC_ds = "";
+         const char* setMaskFeedBackOff_ds1     = "";
+         const char* setMaskFeedBackOff_ds2     = "";
+         const char* isMaskFeedbackOn_VC_ds = "";
+         const char* isMaskFeedbackOn_ds1      = "";
+         const char* isMaskFeedbackOn_ds2      = "";
+         const char* isMaskFeedbackOff_VC_ds  = "";
+         const char* isMaskFeedbackOff_ds1       = "";
+         const char* isMaskFeedbackOff_ds2       = "";
+
         /*
             function pointers for overloads to expose to Python...
         */
@@ -960,6 +1002,14 @@ namespace BOOST_PYTHON_INCLUDE
         const cameraStructs::camera_state&(cameraControllerBase::*getStateObj_1)(cstr&)const= &cameraControllerBase::getStateObj;
         const cameraStructs::camera_state&(cameraControllerBase::*getStateObj_2)()     const= &cameraControllerBase::getStateObj;
 
+        bool(cameraControllerBase::*setMaskFeedBackOn_1)(cstr&)       = &cameraControllerBase::setMaskFeedBackOn;
+        bool(cameraControllerBase::*setMaskFeedBackOn_2)()= &cameraControllerBase::setMaskFeedBackOn;
+        bool(cameraControllerBase::*setMaskFeedBackOff_1)(cstr&)       = &cameraControllerBase::setMaskFeedBackOff;
+        bool(cameraControllerBase::*setMaskFeedBackOff_2)()= &cameraControllerBase::setMaskFeedBackOff;
+        bool(cameraControllerBase::*isMaskFeedbackOn_1)(cstr&)const       = &cameraControllerBase::isMaskFeedbackOn;
+        bool(cameraControllerBase::*isMaskFeedbackOn_2)()const= &cameraControllerBase::isMaskFeedbackOn;
+        bool(cameraControllerBase::*isMaskFeedbackOff_1)(cstr&)const       = &cameraControllerBase::isMaskFeedbackOff;
+        bool(cameraControllerBase::*isMaskFeedbackOff_2)()const = &cameraControllerBase::isMaskFeedbackOff;
 
 
 
@@ -1054,6 +1104,7 @@ namespace BOOST_PYTHON_INCLUDE
         bool(cameraControllerBase::*setMaskYrad_1)(int,cstr&)         = &cameraControllerBase::setMaskYrad;
         bool(cameraControllerBase::*setMaskYrad_2)(int)  = &cameraControllerBase::setMaskYrad;
         bool(cameraControllerBase::*setMask_VC_1)(int,int,int,int) = &cameraControllerBase::setMask_VC;
+        bool(cameraControllerBase::*setMask_VC_2)(cvin&) = &cameraControllerBase::setMask_VC;
         bool(cameraControllerBase::*setMask_1)(int,int,int,int,cstr&) = &cameraControllerBase::setMask;
         bool(cameraControllerBase::*setMask_2)(int,int,int,int) = &cameraControllerBase::setMask;
         bool(cameraControllerBase::*setBackground_1)(cstr&)     = &cameraControllerBase::setBackground;
@@ -1157,6 +1208,25 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getStateObj_VC",  &cameraControllerBase::getStateObj_VC  , return_value_policy<reference_existing_object>(),getStateObj_VC_ds )
         .def("getStateObj",  getStateObj_1 , return_value_policy<reference_existing_object>(), getStateObj_ds1 )
         .def("getStateObj",  getStateObj_2 , return_value_policy<reference_existing_object>(), getStateObj_ds2)
+
+
+        .def("isMaskFeedbackOn_VC",  &cameraControllerBase::isMaskFeedbackOn_VC ,isMaskFeedbackOn_VC_ds )
+        .def("isMaskFeedbackOn",  isMaskFeedbackOn_1       ,  isMaskFeedbackOn_ds1 )
+        .def("isMaskFeedbackOn",  isMaskFeedbackOn_1       ,  isMaskFeedbackOn_ds2 )
+
+        .def("isMaskFeedbackOfVC",  &cameraControllerBase::isMaskFeedbackOff_VC ,isMaskFeedbackOff_VC_ds )
+        .def("isMaskFeedbackOff",  isMaskFeedbackOff_1       ,  isMaskFeedbackOff_ds1 )
+        .def("isMaskFeedbackOff",  isMaskFeedbackOff_1       ,  isMaskFeedbackOff_ds2 )
+
+
+        .def("setMaskFeedBackOn_VC",  &cameraControllerBase::setMaskFeedBackOn_VC ,setMaskFeedBackOn_VC_ds )
+        .def("setMaskFeedBackOn",  setMaskFeedBackOn_1       ,  setMaskFeedBackOn_ds1 )
+        .def("setMaskFeedBackOn",  setMaskFeedBackOn_2       ,  setMaskFeedBackOn_ds2 )
+
+        .def("setMaskFeedBackOff_VC",  &cameraControllerBase::setMaskFeedBackOff_VC ,setMaskFeedBackOff_VC_ds )
+        .def("setMaskFeedBackOff",  setMaskFeedBackOff_1       ,  setMaskFeedBackOff_ds1 )
+        .def("setMaskFeedBackOff",  setMaskFeedBackOff_2       ,  setMaskFeedBackOff_ds2 )
+
 
 
         .def("stopAnalysing_VC",  &cameraControllerBase::stopAnalysing_VC ,stopAnalysing_VC_ds )
@@ -1287,11 +1357,12 @@ namespace BOOST_PYTHON_INCLUDE
         .def("setMaskYrad",                    setMaskYrad_1                                         ,                                               setMaskYrad_ds_1)
         .def("setMaskYrad",                    setMaskYrad_2                                         ,                                               setMaskYrad_ds_2)
         //
-        .def("setMask_VC",                     setMask_VC_1                                          ,                                               setMask_VC_ds)
+        //.def("setMask_VC",                     setMask_VC_1                                          ,                                               setMask_VC_ds1)
+        //.def("setMask_VC",                     setMask_VC_2                                          ,                                               setMask_VC_ds2)
         .def("setMask",                        setMask_1                                             ,                                               setMask_1_ds_1)
         .def("setMask",                        setMask_2                                             ,                                               setMask_2_ds_2)
         //
-        .def("setMask_VC",                     &cameraControllerBase::setMask_VC_Py                  ,                                               setMask_VC_Py)
+        .def("setMask_VC",                     &cameraControllerBase::setMask_VC_Py  , setMask_VC_Py_ds)
         .def("setMask",                        &cameraControllerBase::setMask_Py1,                   setMask_Py1_ds)
         .def("setMask",                        &cameraControllerBase::setMask_Py2,                   setMask_Py2_ds)
         //
