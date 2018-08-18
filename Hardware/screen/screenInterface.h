@@ -59,8 +59,6 @@ class screenInterface: public interface
         bool isVMoving(screenStructs::screenObject& scr);
         bool isScreenMoving(screenStructs::screenObject& scr);
         bool isClearForBeam(screenStructs::screenObject& scr);
-
-
         bool isHOut(const std::string & name);
         bool isVOut(const std::string & name);
         bool isHIn(const std::string & name);
@@ -69,11 +67,7 @@ class screenInterface: public interface
         bool isVMover(const std::string & name);
         bool isHVMover(const std::string & name);
         bool isPneumatic(const std::string & name);
-        bool is_HandV_OUT(const std::string & name);
-
         bool isClearForBeam(const std::string & name);
-
-
         bool isHMoving(const std::string & name);
         bool isVMoving(const std::string & name);
         bool isPMoving(const std::string & name);
@@ -96,6 +90,22 @@ class screenInterface: public interface
         double getJDiff(const std::string & name);
         double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
         double getPosition(const std::string & name);
+        bool isVELAPneumatic(const std::string & name);
+        bool isVELAHVMover(const std::string & name);
+        bool isCLARAHVMover(const std::string & name);
+        bool isCLARAVMover(const std::string & name);
+        std::vector<bool> isScreenIn( const std::vector<std::string> & name );
+        std::vector<bool> isScreenOUT( const std::vector<std::string> & name );
+        std::vector<bool> exists_and_isLocked(const std::string& name);
+        std::vector<bool> exists_and_isNotLocked(const std::string& name);
+        double get_H_ACTPOS(const std::string & name);
+        double get_V_ACTPOS(const std::string & name);
+        const std::vector<std::string> getVELAPneumaticScreens(  const std::vector< std::string > & names );
+        const std::vector<std::string> getVELAHVMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getCLARAHVMoverScreens(  const std::vector< std::string > & names );
+        const std::vector<std::string> getCLARAVMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getHVMoverScreens(   const std::vector< std::string > & names );
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void insertYAG( const std::string & name );
@@ -110,23 +120,6 @@ class screenInterface: public interface
         bool setEN( const std::string & name, const screenStructs::DRIVER_DIRECTION direction );
 
         /// OLD FUNCTIONS
-        bool is_VELA_PNEUMATIC(const std::string & name);
-        bool is_VELA_HV_MOVER (const std::string & name);
-        bool is_CLARA_PNEUMATIC (const std::string & name);
-        bool is_CLARA_HV_MOVER (const std::string & name);
-        bool is_CLARA_V_MOVER (const std::string & name);
-        std::vector<bool> isScreenIn( const std::vector<std::string> & name );
-        std::vector<bool> isScreenOUT( const std::vector<std::string> & name );
-        std::vector<bool> exists_and_isLocked(const std::string& name);
-        std::vector<bool> exists_and_isNotLocked(const std::string& name);
-        double get_H_ACTPOS(const std::string & name);
-        double get_V_ACTPOS(const std::string & name);
-
-        const std::vector<std::string> get_VELA_PNEUMATIC_Screens(  const std::vector< std::string > & names );
-        const std::vector<std::string> get_VELA_HV_MOVER_Screens(   const std::vector< std::string > & names );
-        const std::vector<std::string> get_CLARA_PNEUMATIC_Screens( const std::vector< std::string > & names );
-        const std::vector<std::string> get_CLARA_HV_MOVER_Screens(  const std::vector< std::string > & names );
-        const std::vector<std::string> get_CLARA_V_MOVER_Screens(   const std::vector< std::string > & names );
 
         // i want to make sure so python does not have access to the second arguemnt
         void checkScreenCHIDStates();

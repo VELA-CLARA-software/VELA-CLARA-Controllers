@@ -32,7 +32,6 @@ class screenController : public controller
         /// GETTERS
         bool isHOut(const std::string & name);
         bool isVOut(const std::string & name);
-        bool is_HandV_OUT(const std::string & name);
         bool isHIn(const std::string & name);
         bool isVIn(const std::string & name);
         bool isMover(const std::string & name);
@@ -64,6 +63,12 @@ class screenController : public controller
         double getJDiff(const std::string & name);
         double getDevicePosition(const std::string & name, const screenStructs::SCREEN_STATE state);
         double getPosition(const std::string & name);
+        const std::vector<std::string> getVELAPneumaticScreens(  const std::vector< std::string > & names );
+        const std::vector<std::string> getVELAHVMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getCLARAHVMoverScreens(  const std::vector< std::string > & names );
+        const std::vector<std::string> getCLARAVMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getHVMoverScreens(   const std::vector< std::string > & names );
         //boost::python::list getScreenNames_Py();
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
@@ -81,6 +86,12 @@ class screenController : public controller
 //        boost::python::list isScreenIn_Py(const std::vector<std::string> & name);
         boost::python::dict getILockStatesStr_Py(std::string& name);
         boost::python::dict getILockStates_Py   (std::string& name);
+        boost::python::list getVELAPneumaticScreens_Py( const std::vector< std::string > & names );
+        boost::python::list getVELAHVMoverScreens_Py( const std::vector< std::string > & names );
+        boost::python::list getCLARAHVMoverScreens_Py( const std::vector< std::string > & names );
+        boost::python::list getCLARAVMoverScreens_Py( const std::vector< std::string > & names );
+        boost::python::list getMoverScreens_Py( const std::vector< std::string > & names );
+        boost::python::list getHVMoverScreens_Py( const std::vector< std::string > & names );
         boost::python::dict get_SCREEN_STATE_Definition();
         boost::python::dict get_DRIVER_STATE_Definition();
 #endif // BUILD_DLL

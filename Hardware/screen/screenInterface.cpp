@@ -639,11 +639,6 @@ bool screenInterface::isVOut(screenStructs::screenObject & scr)
     return false;
 }
 //_________________________________________________________________________________________________________________
-bool screenInterface::is_HandV_OUT(const std::string & name)
-{
-    return isHOut(name) && isVOut(name);
-}
-//_________________________________________________________________________________________________________________
 bool screenInterface::isHOut(const std::string & name)
 {
     return isHOut(allScreentData.at(name));
@@ -693,6 +688,32 @@ bool screenInterface::isHVMover(const std::string & name)
     return false;
 }
 //_________________________________________________________________________________________________________________
+bool screenInterface::isVELAHVMover(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) && getScreenType(name) == screenStructs::SCREEN_TYPE::VELA_HV_MOVER )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    return false;
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isCLARAHVMover(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) && getScreenType(name) == screenStructs::SCREEN_TYPE::CLARA_HV_MOVER )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    return false;
+}
+//_________________________________________________________________________________________________________________
 bool screenInterface::isPneumatic(const std::string & name)
 {
     if( entryExists( allScreentData, name ) && getScreenType(name) == screenStructs::SCREEN_TYPE::VELA_PNEUMATIC  )
@@ -705,8 +726,60 @@ bool screenInterface::isPneumatic(const std::string & name)
     }
     return false;
 }
-//_________________________________________________________________________________________________________________
-
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::getVELAPneumaticScreens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( isPneumatic( it ) )
+            r.push_back( it );
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::getVELAHVMoverScreens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( isVELAHVMover( it ) )
+            r.push_back( it );
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::getCLARAHVMoverScreens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( isCLARAHVMover( it ) )
+            r.push_back( it );
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::getCLARAVMoverScreens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( isVMover( it ) )
+            r.push_back( it );
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::getMoverScreens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( isMover( it ) )
+            r.push_back( it );
+    return r;
+}
+//___________________________________________________________________________________________________________
+const std::vector<std::string> screenInterface::getHVMoverScreens(  const std::vector< std::string > & names )
+{
+    std::vector<std::string> r;
+    for( auto && it : names )
+        if( isHVMover( it ) )
+            r.push_back( it );
+    return r;
+}
 //_________________________________________________________________________________________________________________
 bool screenInterface::isClearForBeam(const std::string& name)
 {
@@ -798,6 +871,16 @@ bool screenInterface::isVIn(screenStructs::screenObject & scr)
     return !isVOut(scr);
 }
 //_________________________________________________________________________________________________________________
+bool screenInterface::isHIn(const std::string & name)
+{
+    return !isHOut(name);
+}
+//_________________________________________________________________________________________________________________
+bool screenInterface::isVIn(const std::string & name)
+{
+    return !isVOut(name);
+}
+//_________________________________________________________________________________________________________________
 bool screenInterface::isScreenMoving(screenStructs::screenObject & scr)
 {
     return scr.moving == true;
@@ -817,24 +900,7 @@ bool screenInterface::isScreenMoving(const std::string & name)
 //_________________________________________________________________________________________________________________
 bool screenInterface::isScreenIn(const std::string & name)
 {
-    bool r = false;
-    if( entryExists( allScreentData, name ) )
-    {
-        return !isClearForBeam(name);
-    }
-    else
-        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
-    return r;
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::isHIn(const std::string & name)
-{
-    return !isHOut(name);
-}
-//_________________________________________________________________________________________________________________
-bool screenInterface::isVIn(const std::string & name)
-{
-    return !isVOut(name);
+    return isScreenIn( allScreentData.at(name) );
 }
 //_________________________________________________________________________________________________________________
 bool screenInterface::entryExists2(const std::string & name, bool weKnowEntryExists )
@@ -852,24 +918,6 @@ std::vector<bool> screenInterface::isScreenIn(const std::vector<std::string> & n
         r.push_back(isScreenIn(it));
     return r;
 }
-////___________________________________________________________________________________________________________
-//std::vector<bool> screenInterface::isScreenOUT( const std::vector<std::string> & name )
-//{
-//    std::vector<bool> r;
-//    for( auto && it : name )
-//        r.push_back(isScreenOUT(it,false));
-//    return r;
-//}
-////___________________________________________________________________________________________________________
-//bool screenInterface::getScreenState(const std::string & name, const bool weKnowEntryExists)
-//{
-//    if( weKnowEntryExists )
-//        return allScreentData.at(name).screenState;
-//    else if( entryExists( allScreentData, name ) )
-//        return allScreentData.at(name).screenState;
-//    else
-//        return screenStructs::SCREEN_STATE::SCREEN_UNKNOWN;
-//}
 //___________________________________________________________________________________________________________
 const screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::string & name)
 {
@@ -1395,204 +1443,6 @@ void screenInterface::setPosition( const std::string & name, const double setPos
 //    std::vector< std::string> n( 1, name );
 //    return  screenMoveTo( n, v);
 //}
-//______________________________________________________________________________
-
-// Quantifiers
-
-//___________________________________________________________________________________________________________
-//___________________________________________________________________________________________________________
-bool screenInterface::is_VELA_PNEUMATIC( const std::string & name )
-{
-    bool r = false;
-    if( entryExists(allScreentData, name ) )
-        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::VELA_PNEUMATIC )
-            r = true;
-    return r;
-}
-//___________________________________________________________________________________________________________
-bool screenInterface::is_CLARA_PNEUMATIC( const std::string & name )
-{
-    bool r = false;
-    if( entryExists(allScreentData, name ) )
-        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::CLARA_PNEUMATIC )
-            r = true;
-    return r;
-}
-//___________________________________________________________________________________________________________
-bool screenInterface::is_VELA_HV_MOVER ( const std::string & name )
-{
-    bool r = false;
-    if( entryExists(allScreentData, name ) )
-        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::VELA_HV_MOVER )
-            r = true;
-    return r;
-}
-//___________________________________________________________________________________________________________
-bool screenInterface::is_CLARA_HV_MOVER ( const std::string & name )
-{
-    bool r = false;
-    if( entryExists(allScreentData, name ) )
-        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::CLARA_HV_MOVER )
-            r = true;
-    return r;
-}
-//___________________________________________________________________________________________________________
-bool screenInterface::is_CLARA_V_MOVER ( const std::string & name )
-{
-    bool r = false;
-    if( entryExists(allScreentData, name ) )
-        if( allScreentData.at(name).screenType == screenStructs::SCREEN_TYPE::CLARA_V_MOVER )
-            r = true;
-    return r;
-}
-//___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_VELA_PNEUMATIC_Screens(  const std::vector< std::string > & names )
-{
-    std::vector<std::string> r;
-    for( auto && it : names )
-        if( is_VELA_PNEUMATIC( it ) )
-            r.push_back( it );
-    return r;
-}
-//___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_VELA_HV_MOVER_Screens(  const std::vector< std::string > & names )
-{
-    std::vector<std::string> r;
-    for( auto && it : names )
-        if( is_VELA_HV_MOVER( it ) )
-            r.push_back( it );
-    return r;
-}
-//___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_CLARA_PNEUMATIC_Screens(  const std::vector< std::string > & names )
-{
-    std::vector<std::string> r;
-    for( auto && it : names )
-        if( is_CLARA_PNEUMATIC( it ) )
-            r.push_back( it );
-    return r;
-}
-//___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_CLARA_HV_MOVER_Screens(  const std::vector< std::string > & names )
-{
-    std::vector<std::string> r;
-    for( auto && it : names )
-        if( is_CLARA_HV_MOVER( it ) )
-            r.push_back( it );
-    return r;
-}
-//___________________________________________________________________________________________________________
-const std::vector<std::string> screenInterface::get_CLARA_V_MOVER_Screens(  const std::vector< std::string > & names )
-{
-    std::vector<std::string> r;
-    for( auto && it : names )
-        if( is_CLARA_V_MOVER( it ) )
-            r.push_back( it );
-    return r;
-}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::yagOnV( const screenStructs::screenDriver & scrdr )
-//{
-//    return scrdr.vCassette.cassetteElements.at(screenStructs::SCREEN_STATE::V_YAG) == true;
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::isVDriveEnabled(const screenStructs::screenDriver & scrdr )
-//{
-//    return !isVDriveDisabled(scrdr);
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::isVDriveDisabled(const screenStructs::screenDriver & scrdr )
-//{
-//    return scrdr.vDriverSTA.state == screenStructs::DRIVER_STATE::DRIVER_DISABLED;
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::isHDriveEnabled(const screenStructs::screenDriver & scrdr )
-//{
-//    return !isHDriveDisabled(scrdr);
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::isHDriveDisabled(const screenStructs::screenDriver & scrdr )
-//{
-//    return scrdr.hDriverSTA.state == screenStructs::DRIVER_STATE::DRIVER_DISABLED;
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::is_H_Element(const std::string & name, const screenStructs::SCREEN_STATE e )
-//{   // When moving a cassette element we need to know if it is an H or V element
-//    if( allScreentData.at(name).elementDirection.at(e) == screenStructs::DRIVER_DIRECTION::HORIZONTAL )
-//            return true;
-//    return false;
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::is_V_Element(const std::string & name, const screenStructs::SCREEN_STATE e )
-//{   // When moving a cassette element we need to know if it is an H or V element
-//    if( allScreentData.at(name).elementDirection.at(e) == screenStructs::DRIVER_DIRECTION::VERTICAL )
-//            return true;
-//    return false;
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::is_OUT_AND_VDriveEnabled(const std::string & name)
-//{
-//    return allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_OUT
-//           &&
-//           isVDriveEnabled(allScreentData.at(name).driver);
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::is_H_element_AND_HDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
-//{
-//    return is_H_Element(e) && isHDriveEnabled(scrdr);
-//}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::is_V_element_AND_VDriveEnabled(const screenStructs::SCREEN_STATE e,const screenStructs::screenDriver& scrdr)
-//{
-//    return is_V_Element(e) && isVDriveEnabled(scrdr);
-//}
-//_________________________________________________________________________________________________________________
-bool screenInterface::is_IN_OR_OUT(const screenStructs::SCREEN_STATE sta )
-{
-    return sta == screenStructs::SCREEN_STATE::SCREEN_OUT || sta == screenStructs::SCREEN_STATE::SCREEN_IN;
-}
-////_________________________________________________________________________________________________________________
-//bool screenInterface::isScreenOUT(const std::string & name, const bool weKnowEntryExists)
-//{
-//    if( entryExists2(name,weKnowEntryExists) )
-//        return allScreentData.at(name).screenState == screenStructs::SCREEN_STATE::SCREEN_OUT;
-//    else
-//        return false;//do we need a TRUE FALSE or UNKNOWN ??
-//}
-//_________________________________________________________________________________________________________________
-std::vector<bool> screenInterface::exists_and_isLocked(const std::string& name)
-{
-    std::vector<bool> r;
-    if( entryExists(allScreentData, name ))
-    {
-        r.push_back(true);
-        r.push_back( isLockedMap.at(name) );
-    }
-    else
-    {
-        r.push_back(false);
-        r.push_back(false);
-    }
-    debugMessage("exists_and_isLocked return ", r[0], "  ", r[1]);
-    return r;
-}
-//_________________________________________________________________________________________________________________
-std::vector<bool> screenInterface::exists_and_isNotLocked(const std::string& name)
-{
-    std::vector<bool> r;
-    if( entryExists(allScreentData,name) )
-    {
-        r.push_back(true);
-        r.push_back( !isLockedMap.at(name) );
-    }
-    else
-    {
-        r.push_back(false);
-        r.push_back(false);
-    }
-    debugMessage("exists_and_isNotLocked return ", r[0], "  ", r[1]);
-    return r;
-}
 //______________________________________________________________________________
 std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > screenInterface::getILockStates( const std::string & objName )const
 {

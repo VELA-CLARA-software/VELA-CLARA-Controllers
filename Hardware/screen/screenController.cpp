@@ -79,11 +79,6 @@ bool screenController::isVOut(const std::string & name)
     return localInterface.isVOut(name);
 }
 //________________________________________________________________________________
-bool screenController::is_HandV_OUT(const std::string & name)
-{
-    return localInterface.is_HandV_OUT(name);
-}
-//________________________________________________________________________________
 bool screenController::isHIn(const std::string & name)
 {
     return localInterface.isHIn(name);
@@ -164,7 +159,37 @@ bool screenController::setEX(const std::string & name )
 {
     return localInterface.setEX(name);
 }
-////________________________________________________________________________________
+//________________________________________________________________________________
+const std::vector<std::string> screenController::getVELAPneumaticScreens(  const std::vector< std::string > & names )
+{
+    return localInterface.getVELAPneumaticScreens(names);
+}
+//________________________________________________________________________________
+const std::vector<std::string> screenController::getVELAHVMoverScreens(   const std::vector< std::string > & names )
+{
+    return localInterface.getVELAHVMoverScreens(names);
+}
+//________________________________________________________________________________
+const std::vector<std::string> screenController::getCLARAHVMoverScreens(  const std::vector< std::string > & names )
+{
+    return localInterface.getCLARAHVMoverScreens(names);
+}
+//________________________________________________________________________________
+const std::vector<std::string> screenController::getCLARAVMoverScreens(   const std::vector< std::string > & names )
+{
+    return localInterface.getCLARAVMoverScreens(names);
+}
+//________________________________________________________________________________
+const std::vector<std::string> screenController::getMoverScreens(   const std::vector< std::string > & names )
+{
+    return localInterface.getMoverScreens(names);
+}
+//________________________________________________________________________________
+const std::vector<std::string> screenController::getHVMoverScreens(   const std::vector< std::string > & names )
+{
+    return localInterface.getHVMoverScreens(names);
+}
+//________________________________________________________________________________
 //screenStructs::SCREEN_STATE screenController::getScreenState( const std::string & name, const bool weKnowEntryExists )
 //{
 //    return localInterface.getScreenState(name, weKnowEntryExists);
@@ -285,6 +310,36 @@ boost::python::dict screenController::getILockStates_Py( std::string& name )
 boost::python::list screenController::getScreenNames_Py()
 {
     return toPythonList(getScreenNames());
+}
+//________________________________________________________________________________
+boost::python::list screenController::getVELAPneumaticScreens_Py( const std::vector< std::string > & names )
+{
+    return toPythonList(getVELAPneumaticScreens(names));
+}
+//________________________________________________________________________________
+boost::python::list screenController::getVELAHVMoverScreens_Py( const std::vector< std::string > & names )
+{
+    return toPythonList(getVELAHVMoverScreens(names));
+}
+//________________________________________________________________________________
+boost::python::list screenController::getCLARAHVMoverScreens_Py( const std::vector< std::string > & names )
+{
+    return toPythonList(getCLARAHVMoverScreens(names));
+}
+//________________________________________________________________________________
+boost::python::list screenController::getCLARAVMoverScreens_Py( const std::vector< std::string > & names )
+{
+    return toPythonList(getCLARAVMoverScreens(names));
+}
+//________________________________________________________________________________
+boost::python::list screenController::getMoverScreens_Py( const std::vector< std::string > & names )
+{
+    return toPythonList(getMoverScreens(names));
+}
+//________________________________________________________________________________
+boost::python::list screenController::getHVMoverScreens_Py( const std::vector< std::string > & names )
+{
+    return toPythonList(getHVMoverScreens(names));
 }
 ////________________________________________________________________________________
 //boost::python::list screenController::isScreenIn_Py(const std::vector<std::string> & name )
