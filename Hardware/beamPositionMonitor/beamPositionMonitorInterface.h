@@ -77,6 +77,7 @@ class beamPositionMonitorInterface : public interface
         boost::circular_buffer< double > getBPMQBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getTimeStampsBuffer( const std::string & bpmName );
         boost::circular_buffer< std::string > getStrTimeStampsBuffer( const std::string & bpmName );
+        boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > getStatusBuffer( const std::string & bpmName );
         long getRA1( const std::string & bpm );
         long getRA2( const std::string & bpm );
         long getRD1( const std::string & bpm );

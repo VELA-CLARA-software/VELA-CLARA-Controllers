@@ -81,6 +81,7 @@ class beamPositionMonitorController : public controller
         boost::circular_buffer< double > getBPMQBuffer( const std::string & bpmName );
         boost::circular_buffer< double > getTimeStampsBuffer( const std::string & bpmName );
         boost::circular_buffer< std::string > getStrTimeStampsBuffer( const std::string & bpmName );
+        boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > getStatusBuffer( const std::string & name );
         long getRA1( const std::string & bpmName );
         long getRA2( const std::string & bpmName );
         long getRD1( const std::string & bpmName );
@@ -120,6 +121,7 @@ class beamPositionMonitorController : public controller
         boost::python::list getBPMYBuffer_Py( const std::string & bpmName );
         boost::python::list getBPMQBuffer_Py( const std::string & bpmName );
         boost::python::list getTimeStampsBuffer_Py( const std::string & bpmName );
+        boost::python::list getStatusBuffer_Py( const std::string & bpmName );
         #endif
 
         /// These are pure virtual method in the base class and MUST be overwritten in the derived Controller...
