@@ -1468,7 +1468,7 @@ bool cameraBase::setMaskX(int x,cameraObject& cam)
     if(isClaraCam(cam))
     {
         /*
-            for now, (i.e may changin in future)
+            for now, (i.e may change in future)
             we're going to hardcode som elimits on the mask positions
         */
         if(x < 0)
@@ -1511,7 +1511,7 @@ bool cameraBase::setMaskY(int x,cameraObject& cam)
     if(isClaraCam(cam))
     {
         /*
-            for now, (i.e may changin in future)
+            for now, (i.e may change in future)
             we're going to hardcode som elimits on the mask positions
         */
         if(x < 0)
@@ -1551,27 +1551,31 @@ bool cameraBase::setMaskXrad(int x,const std::string& cam)
     return setMaskXrad(x,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskXrad(int x,cameraObject& cam)
+bool cameraBase::setMaskXrad(int new_val,cameraObject& cam)
 {
     if(isClaraCam(cam))
     {
         /*
-            for now, (i.e may changin in future)
+            for now, (i.e may chang in future)
             we're going to hardcode som elimits on the mask positions
         */
-        if(x < 1)
+        if(new_val < 1)
         {
             return false;
         }
-        if(x > (int)(cam.data.image.bin_num_pix_y/UTL::TWO_SIZET))
+        if(cam.data.mask.mask_x + new_val > (int)cam.data.image.bin_num_pix_x)
         {
             return false;
         }
-        return cam_caput(cam, x, CAM_PV_TYPE::MASK_X_RAD);
+        if(cam.data.mask.mask_x - new_val < UTL::ONE_INT )
+        {
+            return false;
+        }
+        return cam_caput(cam, new_val, CAM_PV_TYPE::MASK_X_RAD);
     }
     else
     {
-        cam.data.mask.mask_x_rad = x;
+        cam.data.mask.mask_x_rad = new_val;
     }
     return false;
 }
@@ -1592,7 +1596,7 @@ bool cameraBase::setMaskYrad(int x,const std::string& cam)
     return setMaskYrad(x,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskYrad(int x,cameraObject& cam)
+bool cameraBase::setMaskYrad(int new_val,cameraObject& cam)
 {
     if(isClaraCam(cam))
     {
@@ -1600,19 +1604,23 @@ bool cameraBase::setMaskYrad(int x,cameraObject& cam)
             for now, (i.e may changin in future)
             we're going to hardcode som elimits on the mask positions
         */
-        if(x < 1)
+        if(new_val < 1)
         {
             return false;
         }
-        else if(x > (int)(cam.data.image.bin_num_pix_y/UTL::TWO_SIZET))
+        if(cam.data.mask.mask_y + new_val > (int)cam.data.image.bin_num_pix_y)
         {
             return false;
         }
-        return cam_caput(cam, x, CAM_PV_TYPE::MASK_Y_RAD);
+        if(cam.data.mask.mask_y - new_val < UTL::ONE_INT )
+        {
+            return false;
+        }
+        return cam_caput(cam, new_val, CAM_PV_TYPE::MASK_Y_RAD);
     }
     else
     {
-        cam.data.mask.mask_y_rad = x;
+        cam.data.mask.mask_y_rad = new_val;
     }
     return false;
 }
@@ -3393,7 +3401,6 @@ bool cameraBase::setCenterYPixel(unsigned short yC)
     return setCenterYPixel(yC,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-
 bool cameraBase::setPixMM_VC(const double pmm)
 {
     return setPixMM(pmm,*vcCamPtr);
@@ -3413,7 +3420,6 @@ bool cameraBase::setPixMM(const double pmm)
 {
     return setPixMM(pmm, *selectedCamPtr);
 }
-
 //---------------------------------------------------------------------------------
 bool cameraBase::startAnalysis_VC()
 {
@@ -3440,7 +3446,6 @@ bool cameraBase::startAnalysis()
     return startAnalysis(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-
 bool cameraBase::stopAnalysis_VC()
 {
     return stopAnalysis(*vcCamPtr);

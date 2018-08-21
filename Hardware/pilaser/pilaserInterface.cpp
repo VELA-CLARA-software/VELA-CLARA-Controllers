@@ -729,8 +729,8 @@ bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
 
     if(proceed)
     {
-        staticEntry_set_VC_xpos
-        return
+//        staticEntry_set_VC_xpos
+//        return
 
     }
     return false;
