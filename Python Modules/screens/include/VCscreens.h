@@ -189,8 +189,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .value("V_YAG",           screenStructs::SCREEN_STATE::V_YAG)
         .value("V_GRAT",          screenStructs::SCREEN_STATE::V_GRAT )
         .value("V_COL",           screenStructs::SCREEN_STATE::V_COL )
-        .value("RETRACTED",       screenStructs::SCREEN_STATE::YAG )
-        .value("YAG",             screenStructs::SCREEN_STATE::RETRACTED )
+        //.value("RETRACTED",       screenStructs::SCREEN_STATE::YAG)
+        //.value("YAG",             screenStructs::SCREEN_STATE::RETRACTED  )
+        // changed to:
+        .value("RETRACTED",       screenStructs::SCREEN_STATE::RETRACTED)
+        .value("YAG",             screenStructs::SCREEN_STATE::YAG  )
         .value("UNKNOWN_POSITION",screenStructs::SCREEN_STATE::UNKNOWN_POSITION )
         ;
 
