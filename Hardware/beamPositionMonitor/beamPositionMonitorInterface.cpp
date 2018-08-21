@@ -628,19 +628,22 @@ void beamPositionMonitorInterface::checkBPMStatus( beamPositionMonitorStructs::b
 {
     if( bpmdo->awakTStampBuffer[bpmdo->awakTStampBuffer.size()] - bpmdo->timeStampsBuffer[bpmdo->timeStampsBuffer.size()] > 1 )
     {
+        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
+        bpmdo -> statusBuffer.push_back( bpmdo->status );
     }
     else if( checkBPMBuffer( bpmdo -> xBuffer ) || checkBPMBuffer( bpmdo -> yBuffer ) )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
+        bpmdo -> statusBuffer.push_back( bpmdo->status );
     }
-    else if ( checkIfNAN( bpmdo -> xBuffer ) || checkIfNAN( bpmdo-> yBuffer ) )
+    else if ( isnan( bpmdo -> xBuffer.back() ) || isnan( bpmdo-> yBuffer.back() ) )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
+        bpmdo -> statusBuffer.push_back( bpmdo->status );
     }
     else if( abs(bpmdo -> pu1Buffer.back()) > 1.0 || abs(bpmdo -> pu2Buffer.back()) > 1.0 || abs(bpmdo -> pu3Buffer.back()) > 1.0 || abs(bpmdo -> pu4Buffer.back()) > 1.0 )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::NONLINEAR;
-        bpmdo -> statusBuffer.push_back( bpmdo->status );
 //        message( bpmdo->name, " status is BAD, X or Y > 10!!!!!!!!!!!!!!!!!! " );
     }
     else if( abs(bpmdo -> pu1Buffer.back()) < 1.0 || abs(bpmdo -> pu2Buffer.back()) < 1.0 || abs(bpmdo -> pu3Buffer.back()) < 1.0 || abs(bpmdo -> pu4Buffer.back()) < 1.0 )
@@ -657,25 +660,10 @@ void beamPositionMonitorInterface::checkBPMStatus( beamPositionMonitorStructs::b
 //______________________________________________________________________________
 bool beamPositionMonitorInterface::checkBPMBuffer( boost::circular_buffer< double > buf )
 {
-    for( std::vector<int>::size_type i = 0; i != buf.size(); i++ )
-    {
-        if( buf[ i + 1 ] == buf[ i ] )
+        if( buf[ buf.size() - 1 ] == buf[ buf.size() ] )
         {
             return true;
         }
-    }
-    return false;
-}
-//______________________________________________________________________________
-bool beamPositionMonitorInterface::checkIfNAN( boost::circular_buffer< double > buf )
-{
-    for( std::vector<int>::size_type i = 0; i != buf.size(); i++ )
-    {
-        if( isnan( buf[ i ] ) )
-        {
-            return true;
-        }
-    }
     return false;
 }
 //______________________________________________________________________________
