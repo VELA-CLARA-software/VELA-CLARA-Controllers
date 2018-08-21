@@ -138,6 +138,7 @@ class beamPositionMonitorInterface : public interface
         void updateDBRLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void checkBPMStatus( beamPositionMonitorStructs::bpmDataObject * bpmdo );
         bool beamPositionMonitorInterface::checkBPMBuffer( boost::circular_buffer< double > buf );
+        bool beamPositionMonitorInterface::checkIfNAN( boost::circular_buffer< double > buf );
 
         void setMonitorVectors( const std::string name );
         void statusBufferToVector( boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > buf, std::vector< beamPositionMonitorStructs::BPM_STATUS > vec );
