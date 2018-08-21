@@ -554,6 +554,10 @@ bool screenConfigReader::readConfig( screenConfigReader & obj, const std::string
             success = true;
             debugMessage( "Number of objects created, ",scrObjects.size()," == ",numObjs,", objects delared in Config" );
         }
+        else
+        {
+            debugMessage( "!!!ERROR!!!!, faile dsanity check Number of objects created, ",scrObjects.size()," != ",numObjs,", objects delared in Config" );
+        }
     }
 
 

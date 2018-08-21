@@ -601,6 +601,7 @@ void screenInterface::updateMoving( screenStructs::monitorStruct * ms, const uns
                 break;
             case 1:
                 allScreentData.at(screenName).moving = true;
+                allScreentData.at(screenName).screenState = screenStructs::SCREEN_STATE::SCREEN_MOVING;
                 break;
         }
     }
