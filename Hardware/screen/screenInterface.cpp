@@ -923,10 +923,12 @@ const screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::str
 {
     if( entryExists( allScreentData, name ) )
     {
-        allScreentData.at(name).screenState;
+        return allScreentData.at(name).screenState;
     }
     else
         std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
+
+    return screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
 }
 //___________________________________________________________________________________________________________
 const screenStructs::screenObject & screenInterface::getScreenObject(const std::string & name)

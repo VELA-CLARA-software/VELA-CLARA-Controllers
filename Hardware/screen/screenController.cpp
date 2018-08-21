@@ -297,6 +297,12 @@ std::vector< std::string > screenController::getScreenNames()
 //________________________________________________________________________________
 #ifdef BUILD_DLL
 //______________________________________________________________________________
+
+boost::python::list screenController::getAvailableDevices_Py(const std::string& name)
+{
+    return toPythonList(getAvailableDevices(name));
+}
+//______________________________________________________________________________
 boost::python::dict screenController::getILockStatesStr_Py( std::string& name )
 {
     return enumStringMapToPythonDict( getILockStatesStr( name ) );
