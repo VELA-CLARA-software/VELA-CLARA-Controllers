@@ -524,7 +524,7 @@ void screenInterface::updateJDiff( screenStructs::monitorStruct * ms, const doub
         }
         // this is also copying the pvstructs maps that we know
         //will never be used (IS THIS A PROBLEM?)
-        if( allScreentData.at(screenName).screenHState == allScreentData.at(screenName).screenSetHState && allScreentData.at(screenName).screenVState == allScreentData.at(screenName).screenSetVState )
+        if( allScreentData.at(screenName).screenState == allScreentData.at(screenName).screenSetState )
         {
             switch( ms->dir )
             {
@@ -1257,13 +1257,13 @@ bool screenInterface::setScreenTrigger( const std::string & name )
     unsigned short send = 1;
     if( isMover(name) )
     {
-        if( allScreentData.at(name).screenSetVState != screenStructs::SCREEN_STATE::V_RETRACTED )
+        if( allScreentData.at(name).screenSetState != screenStructs::SCREEN_STATE::V_RETRACTED )
         {
             ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
                    allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
                    &send );
         }
-        else if( allScreentData.at(name).screenSetHState != screenStructs::SCREEN_STATE::H_RETRACTED )
+        else if( allScreentData.at(name).screenSetState != screenStructs::SCREEN_STATE::H_RETRACTED )
         {
             ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
                    allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,

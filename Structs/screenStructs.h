@@ -130,16 +130,11 @@ namespace screenStructs
     struct screenObject
     {
         screenObject():name(UTL::UNKNOWN_NAME),pvRoot(UTL::UNKNOWN_PVROOT),screenType(UNKNOWN_SCREEN_TYPE),
-                       screenHState(UNKNOWN_POSITION),screenSetHState(UNKNOWN_POSITION),
-                       screenVState(UNKNOWN_POSITION),screenSetVState(UNKNOWN_POSITION),
-                       screenPState(UNKNOWN_POSITION),screenSetPState(UNKNOWN_POSITION),
                        screenState(UNKNOWN_POSITION), screenSetState(UNKNOWN_POSITION),
-//                       screenState.second(UNKNOWN_POSITION), screenSetState.second(UNKNOWN_POSITION),
                        devCentH(UTL::DUMMY_DOUBLE),devCentV(UTL::DUMMY_DOUBLE), devCentP(UTL::DUMMY_DOUBLE),
                        actPOSH(UTL::DUMMY_DOUBLE),actPOSV(UTL::DUMMY_DOUBLE), actPOSP(UTL::DUMMY_DOUBLE){}
         std::string name, pvRoot;
         SCREEN_TYPE       screenType;
-        SCREEN_STATE      screenHState, screenSetHState, screenVState, screenSetVState, screenPState, screenSetPState;
         SCREEN_STATE      screenState, screenSetState;
         double            devCentH, devCentV, devCentP, devCent;
         double            actPOSH, actPOSV, actPOSP;
