@@ -120,6 +120,11 @@ std::vector< std::string > beamPositionMonitorController::getBPMNames()
     return localInterface.getBPMNames();
 }
 //______________________________________________________________________________
+boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > beamPositionMonitorController::getStatusBuffer( const std::string & name )
+{
+    return localInterface.getStatusBuffer( name );
+}
+//______________________________________________________________________________
 const bool beamPositionMonitorController::isDataBufferFull( const std::string & name )
 {
     return localInterface.isDataBufferFull( name );
@@ -364,6 +369,11 @@ boost::python::list beamPositionMonitorController::getBPMQBuffer_Py( const std::
 boost::python::list beamPositionMonitorController::getTimeStampsBuffer_Py( const std::string & name )
 {
     return toPythonList(getTimeStampsBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list beamPositionMonitorController::getStatusBuffer_Py( const std::string & name )
+{
+    return toPythonList(getStatusBuffer( name ));
 }
 #endif
 //______________________________________________________________________________

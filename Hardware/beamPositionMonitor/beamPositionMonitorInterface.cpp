@@ -626,17 +626,17 @@ void beamPositionMonitorInterface::setMonitorVectors( const std::string name )
 //______________________________________________________________________________
 void beamPositionMonitorInterface::checkBPMStatus( beamPositionMonitorStructs::bpmDataObject * bpmdo )
 {
-    if( bpmdo->awakTStampBuffer[bpmdo->awakTStampBuffer.size()] - bpmdo->timeStampsBuffer[bpmdo->timeStampsBuffer.size()] > 1 || checkBPMBuffer( bpmdo -> xBuffer ) )
+    if( bpmdo->awakTStampBuffer[bpmdo->awakTStampBuffer.size()] - bpmdo->timeStampsBuffer[bpmdo->timeStampsBuffer.size()] > 1 || checkBPMBuffer( bpmdo -> xBuffer ) || checkBPMBuffer( bpmdo -> yBuffer ) )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
     }
-    else if( abs(bpmdo -> x) > 10.0 || abs(bpmdo -> y) > 10.0 )
+    else if( abs(bpmdo -> pu1Buffer.back()) > 1.0 || abs(bpmdo -> pu2Buffer.back()) > 1.0 || abs(bpmdo -> pu3Buffer.back()) > 1.0 || abs(bpmdo -> pu4Buffer.back()) > 1.0 )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::NONLINEAR;
         bpmdo -> statusBuffer.push_back( bpmdo->status );
 //        message( bpmdo->name, " status is BAD, X or Y > 10!!!!!!!!!!!!!!!!!! " );
     }
-    else if( abs(bpmdo -> x) < 10.0 || abs(bpmdo -> y) < 10.0 )
+    else if( abs(bpmdo -> pu1Buffer.back()) < 1.0 || abs(bpmdo -> pu2Buffer.back()) < 1.0 || abs(bpmdo -> pu3Buffer.back()) < 1.0 || abs(bpmdo -> pu4Buffer.back()) < 1.0 )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::GOOD;
         bpmdo -> statusBuffer.push_back( bpmdo->status );
@@ -1126,6 +1126,15 @@ std::vector< std::string > beamPositionMonitorInterface::getStrTimeStamps( const
     std::vector< std::string > r;
     if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).strTimeStamps.size() != 0 )
         return bpmObj.dataObjects.at( bpmName ).strTimeStamps;
+    else
+        return r;
+}
+//______________________________________________________________________________
+boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > beamPositionMonitorInterface::getStatusBuffer( const std::string & bpmName )
+{
+    boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > r;
+    if( entryExists( bpmObj.dataObjects, bpmName ) && bpmObj.dataObjects.at( bpmName ).statusBuffer.size() != 0 )
+        return bpmObj.dataObjects.at( bpmName ).statusBuffer;
     else
         return r;
 }

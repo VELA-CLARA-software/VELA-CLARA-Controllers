@@ -132,6 +132,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def(vector_indexing_suite< boost::circular_buffer< double > >())
         ;
 
+//    boost::python::class_< boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > >("Circular buffer definition for python ", boost::python::no_init)
+//        .def(vector_indexing_suite< boost::circular_buffer< beamPositionMonitorStructs::BPM_STATUS > >())
+//        ;
+
     boost::python::class_< boost::circular_buffer< std::vector< double > > >("Circular buffer of vector of doubles definition for python ", boost::python::no_init)
         .def(vector_indexing_suite< boost::circular_buffer< std::vector< double > > >())
         ;
@@ -272,6 +276,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     char const* getModeDocString = "Returns, as a HWC_ENUM, the machine mode for the controller (OFFLINE, PHYSICAL, VIRTUAL).";
     char const* getILocksDocString = "Why are you here? BPMs don't have interlocks. At least as far as I'm aware. I'm not sure why they would.";
     char const* getBPMStatusDocString = "Returns the status of the BPM (based on x/y position) -- GOOD, BAD, NONLINEAR or UNKNOWN.";
+    char const* getStatusBufferDocString = "Returns a buffer of the last N statuses of the BPM (based on x/y position) -- GOOD, BAD, NONLINEAR or UNKNOWN.";
 	boost::python::class_<beamPositionMonitorController, boost::python::bases<controller>, boost::noncopyable>
             ("beamPositionMonitorController","This class contains all the functions in the BPM controller for monitoring and controlling PVs",boost::python::no_init)
             .def("getBPMDataObject",                &beamPositionMonitorController::getBPMDataObject, getBPMDataObjectDocString, return_value_policy<reference_existing_object>()            )
@@ -324,6 +329,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
             .def("setBufferSize",                   &beamPositionMonitorController::setBufferSize, setBufferSizeDocString                )
             .def("getBPMStatus",                    &beamPositionMonitorController::getBPMStatus, getBPMStatusDocString                  )
             .def("getBPMStatusStr",                 &beamPositionMonitorController::getBPMStatusStr, getBPMStatusDocString               )
+            .def("getStatusBuffer",                 &beamPositionMonitorController::getStatusBuffer_Py, getStatusBufferDocString         )
             .def("clearBuffers",                    &beamPositionMonitorController::clearBuffers, clearBuffersDocString                  )
 //            .def("monitorDataForNShots",            monitorMultipleDataForNShots, monitorSglDocString                                    )
 //            .def("monitorDataForNShots",            monitorDataForNShots, monitorMulDocString                                            )

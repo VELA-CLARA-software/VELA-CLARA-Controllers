@@ -336,11 +336,11 @@ beamPositionMonitorController & VCBPMs::getBPMController( const HWC_ENUM::MACHIN
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_PH1 )
         return physical_CLARA_PH1_BPM_Controller();
     else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::CLARA_2_BA1_BA2 )
-        return offline_CLARA_PH1_BPM_Controller();
+        return offline_C2B_BPM_Controller();
     else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::CLARA_2_BA1_BA2 )
-        return virtual_CLARA_PH1_BPM_Controller();
+        return virtual_C2B_BPM_Controller();
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_2_BA1_BA2 )
-        return physical_CLARA_PH1_BPM_Controller();
+        return physical_C2B_BPM_Controller();
 }
 //______________________________________________________________________________
 void VCBPMs::updateMessageStates()
