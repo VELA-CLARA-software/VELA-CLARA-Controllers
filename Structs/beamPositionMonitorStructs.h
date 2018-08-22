@@ -109,6 +109,7 @@ namespace beamPositionMonitorStructs
 //        std::vector< double > timeStamps;
         boost::circular_buffer< double > timeStampsBuffer;
         std::vector< std::vector< double > > rawBPMData;
+        std::vector< double > rawData;
         boost::circular_buffer< std::vector< double > > rawBPMDataBuffer;
         HWC_ENUM::MACHINE_AREA machineArea;
         HWC_ENUM::MACHINE_MODE machineMode;

@@ -264,6 +264,7 @@ beamPositionMonitorController& VCBPMs::offline_CLARA_PH1_BPM_Controller()
 beamPositionMonitorController& VCBPMs::physical_CLARA_PH1_BPM_Controller()
 {
     std::string name  = "physical_CLARA_PH1_BPM_Controller";
+    std::cout << name << std::endl;
     const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
     return getController(physical_CLARA_PH1_BPM_Controller_Obj,
                          bpmconf,

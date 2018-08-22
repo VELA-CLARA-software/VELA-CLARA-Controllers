@@ -1301,25 +1301,21 @@ bool screenInterface::setScreenTrigger( const std::string & name )
 //______________________________________________________________________________
 bool screenInterface::setScreenTrigger( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
-    message("sddedede");
     unsigned short send = 1;
     if( isVElement( name, state )  )
     {
-        message("sddedede");
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
                allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
                &send );
     }
     else if( isHElement( name, state ) )
     {
-        message("sddedede!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
                allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,
                &send );
     }
     else if( isPElement( name, state ) )
     {
-        message("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::TRIGGER).CHTYPE,
         allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::TRIGGER).CHID,
         &send );
