@@ -136,6 +136,8 @@ class beamPositionMonitorInterface : public interface
         void updateXValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateYValue( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void updateDBRLong( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateAWAK( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
+        void updateRDY( beamPositionMonitorStructs::monitorStruct * ms, const event_handler_args args );
         void checkBPMStatus( beamPositionMonitorStructs::bpmDataObject * bpmdo );
         bool beamPositionMonitorInterface::checkBPMBuffer( boost::circular_buffer< double > buf );
         bool beamPositionMonitorInterface::checkIfNAN( boost::circular_buffer< double > buf );
