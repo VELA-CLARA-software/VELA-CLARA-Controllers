@@ -28,6 +28,8 @@
 #include <iterator>
 #include <set>
 #include <list>
+#include <mutex>          // std::mutex
+std::mutex mtx;           // mutex for critical section
 using namespace cameraStructs;
 //---------------------------------------------------------------------------------
 cameraBase::cameraBase(bool& show_messages,
@@ -193,32 +195,52 @@ bool cameraBase::getCamObjects()
         /*
             set the "fast" image array size
             resize pixel_results
+            allocate memory for PTL array pointer
         */
         size_t s;
+        unsigned nBytes;
         for(auto&& it : allCamData)
         {
-            s = (size_t)it.second.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT;
-            it.second.data.image.array_data.clear();
-
-            it.second.data.image.array_data.resize(s);
-
-            message("Resizing camera ",it.first,
-                    " array_data to ",
-                    it.second.data.image.array_data.size());
+            if(entryExists(it.second.pvComStructs,CAM_PV_TYPE::ARRAY_DATA))
+            {
+                s = (size_t)it.second.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT;
+                it.second.data.image.array_data.clear();
+                it.second.data.image.array_data.resize(s);
+                message("Resizing camera ",it.first,
+                        " array_data to ",
+                        it.second.data.image.array_data.size());
+                /*
+                    allocate memory for pTL, array pointer
+                */
+                nBytes = dbr_size_n ( DBR_TIME_LONG, s );
+                it.second.data.image.pTL = ( dbr_time_long * ) malloc ( nBytes );
+                message("pTL pointer allocated ", nBytes," BYTES ");
+            }
+            if(entryExists(it.second.pvMonStructs,CAM_PV_TYPE::ARRAY_DATA))
+            {
+                s = (size_t)it.second.pvMonStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT;
+                it.second.data.image.array_data.clear();
+                it.second.data.image.array_data.resize(s);
+                message("Resizing camera ",it.first,
+                        " array_data to ",
+                        it.second.data.image.array_data.size());
+                /*
+                    allocate memory for pTL, array pointer
+                */
+                nBytes = dbr_size_n ( DBR_TIME_LONG, s );
+                it.second.data.image.pTL = ( dbr_time_long * ) malloc ( nBytes );
+                message("pTL pointer allocated ", nBytes," BYTES ");
+            }
 
             if(entryExists(it.second.pvMonStructs,CAM_PV_TYPE::PIXEL_RESULTS_RBV))
             {
                 s = (size_t)it.second.pvMonStructs.at(CAM_PV_TYPE::PIXEL_RESULTS_RBV).COUNT;
-
                 it.second.data.analysis.pix_values.clear();
-
                 it.second.data.analysis.pix_values.resize(s);
-
                 message("Resizing camera ",it.first,
-                        " analsyis pix_values to ",
+                        " analysis pix_values to ",
                         it.second.data.analysis.pix_values.size());
             }
-
         }
         /*
             set names of objects to match camera/screen name
@@ -270,11 +292,11 @@ bool cameraBase::vcOnly()
         deletes all cameraObjects apart from the VIRTUAL_CATHODE
     */
     std::string cameraName = useCameraFrom(UTL::VIRTUAL_CATHODE);
-    if(entryExists( allCamData, cameraName))
+    if(entryExists(allCamData, cameraName))
     {
         for (auto it = allCamData.cbegin(); it != allCamData.cend() /* not hoisted */; /* no increment */)
         {
-            if ( it->first != cameraName)
+            if(it->first != cameraName)
             {
                 it = allCamData.erase(it);
             }
@@ -284,11 +306,11 @@ bool cameraBase::vcOnly()
             }
         }
     }
-    if( allCamData.size() == UTL::ONE_SIZET)
+    if(allCamData.size() == UTL::ONE_SIZET)
     {
         for(auto&&it:allCamData)
         {
-            if( it.first == cameraName)
+            if(it.first == cameraName)
             {
                 message("Succesfully cut cameraobjects to just ", cameraName, " of camera type: ", ENUM_TO_STRING(allCamData.at(cameraName).type));
                 /*
@@ -383,11 +405,6 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
 //---------------------------------------------------------------------------------
 void cameraBase::addCamChannel(const std::string& pvRoot, pvStruct& pv)
 {
-//    something is goin gwrong, these channels dont work when called from th eparent calss
-//    is it the pointer in th ecamCOntrolerlbase?
-//    also you can't return the  data from this classes allCamadataObjects
-//    instead you get th edumy alues !!
-
     const std::string s = pvRoot + pv.pvSuffix;
     ca_create_channel(s.c_str(), nullptr, nullptr, UTL::PRIORITY_0, &pv.CHID);
     //pv.CHTYPE = ca_field_type(pv.CHID);
@@ -603,7 +620,6 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.x_buf,
                                   camObj.data.analysis.x_rs,
                                   camObj.data.analysis);
-
             break;
         case CAM_PV_TYPE::Y_RBV:
             updateAnalysislResult(args,camObj.data.analysis.y,
@@ -665,6 +681,10 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.avg_pix_buf,
                                   camObj.data.analysis.avg_pix_rs,
                                   camObj.data.analysis);
+            /*
+                update flag to 'guess' if beam is on screen
+            */
+            camObj.state.latest_avg_pix_has_beam = camObj.data.analysis.avg_pix > camObj.data.analysis.avg_pix_beam_level;
             //message(camObj.name,", avg_pix = ", camObj.data.analysis.avg_pix);
             break;
         case CAM_PV_TYPE::SUM_PIX_INTENSITY_RBV:
@@ -675,7 +695,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
             //message(camObj.name,", sum_pix = ", camObj.data.analysis.sum_pix);
             break;
         case CAM_PV_TYPE::PIXEL_RESULTS_RBV:
-            updatePixelResults(args,camObj.data.analysis);
+            updatePixelResults(args,camObj);
             maskFeedBack(camObj);
             break;
 /*
@@ -710,6 +730,10 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
         case CAM_PV_TYPE::PIX_MM_RBV:
             camObj.data.analysis.pix_2_mm = getDBRdouble(args);
             break;
+
+        case CAM_PV_TYPE::ARRAY_DATA:
+            updateArrayData(camObj,args);
+            break;
         default:
             message("!!WARNING!! Unknown PV passed to updateCamValue, pv = ", ENUM_TO_STRING(pv));
     }
@@ -721,6 +745,7 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 // \__/ |    |__/ /~~\  |  |___    .__/  |  /~~\  |  |___ .__/
 //
 //
+//--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 void cameraBase::updateCamState(const event_handler_args& args, CAM_STATE& s)
 {
@@ -853,7 +878,7 @@ void cameraBase::updateSensorTemp(const event_handler_args& args, cameraObject& 
         //stopAcquiring();
     }
 }
-//---------------------------------------------------------------------------------______________
+//---------------------------------------------------------------------------------
 /*
     All analysis results call this function
 */
@@ -880,7 +905,7 @@ void cameraBase::updateAnalysislResult(const event_handler_args& args,
 
     rs_to_update.Push(value_to_update);
 }
-//---------------------------------------------------------------------------------______________
+//---------------------------------------------------------------------------------
 void cameraBase::addToBuffer(const double val, std::deque<double>& buffer, analysis_data& data)
 {
     buffer.push_back(val);
@@ -897,51 +922,97 @@ void cameraBase::addToBuffer(const double val, std::deque<double>& buffer, analy
     data.buffer_count = buffer.size();
 }
 //---------------------------------------------------------------------------------______________
-void cameraBase::updatePixelResults(const event_handler_args& args, analysis_data& data)
+void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject& cam)
 {
-    const double* pValue;
+
     /* if time _type get time and set where pValue points to */
     if(isTimeType(args.type))
     {
-
         const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
-        pValue = &p->value;
-        //updateTime(trace.etime, trace.time, trace.timeStr);
-
-        /* for hints look in epicsTime.h */
-        char timeString[UTL::BUFFER_36];
-        epicsTimeToStrftime(timeString, sizeof(timeString),
-                            "%a %b %d %Y %H:%M:%S.%f", &p->stamp);
         /*
-            prove it works
-            std::cout <<std::setprecision(15) <<std::showpoint<< val <<std::endl;
+            update the epics time buffer
+            1) set last buffer
+            2) update new buffer
+            3) if is updating, get values and increment counter,
         */
-        data.pix_values_time = timeString;
-        std::copy(pValue, pValue + data.pix_values.size(), data.pix_values.begin());
+        cam.data.analysis.last_pix_values_timestamp = cam.data.analysis.pix_values_timestamp;
 
+        cam.data.analysis.pix_values_timestamp.etime = p->stamp;
+        updateTime(cam.data.analysis.pix_values_timestamp.etime,
+                   cam.data.analysis.pix_values_timestamp.time_ns,
+                   cam.data.analysis.pix_values_timestamp.time_Str);
 
+        message("pix   time = ", cam.data.analysis.pix_values_timestamp.time_ns
+                , ", ",cam.data.analysis.pix_values_timestamp.time_Str);
         /*
-            Now we have the new values, update Buffers
+            update counter
         */
-        data.pix_values_buf.push_back(data.pix_values);
-        if(data.pix_values_buf.size()> data.max_buffer_count)
+        cam.data.analysis.pix_values_counter += UTL::ONE_SIZET;
+        /*
+            decide if to update array_data, based on timestanp,
+            we assume if timestamp changes there is new data to get
+        */
+        if( cam.data.analysis.pix_values_counter == UTL::ONE_SIZET )
         {
-            data.pix_values_buf.pop_front();
+            /*
+                first pass, ALWAYS update data
+            */
+            cam.state.is_camera_analysis_updating = true;
+        }
+        else
+        {
+            /* test if timestamp has updated, if not then don't update data  */
+            if(cam.data.analysis.pix_values_timestamp.time_ns
+                ==
+               cam.data.analysis.pix_values_timestamp.time_ns)
+            {
+                cam.state.is_camera_analysis_updating = false;
+            }
+            else
+            {
+                cam.state.is_camera_analysis_updating = true;
+            }
+        }
+        /*
+            if new timestamp then get new data
+        */
+        if(cam.state.is_camera_analysis_updating)
+        {
+            const double* pValue;
+            pValue = &p->value;
+            /*
+                copy the datat to the vector
+                prove it works
+                std::cout <<std::setprecision(15) <<std::showpoint<< val <<std::endl;
+            */
+            std::copy(pValue, pValue + cam.data.analysis.pix_values.size(), cam.data.analysis.pix_values.begin());
+            /*
+                Now we have the new values, update Buffers
+            */
+            cam.data.analysis.pix_values_buf.push_back(cam.data.analysis.pix_values);
+            if(cam.data.analysis.pix_values_buf.size()> cam.data.analysis.max_buffer_count)
+            {
+                cam.data.analysis.pix_values_buf.pop_front();
+            }
         }
     }
-    else /* set where pValue points to */
+    else //if(isTimeType(args.type))
     {
         //message("updatePixelResults, args.type is not a time type, ", args.type);
+        /*
+            set where pValue points to
+        */
+        const double* pValue;
         pValue = (dbr_double_t*)args.dbr;
 
-        std::copy(pValue, pValue + data.pix_values.size(), data.pix_values.begin());
+        std::copy(pValue, pValue + cam.data.analysis.pix_values.size(), cam.data.analysis.pix_values.begin());
         /*
             Now we have the new values, update Buffers
         */
-        data.pix_values_buf.push_back(data.pix_values);
-        if(data.pix_values_buf.size()> data.max_buffer_count)
+        cam.data.analysis.pix_values_buf.push_back(cam.data.analysis.pix_values);
+        if(cam.data.analysis.pix_values_buf.size()> cam.data.analysis.max_buffer_count)
         {
-            data.pix_values_buf.pop_front();
+            cam.data.analysis.pix_values_buf.pop_front();
         }
     }
 }
@@ -1003,28 +1074,6 @@ void cameraBase::mask_feedback(int x, int y, int x_rad, int y_rad, const std::st
     interface->setMask(x, y, x_rad, y_rad, name);
 }
 //____________________________________________________________________________________________
-//void cameraBase::kill_finished_setmask_threads()
-//{
-//    for(auto && it = setAmpHP_Threads.cbegin(); it != setAmpHP_Threads.cend() /* not hoisted */; /* no increment */)
-//    {
-//        if(it->can_kill)
-//        {
-//            /// join before deleting...
-//            /// http://stackoverflow.com/questions/25397874/deleting-stdthread-pointer-raises-exception-libcabi-dylib-terminating
-//            //std::cout<< "it->threadit->thread->join" <<std::endl;
-//            it->thread->join();
-//            //std::cout<< "it->thread" <<std::endl;
-//            delete it->thread;
-//            //std::cout<< "delete" <<std::endl;
-//            setAmpHP_Threads.erase(it++);
-//            //std::cout<< "erase" <<std::endl;
-//        }
-//        else
-//        {
-//            ++it;
-//        }
-//    }
-//}
 
 //---------------------------------------------------------------------------------
 // for all getters and setters we need three versions
@@ -1557,21 +1606,43 @@ bool cameraBase::setMaskXrad(int new_val,cameraObject& cam)
     {
         /*
             for now, (i.e may chang in future)
-            we're going to hardcode som elimits on the mask positions
+            we're going to hardcode some limits on the mask positions
         */
+        // mask_rad can't be less than 1
         if(new_val < 1)
         {
             return false;
         }
+        // mask_rad can't send th eROI off the hi edge of the image (FOR NOW)
         if(cam.data.mask.mask_x + new_val > (int)cam.data.image.bin_num_pix_x)
         {
+            message("cam.data.mask.mask_x + new_val > ",(int)cam.data.image.bin_num_pix_x," ",cam.data.mask.mask_x," ",new_val);
             return false;
         }
+        // mask_rad can't send the ROI off the lo edge of the image (FOR NOW)
         if(cam.data.mask.mask_x - new_val < UTL::ONE_INT )
         {
+            message("cam.data.mask.mask_x - new_val < 1 ",cam.data.mask.mask_x," ",new_val);
             return false;
         }
-        return cam_caput(cam, new_val, CAM_PV_TYPE::MASK_X_RAD);
+        int val_to_send = new_val;
+        // if checking limits, compare to limits
+        if( cam.data.mask.use_mask_rad_limits)
+        {
+            if( new_val > cam.data.mask.mask_x_rad_max)
+            {
+                val_to_send = cam.data.mask.mask_x_rad_max;
+            }
+            if( new_val < cam.data.mask.mask_x_rad_min)
+            {
+                val_to_send = cam.data.mask.mask_x_rad_min;
+            }
+        }
+        if( val_to_send != cam.data.mask.mask_x)
+        {
+            message("val_to_send = ",val_to_send);
+            return cam_caput(cam, val_to_send, CAM_PV_TYPE::MASK_X_RAD);
+        }
     }
     else
     {
@@ -1601,22 +1672,44 @@ bool cameraBase::setMaskYrad(int new_val,cameraObject& cam)
     if(isClaraCam(cam))
     {
         /*
-            for now, (i.e may changin in future)
-            we're going to hardcode som elimits on the mask positions
+            for now, (i.e may change in future)
+            we're going to hardcode some limits on the mask positions
         */
+        // mask_rad can't be less than 1
         if(new_val < 1)
         {
             return false;
         }
+        // mask_rad can't send th eROI off the hi edge of the image (FOR NOW)
         if(cam.data.mask.mask_y + new_val > (int)cam.data.image.bin_num_pix_y)
         {
+            message("cam.data.mask.mask_y + new_val > ",(int)cam.data.image.bin_num_pix_y," ",cam.data.mask.mask_y," ",new_val);
             return false;
         }
+        // mask_rad can't send the ROI off the lo edge of the image (FOR NOW)
         if(cam.data.mask.mask_y - new_val < UTL::ONE_INT )
         {
+            message("cam.data.mask.mask_y - new_val < 1 ",cam.data.mask.mask_y," ",new_val);
             return false;
         }
-        return cam_caput(cam, new_val, CAM_PV_TYPE::MASK_Y_RAD);
+        int val_to_send = new_val;
+        // if checking limits, compare to limits
+        if( cam.data.mask.use_mask_rad_limits)
+        {
+            if( new_val > cam.data.mask.mask_y_rad_max)
+            {
+                val_to_send = cam.data.mask.mask_y_rad_max;
+            }
+            if( new_val < cam.data.mask.mask_y_rad_min)
+            {
+                val_to_send = cam.data.mask.mask_y_rad_min;
+            }
+        }
+        if( val_to_send != cam.data.mask.mask_y)
+        {
+            message("val_to_send = ",val_to_send);
+            return cam_caput(cam, val_to_send, CAM_PV_TYPE::MASK_Y_RAD);
+        }
     }
     else
     {
@@ -2805,7 +2898,7 @@ std::deque<std::vector<double>> cameraBase::getPixelValuesBuffer(const cameraObj
 }
 //---------------------------------------------------------------------------------
 ///
-/// get pixel values buffer
+/// get array data
 ///
 std::vector<int> cameraBase::getFastImage_VC()const
 {
@@ -2824,6 +2917,7 @@ std::vector<int> cameraBase::getFastImage()const
 //---------------------------------------------------------------------------------
 std::vector<int> cameraBase::getFastImage(const cameraObject& cam)const
 {
+    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return  cam.data.image.array_data;
 }
 //---------------------------------------------------------------------------------
@@ -2842,6 +2936,114 @@ bool cameraBase::takeFastImage(const std::string& cam)
     return takeFastImage(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
+bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_handler_args& args)
+{
+    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    /*
+        this function actually gets the new values from EPICS
+        and adds them to the array_data vector
+    /*
+        pointer to array we are expecting depends on type channel
+    */
+    /*
+            see EPICS 3.14 manual, we do no MALLOC here
+            we can probably improve this much
+    */
+    const dbr_time_long* p = (const struct dbr_time_long*)args.dbr;
+    //pStamp = &p->stamp;
+    /*
+        update the epics time buffer
+        first set last_array_data_timestamp = equal to array_data_timestamp
+        (later we compare the times to determine if the data is updating
+    */
+    cam.data.image.last_array_data_timestamp = cam.data.image.array_data_timestamp;
+    cam.data.image.array_data_timestamp.etime = p->stamp;
+    updateTime(cam.data.image.array_data_timestamp.etime,
+               cam.data.image.array_data_timestamp.time_ns,
+               cam.data.image.array_data_timestamp.time_Str);
+    // print
+    message("img   time = ", cam.data.image.array_data_timestamp.time_ns,
+            ", ",            cam.data.image.array_data_timestamp.time_Str);
+    /*
+        update counter
+    */
+    cam.data.image.counter += UTL::ONE_SIZET;
+    /*
+        decide if to update array_data, based on timestanp,
+        we assume if timestamp changes there is new data to get
+    */
+    if( cam.data.image.counter == UTL::ONE_SIZET )
+    {
+        /*
+            first pass, ALWAYS update data
+        */
+        cam.state.is_camera_image_updating = true;
+    }
+    else
+    {
+        /* test if timestamp has updated, if not then don't update data  */
+        if(cam.data.image.last_array_data_timestamp.time_ns
+            ==
+           cam.data.image.array_data_timestamp.time_ns)
+        {
+            cam.state.is_camera_image_updating = false;
+        }
+        else
+        {
+            cam.state.is_camera_image_updating = true;
+        }
+    }
+    /*
+        if new timestamp then get new data
+    */
+    if(cam.state.is_camera_image_updating)
+    {
+        /*
+            see EPICS 3.14 manual, we do no MALLOC here
+            it either happens in EPICS or in  takeFastImage
+            is there a way of doing this without copying to the vector?
+            probably ...
+        */
+        const dbr_long_t * pValue;
+        pValue = &p->value;
+
+        std::copy(pValue,
+                  pValue + cam.data.image.array_data.size(),
+                  cam.data.image.array_data.begin());
+
+
+        //message("tn    time = ", tn_time_d, ", ", tn_time_str);
+        /*
+            update the local version of min/max pixel values etc
+        */
+        cam.data.image.array_data_sum = UTL::ZERO_SIZET;
+        cam.data.image.array_data_max = std::numeric_limits<int>::min();
+        cam.data.image.array_data_min = std::numeric_limits<int>::max();
+        for(auto&& n : cam.data.image.array_data)
+        {
+            /* add to sum */
+            cam.data.image.array_data_sum += (size_t)n;
+            /* set min and max values */
+            if(n > cam.data.image.array_data_max)
+                cam.data.image.array_data_max = n;
+            if(n < cam.data.image.array_data_min)
+                cam.data.image.array_data_min = n;
+        }
+#ifdef BUILD_DLL
+        cam.data.image.data   = toPythonList(cam.data.image.array_data);
+
+//    // toPythonList2D does not work yet!!!
+//    cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
+//                                                cam.data.image.num_pix_x,
+//                                                cam.data.image.num_pix_y);
+#endif
+    }//if(cam.state.is_camera_image_updating)
+    /*
+        return if cam.state.is_camera_image_updating
+    */
+    return cam.state.is_camera_image_updating;
+}
+//---------------------------------------------------------------------------------
 bool cameraBase::takeFastImage(cameraObject& cam)
 {
     if(isAcquiring(cam))
@@ -2850,49 +3052,49 @@ bool cameraBase::takeFastImage(cameraObject& cam)
                     cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHTYPE,
                     cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT,
                     cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHID,
-                    (void*)&(cam.data.image.array_data[UTL::ZERO_SIZET]));
+                    (void*)cam.data.image.pTL);
+                    //(void*)&(cam.data.image.array_data[UTL::ZERO_SIZET]));
         SEVCHK( a, "ca_array_get()" );
 
         if(a == ECA_NORMAL)
         {
-            a = sendToEpics("ca_array_get","","");
+            message("send to epics");
+
+            a = sendToEpics("ca_array_get","mess 1 "," ERROR ?? ");
+
+
             if(a == ECA_NORMAL)
             {
+                message("Getting data");
                 /*
-                    update the local version of min/max pixel values etc
+                    we pass the results to the same update ArrayDataFunction
+                    that might be used if we set up a subscription to the
+                    channel, this should make it easy to incoporate
+                    array_data as a continuous monitor at a-later-date
+                    typedef struct event_handler_args
+                    {
+                        void            *usr;   // user argument supplied with request
+                        chanId          chid;   // channel id
+                        long            type;   // the type of the item returned
+                        long            count;  // the element count of the item returned
+                        const void      *dbr;   // a pointer to the item returned
+                        int             status; // ECA_XXX status of the requested op from the server
+                    } evargs;
                 */
-                cam.data.image.array_data_sum = UTL::ZERO_SIZET;
-                cam.data.image.array_data_max = std::numeric_limits<int>::min();
-                cam.data.image.array_data_min = std::numeric_limits<int>::max();
-                for(auto&& n : cam.data.image.array_data)
-                {
-                    /* add to sum */
-                    cam.data.image.array_data_sum += (size_t)n;
-                    /* set min and max values */
-                    if(n > cam.data.image.array_data_max)
-                        cam.data.image.array_data_max = n;
-                    if(n < cam.data.image.array_data_min)
-                        cam.data.image.array_data_min = n;
-                }
+                event_handler_args args;
+                args.type  = cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHTYPE;
+                args.chid  = cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).CHID;
+                args.count = cam.pvComStructs.at(CAM_PV_TYPE::ARRAY_DATA).COUNT;
+                args.dbr   = (void*)cam.data.image.pTL;
 
-#ifdef BUILD_DLL
-                cam.data.image.data   = toPythonList(cam.data.image.array_data);
-
-                // toPythonList2D does not work yet!!!
-                cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
-                                                            cam.data.image.num_pix_x,
-                                                            cam.data.image.num_pix_y);
-            //boost::python::list data,data2D;
-#endif
-//                message("ca_array_get success");
-                return true;
+                return updateArrayData(cam, args);
             }
         }
         else
         {
             message("ca_array_get did not return ECA_NORMAL");
         }
-    }
+    } // if(isAcquiring(cam))
     else
     {
         message(cam.name," is not acquiring");
@@ -2918,7 +3120,7 @@ boost::python::list cameraBase::takeAndGetFastImage2D()
 //---------------------------------------------------------------------------------
 boost::python::list cameraBase::takeAndGetFastImage2D(cameraStructs::cameraObject& cam)
 {
-    takeFastImage(cam);
+    //takeFastImage(cam);
     return cam.data.image.data2D;
 }
 //---------------------------------------------------------------------------------
@@ -2960,6 +3162,7 @@ boost::python::list cameraBase::getFastImage_Py()const
 //---------------------------------------------------------------------------------
 boost::python::list cameraBase::getFastImage_Py(const cameraStructs::cameraObject& cam)const
 {
+    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return cam.data.image.data;
 }
 //---------------------------------------------------------------------------------

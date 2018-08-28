@@ -236,6 +236,7 @@ class baseObject
         size_t         getSize (const std::string& str) const;
         int            getNum  (const std::string& str) const;
         long           getNumL (const std::string& str) const;
+        bool           getBool (const std::string& str) const;
         bool  stringIsSubString(const std::string& stringToCheck,
                                 const std::string& stringToLookFor) const;
 

@@ -157,180 +157,188 @@ bool claraCameraConfigReader::readConfig()
 void claraCameraConfigReader::addToPVMonitorMapV1(const std::vector<std::string>& keyVal)
 {
     using namespace UTL;
-    if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX"))
+    std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
+    std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
+    if(stringIsSubString(key, "SUFFIX"))
     {
         using namespace cameraStructs;
-        if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_X_RBV)//1
+        if(key == PV_IA_SUFFIX_X_RBV)//1
         {
-            //message("addToPVMonitorMapV1 ",keyVal[ZERO_SIZET] );
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::X_RBV, keyVal[ONE_SIZET] );
+            //message("addToPVMonitorMapV1 ",key );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::X_RBV, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_Y_RBV)//2
+        else if(key == PV_IA_SUFFIX_Y_RBV)//2
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_RBV, keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_RBV, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_X_RBV)//3
+        else if(key == PV_IA_SUFFIX_SIGMA_X_RBV)//3
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_X_RBV, keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_X_RBV, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_Y_RBV)//4
+        else if(key == PV_IA_SUFFIX_SIGMA_Y_RBV)//4
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_Y_RBV, keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_Y_RBV, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_X_PIX_RBV)//5
+        else if(key == PV_IA_SUFFIX_X_PIX_RBV)//5
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::X_PIX_RBV, keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::X_PIX_RBV, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_Y_PIX_RBV)//6
+        else if(key == PV_IA_SUFFIX_Y_PIX_RBV)//6
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_PIX_RBV, keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_PIX_RBV, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_X_PIX_RBV)//7
+        else if(key == PV_IA_SUFFIX_SIGMA_X_PIX_RBV)//7
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_X_PIX_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_X_PIX_RBV,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SIGMA_Y_PIX_RBV)//8
+        else if(key == PV_IA_SUFFIX_SIGMA_Y_PIX_RBV)//8
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_Y_PIX_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_Y_PIX_RBV,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_COV_XY_RBV)//9
+        else if(key == PV_IA_SUFFIX_COV_XY_RBV)//9
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::COV_XY_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::COV_XY_RBV,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_COV_XY_PIX_RBV)//10
+        else if(key == PV_IA_SUFFIX_COV_XY_PIX_RBV)//10
         {
             addPVStruct(pvMonStructs,CAM_PV_TYPE::COV_XY_PIX_RBV,keyVal[ONE_SIZET]);
         }
         // intensity
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_AV_PIX_INTENSITY_RBV)//11
+        else if(key == PV_IA_SUFFIX_AV_PIX_INTENSITY_RBV)//11
         {
             addPVStruct(pvMonStructs,CAM_PV_TYPE::AVG_PIX_INTENSITY_RBV,keyVal[ONE_SIZET]);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_SUM_PIX_INTENSITY_RBV)//12
+        else if(key == PV_IA_SUFFIX_SUM_PIX_INTENSITY_RBV)//12
         {
             addPVStruct(pvMonStructs,CAM_PV_TYPE::SUM_PIX_INTENSITY_RBV,keyVal[ONE_SIZET]);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_PIXEL_RESULTS_RBV)//13
+        else if(key == PV_IA_SUFFIX_PIXEL_RESULTS_RBV)//13
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::PIXEL_RESULTS_RBV,keyVal[ONE_SIZET]);
         }
         // mask parameters
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_X_RBV)//14
+        else if(key == PV_IA_SUFFIX_MASK_X_RBV)//14
         {
-            addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_X_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_X_RBV,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_Y_RBV)//15
+        else if(key == PV_IA_SUFFIX_MASK_Y_RBV)//15
         {
             addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_Y_RBV,keyVal[ONE_SIZET]);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_X_RAD_RBV)//16
+        else if(key == PV_IA_SUFFIX_MASK_X_RAD_RBV)//16
         {
             addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_X_RAD_RBV,keyVal[ONE_SIZET]);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_Y_RAD_RBV)//17
+        else if(key == PV_IA_SUFFIX_MASK_Y_RAD_RBV)//17
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_Y_RAD_RBV,keyVal[ONE_SIZET]);
         }
         // image centre and pix 2 mm
         //
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_PIX_MM_RBV)//18
+        else  if(key == PV_IA_SUFFIX_PIX_MM_RBV)//18
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::PIX_MM_RBV,keyVal[ONE_SIZET]);
         }
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_CENTER_X_RBV)//19
+        else  if(key == PV_IA_SUFFIX_CENTER_X_RBV)//19
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::X_CENTER_RBV,keyVal[ONE_SIZET]);
         }
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_CENTER_Y_RBV)//20
+        else  if(key == PV_IA_SUFFIX_CENTER_Y_RBV)//20
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_CENTER_RBV,keyVal[ONE_SIZET]);
         }
-        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_STEP_SIZE_RBV)//21
+        else if( key == PV_IA_SUFFIX_STEP_SIZE_RBV)//21
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::STEP_SIZE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::STEP_SIZE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_START_IA_RBV  )//22
+        else if( key == PV_IA_SUFFIX_START_IA_RBV  )//22
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::START_IA_RBV,keyVal[ONE_SIZET]);
         }
         // image analysis States
-        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_USE_B_RBV  )//23
+        else if( key == PV_IA_SUFFIX_USE_B_RBV  )//23
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::USE_BKGRND_RBV,keyVal[ONE_SIZET]);
         }
-        else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_USE_NPOINT_RBV  )//24
+        else if( key == PV_IA_SUFFIX_USE_NPOINT_RBV  )//24
         {
              addPVStruct(pvMonStructs,CAM_PV_TYPE::USE_NPOINT_RBV,keyVal[ONE_SIZET]);
         }
-        //NOT NEEDED else if( keyVal[ZERO_SIZET] == PV_IA_SUFFIX_CAM_STATE  )
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_ACQUIRE_RBV  )//25
+        //NOT NEEDED else if( key == PV_IA_SUFFIX_CAM_STATE  )
+        else if( key == PV_DAQ_SUFFIX_ACQUIRE_RBV  )//25
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_CAPTURE_RBV  )//26
+        else if( key == PV_DAQ_SUFFIX_CAPTURE_RBV  )//26
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_CAPTURE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_CAPTURE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_NUM_CAPTURED_RBV  )//27
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURED_RBV  )//27
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_NUM_CAPTURED_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_NUM_CAPTURED_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_NUM_CAPTURE_RBV  )//28
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURE_RBV  )//28
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_NUM_CAPTURE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_NUM_CAPTURE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_STATUS  )//29
+        else if( key == PV_DAQ_SUFFIX_WRITE_STATUS  )//29
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FILE_WRITE_STATUS,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FILE_WRITE_STATUS,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_FILE_RBV  )//3ZERO_SIZET
+        else if( key == PV_DAQ_SUFFIX_WRITE_FILE_RBV  )//3ZERO_SIZET
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_WRITE_FILE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_WRITE_FILE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_MESSAGE  )//31
+        else if( key == PV_DAQ_SUFFIX_WRITE_MESSAGE  )//31
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FILE_WRITE_ERROR_MESSAGE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FILE_WRITE_ERROR_MESSAGE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_CAPTURE_RBV_J  )//32
+        else if( key == PV_DAQ_SUFFIX_CAPTURE_RBV_J  )//32
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_CAPTURE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_CAPTURE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_NUM_CAPTURED_J  )//33
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURED_J  )//33
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_NUM_CAPTURED,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_NUM_CAPTURED,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J )//34
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J )//34
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_NUM_CAPTURE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_NUM_CAPTURE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_CHECK_J )//35
+        else if( key == PV_DAQ_SUFFIX_WRITE_CHECK_J )//35
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_CHECK,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_CHECK,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_RBV_J  )//36
+        else if( key == PV_DAQ_SUFFIX_WRITE_RBV_J  )//36
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_MESSAGE_J  )//37
+        else if( key == PV_DAQ_SUFFIX_WRITE_MESSAGE_J  )//37
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_MESSAGE,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_MESSAGE,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_EXPOSURE_RBV  )//38
+        else if( key == PV_DAQ_SUFFIX_EXPOSURE_RBV  )//38
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_EXPOSURE_TIME_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_EXPOSURE_TIME_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_ACQ_PERIOD_RBV  )//39
+        else if( key == PV_DAQ_SUFFIX_ACQ_PERIOD_RBV  )//39
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_PERIOD_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_PERIOD_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FREQ_RBV  )//4ZERO_SIZET
+        else if( key == PV_DAQ_SUFFIX_FREQ_RBV  )//4ZERO_SIZET
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FREQ_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FREQ_RBV,value);
         }
-        else if( keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_SENSOR_TEMP_RBV)//41
+        else if( key == PV_DAQ_SUFFIX_SENSOR_TEMP_RBV)//41
         {
-            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_SENSOR_TEMP_RBV,keyVal[ONE_SIZET] );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_SENSOR_TEMP_RBV,value);
         }
+        //        // actual cam image data
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)//9
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
+        }
+
     }
     else
         addCOUNT_MASK_OR_CHTYPE(pvMonStructs, keyVal);
@@ -350,40 +358,42 @@ void claraCameraConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<cameraStructs:
 void claraCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &keyVal  )
 {
     using namespace UTL;
-    if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX" ) )
+    std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
+    std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
+    if(stringIsSubString(key, "SUFFIX" ) )
     {
         using namespace cameraStructs;
-        if( keyVal[ZERO_SIZET] == UTL::PV_IA_SUFFIX_START_IA  )//1
+        if( key == UTL::PV_IA_SUFFIX_START_IA  )//1
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::START_IA, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::START_IA, value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_IA_SUFFIX_SET_B  )//2
+        else if( key == UTL::PV_IA_SUFFIX_SET_B  )//2
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::SET_BKGRND,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::SET_BKGRND,value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_IA_SUFFIX_USE_B  )//3
+        else if( key == UTL::PV_IA_SUFFIX_USE_B  )//3
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::USE_BKGRND,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::USE_BKGRND,value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_IA_SUFFIX_USE_NPOINT  )//4
+        else if( key == UTL::PV_IA_SUFFIX_USE_NPOINT  )//4
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::USE_NPOINT,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::USE_NPOINT,value);
         }
         // image centre and pix 2 mm
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_CENTER_X)//5
+        else  if(key == PV_IA_SUFFIX_CENTER_X)//5
         {
              addPVStruct(pvComStructs,CAM_PV_TYPE::X_CENTER,keyVal[ONE_SIZET]);
         }
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_CENTER_Y)//6
+        else  if(key == PV_IA_SUFFIX_CENTER_Y)//6
         {
              addPVStruct(pvComStructs,CAM_PV_TYPE::Y_CENTER,keyVal[ONE_SIZET]);
         }
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_PIX_MM)//7
+        else  if(key == PV_IA_SUFFIX_PIX_MM)//7
         {
              addPVStruct(pvComStructs,CAM_PV_TYPE::PIX_MM,keyVal[ONE_SIZET]);
         }
         // how the image is decimated before anlaysis ?????????
-        else  if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_STEP_SIZE)//8
+        else  if(key == PV_IA_SUFFIX_STEP_SIZE)//8
         {
              addPVStruct(pvComStructs,CAM_PV_TYPE::STEP_SIZE,keyVal[ONE_SIZET]);
         }
@@ -393,84 +403,84 @@ void claraCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string
             addPVStruct(pvComStructs, CAM_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
         }
         // mask setters
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_X)//1ZERO_SIZET
+        else if(key == PV_IA_SUFFIX_MASK_X)//1ZERO_SIZET
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_X,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_X,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_Y)//11
+        else if(key == PV_IA_SUFFIX_MASK_Y)//11
         {
             addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_Y,keyVal[ONE_SIZET]);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_X_RAD)//12
+        else if(key == PV_IA_SUFFIX_MASK_X_RAD)//12
         {
             addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_X_RAD,keyVal[ONE_SIZET]);
         }
-        else if(keyVal[ZERO_SIZET] == PV_IA_SUFFIX_MASK_Y_RAD)//13
+        else if(key == PV_IA_SUFFIX_MASK_Y_RAD)//13
         {
             addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_Y_RAD,keyVal[ONE_SIZET]);
         }
         //
         // first 15 are in cameraImageDataConfigReader
-        if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_START_ACQUIRE)//14
+        if(key == PV_DAQ_SUFFIX_START_ACQUIRE)//14
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_START_ACQUIRE, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_START_ACQUIRE, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_STOP_ACQUIRE)//15
+        else if(key == PV_DAQ_SUFFIX_STOP_ACQUIRE)//15
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_STOP_ACQUIRE, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_STOP_ACQUIRE, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_PATH)//16
+        else if(key == PV_DAQ_SUFFIX_FILE_PATH)//16
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_PATH, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_PATH, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_NAME)//17
+        else if(key == PV_DAQ_SUFFIX_FILE_NAME)//17
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_NAME, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_NAME, value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_CAPTURE  )//18
+        else if( key == UTL::PV_DAQ_SUFFIX_CAPTURE  )//18
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_CAPTURE,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_CAPTURE,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_NUMBER)//19
+        else if(key == PV_DAQ_SUFFIX_FILE_NUMBER)//19
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_NUMBER, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_NUMBER, value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_WRITE  )//20
+        else if( key == UTL::PV_DAQ_SUFFIX_WRITE  )//20
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_FILE_WRITE,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_FILE_WRITE,value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE  )//21
+        else if( key == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE  )//21
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_NUM_CAPTURE,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_NUM_CAPTURE,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_PATH_J)//22
+        else if(key == PV_DAQ_SUFFIX_FILE_PATH_J)//22
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_PATH, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_PATH, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_NAME_J)//23
+        else if(key == PV_DAQ_SUFFIX_FILE_NAME_J)//23
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_NAME, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_NAME, value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_CAPTURE_J  )//24
+        else if( key == UTL::PV_DAQ_SUFFIX_CAPTURE_J  )//24
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::JPG_CAPTURE,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::JPG_CAPTURE,value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_NUMBER_J)//25
+        else if(key == PV_DAQ_SUFFIX_FILE_NUMBER_J)//25
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_NUMBER, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_NUMBER, value);
         }
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_WRITE_J)//26
+        else if(key == PV_DAQ_SUFFIX_WRITE_J)//26
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_WRITE, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_WRITE, value);
         }
-        else if( keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE_J  )//27
+        else if( key == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE_J  )//27
         {
-            addPVStruct(pvComStructs, CAM_PV_TYPE::JPG_NUM_CAPTURE,keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs, CAM_PV_TYPE::JPG_NUM_CAPTURE,value);
         }
         // this is not used, what is it ??????????????????????????????
-        else if(keyVal[ZERO_SIZET] == PV_DAQ_SUFFIX_FILE_TEMPLATE)//30????????????????
+        else if(key == PV_DAQ_SUFFIX_FILE_TEMPLATE)//30????????????????
         {
-            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_TEMPLATE, keyVal[ONE_SIZET] );
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_TEMPLATE, value);
         }
     }
     else
@@ -536,8 +546,9 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
 {
     using namespace cameraStructs;
     using namespace UTL;
+    std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
     std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
-    if( keyVal[ZERO_SIZET] == NAME )
+    if( key == NAME )
     {
         camObjects.push_back(cameraObject() );
         camObjects.back().name      = value;
@@ -545,116 +556,155 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
        // camDAQObject.back().numIlocks = (size_t)numIlocks;
         debugMessage("Added camera ", camObjects.back().name );
     }
-    else if( keyVal[ZERO_SIZET] == PV_ROOT )
+    else if( key == PV_ROOT )
     {
         if( useVM )
             camObjects.back().pvRoot = VM_PREFIX + value;
         else
             camObjects.back().pvRoot = value;
     }
-    else if( keyVal[ZERO_SIZET] == SCREEN_NAME )
+    else if( key == SCREEN_NAME )
     {
         if( useVM )
             camObjects.back().screenName = VM_PREFIX + value;
         else
             camObjects.back().screenName = value;
     }
-    else if(keyVal[ZERO_SIZET] == X_MASK_RAD_DEF)
+    else if(key == X_MASK_RAD_DEF)
     {
         camObjects.back().data.mask.mask_x_rad_def = getNum(value);
     }
-    else if(keyVal[ZERO_SIZET] == Y_MASK_RAD_DEF)
+    else if(key == Y_MASK_RAD_DEF)
     {
         camObjects.back().data.mask.mask_y_rad_def = getNum(value);
     }
-    else if(keyVal[ZERO_SIZET] == X_MASK_DEF)
+    else if(key == X_MASK_RAD_MAX)
+    {
+        camObjects.back().data.mask.mask_x_rad_max = getNum(value);
+    }
+    else if(key == Y_MASK_RAD_MAX)
+    {
+        camObjects.back().data.mask.mask_y_rad_max = getNum(value);
+    }
+    else if(key == X_MASK_RAD_MIN)
+    {
+        camObjects.back().data.mask.mask_x_rad_min = getNum(value);
+    }
+    else if(key == Y_MASK_RAD_MIN)
+    {
+        camObjects.back().data.mask.mask_y_rad_min = getNum(value);
+    }
+    else if(key == Y_MASK_RAD_MIN)
+    {
+        camObjects.back().data.mask.mask_y_rad_min = getNum(value);
+    }
+    else if(key == USE_MASK_RAD_LIMITS)
+    {
+        camObjects.back().data.mask.use_mask_rad_limits = getBool(value);
+    }
+    else if(key == X_MASK_DEF)
     {
         camObjects.back().data.mask.mask_x_def   = getNum(value);
     }
-    else if(keyVal[ZERO_SIZET] == Y_MASK_DEF)
+    else if(key == Y_MASK_DEF)
     {
         camObjects.back().data.mask.mask_y_def = getNum(value);
     }
-    else if(keyVal[ZERO_SIZET] == X_CENTER_DEF)
+    else if(key == X_CENTER_DEF)
     {
         camObjects.back().data.analysis.x_centre_def  = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == Y_CENTER_DEF)
+    else if(key == Y_CENTER_DEF)
     {
         camObjects.back().data.analysis.x_centre_def  = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == PIX_2_MM_RATIO_DEF)
+    else if(key == PIX_2_MM_RATIO_DEF)
     {
         camObjects.back().data.analysis.pix_2_mm_def  = getNumD(value);
     }
-    else if(keyVal[ZERO_SIZET] == ARRAY_DATA_NUM_PIX_X)
+
+    else if(key == BINARY_NUM_PIX_X)
+    {
+        camObjects.back().data.image.bin_num_pix_x  = getSize(value);
+    }
+    else if(key == BINARY_NUM_PIX_Y)
+    {
+        camObjects.back().data.image.bin_num_pix_y = getSize(value);
+    }
+    else if(key == AVG_PIXEL_VALUE_FOR_BEAM)
+    {
+        camObjects.back().data.analysis.avg_pix_beam_level  = getNumD(value);
+    }
+    else if(key == ARRAY_DATA_NUM_PIX_X)
     {
         camObjects.back().data.image.num_pix_x  = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == ARRAY_DATA_NUM_PIX_Y)
+    else if(key == ARRAY_DATA_NUM_PIX_Y)
     {
         camObjects.back().data.image.num_pix_y = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == ARRAY_DATA_X_PIX_2_MM)
+    else if(key == ARRAY_DATA_X_PIX_2_MM)
     {
         camObjects.back().data.image.x_pix_to_mm  = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == ARRAY_DATA_Y_PIX_2_MM)
+    else if(key == ARRAY_DATA_Y_PIX_2_MM)
     {
         camObjects.back().data.image.y_pix_to_mm = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == IP_ADDRESS_STREAM)
+    else if(key == IP_ADDRESS_STREAM)
     {
         camObjects.back().streamingIPAddress = value;
     }
-    else if(keyVal[ZERO_SIZET] == MAX_SHOTS_NUMBER)
+    else if(key == MAX_SHOTS_NUMBER)
     {
         camObjects.back().daq.maxShots = getNum(value);
     }
-    else if(keyVal[ZERO_SIZET] == SENSOR_MIN_TEMP)
+    else if(key == SENSOR_MIN_TEMP)
     {
         camObjects.back().daq.sensorMinTemp = getNumD(value);
     }
-    else if(keyVal[ZERO_SIZET] == SENSOR_MAX_TEMP)
+    else if(key == SENSOR_MAX_TEMP)
     {
         camObjects.back().daq.sensorMaxTemp = getNumD(value);
     }
-    else if(keyVal[ZERO_SIZET] == X)
+    else if(key == X)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = key;
     }
-    else if(keyVal[ZERO_SIZET] == Y)
+    else if(key == Y)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = key;
     }
-    else if(keyVal[ZERO_SIZET] == X_SIGMA)
+    else if(key == X_SIGMA)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = key;
     }
-    else if(keyVal[ZERO_SIZET] == Y_SIGMA)
+    else if(key == Y_SIGMA)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = key;
     }
-    else if(keyVal[ZERO_SIZET] == XY_SIGMA)
+    else if(key == XY_SIGMA)
     {
-        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
+        camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = key;
     }
-    else if(keyVal[ZERO_SIZET] == UTL::CAM_TYPE)
+    else if(key == UTL::CAM_TYPE)
     {
-        camObjects.back().type = getCamType(keyVal[ZERO_SIZET]);
+        camObjects.back().type = getCamType(value);
+        message(camObjects.back().name, " is a ", ENUM_TO_STRING(camObjects.back().type));
     }
-    else if(keyVal[ZERO_SIZET] == UTL::X_PIX_SCALE_FACTOR)
+    else if(key == UTL::X_PIX_SCALE_FACTOR)
     {
-        camObjects.back().data.image.x_pix_scale_factor = getSize(keyVal[ZERO_SIZET]);
+        camObjects.back().data.image.x_pix_scale_factor = getSize(value);
     }
-    else if(keyVal[ZERO_SIZET] == UTL::Y_PIX_SCALE_FACTOR)
+    else if(key == UTL::Y_PIX_SCALE_FACTOR)
     {
-        camObjects.back().data.image.y_pix_scale_factor = getSize(keyVal[ZERO_SIZET]);
+        camObjects.back().data.image.y_pix_scale_factor = getSize(value);
     }
 }
 //______________________________________________________________________________
-cameraStructs::CAM_TYPE claraCameraConfigReader::getCamType(const std::string& value)
+cameraStructs::CAM_TYPE claraCameraConfigReader::getCamType(const std::string& value) const
 {
+    message("getCamType passed ", value);
     if(value == ENUM_TO_STRING(cameraStructs::CAM_TYPE::VELA_CAM))
        return cameraStructs::CAM_TYPE::VELA_CAM;
     if(value == ENUM_TO_STRING(cameraStructs::CAM_TYPE::CLARA_CAM))

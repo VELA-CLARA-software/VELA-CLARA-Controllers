@@ -965,7 +965,6 @@ namespace BOOST_PYTHON_INCLUDE
         const char* takeAndGetFastImage2D_VC_ds = "";
         const char* takeAndGetFastImage2D_ds1   = "";
         const char* takeAndGetFastImage2D_ds2   = "";
-
         const char* takeAndGetFastImage_VC_ds  = "";
         const char* takeAndGetFastImage_ds1    = "";
         const char* takeAndGetFastImage_ds2    = "";

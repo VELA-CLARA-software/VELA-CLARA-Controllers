@@ -80,6 +80,19 @@ std::string baseObject::currentDateTime() const
     return buf;
 }
 //______________________________________________________________________________
+bool baseObject::getBool(const std::string& str) const
+{
+    if( str == UTL::TRUE)
+    {
+        return true;
+    }
+    if( str == UTL::FALSE)
+    {
+        return false;
+    }
+    std::cout << "!!!WARNING!! getBool was not passed TRUE or FALSE" << std::endl;
+}
+//______________________________________________________________________________
 int baseObject::getNum(const std::string& str) const
 {
     return atoi(str.c_str());

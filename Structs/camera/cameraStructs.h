@@ -188,7 +188,7 @@ namespace cameraStructs
         bool           success;
     };
     /*
-        analysis_mask define an simple ellipse ROI that is used
+        analysis_mask define a simple ellipse ROI that is used
         for the analysis
     */
     struct analysis_mask
@@ -203,6 +203,11 @@ namespace cameraStructs
             mask_y_def(UTL::DUMMY_INT),
             mask_x_rad_def(UTL::DUMMY_INT),
             mask_y_rad_def(UTL::DUMMY_INT),
+            mask_x_rad_max(UTL::ONE_INT),
+            mask_y_rad_max(UTL::ONE_INT),
+            mask_x_rad_min(UTL::ONE_INT),
+            mask_y_rad_min(UTL::ONE_INT),
+            use_mask_rad_limits(false),
             maskInterface(nullptr)
             {};
         std::string name;
@@ -215,7 +220,15 @@ namespace cameraStructs
             when you need to reset th emask you would use these values,
             the actual values are defined in the config file
         */
-        int mask_x_def,mask_y_def,mask_x_rad_def,mask_y_rad_def;
+        int mask_x_def, mask_y_def, mask_x_rad_def, mask_y_rad_def;
+        /*
+            max and min values for the mask
+        */
+        int mask_x_rad_max, mask_y_rad_max, mask_x_rad_min, mask_y_rad_min;
+        /*
+            should we use the mask radius limits (max/min) values?
+        */
+        bool use_mask_rad_limits;
         /*
             setter functions
         */
@@ -238,7 +251,10 @@ namespace cameraStructs
             acquire(ACQUIRING_ERROR),
             Blacklevel(UTL::DUMMY_INT),
             gain(UTL::DUMMY_INT),
-            mask_feedback(false)
+            mask_feedback(false),
+            is_camera_image_updating(false),
+            is_camera_analysis_updating(false),
+            latest_avg_pix_has_beam(false)
             {}
         /*
             flags for analysis
@@ -252,6 +268,17 @@ namespace cameraStructs
             is the camera acquiring data
         */
         ACQUIRE_STATE acquire;
+        /*
+            tests to determine if acquisiotion and analysis are 'working'
+            these are based on the timestamps of data coming from EPICS
+            ses .... functions tbd
+        */
+        bool is_camera_image_updating, is_camera_analysis_updating;
+        /*
+            if the avg pixel intensity is above 'some-level' then we assume
+            there is beam in the image
+        */
+        bool latest_avg_pix_has_beam;
         /*
             mas_feedback updates the mask every shot based on the analysis results
         */
@@ -291,7 +318,9 @@ namespace cameraStructs
             max_buffer_count(UTL::TEN_SIZET),
             buffer_count(UTL::ZERO_SIZET),
             step_size(UTL::DUMMY_INT),
-            buffer_full(false)
+            buffer_full(false),
+            avg_pix_beam_level(UTL::DUMMY_DOUBLE),
+            pix_values_counter(UTL::ZERO_SIZET)
             {};
         std::string name;
         /*
@@ -318,6 +347,10 @@ namespace cameraStructs
                avg_pix,sum_pix,
                sig_x_pix,sig_y_pix,sig_xy_pix;
         /*
+            above this level the has_beam flag is set to true
+        */
+        double avg_pix_beam_level;
+        /*
             buffers for pixel values
         */
         size_t max_buffer_count,buffer_count;
@@ -332,7 +365,16 @@ namespace cameraStructs
         size_t num_pix_values;
         std::vector<double> pix_values;
         std::deque<std::vector<double>> pix_values_buf;
-        std::string pix_values_time;
+        /*
+            we keep a timestamp of th elatest pixel values results to detemrine if
+            the camera is updating in a state that will enable feedback to 'work-well'
+        */
+        HWC_ENUM::epics_timestamp pix_values_timestamp, last_pix_values_timestamp;
+        /*
+            counter of how many times this data is updated
+            (NB atm we use ca_get, to limit network traffic
+        */
+        size_t pix_values_counter;
         /*
             this map is defined in the config file
             and tells us which element is which
@@ -434,6 +476,7 @@ namespace cameraStructs
             name(UTL::UNKNOWN_NAME),
             /*
                 number of pixels in binary images (i.e saved to disc)
+                and used for analysis, masks etc ...
             */
             bin_num_pix_x(UTL::ZERO_SIZET),
             bin_num_pix_y(UTL::ZERO_SIZET),
@@ -449,17 +492,32 @@ namespace cameraStructs
             x_pix_scale_factor(UTL::ZERO_SIZET),
             y_pix_scale_factor(UTL::ZERO_SIZET),
             fast_image_interface(nullptr),
+            pTL(nullptr),
             array_data_min(UTL::DUMMY_INT),
-            array_data_max(UTL::DUMMY_INT)
+            array_data_max(UTL::DUMMY_INT),
+            counter(UTL::ZERO_SIZET)
             {}
-        std::string name;
+        dbr_time_long* pTL;
+
+        std::string name, time_stamp;
+        double time_d;
         size_t num_pix_x,num_pix_y, bit_depth,x_pix_scale_factor,y_pix_scale_factor;
         size_t bin_num_pix_x,bin_num_pix_y;
         // not sure if these are ever used ...
         double x_pix_to_mm,y_pix_to_mm;
+
+
+        /*
+            counter of how many times this data is updated
+            (NB atm we use ca_get, to limit network traffic
+        */
+        size_t counter;
         /*
           Actual Array Data
         */
+        //struct dbr_time_long time_stamped_array_data;
+        //struct dbr_time_long time_stamped_background_array_data;
+
         std::vector<int> array_data, background_array;
         #ifdef BUILD_DLL
 //            boost::python::list array_data_Py();
@@ -468,9 +526,18 @@ namespace cameraStructs
 //            boost::python::list background_data_2D_Py();
             boost::python::list data, data2D, background, background2D;
         #endif
-        cameraBase*    fast_image_interface;
+        /*
+            need a camerabse instance for some functionality (mutex?)
+        */
+        cameraBase* fast_image_interface;
         size_t array_data_sum, background_data_sum;
         int array_data_min, array_data_max;
+        /*
+            we keep a timestamp of the latest and last array_data results
+            to determine if the camera is updating in a state that will
+            enable feedback to 'work-well'
+        */
+        HWC_ENUM::epics_timestamp array_data_timestamp, last_array_data_timestamp;
     };
     /*
         combination of all strucst that make up image analysis data
@@ -570,7 +637,6 @@ namespace cameraStructs
             numIlocks(UTL::ZERO_SIZET)
             {}
         HWC_ENUM::MACHINE_AREA  machineArea;
-
 
         std::string name, pvRoot, screenName, streamingIPAddress;
         /*

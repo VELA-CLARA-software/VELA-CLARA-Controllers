@@ -413,6 +413,13 @@ bool interface::isTimeType(const long type) const
     return r;
 }
 //______________________________________________________________________________
+double interface::getTime(const epicsTimeStamp& stamp)
+{
+    /* for hints look in epicsTime.h */
+    return ((double)stamp.nsec * UTL::TEN_POWER_MINUS_NINE) +
+          (double)stamp.secPastEpoch;
+}
+//______________________________________________________________________________
 void interface::updateTime(const epicsTimeStamp& stamp, double& val, std::string& str)
 {
     /* for hints look in epicsTime.h */

@@ -404,7 +404,6 @@ class cameraBase : public interface
         boost::python::list getFastImage2D_Py(const std::string& cam)const;
         boost::python::list getFastImage2D_Py()const;
         boost::python::list getFastImage2D_Py(const cameraStructs::cameraObject& cam)const;
-
 #endif
 
         int getGain_VC()const;
@@ -415,7 +414,6 @@ class cameraBase : public interface
         int getBlacklevel(const std::string& cam)const;
         int getBlacklevel()const;
         int getBlacklevel(const cameraStructs::cameraObject& cam)const;
-
 
         int getStepSize_VC()const;
         int getStepSize(const std::string& cam)const;
@@ -621,7 +619,7 @@ class cameraBase : public interface
         void updateSensorTemp(const event_handler_args& args, cameraStructs::cameraObject& cam);
         void updateSelectedCamRef(cameraStructs::cameraObject& cam);
         void updateWriteErrorMessageJPG(const void *value, cameraStructs::cameraObject& cam);
-        void updatePixelResults(const event_handler_args& args, cameraStructs::analysis_data& data);
+        void updatePixelResults(const event_handler_args& args, cameraStructs::cameraObject& data);
         void addToBuffer(const double val, std::deque<double>& buffer,cameraStructs::analysis_data& data);
 
         std::string useCameraFrom(const std::string& camOrScreen)const;
@@ -685,6 +683,11 @@ class cameraBase : public interface
 
         static void mask_feedback(int x, int y, int x_rad, int y_rad, const std::string& name, cameraBase* interface);
 
+        // testing
+        epicsTime et;
+        epicsTime timestamp;
+
+        bool updateArrayData(cameraStructs::cameraObject& cam, const event_handler_args& args);
 
         const HWC_ENUM::MACHINE_AREA myarea;
 };

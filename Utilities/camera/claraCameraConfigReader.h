@@ -65,7 +65,7 @@ class claraCameraConfigReader : public configReader
         std::vector<cameraStructs::pvStruct> pvComStructs;
 
 
-        cameraStructs::CAM_TYPE getCamType(const std::string& value);
+        cameraStructs::CAM_TYPE getCamType(const std::string& value) const;
 
 
 

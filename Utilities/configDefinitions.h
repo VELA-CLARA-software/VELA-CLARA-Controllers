@@ -38,6 +38,8 @@
 namespace UTL
 {
     /// numerical and string constants
+    const std::string TRUE  ="TRUE";
+    const std::string FALSE ="FALSE";
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
     const double TEN_POWER_MINUS_NINE  = 0.000000001;
@@ -836,12 +838,19 @@ namespace UTL
     const std::string SCREEN_NAME               ="SCREEN_NAME";
     const std::string X_MASK_RAD_DEF                ="X_MASK_RAD_DEF";
     const std::string Y_MASK_RAD_DEF                ="Y_MASK_RAD_DEF";
+    const std::string X_MASK_RAD_MAX                ="X_MASK_RAD_MAX";
+    const std::string X_MASK_RAD_MIN                ="X_MASK_RAD_MIN";
+    const std::string Y_MASK_RAD_MAX                ="Y_MASK_RAD_MAX";
+    const std::string Y_MASK_RAD_MIN                ="Y_MASK_RAD_MIN";
     const std::string X_MASK_DEF                    ="X_MASK_DEF";
     const std::string Y_MASK_DEF                    ="Y_MASK_DEF";
     const std::string X_CENTER_DEF                  ="X_CENTER_DEF";
     const std::string Y_CENTER_DEF                  ="Y_CENTER_DEF";
     const std::string PIX_2_MM_RATIO_DEF            ="PIX_2_MM_RATIO_DEF";
+    const std::string USE_MASK_RAD_LIMITS            ="USE_MASK_RAD_LIMITS";
 
+    const std::string BINARY_NUM_PIX_X  = "BINARY_NUM_PIX_X";
+    const std::string BINARY_NUM_PIX_Y  = "BINARY_NUM_PIX_Y";
     const std::string ARRAY_DATA_NUM_PIX_X  = "ARRAY_DATA_NUM_PIX_X";
     const std::string ARRAY_DATA_NUM_PIX_Y  = "ARRAY_DATA_NUM_PIX_Y";
     const std::string ARRAY_DATA_X_PIX_2_MM  = "ARRAY_DATA_X_PIX_2_MM";
@@ -849,6 +858,8 @@ namespace UTL
 
     const std::string SENSOR_MAX_TEMP = "SENSOR_MAX_TEMP";
     const std::string SENSOR_MIN_TEMP = "SENSOR_MIN_TEMP";
+
+    const std::string AVG_PIXEL_VALUE_FOR_BEAM = "AVG_PIXEL_VALUE_FOR_BEAM";
 
     /*
         the VIRTUAL_CATHODE name is hardcoded, due to it being so

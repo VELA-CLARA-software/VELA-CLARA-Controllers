@@ -126,6 +126,10 @@ class interface : public baseObject
                            map_ilck_state&    iLockStates);
         static void staticEntryILockMonitor(event_handler_args args);
 
+        /*
+            can probably write a generic template function for the
+            below based on args.type
+        */
         static unsigned short getDBRunsignedShort(const event_handler_args& args);
         static unsigned long  getDBRunsignedLong (const event_handler_args& args);
         static std::string    getDBRstring       (const event_handler_args& args);
@@ -139,6 +143,9 @@ class interface : public baseObject
                                                   double& val);
         void getDBRdouble_timestamp(const event_handler_args& args, double& val);
         void updateBoolState(const event_handler_args& args, bool& parameter);
+
+
+        double getTime(const epicsTimeStamp& stamp);
 
 
         void setChannelCountandType(const chid& CHID,

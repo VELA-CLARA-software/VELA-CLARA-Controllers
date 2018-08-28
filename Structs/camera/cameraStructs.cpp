@@ -403,6 +403,10 @@ bool analysis_data::sum_pix_full()
 
 //______________________________________________________________________________
 #ifdef BUILD_DLL
+
+
+
+
 //void fast_image::array_data_Py()
 //{
 //    if(fast_image_interface)
