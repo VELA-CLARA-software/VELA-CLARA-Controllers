@@ -51,9 +51,9 @@ class shutterConfigReader : public configReader
         void addPVStruct(std::vector<shutterStructs::pvStruct>& pvStruct_v,
                          const std::vector<std::string>& keyVal);
 
-        void addToShutterObjectsV1(const std::vector<std::string> &keyVal);
-        void addToPVCommandMapV1  (const std::vector<std::string> &keyVal);
-        void addToPVMonitorMapV1  (const std::vector<std::string> &keyVal);
+        void addToShutterObjectsV1(const std::vector<std::string>& keyVal);
+        void addToPVCommandMapV1  (const std::vector<std::string>& keyVal);
+        void addToPVMonitorMapV1  (const std::vector<std::string>& keyVal);
 
 };
 #endif //UTL_FILE_IO_H

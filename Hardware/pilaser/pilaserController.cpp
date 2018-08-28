@@ -48,12 +48,27 @@ localInterface(show_messages,
                velaCamConfig,
                area),
 name(name),
-cameraControllerBase(show_messages,show_debug_messages, name, HWC_ENUM::CONTROLLER_TYPE::PI_LASER, &localInterface)
+cameraControllerBase(show_messages,show_debug_messages, name, HWC_ENUM::CONTROLLER_TYPE::PI_LASER, &localInterface),
+shutterController(show_messages,
+                                     show_debug_messages,
+                                     startVirtualMachine,
+                                     shouldStartEPICs,
+                                     UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG,
+                                     "physical_PIL_Shutter_Controller")
 {
     if(localInterface.interfaceInitReport(shouldStartEPICs))
     {
         camBase = &localInterface;
-        message("pilaserController instantiation success.");
+        cameraControllerBase::message("pilaserController instantiation success.");
+
+//
+//        shutter = new shutterController(show_messages,
+//                                     show_debug_messages,
+//                                     startVirtualMachine,
+//                                     shouldStartEPICs,
+//                                     UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG,
+//                                     "physical_PIL_Shutter_Controller"
+//                          );
     }
 }
 //______________________________________________________________________________
@@ -153,7 +168,7 @@ std::vector<double> pilaserController::getQBuffer()const
 #ifdef BUILD_DLL
 boost::python::list pilaserController::getQBuffer_Py()const
 {
-    return toPythonList(getQBuffer());
+    return cameraControllerBase::toPythonList(getQBuffer());
 }
 #endif // BUILD_DLL
 //______________________________________________________________________________

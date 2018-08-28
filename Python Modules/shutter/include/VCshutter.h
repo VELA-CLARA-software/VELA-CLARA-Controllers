@@ -67,7 +67,15 @@ class VCshutter : public VCbase
 //______________________________________________________________________________
 BOOST_PYTHON_MODULE(VELA_CLARA_Shutter_Control)
 {
-
+    /*
+        Things that you want to use in python muct be exposed:
+        containers
+    */
+    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+    /*
+        shutter objects are in expose_shutter.h so they can be used by
+        other controllers  (e.g. the pilasercontroller)
+    */
     BOOST_PYTHON_INCLUDE::expose_shutter();
 
     /// The main class that creates all the controller obejcts

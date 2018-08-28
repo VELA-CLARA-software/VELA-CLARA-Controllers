@@ -29,6 +29,7 @@
 #include "pilaserController.h"
 #include "VCheader.h"
 #include "VCbase.h"
+#include "expose_shutter.h"
 //______________________________________________________________________________
 class VCpilaser : public VCbase
 {
@@ -83,11 +84,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     //using namespace boost::python;
     docstring_options doc_options(true, false, false);
     doc_options.disable_cpp_signatures();
-    /*
-        Things that you want to use in python muct be exposed:
-        containers
-    */
+
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
+
+    BOOST_PYTHON_INCLUDE::expose_shutter();
 
     /*
         // IF WE BUILD INDIVIDUAL CONTRLLERS FOR EACH SUB-HARDWARE SYSTEM
@@ -208,7 +208,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* clearLaserRunningValues_doc  = "getQBuffer_doc.";
 
 
-    class_<pilaserController, bases<cameraControllerBase>, noncopyable>
+    class_<pilaserController, bases<cameraControllerBase,shutterController>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
         .def("setHWP",&pilaserController::setHWP,(VALUE_ARG),setHWP_doc)

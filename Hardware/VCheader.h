@@ -1785,7 +1785,6 @@ namespace BOOST_PYTHON_INCLUDE
         {
             reg_vec_double(py_name, py_docs);
         }
-
         /*
             Expose base classes,  these should never be multiply defined
             no_int  forces Python to not construct (init) this object
