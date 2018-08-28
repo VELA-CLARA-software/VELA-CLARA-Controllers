@@ -27,10 +27,16 @@
 #include <vector>
 // project includes
 #include "pilaserInterface.h"
+#include "pilaserInterface.h"
 #include "cameraControllerBase.h"
 #include "cameraStructs.h"
+#include "shutterController.h"
 //______________________________________________________________________________
-class pilaserController : public cameraControllerBase
+/*
+    !!!!WARNING MULTIPLE INHERITANCES!!!!
+    https://stackoverflow.com/questions/406081/why-should-i-avoid-multiple-inheritance-in-c
+*/
+class pilaserController : public cameraControllerBase , public shutterController
 {
     public:
         pilaserController(bool& show_messages,
@@ -96,6 +102,9 @@ class pilaserController : public cameraControllerBase
     protected:
     private:
         pilaserInterface  localInterface;
+
+       // shutterController* shutter;
+
         const std::string name;
 //        localMirrorName, localInterfaceName,
 //                          localVirtualCathodeName;

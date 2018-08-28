@@ -116,6 +116,15 @@ void pilaserInterface::initialise()
                 startMonitors();
                 /* The pause allows EPICS callbacks to catch up. */
                 pause_2000();
+                /* set defaults */
+                if( setDefaults() )
+                {
+
+                }
+                else
+                {
+                    message("The pilaserInterface FAILED TO SET DEFAULT VALUES");
+                }
             }
             else
              message("The pilaserInterface has acquired objects, "
@@ -125,6 +134,25 @@ void pilaserInterface::initialise()
             message("!!!The pilaserInterface received an Error "
                     "while getting laser data!!!");
     }
+}
+//______________________________________________________________________________
+bool pilaserInterface::setDefaults()
+{
+//    cameraStructs::cameraObject& vc = getCamObj(UTL::VIRTUAL_CATHODE);
+//    if(vc.name != UTL::UNKNOWN_NAME)
+//    {
+//        if(entryExists(vc.pvComStructs,cameraStructs::CAM_PV_TYPE::PIX_MM))
+//        {
+//            message(vc.data.analysis.pix_2_mm_def);
+//
+//            cameraStructs::pvStruct& pvs = vc.pvComStructs.at(cameraStructs::CAM_PV_TYPE::PIX_MM);
+//            return move(pvs.CHTYPE,pvs.CHID, vc.data.analysis.pix_2_mm_def,
+//                  "",
+//                  "!!TIMEOUT!! FAILED TO SET DEFAULT PIX-2-MM");
+//
+//        }
+//    }
+    return true;
 }
 //______________________________________________________________________________
 bool pilaserInterface::initObjects()
@@ -375,56 +403,18 @@ std::vector<double> pilaserInterface::getQBuffer()const
 }
 
 
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getXBuffer()const
-//{
-//    return pilaser.vcData.x_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getYBuffer()const
-//{
-//    return pilaser.vcData.y_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getSigXBuffer()const
-//{
-//    return pilaser.vcData.sig_x_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getSigYBuffer()const
-//{
-//    return pilaser.vcData.sig_y_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getSigXYBuffer()const
-//{
-//    return pilaser.vcData.sig_xy_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getXPixBuffer()const
-//{
-//    return pilaser.vcData.x_pix_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getYPixBuffer()const
-//{
-//    return pilaser.vcData.y_pix_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getSigXPixBuffer()const
-//{
-//    return pilaser.vcData.sig_x_pix_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getSigYPixBuffer()const
-//{
-//    return pilaser.vcData.sig_y_pix_buf;
-//}
-////____________________________________________________________________________________________
-//std::vector<double> pilaserInterface::getSigXYPixBuffer()const
-//{
-//    return pilaser.vcData.sig_xy_pix_buf;
-//}
+//setPosition
+//
+//
+//        /*
+//            check timestamp compared to current time
+//        */
+//        epicsTimeStamp tn = epicsTimeStamp( et.getCurrent() );
+//        std::string tn_time_str;
+//        double tn_time_d;
+//        updateTime(tn,tn_time_d,tn_time_str);
+
+
 //____________________________________________________________________________________________
 int pilaserInterface::setHWP(const double value)
 {
@@ -736,34 +726,50 @@ bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
     return false;
 }
 
-void staticEntry_set_VC_xpos(const double xpos, const time_t waitTime, pilaserInterface* interface)
+bool pilaserInterface::shortCaput(unsigned short comm, pilaserStructs::pvStruct& S)
 {
-    interface->set_VC_xpos()
+    bool ans(false);
+    ca_put(S.CHTYPE,S.CHID, &comm);
+    int status = sendToEpics("ca_put", "", "Timeout trying to sendToEpics.");
+    if(status == ECA_NORMAL)
+    {
+        ans = true;
+    }
+    return ans;
 }
 
-set_VC_xpos()
 
-    time_t timeStart = timeNow();
 
-        /* check if time ran out */
-        if(timeNow() - timeStart> waitTime)
-        {
-            timeOut = true;
-        }
-        runningStat& x_mean = cam.data.analysis.x_rs;
-        runningStat& y_mean = cam.data.analysis.y_rs;
 
-        size_t start_buffer_count = getBufferMaxCount_VC();
 
-        setBufferMaxCount_VC(10);//MAGIC_NUMBER
+//void staticEntry_set_VC_xpos(const double xpos, const time_t waitTime, pilaserInterface* interface)
+//{
+//    interface->set_VC_xpos()
+//}
 
-        while( areNotSame(xpos) )
-        {
-
-            message()
-
-        }
-        setBufferMaxCount_VC(start_buffer_count);//MAGIC_NUMBER
+//set_VC_xpos()
+//
+//    time_t timeStart = timeNow();
+//
+//        /* check if time ran out */
+//        if(timeNow() - timeStart> waitTime)
+//        {
+//            timeOut = true;
+//        }
+//        runningStat& x_mean = cam.data.analysis.x_rs;
+//        runningStat& y_mean = cam.data.analysis.y_rs;
+//
+//        size_t start_buffer_count = getBufferMaxCount_VC();
+//
+//        setBufferMaxCount_VC(10);//MAGIC_NUMBER
+//
+//        while( areNotSame(xpos) )
+//        {
+//
+//            message()
+//
+//        }
+//        setBufferMaxCount_VC(start_buffer_count);//MAGIC_NUMBER
 
 
 
@@ -860,17 +866,7 @@ set_VC_xpos()
 //    return ans;
 //}
 //____________________________________________________________________________________________
-bool pilaserInterface::shortCaput(unsigned short comm, pilaserStructs::pvStruct& S)
-{
-    bool ans(false);
-    ca_put(S.CHTYPE,S.CHID, &comm);
-    int status = sendToEpics("ca_put", "", "Timeout trying to sendToEpics.");
-    if(status == ECA_NORMAL)
-    {
-        ans = true;
-    }
-    return ans;
-}
+
 
 //
 //
@@ -1125,6 +1121,56 @@ bool pilaserInterface::shortCaput(unsigned short comm, pilaserStructs::pvStruct&
 
 
 
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getXBuffer()const
+//{
+//    return pilaser.vcData.x_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getYBuffer()const
+//{
+//    return pilaser.vcData.y_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getSigXBuffer()const
+//{
+//    return pilaser.vcData.sig_x_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getSigYBuffer()const
+//{
+//    return pilaser.vcData.sig_y_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getSigXYBuffer()const
+//{
+//    return pilaser.vcData.sig_xy_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getXPixBuffer()const
+//{
+//    return pilaser.vcData.x_pix_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getYPixBuffer()const
+//{
+//    return pilaser.vcData.y_pix_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getSigXPixBuffer()const
+//{
+//    return pilaser.vcData.sig_x_pix_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getSigYPixBuffer()const
+//{
+//    return pilaser.vcData.sig_y_pix_buf;
+//}
+////____________________________________________________________________________________________
+//std::vector<double> pilaserInterface::getSigXYPixBuffer()const
+//{
+//    return pilaser.vcData.sig_xy_pix_buf;
+//}
 
 
 

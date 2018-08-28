@@ -147,6 +147,7 @@ class pilaserInterface : public cameraBase
         bool setValue(pilaserStructs::pvStruct& pvs,const double value);
         bool move(chtype& cht, chid& chi, const double val, const char* m1, const char* m2);
 
+        bool setDefaults();
 
 };
 //______________________________________________________________________________
