@@ -435,6 +435,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("can_increase_active_pulses",      &liberallrfObject::can_increase_active_pulses,"can_increase_active_pulses value")
         ;
 
+    using namespace UTL;
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
         ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init )
         .def("getILockStates",    &liberaLLRFController::getILockStates)
@@ -454,15 +455,15 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getAmpCalibration", &liberaLLRFController::getAmpCalibration,"Return Linear Conversion of Amplitude from LLRF units to MV/m")
         .def("getCrestPhiLLRF",   &liberaLLRFController::getCrestPhiLLRF,"Return the Crest Phase in LLRF Units")
 
-        .def("setActivePulsePowerLimit",   &liberaLLRFController::setActivePulsePowerLimit,(arg("value")),"Set minimum Klystron Forward Power to enable active pulse increasing (below this value active pulses won't increment.).")
+        .def("setActivePulsePowerLimit",   &liberaLLRFController::setActivePulsePowerLimit,(VALUE_ARG),"Set minimum Klystron Forward Power to enable active pulse increasing (below this value active pulses won't increment.).")
         .def("getActivePulsePowerLimit",   &liberaLLRFController::getActivePulsePowerLimit,"Get minimum Klystron Forward Power to enable active pulse increasing.")
 
         .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),"Return LLRF Object Reference")
-        .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(arg("name")),"Return reference to LLRF Trace Object 'name'")
+        .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(NAME_ARG),"Return reference to LLRF Trace Object 'name'")
 
-        .def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at least this time?")
-        .def("getTime",&liberaLLRFController::getTime,(arg("index")),"Return trace_time at this index")
-        //.def("getIndex",&liberaLLRFController::getIndex,(arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
+        .def("getIndex",&liberaLLRFController::getIndex,(boost::python::arg("time")),"Return index from trace at time 'time' (at least this time?")
+        .def("getTime",&liberaLLRFController::getTime,(boost::python::arg("index")),"Return trace_time at this index")
+        //.def("getIndex",&liberaLLRFController::getIndex,(boost::python::arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
 
 
 
@@ -470,7 +471,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-s]")
         .def("getPulseOffset",  &liberaLLRFController::getPulseOffset,"Return RF Pulse Offset [micro-s]")
         .def("getActivePulseCount",  &liberaLLRFController::getActivePulseCount,"Return number of pulses with amplitude > 0 sinze connection")
-        .def("addPulseCountOffset",  &liberaLLRFController::addPulseCountOffset,(arg("value")),"set an offset to the pulse counter (must be postive")
+        .def("addPulseCountOffset",  &liberaLLRFController::addPulseCountOffset,(VALUE_ARG),"set an offset to the pulse counter (must be postive")
 
         .def("isFFLocked",  &liberaLLRFController::isFFLocked,"Return true if FF check box is checked.")
         .def("isFFNotLocked",  &liberaLLRFController::isFFNotLocked,"Return true if FF check box is not checked.")
@@ -485,20 +486,20 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceNames",&liberaLLRFController::getTraceNames_Py,"Return Trace names (defined in config file)")
 
         .def("getOutsideMaskData",&liberaLLRFController::getOutsideMaskData_Py,"Return Saved Data of traces outside masks")
-        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(arg("part")),"Return index [part] from saved data of traces outside masks")
-        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data")
+        .def("getOutsideMaskDataPart",&liberaLLRFController::getOutsideMaskData2_Py,(boost::python::arg("part")),"Return index [part] from saved data of traces outside masks")
+        .def("isOutsideMaskDataFinishedCollecting",&liberaLLRFController::isOutsideMaskDataFinishedCollecting,(boost::python::arg("part")),"Return treu if out_side_mask_traces 'part is still collecting data")
 
 
-        .def("getTraceData",   &liberaLLRFController::getTraceData,(arg("name")),"Return latest rf_trace object for Channel 'name'")
-        .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(arg("name")),"Return latest average trace data for Channel 'name'")
-        .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(arg("name")),"Return latest Trace Values for channel 'name'")
-        .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(arg("name")),"Return buffer of rf_trace objects for channel 'name'")
+        .def("getTraceData",   &liberaLLRFController::getTraceData,(NAME_ARG),"Return latest rf_trace object for Channel 'name'")
+        .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
+        .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(NAME_ARG),"Return latest Trace Values for channel 'name'")
+        .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(NAME_ARG),"Return buffer of rf_trace objects for channel 'name'")
         .def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
-        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(arg("name"),arg("value")),"set tKeepRollingAverage flag, but don't chnage current average data")
-        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(arg("value")),"set tKeepRollingAverage flag, but don't chnage current average data")
+        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(NAME_ARG,VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
+        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
 
-        .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(arg("name"),arg("state"),arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask is detected for trace 'name', returns true on success")
-        .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(arg("name"),arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace for trace 'name' returns true on success")
+        .def("setDropAmpOnOutsideMaskDetection", &liberaLLRFController::setDropAmpOnOutsideMaskDetection,(NAME_ARG,boost::python::arg("state"),boost::python::arg("amp_val")),"Sets the 'state' for dropping the llrf amplitude to 'amp_val' when an outside mask is detected for trace 'name', returns true on success")
+        .def("setDropAmpValue", &liberaLLRFController::setDropAmpValue,(NAME_ARG,boost::python::arg("amp_val")),"Sets the value to drop the amplitude to (when enabled) on detecting an outside mask trace for trace 'name' returns true on success")
 
         .def("getCavRevPowerData",&liberaLLRFController::getCavRevPowerData,"Return latest cavity reverse power rf_trace object")
         .def("getCavFwdPowerData",&liberaLLRFController::getCavFwdPowerData,"Return latest cavity forward power rf_trace object")
@@ -546,20 +547,20 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setTracesToSaveOnBreakDown",  &liberaLLRFController::setTracesToSaveOnBreakDown_2,"Set the Names of Traces to Save when a break down occurs")
         .def("getTracesToSaveOnBreakDown",  &liberaLLRFController::getTracesToSaveOnBreakDown_Py,"Get the Names of Traces to Save when a break down occurs")
 
-        .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(arg("value")),"Set Phase in LLRF Units")
-        .def("setAmpLLRF",&liberaLLRFController::setAmpLLRF,(arg("value")),"Set Amplitude in LLRF units")
-        .def("setPhiDEG",  &liberaLLRFController::setPhiDEG,(arg("value")),"Set Cavity Phase Relative to Creset [degrees] (+ve sense?)")
-        .def("setAmpMVM",  &liberaLLRFController::setAmpMVM,(arg("value")),"Set Cavity Amplitude [MV/m]")
-        .def("setPhiSP",  &liberaLLRFController::setPhiSP,(arg("value")),"Set Phase(SP) in LLRF Units")
-        .def("setPhiFF",  &liberaLLRFController::setPhiFF,(arg("value")),"Set Phase(FF) in LLRF Units")
-        .def("setAmpSP",  &liberaLLRFController::setAmpSP,(arg("value")),"Set Amplitude(SP) in LLRF Units")
-        .def("setAmpHP",  &liberaLLRFController::setAmpHP,(arg("value")),"Set Amplitude(HP) in LLRF Units")
-        .def("setAmpFF",  &liberaLLRFController::setAmpFF,(arg("value")),"Set Amplitude(FF) in LLRF Units")
+        .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(VALUE_ARG),"Set Phase in LLRF Units")
+        .def("setAmpLLRF",&liberaLLRFController::setAmpLLRF,(VALUE_ARG),"Set Amplitude in LLRF units")
+        .def("setPhiDEG",  &liberaLLRFController::setPhiDEG,(VALUE_ARG),"Set Cavity Phase Relative to Creset [degrees] (+ve sense?)")
+        .def("setAmpMVM",  &liberaLLRFController::setAmpMVM,(VALUE_ARG),"Set Cavity Amplitude [MV/m]")
+        .def("setPhiSP",  &liberaLLRFController::setPhiSP,(VALUE_ARG),"Set Phase(SP) in LLRF Units")
+        .def("setPhiFF",  &liberaLLRFController::setPhiFF,(VALUE_ARG),"Set Phase(FF) in LLRF Units")
+        .def("setAmpSP",  &liberaLLRFController::setAmpSP,(VALUE_ARG),"Set Amplitude(SP) in LLRF Units")
+        .def("setAmpHP",  &liberaLLRFController::setAmpHP,(VALUE_ARG),"Set Amplitude(HP) in LLRF Units")
+        .def("setAmpFF",  &liberaLLRFController::setAmpFF,(VALUE_ARG),"Set Amplitude(FF) in LLRF Units")
 
-        .def("setInfiniteMaskEndByPower",&liberaLLRFController::setInfiniteMaskEndByPower,(arg("power_trace"),arg("phase_trace"),arg("level")),
+        .def("setInfiniteMaskEndByPower",&liberaLLRFController::setInfiniteMaskEndByPower,(boost::python::arg("power_trace"),boost::python::arg("phase_trace"),boost::python::arg("level")),
              "Automatically set mask end of phase_trace by index of power 'level' in power_trace")
 
-        .def("disableInfiniteMaskEndByPower",  &liberaLLRFController::disableInfiniteMaskEndByPower,(arg("phase_trace")),"Disable automatic setting of mask infinte end.")
+        .def("disableInfiniteMaskEndByPower",  &liberaLLRFController::disableInfiniteMaskEndByPower,(boost::python::arg("phase_trace")),"Disable automatic setting of mask infinte end.")
 
         .def("trigOff",  &liberaLLRFController::trigOff,"Set the LLRF trigger to off.")
         .def("trigExt",  &liberaLLRFController::trigExt,"Set the LLRF trigger to external.")
@@ -567,53 +568,53 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getTrigSource",  &liberaLLRFController::getTrigSource,"Return current trigger source.")
 
-        .def("setMeanStartEndTime",  &liberaLLRFController::setMeanStartEndTime,(arg("start"),arg("end"),arg("name")),"Set trace 'name' start and end times for mean")
-        .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(arg("name"),arg("value")),"Set trace 'name' start index for mean calculation")
-        .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(arg("name"),arg("value")),"Set trace 'name' stop index for mean calculation")
+        .def("setMeanStartEndTime",  &liberaLLRFController::setMeanStartEndTime,(boost::python::arg("start"),boost::python::arg("end"),boost::python::arg("name")),"Set trace 'name' start and end times for mean")
+        .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' start index for mean calculation")
+        .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' stop index for mean calculation")
 
-        .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(arg("name"),arg("value")),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
-        .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(arg("value")),"Set all monitoring traces SCAN rate to 'value'")
+        .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
+        .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(VALUE_ARG),"Set all monitoring traces SCAN rate to 'value'")
         .def("setAllSCANToPassive",  &liberaLLRFController::setAllSCANToPassive,"Set all SCAN to Passive")
-        .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(arg("name")),"Get High mask for trace 'name'")
-        .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(arg("name")),"Get Low mask for trace 'name'")
+        .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(boost::python::arg("name")),"Get High mask for trace 'name'")
+        .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(boost::python::arg("name")),"Get Low mask for trace 'name'")
 
         .def("resetAverageTraces",  &liberaLLRFController::resetAverageTraces,"Reset All Rolling Averages")
 
-        .def("clearMask",  &liberaLLRFController::clearMask,(arg("name")),"Clear the masks for trace 'name'")
+        .def("clearMask",  &liberaLLRFController::clearMask,(boost::python::arg("name")),"Clear the masks for trace 'name'")
 
-        .def("fullCavityTraceName",  &liberaLLRFController::fullCavityTraceName,(arg("name")),"Returns trace name being used")
+        .def("fullCavityTraceName",  &liberaLLRFController::fullCavityTraceName,(boost::python::arg("name")),"Returns trace name being used")
 
-        .def("getMaskInfiniteEndByPowerIndex",  &liberaLLRFController::getMaskInfiniteEndByPowerIndex,(arg("name")),"Returns end index of trace 'name' from auto-setting end by power.")
-        .def("getMaskInfiniteEndByPowerTime",  &liberaLLRFController::getMaskInfiniteEndByPowerTime,(arg("name")),"Returns end time of trace 'name' from auto-setting end by power.")
+        .def("getMaskInfiniteEndByPowerIndex",  &liberaLLRFController::getMaskInfiniteEndByPowerIndex,(boost::python::arg("name")),"Returns end index of trace 'name' from auto-setting end by power.")
+        .def("getMaskInfiniteEndByPowerTime",  &liberaLLRFController::getMaskInfiniteEndByPowerTime,(boost::python::arg("name")),"Returns end time of trace 'name' from auto-setting end by power.")
 
-        .def("setPulseLength",  &liberaLLRFController::setPulseLength,(arg("value")),"Set RF pulse length [micro-s]")
-        .def("setPulseOffset",  &liberaLLRFController::setPulseOffset,(arg("value")),"Set RF pulse offset [micro-sec]")
-        .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(arg("value")),"Set linear calibration of phase from LLRF units to degrees")
-        .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(arg("value")),"Set linear calibration of amplitude from LLRF units to MV/m")
-        .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(arg("value")),"Set the Crest Phi value in LLRF Units")
-        .def("setInfiniteMasks",  &liberaLLRFController::setInfiniteMasks,(arg("name")),"Set infitine hi/lo masks for for trace 'name'")
-        .def("setHighMask",  setHighMask_1,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
-        .def("setHighMask",  setHighMask_2,(arg("name"),arg("value")),"Set the Hi mask for trace 'name'")
-        .def("setLowMask",  setLowMask_1,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
-        .def("setLowMask",  setLowMask_2,(arg("name"),arg("value")),"Set the Lo mask for trace 'name'")
-        .def("setCavRevPwrHiMask",  &liberaLLRFController::setCavRevPwrHiMask_Py,(arg("value")),"Set the Hi mask for cavity reverse power (channel defined in config file)")
-        .def("setCavRevPwrLoMask",  &liberaLLRFController::setCavRevPwrLoMask_Py,(arg("value")),"Set the Lo mask for cavity reverse power (channel defined in config file)")
-        .def("setPercentTimeMask",  &liberaLLRFController::setPercentTimeMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
-        .def("setAbsoluteTimeMask",  &liberaLLRFController::setAbsoluteTimeMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
-        .def("setPercentMask",  &liberaLLRFController::setPercentMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
-        .def("setAbsoluteMask",  &liberaLLRFController::setAbsoluteMask,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value"),arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
+        .def("setPulseLength",  &liberaLLRFController::setPulseLength,(VALUE_ARG),"Set RF pulse length [micro-s]")
+        .def("setPulseOffset",  &liberaLLRFController::setPulseOffset,(VALUE_ARG),"Set RF pulse offset [micro-sec]")
+        .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(VALUE_ARG),"Set linear calibration of phase from LLRF units to degrees")
+        .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(VALUE_ARG),"Set linear calibration of amplitude from LLRF units to MV/m")
+        .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(VALUE_ARG),"Set the Crest Phi value in LLRF Units")
+        .def("setInfiniteMasks",  &liberaLLRFController::setInfiniteMasks,(boost::python::arg("name")),"Set infitine hi/lo masks for for trace 'name'")
+        .def("setHighMask",  setHighMask_1,(boost::python::arg("name"),VALUE_ARG),"Set the Hi mask for trace 'name'")
+        .def("setHighMask",  setHighMask_2,(boost::python::arg("name"),VALUE_ARG),"Set the Hi mask for trace 'name'")
+        .def("setLowMask",  setLowMask_1,(boost::python::arg("name"),VALUE_ARG),"Set the Lo mask for trace 'name'")
+        .def("setLowMask",  setLowMask_2,(boost::python::arg("name"),VALUE_ARG),"Set the Lo mask for trace 'name'")
+        .def("setCavRevPwrHiMask",  &liberaLLRFController::setCavRevPwrHiMask_Py,(VALUE_ARG),"Set the Hi mask for cavity reverse power (channel defined in config file)")
+        .def("setCavRevPwrLoMask",  &liberaLLRFController::setCavRevPwrLoMask_Py,(VALUE_ARG),"Set the Lo mask for cavity reverse power (channel defined in config file)")
+        .def("setPercentTimeMask",  &liberaLLRFController::setPercentTimeMask,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG,boost::python::arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
+        .def("setAbsoluteTimeMask",  &liberaLLRFController::setAbsoluteTimeMask,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG,boost::python::arg("name")),"Set the mask for trace 'name' giving time co-oords for mask points")
+        .def("setPercentMask",  &liberaLLRFController::setPercentMask,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG,boost::python::arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
+        .def("setAbsoluteMask",  &liberaLLRFController::setAbsoluteMask,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG,boost::python::arg("name")),"Set the mask for trace 'name' giving indixes for mask points")
 
-        .def("setMaskFloor",  &liberaLLRFController::setMaskFloor,(arg("name"),arg("value")),"Set the mask floor for trace 'name'")
-        .def("setNumExtraTraces",  &liberaLLRFController::setNumExtraTraces,(arg("value")),"Set the number of extra traces after out_side mask event")
+        .def("setMaskFloor",  &liberaLLRFController::setMaskFloor,(boost::python::arg("name"),VALUE_ARG),"Set the mask floor for trace 'name'")
+        .def("setNumExtraTraces",  &liberaLLRFController::setNumExtraTraces,(VALUE_ARG),"Set the number of extra traces after out_side mask event")
         .def("getNumExtraTraces",  &liberaLLRFController::getNumExtraTraces,"Get the number of extra traces after out_side mask event")
-        .def("setNumContinuousOutsideMaskCount",  &liberaLLRFController::setNumContinuousOutsideMaskCount,(arg("name"),arg("value")),"Set the number of continuous outside mask hits to trigger event, for trace 'name'")
+        .def("setNumContinuousOutsideMaskCount",  &liberaLLRFController::setNumContinuousOutsideMaskCount,(boost::python::arg("name"),VALUE_ARG),"Set the number of continuous outside mask hits to trigger event, for trace 'name'")
 
 
                 //bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
         //bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
 
 
-        .def("setCavRevPwrMaskPercent",  &liberaLLRFController::setCavRevPwrMaskPercent,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+        .def("setCavRevPwrMaskPercent",  &liberaLLRFController::setCavRevPwrMaskPercent,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG),
             "set the Cavity Reverse Power Mask based on the rolling_average for cavity_rev_power trace/n"
             "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
             "between element s1+1 and s2 will be set by rolling_average +/- value percent of rolling_average/n"
@@ -621,7 +622,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
             "between element s3+1 and s4 will be set by rolling_average +/- value percent of rolling_average/n"
             "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
 
-        .def("setCavRevPwrMaskAbsolute",  &liberaLLRFController::setCavRevPwrMaskAbsolute,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+        .def("setCavRevPwrMaskAbsolute",  &liberaLLRFController::setCavRevPwrMaskAbsolute,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG),
             "set the Cavity Reverse Power Mask based on the rolling_average for cavity_rev_power trace/n"
             "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
             "between element s1+1 and s2 will be set by rolling_average +/- value/n"
@@ -629,7 +630,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
             "between element s3+1 and s4 will be set by rolling_average +/- value/n"
             "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
 
-        .def("setCavFwdPwrMaskPercent",  &liberaLLRFController::setCavFwdPwrMaskPercent,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+        .def("setCavFwdPwrMaskPercent",  &liberaLLRFController::setCavFwdPwrMaskPercent,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG),
             "set the Cavity Forward Power Mask based on the rolling_average for cavity_rev_power trace/n"
             "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
             "between element s1+1 and s2 will be set by rolling_average +/- value percent of rolling_average/n"
@@ -637,7 +638,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
             "between element s3+1 and s4 will be set by rolling_average +/- value percent of rolling_average/n"
             "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
 
-        .def("setCavFwdPwrMaskAbsolute",  &liberaLLRFController::setCavFwdPwrMaskAbsolute,(arg("s1"),arg("s2"),arg("s3"),arg("s4"),arg("value")),
+        .def("setCavFwdPwrMaskAbsolute",  &liberaLLRFController::setCavFwdPwrMaskAbsolute,(boost::python::arg("s1"),boost::python::arg("s2"),boost::python::arg("s3"),boost::python::arg("s4"),VALUE_ARG),
             "set the Cavity Forward Power Mask based on the rolling_average for cavity_rev_power trace/n"
             "between element 0    and s1 will be set to default hi/lo (+/-infinity)/n"
             "between element s1+1 and s2 will be set by rolling_average +/- value/n"
@@ -645,68 +646,68 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
             "between element s3+1 and s4 will be set by rolling_average +/- value/n"
             "between element s3+1 and s4 will be set very default hi/lo (+/-infinity)/n")
 
-        .def("setNumBufferTraces",  setNumBufferTraces_1,(arg("name"),arg("value")),"Set the number of buffer traces to keep for trace 'name' to 'value'")
-        .def("setNumBufferTraces",  setNumBufferTraces_2,(arg("value")),"Set the number of buffer traces for all traces to 'value'")
+        .def("setNumBufferTraces",  setNumBufferTraces_1,(boost::python::arg("name"),VALUE_ARG),"Set the number of buffer traces to keep for trace 'name' to 'value'")
+        .def("setNumBufferTraces",  setNumBufferTraces_2,(VALUE_ARG),"Set the number of buffer traces for all traces to 'value'")
 
         .def("startTimer", &liberaLLRFController::startTimer,"Starts (or resets) a local timer")
         .def("elapsedTime",&liberaLLRFController::elapsedTime,"ms since the last startTimer call, (if negative then no call to startTimerhas been made)")
         .def("offsetTimer",&liberaLLRFController::offsetTimer,"offeswt the timer by an integer amount")
 
 
-        .def("setCheckMask",  &liberaLLRFController::setCheckMask,(arg("name"),arg("value")),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")
-        .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(arg("name")),"Set check mask to true for trace 'name'")
+        .def("setCheckMask",  &liberaLLRFController::setCheckMask,(boost::python::arg("name"),VALUE_ARG),"Set whether to check (or not check) new traces against the mask (pass 'name' and true or false)")
+        .def("setShouldCheckMask",  &liberaLLRFController::setShouldCheckMask,(boost::python::arg("name")),"Set check mask to true for trace 'name'")
 
-        .def("shouldCheckMasks",  &liberaLLRFController::shouldCheckMasks,(arg("name")),"return true if checking masks for trace 'name'")
+        .def("shouldCheckMasks",  &liberaLLRFController::shouldCheckMasks,(boost::python::arg("name")),"return true if checking masks for trace 'name'")
 
-        .def("setShouldNotCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(arg("name")),"Set check mask to false for trace 'name'")
+        .def("setShouldNotCheckMask",  &liberaLLRFController::setShouldNotCheckMask,(boost::python::arg("name")),"Set check mask to false for trace 'name'")
 
-        .def("setGlobalCheckMask",  &liberaLLRFController::setGlobalCheckMask,(arg("value")),"Set Global check mask flag to  'value'")
+        .def("setGlobalCheckMask",  &liberaLLRFController::setGlobalCheckMask,(VALUE_ARG),"Set Global check mask flag to  'value'")
         .def("setGlobalShouldCheckMask",  &liberaLLRFController::setGlobalShouldCheckMask,"Set Global check mask flag to True")
         .def("setGlobalShouldNotCheckMask",  &liberaLLRFController::setGlobalShouldNotCheckMask,"Set Global check mask flag to False")
-        .def("setKeepRollingAverage",  &liberaLLRFController::setKeepRollingAverage,(arg("name"),arg("value")),"Set whetrher to keep a rolling average of previous traces (pass 'name' and true or false)")
-        .def("setNumRollingAverageTraces",  setNumRollingAverageTraces_1,(arg("name"),arg("value")),"Set the number of traces used for the rolling average")
-        .def("setNumRollingAverageTraces",  setNumRollingAverageTraces_2,(arg("name")),"Set the number of traces used for the rolling average")
+        .def("setKeepRollingAverage",  &liberaLLRFController::setKeepRollingAverage,(boost::python::arg("name"),VALUE_ARG),"Set whetrher to keep a rolling average of previous traces (pass 'name' and true or false)")
+        .def("setNumRollingAverageTraces",  setNumRollingAverageTraces_1,(boost::python::arg("name"),VALUE_ARG),"Set the number of traces used for the rolling average")
+        .def("setNumRollingAverageTraces",  setNumRollingAverageTraces_2,(boost::python::arg("name")),"Set the number of traces used for the rolling average")
 
 
-        .def("setShouldKeepRollingAverage",   setShouldKeepRollingAverage_1,(arg("name")),"Set keep rolling average to true for trace 'name'")
+        .def("setShouldKeepRollingAverage",   setShouldKeepRollingAverage_1,(boost::python::arg("name")),"Set keep rolling average to true for trace 'name'")
         .def("setShouldKeepRollingAverage",   setShouldKeepRollingAverage_2,"Set keep rolling average to true for all traces  ")
 
-        .def("setShouldNotKeepRollingAverage",setShouldNotKeepRollingAverage_1,(arg("name")),"Set keep rolling average to false for trace 'name'")
+        .def("setShouldNotKeepRollingAverage",setShouldNotKeepRollingAverage_1,(boost::python::arg("name")),"Set keep rolling average to false for trace 'name'")
         .def("setShouldNotKeepRollingAverage",setShouldNotKeepRollingAverage_2,"Set keep rolling average to false for all traces")
 
-        .def("getNumRollingAverageTraces",  &liberaLLRFController::getNumRollingAverageTraces,(arg("name")),"Get the number of traces to average for trace 'name'")
-        .def("clearRollingAverage",  &liberaLLRFController::clearRollingAverage,(arg("name")),"Clear the Rolling Average data for trace 'name' This also rests other counters to zero, meaning any/all current data in the rolling averages will be lost. ")
+        .def("getNumRollingAverageTraces",  &liberaLLRFController::getNumRollingAverageTraces,(boost::python::arg("name")),"Get the number of traces to average for trace 'name'")
+        .def("clearRollingAverage",  &liberaLLRFController::clearRollingAverage,(boost::python::arg("name")),"Clear the Rolling Average data for trace 'name' This also rests other counters to zero, meaning any/all current data in the rolling averages will be lost. ")
 
-        .def("isTracePV",  &liberaLLRFController::isTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
-        .def("isNotTracePV",  &liberaLLRFController::isNotTracePV,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
+        .def("isTracePV",  &liberaLLRFController::isTracePV,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE a power trace?")
+        .def("isNotTracePV",  &liberaLLRFController::isNotTracePV,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT a power trace?")
 
-        .def("isMonitoring",  isMonitoring_1,(arg("name")),"Is the trace 'name' being monitored?")
-        .def("isMonitoring",  isMonitoring_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")
+        .def("isMonitoring",  isMonitoring_1,(boost::python::arg("name")),"Is the trace 'name' being monitored?")
+        .def("isMonitoring",  isMonitoring_2,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE being monitored?")
 
-        .def("isNotMonitoring",  isNotMonitoring_1,(arg("name")),"Is the trace 'name' NOT being monitored?")
-        .def("isNotMonitoring",  isNotMonitoring_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT being monitored?")
+        .def("isNotMonitoring",  isNotMonitoring_1,(boost::python::arg("name")),"Is the trace 'name' NOT being monitored?")
+        .def("isNotMonitoring",  isNotMonitoring_2,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE NOT being monitored?")
 
-        .def("isCheckingMask", isCheckingMask_1,(arg("name")),"Is trace 'name' checking against a mask?")
-        .def("isCheckingMask", isCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE checking against a  mask?")
+        .def("isCheckingMask", isCheckingMask_1,(boost::python::arg("name")),"Is trace 'name' checking against a mask?")
+        .def("isCheckingMask", isCheckingMask_2,(boost::python::arg("LLRF_PV_TYPE")),"Is this LLRF_PV_TYPE checking against a  mask?")
 
-        .def("isNotCheckingMask", isNotCheckingMask_1,(arg("name")),"Is trace 'name' NOT Checking against a mask?")
-        .def("isNotCheckingMask", isNotCheckingMask_2,(arg("LLRF_PV_TYPE")),"Is trace LLRF_PV_TYPE  NOT Checking against a mask?")
+        .def("isNotCheckingMask", isNotCheckingMask_1,(boost::python::arg("name")),"Is trace 'name' NOT Checking against a mask?")
+        .def("isNotCheckingMask", isNotCheckingMask_2,(boost::python::arg("LLRF_PV_TYPE")),"Is trace LLRF_PV_TYPE  NOT Checking against a mask?")
 
 
-        .def("getShotCount", &liberaLLRFController::getShotCount,(arg("name")),"Get Number of traces recieved by this controller for trace 'name'")
+        .def("getShotCount", &liberaLLRFController::getShotCount,(boost::python::arg("name")),"Get Number of traces recieved by this controller for trace 'name'")
 
 
         .def("startTraceMonitoring", startTraceMonitoring_1,"Start all LLRF Trace Monitors")
-        .def("startTraceMonitoring", startTraceMonitoring_2,(arg("LLRF_PV_TYPE")),"Start Trace Monitoring for LLRF_PV_TYPE")
-        .def("startTraceMonitoring", startTraceMonitoring_3,(arg("name")),"Start Trace Monitoring for 'name'")
+        .def("startTraceMonitoring", startTraceMonitoring_2,(boost::python::arg("LLRF_PV_TYPE")),"Start Trace Monitoring for LLRF_PV_TYPE")
+        .def("startTraceMonitoring", startTraceMonitoring_3,(boost::python::arg("name")),"Start Trace Monitoring for 'name'")
         .def("startCavFwdTraceMonitor", &liberaLLRFController::startCavFwdTraceMonitor,"Start Cavity Forward Power Trace Monitoring")
         .def("startCavRevTraceMonitor", &liberaLLRFController::startCavRevTraceMonitor,"Start Cavity Reverse Power Trace Monitoring")
         .def("startKlyFwdTraceMonitor", &liberaLLRFController::startKlyFwdTraceMonitor,"Start Klystron Forward Power Trace Monitoring")
         .def("startKlyRevTraceMonitor", &liberaLLRFController::startKlyRevTraceMonitor,"Start Klystron Reverse Power Trace Monitoring")
 
         .def("stopTraceMonitoring",stopTraceMonitoring_1,"Stop all LLRF Trace Monitors")
-        .def("stopTraceMonitoring",stopTraceMonitoring_2,(arg("LLRF_PV_TYPE")),"Stop Trace Monitoring for LLRF_PV_TYPE")
-        .def("stopTraceMonitoring",stopTraceMonitoring_3,(arg("name")),"Stop Trace Monitoring for trace 'name'")
+        .def("stopTraceMonitoring",stopTraceMonitoring_2,(boost::python::arg("LLRF_PV_TYPE")),"Stop Trace Monitoring for LLRF_PV_TYPE")
+        .def("stopTraceMonitoring",stopTraceMonitoring_3,(boost::python::arg("name")),"Stop Trace Monitoring for trace 'name'")
 
         .def("stopCavFwdTraceMonitor", &liberaLLRFController::stopCavFwdTraceMonitor,"Stop Cavity Forward Power Trace Monitoring")
         .def("stopCavRevTraceMonitor", &liberaLLRFController::stopCavRevTraceMonitor,"Stop Cavity Reverse Power Trace Monitoring")
