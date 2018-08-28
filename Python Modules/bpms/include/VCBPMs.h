@@ -125,8 +125,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
     local_docstring_options.disable_cpp_signatures();
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
-    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
-        ;
+//    boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
+//        ;
 
     boost::python::class_< boost::circular_buffer< double > >("Circular buffer definition for python ", boost::python::no_init)
         .def(vector_indexing_suite< boost::circular_buffer< double > >())
@@ -185,6 +185,12 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("statusBuffer",     &beamPositionMonitorStructs::bpmDataObject::statusBuffer     )
         .def_readonly("statusVec",        &beamPositionMonitorStructs::bpmDataObject::statusVec        )
         .def_readonly("rawBPMDataBuffer", &beamPositionMonitorStructs::bpmDataObject::rawBPMDataBuffer )
+        .def_readonly("awakCount",        &beamPositionMonitorStructs::bpmDataObject::awakCount        )
+        .def_readonly("rdyCount",         &beamPositionMonitorStructs::bpmDataObject::rdyCount         )
+        .def_readonly("awakTStamp",       &beamPositionMonitorStructs::bpmDataObject::awakTStamp       )
+        .def_readonly("awakTStampBuffer", &beamPositionMonitorStructs::bpmDataObject::awakTStampBuffer )
+        .def_readonly("rdyTStamp",        &beamPositionMonitorStructs::bpmDataObject::rdyTStamp        )
+        .def_readonly("rdyTStampBuffer",  &beamPositionMonitorStructs::bpmDataObject::rdyTStampBuffer  )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>

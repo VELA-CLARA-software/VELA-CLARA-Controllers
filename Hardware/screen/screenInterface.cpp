@@ -524,7 +524,7 @@ void screenInterface::updateJDiff( screenStructs::monitorStruct * ms, const doub
         }
         // this is also copying the pvstructs maps that we know
         //will never be used (IS THIS A PROBLEM?)
-        if( allScreentData.at(screenName).screenHState == allScreentData.at(screenName).screenSetHState && allScreentData.at(screenName).screenVState == allScreentData.at(screenName).screenSetVState )
+        if( allScreentData.at(screenName).screenState == allScreentData.at(screenName).screenSetState )
         {
             switch( ms->dir )
             {
@@ -1177,13 +1177,12 @@ void screenInterface::insertYAG( const std::string & name )
     {
         if( isMover(name) )
         {
-            setScreenSDEV( name, screenStructs::SCREEN_STATE::V_YAG );
+            moveScreenTo( name, screenStructs::SCREEN_STATE::V_YAG );
         }
         else if ( isPneumatic(name) )
         {
-            setScreenSDEV( name, screenStructs::SCREEN_STATE::YAG );
+            moveScreenTo( name, screenStructs::SCREEN_STATE::YAG );
         }
-        setScreenTrigger( name );
     }
     else
         std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
@@ -1217,27 +1216,34 @@ void screenInterface::resetPosition( const std::string & name )
 //______________________________________________________________________________
 bool screenInterface::setScreenSDEV(const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
-    if( isVElement( name, state ) )
+    if( isScreenMoving( allScreentData.at(name) ) )
     {
-        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHTYPE,
-               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHID,
-               &allScreentData.at(name).elementPositions.at(state) );
-    }
-    else if( isHElement( name, state ) )
-    {
-        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHTYPE,
-               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHID,
-               &allScreentData.at(name).elementPositions.at(state) );
-    }
-    else if( isPElement( name, state ) )
-    {
-        ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::SDEV).CHTYPE,
-               allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::SDEV).CHID,
-               &allScreentData.at(name).elementPositions.at(state) );
+        message("Screen ", name, " is moving, please wait!!!!!");
     }
     else
     {
-        message("ERROR! DRIVER DIRECTION UNKNOWN");
+         if( isVElement( name, state ) )
+        {
+            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHTYPE,
+                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_SDEV).CHID,
+                   &allScreentData.at(name).elementPositions.at(state) );
+        }
+        else if( isHElement( name, state ) )
+        {
+            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHTYPE,
+                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_SDEV).CHID,
+                   &allScreentData.at(name).elementPositions.at(state) );
+        }
+        else if( isPElement( name, state ) )
+        {
+            ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::SDEV).CHTYPE,
+                   allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::SDEV).CHID,
+                   &allScreentData.at(name).elementPositions.at(state) );
+        }
+        else
+        {
+            message("ERROR! DRIVER DIRECTION UNKNOWN");
+        }
     }
     std::string m1;
     m1 = "Timeout sending position in setScreenSDEV";
@@ -1257,13 +1263,13 @@ bool screenInterface::setScreenTrigger( const std::string & name )
     unsigned short send = 1;
     if( isMover(name) )
     {
-        if( allScreentData.at(name).screenSetVState != screenStructs::SCREEN_STATE::V_RETRACTED )
+        if( allScreentData.at(name).screenSetState != screenStructs::SCREEN_STATE::V_RETRACTED )
         {
             ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHTYPE,
                    allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::V_TRIGGER).CHID,
                    &send );
         }
-        else if( allScreentData.at(name).screenSetHState != screenStructs::SCREEN_STATE::H_RETRACTED )
+        else if( allScreentData.at(name).screenSetState != screenStructs::SCREEN_STATE::H_RETRACTED )
         {
             ca_put(allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHTYPE,
                    allScreentData.at(name).pvComStructs.at(screenStructs::SCREEN_PV_TYPE::H_TRIGGER).CHID,

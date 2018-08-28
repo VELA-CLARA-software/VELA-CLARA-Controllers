@@ -213,6 +213,7 @@ namespace UTL
     const std::string VELA_BA1_CHARGE_CONFIG  = "velaBA1Charge.config";
     const std::string VELA_BA2_CHARGE_CONFIG  = "velaBA2Charge.config";
     const std::string CLARA_PH1_CHARGE_CONFIG = "claraPH1Charge.config";
+    const std::string C2B_CHARGE_CONFIG       = "C2BCharge.config";
 
 /// Gun Modulator
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";

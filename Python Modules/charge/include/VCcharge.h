@@ -45,6 +45,9 @@ class VCcharge : public VCbase
         chargeController & virtual_CLARA_PH1_Charge_Controller();
         chargeController & offline_CLARA_PH1_Charge_Controller();
         chargeController & physical_CLARA_PH1_Charge_Controller();
+        chargeController & virtual_C2B_Charge_Controller();
+        chargeController & offline_C2B_Charge_Controller();
+        chargeController & physical_C2B_Charge_Controller();
         chargeController & getChargeController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
     protected:
@@ -72,6 +75,9 @@ class VCcharge : public VCbase
         chargeController * virtual_CLARA_PH1_Charge_Controller_Obj;
         chargeController * offline_CLARA_PH1_Charge_Controller_Obj;
         chargeController * physical_CLARA_PH1_Charge_Controller_Obj;
+        chargeController * virtual_C2B_Charge_Controller_Obj;
+        chargeController * offline_C2B_Charge_Controller_Obj;
+        chargeController * physical_C2B_Charge_Controller_Obj;
 };
 
 #ifdef BUILD_DLL
@@ -159,6 +165,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
     char const* isWCMBufferNotFullDocString = "Returns true if the WCM buffer is not full";
     char const* isS02FCUPBufferFullDocString = "Returns true if the S02-FCUP buffer is full";
     char const* isS02FCUPBufferNotFullDocString = "Returns true if the S02-FCUP buffer is not full";
+    char const* isSP1FCUPBufferFullDocString = "Returns true if the SP1-FCUP buffer is full";
+    char const* isSP1FCUPBufferNotFullDocString = "Returns true if the SP1-FCUP buffer is not full";
     char const* isNotMonitoringChargeDocString = "Returns true if str(name) is not being monitored";
     char const* isMonitoringWCMDocString = "Returns true if WCM is being monitored";
     char const* isNotMonitoringWCMDocString = "Returns true if WCM is not being monitored";
@@ -167,46 +175,46 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
 
 	boost::python::class_<chargeController, boost::python::bases<controller>, boost::noncopyable>
             ("chargeController","chargeController Doc String",boost::python::no_init)
-            .def("getChargeDataStruct",         &chargeController::getChargeDataStruct, (arg("name")), getChargeDataStructDocString, return_value_policy<reference_existing_object>() )
+            .def("getChargeDataStruct",         &chargeController::getChargeDataStruct, (boost::python::arg("name")), getChargeDataStructDocString, return_value_policy<reference_existing_object>() )
             .def("get_CA_PEND_IO_TIMEOUT",      &chargeController::get_CA_PEND_IO_TIMEOUT                                                   )
             .def("set_CA_PEND_IO_TIMEOUT",      &chargeController::set_CA_PEND_IO_TIMEOUT                                                   )
-            .def("setBufferSize",               &chargeController::setBufferSize, (arg("size_t")), setBufferSizeDocString                   )
+            .def("setBufferSize",               &chargeController::setBufferSize, (boost::python::arg("size_t")), setBufferSizeDocString                   )
 //            .def("restartContinuousMonitoring", &chargeController::restartContinuousMonitoring, restartContinuousMonitoringDocString        )
 //            .def("monitorForNShots",            &chargeController::monitorForNShots, (arg("name"),arg("size_t")), monitorForNShotsDocString )
 //            .def("cancelDataMonitors",          &chargeController::cancelDataMonitors, cancelDataMonitorsDocString                          )
-            .def("getBufferSize",               &chargeController::getBufferSize, (arg("name")), getBufferSizeDocString                     )
-            .def("getDiagType",                 &chargeController::getDiagType, (arg("name")), getDiagTypeDocString                         )
-            .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (arg("name")), getDiagTypeStrDocString                   )
-            .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (arg("name")), getChargeBufferDocString              )
-            .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (arg("name")), getVoltageBufferDocString            )
-            .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                       )
-            .def("getWCMVoltageBuffer",         &chargeController::getWCMVoltageBuffer_Py, getWCMVoltageBufferDocString                     )
-            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString               )
-            .def("getSP1FCUPChargeBuffer",      &chargeController::getSP1FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString               )
-            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString             )
-            .def("getSP1FCUPVoltageBuffer",     &chargeController::getSP1FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString             )
-            .def("getTimeStamps",               &chargeController::getTimeStamps_Py, (arg("name")), getTimeStampsDocString                  )
-            .def("getStrTimeStamps",            &chargeController::getStrTimeStamps_Py, (arg("name")), getStrTimeStampsDocString            )
-            .def("getChargeDiagnosticNames",    &chargeController::getChargeDiagnosticNames_Py, getChargeDiagnosticNamesDocString           )
-            .def("getChargePVs",                &chargeController::getChargePVs_Py, getChargePVsDocString                                   )
-            .def("getCharge",                   &chargeController::getCharge, (arg("name")), getChargeDocString                             )
-            .def("getVoltage",                  &chargeController::getVoltage, (arg("name")), getVoltageDocString                           )
-            .def("getWCMCharge",                &chargeController::getWCMCharge, getWCMChargeDocString                                      )
-            .def("getWCMVoltage",               &chargeController::getWCMVoltage, getWCMVoltageDocString                                    )
-            .def("getS02FCUPCharge",            &chargeController::getS02FCUPCharge, getS02FCUPChargeDocString                              )
-            .def("getSP1FCUPCharge",            &chargeController::getSP1FCUPCharge, getS02FCUPChargeDocString                              )
-            .def("getS02FCUPVoltage",           &chargeController::getS02FCUPVoltage, getS02FCUPVoltageDocString                            )
-            .def("getSP1FCUPVoltage",           &chargeController::getSP1FCUPVoltage, getS02FCUPVoltageDocString                            )
-            .def("isChargeBufferFull",          &chargeController::isChargeBufferFull, (arg("name")), isChargeBufferFullDocString           )
-            .def("isVoltageBufferFull",         &chargeController::isVoltageBufferFull, (arg("name")), isVoltageBufferFullDocString           )
-            .def("isChargeBufferNotFull",       &chargeController::isChargeBufferNotFull, (arg("name")), isChargeBufferNotFullDocString     )
-            .def("isVoltageBufferNotFull",      &chargeController::isVoltageBufferNotFull, (arg("name")), isVoltageBufferNotFullDocString     )
-            .def("isWCMBufferFull",             &chargeController::isWCMBufferFull, isMonitoringWCMDocString                                )
-            .def("isWCMBufferNotFull",          &chargeController::isWCMBufferNotFull, isNotMonitoringWCMDocString                          )
-            .def("isS02FCUPBufferFull",         &chargeController::isS02FCUPBufferFull, isMonitoringS02FCUPDocString                        )
-            .def("isSP1FCUPBufferFull",         &chargeController::isSP1FCUPBufferFull, isMonitoringS02FCUPDocString                        )
-            .def("isS02FCUPBufferNotFull",      &chargeController::isS02FCUPBufferNotFull, isNotMonitoringS02FCUPDocString                  )
-            .def("isSP1FCUPBufferNotFull",      &chargeController::isSP1FCUPBufferNotFull, isNotMonitoringS02FCUPDocString                  )
+            .def("getBufferSize",               &chargeController::getBufferSize, (boost::python::arg("name")), getBufferSizeDocString                     )
+            .def("getDiagType",                 &chargeController::getDiagType, (boost::python::arg("name")), getDiagTypeDocString                         )
+            .def("getDiagTypeStr",              &chargeController::getDiagTypeStr, (boost::python::arg("name")), getDiagTypeStrDocString                   )
+            .def("getChargeBuffer",             &chargeController::getChargeBuffer_Py, (boost::python::arg("name")), getChargeBufferDocString              )
+            .def("getVoltageBuffer",            &chargeController::getVoltageBuffer_Py, (boost::python::arg("name")), getVoltageBufferDocString            )
+            .def("getWCMChargeBuffer",          &chargeController::getWCMChargeBuffer_Py, getWCMChargeBufferDocString                                      )
+            .def("getWCMVoltageBuffer",         &chargeController::getWCMVoltageBuffer_Py, getWCMVoltageBufferDocString                                    )
+            .def("getS02FCUPChargeBuffer",      &chargeController::getS02FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString                              )
+            .def("getSP1FCUPChargeBuffer",      &chargeController::getSP1FCUPChargeBuffer_Py, getS02FCUPChargeBufferDocString                              )
+            .def("getS02FCUPVoltageBuffer",     &chargeController::getS02FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString                            )
+            .def("getSP1FCUPVoltageBuffer",     &chargeController::getSP1FCUPVoltageBuffer_Py, getS02FCUPVoltageBufferDocString                            )
+            .def("getTimeStamps",               &chargeController::getTimeStamps_Py, (boost::python::arg("name")), getTimeStampsDocString                  )
+            .def("getStrTimeStamps",            &chargeController::getStrTimeStamps_Py, (boost::python::arg("name")), getStrTimeStampsDocString            )
+            .def("getChargeDiagnosticNames",    &chargeController::getChargeDiagnosticNames_Py, getChargeDiagnosticNamesDocString                          )
+            .def("getChargePVs",                &chargeController::getChargePVs_Py, getChargePVsDocString                                                  )
+            .def("getCharge",                   &chargeController::getCharge, (boost::python::arg("name")), getChargeDocString                             )
+            .def("getVoltage",                  &chargeController::getVoltage, (boost::python::arg("name")), getVoltageDocString                           )
+            .def("getWCMCharge",                &chargeController::getWCMCharge, getWCMChargeDocString                                                     )
+            .def("getWCMVoltage",               &chargeController::getWCMVoltage, getWCMVoltageDocString                                                   )
+            .def("getS02FCUPCharge",            &chargeController::getS02FCUPCharge, getS02FCUPChargeDocString                                             )
+            .def("getSP1FCUPCharge",            &chargeController::getSP1FCUPCharge, getS02FCUPChargeDocString                                             )
+            .def("getS02FCUPVoltage",           &chargeController::getS02FCUPVoltage, getS02FCUPVoltageDocString                                           )
+            .def("getSP1FCUPVoltage",           &chargeController::getSP1FCUPVoltage, getS02FCUPVoltageDocString                                           )
+            .def("isChargeBufferFull",          &chargeController::isChargeBufferFull, (boost::python::arg("name")), isChargeBufferFullDocString           )
+            .def("isVoltageBufferFull",         &chargeController::isVoltageBufferFull, (boost::python::arg("name")), isVoltageBufferFullDocString         )
+            .def("isChargeBufferNotFull",       &chargeController::isChargeBufferNotFull, (boost::python::arg("name")), isChargeBufferNotFullDocString     )
+            .def("isVoltageBufferNotFull",      &chargeController::isVoltageBufferNotFull, (boost::python::arg("name")), isVoltageBufferNotFullDocString   )
+            .def("isWCMBufferFull",             &chargeController::isWCMBufferFull, isWCMBufferFullDocString                                               )
+            .def("isWCMBufferNotFull",          &chargeController::isWCMBufferNotFull, isWCMBufferNotFullDocString                                         )
+            .def("isS02FCUPBufferFull",         &chargeController::isS02FCUPBufferFull, isS02FCUPBufferFullDocString                                       )
+            .def("isSP1FCUPBufferFull",         &chargeController::isSP1FCUPBufferFull, isSP1FCUPBufferFullDocString                                       )
+            .def("isS02FCUPBufferNotFull",      &chargeController::isS02FCUPBufferNotFull, isS02FCUPBufferNotFullDocString                                 )
+            .def("isSP1FCUPBufferNotFull",      &chargeController::isSP1FCUPBufferNotFull, isSP1FCUPBufferNotFullDocString                                 )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",            &chargeController::debugMessagesOff                       )
             .def("debugMessagesOn",             &chargeController::debugMessagesOn                        )
@@ -229,6 +237,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
         .def("virtual_CLARA_PH1_Charge_Controller",  &VCcharge::virtual_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_Charge_Controller",  &VCcharge::offline_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_Charge_Controller", &VCcharge::physical_CLARA_PH1_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_C2B_Charge_Controller",        &VCcharge::virtual_C2B_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_C2B_Charge_Controller",        &VCcharge::offline_C2B_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_C2B_Charge_Controller",       &VCcharge::physical_C2B_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("getChargeController",                  &VCcharge::getChargeController, return_value_policy<reference_existing_object>())
         ;
 };
