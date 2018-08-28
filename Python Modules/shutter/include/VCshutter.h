@@ -26,7 +26,8 @@
 #include <string>
 //
 #include "shutterController.h"
-#include "VCheader.h"
+#include "expose_shutter.h"
+
 #include "VCbase.h"
 //______________________________________________________________________________
 class VCshutter : public VCbase
@@ -66,61 +67,8 @@ class VCshutter : public VCbase
 //______________________________________________________________________________
 BOOST_PYTHON_MODULE(VELA_CLARA_Shutter_Control)
 {
-    //using namespace boost::python;
-    docstring_options doc_options(true, false, false);
-    doc_options.disable_cpp_signatures();
-    /*
-        Things that you want to use in python muct be exposed:
-        containers
-    */
-    BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
-    using namespace UTL;
-    using namespace boost::python;
-    using namespace boost;
-    using namespace shutterStructs;
-
-    enum_<SHUTTER_STATE>("SHUTTER_STATE","State of shutters")
-        .value("OPEN", SHUTTER_STATE::OPEN)
-        .value("CLOSED",  SHUTTER_STATE::CLOSED )
-        .value("TIMING",  SHUTTER_STATE::TIMING )
-        .value("ERROR",  SHUTTER_STATE::ERROR )
-        ;
-
-//    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
-//    const char* closeAndWait_doc = "closeAndWait_doc.";
-//    const char* openAndWait_doc = "openAndWait_doc.";
-//    const char* isClosed_doc = "isClosed_doc.";
-//    const char* isOpen_doc = "isOpen_doc.";
-//    const char* close_doc = "close_doc.";
-//    const char* open_doc = "open_doc.";
-//    const char* getState_doc = "getState_doc.";
-
-//    const char* areAllOpen_doc = "areAllOpen_doc.";
-//    const char* areAllClosed_doc = "areAllClosed_doc.";
-//    const char* getShutterNames_doc = "getShutterNames_doc.";
-    const char* state_doc = "State (OPEN/CLOSED/TIMING etc.) of Shutter.";
-    const char* name_doc = "Shutter name.";
-
-    class_<shutterObject,noncopyable>
-        ("shutterObject","shutterObject member variables (read access only)", no_init)
-        .def_readonly("state",&shutterObject::state,state_doc)
-        .def_readonly("name",&shutterObject::name,name_doc)
-        ;
-
-    class_<shutterController, bases<controller>, noncopyable>
-        ("shutterController","shutterController Doc String",no_init)
-        .def("closeAndWait",  &shutterController::closeAndWait         )
-        .def("openAndWait", &shutterController::openAndWait)
-        .def("isClosed",   &shutterController::isClosed )
-        .def("isOpen",   &shutterController::isOpen )
-        .def("areAllOpen",   &shutterController::areAllOpen )
-        .def("areAllClosed",   &shutterController::areAllClosed )
-        .def("close",   &shutterController::close )
-        .def("open",   &shutterController::open )
-        .def("getShutterNames",   &shutterController::getShutterNames_Py )
-        .def("getShutterObjConstRef",   &shutterController::getShutterObjConstRef,return_value_policy<reference_existing_object>())
-        ;
+    BOOST_PYTHON_INCLUDE::expose_shutter();
 
     /// The main class that creates all the controller obejcts
     class_<VCshutter,bases<VCbase>,noncopyable> ("init","Doc string")
@@ -135,8 +83,78 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Shutter_Control)
              "returns a reference to the offline PI laser object.")
         ;
 
-//https://wiki.python.org/moin/boost.python/FAQ
-//#include /libs/python/test/module_tail.cpp
 }
+//    //using namespace boost::python;
+//    docstring_options doc_options(true, false, false);
+//    doc_options.disable_cpp_signatures();
+//    /*
+//        Things that you want to use in python muct be exposed:
+//        containers
+//    */
+//    BOOST_PYTHON_INCLUDE::export_BaseObjects();
+//
+//    using namespace UTL;
+//    using namespace boost::python;
+//    using namespace boost;
+//    using namespace shutterStructs;
+//
+//    enum_<SHUTTER_STATE>("SHUTTER_STATE","State of shutters")
+//        .value("OPEN", SHUTTER_STATE::OPEN)
+//        .value("CLOSED",  SHUTTER_STATE::CLOSED )
+//        .value("TIMING",  SHUTTER_STATE::TIMING )
+//        .value("ERROR",  SHUTTER_STATE::ERROR )
+//        ;
+//
+////    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
+////    const char* closeAndWait_doc = "closeAndWait_doc.";
+////    const char* openAndWait_doc = "openAndWait_doc.";
+////    const char* isClosed_doc = "isClosed_doc.";
+////    const char* isOpen_doc = "isOpen_doc.";
+////    const char* close_doc = "close_doc.";
+////    const char* open_doc = "open_doc.";
+////    const char* getState_doc = "getState_doc.";
+//
+////    const char* areAllOpen_doc = "areAllOpen_doc.";
+////    const char* areAllClosed_doc = "areAllClosed_doc.";
+////    const char* getShutterNames_doc = "getShutterNames_doc.";
+//    const char* state_doc = "State (OPEN/CLOSED/TIMING etc.) of Shutter.";
+//    const char* name_doc = "Shutter name.";
+//
+//    class_<shutterObject,noncopyable>
+//        ("shutterObject","shutterObject member variables (read access only)", no_init)
+//        .def_readonly("state",&shutterObject::state,state_doc)
+//        .def_readonly("name",&shutterObject::name,name_doc)
+//        ;
+//
+//    class_<shutterController, bases<controller>, noncopyable>
+//        ("shutterController","shutterController Doc String",no_init)
+//        .def("closeAndWait",  &shutterController::closeAndWait         )
+//        .def("openAndWait", &shutterController::openAndWait)
+//        .def("isClosed",   &shutterController::isClosed )
+//        .def("isOpen",   &shutterController::isOpen )
+//        .def("areAllOpen",   &shutterController::areAllOpen )
+//        .def("areAllClosed",   &shutterController::areAllClosed )
+//        .def("close",   &shutterController::close )
+//        .def("open",   &shutterController::open )
+//        .def("getShutterNames",   &shutterController::getShutterNames_Py )
+//        .def("getShutterObjConstRef",   &shutterController::getShutterObjConstRef,return_value_policy<reference_existing_object>())
+//        ;
+//
+//    /// The main class that creates all the controller obejcts
+//    class_<VCshutter,bases<VCbase>,noncopyable> ("init","Doc string")
+//        .def("virtual_PIL_Shutter_Controller",  &VCshutter::virtual_PIL_Shutter_Controller,
+//             return_value_policy<reference_existing_object>(),
+//             "returns a reference to the virtual PI laser object.")
+//        .def("physical_PIL_Shutter_Controller",  &VCshutter::physical_PIL_Shutter_Controller,
+//             return_value_policy<reference_existing_object>(),
+//            "returns a reference to the physical PI laser object.")
+//        .def("offline_PIL_Shutter_Controller",  &VCshutter::offline_PIL_Shutter_Controller,
+//             return_value_policy<reference_existing_object>(),
+//             "returns a reference to the offline PI laser object.")
+//        ;
+//
+////https://wiki.python.org/moin/boost.python/FAQ
+////#include /libs/python/test/module_tail.cpp
+//}
 
 #endif // _VC_PILASER_H_

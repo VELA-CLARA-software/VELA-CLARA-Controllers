@@ -91,6 +91,7 @@
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
 		<Unit filename="../../Hardware/interface.h" />
+		<Unit filename="../../Hardware/shutter/expose_shutter.h" />
 		<Unit filename="../../Hardware/shutter/shutterController.cpp" />
 		<Unit filename="../../Hardware/shutter/shutterController.h" />
 		<Unit filename="../../Hardware/shutter/shutterInterface.cpp" />
