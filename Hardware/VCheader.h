@@ -998,8 +998,17 @@ namespace BOOST_PYTHON_INCLUDE
          const char* isAnalysisUpdating_ds2    = "";
 
          const char* isAnalysisNotUpdating_VC_ds = "";
-         const char* isAnalysisNotUpdating_ds1      = "";
-         const char* isAnalysisNotUpdating_ds2      = "";
+         const char* isAnalysisNotUpdating_ds1   = "";
+         const char* isAnalysisNotUpdating_ds2   = "";
+
+
+        const char* getPix2mm_VC_ds = "";
+        const char* getPix2mm_ds1    = "";
+        const char* getPix2mm_ds2    = "";
+
+        const char* getPix2mmDef_VC_ds = "";
+        const char* getPix2mmDef_ds1   = "";
+        const char* getPix2mmDef_ds2   = "";
 
 
         /*
@@ -1031,8 +1040,8 @@ namespace BOOST_PYTHON_INCLUDE
 
 
 
-        bool(cameraControllerBase::*takeFastImage_1)(cstr&)       = &cameraControllerBase::takeFastImage;
-        bool(cameraControllerBase::*takeFastImage_2)()= &cameraControllerBase::takeFastImage;
+        bool(cameraControllerBase::*takeFastImage_1)(cstr&) = &cameraControllerBase::takeFastImage;
+        bool(cameraControllerBase::*takeFastImage_2)()      = &cameraControllerBase::takeFastImage;
 
 
         bool(cameraControllerBase::*useNPoint_1)(bool,cstr&)       = &cameraControllerBase::useNPoint;
@@ -1178,6 +1187,13 @@ namespace BOOST_PYTHON_INCLUDE
         double(cameraControllerBase::*getSigYPix_2)()     const                             = &cameraControllerBase::getSigYPix;
         double(cameraControllerBase::*getSigXYPix_1)(cstr&)const                            = &cameraControllerBase::getSigXYPix;
         double(cameraControllerBase::*getSigXYPix_2)()     const                            = &cameraControllerBase::getSigXYPix;
+
+        double(cameraControllerBase::*getPix2mm_1)(cstr&)const                            = &cameraControllerBase::getPix2mm;
+        double(cameraControllerBase::*getPix2mm_2)()     const                            = &cameraControllerBase::getPix2mm;
+        double(cameraControllerBase::*getPix2mmDef_1)(cstr&)const                         = &cameraControllerBase::getPix2mmDef;
+        double(cameraControllerBase::*getPix2mmDef_2)()     const                         = &cameraControllerBase::getPix2mmDef;
+
+
         void(cameraControllerBase::*setBufferMaxCount_1)(const size_t s,cstr&)         = &cameraControllerBase::setBufferMaxCount;
         void(cameraControllerBase::*setBufferMaxCount_2)(const size_t s)               = &cameraControllerBase::setBufferMaxCount;
 
@@ -1237,6 +1253,14 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getStateObj_VC",  &cameraControllerBase::getStateObj_VC  , return_value_policy<reference_existing_object>(),getStateObj_VC_ds )
         .def("getStateObj",  getStateObj_1 , return_value_policy<reference_existing_object>(), getStateObj_ds1 )
         .def("getStateObj",  getStateObj_2 , return_value_policy<reference_existing_object>(), getStateObj_ds2)
+
+        .def("getPix2mmDef_VC",  &cameraControllerBase::getPix2mm_VC, getPix2mm_VC_ds )
+        .def("getPix2mmDef",  getPix2mm_1       ,  getPix2mm_ds1 )
+        .def("getPix2mmDef",  getPix2mm_2       ,  getPix2mm_ds2 )
+
+        .def("getPix2mm_VC",  &cameraControllerBase::getPix2mmDef_VC, getPix2mmDef_VC_ds )
+        .def("getPix2mm",  getPix2mmDef_1       ,  getPix2mmDef_ds1 )
+        .def("getPix2mm",  getPix2mmDef_2       ,  getPix2mmDef_ds2 )
 
 
         .def("isAnalysisUpdating_VC",  &cameraControllerBase::isAnalysisUpdating_VC ,isAnalysisUpdating_VC_ds )

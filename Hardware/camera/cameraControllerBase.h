@@ -230,6 +230,15 @@ class cameraControllerBase : public controller
 // \__> |___  |   |  |___ |  \ .__/
 //
 //-----------------------------------------------------------------------------------------
+
+        double getPix2mm_VC() const;
+        double getPix2mm() const;
+        double getPix2mm(const std::string& name) const;
+
+        double getPix2mmDef_VC() const;
+        double getPix2mmDef() const;
+        double getPix2mmDef(const std::string& name) const;
+
         unsigned short getMaskX_VC()const;
         unsigned short getMaskX(const std::string& cam )const;
         unsigned short getMaskX()const;
@@ -437,6 +446,13 @@ class cameraControllerBase : public controller
         const cameraStructs::camera_state& getStateObj(const std::string& name)const;
         const cameraStructs::camera_state& getStateObj_VC()const;
         const cameraStructs::camera_state& getStateObj()const;
+
+        /*
+            DONT EXPOSE TO PYTHON!!!!
+        */
+        runningStat& get_x_private_rs_ref_VC();
+        runningStat& get_y_private_rs_ref_VC();
+
 //-----------------------------------------------------------------------------------------
 //  __   ___ ___ ___  ___  __   __
 // /__` |__   |   |  |__  |__) /__`

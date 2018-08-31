@@ -61,8 +61,8 @@ class pilaserController : public cameraControllerBase , public shutterController
         double getHWP();
 
         bool setCharge(const double value);
-        bool setIntensity(const double valueL);
-        double getIntensity() const;
+        bool setEnergy(const double value);
+        double getEnergy() const;
         std::string getName() const;
         HWC_ENUM::STATE getStatus() const;
         double getStabilisationStatus() const;
@@ -93,24 +93,32 @@ class pilaserController : public cameraControllerBase , public shutterController
         void clearRunningValues();
         double getQ()const;
         std::vector<double> getQBuffer()const;
+        std::vector<double> getEBuffer()const;
 
 
+        pilaserStructs::VC_SET_POS_STATE getSetVCPosState()const;
 
-
+        bool setVCPos(double h, double v);
+        bool setVCPos(double h, double v, double h_prec, double v_prec,
+                      double mirror_step_x_0, double mirror_step_y_0,
+                      size_t num_points_x, size_t num_points_y,
+                      size_t max_it, size_t time_out);
 
 #ifdef BUILD_DLL
         boost::python::list getQBuffer_Py()const;
+        boost::python::list getEBuffer_Py()const;
 #endif
 
         const pilaserStructs::pilMirrorObject&  getpilMirrorObjConstRef() const;
         const pilaserStructs::pilaserObject&    getPILObjConstRef() const;
         //const cameraStructs::camera_image_data& getVCDataObjConstRef() const;
 
-        bool setVCPosition(const double xpos, const double ypos);
-
     protected:
     private:
         pilaserInterface  localInterface;
+
+
+
 
        // shutterController* shutter;
 
@@ -128,12 +136,12 @@ class pilaserController : public cameraControllerBase , public shutterController
         */
 
         bool is_setting_position;
+        pilaserStructs::set_vc_position set_pos_struct;
 
+        static void staticEntrySetPosition(pilaserController* controller);
+        void setPosition();
 
-
-
-
-        static setPosition()
+        bool VCPositionEssentialRequirements_areBad();
 
         const std::string name;
 //        localMirrorName, localInterfaceName,

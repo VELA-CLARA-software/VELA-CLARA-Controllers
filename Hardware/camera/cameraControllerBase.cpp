@@ -247,8 +247,6 @@ bool cameraControllerBase::isBeam_y_Lo_VC()
     return camBase->isBeam_y_Lo_VC();
 }
 //---------------------------------------------------------------------------------
-
-
 bool cameraControllerBase::isAnalysisUpdating_VC()const
 {
     return camBase->isAnalysisUpdating_VC();
@@ -2038,6 +2036,16 @@ const cameraStructs::camera_state& cameraControllerBase::getStateObj()const
     return camBase->getStateObj();
 }
 //---------------------------------------------------------------------------------
+runningStat& cameraControllerBase::get_x_private_rs_ref_VC()
+{
+    return camBase->get_x_private_rs_ref_VC();
+}
+//---------------------------------------------------------------------------------
+runningStat& cameraControllerBase::get_y_private_rs_ref_VC()
+{
+    return camBase->get_y_private_rs_ref_VC();
+}
+//---------------------------------------------------------------------------------
 int cameraControllerBase::getStepSize_VC()const
 {
     return camBase->getStepSize_VC();
@@ -2143,12 +2151,37 @@ bool cameraControllerBase::isMaskFeedbackOff(const std::string& name)const
     return camBase->isMaskFeedbackOff(name);
 }
 //---------------------------------------------------------------------------------
-
-
-
-
+double cameraControllerBase::getPix2mm_VC() const
+{
+    return camBase->getPix2mm_VC();
+}
+//---------------------------------------------------------------------------------
+double cameraControllerBase::getPix2mm() const
+{
+    return camBase->getPix2mm();
+}
+//---------------------------------------------------------------------------------
+double cameraControllerBase::getPix2mm(const std::string& name) const
+{
+    return camBase->getPix2mm(name);
+}
+//---------------------------------------------------------------------------------
+double cameraControllerBase::getPix2mmDef_VC() const
+{
+    return camBase->getPix2mmDef_VC();
+}
+//---------------------------------------------------------------------------------
+double cameraControllerBase::getPix2mmDef() const
+{
+    return camBase->getPix2mmDef();
+}
+//---------------------------------------------------------------------------------
+double cameraControllerBase::getPix2mmDef(const std::string& name) const
+{
+    return camBase->getPix2mmDef(name);
+}
+//---------------------------------------------------------------------------------
 /*
-
     NumPy stuff, not yet working.
     have to link to boost.python.numpy lib
     somehow

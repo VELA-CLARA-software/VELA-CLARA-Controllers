@@ -36,9 +36,9 @@ void  pilaserStructs::pilaserObject::Q_clear()
     Q_rs.Clear();
 }
 //______________________________________________________________________________
-void  pilaserStructs::pilaserObject::intensity_clear()
+void  pilaserStructs::pilaserObject::energy_clear()
 {
-    intensity_rs.Clear();
+    energy_rs.Clear();
 }
 //______________________________________________________________________________
 double pilaserStructs::pilaserObject::Q_mean()
@@ -46,9 +46,9 @@ double pilaserStructs::pilaserObject::Q_mean()
     return Q_rs.Mean();
 }
 //______________________________________________________________________________
-double pilaserStructs::pilaserObject::intensity_mean()
+double pilaserStructs::pilaserObject::energy_mean()
 {
-    return intensity_rs.Mean();
+    return energy_rs.Mean();
 }
 //______________________________________________________________________________
 double pilaserStructs::pilaserObject::Q_sd()
@@ -56,9 +56,9 @@ double pilaserStructs::pilaserObject::Q_sd()
     return Q_rs.StandardDeviation();
 }
 //______________________________________________________________________________
-double pilaserStructs::pilaserObject::intensity_sd()
+double pilaserStructs::pilaserObject::energy_sd()
 {
-    return intensity_rs.StandardDeviation();
+    return energy_rs.StandardDeviation();
 }
 //______________________________________________________________________________
 size_t pilaserStructs::pilaserObject::Q_n()
@@ -66,8 +66,8 @@ size_t pilaserStructs::pilaserObject::Q_n()
     return Q_rs.NumDataValues();
 }
 //______________________________________________________________________________
-size_t pilaserStructs::pilaserObject::intensity_n()
+size_t pilaserStructs::pilaserObject::energy_n()
 {
-    return intensity_rs.NumDataValues();
+    return energy_rs.NumDataValues();
 }
 //______________________________________________________________________________

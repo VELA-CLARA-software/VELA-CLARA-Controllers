@@ -38,12 +38,13 @@
 namespace UTL
 {
     /// numerical and string constants
-    const std::string TRUE  ="TRUE";
-    const std::string FALSE ="FALSE";
+    const std::string TRUE  = "TRUE";
+    const std::string FALSE = "FALSE";
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
     const double TEN_POWER_MINUS_NINE  = 0.000000001;
     const double TEN_POWER_MINUS_THREE  = 0.001;
+    const double ONE_DOUBLE   = 1.0;
     const double ZERO_DOUBLE  = 0.0;
     const double TEN_DOUBLE   = 10.0;
     const double FIVE_DOUBLE  = 5.0;
@@ -100,7 +101,9 @@ namespace UTL
     const unsigned short EPICS_RESET    = ONE_US;
     const double         DBL_ERR_NUM    =-9999.9999;
 
+    const time_t TIMET_0  = 0;
     const time_t TIMET_45 = 45;
+    const time_t TIMET_60 = 60;
 
     const std::chrono::milliseconds STANDARD_PAUSE(2000);
     const std::chrono::milliseconds PAUSE_1000(1000);
@@ -283,7 +286,7 @@ namespace UTL
     const std::string PV_SUFFIX_PIL_STABILISATION = "PV_SUFFIX_PIL_STABILISATION";
     const std::string PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET = "PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET";
     const std::string PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ = "PV_SUFFIX_PIL_HALF_WAVE_PLATE_READ";
-    const std::string PV_SUFFIX_PIL_INTENSITY = "PV_SUFFIX_PIL_INTENSITY";
+    const std::string PV_SUFFIX_PIL_ENERGY = "PV_SUFFIX_PIL_ENERGY";
     const std::string PV_SUFFIX_PIL_STATUS = "PV_SUFFIX_PIL_STATUS";
     const std::string PV_SUFFIX_PIL_H_STEP = "PV_SUFFIX_PIL_H_STEP";
     const std::string PV_SUFFIX_PIL_V_STEP = "PV_SUFFIX_PIL_V_STEP";
@@ -308,13 +311,12 @@ namespace UTL
 
     const std::string RESULTS_COUNT = "RESULTS_COUNT";
     const std::string PV_ROOT_Q = "PV_ROOT_Q";
+    const std::string PV_ROOT_E = "PV_ROOT_E";
     const std::string STEP_MAX = "STEP_MAX";
     const std::string LEFT_SENSE = "LEFT_SENSE";
     const std::string RIGHT_SENSE = "RIGHT_SENSE";
     const std::string UP_SENSE = "UP_SENSE";
     const std::string DOWN_SENSE = "DOWN_SENSE";
-
-
 
 /// Cameras
     const std::string VELA_FAST_CAM_CONFIG  = "velaFastCamera.config";

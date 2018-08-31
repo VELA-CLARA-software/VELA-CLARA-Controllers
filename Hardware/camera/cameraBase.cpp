@@ -650,6 +650,11 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.x_pix_buf,
                                   camObj.data.analysis.x_pix_rs,
                                   camObj.data.analysis);
+            camObj.data.analysis.x_private_rs.Push(camObj.data.analysis.x_pix);
+            /*
+                sets flags if x-positino is tool close to the edge of the image
+            */
+
             //message("new x_pix = ",camObj.data.analysis.x_pix);
             if(camObj.data.analysis.x_pix >  camObj.data.analysis.pix_val_x_hi )
             {
@@ -673,7 +678,10 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.y_pix_buf,
                                   camObj.data.analysis.y_pix_rs,
                                   camObj.data.analysis);
-
+            camObj.data.analysis.y_private_rs.Push(camObj.data.analysis.y_pix);
+            /*
+                sets flags if x-positino is tool close to the edge of the image
+            */
             //message("Y_PIX_RBV, ", camObj.data.analysis.y_pix, ", ", camObj.data.analysis.pix_val_y_hi);
             if(camObj.data.analysis.y_pix >  camObj.data.analysis.pix_val_y_hi )
             {
@@ -1148,6 +1156,11 @@ void cameraBase::maskFeedBack(cameraObject& cam)
             message(cam.name, " hasBeam == false" );
         }
     }//    if(cam.state.mask_feedback )
+//    else
+//    {
+//        message(cam.name, " mask_feedback = false" );
+//    }
+
 }
 //____________________________________________________________________________________________
 void cameraBase::mask_feedback(unsigned short x,
@@ -4143,7 +4156,7 @@ void cameraBase::clearRunningValues(cameraObject& cam)
     cam.data.analysis.sig_xy_pix_rs.Clear();
 }
 //---------------------------------------------------------------------------------
-
+//---------------------------------------------------------------------------------
 ///
 /// set buffer max count
 ///
@@ -4373,6 +4386,18 @@ const cameraStructs::camera_state& cameraBase::getStateObj(const cameraStructs::
     return cam.state;
 }
 //---------------------------------------------------------------------------------
+runningStat& cameraBase::get_x_private_rs_ref_VC()
+{
+    return getCamObj(UTL::VIRTUAL_CATHODE).data.analysis.x_private_rs;
+}
+//---------------------------------------------------------------------------------
+runningStat& cameraBase::get_y_private_rs_ref_VC()
+{
+    return getCamObj(UTL::VIRTUAL_CATHODE).data.analysis.y_private_rs;
+}
+
+
+//---------------------------------------------------------------------------------
 bool cameraBase::setMaskFeedBackOn_VC()
 {
     return setMaskFeedBackOn(*vcCamPtr);
@@ -4413,7 +4438,7 @@ bool cameraBase::setMaskFeedBackOff(const std::string& name)
 bool cameraBase::setMaskFeedBackOff(cameraStructs::cameraObject& cam)
 {
     cam.state.mask_feedback = false;
-    return cam.state.mask_feedback;
+    return isMaskFeedbackOff(cam);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isMaskFeedbackOn_VC()const
@@ -4433,17 +4458,17 @@ bool cameraBase::isMaskFeedbackOn(const std::string& name)const
 //---------------------------------------------------------------------------------
 bool cameraBase::isMaskFeedbackOn(const cameraStructs::cameraObject& cam)const
 {
-    return cam.state.mask_feedback == true;
+    return cam.state.mask_feedback;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isMaskFeedbackOff_VC()const
 {
-    return isMaskFeedbackOn(*vcCamPtr);
+    return isMaskFeedbackOff(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isMaskFeedbackOff()const
 {
-    return isMaskFeedbackOn(*selectedCamPtr);
+    return isMaskFeedbackOff(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isMaskFeedbackOff(const std::string& name)const
@@ -4459,13 +4484,13 @@ bool cameraBase::isMaskFeedbackOff(const cameraStructs::cameraObject& cam)const
 
 bool cameraBase::isBeam_x_Hi_VC()
 {
-    message("isBeam_x_Hi_VC ", (*vcCamPtr).data.analysis.x_pix, ", ", (*vcCamPtr).data.analysis.pix_val_x_hi);
+    //message("isBeam_x_Hi_VC ", (*vcCamPtr).data.analysis.x_pix, ", ", (*vcCamPtr).data.analysis.pix_val_x_hi);
     return (*vcCamPtr).state.is_pix_val_x_hi;
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isBeam_x_Lo_VC()
 {
-    message("isBeam_x_Lo_VC ", (*vcCamPtr).data.analysis.x_pix, ", ", (*vcCamPtr).data.analysis.pix_val_x_lo);
+    //message("isBeam_x_Lo_VC ", (*vcCamPtr).data.analysis.x_pix, ", ", (*vcCamPtr).data.analysis.pix_val_x_lo);
     return (*vcCamPtr).state.is_pix_val_x_lo;
 }
 //---------------------------------------------------------------------------------
@@ -4521,6 +4546,46 @@ bool cameraBase::isAnalysisNotUpdating(const std::string& name)const
 bool cameraBase::isAnalysisNotUpdating(const cameraStructs::cameraObject& cam)const
 {
     return !cam.state.is_camera_analysis_updating;
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mm_VC()const
+{
+    return getPix2mm(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mm()const
+{
+    return getPix2mm(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mm(const std::string& name)const
+{
+    return getPix2mm(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mm(const cameraStructs::cameraObject& cam) const
+{
+    return cam.data.analysis.pix_2_mm;
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mmDef_VC()const
+{
+    return getPix2mmDef(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mmDef()const
+{
+    return getPix2mmDef(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mmDef(const std::string& name) const
+{
+    return getPix2mmDef(getCamObj(name));
+}
+//---------------------------------------------------------------------------------
+double cameraBase::getPix2mmDef(const cameraStructs::cameraObject& cam) const
+{
+    return cam.data.analysis.pix_2_mm_def;
 }
 //---------------------------------------------------------------------------------
 

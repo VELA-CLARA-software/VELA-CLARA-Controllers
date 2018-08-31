@@ -101,6 +101,26 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     using namespace boost;
     using namespace pilaserStructs;
 
+
+    const char* VC_SET_POS_STATE_ds= "ENUM defining states when setting VC Position";
+
+
+    enum_<VC_SET_POS_STATE>("VC_SET_POS_STATE",VC_SET_POS_STATE_ds)
+            .value("SHUTTER_CLOSED", VC_SET_POS_STATE::SHUTTER_CLOSED)
+            .value("LASER_NOT_IN_IMAGE",  VC_SET_POS_STATE::LASER_NOT_IN_IMAGE )
+            .value("H_HI",  VC_SET_POS_STATE::H_HI )
+            .value("V_LO",  VC_SET_POS_STATE::V_LO )
+            .value("TIME_OUT",  VC_SET_POS_STATE::TIME_OUT )
+            .value("MAX_ITERATIONS",  VC_SET_POS_STATE::MAX_ITERATIONS )
+            .value("UNKNOWN_STATE",  VC_SET_POS_STATE::UNKNOWN_STATE )
+            .value("MOVING",  VC_SET_POS_STATE::MOVING )
+            .value("STARTUP",  VC_SET_POS_STATE::STARTUP )
+            .value("SUCCESS",  VC_SET_POS_STATE::SUCCESS )
+            .value("FAIL",  VC_SET_POS_STATE::FAIL )
+            .value("RUNNING",  VC_SET_POS_STATE::RUNNING )
+            ;
+
+
     const char* hPos_ds = "";
     const char* vPos_ds = "";
     const char* hStep_ds = "";
@@ -122,31 +142,31 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* Q_sd_ds= "";
     const char* Q_clear_ds= "";
 
-    const char* intensity_ds= "";
-    const char* intensity_mean_ds= "";
-    const char* intensity_n_ds= "";
-    const char* intensity_sd_ds= "";
-    const char* intensity_clear_ds= "";
+    const char* energy_ds= "";
+    const char* energy_mean_ds= "";
+    const char* energy_n_ds= "";
+    const char* energy_sd_ds= "";
+    const char* energy_clear_ds= "";
     const char* status_ds= "";
     const char* HWP_ds= "";
     const char* setCharge_ds= "";
-
+    const char* setVCPosState_ds= "";
 
     class_<pilaserObject,noncopyable>
         ("pilaserObject","pilaserObject member variables (read access only)", no_init)
-        .def_readonly("HWP",            &pilaserObject::HWP,    HWP_ds)
-        .def_readonly("Q",         &pilaserObject::Q, Q_ds)
-        .def_readonly("Q_mean",         &pilaserObject::Q_mean, Q_mean_ds)
-        .def_readonly("Q_n",            &pilaserObject::Q_n,    Q_n_ds)
-        .def_readonly("Q_sd",           &pilaserObject::Q_sd,   Q_sd_ds)
-        .def_readonly("Q_clear",        &pilaserObject::Q_clear, Q_clear_ds)
-        .def_readonly("intensity",  &pilaserObject::intensity,    intensity_ds)
-        .def_readonly("intensity_mean",  &pilaserObject::intensity_mean,    intensity_mean_ds)
-        .def_readonly("intensity_n",    &pilaserObject::intensity_n,        intensity_n_ds)
-        .def_readonly("intensity_sd",   &pilaserObject::intensity_sd,       intensity_sd_ds)
-        .def_readonly("intensity_clear",  &pilaserObject::intensity_clear,  intensity_clear_ds)
-        .def_readonly("status",         &pilaserObject::status,             status_ds)
+        .def_readonly("HWP",     &pilaserObject::HWP,    HWP_ds)
+        .def_readonly("Q",       &pilaserObject::Q, Q_ds)
+        .def_readonly("Q_mean",  &pilaserObject::Q_mean, Q_mean_ds)
+        .def_readonly("Q_n",     &pilaserObject::Q_n,    Q_n_ds)
+        .def_readonly("Q_sd",    &pilaserObject::Q_sd,   Q_sd_ds)
+        .def_readonly("Q_clear", &pilaserObject::Q_clear, Q_clear_ds)
+        .def_readonly("energy",  &pilaserObject::energy,    energy_ds)
+        .def_readonly("energy_mean",  &pilaserObject::energy_mean,    energy_mean_ds)
+        .def_readonly("energy_n",    &pilaserObject::energy_n,        energy_n_ds)
+        .def_readonly("energy_sd",   &pilaserObject::energy_sd,       energy_sd_ds)
+        .def_readonly("energy_clear",  &pilaserObject::energy_clear,  energy_clear_ds)
         .def_readonly("setCharge",  &pilaserObject::setCharge,          setCharge_ds)
+        .def_readonly("setVCPosState", &pilaserObject::setVCPosState, setVCPosState_ds)
         ;
 
 
@@ -161,9 +181,9 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //    const char* name_doc = "name_doc.";
 //    const char* getState_doc = "getState_doc.";
 //
-    const char* getIntensity_doc = "getIntensity_doc.";
+    const char* getEnergy_doc = "getIntensity_doc.";
     const char* setCharge_doc = "setCharge_doc.";
-    const char* setIntensity_doc = "getIntensity_doc.";
+    const char* setEnergy_doc = "getIntensity_doc.";
     const char* getStatus_doc = "getIntensity_doc.";
     const char* getStabilisationStatus_doc = "getIntensity_doc.";
     const char* isOn_doc = "isOn_doc.";
@@ -201,8 +221,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
     const char* stabilisation_status_doc
         = "Status (ON/OFF) of laser transport system stabilisation system.";
-    const char* intensity_doc
-        = "Laser intensity set-point (AU) add more detail when we have it.";
+    const char* energy_doc
+        = "Laser energy set-point (AU) add more detail when we have it.";
     const char* status_doc  = "Status (ON/OFF) of laser system.";
     const char* setCharge_doc2 = "Charge (pc) set point.";
 
@@ -210,17 +230,28 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* getQBuffer_doc  = "getQBuffer_doc.";
     const char* clearLaserRunningValues_doc  = "getQBuffer_doc.";
 
-    const char* setVCPosition_doc     = "setVCPosition_doc   .";
+    const char* setVCPos_doc1  = "setVCPos_doc1.";
+    const char* setVCPos_doc2  = "setVCPos_doc2.";
+
+    const char* setVCPosition_doc  = "setVCPosition_doc, to position 'horizonal' and 'vertical' in mm.";
+    const char* getSetVCPosState_doc  = "getSetVCPosState_doc, gets current status of SetVCPosState.";
+
+    /*
+        some function pointers for exposing overloads to python
+    */
+
+    bool(pilaserController::*setVCPos_1)(double, double)         = &pilaserController::setVCPos;
+    bool(pilaserController::*setVCPos_2)(double, double, double, double, double, double,size_t, size_t, size_t, size_t) = &pilaserController::setVCPos;
 
 
     class_<pilaserController, bases<cameraControllerBase,shutterController>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
         .def("setHWP",&pilaserController::setHWP,(VALUE_ARG),setHWP_doc)
-        .def("setCharge",&pilaserController::setCharge,setCharge_doc)
-        .def("setIntensity",&pilaserController::setIntensity,setIntensity_doc)
-        .def("getIntensity",&pilaserController::getIntensity,getIntensity_doc)
-        .def("getStatus",&pilaserController::getStatus,getStatus_doc)
+        .def("setCharge",&pilaserController::setCharge,(VALUE_ARG), setCharge_doc)
+        .def("setEnergy",&pilaserController::setEnergy, setEnergy_doc)
+        .def("getEnergy",&pilaserController::getEnergy, getEnergy_doc)
+        .def("getStatus",&pilaserController::getStatus, getStatus_doc)
         .def("getStabilisationStatus",&pilaserController::getStabilisationStatus,getStabilisationStatus_doc)
         .def("isOn",&pilaserController::isOn,isOn_doc)
         .def("isOff",&pilaserController::isOff,isOff_doc)
@@ -230,26 +261,25 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("enableStabilisation",&pilaserController::enableStabilisation,enableStabilisation_doc)
         .def("getHpos", &pilaserController::getHpos, getHpos_doc )
         .def("getVpos", &pilaserController::getVpos, getVpos_doc )
-        .def("setHpos", &pilaserController::setHpos, setHpos_doc )
-        .def("setVpos", &pilaserController::setVpos, setVpos_doc )
+        .def("setHpos", &pilaserController::setHpos,(VALUE_ARG), setHpos_doc )
+        .def("setVpos", &pilaserController::setVpos,(VALUE_ARG), setVpos_doc )
         .def("getHstep",&pilaserController::getHstep,getHstep_doc)
         .def("getVstep",&pilaserController::getVstep,getVstep_doc)
-        .def("setHstep",&pilaserController::setHstep,setVstep_doc)
-        .def("setVstep",&pilaserController::setVstep,setHstep_doc)
+        .def("setHstep",&pilaserController::setHstep,(VALUE_ARG),setVstep_doc)
+        .def("setVstep",&pilaserController::setVstep,(VALUE_ARG),setHstep_doc)
 
-        .def("moveLeft",  &pilaserController::moveLeft,   moveLeft_doc   )
-        .def("moveRight", &pilaserController::moveRight, moveRight_doc   )
+        .def("getSetVCPosState",&pilaserController::getSetVCPosState, getSetVCPosState_doc)
 
-        .def("moveUp",  &pilaserController::moveUp,   moveUp_doc   )
-        .def("moveDown", &pilaserController::moveDown, moveDown_doc   )
+        .def("moveLeft",  &pilaserController::moveLeft,(VALUE_ARG),   moveLeft_doc   )
+        .def("moveRight", &pilaserController::moveRight,(VALUE_ARG), moveRight_doc   )
 
-        //.def("moveH",   &pilaserController::moveH,   moveH_doc   )
-        //.def("moveV",   &pilaserController::moveV,   moveV_doc   )
-
-
-        .def("setVCPosition",   &pilaserController::setVCPosition,   setVCPosition_doc   )
+        .def("moveUp",  &pilaserController::moveUp, (VALUE_ARG),  moveUp_doc   )
+        .def("moveDown", &pilaserController::moveDown,(VALUE_ARG), moveDown_doc   )
 
         .def("clearRunningValues",   &pilaserController::clearRunningValues,   clearLaserRunningValues_doc )
+
+        .def("setVCPos",   setVCPos_1,   setVCPos_doc1 )
+        .def("setVCPos",   setVCPos_2,   setVCPos_doc2 )
 
         .def("getQ",        &pilaserController::getQ,          getQ_doc)
         .def("getQBuffer",  &pilaserController::getQBuffer_Py, getQBuffer_doc)
@@ -284,8 +314,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //                      "The horizontal position of the laser on the cathode [mm hopefully]")
 //        .def_readonly("vPos",      &pilaserStructs::pilaserObject::vPos,
 //                      "The vertical position of the laser on the cathode [mm hopefully]"
-//        .def_readonly("intensity", &pilaserStructs::pilaserObject::intensity,
-//                      "The intensity of the laser on the cathode [mJ ??]")
+//        .def_readonly("energy", &pilaserStructs::pilaserObject::energy,
+//                      "The energy of the laser on the cathode [mJ ??]")
 ////        .def_readonly("numIlocks", &pilaserStructs::pilaserObject::numIlocks,
 ////                      "The number of standard interlocks on the laser system")
 //        ;
@@ -334,7 +364,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //        .def("getVpos", &pilaserController::getVpos,
 //                            "returns the vertical position of the laser on the cathode [units etc?]."
 //        .def("getIntensity", &pilaserController::getIntensity,
-//                            "returns the intensity the laser [units etc?]."
+//                            "returns the energy the laser [units etc?]."
 //        .def("getPILObjConstRef",  &pilaserController::getPILObjConstRef,
 //                                   return_value_policy<reference_existing_object>(),
 //                            "returns a reference to a PI laser object, (identified by its name)."
@@ -344,8 +374,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 //             "set the horizontal position of the laser beam on the cathode."
 //        .def("setVpos",  setVpos_1,"set the vertical position of the laser beam on the cathode."
 //        .def("setVpos",  setVpos_2,"set the vertical position of the laser beam on the cathode."
-//        .def("setIntensity",  setIntensity_1,"set the intensity of the laser beam on the cathode.")
-//        .def("setIntensity",  setIntensity_2,"set the intensity of the laser beam on the cathode.")
+//        .def("setIntensity",  setIntensity_1,"set the energy of the laser beam on the cathode.")
+//        .def("setIntensity",  setIntensity_2,"set the energy of the laser beam on the cathode.")
 //        ;
 
 //https://wiki.python.org/moin/boost.python/FAQ

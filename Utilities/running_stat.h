@@ -23,6 +23,7 @@
 #ifndef _VC_RUNNING_STAT_H_
 #define _VC_RUNNING_STAT_H_
 
+#include <iostream>
 
 class runningStat
 {
@@ -46,13 +47,16 @@ class runningStat
             max_n = value;
         }
 
+        size_t getMaxCount() const
+        {
+            return max_n;
+        }
+
         void Push(double x)
         {
-
             if(can_add())
             {
                 m_n++;
-
                 // See Knuth TAOCP vol 2, 3rd edition, page 232
                 if (m_n == 1)
                 {
@@ -96,6 +100,12 @@ class runningStat
             return rs_complete;
         }
 
+        bool NotFull() const
+        {
+            return !Full();
+        }
+
+
     private:
         size_t m_n;
         double m_oldM, m_newM, m_oldS, m_newS;
@@ -105,10 +115,15 @@ class runningStat
         bool can_add()
         {
             if(max_n == 0)
+            {
                 return true;
-            if(!rs_complete)
-                return true;
-            if(m_n> max_n)
+            }
+            if(rs_complete)
+            {
+                return false;
+            }
+
+            if(m_n > max_n)
             {
                 rs_complete = true;
                 return false;

@@ -14,7 +14,7 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   29-06-2018
+//  Last edit:   31-08-2018
 //  FileName:    pilaserStructs.cpp
 //  Description:
 //
@@ -22,7 +22,7 @@
 //*/
 #ifndef _VELA_CLARA_PIL_STRUCTS_H_
 #define _VELA_CLARA_PIL_STRUCTS_H_
-//
+// project
 #include "structs.h"
 #include "configDefinitions.h"
 #include "cameraStructs.h"
@@ -31,20 +31,15 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <chrono>
 //epics
 #ifndef __CINT__
 #include <cadef.h>
 #endif
-
-#ifdef BUILD_DLL
-#include <boost/python.hpp>
-#endif
-
-
 // forward declare classes/structs to avoid circular dependency
-class pilaserInterface;
 //https://stackoverflow.com/questions/2059665/why-cant-i-forward-declare-a-class-in-a-namespace-using-double-colons
-
+class pilaserInterface;
+//
 namespace pilaserStructs
 {
     /* Forward declare structs, gcc seems to like this...*/
@@ -55,7 +50,7 @@ namespace pilaserStructs
         Use this MACRO to define enums.
         Consider putting ENUMS that are more 'global' in structs.h
     */
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(PILASER_PV_TYPE,(INTENSITY)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(PILASER_PV_TYPE,(ENERGY)
                                                         (STABILISATION)
                                                         (STATUS)
                                                         (HALF_WAVE_PLATE_SET)
@@ -74,7 +69,25 @@ namespace pilaserStructs
                                                         (POS_UPDATE)
                                                         (WCM_Q)
                                                         (UNKNOWN_PILASER_PV_TYPE)
-                                               )
+                                                        )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(VC_SET_POS_STATE,(SHUTTER_CLOSED)
+                                                         (CAMERA_ANALYSIS_NOT_WORKING)
+                                                         (LASER_NOT_IN_IMAGE)
+                                                         (H_HI)
+                                                         (V_HI)
+                                                         (H_LO)
+                                                         (V_LO)
+                                                         (TIME_OUT)
+                                                         (MAX_ITERATIONS)
+                                                         (UNKNOWN_STATE)
+                                                         (MOVING)
+                                                         (STARTUP)
+                                                         (SUCCESS)
+                                                         (FAIL)
+                                                         (RUNNING)
+                                                         (NO_MASK_FEEDBACK)
+                                                         )
+
     struct monitorStruct
     {
         monitorStruct():
@@ -137,7 +150,7 @@ namespace pilaserStructs
         pilaserObject():
             status(HWC_ENUM::STATE::UNKNOWN),
             stabilisation_status(HWC_ENUM::STATE::UNKNOWN),
-            intensity(UTL::DUMMY_DOUBLE),
+            energy(UTL::DUMMY_DOUBLE),
             setCharge(UTL::DUMMY_DOUBLE),
             HWP(UTL::DUMMY_DOUBLE),
             Q(UTL::DUMMY_DOUBLE),
@@ -145,32 +158,64 @@ namespace pilaserStructs
             pvRoot(UTL::UNKNOWN_PVROOT),
             max_buffer_count(UTL::TEN_SIZET),
             buffer_count(UTL::ZERO_SIZET),
-            buffer_full(false)
+            buffer_full(false),
+            pvRootQ(UTL::UNKNOWN_STRING),
+            pvRootE(UTL::UNKNOWN_STRING),
+            setVCPosState(UNKNOWN_STATE)
             {};
         /*
             buffers for pixel values
         */
         size_t max_buffer_count,buffer_count;
         bool buffer_full;
-        std::string name, pvRoot,pvRootQ;
-        cameraStructs::cameraObject vcCam;
-        double intensity,setCharge,HWP,Q;
+        std::string name, pvRoot, pvRootQ, pvRootE;
+        //cameraStructs::cameraObject vcCam;
+        double energy, setCharge, HWP, Q;
         std::vector<double> Q_buf;
-        runningStat Q_rs,intensity_rs;
+        std::vector<double> E_buf;
+        runningStat Q_rs, energy_rs;
         pilMirrorObject             mirror;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
-
-        void Q_clear();
-        void intensity_clear();
+        VC_SET_POS_STATE setVCPosState;
+        void   Q_clear();
+        void   energy_clear();
         double Q_mean();
-        double intensity_mean();
+        double energy_mean();
         double Q_sd();
-        double intensity_sd();
+        double energy_sd();
         size_t Q_n();
-        size_t intensity_n();
+        size_t energy_n();
     };
+
+    struct set_vc_position
+    {
+        set_vc_position():
+            x_pos(UTL::DUMMY_DOUBLE),
+            y_pos(UTL::DUMMY_DOUBLE),
+            x_precision(UTL::DUMMY_DOUBLE),
+            y_precision(UTL::DUMMY_DOUBLE),
+            mirror_step_x(UTL::ZERO_DOUBLE),
+            mirror_step_y(UTL::ZERO_DOUBLE),
+            num_points_x(UTL::ZERO_SIZET),
+            num_points_y(UTL::ZERO_SIZET),
+            max_iterations(UTL::ZERO_SIZET),
+            state(UNKNOWN_STATE),
+            time_start(UTL::TIMET_0),
+            time_out(UTL::TIMET_0),
+            thread(nullptr)
+            {};
+        double x_pos, y_pos,x_precision,y_precision, mirror_step_x, mirror_step_y;
+        size_t  max_iterations, num_points_x, num_points_y;
+        time_t time_out;
+        time_t time_start;
+        pilaserInterface* interface;
+        VC_SET_POS_STATE state;
+        std::thread*   thread;
+    };
+
+
 }
 #endif

@@ -56,14 +56,12 @@ class pilaserInterface : public cameraBase
         ~pilaserInterface();
 
 
-
-
         int  setHWP(const double value);
         double getHWP();
 
         bool setCharge(const double value);
-        bool setIntensity(const double valueL);
-        double getIntensity() const;
+        bool setEnergy(const double value);
+        double getEnergy() const;
         std::string getName() const;
         HWC_ENUM::STATE getStatus() const;
         double getStabilisationStatus() const;
@@ -86,6 +84,7 @@ class pilaserInterface : public cameraBase
 
         double getQ()const;
         std::vector<double> getQBuffer()const;
+        std::vector<double> getEBuffer()const;
 
         bool setHpos(const double value);
         bool setVpos(const double value);
@@ -99,20 +98,15 @@ class pilaserInterface : public cameraBase
         bool setHstep(const double value);
         bool setVstep(const double value);
 
-
-
-
-        double getHstep() const;
-        double getVstep() const;
+        double getHstep()const;
+        double getVstep()const;
 
         void clearRunningValues();
 
         bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
 
-        bool setVCPosition(const double xpos, const double ypos);
 
     private:
-
 
         bool moveH();
         bool moveV();

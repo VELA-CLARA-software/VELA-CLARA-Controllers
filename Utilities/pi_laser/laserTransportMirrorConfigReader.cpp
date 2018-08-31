@@ -325,35 +325,6 @@ void laserTransportMirrorConfigReader::addToObjectsV1(const std::vector<std::str
 
 
             mirror.up_sense = getNumD(keyVal[ONE_SIZET]);
-
-
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-            message(keyVal[ONE_SIZET], mirror.up_sense );
-
             //pause_2000();
 
         }

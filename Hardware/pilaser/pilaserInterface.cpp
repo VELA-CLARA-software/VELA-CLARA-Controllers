@@ -184,8 +184,13 @@ void pilaserInterface::initChids()
     debugMessage("\npilaserInterface Create channel to monitor PVs\n");
     for(auto&& it:pilaser.pvMonStructs)
     {
+        /*
+            the PILaser inerface is
+        */
         if(it.first == pilaserStructs::PILASER_PV_TYPE::WCM_Q)
+        {
             s = pilaser.pvRootQ;
+        }
         else if(isVCMirror_PV(it.first))
         {
             //message(ENUM_TO_STRING(it.first), " is a mirror PV");
@@ -306,8 +311,8 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
     using namespace pilaserStructs;
     switch(pv)
     {
-    case PILASER_PV_TYPE::INTENSITY:
-            pilaser.intensity = getDBRdouble(args);
+    case PILASER_PV_TYPE::ENERGY:
+            pilaser.energy = getDBRdouble(args);
             break;
         case PILASER_PV_TYPE::STABILISATION:
             pilaser.stabilisation_status = HWC_ENUM::STATE::ERR;
@@ -401,7 +406,11 @@ std::vector<double> pilaserInterface::getQBuffer()const
 {
     return pilaser.Q_buf;
 }
-
+//____________________________________________________________________________________________
+std::vector<double> pilaserInterface::getEBuffer()const
+{
+    return pilaser.E_buf;
+}
 
 
 
@@ -428,15 +437,15 @@ bool pilaserInterface::setCharge(const double value)
     return false;
 }
 //____________________________________________________________________________________________
-bool pilaserInterface::setIntensity(const double value)
+bool pilaserInterface::setEnergy(const double value)
 {
     // To Write
     return false;
 }
 //____________________________________________________________________________________________
-double pilaserInterface::getIntensity() const
+double pilaserInterface::getEnergy() const
 {
-    return pilaser.intensity;
+    return pilaser.energy;
 }
 //____________________________________________________________________________________________
 std::string pilaserInterface::getName() const
@@ -648,30 +657,30 @@ bool pilaserInterface::setVpos(const double value)
 //____________________________________________________________________________________________
 bool pilaserInterface::moveLeft(const double value)
 {
-    message("pilaserInterface::moveLeft");
+    //message("pilaserInterface::moveLeft");
     setHstep( value * pilaser.mirror.left_sense);
     return moveH();
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::moveRight(const double value)
 {
-    message("pilaserInterface::moveRight");
+    //message("pilaserInterface::moveRight");
     setHstep( value * pilaser.mirror.right_sense);
     return moveH();
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::moveUp(const double value)
 {
-    message("pilaserInterface::moveUp");
+    //message("pilaserInterface::moveUp");
     double val2 = value * pilaser.mirror.up_sense;
-    message("pilaserInterface::moveUp val2, val, up_sense = ", val2, ", ", value, ", ", pilaser.mirror.up_sense );
-    setVstep( val2  );
+    //message("pilaserInterface::moveUp val2, val, up_sense = ", val2, ", ", value, ", ", pilaser.mirror.up_sense );
+    setVstep(value * pilaser.mirror.up_sense);
     return moveV();
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::moveDown(const double value)
 {
-    message("pilaserInterface::moveDown");
+    //message("pilaserInterface::moveDown");
     setVstep( value * pilaser.mirror.down_sense);
     return moveV();
 }
@@ -683,12 +692,10 @@ bool pilaserInterface::moveH()
                   "",
                   "!!TIMEOUT!! FAILED TO SEND MOVE H");
 }
-
-
 //____________________________________________________________________________________________
 bool pilaserInterface::moveV()
 {
-    message("pilaserInterface::moveV() ", pilaser.mirror.vStep);
+    //message("pilaserInterface::moveV() ", pilaser.mirror.vStep);
     pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::V_MREL);
     return move(pvs.CHTYPE,pvs.CHID,pilaser.mirror.vStep,
                   "",
@@ -710,53 +717,9 @@ bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* 
 void pilaserInterface::clearRunningValues()
 {
     pilaser.Q_clear();
-    pilaser.intensity_clear();
+    pilaser.energy_clear();
 }
-//______________________________________________________________________________
-bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
-{
-    bool proceed = true;
-    if(xpos < 0.0) //MAGIC_NUMBER
-    {
-        proceed = false;
-        message("setVCPosition not proceeding xpos too lo, xpos =  ", xpos);
-    }
-    if(ypos < 0.0) //MAGIC_NUMBER
-    {
-        proceed = false;
-        message("setVCPosition not proceeding xpos too lo, ypos =  ", ypos);
-    }
-    if(xpos > 10.0) //MAGIC_NUMBER
-    {
-        proceed = false;
-        message("setVCPosition not proceeding xpos too hi, xpos =  ", xpos);
-    }
-    if(ypos < 10.0) //MAGIC_NUMBER
-    {
-        proceed = false;
-        message("setVCPosition not proceeding ypos too hi, ypos =  ", ypos);
-    }
 
-    // check time stamps of fast image and analysis and curren time
-
-    if(entryExists(allCamData, UTL::VIRTUAL_CATHODE))
-    {
-        cameraStructs::cameraObject& cam = allCamData.at(UTL::VIRTUAL_CATHODE);
-
-        check_data_timestamps(cam);
-    }
-    else
-    {
-        proceed = false;
-    }
-
-    if(proceed)
-    {
-       message( "proceeding to maine set position function" );
-
-    }
-    return false;
-}
 //______________________________________________________________________________
 bool pilaserInterface::check_data_timestamps(const cameraStructs::cameraObject& cam)
 {

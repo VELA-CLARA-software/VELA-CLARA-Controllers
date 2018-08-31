@@ -431,6 +431,17 @@ class cameraBase : public interface
         boost::python::list getFastImage2D_Py(const cameraStructs::cameraObject& cam)const;
 #endif
 
+        double getPix2mm_VC() const;
+        double getPix2mm() const;
+        double getPix2mm(const std::string& name) const;
+        double getPix2mm(const cameraStructs::cameraObject& cam) const;
+
+        double getPix2mmDef_VC() const;
+        double getPix2mmDef() const;
+        double getPix2mmDef(const std::string& name) const;
+        double getPix2mmDef(const cameraStructs::cameraObject& cam) const;
+
+
         int getGain_VC()const;
         int getGain(const std::string& cam)const;
         int getGain()const;
@@ -573,6 +584,14 @@ class cameraBase : public interface
         const cameraStructs::camera_state& getStateObj_VC()const;
         const cameraStructs::camera_state& getStateObj()const;
         const cameraStructs::camera_state& getStateObj(const cameraStructs::cameraObject& cam)const;
+
+        /*
+            DONT EXPOSE TO PYTHON!!!
+        */
+        runningStat& get_x_private_rs_ref_VC();
+        runningStat& get_y_private_rs_ref_VC();
+
+
 //______________________________________________________________________________
         /*
             Image Collection functions

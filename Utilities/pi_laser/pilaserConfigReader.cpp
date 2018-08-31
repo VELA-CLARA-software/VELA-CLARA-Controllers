@@ -200,9 +200,9 @@ void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &k
         {
             addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::STABILISATION, keyVal[ONE_SIZET] );
         }
-        else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_INTENSITY)
+        else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_ENERGY)
         {
-            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::INTENSITY, keyVal[ONE_SIZET]);
+            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::ENERGY, keyVal[ONE_SIZET]);
         }
         else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
         {
@@ -297,8 +297,16 @@ void pilaserConfigReader::addTopilaserObjectsV1(const std::vector<std::string>& 
             pilaserObject.pvRootQ =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
         else
             pilaserObject.pvRootQ = keyVal[UTL::ONE_SIZET];
-
     }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_ROOT_E)
+    {
+        if(useVM)
+            pilaserObject.pvRootE =  UTL::VM_PREFIX + keyVal[UTL::ONE_SIZET];
+        else
+            pilaserObject.pvRootE = keyVal[UTL::ONE_SIZET];
+    }
+
+
 }
 //______________________________________________________________________________
 bool pilaserConfigReader::getpilaserObject(pilaserStructs::pilaserObject& obj)

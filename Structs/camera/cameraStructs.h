@@ -310,6 +310,7 @@ namespace cameraStructs
         analysis_data():
             name(UTL::UNKNOWN_NAME),
             pix_2_mm(UTL::DUMMY_DOUBLE),
+            pix_2_mm_def(UTL::DUMMY_DOUBLE),
             x(UTL::DUMMY_DOUBLE),
             y(UTL::DUMMY_DOUBLE),
             sig_x(UTL::DUMMY_DOUBLE),
@@ -422,6 +423,8 @@ namespace cameraStructs
         runningStat x_rs,y_rs,sig_x_rs,sig_y_rs,sig_xy_rs,x_pix_rs,
                     avg_pix_rs,sum_pix_rs,
                     y_pix_rs,sig_x_pix_rs,sig_y_pix_rs,sig_xy_pix_rs;
+
+        runningStat x_private_rs, y_private_rs;
         /*
             running-stats "getters" and clear
             you can also set a biffer size for _rs, but not yet implemented
@@ -439,7 +442,9 @@ namespace cameraStructs
         void avg_pix_clear();
         void sum_pix_clear();
         double x_mean();
+        double x_private_mean();
         double y_mean();
+        double y_private_mean();
         double sig_x_mean();
         double sig_y_mean();
         double sig_xy_mean();
@@ -476,6 +481,8 @@ namespace cameraStructs
         size_t avg_pix_n();
         size_t sum_pix_n();
 
+        bool x_private_full();
+        bool y_private_full();
         bool x_full();
         bool y_full();
         bool sig_x_full();
