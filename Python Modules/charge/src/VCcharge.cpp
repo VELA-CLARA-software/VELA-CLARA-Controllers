@@ -105,8 +105,8 @@ VCcharge::~VCcharge()
 chargeController& VCcharge::getController(chargeController*& cont,
                                          const std::string& conf1,
                                          const std::string & name,
-                                         const bool shouldVM,
                                          const bool shouldEPICS,
+                                         const bool shouldVM,
                                          const HWC_ENUM::MACHINE_AREA myMachineArea)
 {
     if(cont)
@@ -120,8 +120,8 @@ chargeController& VCcharge::getController(chargeController*& cont,
         cont = new chargeController(conf1,
                                     messageStates.at(cont).first,
                                     messageStates.at(cont).second,
-                                    shouldVM,
                                     shouldEPICS,
+                                    shouldVM,
                                     myMachineArea);
         std::cout <<"Creating " <<name <<" object" <<std::endl;
     }
@@ -135,8 +135,8 @@ chargeController& VCcharge::virtual_VELA_INJ_Charge_Controller()
     return getController(virtual_VELA_INJ_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
@@ -147,8 +147,8 @@ chargeController & VCcharge::offline_VELA_INJ_Charge_Controller()
     return getController(offline_VELA_INJ_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withoutEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
@@ -159,8 +159,8 @@ chargeController & VCcharge::physical_VELA_INJ_Charge_Controller()
     return getController(physical_VELA_INJ_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withoutVM,
                          withEPICS,
+                         withoutVM,
                          HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
 //______________________________________________________________________________
@@ -171,8 +171,8 @@ chargeController & VCcharge::virtual_VELA_BA1_Charge_Controller()
     return getController(virtual_VELA_BA1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
@@ -183,8 +183,8 @@ chargeController & VCcharge::offline_VELA_BA1_Charge_Controller()
     return getController(offline_VELA_BA1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withoutEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
@@ -195,8 +195,8 @@ chargeController & VCcharge::physical_VELA_BA1_Charge_Controller()
     return getController(physical_VELA_BA1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withoutVM,
                          withEPICS,
+                         withoutVM,
                          HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
 //______________________________________________________________________________
@@ -207,8 +207,8 @@ chargeController & VCcharge::virtual_VELA_BA2_Charge_Controller()
     return getController(virtual_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
@@ -219,8 +219,8 @@ chargeController & VCcharge::offline_VELA_BA2_Charge_Controller()
     return getController(offline_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withoutEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
@@ -231,8 +231,8 @@ chargeController & VCcharge::physical_VELA_BA2_Charge_Controller()
     return getController(physical_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withoutVM,
                          withEPICS,
+                         withoutVM,
                          HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
 //______________________________________________________________________________
@@ -243,8 +243,8 @@ chargeController & VCcharge::virtual_CLARA_PH1_Charge_Controller()
     return getController(virtual_CLARA_PH1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
@@ -255,8 +255,8 @@ chargeController & VCcharge::offline_CLARA_PH1_Charge_Controller()
     return getController(offline_CLARA_PH1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withoutEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
@@ -267,8 +267,8 @@ chargeController & VCcharge::physical_CLARA_PH1_Charge_Controller()
     return getController(physical_CLARA_PH1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withoutVM,
                          withEPICS,
+                         withoutVM,
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
 //______________________________________________________________________________
@@ -279,8 +279,8 @@ chargeController & VCcharge::virtual_C2B_Charge_Controller()
     return getController(virtual_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
 }
 //______________________________________________________________________________
@@ -291,8 +291,8 @@ chargeController & VCcharge::offline_C2B_Charge_Controller()
     return getController(offline_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withVM,
                          withoutEPICS,
+                         withVM,
                          HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
 }
 //______________________________________________________________________________
@@ -303,12 +303,12 @@ chargeController & VCcharge::physical_C2B_Charge_Controller()
     return getController(physical_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
-                         withoutVM,
                          withEPICS,
+                         withoutVM,
                          HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
 }
 //______________________________________________________________________________
-chargeController & VCcharge::getChargeController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
+chargeController & VCcharge::getChargeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area )
 {
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
         return offline_VELA_INJ_Charge_Controller();

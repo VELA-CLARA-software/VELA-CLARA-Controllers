@@ -191,6 +191,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BPM_Control )
         .def_readonly("awakTStampBuffer", &beamPositionMonitorStructs::bpmDataObject::awakTStampBuffer )
         .def_readonly("rdyTStamp",        &beamPositionMonitorStructs::bpmDataObject::rdyTStamp        )
         .def_readonly("rdyTStampBuffer",  &beamPositionMonitorStructs::bpmDataObject::rdyTStampBuffer  )
+        .def_readonly("pu1Buffer",        &beamPositionMonitorStructs::bpmDataObject::pu1Buffer        )
+        .def_readonly("pu2Buffer",        &beamPositionMonitorStructs::bpmDataObject::pu2Buffer        )
+        .def_readonly("pu3Buffer",        &beamPositionMonitorStructs::bpmDataObject::pu3Buffer        )
+        .def_readonly("pu4Buffer",        &beamPositionMonitorStructs::bpmDataObject::pu4Buffer        )
         ;
 
     boost::python::class_<beamPositionMonitorStructs::rawDataStruct, boost::shared_ptr<beamPositionMonitorStructs::rawDataStruct>, boost::noncopyable>

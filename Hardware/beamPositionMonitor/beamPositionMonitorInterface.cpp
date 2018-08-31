@@ -174,6 +174,7 @@ void beamPositionMonitorInterface::monitorBPMs()
         it1.second.yPVBuffer.resize(UTL::BUFFER_TEN);
         it1.second.awakTStampBuffer.resize(UTL::BUFFER_TEN);
         it1.second.rdyTStampBuffer.resize(UTL::BUFFER_TEN);
+        it1.second.statusBuffer.resize(UTL::BUFFER_TEN);
         for( auto && it2 : it1.second.pvMonStructs )
         {
             continuousMonitorStructs.push_back(new beamPositionMonitorStructs::monitorStruct());
@@ -394,7 +395,6 @@ void beamPositionMonitorInterface::updateData( beamPositionMonitorStructs::monit
             bpmdo->pu4Buffer.resize(bpmdo->buffer);
             bpmdo->c2Buffer.resize(bpmdo->buffer);
             bpmdo->p2Buffer.resize(bpmdo->buffer);
-            bpmdo->statusBuffer.resize(bpmdo->buffer);
         }
     }
 
@@ -652,16 +652,35 @@ void beamPositionMonitorInterface::checkBPMStatus( beamPositionMonitorStructs::b
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
         bpmdo -> statusBuffer.push_back( bpmdo->status );
+//        message("x");
     }
+    else if( checkBPMBuffer( bpmdo -> pu1Buffer ) || checkBPMBuffer( bpmdo -> pu2Buffer ) || checkBPMBuffer( bpmdo -> pu3Buffer ) || checkBPMBuffer( bpmdo -> pu4Buffer ) )
+    {
+//        if( abs(bpmdo -> pu1Buffer.back()) > 1.0 || abs(bpmdo -> pu2Buffer.back()) > 1.0 || abs(bpmdo -> pu3Buffer.back()) > 1.0 || abs(bpmdo -> pu4Buffer.back()) > 1.0 )
+//        {
+            bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
+            bpmdo -> statusBuffer.push_back( bpmdo->status );
+//            message(bpmdo->name);
+//            message("pu");
+//        }
+    }
+//    else if( checkBPMBuffer( bpmdo -> p1Buffer ) || checkBPMBuffer( bpmdo -> p2Buffer ) )
+//    {
+//        bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
+//        bpmdo -> statusBuffer.push_back( bpmdo->status );
+//        message(bpmdo->name);
+//        message("p");
+//    }
     else if ( isnan( bpmdo -> xBuffer.back() ) || isnan( bpmdo-> yBuffer.back() ) )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::BAD;
         bpmdo -> statusBuffer.push_back( bpmdo->status );
+//        message(bpmdo->name);
+//        message("nan");
     }
     else if( abs(bpmdo -> pu1Buffer.back()) > 1.0 || abs(bpmdo -> pu2Buffer.back()) > 1.0 || abs(bpmdo -> pu3Buffer.back()) > 1.0 || abs(bpmdo -> pu4Buffer.back()) > 1.0 )
     {
         bpmdo -> status = beamPositionMonitorStructs::BPM_STATUS::NONLINEAR;
-//        message( bpmdo->name, " status is BAD, X or Y > 10!!!!!!!!!!!!!!!!!! " );
     }
     else if( abs(bpmdo -> pu1Buffer.back()) < 1.0 || abs(bpmdo -> pu2Buffer.back()) < 1.0 || abs(bpmdo -> pu3Buffer.back()) < 1.0 || abs(bpmdo -> pu4Buffer.back()) < 1.0 )
     {

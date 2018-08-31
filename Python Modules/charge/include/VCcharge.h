@@ -48,7 +48,7 @@ class VCcharge : public VCbase
         chargeController & virtual_C2B_Charge_Controller();
         chargeController & offline_C2B_Charge_Controller();
         chargeController & physical_C2B_Charge_Controller();
-        chargeController & getChargeController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
+        chargeController & getChargeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
 
     protected:
     private:
@@ -59,8 +59,8 @@ class VCcharge : public VCbase
         chargeController& getController(chargeController*& cont,
                                        const std::string& conf1,
                                        const std::string& name,
-                                       const bool shouldVM,
                                        const bool shouldEPICS,
+                                       const bool shouldVM,
                                        const HWC_ENUM::MACHINE_AREA myMachineArea);
 
         chargeController * virtual_VELA_INJ_Charge_Controller_Obj;
