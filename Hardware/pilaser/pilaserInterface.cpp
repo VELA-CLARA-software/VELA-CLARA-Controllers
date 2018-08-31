@@ -387,7 +387,7 @@ void pilaserInterface::updateAnalysisBuffers()
 //        pilaser.vcData.pix_values_buffer.pop_front();
 //    }
 }
-//____________________________________________________________________________________________
+
 
 
 
@@ -403,16 +403,7 @@ std::vector<double> pilaserInterface::getQBuffer()const
 }
 
 
-//setPosition
-//
-//
-//        /*
-//            check timestamp compared to current time
-//        */
-//        epicsTimeStamp tn = epicsTimeStamp( et.getCurrent() );
-//        std::string tn_time_str;
-//        double tn_time_d;
-//        updateTime(tn,tn_time_d,tn_time_str);
+
 
 
 //____________________________________________________________________________________________
@@ -655,6 +646,36 @@ bool pilaserInterface::setVpos(const double value)
     return false;
 }
 //____________________________________________________________________________________________
+bool pilaserInterface::moveLeft(const double value)
+{
+    message("pilaserInterface::moveLeft");
+    setHstep( value * pilaser.mirror.left_sense);
+    return moveH();
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::moveRight(const double value)
+{
+    message("pilaserInterface::moveRight");
+    setHstep( value * pilaser.mirror.right_sense);
+    return moveH();
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::moveUp(const double value)
+{
+    message("pilaserInterface::moveUp");
+    double val2 = value * pilaser.mirror.up_sense;
+    message("pilaserInterface::moveUp val2, val, up_sense = ", val2, ", ", value, ", ", pilaser.mirror.up_sense );
+    setVstep( val2  );
+    return moveV();
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::moveDown(const double value)
+{
+    message("pilaserInterface::moveDown");
+    setVstep( value * pilaser.mirror.down_sense);
+    return moveV();
+}
+//____________________________________________________________________________________________
 bool pilaserInterface::moveH()
 {
     pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::H_MREL);
@@ -662,13 +683,12 @@ bool pilaserInterface::moveH()
                   "",
                   "!!TIMEOUT!! FAILED TO SEND MOVE H");
 }
+
+
 //____________________________________________________________________________________________
 bool pilaserInterface::moveV()
 {
-    message("moveV() ", pilaser.mirror.vStep);
-    message("moveV() ", pilaser.mirror.vStep);
-    message("moveV() ", pilaser.mirror.vStep);
-    message("moveV() ", pilaser.mirror.vStep);
+    message("pilaserInterface::moveV() ", pilaser.mirror.vStep);
     pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::V_MREL);
     return move(pvs.CHTYPE,pvs.CHID,pilaser.mirror.vStep,
                   "",
@@ -717,14 +737,84 @@ bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
         message("setVCPosition not proceeding ypos too hi, ypos =  ", ypos);
     }
 
+    // check time stamps of fast image and analysis and curren time
+
+    if(entryExists(allCamData, UTL::VIRTUAL_CATHODE))
+    {
+        cameraStructs::cameraObject& cam = allCamData.at(UTL::VIRTUAL_CATHODE);
+
+        check_data_timestamps(cam);
+    }
+    else
+    {
+        proceed = false;
+    }
+
     if(proceed)
     {
-//        staticEntry_set_VC_xpos
-//        return
+       message( "proceeding to maine set position function" );
 
     }
     return false;
 }
+//______________________________________________________________________________
+bool pilaserInterface::check_data_timestamps(const cameraStructs::cameraObject& cam)
+{
+    /*
+        these are the thing swe have to decide if the data is updating
+
+            cam.data.analysis.pix_values_counter
+
+            cam.data.analysis.pix_values_timestamp
+
+            cam.state.is_camera_image_updating
+
+            cam.data.image.array_data_timestamp
+
+            cam.state.is_camera_analysis_updating
+
+            cam.data.image.counter
+
+            camObj.state.latest_avg_pix_has_beam
+
+            cam.state.mask_feedback
+    */
+    if(cam.data.image.counter < UTL::TWO_SIZET)
+    {
+        message("Image counter < 2, i'm not sure images are updating ");
+        //return false;
+    }
+
+    if(cam.data.analysis.pix_values_counter < UTL::TWO_SIZET)
+    {
+        message("Image counter < 2, i'm not sure analysis values are updating ");
+         //return false;
+    }
+    // Compare TIMES TO CURRENT TIME
+    /*
+        check timestamp compared to current time
+    */
+    epicsTimeStamp tn = epicsTimeStamp( et.getCurrent() );
+    std::string tn_time_str;
+    double tn_time_d;
+    updateTime(tn,tn_time_d,tn_time_str);
+
+    message("Times: pix_values = ", cam.data.analysis.pix_values_timestamp.time_Str, " Now = ", tn_time_str);
+    message("DIFF : ", cam.data.analysis.pix_values_timestamp.time_ns - tn_time_d);
+
+    if(cam.state.latest_avg_pix_has_beam)
+    {
+        message("I think there is laser bema on the screen");
+    }
+    else
+    {
+        message("I think there is NO laser bema on the screen");
+    }
+    return false;
+
+}
+
+
 
 bool pilaserInterface::shortCaput(unsigned short comm, pilaserStructs::pvStruct& S)
 {

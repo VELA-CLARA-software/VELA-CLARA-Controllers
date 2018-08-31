@@ -309,6 +309,10 @@ namespace UTL
     const std::string RESULTS_COUNT = "RESULTS_COUNT";
     const std::string PV_ROOT_Q = "PV_ROOT_Q";
     const std::string STEP_MAX = "STEP_MAX";
+    const std::string LEFT_SENSE = "LEFT_SENSE";
+    const std::string RIGHT_SENSE = "RIGHT_SENSE";
+    const std::string UP_SENSE = "UP_SENSE";
+    const std::string DOWN_SENSE = "DOWN_SENSE";
 
 
 
@@ -849,6 +853,13 @@ namespace UTL
     const std::string Y_CENTER_DEF                  ="Y_CENTER_DEF";
     const std::string PIX_2_MM_RATIO_DEF            ="PIX_2_MM_RATIO_DEF";
     const std::string USE_MASK_RAD_LIMITS            ="USE_MASK_RAD_LIMITS";
+
+    const std::string MIN_X_PIXEL_POS = "MIN_X_PIXEL_POS";
+    const std::string MAX_X_PIXEL_POS = "MAX_X_PIXEL_POS";
+    const std::string MIN_Y_PIXEL_POS = "MIN_Y_PIXEL_POS";
+    const std::string MAX_Y_PIXEL_POS = "MAX_Y_PIXEL_POS";
+
+
 
     const std::string BINARY_NUM_PIX_X  = "BINARY_NUM_PIX_X";
     const std::string BINARY_NUM_PIX_Y  = "BINARY_NUM_PIX_Y";

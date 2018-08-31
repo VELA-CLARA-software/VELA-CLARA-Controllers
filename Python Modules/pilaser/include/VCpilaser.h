@@ -193,8 +193,11 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* setHstep_doc = "set horizontal Mirror step size ";
     const char* setVstep_doc = "set vertical   Mirror step size ";
 
-    const char* moveH_doc = "set horizontal Mirror step size ";
-    const char* moveV_doc = "set vertical   Mirror step size ";
+    const char* moveUp_doc   = "Move Laser Beam UP, by step 'step' (if too close to edge will not work)";
+    const char* moveDown_doc = "Move Laser Beam DOWN, by step 'step' (if too close to edge will not work)";
+    const char* moveLeft_doc   = "Move Laser Beam LEFT, by step 'step' (if too close to edge will not work)";
+    const char* moveRight_doc = "Move Laser Beam RIGHT, by step 'step' (if too close to edge will not work)";
+
 
     const char* stabilisation_status_doc
         = "Status (ON/OFF) of laser transport system stabilisation system.";
@@ -206,6 +209,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* getQ_doc        = "getQ_doc.";
     const char* getQBuffer_doc  = "getQBuffer_doc.";
     const char* clearLaserRunningValues_doc  = "getQBuffer_doc.";
+
+    const char* setVCPosition_doc     = "setVCPosition_doc   .";
 
 
     class_<pilaserController, bases<cameraControllerBase,shutterController>, noncopyable>
@@ -231,8 +236,18 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("getVstep",&pilaserController::getVstep,getVstep_doc)
         .def("setHstep",&pilaserController::setHstep,setVstep_doc)
         .def("setVstep",&pilaserController::setVstep,setHstep_doc)
-        .def("moveH",   &pilaserController::moveH,   moveH_doc   )
-        .def("moveV",   &pilaserController::moveV,   moveV_doc   )
+
+        .def("moveLeft",  &pilaserController::moveLeft,   moveLeft_doc   )
+        .def("moveRight", &pilaserController::moveRight, moveRight_doc   )
+
+        .def("moveUp",  &pilaserController::moveUp,   moveUp_doc   )
+        .def("moveDown", &pilaserController::moveDown, moveDown_doc   )
+
+        //.def("moveH",   &pilaserController::moveH,   moveH_doc   )
+        //.def("moveV",   &pilaserController::moveV,   moveV_doc   )
+
+
+        .def("setVCPosition",   &pilaserController::setVCPosition,   setVCPosition_doc   )
 
         .def("clearRunningValues",   &pilaserController::clearRunningValues,   clearLaserRunningValues_doc )
 

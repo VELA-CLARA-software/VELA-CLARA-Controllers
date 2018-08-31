@@ -120,10 +120,15 @@ namespace pilaserStructs
             vStep(UTL::TEN_DOUBLE),
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
-            STEP_MAX(UTL::ZERO_DOUBLE)
+            STEP_MAX(UTL::ZERO_DOUBLE),
+            left_sense(UTL::ZERO_DOUBLE),
+            right_sense(UTL::ZERO_DOUBLE),
+            up_sense(UTL::ZERO_DOUBLE),
+            down_sense(UTL::ZERO_DOUBLE)
             {};
         std::string name, pvRoot;
         double hPos, vPos, hStep, vStep,STEP_MAX;
+        double left_sense, right_sense, up_sense, down_sense;
     };
 
     // The main hardware object holds ...

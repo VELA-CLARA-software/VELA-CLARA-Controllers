@@ -48,6 +48,7 @@ localInterface(show_messages,
                velaCamConfig,
                area),
 name(name),
+is_setting_position(false),
 cameraControllerBase(show_messages,show_debug_messages, name, HWC_ENUM::CONTROLLER_TYPE::PI_LASER, &localInterface),
 shutterController(show_messages,
                                      show_debug_messages,
@@ -221,14 +222,61 @@ bool pilaserController::setVstep(double value)
     return localInterface.setVstep(value);
 }
 //______________________________________________________________________________
-bool pilaserController::moveH()
+bool pilaserController::moveLeft(const double value)
 {
-    return localInterface.moveH();
+    if( can_move_test_1() )
+    {
+        if( cameraControllerBase::isBeam_x_Lo_VC())
+        {
+            cameraControllerBase::message("isBeamy_x_Lo_VC = true");
+            return false;
+        }
+        return localInterface.moveLeft(value);
+    }
+    return false;
 }
 //______________________________________________________________________________
-bool pilaserController::moveV()
+bool pilaserController::moveRight(const double value)
 {
-    return localInterface.moveV();
+    if( can_move_test_1() )
+    {
+        if( cameraControllerBase::isBeam_x_Hi_VC())
+        {
+            cameraControllerBase::message("isBeamy_x_Hi_VC = true");
+            return false;
+        }
+
+        return localInterface.moveRight(value);
+    }
+    return false;
+}
+//______________________________________________________________________________
+bool pilaserController::moveUp(const double value)
+{
+    if( can_move_test_1() )
+    {
+        if( cameraControllerBase::isBeam_y_Hi_VC())
+        {
+            cameraControllerBase::message("isBeam_y_Hi_VC = true");
+            return false;
+        }
+        return localInterface.moveUp(value);
+    }
+    return false;
+}
+//______________________________________________________________________________
+bool pilaserController::moveDown(const double value)
+{
+    if( can_move_test_1() )
+    {
+        if( cameraControllerBase::isBeam_y_Lo_VC())
+        {
+            cameraControllerBase::message("isBeamy_y_Lo_VC = true");
+            return false;
+        }
+        return localInterface.moveDown(value);
+    }
+    return false;
 }
 //______________________________________________________________________________
 const pilaserStructs::pilMirrorObject& pilaserController::getpilMirrorObjConstRef() const
@@ -247,8 +295,38 @@ void pilaserController::clearRunningValues()
     cameraControllerBase::clearRunningValues();
 }
 //______________________________________________________________________________
-//const pilaserStructs::virtualCathodeDataObject& pilaserController::getVCDataObjConstRef() const
-//{
-//    return localInterface.getVCDataObjConstRef();
-//}
+bool pilaserController::setVCPosition(const double xpos, const double ypos)
+{
+    return localInterface.setVCPosition(xpos, ypos);
+}
+//____________________________________________________________________________________________
+bool pilaserController::can_move_test_1()
+{
+    /*
+        simple test 1 to decide if we can move laser mirrors
+    */
+    // check shutters are open
+    if( areAllOpen() )
+    {
+        if( isAnalysisUpdating())
+        {
+            if( hasBeam_VC() )
+            {
+                return true;
+            }
+        }
+    }
+    cameraControllerBase::message("can_move_test_1 failed");
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
 

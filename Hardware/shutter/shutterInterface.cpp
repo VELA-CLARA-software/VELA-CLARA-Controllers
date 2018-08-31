@@ -86,7 +86,7 @@ void shutterInterface::initialise()
                 /* start the monitors: set up the callback functions */
                 startMonitors();
                 /* The pause allows EPICS callbacks to catch up. */
-                pause_2000();
+                pause_500();
             }
             else
              message("The shutterInterface has acquired objects, "

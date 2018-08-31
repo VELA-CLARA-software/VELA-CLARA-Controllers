@@ -125,6 +125,31 @@ class cameraBase : public interface
 //
 //-----------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
+
+        bool isBeam_x_Hi_VC();
+        bool isBeam_x_Lo_VC();
+        bool isBeam_y_Hi_VC();
+        bool isBeam_y_Lo_VC();
+
+        bool isAnalysisUpdating_VC()const;
+        bool isAnalysisUpdating()const;
+        bool isAnalysisUpdating(const std::string& name)const;
+        bool isAnalysisUpdating(const cameraStructs::cameraObject& cam)const;
+
+        bool isAnalysisNotUpdating_VC()const;
+        bool isAnalysisNotUpdating()const;
+        bool isAnalysisNotUpdating(const std::string& name)const;
+        bool isAnalysisNotUpdating(const cameraStructs::cameraObject& cam)const;
+
+        bool hasBeam_VC()const;
+        bool hasBeam(const cameraStructs::cameraObject& cam)const;
+        bool hasBeam(const std::string& cam)const;
+        bool hasBeam()const;
+        bool hasNoBeam_VC()const;
+        bool hasNoBeam(const cameraStructs::cameraObject& cam)const;
+        bool hasNoBeam(const std::string& cam)const;
+        bool hasNoBeam()const;
+
         bool isBusy_VC()const;
         bool isBusy(const cameraStructs::cameraObject& cam)const;
         bool isBusy(const std::string& cam)const;
@@ -236,22 +261,22 @@ class cameraBase : public interface
 // |  | /~~\ .__/ |  \    \__> |___  |   |  |___ |  \ .__/
 //
 //--------------------------------------------------------------------------------------------------------------------
-        int getMaskX(const cameraStructs::cameraObject& cam)const;
-        int getMaskX(const std::string& cam)const;
-        int getMaskX_VC()const;
-        int getMaskX()const;
-        int getMaskY_VC()const;
-        int getMaskY(const std::string& cam)const;
-        int getMaskY(const cameraStructs::cameraObject& cam)const;
-        int getMaskY()const;
-        int getMaskXrad_VC()const;
-        int getMaskXrad(const std::string& cam )const;
-        int getMaskXrad(const cameraStructs::cameraObject& cam)const;
-        int getMaskXrad()const;
-        int getMaskYrad_VC()const;
-        int getMaskYrad(const std::string& cam )const;
-        int getMaskYrad(const cameraStructs::cameraObject& cam)const;
-        int getMaskYrad()const;
+        unsigned short getMaskX(const cameraStructs::cameraObject& cam)const;
+        unsigned short getMaskX(const std::string& cam)const;
+        unsigned short getMaskX_VC()const;
+        unsigned short getMaskX()const;
+        unsigned short getMaskY_VC()const;
+        unsigned short getMaskY(const std::string& cam)const;
+        unsigned short getMaskY(const cameraStructs::cameraObject& cam)const;
+        unsigned short getMaskY()const;
+        unsigned short getMaskXrad_VC()const;
+        unsigned short getMaskXrad(const std::string& cam )const;
+        unsigned short getMaskXrad(const cameraStructs::cameraObject& cam)const;
+        unsigned short getMaskXrad()const;
+        unsigned short getMaskYrad_VC()const;
+        unsigned short getMaskYrad(const std::string& cam )const;
+        unsigned short getMaskYrad(const cameraStructs::cameraObject& cam)const;
+        unsigned short getMaskYrad()const;
 //--------------------------------------------------------------------------------------------------------------------
 //                          __     __      __   ___  __            ___  __      __   ___ ___ ___  ___  __   __
 //  /\  |\ |  /\  |    \ / /__` | /__`    |__) |__  /__` |  | |     |  /__`    / _` |__   |   |  |__  |__) /__`
@@ -440,30 +465,30 @@ class cameraBase : public interface
         void setBufferMaxCount(const size_t s,const std::string& cam);
         void setBufferMaxCount(const size_t s, cameraStructs::cameraObject& cam);
         void setBufferMaxCount(const size_t s);
-        bool setMaskX_VC(int x);
-        bool setMaskX(int x,const std::string& cam);
-        bool setMaskX(int x,cameraStructs::cameraObject& cam);
-        bool setMaskX(int x);
-        bool setMaskY_VC(int x);
-        bool setMaskY(int x,const std::string& cam);
-        bool setMaskY(int x,cameraStructs::cameraObject& cam);
-        bool setMaskY(int x);
-        bool setMaskXrad_VC(int x);
-        bool setMaskXrad(int x,const std::string& cam);
-        bool setMaskXrad(int x,cameraStructs::cameraObject& cam);
-        bool setMaskXrad(int x);
-        bool setMaskYrad_VC(int x);
-        bool setMaskYrad(int x,const std::string& cam);
-        bool setMaskYrad(int x,cameraStructs::cameraObject& cam);
-        bool setMaskYrad(int x);
-        bool setMask_VC(int x, int y,int xr,int yr);
-        bool setMask(int x,int y,int xr,int yr,const std::string& cam );
-        bool setMask(int x, int y,int xr,int yr,cameraStructs::cameraObject& cam);
-        bool setMask(int x, int y,int xr,int yr);
-        bool setMask_VC(const std::vector<int>& vales);
-        bool setMask(const std::vector<int>& vales,const std::string& cam);
-        bool setMask(const std::vector<int>& vales,cameraStructs::cameraObject& cam);
-        bool setMask(const std::vector<int>& vales);
+        bool setMaskX_VC(unsigned short x);
+        bool setMaskX(unsigned short x,const std::string& cam);
+        bool setMaskX(unsigned short x,cameraStructs::cameraObject& cam);
+        bool setMaskX(unsigned short x);
+        bool setMaskY_VC(unsigned short x);
+        bool setMaskY(unsigned short x,const std::string& cam);
+        bool setMaskY(unsigned short x,cameraStructs::cameraObject& cam);
+        bool setMaskY(unsigned short x);
+        bool setMaskXrad_VC(unsigned short x);
+        bool setMaskXrad(unsigned short x,const std::string& cam);
+        bool setMaskXrad(unsigned short x,cameraStructs::cameraObject& cam);
+        bool setMaskXrad(unsigned short x);
+        bool setMaskYrad_VC(unsigned short x);
+        bool setMaskYrad(unsigned short x,const std::string& cam);
+        bool setMaskYrad(unsigned short x,cameraStructs::cameraObject& cam);
+        bool setMaskYrad(unsigned short x);
+        bool setMask_VC(unsigned short x, unsigned short y,unsigned short xr,unsigned short yr);
+        bool setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr,const std::string& cam );
+        bool setMask(unsigned short x, unsigned short y,unsigned short xr,unsigned short yr,cameraStructs::cameraObject& cam);
+        bool setMask(unsigned short x, unsigned short y,unsigned short xr,unsigned short yr);
+        bool setMask_VC(const std::vector<unsigned short>& vales);
+        bool setMask(const std::vector<unsigned short>& vales,const std::string& cam);
+        bool setMask(const std::vector<unsigned short>& vales,cameraStructs::cameraObject& cam);
+        bool setMask(const std::vector<unsigned short>& vales);
         bool setBackground_VC();
         bool setBackground(const std::string& cam);
         bool setBackground(cameraStructs::cameraObject& cam);
@@ -681,7 +706,9 @@ class cameraBase : public interface
     protected:
     private:
 
-        static void mask_feedback(int x, int y, int x_rad, int y_rad, const std::string& name, cameraBase* interface);
+        static void mask_feedback(unsigned short x, unsigned short y,
+                                  unsigned short x_rad, unsigned short y_rad,
+                                  const std::string& name, cameraBase* interface);
 
         // testing
         epicsTime et;

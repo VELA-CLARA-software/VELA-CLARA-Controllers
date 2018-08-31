@@ -227,6 +227,90 @@ bool cameraControllerBase::startAcquireAndAnalysis()
 //
 //-----------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
+bool cameraControllerBase::isBeam_x_Hi_VC()
+{
+    return camBase->isBeam_x_Hi_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isBeam_x_Lo_VC()
+{
+    return camBase->isBeam_x_Lo_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isBeam_y_Hi_VC()
+{
+    return camBase->isBeam_y_Hi_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isBeam_y_Lo_VC()
+{
+    return camBase->isBeam_y_Lo_VC();
+}
+//---------------------------------------------------------------------------------
+
+
+bool cameraControllerBase::isAnalysisUpdating_VC()const
+{
+    return camBase->isAnalysisUpdating_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isAnalysisUpdating()const
+{
+    return camBase->isAnalysisUpdating();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isAnalysisUpdating(const std::string& name)const
+{
+    return camBase->isAnalysisUpdating();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isAnalysisNotUpdating_VC()const
+{
+    return camBase->isAnalysisNotUpdating_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isAnalysisNotUpdating()const
+{
+    return camBase->isAnalysisNotUpdating();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isAnalysisNotUpdating(const std::string& name)const
+{
+    return camBase->isAnalysisNotUpdating();
+}
+//---------------------------------------------------------------------------------
+
+bool cameraControllerBase::hasBeam_VC()const
+{
+    return camBase->hasBeam_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::hasBeam(const std::string& cam)const
+{
+    return camBase->hasBeam();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::hasBeam()const
+{
+    return camBase->hasBeam();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::hasNoBeam_VC()const
+{
+    return camBase->hasNoBeam_VC();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::hasNoBeam(const std::string& cam)const
+{
+    return camBase->hasNoBeam(cam);
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::hasNoBeam()const
+{
+    return camBase->hasNoBeam();
+}
+//---------------------------------------------------------------------------------
+
 bool cameraControllerBase::isVelaCam_VC()const
 {
     return camBase->isVelaCam_VC();
@@ -607,63 +691,63 @@ bool cameraControllerBase::latestCollectAndSaveSuccess()const
 
 
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskX_VC()const
+unsigned short cameraControllerBase::getMaskX_VC()const
 {
     return camBase->getMaskX_VC();
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskX(const std::string& cam )const
+unsigned short cameraControllerBase::getMaskX(const std::string& cam )const
 {
     return camBase->getMaskX(cam);
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskX()const
+unsigned short cameraControllerBase::getMaskX()const
 {
     return camBase->getMaskX();
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskY_VC()const
+unsigned short cameraControllerBase::getMaskY_VC()const
 {
     return camBase->getMaskY_VC();
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskY(const std::string& cam)const
+unsigned short cameraControllerBase::getMaskY(const std::string& cam)const
 {
     return camBase->getMaskY(cam);
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskY()const
+unsigned short cameraControllerBase::getMaskY()const
 {
     return camBase->getMaskY();
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskXrad_VC()const
+unsigned short cameraControllerBase::getMaskXrad_VC()const
 {
     return camBase->getMaskXrad_VC();
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskXrad(const std::string& cam )const
+unsigned short cameraControllerBase::getMaskXrad(const std::string& cam )const
 {
     return camBase->getMaskXrad(cam);
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskXrad()const
+unsigned short cameraControllerBase::getMaskXrad()const
 {
     return camBase->getMaskXrad();
 }
 //---------------------------------------------------------------------------------
 
-int cameraControllerBase::getMaskYrad_VC()const
+unsigned short cameraControllerBase::getMaskYrad_VC()const
 {
     return camBase->getMaskYrad_VC();
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskYrad(const std::string& cam )const
+unsigned short cameraControllerBase::getMaskYrad(const std::string& cam )const
 {
     return camBase->getMaskYrad(cam);
 }
 //---------------------------------------------------------------------------------
-int cameraControllerBase::getMaskYrad()const
+unsigned short cameraControllerBase::getMaskYrad()const
 {
     return camBase->getMaskYrad();
 }
@@ -684,98 +768,98 @@ int cameraControllerBase::getMaskYrad()const
 
 
 
-bool cameraControllerBase::setMaskX_VC(int x)
+bool cameraControllerBase::setMaskX_VC(unsigned short x)
 {
     return camBase->setMaskX_VC(x);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskX(int x,const std::string& cam)
+bool cameraControllerBase::setMaskX(unsigned short x,const std::string& cam)
 {
     return camBase->setMaskX(x,cam);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskX(int x)
+bool cameraControllerBase::setMaskX(unsigned short x)
 {
     return camBase->setMaskX(x);
 }
 //---------------------------------------------------------------------------------
 
-bool cameraControllerBase::setMaskY_VC(int x)
+bool cameraControllerBase::setMaskY_VC(unsigned short x)
 {
     return camBase->setMaskY_VC(x);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskY(int x,const std::string& cam)
+bool cameraControllerBase::setMaskY(unsigned short x,const std::string& cam)
 {
     message("cameraControllerBase::setMaskY called ", cam);
     return camBase->setMaskY(x,cam);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskY(int x)
+bool cameraControllerBase::setMaskY(unsigned short x)
 {
     return camBase->setMaskY(x);
 }
 //---------------------------------------------------------------------------------
 
-bool cameraControllerBase::setMaskXrad_VC(int x)
+bool cameraControllerBase::setMaskXrad_VC(unsigned short x)
 {
     return camBase->setMaskXrad_VC(x);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskXrad(int x,const std::string& cam)
+bool cameraControllerBase::setMaskXrad(unsigned short x,const std::string& cam)
 {
     return camBase->setMaskXrad(x,cam);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskXrad(int x)
+bool cameraControllerBase::setMaskXrad(unsigned short x)
 {
     return camBase->setMaskXrad(x);
 }
 //---------------------------------------------------------------------------------
 
-bool cameraControllerBase::setMaskYrad_VC(int x)
+bool cameraControllerBase::setMaskYrad_VC(unsigned short x)
 {
     return camBase->setMaskYrad_VC(x);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskYrad(int x,const std::string& cam)
+bool cameraControllerBase::setMaskYrad(unsigned short x,const std::string& cam)
 {
     return camBase->setMaskYrad(x,cam);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMaskYrad(int x)
+bool cameraControllerBase::setMaskYrad(unsigned short x)
 {
     return camBase->setMaskYrad(x);
 }
 //---------------------------------------------------------------------------------
 
-bool cameraControllerBase::setMask_VC(int x,int y,int xr,int yr)
+bool cameraControllerBase::setMask_VC(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr)
 {
     return camBase->setMask_VC(x,y,xr,yr);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMask(int x,int y,int xr,int yr,const std::string& cam)
+bool cameraControllerBase::setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr,const std::string& cam)
 {
     return camBase->setMask(x,y,xr,yr,cam);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMask(int x,int y,int xr,int yr)
+bool cameraControllerBase::setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr)
 {
     return camBase->setMask(x,y,xr,yr);
 }
 //---------------------------------------------------------------------------------
 
-bool cameraControllerBase::setMask_VC(const std::vector<int>& v)
+bool cameraControllerBase::setMask_VC(const std::vector<unsigned short>& v)
 {
     return camBase->setMask_VC(v);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMask(const std::vector<int>& v,const std::string& cam)
+bool cameraControllerBase::setMask(const std::vector<unsigned short>& v,const std::string& cam)
 {
     return camBase->setMask(v,cam);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setMask(const std::vector<int>& v)
+bool cameraControllerBase::setMask(const std::vector<unsigned short>& v)
 {
     return camBase->setMask(v);
 }
@@ -802,17 +886,17 @@ bool cameraControllerBase::collectAndSave_VC(const int numbOfShots)
 bool cameraControllerBase::setMask_VC_Py(const boost::python::list& v)
 {
     message("setMask_VC_Py called");
-    return setMask_VC(to_std_vector<int>(v));
+    return setMask_VC(to_std_vector<unsigned short>(v));
 }
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setMask_Py1(const boost::python::list v,const std::string& cam)
 {
-    return setMask(to_std_vector<int>(v),cam);
+    return setMask(to_std_vector<unsigned short>(v),cam);
 }
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setMask_Py2(const boost::python::list v)
 {
-    return setMask(to_std_vector<int>(v));
+    return setMask(to_std_vector<unsigned short>(v));
 }
 #endif
 //---------------------------------------------------------------------------------

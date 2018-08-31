@@ -95,7 +95,7 @@ bool baseObject::getBool(const std::string& str) const
 //______________________________________________________________________________
 int baseObject::getNum(const std::string& str) const
 {
-    return atoi(str.c_str());
+    return std::stoi(str.c_str());
 }
 //______________________________________________________________________________
 size_t baseObject::getSize(const std::string& str) const

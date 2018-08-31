@@ -90,13 +90,20 @@ class pilaserInterface : public cameraBase
         bool setHpos(const double value);
         bool setVpos(const double value);
 
-        double getHstep() const;
-        double getVstep() const;
+        bool moveLeft(const double value);
+        bool moveRight(const double value);
+        bool moveUp(const double value);
+        bool moveDown(const double value);
+
+
         bool setHstep(const double value);
         bool setVstep(const double value);
 
-        bool moveH();
-        bool moveV();
+
+
+
+        double getHstep() const;
+        double getVstep() const;
 
         void clearRunningValues();
 
@@ -105,6 +112,10 @@ class pilaserInterface : public cameraBase
         bool setVCPosition(const double xpos, const double ypos);
 
     private:
+
+
+        bool moveH();
+        bool moveV();
 
         void initialise();
         bool initObjects();
@@ -116,6 +127,8 @@ class pilaserInterface : public cameraBase
 
         bool shortCaput(unsigned short comm, pilaserStructs::pvStruct& S);
 
+        // position settign stuff
+        bool check_data_timestamps(const cameraStructs::cameraObject& cam);
         static void staticEntry_set_VC_xpos(double xpos);
 
 
@@ -148,6 +161,11 @@ class pilaserInterface : public cameraBase
         bool move(chtype& cht, chid& chi, const double val, const char* m1, const char* m2);
 
         bool setDefaults();
+
+        // testing
+        epicsTime et;
+        epicsTime timestamp;
+
 
 };
 //______________________________________________________________________________

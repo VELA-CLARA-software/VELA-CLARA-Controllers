@@ -195,18 +195,18 @@ namespace cameraStructs
     {
         analysis_mask():
             name(UTL::UNKNOWN_NAME),
-            mask_x(UTL::DUMMY_INT),
-            mask_y(UTL::DUMMY_INT),
-            mask_x_rad(UTL::DUMMY_INT),
-            mask_y_rad(UTL::DUMMY_INT),
-            mask_x_def(UTL::DUMMY_INT),
-            mask_y_def(UTL::DUMMY_INT),
-            mask_x_rad_def(UTL::DUMMY_INT),
-            mask_y_rad_def(UTL::DUMMY_INT),
-            mask_x_rad_max(UTL::ONE_INT),
-            mask_y_rad_max(UTL::ONE_INT),
-            mask_x_rad_min(UTL::ONE_INT),
-            mask_y_rad_min(UTL::ONE_INT),
+            mask_x(UTL::ZERO_U_SHORT),
+            mask_y(UTL::ZERO_U_SHORT),
+            mask_x_rad(UTL::ZERO_U_SHORT),
+            mask_y_rad(UTL::ZERO_U_SHORT),
+            mask_x_def(UTL::ZERO_U_SHORT),
+            mask_y_def(UTL::ZERO_U_SHORT),
+            mask_x_rad_def(UTL::ZERO_U_SHORT),
+            mask_y_rad_def(UTL::ZERO_U_SHORT),
+            mask_x_rad_max(UTL::ZERO_U_SHORT),
+            mask_y_rad_max(UTL::ZERO_U_SHORT),
+            mask_x_rad_min(UTL::ZERO_U_SHORT),
+            mask_y_rad_min(UTL::ZERO_U_SHORT),
             use_mask_rad_limits(false),
             maskInterface(nullptr)
             {};
@@ -214,17 +214,17 @@ namespace cameraStructs
         /*
             These are in pixels counting from the bottom LHS (?)
         */
-        int mask_x,mask_y,mask_x_rad,mask_y_rad;
+        unsigned short mask_x,mask_y,mask_x_rad,mask_y_rad;
         /*
             default states housl dbe set to comver screen,
             when you need to reset th emask you would use these values,
             the actual values are defined in the config file
         */
-        int mask_x_def, mask_y_def, mask_x_rad_def, mask_y_rad_def;
+        unsigned short mask_x_def, mask_y_def, mask_x_rad_def, mask_y_rad_def;
         /*
             max and min values for the mask
         */
-        int mask_x_rad_max, mask_y_rad_max, mask_x_rad_min, mask_y_rad_min;
+        unsigned short mask_x_rad_max, mask_y_rad_max, mask_x_rad_min, mask_y_rad_min;
         /*
             should we use the mask radius limits (max/min) values?
         */
@@ -254,7 +254,11 @@ namespace cameraStructs
             mask_feedback(false),
             is_camera_image_updating(false),
             is_camera_analysis_updating(false),
-            latest_avg_pix_has_beam(false)
+            latest_avg_pix_has_beam(false),
+            is_pix_val_x_hi(false),
+            is_pix_val_x_lo(false),
+            is_pix_val_y_hi(false),
+            is_pix_val_y_lo(false)
             {}
         /*
             flags for analysis
@@ -283,6 +287,14 @@ namespace cameraStructs
             mas_feedback updates the mask every shot based on the analysis results
         */
         bool mask_feedback;
+
+        /*
+            flags to say if we are close to the edge or not
+        */
+        bool is_pix_val_x_hi,is_pix_val_x_lo,is_pix_val_y_hi,is_pix_val_y_lo;
+
+
+
         /*
             these are vela cam paramters, and i can't think of a
             better place to put them ...
@@ -320,7 +332,13 @@ namespace cameraStructs
             step_size(UTL::DUMMY_INT),
             buffer_full(false),
             avg_pix_beam_level(UTL::DUMMY_DOUBLE),
-            pix_values_counter(UTL::ZERO_SIZET)
+            pix_values_counter(UTL::ZERO_SIZET),
+
+            pix_val_x_hi(UTL::DUMMY_DOUBLE),
+            pix_val_x_lo(UTL::DUMMY_DOUBLE),
+            pix_val_y_hi(UTL::DUMMY_DOUBLE),
+            pix_val_y_lo(UTL::DUMMY_DOUBLE)
+
             {};
         std::string name;
         /*
@@ -365,6 +383,10 @@ namespace cameraStructs
         size_t num_pix_values;
         std::vector<double> pix_values;
         std::deque<std::vector<double>> pix_values_buf;
+
+        /* limits on pix values to set 'near edge flag' */
+        double pix_val_x_hi, pix_val_x_lo, pix_val_y_hi, pix_val_y_lo;
+
         /*
             we keep a timestamp of th elatest pixel values results to detemrine if
             the camera is updating in a state that will enable feedback to 'work-well'

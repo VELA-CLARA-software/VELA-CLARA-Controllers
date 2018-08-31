@@ -68,6 +68,7 @@
 					<Add directory="Hardware/camera" />
 					<Add directory="../../Structs/camera" />
 					<Add directory="../../Utilities/camera" />
+					<Add directory="../../Utilities/shutter" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -96,6 +97,11 @@
 		<Unit filename="../../Hardware/pilaser/pilaserController.h" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.cpp" />
 		<Unit filename="../../Hardware/pilaser/pilaserInterface.h" />
+		<Unit filename="../../Hardware/shutter/expose_shutter.h" />
+		<Unit filename="../../Hardware/shutter/shutterController.cpp" />
+		<Unit filename="../../Hardware/shutter/shutterController.h" />
+		<Unit filename="../../Hardware/shutter/shutterInterface.cpp" />
+		<Unit filename="../../Hardware/shutter/shutterInterface.h" />
 		<Unit filename="../../Structs/camera/cameraStructs.cpp" />
 		<Unit filename="../../Structs/camera/cameraStructs.h" />
 		<Unit filename="../../Structs/pi_laser/pilaserStructs.cpp" />
@@ -119,6 +125,8 @@
 		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.cpp" />
 		<Unit filename="../../Utilities/pi_laser/pilaserConfigReader.h" />
 		<Unit filename="../../Utilities/running_stat.h" />
+		<Unit filename="../../Utilities/shutter/shutterConfigReader.cpp" />
+		<Unit filename="../../Utilities/shutter/shutterConfigReader.h" />
 		<Unit filename="include/VCpilaser.h" />
 		<Unit filename="src/VCpilaser.cpp" />
 		<Extensions>

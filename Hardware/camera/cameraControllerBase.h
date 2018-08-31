@@ -126,6 +126,28 @@ class cameraControllerBase : public controller
 //
 //-----------------------------------------------------------------------------------------
 
+        bool isBeam_x_Hi_VC();
+        bool isBeam_x_Lo_VC();
+        bool isBeam_y_Hi_VC();
+        bool isBeam_y_Lo_VC();
+
+
+        bool hasBeam_VC()const;
+        bool hasBeam(const std::string& cam)const;
+        bool hasBeam()const;
+        bool hasNoBeam_VC()const;
+        bool hasNoBeam(const std::string& cam)const;
+        bool hasNoBeam()const;
+
+        bool isAnalysisUpdating_VC()const;
+        bool isAnalysisUpdating()const;
+        bool isAnalysisUpdating(const std::string& name)const;
+
+        bool isAnalysisNotUpdating_VC()const;
+        bool isAnalysisNotUpdating()const;
+        bool isAnalysisNotUpdating(const std::string& name)const;
+
+
         bool isVelaCam_VC()const;
         bool isVelaCam(const std::string& cam)const;
         bool isVelaCam()const;
@@ -208,18 +230,18 @@ class cameraControllerBase : public controller
 // \__> |___  |   |  |___ |  \ .__/
 //
 //-----------------------------------------------------------------------------------------
-        int getMaskX_VC()const;
-        int getMaskX(const std::string& cam )const;
-        int getMaskX()const;
-        int getMaskY_VC()const;
-        int getMaskY(const std::string& cam)const;
-        int getMaskY()const;
-        int getMaskXrad_VC()const;
-        int getMaskXrad(const std::string& cam )const;
-        int getMaskXrad()const;
-        int getMaskYrad_VC()const;
-        int getMaskYrad(const std::string& cam )const;
-        int getMaskYrad()const;
+        unsigned short getMaskX_VC()const;
+        unsigned short getMaskX(const std::string& cam )const;
+        unsigned short getMaskX()const;
+        unsigned short getMaskY_VC()const;
+        unsigned short getMaskY(const std::string& cam)const;
+        unsigned short getMaskY()const;
+        unsigned short getMaskXrad_VC()const;
+        unsigned short getMaskXrad(const std::string& cam )const;
+        unsigned short getMaskXrad()const;
+        unsigned short getMaskYrad_VC()const;
+        unsigned short getMaskYrad(const std::string& cam )const;
+        unsigned short getMaskYrad()const;
         std::deque<double> getXBuffer_VC()const;
         std::deque<double> getXBuffer(const std::string& cam)const;
         std::deque<double> getXBuffer()const;
@@ -421,24 +443,24 @@ class cameraControllerBase : public controller
 // .__/ |___  |   |  |___ |  \ .__/
 //
 //-----------------------------------------------------------------------------------------
-        bool setMaskX_VC(int x);
-        bool setMaskX(int x,const std::string& cam);
-        bool setMaskX(int x);
-        bool setMaskY_VC(int x);
-        bool setMaskY(int x,const std::string& cam);
-        bool setMaskY(int x);
-        bool setMaskXrad_VC(int x);
-        bool setMaskXrad(int x,const std::string& cam);
-        bool setMaskXrad(int x);
-        bool setMaskYrad_VC(int x);
-        bool setMaskYrad(int x,const std::string& cam);
-        bool setMaskYrad(int x);
-        bool setMask_VC(int x,int y,int xr,int yr);
-        bool setMask(int x,int y,int xr,int yr,const std::string& cam);
-        bool setMask(int x,int y,int xr,int yr);
-        bool setMask_VC(const std::vector<int>& v);
-        bool setMask(const std::vector<int>& v,const std::string& cam);
-        bool setMask(const std::vector<int>& v);
+        bool setMaskX_VC(unsigned short x);
+        bool setMaskX(unsigned short x,const std::string& cam);
+        bool setMaskX(unsigned short x);
+        bool setMaskY_VC(unsigned short x);
+        bool setMaskY(unsigned short x,const std::string& cam);
+        bool setMaskY(unsigned short x);
+        bool setMaskXrad_VC(unsigned short x);
+        bool setMaskXrad(unsigned short x,const std::string& cam);
+        bool setMaskXrad(unsigned short x);
+        bool setMaskYrad_VC(unsigned short x);
+        bool setMaskYrad(unsigned short x,const std::string& cam);
+        bool setMaskYrad(unsigned short x);
+        bool setMask_VC(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr);
+        bool setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr,const std::string& cam);
+        bool setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr);
+        bool setMask_VC(const std::vector<unsigned short>& v);
+        bool setMask(const std::vector<unsigned short>& v,const std::string& cam);
+        bool setMask(const std::vector<unsigned short>& v);
 #ifdef BUILD_DLL
         bool setMask_VC_Py(const boost::python::list& v);
         bool setMask_Py1(const boost::python::list v,const std::string& cam);

@@ -312,6 +312,55 @@ void laserTransportMirrorConfigReader::addToObjectsV1(const std::vector<std::str
         {
             mirror.STEP_MAX = getNumD(keyVal[ONE_SIZET]);
         }
+        else if(keyVal[ZERO_SIZET] == LEFT_SENSE)
+        {
+            mirror.left_sense = getNumD(keyVal[ONE_SIZET]);
+        }
+        else if(keyVal[ZERO_SIZET] == RIGHT_SENSE)
+        {
+            mirror.right_sense = getNumD(keyVal[ONE_SIZET]);
+        }
+        else if(keyVal[ZERO_SIZET] == UP_SENSE)
+        {
+
+
+            mirror.up_sense = getNumD(keyVal[ONE_SIZET]);
+
+
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+            message(keyVal[ONE_SIZET], mirror.up_sense );
+
+            //pause_2000();
+
+        }
+        else if(keyVal[ZERO_SIZET] == DOWN_SENSE)
+        {
+            mirror.down_sense = getNumD(keyVal[ONE_SIZET]);
+        }
     }
 }
 //______________________________________________________________________________

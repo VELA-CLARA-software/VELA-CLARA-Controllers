@@ -651,12 +651,47 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                                   camObj.data.analysis.x_pix_rs,
                                   camObj.data.analysis);
             //message("new x_pix = ",camObj.data.analysis.x_pix);
+            if(camObj.data.analysis.x_pix >  camObj.data.analysis.pix_val_x_hi )
+            {
+                camObj.state.is_pix_val_x_hi = true;
+                camObj.state.is_pix_val_x_lo = false;
+            }
+            else if(camObj.data.analysis.x_pix <  camObj.data.analysis.pix_val_x_lo )
+            {
+                camObj.state.is_pix_val_x_hi = false;
+                camObj.state.is_pix_val_x_lo = true;
+            }
+            else
+            {
+                camObj.state.is_pix_val_x_hi = false;
+                camObj.state.is_pix_val_x_lo = false;
+            }
+
             break;
         case CAM_PV_TYPE::Y_PIX_RBV:
             updateAnalysislResult(args,camObj.data.analysis.y_pix,
                                   camObj.data.analysis.y_pix_buf,
                                   camObj.data.analysis.y_pix_rs,
                                   camObj.data.analysis);
+
+            //message("Y_PIX_RBV, ", camObj.data.analysis.y_pix, ", ", camObj.data.analysis.pix_val_y_hi);
+            if(camObj.data.analysis.y_pix >  camObj.data.analysis.pix_val_y_hi )
+            {
+                camObj.state.is_pix_val_y_hi = true;
+                camObj.state.is_pix_val_y_lo = false;
+            }
+            else if(camObj.data.analysis.y_pix <  camObj.data.analysis.pix_val_y_lo )
+            {
+                camObj.state.is_pix_val_y_hi = false;
+                camObj.state.is_pix_val_y_lo = true;
+            }
+            else
+            {
+                camObj.state.is_pix_val_y_hi = false;
+                camObj.state.is_pix_val_y_lo = false;
+            }
+
+
             break;
         case CAM_PV_TYPE::SIGMA_X_PIX_RBV:
             updateAnalysislResult(args,camObj.data.analysis.sig_x_pix,
@@ -685,6 +720,9 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
                 update flag to 'guess' if beam is on screen
             */
             camObj.state.latest_avg_pix_has_beam = camObj.data.analysis.avg_pix > camObj.data.analysis.avg_pix_beam_level;
+
+            //message(camObj.data.analysis.avg_pix, " compared to config  ", camObj.data.analysis.avg_pix_beam_level);
+
             //message(camObj.name,", avg_pix = ", camObj.data.analysis.avg_pix);
             break;
         case CAM_PV_TYPE::SUM_PIX_INTENSITY_RBV:
@@ -942,8 +980,8 @@ void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject
                    cam.data.analysis.pix_values_timestamp.time_ns,
                    cam.data.analysis.pix_values_timestamp.time_Str);
 
-        message("pix   time = ", cam.data.analysis.pix_values_timestamp.time_ns
-                , ", ",cam.data.analysis.pix_values_timestamp.time_Str);
+//        message("pix   time = ", cam.data.analysis.pix_values_timestamp.time_ns
+//                , ", ",cam.data.analysis.pix_values_timestamp.time_Str);
         /*
             update counter
         */
@@ -952,7 +990,7 @@ void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject
             decide if to update array_data, based on timestanp,
             we assume if timestamp changes there is new data to get
         */
-        if( cam.data.analysis.pix_values_counter == UTL::ONE_SIZET )
+        if(cam.data.analysis.pix_values_counter == UTL::ONE_SIZET )
         {
             /*
                 first pass, ALWAYS update data
@@ -964,7 +1002,7 @@ void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject
             /* test if timestamp has updated, if not then don't update data  */
             if(cam.data.analysis.pix_values_timestamp.time_ns
                 ==
-               cam.data.analysis.pix_values_timestamp.time_ns)
+               cam.data.analysis.last_pix_values_timestamp.time_ns)
             {
                 cam.state.is_camera_analysis_updating = false;
             }
@@ -994,6 +1032,9 @@ void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject
             {
                 cam.data.analysis.pix_values_buf.pop_front();
             }
+
+
+
         }
     }
     else //if(isTimeType(args.type))
@@ -1019,9 +1060,12 @@ void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject
 //---------------------------------------------------------------------------------
 void cameraBase::maskFeedBack(cameraObject& cam)
 {
-    if(cam.state.mask_feedback)
+    if(cam.state.mask_feedback )
     {
-//        message(cam.name," mask feedback on");
+        if(hasBeam(cam) )
+        {
+
+          //message(cam.name," mask feedback on");
 //        message("pix numbers = ", cam.data.analysis.pix_values[0]," ",
 //                cam.data.analysis.pix_values[2] * 5," ",
 //                cam.data.analysis.pix_values[1]    ," ",
@@ -1036,42 +1080,93 @@ void cameraBase::maskFeedBack(cameraObject& cam)
                 Y_SIGMA_POS = 3
             */
             //13.138 392.887 957.832 338.189VIRTUAL_CATHODE
-            bool reset_mask = false;
+            // we decouple horiztonal and vertical changes in mask
+            // so that the mask can track x when y has reached its limti and vice-versa
+            bool reset_mask_horizontal = true;
+            bool reset_mask_vertical = true;
+
+            // initial values for new mask
+            unsigned short new_x  = (unsigned short)cam.data.analysis.pix_values[0];     //MAGIC_NUMBER
+            unsigned short new_y  = (unsigned short)cam.data.analysis.pix_values[1];     //MAGIC_NUMBER
+            unsigned short new_xr = (unsigned short)cam.data.analysis.pix_values[2] * 5; //MAGIC_NUMBER
+            unsigned short new_yr = (unsigned short)cam.data.analysis.pix_values[3] * 5; //MAGIC_NUMBER
+
 
             using namespace UTL;
             if( (cam.data.analysis.pix_values[0] - 5.0 * cam.data.analysis.pix_values[2]) < ZERO_DOUBLE)// MAGIC_NUMBER
             {
-                reset_mask = true;
+                reset_mask_horizontal = false;
+                //message("reset_mask_horizontal = false");
             }
-            else if(  (cam.data.analysis.pix_values[0] + 5.0 * cam.data.analysis.pix_values[2]) < cam.data.image.bin_num_pix_x)// MAGIC_NUMBER
+            if(  (cam.data.analysis.pix_values[0] + 5.0 * cam.data.analysis.pix_values[2]) > (double)cam.data.image.bin_num_pix_x)// MAGIC_NUMBER
             {
-                reset_mask = true;
+                reset_mask_horizontal = false;
+                //message("reset_mask_horizontal = false");
             }
-            else if( (cam.data.analysis.pix_values[1] - 5.0 * cam.data.analysis.pix_values[3]) > ZERO_DOUBLE)// MAGIC_NUMBER
+            if( (cam.data.analysis.pix_values[1] - 5.0 * cam.data.analysis.pix_values[3]) < ZERO_DOUBLE)// MAGIC_NUMBER
             {
-                reset_mask = true;
+                reset_mask_vertical = false;
+                //message("reset_mask_vertical = false");
             }
-            else if(cam.data.analysis.pix_values[1] + 5.0 * cam.data.analysis.pix_values[3] < cam.data.image.bin_num_pix_y)// MAGIC_NUMBER
+            if(cam.data.analysis.pix_values[1] + 5.0 * cam.data.analysis.pix_values[3] > (double)cam.data.image.bin_num_pix_y)// MAGIC_NUMBER
             {
-                reset_mask = true;
+                reset_mask_vertical = false;
+                //message("reset_mask_vertical = false");
             }
+
+            // now set masks based on reset_mask_horizontal and reset_mask_vertical
+
+            bool reset_mask = true;
+            if( reset_mask_horizontal == false && reset_mask_vertical == false)
+            {
+                reset_mask = false;
+                //message("maskFeedBack requested Horizontal and Vertical values are not good, no mask feedback");
+            }
+            else if( reset_mask_horizontal == false)
+            {
+                new_x = cam.data.mask.mask_x;
+                new_xr = cam.data.mask.mask_x_rad;
+                //message("maskFeedBack requested Horizontal values are not good, only mask vertical feedback");
+
+            }
+            else if(reset_mask_vertical == false)
+            {
+                //message("maskFeedBack requested Vertical values are not good, only mask horizontal feedback");
+                new_y = cam.data.mask.mask_y;
+                new_yr = cam.data.mask.mask_y_rad;
+            }
+
             if(reset_mask)
             {
-
-                std::thread mask_feedback_thread(mask_feedback, (int)cam.data.analysis.pix_values[0],
-                                                                (int)cam.data.analysis.pix_values[1],
-                                                                (int)cam.data.analysis.pix_values[2] * 5,
-                                                                (int)cam.data.analysis.pix_values[3] * 5,
-                                                 cam.name, this);
+                //message("reset_mask == true" );
+                std::thread mask_feedback_thread(mask_feedback, new_x, new_y, new_xr, new_yr, cam.name, this);
                 mask_feedback_thread.join();
             }
-    }
+        }//        if(hasBeam(cam) )
+        else
+        {
+            message(cam.name, " hasBeam == false" );
+        }
+    }//    if(cam.state.mask_feedback )
 }
 //____________________________________________________________________________________________
-void cameraBase::mask_feedback(int x, int y, int x_rad, int y_rad, const std::string& name, cameraBase* interface)
+void cameraBase::mask_feedback(unsigned short x,
+                               unsigned short y,
+                               unsigned short x_rad,
+                               unsigned short y_rad,
+                               const std::string& name, cameraBase* interface)
 {
-    interface->message("Feedback function = ",x,", ",y,", ",x_rad,", ",y_rad);
-    interface->setMask(x, y, x_rad, y_rad, name);
+    interface->attachTo_thisCAContext();
+    //interface->message("Feedback function = ",x,", ",y,", ",x_rad,", ",y_rad);
+    bool success = interface->setMask(x, y, x_rad, y_rad, name);
+    if(success)
+    {
+        //interface->message("mask_feedback setMask returned true ");
+    }
+    else
+    {
+        interface->message("mask_feedback setMask returned false ");
+    }
 }
 //____________________________________________________________________________________________
 
@@ -1501,61 +1596,71 @@ bool cameraBase::useNPoint(bool v)
 }
 //---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskX_VC(int x)
+bool cameraBase::setMaskX_VC(unsigned short x)
 {
     return setMaskX(x,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskX(int x,const std::string& cam)
+bool cameraBase::setMaskX(unsigned short x,const std::string& cam)
 {
     return setMaskX(x,getCamObj(cam));
 }
 using namespace cameraStructs;
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskX(int x,cameraObject& cam)
+bool cameraBase::setMaskX(unsigned short new_val,cameraObject& cam)
 {
+    if( cam.data.mask.mask_x == new_val)
+    {
+        return true;
+    }
+
     if(isClaraCam(cam))
     {
         /*
             for now, (i.e may change in future)
             we're going to hardcode som elimits on the mask positions
         */
-        if(x < 0)
+        if(new_val < 0)
         {
             return false;
         }
-        if(x > (int)cam.data.image.bin_num_pix_x)
+        if(new_val > cam.data.image.bin_num_pix_x)
         {
             return false;
         }
-        return cam_caput(cam, x, CAM_PV_TYPE::MASK_X);
+        return cam_caput(cam, new_val, CAM_PV_TYPE::MASK_X);
     }
     else
     {
         message("setMaskX, ", cam.name, " is not CLARA CAM");
-        cam.data.mask.mask_x = x;
+        cam.data.mask.mask_x = new_val;
     }
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskX(int x)
+bool cameraBase::setMaskX(unsigned short x)
 {
     return setMaskX(x,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskY_VC(int x)
+bool cameraBase::setMaskY_VC(unsigned short x)
 {
     return setMaskY(x,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskY(int x,const std::string& cam )
+bool cameraBase::setMaskY(unsigned short x,const std::string& cam )
 {
     return setMaskY(x,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskY(int x,cameraObject& cam)
+bool cameraBase::setMaskY(unsigned short new_val,cameraObject& cam)
 {
+    if( cam.data.mask.mask_y == new_val)
+    {
+        return true;
+    }
+
     //message("cameraBase::setMaskY called ", cam.name);
     if(isClaraCam(cam))
     {
@@ -1563,45 +1668,53 @@ bool cameraBase::setMaskY(int x,cameraObject& cam)
             for now, (i.e may change in future)
             we're going to hardcode som elimits on the mask positions
         */
-        if(x < 0)
+        if(new_val < 0)
         {
             //message(x," < ", 0);
             return false;
         }
-        if(x > (int)cam.data.image.bin_num_pix_y)
+        if(new_val > cam.data.image.bin_num_pix_y)
         {
             //message(x," > ", (int)cam.data.image.bin_num_pix_y);
             return false;
         }
         //message(cam.name," cam_caput for masky");
-        return cam_caput(cam, x, CAM_PV_TYPE::MASK_Y);
+        return cam_caput(cam, new_val, CAM_PV_TYPE::MASK_Y);
     }
     else
     {
         //message(cam.name," is not clara cam");
-        cam.data.mask.mask_y = x;
+        cam.data.mask.mask_y = new_val;
     }
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskY(int x)
+bool cameraBase::setMaskY(unsigned short x)
 {
     return setMaskY(x,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskXrad_VC(int x)
+bool cameraBase::setMaskXrad_VC(unsigned short x)
 {
     return setMaskXrad(x,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskXrad(int x,const std::string& cam)
+bool cameraBase::setMaskXrad(unsigned short x,const std::string& cam)
 {
     return setMaskXrad(x,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskXrad(int new_val,cameraObject& cam)
+bool cameraBase::setMaskXrad(unsigned short new_val,cameraObject& cam)
 {
+    if( cam.data.mask.mask_x_rad == new_val)
+    {
+        return true;
+    }
+    else
+    {
+        //message(cam.data.mask.mask_x_rad, " != ", new_val);
+    }
     if(isClaraCam(cam))
     {
         /*
@@ -1614,9 +1727,9 @@ bool cameraBase::setMaskXrad(int new_val,cameraObject& cam)
             return false;
         }
         // mask_rad can't send th eROI off the hi edge of the image (FOR NOW)
-        if(cam.data.mask.mask_x + new_val > (int)cam.data.image.bin_num_pix_x)
+        if(cam.data.mask.mask_x + new_val > cam.data.image.bin_num_pix_x)
         {
-            message("cam.data.mask.mask_x + new_val > ",(int)cam.data.image.bin_num_pix_x," ",cam.data.mask.mask_x," ",new_val);
+            message("cam.data.mask.mask_x + new_val > ", cam.data.image.bin_num_pix_x," ",cam.data.mask.mask_x," ",new_val);
             return false;
         }
         // mask_rad can't send the ROI off the lo edge of the image (FOR NOW)
@@ -1640,7 +1753,7 @@ bool cameraBase::setMaskXrad(int new_val,cameraObject& cam)
         }
         if( val_to_send != cam.data.mask.mask_x)
         {
-            message("val_to_send = ",val_to_send);
+            //message("setMaskXrad val_to_send = ",val_to_send, ", Old value = ",cam.data.mask.mask_x_rad);
             return cam_caput(cam, val_to_send, CAM_PV_TYPE::MASK_X_RAD);
         }
     }
@@ -1651,24 +1764,32 @@ bool cameraBase::setMaskXrad(int new_val,cameraObject& cam)
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskXrad(int x)
+bool cameraBase::setMaskXrad(unsigned short x)
 {
     return setMaskXrad(x,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskYrad_VC(int x)
+bool cameraBase::setMaskYrad_VC(unsigned short x)
 {
     return setMaskYrad(x,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskYrad(int x,const std::string& cam)
+bool cameraBase::setMaskYrad(unsigned short x,const std::string& cam)
 {
     return setMaskYrad(x,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskYrad(int new_val,cameraObject& cam)
+bool cameraBase::setMaskYrad(unsigned short new_val, cameraObject& cam)
 {
+    if( cam.data.mask.mask_y_rad == new_val)
+    {
+        return true;
+    }
+    else
+    {
+        //message(cam.data.mask.mask_y_rad, " != ", new_val);
+    }
     if(isClaraCam(cam))
     {
         /*
@@ -1681,9 +1802,9 @@ bool cameraBase::setMaskYrad(int new_val,cameraObject& cam)
             return false;
         }
         // mask_rad can't send th eROI off the hi edge of the image (FOR NOW)
-        if(cam.data.mask.mask_y + new_val > (int)cam.data.image.bin_num_pix_y)
+        if(cam.data.mask.mask_y + new_val > cam.data.image.bin_num_pix_y)
         {
-            message("cam.data.mask.mask_y + new_val > ",(int)cam.data.image.bin_num_pix_y," ",cam.data.mask.mask_y," ",new_val);
+            message("cam.data.mask.mask_y + new_val > ", cam.data.image.bin_num_pix_y," ",cam.data.mask.mask_y," ",new_val);
             return false;
         }
         // mask_rad can't send the ROI off the lo edge of the image (FOR NOW)
@@ -1707,7 +1828,7 @@ bool cameraBase::setMaskYrad(int new_val,cameraObject& cam)
         }
         if( val_to_send != cam.data.mask.mask_y)
         {
-            message("val_to_send = ",val_to_send);
+            //message("setMaskYrad val_to_send = ",val_to_send, ", Old value = ",cam.data.mask.mask_y_rad);
             return cam_caput(cam, val_to_send, CAM_PV_TYPE::MASK_Y_RAD);
         }
     }
@@ -1718,52 +1839,86 @@ bool cameraBase::setMaskYrad(int new_val,cameraObject& cam)
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMaskYrad(int x)
+bool cameraBase::setMaskYrad(unsigned short x)
 {
     return setMaskYrad(x,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask_VC(int x,int y,int xr,int yr)
+bool cameraBase::setMask_VC(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr)
 {
     message("setMask_VC(", x," ", y," ", xr," ", yr,") called ");
     return setMask(x,y,xr,yr,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask(int x,int y,int xr,int yr,const std::string& cam)
+bool cameraBase::setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr,const std::string& cam)
 {
     return setMask(x,y,xr,yr,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask(int x,int y,int xr,int yr,cameraObject& cam)
+bool cameraBase::setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr,cameraObject& cam)
 {
     //message("setMask(int x,int y,int xr,int yr,cameraObject& cam) called ");
-    bool x_result  =  setMaskX(x,cam);
-    bool y_result  =  setMaskY(y,cam);
-    bool xr_result =  setMaskXrad(xr,cam);
-    bool yr_result =  setMaskYrad(yr,cam);
-    if( x_result && y_result && xr_result && yr_result)
-        return true;
+    bool proceed = true;
+    if(x < 1)
+    {
+        proceed = false;
+    }
+    if(y < 1)
+    {
+        proceed = false;
+    }
+    if(xr < 1)
+    {
+        proceed = false;
+    }
+    if(yr < 1)
+    {
+        proceed = false;
+    }
+    if( x + xr >  cam.data.image.bin_num_pix_x  - 1)
+    {
+        proceed = false;
+        message("X error, ", x," + ", xr, " > ",  cam.data.image.bin_num_pix_x);
+    }
+    if( y + yr >  cam.data.image.bin_num_pix_y  - 1)
+    {
+        proceed = false;
+        message("Y error, ", y," + ", yr, " > ",  cam.data.image.bin_num_pix_y);
+    }
+    if(proceed)
+    {
+        bool x_result  =  setMaskX(x,cam);
+        bool y_result  =  setMaskY(y,cam);
+        bool xr_result =  setMaskXrad(xr,cam);
+        bool yr_result =  setMaskYrad(yr,cam);
+        if( x_result && y_result && xr_result && yr_result)
+            return true;
+    }
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask(int x,int y,int xr,int yr)
+
+
+
+//---------------------------------------------------------------------------------
+bool cameraBase::setMask(unsigned short x,unsigned short y,unsigned short xr,unsigned short yr)
 {
     return setMask(x,y,xr,yr,*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask_VC(const std::vector<int>& v)
+bool cameraBase::setMask_VC(const std::vector<unsigned short>& v)
 {
     //message("setMask_VC(int x,int y,int xr,int yr) called ");
     return setMask(v,*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask(const std::vector<int>& v,const std::string& cam)
+bool cameraBase::setMask(const std::vector<unsigned short>& v,const std::string& cam)
 {
     return setMask(v,getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask(const std::vector<int>& v,cameraObject& cam)
+bool cameraBase::setMask(const std::vector<unsigned short>& v,cameraObject& cam)
 {
     if(v.size() == 4)// MAGIC_NUMBER
     {
@@ -1772,7 +1927,7 @@ bool cameraBase::setMask(const std::vector<int>& v,cameraObject& cam)
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::setMask(const std::vector<int>& v)
+bool cameraBase::setMask(const std::vector<unsigned short>& v)
 {
     return setMask(v,*selectedCamPtr);
 }
@@ -1875,6 +2030,48 @@ bool cameraBase::setBlacklevel(cameraStructs::cameraObject& cam, const long valu
 ///
 ///
 //---------------------------------------------------------------------------------
+bool cameraBase::hasBeam_VC()const
+{
+    return hasBeam(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasBeam(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state.latest_avg_pix_has_beam;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasBeam(const std::string& cam)const
+{
+    return hasBeam(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasBeam()const
+{
+    return hasBeam(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasNoBeam_VC()const
+{
+    return hasNoBeam(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasNoBeam(const cameraStructs::cameraObject& cam)const
+{
+    return !cam.state.latest_avg_pix_has_beam;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasNoBeam(const std::string& cam)const
+{
+    return hasNoBeam(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::hasNoBeam()const
+{
+    return hasNoBeam(*selectedCamPtr);
+}
+
+
+
 
 //---------------------------------------------------------------------------------
 bool cameraBase::isVelaCam_VC()const
@@ -2466,22 +2663,22 @@ const cameraObject& cameraBase::getCamObj(const std::string& cam)const
 ///
 /// MASK X
 ///
-int cameraBase::getMaskX_VC()const
+unsigned short cameraBase::getMaskX_VC()const
 {
     return getMaskX(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskX(const std::string& cam)const
+unsigned short cameraBase::getMaskX(const std::string& cam)const
 {
     return getMaskX(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskX(const cameraObject& cam)const
+unsigned short cameraBase::getMaskX(const cameraObject& cam)const
 {
     return cam.data.mask.mask_x;
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskX()const
+unsigned short cameraBase::getMaskX()const
 {
     return getMaskX(*selectedCamPtr);
 }
@@ -2489,23 +2686,23 @@ int cameraBase::getMaskX()const
 ///
 /// MASK Y
 ///
-int cameraBase::getMaskY_VC()const
+unsigned short cameraBase::getMaskY_VC()const
 {
     return getMaskY(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskY(const std::string& cam)const
+unsigned short cameraBase::getMaskY(const std::string& cam)const
 {
     return getMaskY(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskY(const cameraObject& cam)const
+unsigned short cameraBase::getMaskY(const cameraObject& cam)const
 {
     message("getMaskY ", cam.name, " ", cam.data.mask.mask_y);
     return cam.data.mask.mask_y;
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskY()const
+unsigned short cameraBase::getMaskY()const
 {
     return getMaskY(*selectedCamPtr);
 }
@@ -2513,22 +2710,22 @@ int cameraBase::getMaskY()const
 ///
 /// MASK X Radius
 ///
-int cameraBase::getMaskXrad_VC()const
+unsigned short cameraBase::getMaskXrad_VC()const
 {
     return getMaskXrad(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskXrad(const std::string& cam)const
+unsigned short cameraBase::getMaskXrad(const std::string& cam)const
 {
     return getMaskXrad(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskXrad(const cameraObject& cam)const
+unsigned short cameraBase::getMaskXrad(const cameraObject& cam)const
 {
     return cam.data.mask.mask_x_rad;
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskXrad()const
+unsigned short cameraBase::getMaskXrad()const
 {
     return getMaskXrad(*selectedCamPtr);
 }
@@ -2536,22 +2733,22 @@ int cameraBase::getMaskXrad()const
 ///
 /// MASK X Radius
 ///
-int cameraBase::getMaskYrad_VC()const
+unsigned short cameraBase::getMaskYrad_VC()const
 {
     return getMaskYrad(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskYrad(const std::string& cam)const
+unsigned short cameraBase::getMaskYrad(const std::string& cam)const
 {
     return getMaskYrad(getCamObj(cam));
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskYrad(const cameraObject& cam)const
+unsigned short cameraBase::getMaskYrad(const cameraObject& cam)const
 {
     return cam.data.mask.mask_y_rad;
 }
 //---------------------------------------------------------------------------------
-int cameraBase::getMaskYrad()const
+unsigned short cameraBase::getMaskYrad()const
 {
     return getMaskYrad(*selectedCamPtr);
 }
@@ -4260,5 +4457,71 @@ bool cameraBase::isMaskFeedbackOff(const cameraStructs::cameraObject& cam)const
 }
 //---------------------------------------------------------------------------------
 
+bool cameraBase::isBeam_x_Hi_VC()
+{
+    message("isBeam_x_Hi_VC ", (*vcCamPtr).data.analysis.x_pix, ", ", (*vcCamPtr).data.analysis.pix_val_x_hi);
+    return (*vcCamPtr).state.is_pix_val_x_hi;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isBeam_x_Lo_VC()
+{
+    message("isBeam_x_Lo_VC ", (*vcCamPtr).data.analysis.x_pix, ", ", (*vcCamPtr).data.analysis.pix_val_x_lo);
+    return (*vcCamPtr).state.is_pix_val_x_lo;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isBeam_y_Hi_VC()
+{
+    return (*vcCamPtr).state.is_pix_val_y_hi;
+
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isBeam_y_Lo_VC()
+{
+    return (*vcCamPtr).state.is_pix_val_y_lo;
+}
+//---------------------------------------------------------------------------------
+
+
+bool cameraBase::isAnalysisUpdating_VC()const
+{
+    return isAnalysisUpdating(*vcCamPtr);
+}
+//____________________________________________________________________________________________
+bool cameraBase::isAnalysisUpdating()const
+{
+    return isAnalysisUpdating(*selectedCamPtr);
+}
+//____________________________________________________________________________________________
+bool cameraBase::isAnalysisUpdating(const std::string& name)const
+{
+    return isAnalysisUpdating(getCamObj(name));
+}
+//____________________________________________________________________________________________
+bool cameraBase::isAnalysisUpdating(const cameraStructs::cameraObject& cam)const
+{
+    return cam.state.is_camera_analysis_updating;
+}
+//---------------------------------------------------------------------------------
+
+bool cameraBase::isAnalysisNotUpdating_VC()const
+{
+    return isAnalysisNotUpdating(*vcCamPtr);
+}
+//____________________________________________________________________________________________
+bool cameraBase::isAnalysisNotUpdating()const
+{
+    return isAnalysisNotUpdating(*selectedCamPtr);
+}
+//____________________________________________________________________________________________
+bool cameraBase::isAnalysisNotUpdating(const std::string& name)const
+{
+    return isAnalysisNotUpdating(getCamObj(name));
+}
+//____________________________________________________________________________________________
+bool cameraBase::isAnalysisNotUpdating(const cameraStructs::cameraObject& cam)const
+{
+    return !cam.state.is_camera_analysis_updating;
+}
+//---------------------------------------------------------------------------------
 
 

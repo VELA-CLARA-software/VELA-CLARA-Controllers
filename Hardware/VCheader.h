@@ -983,6 +983,25 @@ namespace BOOST_PYTHON_INCLUDE
          const char* isMaskFeedbackOff_ds1       = "";
          const char* isMaskFeedbackOff_ds2       = "";
 
+
+        const char* hasBeam_VC_ds = "";
+        const char* hasBeam_ds1   = "";
+        const char* hasBeam_ds2  = "";
+
+        const char* hasNoBeam_VC_ds = "";
+        const char* hasNoBeam_ds1   = "";
+        const char* hasNoBeam_ds2   = "";
+
+
+         const char* isAnalysisUpdating_VC_ds = "";
+         const char* isAnalysisUpdating_ds1    = "";
+         const char* isAnalysisUpdating_ds2    = "";
+
+         const char* isAnalysisNotUpdating_VC_ds = "";
+         const char* isAnalysisNotUpdating_ds1      = "";
+         const char* isAnalysisNotUpdating_ds2      = "";
+
+
         /*
             function pointers for overloads to expose to Python...
         */
@@ -1041,10 +1060,21 @@ namespace BOOST_PYTHON_INCLUDE
         void(cameraControllerBase::*clearRunningValues_1)(cstr&)                            = &cameraControllerBase::clearRunningValues;
         void(cameraControllerBase::*clearRunningValues_2)()                            = &cameraControllerBase::clearRunningValues;
 
+
+        bool(cameraControllerBase::*isAnalysisUpdating_1)(cstr&)const = &cameraControllerBase::isAnalysisUpdating;
+        bool(cameraControllerBase::*isAnalysisUpdating_2)(     )const = &cameraControllerBase::isAnalysisUpdating;
+        bool(cameraControllerBase::*isAnalysisNotUpdating_1)(cstr&)const = &cameraControllerBase::isAnalysisNotUpdating;
+        bool(cameraControllerBase::*isAnalysisNotUpdating_2)(     )const = &cameraControllerBase::isAnalysisNotUpdating;
+
         bool(cameraControllerBase::*isBusy_1)(cstr&)const = &cameraControllerBase::isBusy;
         bool(cameraControllerBase::*isBusy_2)(     )const = &cameraControllerBase::isBusy;
         bool(cameraControllerBase::*isNotBusy_1)(cstr&)const = &cameraControllerBase::isNotBusy;
         bool(cameraControllerBase::*isNotBusy_2)(     )const = &cameraControllerBase::isNotBusy;
+
+        bool(cameraControllerBase::*hasBeam_1)(cstr&)const = &cameraControllerBase::hasBeam;
+        bool(cameraControllerBase::*hasBeam_2)(     )const = &cameraControllerBase::hasBeam;
+        bool(cameraControllerBase::*hasNoBeam_1)(cstr&)const = &cameraControllerBase::hasNoBeam;
+        bool(cameraControllerBase::*hasNoBeam_2)(     )const = &cameraControllerBase::hasNoBeam;
 
         bool(cameraControllerBase::*isUsingBackground_1)(cstr&)const = &cameraControllerBase::isUsingBackground;
         bool(cameraControllerBase::*isUsingBackground_2)(     )const = &cameraControllerBase::isUsingBackground;
@@ -1094,18 +1124,18 @@ namespace BOOST_PYTHON_INCLUDE
         bool(cameraControllerBase::*isVelaCam_2)()     const = &cameraControllerBase::isVelaCam;
 
 
-        bool(cameraControllerBase::*setMaskX_1)(int,cstr&)            = &cameraControllerBase::setMaskX;
-        bool(cameraControllerBase::*setMaskX_2)(int)     = &cameraControllerBase::setMaskX;
-        bool(cameraControllerBase::*setMaskY_1)(int,cstr&)            = &cameraControllerBase::setMaskY;
-        bool(cameraControllerBase::*setMaskY_2)(int)     = &cameraControllerBase::setMaskY;
-        bool(cameraControllerBase::*setMaskXrad_1)(int,cstr&)         = &cameraControllerBase::setMaskXrad;
-        bool(cameraControllerBase::*setMaskXrad_2)(int)  = &cameraControllerBase::setMaskXrad;
-        bool(cameraControllerBase::*setMaskYrad_1)(int,cstr&)         = &cameraControllerBase::setMaskYrad;
-        bool(cameraControllerBase::*setMaskYrad_2)(int)  = &cameraControllerBase::setMaskYrad;
-        bool(cameraControllerBase::*setMask_VC_1)(int,int,int,int) = &cameraControllerBase::setMask_VC;
-        bool(cameraControllerBase::*setMask_VC_2)(cvin&) = &cameraControllerBase::setMask_VC;
-        bool(cameraControllerBase::*setMask_1)(int,int,int,int,cstr&) = &cameraControllerBase::setMask;
-        bool(cameraControllerBase::*setMask_2)(int,int,int,int) = &cameraControllerBase::setMask;
+        bool(cameraControllerBase::*setMaskX_1)(unsigned short,cstr&)            = &cameraControllerBase::setMaskX;
+        bool(cameraControllerBase::*setMaskX_2)(unsigned short)     = &cameraControllerBase::setMaskX;
+        bool(cameraControllerBase::*setMaskY_1)(unsigned short,cstr&)            = &cameraControllerBase::setMaskY;
+        bool(cameraControllerBase::*setMaskY_2)(unsigned short)     = &cameraControllerBase::setMaskY;
+        bool(cameraControllerBase::*setMaskXrad_1)(unsigned short,cstr&)         = &cameraControllerBase::setMaskXrad;
+        bool(cameraControllerBase::*setMaskXrad_2)(unsigned short)  = &cameraControllerBase::setMaskXrad;
+        bool(cameraControllerBase::*setMaskYrad_1)(unsigned short,cstr&)         = &cameraControllerBase::setMaskYrad;
+        bool(cameraControllerBase::*setMaskYrad_2)(unsigned short)  = &cameraControllerBase::setMaskYrad;
+        bool(cameraControllerBase::*setMask_VC_1)(unsigned short,unsigned short,unsigned short,unsigned short) = &cameraControllerBase::setMask_VC;
+        bool(cameraControllerBase::*setMask_VC_2)(cvus&) = &cameraControllerBase::setMask_VC;
+        bool(cameraControllerBase::*setMask_1)(unsigned short,unsigned short,unsigned short,unsigned short,cstr&) = &cameraControllerBase::setMask;
+        bool(cameraControllerBase::*setMask_2)(unsigned short,unsigned short,unsigned short,unsigned short) = &cameraControllerBase::setMask;
         bool(cameraControllerBase::*setBackground_1)(cstr&)     = &cameraControllerBase::setBackground;
         bool(cameraControllerBase::*setBackground_2)()          = &cameraControllerBase::setBackground;
         bool(cameraControllerBase::*useBackground_1)(bool ,cstr&)   = &cameraControllerBase::useBackground;
@@ -1120,14 +1150,14 @@ namespace BOOST_PYTHON_INCLUDE
         bool(cameraControllerBase::*setPixMM_2)(const double)            = &cameraControllerBase::setPixMM;
         int (cameraControllerBase::*getStepSize_1)(cstr& )const  = &cameraControllerBase::getStepSize;
         int (cameraControllerBase::*getStepSize_2)()const        = &cameraControllerBase::getStepSize;
-        int (cameraControllerBase::*getMaskX_1)(cstr& )  const= &cameraControllerBase::getMaskX;
-        int (cameraControllerBase::*getMaskX_2)()        const= &cameraControllerBase::getMaskX;
-        int (cameraControllerBase::*getMaskY_1)(cstr&)   const= &cameraControllerBase::getMaskY;
-        int (cameraControllerBase::*getMaskY_2)()        const= &cameraControllerBase::getMaskY;
-        int (cameraControllerBase::*getMaskXrad_1)(cstr& )            const= &cameraControllerBase::getMaskXrad;
-        int (cameraControllerBase::*getMaskXrad_2)()     const= &cameraControllerBase::getMaskXrad;
-        int (cameraControllerBase::*getMaskYrad_1)(cstr& )            const= &cameraControllerBase::getMaskYrad;
-        int (cameraControllerBase::*getMaskYrad_2)()     const= &cameraControllerBase::getMaskYrad;
+        unsigned short (cameraControllerBase::*getMaskX_1)(cstr& )  const= &cameraControllerBase::getMaskX;
+        unsigned short (cameraControllerBase::*getMaskX_2)()        const= &cameraControllerBase::getMaskX;
+        unsigned short (cameraControllerBase::*getMaskY_1)(cstr&)   const= &cameraControllerBase::getMaskY;
+        unsigned short (cameraControllerBase::*getMaskY_2)()        const= &cameraControllerBase::getMaskY;
+        unsigned short (cameraControllerBase::*getMaskXrad_1)(cstr& )            const= &cameraControllerBase::getMaskXrad;
+        unsigned short (cameraControllerBase::*getMaskYrad_2)()     const= &cameraControllerBase::getMaskYrad;
+        unsigned short (cameraControllerBase::*getMaskXrad_2)()     const= &cameraControllerBase::getMaskXrad;
+        unsigned short (cameraControllerBase::*getMaskYrad_1)(cstr& )            const= &cameraControllerBase::getMaskYrad;
         double(cameraControllerBase::*getX_1)(cstr&)  const                                 = &cameraControllerBase::getX;
         double(cameraControllerBase::*getX_2)()      const                                  = &cameraControllerBase::getX;
         double(cameraControllerBase::*getY_1)(cstr&)  const                                 = &cameraControllerBase::getY;
@@ -1209,13 +1239,22 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getStateObj",  getStateObj_2 , return_value_policy<reference_existing_object>(), getStateObj_ds2)
 
 
+        .def("isAnalysisUpdating_VC",  &cameraControllerBase::isAnalysisUpdating_VC ,isAnalysisUpdating_VC_ds )
+        .def("isAnalysisUpdating",  isAnalysisUpdating_1       ,  isAnalysisUpdating_ds1 )
+        .def("isAnalysisUpdating",  isAnalysisUpdating_2       ,  isAnalysisUpdating_ds2 )
+
+
+        .def("isAnalysisNotUpdating_VC",  &cameraControllerBase::isAnalysisNotUpdating_VC ,isAnalysisNotUpdating_VC_ds )
+        .def("isAnalysisNotUpdating",  isAnalysisNotUpdating_1       ,  isAnalysisNotUpdating_ds1 )
+        .def("isAnalysisNotUpdating",  isAnalysisNotUpdating_2       ,  isAnalysisNotUpdating_ds2 )
+
         .def("isMaskFeedbackOn_VC",  &cameraControllerBase::isMaskFeedbackOn_VC ,isMaskFeedbackOn_VC_ds )
         .def("isMaskFeedbackOn",  isMaskFeedbackOn_1       ,  isMaskFeedbackOn_ds1 )
-        .def("isMaskFeedbackOn",  isMaskFeedbackOn_1       ,  isMaskFeedbackOn_ds2 )
+        .def("isMaskFeedbackOn",  isMaskFeedbackOn_2       ,  isMaskFeedbackOn_ds2 )
 
         .def("isMaskFeedbackOfVC",  &cameraControllerBase::isMaskFeedbackOff_VC ,isMaskFeedbackOff_VC_ds )
         .def("isMaskFeedbackOff",  isMaskFeedbackOff_1       ,  isMaskFeedbackOff_ds1 )
-        .def("isMaskFeedbackOff",  isMaskFeedbackOff_1       ,  isMaskFeedbackOff_ds2 )
+        .def("isMaskFeedbackOff",  isMaskFeedbackOff_2       ,  isMaskFeedbackOff_ds2 )
 
 
         .def("setMaskFeedBackOn_VC",  &cameraControllerBase::setMaskFeedBackOn_VC ,setMaskFeedBackOn_VC_ds )
@@ -1225,6 +1264,16 @@ namespace BOOST_PYTHON_INCLUDE
         .def("setMaskFeedBackOff_VC",  &cameraControllerBase::setMaskFeedBackOff_VC ,setMaskFeedBackOff_VC_ds )
         .def("setMaskFeedBackOff",  setMaskFeedBackOff_1       ,  setMaskFeedBackOff_ds1 )
         .def("setMaskFeedBackOff",  setMaskFeedBackOff_2       ,  setMaskFeedBackOff_ds2 )
+
+
+        .def("hasBeam_VC",  &cameraControllerBase::hasBeam_VC ,hasBeam_VC_ds )
+        .def("hasBeam",  hasBeam_1       ,  hasBeam_ds1 )
+        .def("hasBeam",  hasBeam_2       ,  hasBeam_ds2 )
+
+
+        .def("hasNoBeam_VC",  &cameraControllerBase::hasNoBeam_VC ,hasNoBeam_VC_ds )
+        .def("hasNoBeam",  hasNoBeam_1       ,  hasNoBeam_ds1 )
+        .def("hasNoBeam",  hasNoBeam_2       ,  hasNoBeam_ds2 )
 
 
 

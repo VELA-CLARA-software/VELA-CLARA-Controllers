@@ -622,7 +622,22 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
     {
         camObjects.back().data.analysis.pix_2_mm_def  = getNumD(value);
     }
-
+    else if(key == MAX_X_PIXEL_POS)
+    {
+        camObjects.back().data.analysis.pix_val_x_hi  = getNumD(value);
+    }
+    else if(key == MIN_X_PIXEL_POS)
+    {
+        camObjects.back().data.analysis.pix_val_x_lo = getNumD(value);
+    }
+    else if(key == MIN_Y_PIXEL_POS)
+    {
+        camObjects.back().data.analysis.pix_val_y_lo  = getNumD(value);
+    }
+    else if(key == MAX_Y_PIXEL_POS)
+    {
+        camObjects.back().data.analysis.pix_val_y_hi = getNumD(value);
+    }
     else if(key == BINARY_NUM_PIX_X)
     {
         camObjects.back().data.image.bin_num_pix_x  = getSize(value);

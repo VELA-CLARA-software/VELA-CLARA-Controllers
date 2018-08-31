@@ -84,12 +84,19 @@ class pilaserController : public cameraControllerBase , public shutterController
         double getVstep() const;
         bool setHstep(double value);
         bool setVstep(double value);
-        bool moveH();
-        bool moveV();
+
+        bool moveLeft(const double value);
+        bool moveRight(const double value);
+        bool moveUp(const double value);
+        bool moveDown(const double value);
 
         void clearRunningValues();
         double getQ()const;
         std::vector<double> getQBuffer()const;
+
+
+
+
 
 #ifdef BUILD_DLL
         boost::python::list getQBuffer_Py()const;
@@ -99,11 +106,34 @@ class pilaserController : public cameraControllerBase , public shutterController
         const pilaserStructs::pilaserObject&    getPILObjConstRef() const;
         //const cameraStructs::camera_image_data& getVCDataObjConstRef() const;
 
+        bool setVCPosition(const double xpos, const double ypos);
+
     protected:
     private:
         pilaserInterface  localInterface;
 
        // shutterController* shutter;
+
+
+        /*
+            NOW (FOR THE FIRST TIME) WE HAVE A CONTROLLER WITH MULTIPLE INTERFACES,
+            WE'RE GOING TO HAVE TO HAVE 'COMPLEX' FUNCTIONS IN THE CONTROLLER
+            HERE WE CHECK IF THE SHUTTERS ARE OPEN AND THE ONLINE IMAGE ANALYSIS IS WORKING
+            BEFORE WE LET YOU MOVE THE LASER MIRRORS
+        */
+        bool can_move_test_1();
+        /*
+            for setting a position on the VC we also require multiple interfaces
+            so the
+        */
+
+        bool is_setting_position;
+
+
+
+
+
+        static setPosition()
 
         const std::string name;
 //        localMirrorName, localInterfaceName,
