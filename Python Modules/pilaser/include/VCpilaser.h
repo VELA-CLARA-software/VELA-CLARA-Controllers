@@ -286,7 +286,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
         .def("getVCDataObjConstRef",     &cameraControllerBase::getAnalysisObj_VC, "",return_value_policy<reference_existing_object>())
         .def("getpilMirrorObjConstRef",  &pilaserController::getpilMirrorObjConstRef, "",return_value_policy<reference_existing_object>())
-        .def("getPILObjConstRef",        &pilaserController::getPILObjConstRef, "",return_value_policy<reference_existing_object>())
+        .def("getPILObjConstRef",  &pilaserController::getPILObjConstRef, "",return_value_policy<reference_existing_object>())
         ;
 
     /// The main class that creates all the controller obejcts

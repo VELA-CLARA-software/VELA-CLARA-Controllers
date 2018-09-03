@@ -46,8 +46,8 @@ namespace BOOST_PYTHON_INCLUDE
         const char* name_doc  = "Shutter name.";
 
         class_<shutterObject,noncopyable>
-            ("shutterObject", no_init)
-            .def_readonly("state""shutterObject member variables (read access only)", &shutterObject::state, state_doc)
+            ("shutterObject", "shutterObject member variables (read access only)",no_init)
+            .def_readonly("state", &shutterObject::state, state_doc)
             .def_readonly("name" , &shutterObject::name , name_doc )
             ;
 
@@ -62,10 +62,10 @@ namespace BOOST_PYTHON_INCLUDE
             .def("close",   &shutterController::close )
             .def("open",   &shutterController::open )
             .def("getShutterNames",   &shutterController::getShutterNames_Py )
+
             .def("getShutterObjConstRef",   &shutterController::getShutterObjConstRef,
                  return_value_policy<reference_existing_object>())
             ;
-
 
     }
 }

@@ -3172,8 +3172,8 @@ bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_h
                cam.data.image.array_data_timestamp.time_ns,
                cam.data.image.array_data_timestamp.time_Str);
     // print
-    message("img   time = ", cam.data.image.array_data_timestamp.time_ns,
-            ", ",            cam.data.image.array_data_timestamp.time_Str);
+//    message("img   time = ", cam.data.image.array_data_timestamp.time_ns,
+//            ", ",            cam.data.image.array_data_timestamp.time_Str);
     /*
         update counter
     */
@@ -3239,6 +3239,9 @@ bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_h
             if(n < cam.data.image.array_data_min)
                 cam.data.image.array_data_min = n;
         }
+
+        //message("NEW MAX = ", cam.data.image.array_data_max);
+
 #ifdef BUILD_DLL
         cam.data.image.data   = toPythonList(cam.data.image.array_data);
 
@@ -3268,14 +3271,14 @@ bool cameraBase::takeFastImage(cameraObject& cam)
 
         if(a == ECA_NORMAL)
         {
-            message("send to epics");
+            //message("send to epics");
 
-            a = sendToEpics("ca_array_get","mess 1 "," ERROR ?? ");
+            a = sendToEpics("ca_array_get","","");
 
 
             if(a == ECA_NORMAL)
             {
-                message("Getting data");
+                //message("Getting data");
                 /*
                     we pass the results to the same update ArrayDataFunction
                     that might be used if we set up a subscription to the

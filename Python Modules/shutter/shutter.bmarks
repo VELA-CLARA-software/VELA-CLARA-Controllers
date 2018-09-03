@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="..\..\Utilities\shutter\shutterConfigReader.h" open="0" top="0" tabpos="7">
+		<Cursor position="1954" topLine="27" />
+	</File>
+	<File name="include\VCshutter.h" open="0" top="0" tabpos="4">
+		<Cursor position="2389" topLine="33" />
+	</File>
+	<File name="..\..\Hardware\shutter\expose_shutter.h" open="0" top="0" tabpos="0">
+		<Cursor position="1511" topLine="0" />
+	</File>
+	<File name="src\VCshutter.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="2332" topLine="27" />
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="2098" topLine="34" />
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0">
+		<Cursor position="120376" topLine="1964" />
+	</File>
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2845" topLine="46" />
+	</File>
+	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="3">
+		<Cursor position="4104" topLine="65" />
+	</File>
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2618" topLine="24" />
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0">
+		<Cursor position="2775" topLine="28" />
+	</File>
+	<File name="..\..\Hardware\shutter\shutterController.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="1320" topLine="30" />
+	</File>
+	<File name="..\..\Hardware\shutter\shutterController.h" open="0" top="0" tabpos="6">
+		<Cursor position="3587" topLine="59" />
+	</File>
+	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="898" topLine="95" />
+	</File>
+	<File name="..\..\Hardware\shutter\shutterInterface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="11410" topLine="273" />
+	</File>
+	<File name="..\..\Structs\shutterStructs.h" open="0" top="0" tabpos="0">
+		<Cursor position="3772" topLine="80" />
+	</File>
+	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
+		<Cursor position="6070" topLine="78" />
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1979" topLine="25" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="3116" topLine="60" />
+	</File>
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5125" topLine="96" />
+	</File>
+	<File name="..\..\Utilities\shutter\shutterConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1308" topLine="0" />
+	</File>
+</BrowseTracker_layout_file>

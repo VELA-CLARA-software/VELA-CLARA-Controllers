@@ -88,11 +88,11 @@ void pilaserInterface::initialise()
 
     if( cam_config_read && configFileRead && mirror_con_read)
     {
-        configFileRead  =true;
+        configFileRead = true;
     }
     else
     {
-        configFileRead  =false;
+        configFileRead = false;
     }
 
 //    if(configFileRead)
@@ -117,7 +117,7 @@ void pilaserInterface::initialise()
                 /* The pause allows EPICS callbacks to catch up. */
                 pause_2000();
                 /* set defaults */
-                if( setDefaults() )
+                if(setDefaults())
                 {
 
                 }
@@ -191,6 +191,10 @@ void pilaserInterface::initChids()
         {
             s = pilaser.pvRootQ;
         }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY)
+        {
+            s = pilaser.pvRootE;
+        }
         else if(isVCMirror_PV(it.first))
         {
             //message(ENUM_TO_STRING(it.first), " is a mirror PV");
@@ -205,6 +209,8 @@ void pilaserInterface::initChids()
     {
         if(it.first == pilaserStructs::PILASER_PV_TYPE::WCM_Q)
             s = pilaser.pvRootQ;
+        if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY)
+            s = pilaser.pvRootE;
         else if(isVCMirror_PV(it.first))
         {
             //message(ENUM_TO_STRING(it.first), " is a mirror PV");
@@ -311,9 +317,6 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
     using namespace pilaserStructs;
     switch(pv)
     {
-    case PILASER_PV_TYPE::ENERGY:
-            pilaser.energy = getDBRdouble(args);
-            break;
         case PILASER_PV_TYPE::STABILISATION:
             pilaser.stabilisation_status = HWC_ENUM::STATE::ERR;
             break;
@@ -330,6 +333,12 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
             pilaser.Q_rs.Push(pilaser.Q);
             addToBuffer(pilaser.Q,pilaser.Q_buf);
             break;
+        case PILASER_PV_TYPE::ENERGY:
+            pilaser.energy = getDBRdouble(args);
+            pilaser.energy_rs.Push(pilaser.energy);
+            addToBuffer(pilaser.energy,pilaser.E_buf);
+            break;
+
         default:
             //message("ERROR nkown PV passed to pilaserInterface::updateValue, ",pv);
             break;

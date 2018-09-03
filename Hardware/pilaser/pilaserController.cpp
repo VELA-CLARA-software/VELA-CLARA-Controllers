@@ -345,13 +345,21 @@ bool pilaserController::setVCPos(double h, double v, double h_prec, double v_pre
     using namespace pilaserStructs;
     if(is_setting_position)
     {
+        cameraControllerBase::message( "is_setting_position == true");
         return false;
     }
 
     if(set_pos_struct.thread)
     {
+        cameraControllerBase::message("Joining Thread");
         set_pos_struct.thread->join();
+
+        cameraControllerBase::message("Deleting Thread");
+
         delete set_pos_struct.thread;
+
+        cameraControllerBase::message("Set  Thread to nullptr");
+
         set_pos_struct.thread = nullptr;
     }
     /*
@@ -386,6 +394,7 @@ bool pilaserController::setVCPos(double h, double v, double h_prec, double v_pre
     if(VCPositionEssentialRequirements_areBad())
     {
         cameraControllerBase::message("Exiting setPosition because: ", ENUM_TO_STRING(set_pos_struct.state) );
+        is_setting_position = false;
     }
     else
     {
@@ -541,12 +550,6 @@ void pilaserController::setPosition()
             }
 
 
-
-
-
-
-//        }
-
         if(VCPositionEssentialRequirements_areBad())
         {
             cameraControllerBase::message("Exiting setPosition because: ", ENUM_TO_STRING(set_pos_struct.state) );
@@ -573,6 +576,8 @@ void pilaserController::setPosition()
         {
             if(cameraControllerBase::areNotSame( x_rs.Mean(), set_pos_struct.x_pos, set_pos_struct.x_precision ))
             {
+
+                cameraControllerBase::message("Reached Requested Position with desired tolerance Finished!" );
                 set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::SUCCESS;
 
                 break;
@@ -597,7 +602,8 @@ void pilaserController::setPosition()
     {
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::FAIL;
     }
-    is_setting_position = true;
+    is_setting_position = false;
+    cameraControllerBase::message("Set Position FInished");
 }
 //---------------------------------------------------------------------------------------------
 pilaserStructs::VC_SET_POS_STATE pilaserController::getSetVCPosState()const
@@ -635,7 +641,6 @@ bool pilaserController::VCPositionEssentialRequirements_areBad()
 
     return false;
 }
-
 
 
 //______________________________________________________________________________

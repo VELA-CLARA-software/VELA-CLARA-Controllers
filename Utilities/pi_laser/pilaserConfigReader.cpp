@@ -167,14 +167,10 @@ void pilaserConfigReader::addToPVMonitorMapV1(const std::vector<std::string>& ke
         {
             addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::WCM_Q, keyVal[ONE_SIZET]);
         }
-//        else if( keyVal[0] == PV_IA_SUFFIX_ACQUIRE_RBV  )
-//        {
-//            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::CAM_ACQUIRE_RBV, keyVal[ONE_SIZET]);
-//        }
-//        else if( keyVal[0] == PV_IA_SUFFIX_CAM_STATE  )
-//        {
-//            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::CAM_STATUS, keyVal[ONE_SIZET]);
-//        }
+        else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_ENERGY)
+        {
+            addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::ENERGY, keyVal[ONE_SIZET]);
+        }
     }
     else
         addCOUNT_MASK_OR_CHTYPE(pvMonStructs, keyVal);
@@ -199,10 +195,6 @@ void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &k
         if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_STABILISATION)
         {
             addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::STABILISATION, keyVal[ONE_SIZET] );
-        }
-        else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_ENERGY)
-        {
-            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::ENERGY, keyVal[ONE_SIZET]);
         }
         else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
         {

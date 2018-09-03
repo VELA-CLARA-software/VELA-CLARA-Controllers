@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="..\..\Utilities\llrf\liberallrfConfigReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="1378" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\llrf\liberallrfInterface.h" open="0" top="0" tabpos="0">
+		<Cursor position="17310" topLine="363" />
+	</File>
+	<File name="..\..\Hardware\llrf\liberallrfController.h" open="0" top="0" tabpos="0">
+		<Cursor position="5216" topLine="84" />
+	</File>
+	<File name="..\..\Hardware\llrf\liberallrfInterface.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="72110" topLine="1768" />
+	</File>
+	<File name="..\..\Utilities\llrf\liberallrfConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5079" topLine="101" />
+	</File>
+	<File name="..\..\Structs\llrf\llrfStructs.h" open="0" top="0" tabpos="0">
+		<Cursor position="24660" topLine="381" />
+	</File>
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
+		<Cursor position="50624" topLine="827" />
+	</File>
+	<File name="include\VCllrf.h" open="0" top="0" tabpos="0">
+		<Cursor position="9266" topLine="176" />
+	</File>
+	<File name="src\VCllrf.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1602" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\llrf\liberallrfController.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1749" topLine="0" />
+	</File>
+</BrowseTracker_layout_file>
