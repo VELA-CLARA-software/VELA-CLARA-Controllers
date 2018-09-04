@@ -760,21 +760,36 @@ bool cameraControllerBase::claraLEDOff()
     return camBase->claraLEDOff();
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::isCLaraLEDOn()
+bool cameraControllerBase::isClaraLEDOn()
 {
-    return camBase->isCLaraLEDOn();
+    return camBase->isClaraLEDOn();
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::isCLaraLEDOff()
+bool cameraControllerBase::isClaraLEDOff()
 {
-    return camBase->isCLaraLEDOff();
+    return camBase->isClaraLEDOff();
 }
 //---------------------------------------------------------------------------------
-
-
-
-
-
+bool cameraControllerBase::velaLEDOn()
+{
+    return camBase->velaLEDOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::velaLEDOff()
+{
+    return camBase->velaLEDOff();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isVelaLEDOn()
+{
+    return camBase->isVelaLEDOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isVelaLEDOff()
+{
+    return camBase->isVelaLEDOff();
+}
+//---------------------------------------------------------------------------------
 
 
 

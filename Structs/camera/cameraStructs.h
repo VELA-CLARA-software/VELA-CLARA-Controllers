@@ -105,6 +105,7 @@ namespace cameraStructs
             (BLACKLEVEL_RBV) (GAINRAW_RBV)
 
             (LED_STA) (LED_ON) (LED_OFF)
+            (VELA_LED_STA) (VELA_LED_ON) (VELA_LED_OFF)
 
             )
 

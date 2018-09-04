@@ -76,8 +76,14 @@ class cameraControllerBase : public controller
 
         bool claraLEDOn();
         bool claraLEDOff();
-        bool isCLaraLEDOn();
-        bool isCLaraLEDOff();
+        bool isClaraLEDOn();
+        bool isClaraLEDOff();
+
+        bool velaLEDOn();
+        bool velaLEDOff();
+        bool isVelaLEDOn();
+        bool isVelaLEDOff();
+
 
         bool takeFastImage(const std::string& cam);
         bool takeFastImage_VC();

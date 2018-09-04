@@ -350,13 +350,11 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
     for(auto&& it:allCamData)
     {
 
-
-
         debugMessage("\ncameraBase Create channel to monitor PVs\n");
         for(auto&& mon_it:it.second.pvMonStructs)
         {
 
-            if( mon_it.first == cameraStructs::CAM_PV_TYPE::LED_STA)
+            if( isLED_PV(mon_it.first) )
             {
                 addCamChannel("", mon_it.second);
             }
@@ -369,11 +367,7 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
         debugMessage("\ncameraBase Create channel to command PVs\n");
         for(auto&& com_it:it.second.pvComStructs)
         {
-            if( com_it.first == cameraStructs::CAM_PV_TYPE::LED_ON)
-            {
-                addCamChannel("", com_it.second);
-            }
-            else if( com_it.first == cameraStructs::CAM_PV_TYPE::LED_OFF)
+            if( isLED_PV(com_it.first) )
             {
                 addCamChannel("", com_it.second);
             }
@@ -808,6 +802,10 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
             updateCLaraLEDState(args);
             break;
 
+        case CAM_PV_TYPE::VELA_LED_STA:
+            updateVelaLEDState(args);
+            break;
+
 
         default:
             message("!!WARNING!! Unknown PV passed to updateCamValue, pv = ", ENUM_TO_STRING(pv));
@@ -820,6 +818,60 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 // \__/ |    |__/ /~~\  |  |___    .__/  |  /~~\  |  |___ .__/
 //
 //
+//--------------------------------------------------------------------------------------------------
+void cameraBase::updateVelaLEDState(const event_handler_args& args)
+{
+    switch(getDBRunsignedShort(args))
+    {
+        case UTL::ZERO_US:
+            vela_led_state = HWC_ENUM::STATE::OFF;
+            break;
+        case UTL::ONE_US:
+            vela_led_state = HWC_ENUM::STATE::ON;
+            break;
+        default:
+            vela_led_state = HWC_ENUM::STATE::ERR;
+    }
+    //message("New Vela LED state = ", ENUM_TO_STRING(vela_led_state) );
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::velaLEDOn()
+{
+    for(auto&& it: allCamData)
+    {
+        if(isVelaCam( it.second ))
+        {
+            return toggelLED(it.second.pvComStructs.at(CAM_PV_TYPE::VELA_LED_ON));
+        }
+    }
+    message("No VELA CAMS found");
+
+    return false;
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::velaLEDOff()
+{
+    for(auto&& it: allCamData)
+    {
+        if(isVelaCam( it.second ))
+        {
+            return toggelLED(it.second.pvComStructs.at(CAM_PV_TYPE::VELA_LED_OFF));
+        }
+    }
+    message("No VELA CAMS found");
+    return false;
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::isVelaLEDOn()
+{
+    return vela_led_state == HWC_ENUM::STATE::ON;
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::isVelaLEDOff()
+{
+    return vela_led_state == HWC_ENUM::STATE::ON;
+}
+//--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 void cameraBase::updateCLaraLEDState(const event_handler_args& args)
 {
@@ -834,29 +886,15 @@ void cameraBase::updateCLaraLEDState(const event_handler_args& args)
         default:
             clara_led_state = HWC_ENUM::STATE::ERR;
     }
-    message("New Clara LED state = ", ENUM_TO_STRING(clara_led_state) );
-
 }
 //--------------------------------------------------------------------------------------------------
 bool cameraBase::claraLEDOn()
 {
-    unsigned short c = UTL::ONE_US;
-
-    message("claraLEDOn ");
-
-    cameraStructs::pvStruct& pvs = (allCamData.begin()->second).pvComStructs.at(CAM_PV_TYPE::LED_ON);
-
-    message("claraLEDOn 1");
-    ca_put(DBR_ENUM, pvs.CHID, &c);
-    int success = sendToEpics("ca_put", "", "");
-    if(success == ECA_NORMAL)
+    for(auto&& it: allCamData)
     {
-        c = UTL::ZERO_US;
-        ca_put(DBR_ENUM, pvs.CHID, &c);
-        success = sendToEpics("ca_put", "", "");
-        if(success == ECA_NORMAL)
+        if(isClaraCam( it.second ))
         {
-            return true;
+            return toggelLED(it.second.pvComStructs.at(CAM_PV_TYPE::LED_ON));
         }
     }
     return false;
@@ -864,16 +902,27 @@ bool cameraBase::claraLEDOn()
 //--------------------------------------------------------------------------------------------------
 bool cameraBase::claraLEDOff()
 {
+    for(auto&& it: allCamData)
+    {
+        if(isClaraCam( it.second ))
+        {
+            return toggelLED(it.second.pvComStructs.at(CAM_PV_TYPE::LED_OFF));
+        }
+    }
+    return false;
+
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::toggelLED(cameraStructs::pvStruct& pvs)
+{
     unsigned short c = UTL::ONE_US;
-
-    message("claraLEDOff ");
-
-    cameraStructs::pvStruct& pvs = (allCamData.begin()->second).pvComStructs.at(CAM_PV_TYPE::LED_OFF);
     ca_put(DBR_ENUM, pvs.CHID, &c);
     int success = sendToEpics("ca_put", "", "");
     if(success == ECA_NORMAL)
     {
         c = UTL::ZERO_US;
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));//MAGIC_NUMBER!
+
         ca_put(DBR_ENUM, pvs.CHID, &c);
         success = sendToEpics("ca_put", "", "");
         if(success == ECA_NORMAL)
@@ -883,13 +932,15 @@ bool cameraBase::claraLEDOff()
     }
     return false;
 }
+
+
 //--------------------------------------------------------------------------------------------------
-bool cameraBase::isCLaraLEDOn()
+bool cameraBase::isClaraLEDOn()
 {
     return clara_led_state == HWC_ENUM::STATE::ON;
 }
 //--------------------------------------------------------------------------------------------------
-bool cameraBase::isCLaraLEDOff()
+bool cameraBase::isClaraLEDOff()
 {
     return clara_led_state == HWC_ENUM::STATE::OFF;
 }
@@ -4692,5 +4743,25 @@ double cameraBase::getPix2mmDef(const cameraStructs::cameraObject& cam) const
     return cam.data.analysis.pix_2_mm_def;
 }
 //---------------------------------------------------------------------------------
-
+bool cameraBase::isLED_PV(CAM_PV_TYPE pv)
+{
+    switch(pv)
+    {
+        case CAM_PV_TYPE::LED_STA:
+            return true;
+        case CAM_PV_TYPE::LED_ON:
+            return true;
+        case CAM_PV_TYPE::LED_OFF:
+            return true;
+        case CAM_PV_TYPE::VELA_LED_STA:
+            return true;
+        case CAM_PV_TYPE::VELA_LED_ON:
+            return true;
+        case CAM_PV_TYPE::VELA_LED_OFF:
+            return true;
+        default:
+            return false;
+    }
+    return false;
+}
 

@@ -175,6 +175,11 @@ void velaCameraConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&
         {
             addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_RBV, keyVal[ONE_SIZET]);
         }
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_LED_STA)//9
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::VELA_LED_STA,keyVal[ONE_SIZET]);
+        }
+
     }
     else
     {
@@ -220,6 +225,15 @@ void velaCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string>
         {
             addPVStruct(pvComStructs, CAM_PV_TYPE::GAINRAW, keyVal[ONE_SIZET]);
         }
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_LED_OFF)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::VELA_LED_OFF, keyVal[ONE_SIZET]);
+        }
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_LED_ON)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::VELA_LED_ON, keyVal[ONE_SIZET]);
+        }
+
     }
     else
     {
@@ -295,7 +309,8 @@ void velaCameraConfigReader::addToCameraObjects(const std::vector<std::string> &
     }
     else if(keyVal[ZERO_SIZET] == UTL::CAM_TYPE)
     {
-        camObjects.back().type = getCameType(keyVal[ZERO_SIZET]);
+        camObjects.back().type = getCameType(keyVal[ONE_SIZET]);
+        //message(camObjects.back().name, " is a ", ENUM_TO_STRING(camObjects.back().type));
     }
     else if(keyVal[ZERO_SIZET] == PV_ROOT)
     {
@@ -382,10 +397,6 @@ void velaCameraConfigReader::addToCameraObjects(const std::vector<std::string> &
     else if(keyVal[ZERO_SIZET] == XY_SIGMA)
     {
         camObjects.back().data.analysis.pixel_values_pos[getSize(value)] = keyVal[ZERO_SIZET];
-    }
-    else if(keyVal[ZERO_SIZET] == UTL::CAM_TYPE)
-    {
-        camObjects.back().type = getCameType(keyVal[ZERO_SIZET]);
     }
     else if(keyVal[ZERO_SIZET] == UTL::X_PIX_SCALE_FACTOR)
     {

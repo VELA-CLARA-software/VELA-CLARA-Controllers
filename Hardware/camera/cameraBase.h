@@ -128,8 +128,12 @@ class cameraBase : public interface
 
         bool claraLEDOn();
         bool claraLEDOff();
-        bool isCLaraLEDOn();
-        bool isCLaraLEDOff();
+        bool isClaraLEDOn();
+        bool isClaraLEDOff();
+        bool velaLEDOn();
+        bool velaLEDOff();
+        bool isVelaLEDOn();
+        bool isVelaLEDOff();
 
 
         bool isBeam_x_Hi_VC();
@@ -737,6 +741,7 @@ class cameraBase : public interface
 
 
         void updateCLaraLEDState(const event_handler_args& args);
+        void updateVelaLEDState(const event_handler_args& args);
         HWC_ENUM::STATE clara_led_state;
         HWC_ENUM::STATE vela_led_state;
 
@@ -744,6 +749,9 @@ class cameraBase : public interface
         // testing
         epicsTime et;
         epicsTime timestamp;
+
+        bool isLED_PV(cameraStructs::CAM_PV_TYPE pv);
+        bool toggelLED(cameraStructs::pvStruct& pvs);
 
         bool updateArrayData(cameraStructs::cameraObject& cam, const event_handler_args& args);
 

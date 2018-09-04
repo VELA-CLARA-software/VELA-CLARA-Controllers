@@ -313,6 +313,7 @@ namespace BOOST_PYTHON_INCLUDE
         const char* sig_y_mean_ds = "";
         const char* sig_xy_mean_ds = "";
         const char* x_pix_mean_ds = "";
+        const char* y_pix_mean_ds = "";
         const char* sig_x_pix_mean_ds = "";
         const char* sig_y_pix_mean_ds = "";
         const char* sig_xy_pix_mean = "";
@@ -325,6 +326,7 @@ namespace BOOST_PYTHON_INCLUDE
         const char* sig_y_sd_ds = "";
         const char* sig_xy_sd_ds = "";
         const char* x_pix_sd_ds = "";
+        const char* y_pix_sd_ds = "";
         const char* sig_x_pix_sd_ds = "";
         const char* sig_y_pix_sd_ds = "";
         const char* sig_xy_pix_sd = "";
@@ -337,6 +339,7 @@ namespace BOOST_PYTHON_INCLUDE
         const char* sig_y_clear_ds = "";
         const char* sig_xy_clear_ds = "";
         const char* x_pix_clear_ds = "";
+        const char* y_pix_clear_ds = "";
         const char* sig_x_pix_clear_ds = "";
         const char* sig_y_pix_clear_ds = "";
         const char* sig_xy_pix_clear_ds = "";
@@ -349,6 +352,7 @@ namespace BOOST_PYTHON_INCLUDE
         const char* sig_y_n_ds = "";
         const char* sig_xy_n_ds = "";
         const char* x_pix_n_ds = "";
+        const char* y_pix_n_ds = "";
         const char* sig_x_pix_n_ds = "";
         const char* sig_y_pix_n_ds = "";
         const char* sig_xy_pix_n_ds = "";
@@ -361,6 +365,7 @@ namespace BOOST_PYTHON_INCLUDE
         const char* sig_y_full_ds = "";
         const char* sig_xy_full_ds = "";
         const char* x_pix_full_ds = "";
+        const char* y_pix_full_ds = "";
         const char* sig_x_pix_full_ds = "";
         const char* sig_y_pix_full_ds = "";
         const char* sig_xy_pix_full_ds = "";
@@ -395,6 +400,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_y_mean",     &analysis_data::sig_y_mean,sig_y_mean_ds)
             .def_readonly("sig_xy_mean",    &analysis_data::sig_xy_mean,sig_xy_mean_ds)
             .def_readonly("x_pix_mean",     &analysis_data::x_pix_mean,x_pix_mean_ds)
+            .def_readonly("y_pix_mean",     &analysis_data::y_pix_mean,y_pix_mean_ds)
             .def_readonly("sig_x_pix_mean", &analysis_data::sig_x_pix_mean,sig_x_pix_mean_ds)
             .def_readonly("sig_y_pix_mean", &analysis_data::sig_y_pix_mean,sig_y_pix_mean_ds)
             .def_readonly("sig_xy_pix_mean",&analysis_data::sig_xy_pix_mean,sig_xy_pix_mean)
@@ -407,6 +413,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_y_sd",     &analysis_data::sig_y_sd,sig_y_sd_ds)
             .def_readonly("sig_xy_sd",    &analysis_data::sig_xy_sd,sig_xy_sd_ds)
             .def_readonly("x_pix_sd",     &analysis_data::x_pix_sd,x_pix_sd_ds)
+            .def_readonly("y_pix_sd",     &analysis_data::y_pix_sd,y_pix_sd_ds)
             .def_readonly("sig_x_pix_sd", &analysis_data::sig_x_pix_sd,sig_x_pix_sd_ds)
             .def_readonly("sig_y_pix_sd", &analysis_data::sig_y_pix_sd,sig_y_pix_sd_ds)
             .def_readonly("sig_xy_pix_sd",&analysis_data::sig_xy_pix_sd,sig_xy_pix_sd)
@@ -419,6 +426,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_y_clear",     &analysis_data::sig_y_clear,sig_y_clear_ds)
             .def_readonly("sig_xy_clear",    &analysis_data::sig_xy_clear,sig_xy_clear_ds)
             .def_readonly("x_pix_clear",     &analysis_data::x_pix_clear,x_pix_clear_ds)
+            .def_readonly("y_pix_clear",     &analysis_data::y_pix_clear,y_pix_clear_ds)
             .def_readonly("sig_x_pix_clear", &analysis_data::sig_x_pix_clear,sig_x_pix_clear_ds)
             .def_readonly("sig_y_pix_clear", &analysis_data::sig_y_pix_clear,sig_y_pix_clear_ds)
             .def_readonly("sig_xy_pix_clear",&analysis_data::sig_xy_pix_clear,sig_xy_pix_clear_ds)
@@ -430,6 +438,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_y_n",     &analysis_data::sig_y_n,sig_y_n_ds)
             .def_readonly("sig_xy_n",    &analysis_data::sig_xy_n,sig_xy_n_ds)
             .def_readonly("x_pix_n",     &analysis_data::x_pix_n,x_pix_n_ds)
+            .def_readonly("y_pix_n",     &analysis_data::y_pix_n,y_pix_n_ds)
             .def_readonly("sig_x_pix_n", &analysis_data::sig_x_pix_n,sig_x_pix_n_ds)
             .def_readonly("sig_y_pix_n", &analysis_data::sig_y_pix_n,sig_y_pix_n_ds)
             .def_readonly("sig_xy_pix_n",&analysis_data::sig_xy_pix_n,sig_xy_pix_n_ds)
@@ -442,6 +451,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_y_full",     &analysis_data::sig_y_full,sig_y_full_ds)
             .def_readonly("sig_xy_full",    &analysis_data::sig_xy_full,sig_xy_full_ds)
             .def_readonly("x_pix_full",     &analysis_data::x_pix_full,x_pix_full_ds)
+            .def_readonly("y_pix_full",     &analysis_data::y_pix_full,y_pix_full_ds)
             .def_readonly("sig_x_pix_full", &analysis_data::sig_x_pix_full,sig_x_pix_full_ds)
             .def_readonly("sig_y_pix_full", &analysis_data::sig_y_pix_full,sig_y_pix_full_ds)
             .def_readonly("sig_xy_pix_full",&analysis_data::sig_xy_pix_full,sig_xy_pix_full_ds)
@@ -1013,10 +1023,13 @@ namespace BOOST_PYTHON_INCLUDE
 
         const char* claraLEDOn_ds = "";
         const char* claraLEDOff_ds = "";
-        const char* isCLaraLEDOn_ds = "";
-        const char* isCLaraLEDOff_ds = "";
+        const char* isClaraLEDOn_ds = "";
+        const char* isClaraLEDOff_ds = "";
 
-
+        const char*velaLEDOn_ds;
+        const char*velaLEDOffds;
+        const char*isVelaLEDOn_ds;
+        const char*isVelaLEDOff_ds;
 
         /*
             function pointers for overloads to expose to Python...
@@ -1230,10 +1243,6 @@ namespace BOOST_PYTHON_INCLUDE
 
 
 
-
-
-
-
         //Py_Initialize();
         //boost::python::numpy::initialize();
 
@@ -1241,8 +1250,14 @@ namespace BOOST_PYTHON_INCLUDE
 
         .def("claraLEDOn",  &cameraControllerBase::claraLEDOn,claraLEDOn_ds  )
         .def("claraLEDOff",  &cameraControllerBase::claraLEDOff,claraLEDOff_ds  )
-        .def("isCLaraLEDOn",  &cameraControllerBase::isCLaraLEDOn,isCLaraLEDOn_ds  )
-        .def("isCLaraLEDOff",  &cameraControllerBase::isCLaraLEDOff,isCLaraLEDOff_ds  )
+        .def("isClaraLEDOn",  &cameraControllerBase::isClaraLEDOn,isClaraLEDOn_ds  )
+        .def("isClaraLEDOff",  &cameraControllerBase::isClaraLEDOff,isClaraLEDOff_ds  )
+
+        .def("velaLEDOn",  &cameraControllerBase::velaLEDOn,      velaLEDOn_ds  )
+        .def("velaLEDOff",  &cameraControllerBase::velaLEDOff,    velaLEDOffds  )
+        .def("isVelaLEDOn",  &cameraControllerBase::isVelaLEDOn,  isVelaLEDOn_ds  )
+        .def("isVelaLEDOff",  &cameraControllerBase::isVelaLEDOff,isVelaLEDOff_ds  )
+
 
         .def("getMaskObj_VC",  &cameraControllerBase::getMaskObj_VC, return_value_policy<reference_existing_object>(),getMaskObj_VC_ds  )
         .def("getMaskObj",  getMaskObj_1, return_value_policy<reference_existing_object>(),getMaskObj_ds1    )
