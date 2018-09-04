@@ -73,6 +73,12 @@ class cameraControllerBase : public controller
 // \__, \__/  |  |  |  | /~~\ | \| |__/ .__/
 //
 //-----------------------------------------------------------------------------------------
+
+        bool claraLEDOn();
+        bool claraLEDOff();
+        bool isCLaraLEDOn();
+        bool isCLaraLEDOff();
+
         bool takeFastImage(const std::string& cam);
         bool takeFastImage_VC();
         bool takeFastImage();

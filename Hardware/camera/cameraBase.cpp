@@ -349,15 +349,38 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
 {
     for(auto&& it:allCamData)
     {
+
+
+
         debugMessage("\ncameraBase Create channel to monitor PVs\n");
         for(auto&& mon_it:it.second.pvMonStructs)
         {
-            addCamChannel(it.second.pvRoot, mon_it.second);
+
+            if( mon_it.first == cameraStructs::CAM_PV_TYPE::LED_STA)
+            {
+                addCamChannel("", mon_it.second);
+            }
+            else
+            {
+                addCamChannel(it.second.pvRoot, mon_it.second);
+            }
+
         }
         debugMessage("\ncameraBase Create channel to command PVs\n");
         for(auto&& com_it:it.second.pvComStructs)
         {
-            addCamChannel(it.second.pvRoot, com_it.second);
+            if( com_it.first == cameraStructs::CAM_PV_TYPE::LED_ON)
+            {
+                addCamChannel("", com_it.second);
+            }
+            else if( com_it.first == cameraStructs::CAM_PV_TYPE::LED_OFF)
+            {
+                addCamChannel("", com_it.second);
+            }
+            else
+            {
+                addCamChannel(it.second.pvRoot, com_it.second);
+            }
         }
     }
     if(sendToEPICS)
@@ -780,6 +803,12 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
         case CAM_PV_TYPE::ARRAY_DATA:
             updateArrayData(camObj,args);
             break;
+
+        case CAM_PV_TYPE::LED_STA:
+            updateCLaraLEDState(args);
+            break;
+
+
         default:
             message("!!WARNING!! Unknown PV passed to updateCamValue, pv = ", ENUM_TO_STRING(pv));
     }
@@ -792,6 +821,78 @@ void cameraBase::updateCamValue(const CAM_PV_TYPE pv, const std::string& objName
 //
 //
 //--------------------------------------------------------------------------------------------------
+void cameraBase::updateCLaraLEDState(const event_handler_args& args)
+{
+    switch(getDBRunsignedShort(args))
+    {
+        case UTL::ZERO_US:
+            clara_led_state = HWC_ENUM::STATE::OFF;
+            break;
+        case UTL::ONE_US:
+            clara_led_state = HWC_ENUM::STATE::ON;
+            break;
+        default:
+            clara_led_state = HWC_ENUM::STATE::ERR;
+    }
+    message("New Clara LED state = ", ENUM_TO_STRING(clara_led_state) );
+
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::claraLEDOn()
+{
+    unsigned short c = UTL::ONE_US;
+
+    message("claraLEDOn ");
+
+    cameraStructs::pvStruct& pvs = (allCamData.begin()->second).pvComStructs.at(CAM_PV_TYPE::LED_ON);
+
+    message("claraLEDOn 1");
+    ca_put(DBR_ENUM, pvs.CHID, &c);
+    int success = sendToEpics("ca_put", "", "");
+    if(success == ECA_NORMAL)
+    {
+        c = UTL::ZERO_US;
+        ca_put(DBR_ENUM, pvs.CHID, &c);
+        success = sendToEpics("ca_put", "", "");
+        if(success == ECA_NORMAL)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::claraLEDOff()
+{
+    unsigned short c = UTL::ONE_US;
+
+    message("claraLEDOff ");
+
+    cameraStructs::pvStruct& pvs = (allCamData.begin()->second).pvComStructs.at(CAM_PV_TYPE::LED_OFF);
+    ca_put(DBR_ENUM, pvs.CHID, &c);
+    int success = sendToEpics("ca_put", "", "");
+    if(success == ECA_NORMAL)
+    {
+        c = UTL::ZERO_US;
+        ca_put(DBR_ENUM, pvs.CHID, &c);
+        success = sendToEpics("ca_put", "", "");
+        if(success == ECA_NORMAL)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::isCLaraLEDOn()
+{
+    return clara_led_state == HWC_ENUM::STATE::ON;
+}
+//--------------------------------------------------------------------------------------------------
+bool cameraBase::isCLaraLEDOff()
+{
+    return clara_led_state == HWC_ENUM::STATE::OFF;
+}
 //--------------------------------------------------------------------------------------------------
 void cameraBase::updateCamState(const event_handler_args& args, CAM_STATE& s)
 {

@@ -775,6 +775,11 @@ namespace UTL
     const std::string PV_DAQ_SUFFIX_WRITE_J         ="PV_DAQ_SUFFIX_WRITE_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_J   ="PV_DAQ_SUFFIX_NUM_CAPTURE_J";
 
+
+    const std::string PV_CLARA_SUFFIX_LED_OFF  = "PV_CLARA_SUFFIX_LED_OFF";
+    const std::string PV_CLARA_SUFFIX_LED_ON = "PV_CLARA_SUFFIX_LED_ON";
+    const std::string PV_CLARA_SUFFIX_LED_STA = "PV_CLARA_SUFFIX_LED_STA";
+
     const std::string PV_DAQ_SUFFIX_CAPTURE_RBV_J   ="PV_DAQ_SUFFIX_CAPTURE_RBV_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURED_J  ="PV_DAQ_SUFFIX_NUM_CAPTURED_J";
     const std::string PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J="PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J";

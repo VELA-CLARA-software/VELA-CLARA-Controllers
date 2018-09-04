@@ -339,6 +339,13 @@ void claraCameraConfigReader::addToPVMonitorMapV1(const std::vector<std::string>
             addPVStruct(pvMonStructs, CAM_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
         }
 
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_CLARA_SUFFIX_LED_STA)//9
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::LED_STA,keyVal[ONE_SIZET]);
+        }
+
+
+
     }
     else
         addCOUNT_MASK_OR_CHTYPE(pvMonStructs, keyVal);
@@ -360,6 +367,9 @@ void claraCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string
     using namespace UTL;
     std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
     std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
+
+    message(key," = ", value );
+
     if(stringIsSubString(key, "SUFFIX" ) )
     {
         using namespace cameraStructs;
@@ -482,6 +492,34 @@ void claraCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string
         {
             addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_TEMPLATE, value);
         }
+
+        else if(key == UTL::PV_CLARA_SUFFIX_LED_OFF)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::LED_OFF, value);
+        }
+        else if(key == UTL::PV_CLARA_SUFFIX_LED_ON)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::LED_ON, value);
+
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+            message(" ADDED PV_CLARA_LED_ON");
+
+        }
+
+
     }
     else
         addCOUNT_MASK_OR_CHTYPE(pvComStructs, keyVal );

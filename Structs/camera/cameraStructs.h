@@ -103,7 +103,12 @@ namespace cameraStructs
             // vela cam stuff
             (Blacklevel) (GAINRAW)
             (BLACKLEVEL_RBV) (GAINRAW_RBV)
+
+            (LED_STA) (LED_ON) (LED_OFF)
+
             )
+
+    // so far, two types of camera
 
     // so far, two types of camera
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,

@@ -1011,6 +1011,13 @@ namespace BOOST_PYTHON_INCLUDE
         const char* getPix2mmDef_ds2   = "";
 
 
+        const char* claraLEDOn_ds = "";
+        const char* claraLEDOff_ds = "";
+        const char* isCLaraLEDOn_ds = "";
+        const char* isCLaraLEDOff_ds = "";
+
+
+
         /*
             function pointers for overloads to expose to Python...
         */
@@ -1222,10 +1229,21 @@ namespace BOOST_PYTHON_INCLUDE
         boost::python::list(cameraControllerBase::*takeAndGetFastImage_2)()       = &cameraControllerBase::takeAndGetFastImage;
 
 
+
+
+
+
+
         //Py_Initialize();
         //boost::python::numpy::initialize();
 
     class_<cameraControllerBase, bases<controller>,noncopyable>(py_name,py_docs, no_init)
+
+        .def("claraLEDOn",  &cameraControllerBase::claraLEDOn,claraLEDOn_ds  )
+        .def("claraLEDOff",  &cameraControllerBase::claraLEDOff,claraLEDOff_ds  )
+        .def("isCLaraLEDOn",  &cameraControllerBase::isCLaraLEDOn,isCLaraLEDOn_ds  )
+        .def("isCLaraLEDOff",  &cameraControllerBase::isCLaraLEDOff,isCLaraLEDOff_ds  )
+
         .def("getMaskObj_VC",  &cameraControllerBase::getMaskObj_VC, return_value_policy<reference_existing_object>(),getMaskObj_VC_ds  )
         .def("getMaskObj",  getMaskObj_1, return_value_policy<reference_existing_object>(),getMaskObj_ds1    )
         .def("getMaskObj",  getMaskObj_2, return_value_policy<reference_existing_object>(),getMaskObj_ds2    )

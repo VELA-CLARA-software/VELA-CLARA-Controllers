@@ -750,9 +750,26 @@ unsigned short cameraControllerBase::getMaskYrad()const
     return camBase->getMaskYrad();
 }
 //---------------------------------------------------------------------------------
-
-
-
+bool cameraControllerBase::claraLEDOn()
+{
+    return camBase->claraLEDOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::claraLEDOff()
+{
+    return camBase->claraLEDOff();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isCLaraLEDOn()
+{
+    return camBase->isCLaraLEDOn();
+}
+//---------------------------------------------------------------------------------
+bool cameraControllerBase::isCLaraLEDOff()
+{
+    return camBase->isCLaraLEDOff();
+}
+//---------------------------------------------------------------------------------
 
 
 

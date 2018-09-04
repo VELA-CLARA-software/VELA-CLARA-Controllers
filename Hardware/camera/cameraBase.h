@@ -126,6 +126,12 @@ class cameraBase : public interface
 //-----------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 
+        bool claraLEDOn();
+        bool claraLEDOff();
+        bool isCLaraLEDOn();
+        bool isCLaraLEDOff();
+
+
         bool isBeam_x_Hi_VC();
         bool isBeam_x_Lo_VC();
         bool isBeam_y_Hi_VC();
@@ -728,6 +734,12 @@ class cameraBase : public interface
         static void mask_feedback(unsigned short x, unsigned short y,
                                   unsigned short x_rad, unsigned short y_rad,
                                   const std::string& name, cameraBase* interface);
+
+
+        void updateCLaraLEDState(const event_handler_args& args);
+        HWC_ENUM::STATE clara_led_state;
+        HWC_ENUM::STATE vela_led_state;
+
 
         // testing
         epicsTime et;
