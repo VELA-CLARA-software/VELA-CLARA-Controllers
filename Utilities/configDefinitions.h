@@ -990,6 +990,7 @@ namespace UTL
     const std::string V_COL_POS       = "V_COL_POS";
     const std::string YAG             = "YAG";
     const std::string RETRACTED       = "RETRACTED";
+    const std::string SCREEN_HAS_CAM  = "SCREEN_HAS_CAM";
     // SCREEN YAG 1/2/3 COMMAND PVs
     const std::string PV_SUFFIX_H_MABS = "PV_SUFFIX_H_MABS";
     const std::string PV_SUFFIX_V_MABS = "PV_SUFFIX_V_MABS";

@@ -274,6 +274,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def_readonly("elementDirection", &screenStructs::screenObject::elementDirection)
         .def_readonly("numIlocks",        &screenStructs::screenObject::numIlocks       )
         .def_readonly("position",         &screenStructs::screenObject::position        )
+        .def_readonly("hasCam",           &screenStructs::screenObject::hasCam          )
         ;
 
     /// Expose base classes
@@ -307,6 +308,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* getAvailableDevicesString = "Returns the devices available on the screen.";
     char const* isScreenInStateString = "Returns true if screen is currently in SCREEN_STATE state.";
     char const* getScreenNamesString = "Returns all screen names defined in config file.";
+    char const* getScreenNamesWCamsString = "Returns all screen names with associated cameras as defined in config file.";
     char const* isYAGInString = "Returns true if the YAG screen is in.";
     char const* isMoverString = "Returns true if the screen is an H and/or V mover.";
     char const* isPneumaticString = "Returns true if the screen is a pneumatic device.";
@@ -362,7 +364,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("getJDiff",                &screenController::getJDiff, (boost::python::arg("name")), getJDiffString                                           )
         .def("getDevicePosition",       &screenController::getDevicePosition, (boost::python::arg("name"),boost::python::arg("state")), getDevicePosString  )
         .def("getPosition",             &screenController::getPosition, (boost::python::arg("name")), getPosString                                          )
-        .def("getScreenNames",          &screenController::getScreenNames_Py, (boost::python::arg("name")), getScreenNamesString                            )
+        .def("getScreenNames",          &screenController::getScreenNames_Py, getScreenNamesString                                                          )
         .def("getVELAPneumaticScreens", &screenController::getVELAPneumaticScreens_Py, (boost::python::arg("names")) ,getVELAPneumaticScreensString         )
         .def("getCLARAHVMoverScreens",  &screenController::getCLARAHVMoverScreens_Py, (boost::python::arg("names")) ,getCLARAHVMoverScreensString           )
         .def("getCLARAVMoverScreens",   &screenController::getCLARAVMoverScreens_Py, (boost::python::arg("names")) ,getCLARAVMoverScreensString             )
@@ -375,6 +377,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("setEX",                   &screenController::setEX, (boost::python::arg("name")), setEXString                                                   )
         .def("setPosition",             &screenController::setPosition, (boost::python::arg("name"),boost::python::arg("pos (mm)")), setPositionString        )
         .def("isClearForBeam",          &screenController::isClearForBeam, (boost::python::arg("name")), isClearForBeam_ds )
+        .def("getNamesOfScreensWithCameras", &screenController::getNamesOfScreensWithCameras_Py, getScreenNamesWCamsString  )
         .def("debugMessagesOff",        &screenController::debugMessagesOff                         )
         .def("debugMessagesOn",         &screenController::debugMessagesOn                          )
         .def("messagesOff",             &screenController::messagesOff                              )

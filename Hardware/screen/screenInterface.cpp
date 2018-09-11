@@ -972,6 +972,32 @@ std::vector< std::string > screenInterface::getScreenNames()
     return names;
 }
 //___________________________________________________________________________________________________________
+const std::vector< screenStructs::screenObject > screenInterface::getScreensWithCameras()
+{
+    std::vector< screenStructs::screenObject > screensWithCams;
+    for ( auto it : allScreentData )
+    {
+        if( it.second.hasCam )
+        {
+            screensWithCams.push_back( it.second );
+        }
+    }
+    return screensWithCams;
+}
+//___________________________________________________________________________________________________________
+const std::vector< std::string > screenInterface::getNamesOfScreensWithCameras()
+{
+    std::vector< std::string > screenNames;
+    for ( auto it : allScreentData )
+    {
+        if( it.second.hasCam )
+        {
+            screenNames.push_back( it.first );
+        }
+    }
+    return screenNames;
+}
+//___________________________________________________________________________________________________________
 bool screenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;
