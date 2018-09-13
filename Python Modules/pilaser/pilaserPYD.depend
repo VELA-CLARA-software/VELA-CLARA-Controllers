@@ -60,7 +60,7 @@
 	<sstream>
 	<chrono>
 
-1535635668 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1536687196 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
@@ -82,7 +82,7 @@
 	<vector>
 	<cadef.h>
 
-1535706987 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1536060821 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -90,11 +90,11 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1535965628 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
+1536828639 source:d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
 	"pilaserController.h"
 	"running_stat.h"
 
-1535965663 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
+1536828588 d:\vela\git projects\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
 	<string>
 	<vector>
 	"pilaserInterface.h"
@@ -201,7 +201,7 @@
 	"VCpilaser.h"
 	<iostream>
 
-1535964896 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
+1536835552 d:\vela\git projects\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
 	<string>
 	<map>
 	"pilaserController.h"
@@ -209,7 +209,7 @@
 	"VCbase.h"
 	"expose_shutter.h"
 
-1535708509 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1536687400 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -400,7 +400,7 @@
 	<algorithm>
 	<thread>
 
-1535980022 source:d:\vela\git projects\vela-clara-controllers\utilities\pi_laser\pilaserconfigreader.cpp
+1536825467 source:d:\vela\git projects\vela-clara-controllers\utilities\pi_laser\pilaserconfigreader.cpp
 	"pilaserConfigReader.h"
 	"pilaserStructs.h"
 	<iostream>
@@ -681,7 +681,7 @@
 1535708442 source:d:\vela\git projects\vela-clara-controllers\structs\pi_laser\pilaserstructs.cpp
 	"pilaserStructs.h"
 
-1535991394 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.cpp
+1536834803 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.cpp
 	"cameraBase.h"
 	<limits>
 	<iterator>
@@ -689,7 +689,7 @@
 	<list>
 	<mutex>
 
-1535714433 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+1536062259 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -717,7 +717,7 @@
 	"configReader.h"
 	"pilaserStructs.h"
 
-1535715290 d:\vela\git projects\vela-clara-controllers\structs\camera\camerastructs.h
+1536060696 d:\vela\git projects\vela-clara-controllers\structs\camera\camerastructs.h
 	<vector>
 	<string>
 	<thread>
@@ -784,7 +784,7 @@
 	"configReader.h"
 	"cameraStructs.h"
 
-1535725678 source:d:\vela\git projects\vela-clara-controllers\utilities\pi_laser\lasertransportmirrorconfigreader.cpp
+1536823132 source:d:\vela\git projects\vela-clara-controllers\utilities\pi_laser\lasertransportmirrorconfigreader.cpp
 	"laserTransportMirrorConfigReader.h"
 	<iostream>
 	<vector>
@@ -802,20 +802,20 @@
 	"configReader.h"
 	"cameraStructs.h"
 
-1535699066 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\claracameraconfigreader.cpp
+1536060918 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\claracameraconfigreader.cpp
 	"claraCameraConfigReader.h"
 	"configDefinitions.h"
 	<iostream>
 	<fstream>
 	<sstream>
 
-1535714534 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1536687315 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1535714552 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.cpp
+1536687277 source:d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.cpp
 	"cameraControllerBase.h"
 
 1534596693 d:\vela\git projects\vela-clara-controllers\utilities\camera\velacameraconfigreader.h
@@ -826,7 +826,7 @@
 	"configReader.h"
 	"cameraStructs.h"
 
-1534596693 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\velacameraconfigreader.cpp
+1536063183 source:d:\vela\git projects\vela-clara-controllers\utilities\camera\velacameraconfigreader.cpp
 	"velaCameraConfigReader.h"
 	"configDefinitions.h"
 	<iostream>
@@ -852,7 +852,7 @@
 	<algorithm>
 	<ctype.h>
 
-1535969183 d:\vela\git projects\vela-clara-controllers\hardware\shutter\expose_shutter.h
+1536836094 d:\vela\git projects\vela-clara-controllers\hardware\shutter\expose_shutter.h
 	"VCheader.h"
 	"shutterStructs.h"
 

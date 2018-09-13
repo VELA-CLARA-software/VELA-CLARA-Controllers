@@ -495,10 +495,10 @@ class cameraControllerBase : public controller
         bool setMask_Py2(const boost::python::list v);
 #endif
         bool setGain_VC(const long value);
-        bool setGain(const long value, const std::string& cam);
+        bool setGain(const std::string& cam, const long value);
         bool setGain(const long value);
         bool setBlacklevel_VC(const long value);
-        bool setBlacklevel(const long value, const std::string& cam);
+        bool setBlacklevel(const std::string& cam, const long valu);
         bool setBlacklevel(const long value);
 
         bool setBackground_VC();

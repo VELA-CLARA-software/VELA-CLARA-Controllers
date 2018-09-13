@@ -932,32 +932,32 @@ bool cameraControllerBase::setMask_Py2(const boost::python::list v)
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setGain_VC(const long value)
 {
-    return setGain_VC(value);
+    return camBase->setGain_VC(value);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setGain(const long value, const std::string& cam)
+bool cameraControllerBase::setGain(const std::string& cam, const long value)
 {
-    return setGain(value, cam);
+    return camBase->setGain(cam, value);
 }
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setGain(const long value)
 {
-    return setGain(value);
+    return camBase->setGain(value);
 }
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setBlacklevel_VC(const long value)
 {
-    return setBlacklevel(value);
+    return camBase->setBlacklevel(value);
 }
 //---------------------------------------------------------------------------------
-bool cameraControllerBase::setBlacklevel(const long value, const std::string& cam)
+bool cameraControllerBase::setBlacklevel(const std::string& cam, const long value)
 {
-    return setBlacklevel(value, cam);
+    return camBase->setBlacklevel(cam, value);
 }
 //---------------------------------------------------------------------------------
 bool cameraControllerBase::setBlacklevel(const long value)
 {
-    return setBlacklevel(value);
+    return camBase->setBlacklevel(value);
 }
 
 //---------------------------------------------------------------------------------

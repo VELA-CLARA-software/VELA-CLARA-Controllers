@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="..\..\Hardware\charge\chargeInterface.h" open="1" top="0" tabpos="1">
+		<Cursor position="1809" topLine="18" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+</BrowseTracker_layout_file>

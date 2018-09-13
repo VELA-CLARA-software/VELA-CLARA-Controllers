@@ -1223,9 +1223,9 @@ namespace BOOST_PYTHON_INCLUDE
         size_t(cameraControllerBase::*getBufferMaxCount_2)()     const                      = &cameraControllerBase::getBufferMaxCount;
 
 
-        bool(cameraControllerBase::*setGain_1)(const long, cstr&) = &cameraControllerBase::setGain;
+        bool(cameraControllerBase::*setGain_1)(cstr&,const long) = &cameraControllerBase::setGain;
         bool(cameraControllerBase::*setGain_2)(const long)        = &cameraControllerBase::setGain;
-        bool(cameraControllerBase::*setBlacklevel_1)(const long, cstr&) = &cameraControllerBase::setBlacklevel;
+        bool(cameraControllerBase::*setBlacklevel_1)(cstr&, const long ) = &cameraControllerBase::setBlacklevel;
         bool(cameraControllerBase::*setBlacklevel_2)(const long)        = &cameraControllerBase::setBlacklevel;
 
         int(cameraControllerBase::*getGain_1)(cstr&)const = &cameraControllerBase::getGain;

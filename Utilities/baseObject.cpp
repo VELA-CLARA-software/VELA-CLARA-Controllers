@@ -91,6 +91,7 @@ bool baseObject::getBool(const std::string& str) const
         return false;
     }
     std::cout << "!!!WARNING!! getBool was not passed TRUE or FALSE" << std::endl;
+    return false;
 }
 //______________________________________________________________________________
 int baseObject::getNum(const std::string& str) const

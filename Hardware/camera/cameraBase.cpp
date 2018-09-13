@@ -254,7 +254,7 @@ bool cameraBase::getCamObjects()
         }
         /*
             check that the screen names are all unique (we tend to refer to cameras
-            using the name of teh screen they display
+            using the name of the screen they display
         */
         std::vector<std::string> temp_screen_name,intermediate;
         for(auto&& it : allCamData)
@@ -353,7 +353,6 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
         debugMessage("\ncameraBase Create channel to monitor PVs\n");
         for(auto&& mon_it:it.second.pvMonStructs)
         {
-
             if( isLED_PV(mon_it.first) )
             {
                 addCamChannel("", mon_it.second);
@@ -362,7 +361,6 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
             {
                 addCamChannel(it.second.pvRoot, mon_it.second);
             }
-
         }
         debugMessage("\ncameraBase Create channel to command PVs\n");
         for(auto&& com_it:it.second.pvComStructs)

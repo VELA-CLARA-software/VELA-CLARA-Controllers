@@ -192,8 +192,6 @@ void laserTransportMirrorConfigReader::addToPVMonitorMapV1(const std::vector<std
             {
                  addToPVStruct(pvMonStructs,PILASER_PV_TYPE::H_POS,keyVal[ONE_SIZET]);
             }
-
-
         }
         /*
             we know the PV_CHTYPE, PV_MASK, etc must come after the suffix,

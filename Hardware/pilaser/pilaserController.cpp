@@ -14,7 +14,7 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   29-03-2018
+//  Last edit:   11-09-2018
 //  FileName:    pilaserController.cpp
 //  Description:
 //
@@ -62,15 +62,6 @@ shutterController(show_messages,
     {
         camBase = &localInterface;
         cameraControllerBase::message("pilaserController instantiation success.");
-
-//
-//        shutter = new shutterController(show_messages,
-//                                     show_debug_messages,
-//                                     startVirtualMachine,
-//                                     shouldStartEPICs,
-//                                     UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG,
-//                                     "physical_PIL_Shutter_Controller"
-//                          );
     }
 }
 //______________________________________________________________________________
@@ -313,6 +304,7 @@ bool pilaserController::can_move_test_1()
     */
     // check shutters are open
     if( areAllOpen() )
+    //if( true )
     {
         if( isAnalysisUpdating())
         {
@@ -398,10 +390,14 @@ bool pilaserController::setVCPos(double h, double v, double h_prec, double v_pre
     }
     else
     {
-        cameraControllerBase::message("VCPositionEssentialRequirements ARE GOOD PRIOCEEDING TO setPosition ");
+
+        cameraControllerBase::message("VCPositionEssentialRequirements ARE GOOD PROCEEDING TO setPosition function.");
+        cameraControllerBase::message("Using pixels instead of mm:\nhorizontal ",
+                                        h," (mm) = ", set_pos_struct.x_pos, "(pix)/nvertical ",
+                                        v," (mm) = ", set_pos_struct.y_pos, "(pix)");
         set_pos_struct.thread = new std::thread(staticEntrySetPosition, this);
     }
-
+    return true;
 }
 //---------------------------------------------------------------------------------------------
 void pilaserController::staticEntrySetPosition(pilaserController* controller)
@@ -442,9 +438,10 @@ void pilaserController::setPosition()
     bool horizontal_change_direction = false;
 
     set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::RUNNING;
-    cameraControllerBase::message("pilaserController::setPosition()");
-    for(auto&& i = 0; i < set_pos_struct.max_iterations; ++i )
+    for(auto&& i = 0; i < set_pos_struct.max_iterations; ++i )//MAGIC_STRING
     {
+        cameraControllerBase::message("pilaserController::setPosition(), iteration = ", i + 1);
+
         /*
             clear running stats
         */
@@ -455,6 +452,7 @@ void pilaserController::setPosition()
         */
         while( x_rs.NotFull() && y_rs.NotFull() )
         {
+            // if the running stats are not updatying, VCPositionEssentialRequirements_areBad checks
             if(VCPositionEssentialRequirements_areBad())
             {
                 break;
@@ -507,47 +505,49 @@ void pilaserController::setPosition()
             }
         }
 
-            if( move_up  )
+        if( move_up  )
+        {
+            if(moveUp( set_pos_struct.mirror_step_y ))
+            {}
+            else
             {
-                if(moveUp( set_pos_struct.mirror_step_y ))
-                {}
-                else
-                {
-                    cameraControllerBase::message("Failed to send moveUp");
-                }
+                cameraControllerBase::message("Failed to send moveUp");
             }
-            if( move_down  )
+        }
+        if( move_down  )
+        {
+            if(moveDown( set_pos_struct.mirror_step_y ))
+            {}
+            else
             {
-                if(moveDown( set_pos_struct.mirror_step_y ))
-                {}
-                else
-                {
-                    cameraControllerBase::message("Failed to send moveDown");
-                }
+                cameraControllerBase::message("Failed to send moveDown");
+            }
+        }
+        /*
+            wait because the motor controller can't take two commands in quick succession
+        */
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));//MAGIC_NUMBER!
+
+        if( move_left )
+        {
+            if(moveLeft( set_pos_struct.mirror_step_x))
+            {
+            }
+            else
+            {
+                cameraControllerBase::message("Failed to send MoveLeft");
+            }
+        }
+        if( move_right )
+        {
+            if(moveRight( set_pos_struct.mirror_step_x ))
+            {}
+            else
+            {
+                cameraControllerBase::message("Failed to send MoveLeft");
             }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(150));//MAGIC_NUMBER!
-
-            if( move_left )
-            {
-                if(moveLeft( set_pos_struct.mirror_step_x))
-                {
-                }
-                else
-                {
-                    cameraControllerBase::message("Failed to send MoveLeft");
-                }
-            }
-            if( move_right )
-            {
-                if(moveRight( set_pos_struct.mirror_step_x ))
-                {}
-                else
-                {
-                    cameraControllerBase::message("Failed to send MoveLeft");
-                }
-
-            }
+        }
 
 
         if(VCPositionEssentialRequirements_areBad())
@@ -556,7 +556,7 @@ void pilaserController::setPosition()
             break;
         }
 
-        // after the firts iteration, check if we have moved past the requested point, if so decrasse step size
+        // after the first iteration, check if we have moved past the requested position, if so decrease step size
         if( i > 1)
         {
             if( move_left != old_move_left && move_right != old_move_right )
@@ -574,7 +574,7 @@ void pilaserController::setPosition()
 
         if(cameraControllerBase::areSame( y_rs.Mean(), set_pos_struct.y_pos, set_pos_struct.y_precision ))
         {
-            if(cameraControllerBase::areNotSame( x_rs.Mean(), set_pos_struct.x_pos, set_pos_struct.x_precision ))
+            if(cameraControllerBase::areSame( x_rs.Mean(), set_pos_struct.x_pos, set_pos_struct.x_precision ))
             {
 
                 cameraControllerBase::message("Reached Requested Position with desired tolerance Finished!" );
@@ -582,6 +582,15 @@ void pilaserController::setPosition()
 
                 break;
             }
+            else
+            {
+                cameraControllerBase::message("Y position reached, but NOT X position, moving to next iteration");
+            }
+
+        }
+        else
+        {
+            cameraControllerBase::message("Y position not reached, moving to next iteration");
         }
 
         // save old values
@@ -594,6 +603,7 @@ void pilaserController::setPosition()
         /* set reached max_iteratios state */
         if(i == set_pos_struct.max_iterations - 1)
         {
+            cameraControllerBase::message("Reached max number of iterations, cancelling setPosition");
             set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::MAX_ITERATIONS;
         }
     }
@@ -614,27 +624,33 @@ pilaserStructs::VC_SET_POS_STATE pilaserController::getSetVCPosState()const
 bool pilaserController::VCPositionEssentialRequirements_areBad()
 {
     if( !areAllOpen())
+    //if( true )
     {
+        cameraControllerBase::message("setPosition !!!SHUTTER_CLOSED!!!");
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::SHUTTER_CLOSED;
         return true;
     }
     else if( ! isAnalysisUpdating() )
     {
+        cameraControllerBase::message("setPosition !!!CAMERA_ANALYSIS_NOT_WORKING!!!");
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::CAMERA_ANALYSIS_NOT_WORKING;
         return true;
     }
     else if( hasNoBeam_VC() )
     {
+        cameraControllerBase::message("setPosition !!!SUSPECT NO LASER BEAM ON VIRTUAL CATHODE!!!");
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::LASER_NOT_IN_IMAGE;
         return true;
     }
     else if(cameraControllerBase::timeNow() - set_pos_struct.time_start > set_pos_struct.time_out )
     {
+        cameraControllerBase::message("setPosition !!!TIIMEOUT!!!");
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::TIME_OUT;
         return true;
     }
     else if(isMaskFeedbackOff_VC() )
     {
+        cameraControllerBase::message("setPosition !!!MASK FEEDBACK IS OFF!!!");
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::NO_MASK_FEEDBACK;
         return true;
     }

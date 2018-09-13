@@ -230,8 +230,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* getQBuffer_doc  = "getQBuffer_doc.";
     const char* clearLaserRunningValues_doc  = "getQBuffer_doc.";
 
-    const char* setVCPos_doc1  = "setVCPos_doc1.";
-    const char* setVCPos_doc2  = "setVCPos_doc2.";
+    const char* setVCPos_doc1  = "setVCPos using the default parameters.";
+    const char* setVCPos_doc2  = "setVCPos with full control of all parameters, ";
 
     const char* setVCPosition_doc  = "setVCPosition_doc, to position 'horizonal' and 'vertical' in mm.";
     const char* getSetVCPosState_doc  = "getSetVCPosState_doc, gets current status of SetVCPosState.";
@@ -245,6 +245,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
 
     class_<pilaserController, bases<cameraControllerBase,shutterController>, noncopyable>
+    //class_<pilaserController, bases<cameraControllerBase>, noncopyable>
         ("pilaserController","pilaserController member functions", no_init )
         .def("getHWP",&pilaserController::getHWP,getHWP_doc)
         .def("setHWP",&pilaserController::setHWP,(VALUE_ARG),setHWP_doc)

@@ -13,8 +13,16 @@ namespace BOOST_PYTHON_INCLUDE
 
     void expose_shutter()
     {
-        docstring_options doc_options(true, false, false);
-        doc_options.disable_cpp_signatures();
+        /*
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        NO - NEVER put a docstrings option in a function like this
+        Having multiple docstring_options causes a crash when importing to PYTHON!!!
+        So we have to have some rule-of-thumb
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//        docstring_options doc_options(true, false, false);
+//        doc_options.disable_cpp_signatures();
+        */
+
         /*
             Things that you want to use in python must be exposed:
             containers

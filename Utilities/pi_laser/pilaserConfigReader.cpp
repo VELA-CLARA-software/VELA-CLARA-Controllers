@@ -66,19 +66,20 @@ bool pilaserConfigReader::readConfig()
         debugMessage("Opened from ", configFile1 );
         while(std::getline(inputFile, line)) /// Go through, reading file line by line
         {
-            trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
+            trimmedLine = trimAllWhiteSpaceExceptBetweenDoubleQuotes(trimToDelimiter(line, UTL::END_OF_LINE));
+
             if(trimmedLine.size()> UTL::ZERO_SIZET )
             {
-                if(stringIsSubString(line, UTL::END_OF_DATA ) )
+                if(stringIsSubString(line, UTL::END_OF_DATA))
                 {
-                    debugMessage("Found END_OF_DATA" );
+                    debugMessage("Found END_OF_DATA");
                     readingData = false;
                     readingObjs = false;
                     readingCommandPVs  = false;
                     readingMonitorPVs  = false;
                     break;
                 }
-                if(readingData )
+                if(readingData)
                 {
                     if(stringIsSubString(trimmedLine, UTL::VERSION ) )
                         getVersion(trimmedLine );
@@ -140,7 +141,6 @@ bool pilaserConfigReader::readConfig()
         }
         inputFile.close();
         debugMessage("File Closed" );
-
         success = true;
     }
     else{
@@ -180,14 +180,20 @@ void pilaserConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<pilaserStructs::pv
                                                   const std::vector<std::string>& keyVal)
 {
     if(keyVal[UTL::ZERO_SIZET] == UTL::PV_COUNT)
+    {
         pvStruct_v.back().COUNT = getCOUNT(keyVal[UTL::ONE_SIZET]);
+    }
     else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_MASK)
+    {
         pvStruct_v.back().MASK = getMASK(keyVal[UTL::ONE_SIZET]);
+    }
     else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_CHTYPE)
+    {
         pvStruct_v.back().CHTYPE = getCHTYPE(keyVal[UTL::ONE_SIZET]);
+    }
 }
 //______________________________________________________________________________
-void pilaserConfigReader::addToPVCommandMapV1(const  std::vector<std::string> &keyVal  )
+void pilaserConfigReader::addToPVCommandMapV1(const std::vector<std::string>& keyVal)
 {
     using namespace UTL;
     if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX" ) )
