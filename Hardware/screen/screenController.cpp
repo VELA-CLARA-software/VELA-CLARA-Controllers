@@ -279,6 +279,16 @@ std::vector< std::string > screenController::getScreenNames()
 {
     return localInterface.getScreenNames();
 }
+//___________________________________________________________________________________________________________
+const std::vector< std::string > screenController::getNamesOfScreensWithCameras()
+{
+    return localInterface.getNamesOfScreensWithCameras();
+}
+//___________________________________________________________________________________________________________
+const std::vector< screenStructs::screenObject > screenController::getScreensWithCameras()
+{
+    return localInterface.getScreensWithCameras();
+}
 ////________________________________________________________________________________
 //bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)
 //{
@@ -316,6 +326,11 @@ boost::python::dict screenController::getILockStates_Py( std::string& name )
 boost::python::list screenController::getScreenNames_Py()
 {
     return toPythonList(getScreenNames());
+}
+//______________________________________________________________________________
+boost::python::list screenController::getNamesOfScreensWithCameras_Py()
+{
+    return toPythonList(getNamesOfScreensWithCameras());
 }
 //________________________________________________________________________________
 boost::python::list screenController::getVELAPneumaticScreens_Py( const std::vector< std::string > & names )

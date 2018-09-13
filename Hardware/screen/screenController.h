@@ -69,6 +69,8 @@ class screenController : public controller
         const std::vector<std::string> getCLARAVMoverScreens(   const std::vector< std::string > & names );
         const std::vector<std::string> getMoverScreens(   const std::vector< std::string > & names );
         const std::vector<std::string> getHVMoverScreens(   const std::vector< std::string > & names );
+        const std::vector<std::string> getNamesOfScreensWithCameras();
+        const std::vector<screenStructs::screenObject> getScreensWithCameras();
         //boost::python::list getScreenNames_Py();
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
@@ -83,6 +85,7 @@ class screenController : public controller
 
 #ifdef BUILD_DLL
         boost::python::list getScreenNames_Py();
+        boost::python::list getNamesOfScreensWithCameras_Py();
         boost::python::list getAvailableDevices_Py(const std::string& name);
 //        boost::python::list isScreenIn_Py(const std::vector<std::string> & name);
         boost::python::dict getILockStatesStr_Py(std::string& name);

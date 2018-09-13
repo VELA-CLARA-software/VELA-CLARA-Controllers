@@ -263,6 +263,18 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     {
         scrObjects.back().screenType =  getScreenType(keyVal[ 1 ]);
     }
+    else if( keyVal[0] == UTL::SCREEN_HAS_CAM )
+    {
+        bool screenHasCam = false;
+        if( keyVal[ 1 ] == UTL::TRUE )
+        {
+            scrObjects.back().hasCam =  true;
+        }
+        else if( keyVal[ 1 ] == UTL::FALSE )
+        {
+            scrObjects.back().hasCam =  false;
+        }
+    }
     else if( keyVal[0] == UTL::V_RETRACTED )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_RETRACTED ] = true;

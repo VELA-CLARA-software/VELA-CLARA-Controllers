@@ -106,6 +106,8 @@ class screenInterface: public interface
         const std::vector<std::string> getCLARAVMoverScreens(   const std::vector< std::string > & names );
         const std::vector<std::string> getMoverScreens(   const std::vector< std::string > & names );
         const std::vector<std::string> getHVMoverScreens(   const std::vector< std::string > & names );
+        const std::vector< screenStructs::screenObject > getScreensWithCameras();
+        const std::vector< std::string > getNamesOfScreensWithCameras();
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void insertYAG( const std::string & name );
