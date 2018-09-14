@@ -147,8 +147,7 @@ blmController& VCblm::getController(blmController*& cont,
 blmController& VCblm::virtual_VELA_INJ_BLM_Controller()
 {
     std::string name  = "virtual_VELA_INJ_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(virtual_VELA_INJ_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -160,8 +159,7 @@ blmController& VCblm::virtual_VELA_INJ_BLM_Controller()
 blmController & VCblm::offline_VELA_INJ_BLM_Controller()
 {
     std::string name  = "offline_VELA_INJ_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(offline_VELA_INJ_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -173,8 +171,7 @@ blmController & VCblm::offline_VELA_INJ_BLM_Controller()
 blmController & VCblm::physical_VELA_INJ_BLM_Controller()
 {
     std::string name  = "physical_VELA_INJ_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(physical_VELA_INJ_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -186,8 +183,7 @@ blmController & VCblm::physical_VELA_INJ_BLM_Controller()
 blmController & VCblm::virtual_VELA_BA1_BLM_Controller()
 {
     std::string name  = "virtual_VELA_BA1_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(virtual_VELA_BA1_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -199,8 +195,7 @@ blmController & VCblm::virtual_VELA_BA1_BLM_Controller()
 blmController & VCblm::offline_VELA_BA1_BLM_Controller()
 {
     std::string name  = "offline_VELA_BA1_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(offline_VELA_BA1_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -212,8 +207,7 @@ blmController & VCblm::offline_VELA_BA1_BLM_Controller()
 blmController & VCblm::physical_VELA_BA1_BLM_Controller()
 {
     std::string name  = "physical_VELA_BA1_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(physical_VELA_BA1_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -225,8 +219,7 @@ blmController & VCblm::physical_VELA_BA1_BLM_Controller()
 blmController & VCblm::virtual_VELA_BA2_BLM_Controller()
 {
     std::string name  = "virtual_VELA_BA2_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(virtual_VELA_BA2_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -238,8 +231,7 @@ blmController & VCblm::virtual_VELA_BA2_BLM_Controller()
 blmController & VCblm::offline_VELA_BA2_BLM_Controller()
 {
     std::string name  = "offline_VELA_BA2_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(offline_VELA_BA2_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -251,8 +243,7 @@ blmController & VCblm::offline_VELA_BA2_BLM_Controller()
 blmController & VCblm::physical_VELA_BA2_BLM_Controller()
 {
     std::string name  = "physical_VELA_BA2_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(physical_VELA_BA2_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -264,8 +255,7 @@ blmController & VCblm::physical_VELA_BA2_BLM_Controller()
 blmController & VCblm::virtual_CLARA_PH1_BLM_Controller()
 {
     std::string name  = "virtual_CLARA_PH1_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(virtual_CLARA_PH1_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -277,8 +267,7 @@ blmController & VCblm::virtual_CLARA_PH1_BLM_Controller()
 blmController & VCblm::offline_CLARA_PH1_BLM_Controller()
 {
     std::string name  = "offline_CLARA_PH1_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(offline_CLARA_PH1_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -290,8 +279,7 @@ blmController & VCblm::offline_CLARA_PH1_BLM_Controller()
 blmController & VCblm::physical_CLARA_PH1_BLM_Controller()
 {
     std::string name  = "physical_CLARA_PH1_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(physical_CLARA_PH1_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -303,8 +291,7 @@ blmController & VCblm::physical_CLARA_PH1_BLM_Controller()
 blmController & VCblm::virtual_C2B_BLM_Controller()
 {
     std::string name  = "virtual_C2B_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(virtual_C2B_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -316,8 +303,7 @@ blmController & VCblm::virtual_C2B_BLM_Controller()
 blmController & VCblm::offline_C2B_BLM_Controller()
 {
     std::string name  = "offline_C2B_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(offline_C2B_BLM_Controller_Obj,
                          blmconf1,
                          name,
@@ -329,8 +315,7 @@ blmController & VCblm::offline_C2B_BLM_Controller()
 blmController & VCblm::physical_C2B_BLM_Controller()
 {
     std::string name  = "physical_C2B_BLM_Controller";
-    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_CONFIG;
-    const std::string blmconf2 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_SCOPE_TRACE_CONFIG;
+    const std::string blmconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_SCOPE_TRACE_CONFIG;
     return getController(physical_C2B_BLM_Controller_Obj,
                          blmconf1,
                          name,

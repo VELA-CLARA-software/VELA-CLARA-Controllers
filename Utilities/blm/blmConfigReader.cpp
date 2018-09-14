@@ -31,32 +31,6 @@ blmStructs::blmObject blmConfigReader::getBLMObject()
 
     obj.name = "VELA_SCOPE";
 
-//    /// there are only 1 blmNumObject and 1 blmTraceDataObject
-//
-//    obj.numObject = blmNumObject;
-//    for( auto && it : blmNumMonStructs )
-//        obj.numObject.pvMonStructs[ it.pvType ] = it;
-//
-
-    for( auto && it : blmNumObjects )
-        obj.numObjects[ it.name ] = it;
-
-    /// Then we add in the monitor structs, for each num object ...
-
-    for( auto && it : obj.numObjects )
-    {
-        for( auto it2 : blmNumMonStructs )
-        {
-            it.second.pvMonStructs[ it2.pvType ] = it2;
-            it.second.isMonitoringMap[ it2.pvType ] = false;
-            it.second.numData[ it2.pvType ] = nums;
-            it.second.numTimeStamps[ it2.pvType ] = numtstamps;
-            it.second.numStrTimeStamps[ it2.pvType ] = numstrtstamps;
-            it.second.shotCounts[ it2.pvType ] = numshotcounts;
-            it.second.numDataBuffer[ it2.pvType ] = numsbuffer;
-        }
-    }
-
     /// blmTraceDataObjects are in a map keyed by name ...
 
     for( auto && it : blmTraceDataObjects )
@@ -87,24 +61,11 @@ bool blmConfigReader::readConfigFiles()
     /// There are 2 types of objects in the blm, a trace monitor and a number monitor;
     /// They are defined in seperate config files to seperate the data more clearly
     /// they still all end up in an blmObject
-    //NUM
-    blmNumObjects.clear();
-    blmNumMonStructs.clear();
-    bool numSuccess = readConfig( *this,  blmConf1, &blmConfigReader::addToBLMNumObjectsV1,nullptr, &blmConfigReader::addToBLMNumMonStructsV1 );
-    if( !numSuccess )
-        success = false;
-//    if( numObjs == blmTraceDataObject.size() )
-    if( numObjs == blmNumObjects.size() )
-        debugMessage( "*** Created ", numObjs, " blm num Objects, As Expected ***", "\n" );
-    else
-    {
-        debugMessage( "*** Created ", blmNumObjects.size() ," blm num Objects, Expected ", numObjs,  " ERROR ***", "\n"  );
-        success = false;
-    }
+
     //TRACE
     blmTraceDataObjects.clear();
     blmTraceDataMonStructs.clear();
-    bool traceSuccess = readConfig( *this,  blmConf2, &blmConfigReader::addToBLMTraceDataObjectsV1,nullptr, &blmConfigReader::addToBLMTraceDataMonStructsV1 );
+    bool traceSuccess = readConfig( *this,  blmConf1, &blmConfigReader::addToBLMTraceDataObjectsV1,nullptr, &blmConfigReader::addToBLMTraceDataMonStructsV1 );
     if( !traceSuccess )
         success = false;
 //    if( numObjs == blmTraceDataObject.size() )
@@ -119,37 +80,9 @@ bool blmConfigReader::readConfigFiles()
     return success;
 }
 //______________________________________________________________________________
-void blmConfigReader::addToBLMNumMonStructsV1( const std::vector<std::string> &keyVal )
-{
-    addToPVStruct( blmNumMonStructs, keyVal );
-}
-//______________________________________________________________________________
 void blmConfigReader::addToBLMTraceDataMonStructsV1( const std::vector<std::string> &keyVal )
 {
     addToPVStruct( blmTraceDataMonStructs, keyVal );
-}
-//______________________________________________________________________________
-void blmConfigReader::addToBLMNumObjectsV1( const std::vector<std::string> &keyVal )
-{
-    if( keyVal[0] == UTL::NAME )
-    {
-        blmStructs::blmNumObject sconumob = blmStructs::blmNumObject();
-        sconumob.name = keyVal[ 1 ];
-        blmNumObjects.push_back( sconumob );
-        debugMessage("Added ", blmNumObjects.back().name );
-    }
-    else if( keyVal[0] == UTL::PV_ROOT )
-    {
-        if( startVirtualMachine )
-            blmNumObjects.back().pvRoot = UTL::VM_PREFIX + keyVal[ 1 ];
-        else
-            blmNumObjects.back().pvRoot = keyVal[ 1 ];
-    }
-    else if( keyVal[0] == UTL::SCOPE_NAME )
-    {
-        blmNumObjects.back().blmName = getBLMName( keyVal[ 1 ] );
-    }
-
 }
 //______________________________________________________________________________
 void blmConfigReader::addToBLMTraceDataObjectsV1( const std::vector<std::string> &keyVal )
