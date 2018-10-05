@@ -54,16 +54,12 @@ class blmConfigReader : public configReader
         void addToBLMTraceDataObjectsV1( const std::vector<std::string> &keyVal );
         void addToBLMTraceDataMonStructsV1( const std::vector<std::string> &keyVal );
         // NUM objects
-        std::vector< blmStructs::blmNumObject > blmNumObjects;
         std::vector< blmStructs::pvStruct > blmNumMonStructs;
         void addToBLMNumObjectsV1( const std::vector<std::string> &keyVal );
         void addToBLMNumMonStructsV1( const std::vector<std::string> &keyVal );
 
         void addToPVStruct( std::vector< blmStructs::pvStruct > & pvStruct_v, const  std::vector<std::string> &keyVal );
         void addCOUNT_MASK_OR_CHTYPE(  std::vector< blmStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal );
-
-        blmStructs::DIAG_TYPE getDiagType( const std::string & val );
-        blmStructs::SCOPE_NAME getBLMName( const std::string & val );
 
         std::vector< double >                           tstamps;
         std::vector< double >                           numtstamps;

@@ -48,39 +48,19 @@ void blmController::monitorTracesForNShots( size_t N )
     localInterface.monitorTracesForNShots( N );
 }
 //______________________________________________________________________________
-void blmController::monitorATraceForNShots( const std::string trace, blmStructs::SCOPE_PV_TYPE channel, size_t N )
+void blmController::monitorATraceForNShots( const std::string trace, blmStructs::BLM_PV_TYPE channel, size_t N )
 {
     localInterface.monitorATraceForNShots( trace, channel, N );
 }
 //______________________________________________________________________________
-void blmController::monitorNumsForNShots( size_t N )
-{
-    localInterface.monitorNumsForNShots( N );
-}
-//______________________________________________________________________________
-void blmController::monitorANumForNShots( const std::string num, blmStructs::SCOPE_PV_TYPE channel, size_t N )
-{
-    localInterface.monitorANumForNShots( num, channel, N );
-}
-//______________________________________________________________________________
-bool blmController::isMonitoringBLMTrace( const std::string & blmName, blmStructs::SCOPE_PV_TYPE pvType )
+bool blmController::isMonitoringBLMTrace( const std::string & blmName, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.isMonitoringBLMTrace( blmName, pvType );
 }
 //______________________________________________________________________________
-bool blmController::isNotMonitoringBLMTrace( const std::string & blmName, blmStructs::SCOPE_PV_TYPE pvType )
+bool blmController::isNotMonitoringBLMTrace( const std::string & blmName, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.isNotMonitoringBLMTrace( blmName, pvType );
-}
-//______________________________________________________________________________
-bool blmController::isMonitoringBLMNum( const std::string & blmName, blmStructs::SCOPE_PV_TYPE pvType )
-{
-    return localInterface.isMonitoringBLMNum( blmName, pvType );
-}
-//______________________________________________________________________________
-bool blmController::isNotMonitoringBLMNum( const std::string & blmName, blmStructs::SCOPE_PV_TYPE pvType )
-{
-    return localInterface.isNotMonitoringBLMNum( blmName, pvType );
 }
 //______________________________________________________________________________
 const blmStructs::blmTraceData & blmController::getBLMTraceDataStruct( const std::string & blmName )
@@ -88,64 +68,29 @@ const blmStructs::blmTraceData & blmController::getBLMTraceDataStruct( const std
     return localInterface.getBLMTraceDataStruct( blmName );
 }
 //______________________________________________________________________________
-const blmStructs::blmNumObject & blmController::getBLMNumDataStruct( const std::string & blmName )
-{
-    return localInterface.getBLMNumDataStruct( blmName );
-}
-//______________________________________________________________________________
-std::vector< std::vector< double > > blmController::getBLMTraces( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< std::vector< double > > blmController::getBLMTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getBLMTraces( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getBLMNums( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getBLMTrace( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return localInterface.getBLMNums( name, pvType );
+    return localInterface.getBLMTrace( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< std::vector< double > > blmController::getPartOfTrace( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+std::vector< std::vector< double > > blmController::getPartOfTrace( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
 {
     return localInterface.getPartOfTrace( name, pvType, part1, part2 );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getAreaUnderPartOfTrace( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+std::vector< double > blmController::getAreaUnderPartOfTrace( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
 {
     return localInterface.getAreaUnderPartOfTrace( name, pvType, part1, part2 );
-}
-//______________________________________________________________________________
-std::vector< double > blmController::getBLMP1Vec( const std::string & name )
-{
-    return localInterface.getBLMP1Vec( name );
-}
-//______________________________________________________________________________
-std::vector< double > blmController::getBLMP2Vec( const std::string & name )
-{
-    return localInterface.getBLMP2Vec( name );
-}
-//______________________________________________________________________________
-std::vector< double > blmController::getBLMP3Vec( const std::string & name )
-{
-    return localInterface.getBLMP3Vec( name );
-}
-//______________________________________________________________________________
-std::vector< double > blmController::getBLMP4Vec( const std::string & name )
-{
-    return localInterface.getBLMP4Vec( name );
 }
 //______________________________________________________________________________
 void blmController::setBufferSize( size_t bufferSize )
 {
     localInterface.setBufferSize( bufferSize );
-}
-//______________________________________________________________________________
-void blmController::setNumBufferSize( size_t bufferSize )
-{
-    localInterface.setNumBufferSize( bufferSize );
-}
-//______________________________________________________________________________
-void blmController::setTraceBufferSize( size_t bufferSize )
-{
-    localInterface.setTraceBufferSize( bufferSize );
 }
 //______________________________________________________________________________
 void blmController::restartContinuousMonitoring()
@@ -168,139 +113,119 @@ size_t blmController::getBufferSize( const std::string & name )
     return localInterface.getBufferSize( name );
 }
 //______________________________________________________________________________
-const blmStructs::DIAG_TYPE blmController::getDiagType( const std::string & blmName, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getBLMCH1Waveform( const std::string & name )
 {
-    return localInterface.getDiagType( blmName, pvType );
+    return localInterface.getBLMCH1Waveform( name );
 }
 //______________________________________________________________________________
-const std::string blmController::getDiagTypeStr( const std::string & blmName, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getBLMCH2Waveform( const std::string & name )
 {
-    return localInterface.getDiagTypeStr( blmName, pvType );
+    return localInterface.getBLMCH2Waveform( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > blmController::getBLMNumBuffer( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getBLMCH3Waveform( const std::string & name )
 {
-    return localInterface.getBLMNumBuffer( name, pvType );
+    return localInterface.getBLMCH3Waveform( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > blmController::getBLMP1Buffer( const std::string & name )
+std::vector< double > blmController::getBLMCH4Waveform( const std::string & name )
 {
-    return localInterface.getBLMP1Buffer( name );
+    return localInterface.getBLMCH4Waveform( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > blmController::getBLMP2Buffer( const std::string & name )
+std::vector< double > blmController::getBLMCH1Time( const std::string & name )
 {
-    return localInterface.getBLMP2Buffer( name );
+    return localInterface.getBLMCH1Time( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > blmController::getBLMP3Buffer( const std::string & name )
+std::vector< double > blmController::getBLMCH2Time( const std::string & name )
 {
-    return localInterface.getBLMP3Buffer( name );
+    return localInterface.getBLMCH2Time( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< double > blmController::getBLMP4Buffer( const std::string & name )
+std::vector< double > blmController::getBLMCH3Time( const std::string & name )
 {
-    return localInterface.getBLMP4Buffer( name );
+    return localInterface.getBLMCH3Time( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< std::vector < double > > blmController::getBLMTraceBuffer( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getBLMCH4Time( const std::string & name )
+{
+    return localInterface.getBLMCH4Time( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > blmController::getBLMTraceBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getBLMTraceBuffer( name, pvType );
 }
 //______________________________________________________________________________
-boost::circular_buffer< std::vector < double > > blmController::getBLMTR1Buffer( const std::string & name )
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH1WaveformBuffer( const std::string & name )
 {
-    return localInterface.getBLMTR1Buffer( name );
+    return localInterface.getBLMCH1WaveformBuffer( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< std::vector < double > > blmController::getBLMTR2Buffer( const std::string & name )
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH2WaveformBuffer( const std::string & name )
 {
-    return localInterface.getBLMTR2Buffer( name );
+    return localInterface.getBLMCH2WaveformBuffer( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< std::vector < double > > blmController::getBLMTR3Buffer( const std::string & name )
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH3WaveformBuffer( const std::string & name )
 {
-    return localInterface.getBLMTR3Buffer( name );
+    return localInterface.getBLMCH3WaveformBuffer( name );
 }
 //______________________________________________________________________________
-boost::circular_buffer< std::vector < double > > blmController::getBLMTR4Buffer( const std::string & name )
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH4WaveformBuffer( const std::string & name )
 {
-    return localInterface.getBLMTR4Buffer( name );
+    return localInterface.getBLMCH4WaveformBuffer( name );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getMinOfTraces( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH1TimeBuffer( const std::string & name )
+{
+    return localInterface.getBLMCH1TimeBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH2TimeBuffer( const std::string & name )
+{
+    return localInterface.getBLMCH2TimeBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH3TimeBuffer( const std::string & name )
+{
+    return localInterface.getBLMCH3TimeBuffer( name );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::vector < double > > blmController::getBLMCH4TimeBuffer( const std::string & name )
+{
+    return localInterface.getBLMCH4TimeBuffer( name );
+}
+//______________________________________________________________________________
+std::vector< double > blmController::getMinOfTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getMinOfTraces( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getMaxOfTraces( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getMaxOfTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getMaxOfTraces( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getAreaUnderTraces( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getAreaUnderTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getAreaUnderTraces( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getTimeStamps( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< double > blmController::getTimeStamps( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getTimeStamps( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< std::string > blmController::getStrTimeStamps( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+std::vector< std::string > blmController::getStrTimeStamps( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return localInterface.getStrTimeStamps( name, pvType );
 }
 //______________________________________________________________________________
-std::vector< double > blmController::getAvgNoise( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+std::vector< double > blmController::getAvgNoise( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
 {
     return localInterface.getAvgNoise( name, pvType, part1, part2 );
-}
-//______________________________________________________________________________
-double blmController::getBLMP1( const std::string & name )
-{
-    return localInterface.getBLMP1( name );
-}
-//______________________________________________________________________________
-double blmController::getBLMP2( const std::string & name )
-{
-    return localInterface.getBLMP2( name );
-}
-//______________________________________________________________________________
-double blmController::getBLMP3( const std::string & name )
-{
-    return localInterface.getBLMP3( name );
-}
-//______________________________________________________________________________
-double blmController::getBLMP4( const std::string & name )
-{
-    return localInterface.getBLMP4( name );
-}
-//______________________________________________________________________________
-double blmController::getWCMQ()
-{
-    return localInterface.getWCMQ();
-}
-//______________________________________________________________________________
-double blmController::getICT1Q( const int part1, const int part2 )
-{
-    return localInterface.getICT1Q( part1, part2 );
-}
-//______________________________________________________________________________
-double blmController::getICT2Q( const int part1, const int part2 )
-{
-    return localInterface.getICT2Q( part1, part2 );
-}
-//______________________________________________________________________________
-double blmController::getFCUPQ()
-{
-    return localInterface.getFCUPQ();
-}
-//______________________________________________________________________________
-double blmController::getEDFCUPQ()
-{
-    return localInterface.getEDFCUPQ();
 }
 //______________________________________________________________________________
 std::vector< std::string > blmController::getBLMNames()
@@ -318,118 +243,133 @@ std::vector< std::string > blmController::getBLMTracePVs()
     return localInterface.getBLMTracePVs();
 }
 //______________________________________________________________________________
-std::vector< std::string > blmController::getBLMNumPVs()
-{
-    return localInterface.getBLMNumPVs();
-}
-//______________________________________________________________________________
 #ifdef BUILD_DLL
-boost::python::list blmController::getBLMP1Vec_Py( const std::string & name )
+boost::python::list blmController::getBLMCH1Waveform_Py( const std::string & name )
 {
-    return toPythonList(getBLMP1Vec( name ));
+    return toPythonList(getBLMCH1Waveform( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP2Vec_Py( const std::string & name )
+boost::python::list blmController::getBLMCH2Waveform_Py( const std::string & name )
 {
-    return toPythonList(getBLMP2Vec( name ));
+    return toPythonList(getBLMCH2Waveform( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP3Vec_Py( const std::string & name )
+boost::python::list blmController::getBLMCH3Waveform_Py( const std::string & name )
 {
-    return toPythonList(getBLMP3Vec( name ));
+    return toPythonList(getBLMCH3Waveform( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP4Vec_Py( const std::string & name )
+boost::python::list blmController::getBLMCH4Waveform_Py( const std::string & name )
 {
-    return toPythonList(getBLMP4Vec( name ));
+    return toPythonList(getBLMCH4Waveform( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getMinOfTraces_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMCH1Time_Py( const std::string & name )
 {
-    return toPythonList(getMinOfTraces( name, pvType ));
+    return toPythonList(getBLMCH1Time( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getMaxOfTraces_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMCH2Time_Py( const std::string & name )
 {
-    return toPythonList(getMaxOfTraces( name, pvType ));
+    return toPythonList(getBLMCH2Time( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getAreaUnderTraces_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMCH3Time_Py( const std::string & name )
 {
-    return toPythonList(getAreaUnderTraces( name, pvType ));
+    return toPythonList(getBLMCH3Time( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getTimeStamps_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMCH4Time_Py( const std::string & name )
 {
-    return toPythonList(getTimeStamps( name, pvType ));
+    return toPythonList(getBLMCH4Time( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getStrTimeStamps_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMTraces_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getStrTimeStamps( name, pvType ));
+    return toPythonList(getBLMTraces( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getAvgNoise_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+boost::python::list blmController::getBLMTrace_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getAvgNoise( name, pvType, part1, part2 ));
+    return toPythonList(getBLMTrace( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMNumBuffer_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMCH1WaveformBuffer_Py( const std::string & name )
 {
-    return toPythonList(getBLMNumBuffer( name, pvType ));
+    return toPythonList(getBLMCH1WaveformBuffer( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP1Buffer_Py( const std::string & name )
+boost::python::list blmController::getBLMCH2WaveformBuffer_Py( const std::string & name )
 {
-    return toPythonList(getBLMP1Buffer( name ));
+    return toPythonList(getBLMCH2WaveformBuffer( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP2Buffer_Py( const std::string & name )
+boost::python::list blmController::getBLMCH3WaveformBuffer_Py( const std::string & name )
 {
-    return toPythonList(getBLMP2Buffer( name ));
+    return toPythonList(getBLMCH3WaveformBuffer( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP3Buffer_Py( const std::string & name )
+boost::python::list blmController::getBLMCH4WaveformBuffer_Py( const std::string & name )
 {
-    return toPythonList(getBLMP3Buffer( name ));
+    return toPythonList(getBLMCH4WaveformBuffer( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMP4Buffer_Py( const std::string & name )
+boost::python::list blmController::getBLMCH1TimeBuffer_Py( const std::string & name )
 {
-    return toPythonList(getBLMP4Buffer( name ));
+    return toPythonList(getBLMCH1TimeBuffer( name ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMTraceBuffer_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getBLMCH2TimeBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBLMCH2TimeBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMCH3TimeBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBLMCH3TimeBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMCH4TimeBuffer_Py( const std::string & name )
+{
+    return toPythonList(getBLMCH4TimeBuffer( name ));
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMTraceBuffer_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
     return toPythonList(getBLMTraceBuffer( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMTR1Buffer_Py( const std::string & name )
+boost::python::list blmController::getMinOfTraces_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getBLMTR1Buffer( name ));
+    return toPythonList(getMinOfTraces( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMTR2Buffer_Py( const std::string & name )
+boost::python::list blmController::getMaxOfTraces_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getBLMTR2Buffer( name ));
+    return toPythonList(getMaxOfTraces( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMTR3Buffer_Py( const std::string & name )
+boost::python::list blmController::getAreaUnderTraces_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getBLMTR3Buffer( name ));
+    return toPythonList(getAreaUnderTraces( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMTR4Buffer_Py( const std::string & name )
+boost::python::list blmController::getTimeStamps_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getBLMTR4Buffer( name ));
+    return toPythonList(getTimeStamps( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMNums_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType )
+boost::python::list blmController::getStrTimeStamps_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
 {
-    return toPythonList(getBLMNums( name, pvType ));
+    return toPythonList(getStrTimeStamps( name, pvType ));
 }
 //______________________________________________________________________________
-boost::python::list blmController::getAreaUnderPartOfTrace_Py( const std::string & name, blmStructs::SCOPE_PV_TYPE pvType, const int part1, const int part2 )
+boost::python::list blmController::getAvgNoise_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
+{
+    return toPythonList(getAvgNoise( name, pvType, part1, part2 ));
+}
+//______________________________________________________________________________
+boost::python::list blmController::getAreaUnderPartOfTrace_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
 {
     return toPythonList(getAreaUnderPartOfTrace( name, pvType, part1, part2 ));
 }
@@ -447,11 +387,6 @@ boost::python::list blmController::getBLMPVs_Py()
 boost::python::list blmController::getBLMTracePVs_Py()
 {
     return toPythonList(getBLMTracePVs());
-}
-//______________________________________________________________________________
-boost::python::list blmController::getBLMNumPVs_Py()
-{
-    return toPythonList(getBLMNumPVs());
 }
 #endif
 //______________________________________________________________________________________________

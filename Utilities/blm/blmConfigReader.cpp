@@ -29,8 +29,6 @@ blmStructs::blmObject blmConfigReader::getBLMObject()
 {
     blmStructs::blmObject obj;
 
-    obj.name = "VELA_SCOPE";
-
     /// blmTraceDataObjects are in a map keyed by name ...
 
     for( auto && it : blmTraceDataObjects )
@@ -101,14 +99,6 @@ void blmConfigReader::addToBLMTraceDataObjectsV1( const std::vector<std::string>
         else
             blmTraceDataObjects.back().pvRoot = keyVal[ 1 ];
     }
-    else if( keyVal[0] == UTL::SCOPE_NAME )
-    {
-        blmTraceDataObjects.back().blmName = getBLMName( keyVal[ 1 ] );
-    }
-    else if( keyVal[0] == UTL::TIMEBASE )
-    {
-        blmTraceDataObjects.back().timebase = getNumD( keyVal[ 1 ] );
-    }
 }
 //______________________________________________________________________________
 void blmConfigReader::addToPVStruct( std::vector< blmStructs::pvStruct >  & pvStruct_v, const std::vector<std::string> &keyVal )
@@ -118,50 +108,45 @@ void blmConfigReader::addToPVStruct( std::vector< blmStructs::pvStruct >  & pvSt
         pvStruct_v.push_back( blmStructs::pvStruct() );    /// Any way to avoid the ladders?
         pvStruct_v.back().pvSuffix = keyVal[1];
         // NUMBER PVs
-        if( keyVal[0] == UTL::PV_SUFFIX_P1  )
+        if( keyVal[0] == UTL::PV_SUFFIX_CH1_WAVE  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::P1;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::NUM;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH1WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_P2  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH2_WAVE  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::P2;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::NUM;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH2WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_P3  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH3_WAVE  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::P3;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::NUM;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH3WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_P4  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH4_WAVE  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::P4;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::NUM;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH4WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        // TRACE PVs
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR1  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH1_TIME  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::TR1;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::ARRAY;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH1TIME;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR2  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH2_TIME  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::TR2;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::ARRAY;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH2TIME;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR3  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH3_TIME  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::TR3;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::ARRAY;
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH3TIME;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
-        else if( keyVal[0] == UTL::PV_SUFFIX_TR4  )
+        else if( keyVal[0] == UTL::PV_SUFFIX_CH4_TIME  )
         {
-            pvStruct_v.back().pvType    = blmStructs::SCOPE_PV_TYPE::TR4;
-            pvStruct_v.back().blmType = blmStructs::SCOPE_TYPE::ARRAY;
-        }
-        else if( keyVal[0] == UTL::DIAG_TYPE )
-        {
-            pvStruct_v.back().diagType = getDiagType( keyVal[ 1 ] );
+            pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH4TIME;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
         }
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }
@@ -173,8 +158,6 @@ void blmConfigReader::addCOUNT_MASK_OR_CHTYPE( std::vector< blmStructs::pvStruct
 {
     if( keyVal[0] == UTL::PV_COUNT )
         pvStruct_v.back().COUNT = getCOUNT( keyVal[ 1 ] );
-    else if( keyVal[0] == UTL::DIAG_TYPE )
-        pvStruct_v.back().diagType = getDiagType( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_MASK )
         pvStruct_v.back().MASK = getMASK( keyVal[ 1 ] );
     else if( keyVal[0] == UTL::PV_CHTYPE )
@@ -289,35 +272,3 @@ bool blmConfigReader::readConfig( blmConfigReader & obj, const std::string fn, a
     return success;
 }
 //______________________________________________________________________________
-blmStructs::DIAG_TYPE blmConfigReader::getDiagType( const std::string & val )
-{
-    blmStructs::DIAG_TYPE r;
-
-    if( val == UTL::WCM )
-        r = blmStructs::DIAG_TYPE::WCM;
-    else if( val == UTL::ICT1 )
-        r = blmStructs::DIAG_TYPE::ICT1;
-    else if( val == UTL::ICT2 )
-        r = blmStructs::DIAG_TYPE::ICT2;
-    else if( val == UTL::ED_FCUP )
-        r = blmStructs::DIAG_TYPE::ED_FCUP;
-    else if( val == UTL::FCUP )
-        r = blmStructs::DIAG_TYPE::FCUP;
-
-    return r;
-}
-//______________________________________________________________________________
-blmStructs::SCOPE_NAME blmConfigReader::getBLMName( const std::string & val )
-{
-    blmStructs::SCOPE_NAME r;
-
-    if( val == UTL::CLARASCOPE01 )
-        r = blmStructs::SCOPE_NAME::CLARASCOPE01;
-    else if( val == UTL::VELASCOPE02 )
-        r = blmStructs::SCOPE_NAME::VELASCOPE02;
-    else
-        r = blmStructs::UNKNOWN_SCOPE_NAME;
-
-    return r;
-}
-
