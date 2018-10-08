@@ -226,37 +226,45 @@ void blmInterface::staticEntryrMonitor( const event_handler_args args )
 //______________________________________________________________________________
 void blmInterface::updateTrace( blmStructs::monitorStruct * ms, const event_handler_args args )
 {
-    const dbr_time_float * p = ( const struct dbr_time_float * ) args.dbr;
-    blmStructs::blmTraceData * td = reinterpret_cast< blmStructs::blmTraceData *> (ms -> val);
+    const dbr_time_double * p = ( const struct dbr_time_double * ) args.dbr;
+    blmStructs::blmTraceData * td = &ms->interface->blmObj.traceObjects.at( ms->objName );
 
     if( td->isAContinuousMonitorStruct )
     {
         td->shotCounts.at( ms -> monType ) = 0;
         if( td->timeStamps.at(ms->monType).size() == 0 )
         {
+            setBufferSize(UTL::TEN_SIZET);
             td->timeStamps.at(ms->monType).push_back(1);
             td->strTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
-            td->traceData.at(ms->monType).resize(1);
             td->traceDataBuffer.at(ms->monType).resize(td->buffer);
+            for( auto && it : td->traceDataBuffer.at(ms -> monType) )
+            {
+                it.resize( td->pvMonStructs[ blmStructs::BLM_PV_TYPE::CH1WAVE ].COUNT );
+            }
         }
     }
-    const dbr_float_t * value = &(p  -> value);
+    const dbr_double_t * value = &(p  -> value);
     size_t i =1;
     int zero = 0;
 
-    updateTime( p->stamp, td->timeStamps.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ],
-               td->strTimeStamps.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ]  );
+    updateTime( p->stamp, td->timeStamps.at( ms -> monType ).back(),
+               td->strTimeStamps.at( ms -> monType ).back() );
 
     /// resizes the trace vectors dynamically in case the trace being sent to EPICS from the blm changes size
     /// - limited by the array size set in EPICS database (currently (6/4/17) 2000 points)
-    td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ].resize(static_cast< int >(*( &p->value ) ) );
+//    td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ].resize(static_cast< int >(*( &p->value ) ) );
 
-    for( auto && it : td->traceData.at( ms -> monType )[ td->shotCounts.at( ms -> monType ) ] )
+    std::vector< double > rawVectorContainer(td->pvMonStructs[ blmStructs::BLM_PV_TYPE::CH1WAVE ].COUNT);
+
+    for( auto && it : rawVectorContainer )
     {
         it = *( &p->value + i );
         ++i;
     }
-    td->traceDataBuffer.at( ms -> monType ).push_back(td->traceData.at( ms -> monType ).back());
+    td->traceDataBuffer.at( ms -> monType ).push_back(rawVectorContainer);
+    td->timeStampsBuffer.at( ms -> monType ).push_back(td->timeStamps.at(ms->monType).back());
+    td->strTimeStampsBuffer.at( ms -> monType ).push_back(td->strTimeStamps.at(ms->monType).back());
 
     if( td -> isATemporaryMonitorStruct )
     {
@@ -527,6 +535,16 @@ std::vector< std::string > blmInterface::getStrTimeStamps( const std::string & n
     return blmObj.traceObjects.at( name ).strTimeStamps.at( pvType );
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > blmInterface::getTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
+{
+    return blmObj.traceObjects.at( name ).timeStampsBuffer.at( pvType );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::string > blmInterface::getStrTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
+{
+    return blmObj.traceObjects.at( name ).strTimeStampsBuffer.at( pvType );
+}
+//______________________________________________________________________________
 std::vector< double > blmInterface::getBLMCH1Waveform( const std::string & name )
 {
     return blmObj.traceObjects.at( name ).traceDataBuffer.at( blmStructs::BLM_PV_TYPE::CH1WAVE ).back();
@@ -580,6 +598,16 @@ void blmInterface::setBufferSize( size_t bufferSize )
     for( auto && it : blmObj.traceObjects )
     {
         for( auto && it1 : it.second.traceDataBuffer )
+        {
+            it1.second.clear();
+            it1.second.resize( bufferSize );
+        }
+        for( auto && it1 : it.second.timeStampsBuffer )
+        {
+            it1.second.clear();
+            it1.second.resize( bufferSize );
+        }
+        for( auto && it1 : it.second.strTimeStampsBuffer )
         {
             it1.second.clear();
             it1.second.resize( bufferSize );
@@ -679,7 +707,7 @@ void blmInterface::killTraceCallBack( blmStructs::monitorStruct * ms )
     }
 }
 //______________________________________________________________________________
-bool blmInterface::isATimePV( blmStructs::BLM_PV_TYPE pv )
+bool blmInterface::isATimePV( blmStructs::BLM_DATA_TYPE pv )
 {
     bool ret = false;
     if( pv == blmStructs::BLM_DATA_TYPE::TIME )
@@ -687,7 +715,7 @@ bool blmInterface::isATimePV( blmStructs::BLM_PV_TYPE pv )
     return ret;
 }
 //______________________________________________________________________________
-bool blmInterface::isAWaveformPV( blmStructs::BLM_PV_TYPE pv )
+bool blmInterface::isAWaveformPV( blmStructs::BLM_DATA_TYPE pv )
 {
     bool ret = false;
     if( pv == blmStructs::BLM_DATA_TYPE::WAVE )
@@ -767,7 +795,7 @@ std::vector< std::string > blmInterface::getBLMNames()
     return blmNames;
 }
 //______________________________________________________________________________
-std::vector< std::string > blmInterface::getBLMPVs()
+std::vector< std::string > blmInterface::getBLMPVStrings()
 {
     std::vector< std::string > blmNames;
     for( auto && iter : blmObj.traceObjects )
@@ -778,6 +806,90 @@ std::vector< std::string > blmInterface::getBLMPVs()
             message( "BLM PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
             s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
             blmNames.push_back( s.str() );
+        }
+    }
+    return blmNames;
+}
+//______________________________________________________________________________
+std::vector< std::string > blmInterface::getBLMWaveformPVStrings()
+{
+    std::vector< std::string > blmNames;
+    for( auto && iter : blmObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            if( isAWaveformPV( iter2.second.blmDataType ) )
+            {
+                std::stringstream s;
+                message( "BLM PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+                s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+                blmNames.push_back( s.str() );
+            }
+        }
+    }
+    return blmNames;
+}
+//______________________________________________________________________________
+std::vector< std::string > blmInterface::getBLMTimePVStrings()
+{
+    std::vector< std::string > blmNames;
+    for( auto && iter : blmObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            if( isATimePV( iter2.second.blmDataType ) )
+            {
+                std::stringstream s;
+                message( "BLM PV ", iter.second.pvRoot, ":", iter2.second.pvSuffix );
+                s << iter.second.pvRoot << ":" << iter2.second.pvSuffix;
+                blmNames.push_back( s.str() );
+            }
+        }
+    }
+    return blmNames;
+}
+//______________________________________________________________________________
+std::vector< blmStructs::BLM_PV_TYPE > blmInterface::getBLMPVs()
+{
+    std::vector< blmStructs::BLM_PV_TYPE > blmNames;
+    for( auto && iter : blmObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            blmNames.push_back( iter2.second.pvType );
+        }
+    }
+    return blmNames;
+}
+//______________________________________________________________________________
+std::vector< blmStructs::BLM_PV_TYPE > blmInterface::getBLMWaveformPVs()
+{
+    std::vector< blmStructs::BLM_PV_TYPE > blmNames;
+    for( auto && iter : blmObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            if( isAWaveformPV( iter2.second.blmDataType ) )
+            {
+                blmNames.push_back( iter2.second.pvType );
+                message(blmNames.back());
+            }
+        }
+    }
+    return blmNames;
+}
+//______________________________________________________________________________
+std::vector< blmStructs::BLM_PV_TYPE > blmInterface::getBLMTimePVs()
+{
+    std::vector< blmStructs::BLM_PV_TYPE > blmNames;
+    for( auto && iter : blmObj.traceObjects )
+    {
+        for( auto && iter2 : iter.second.pvMonStructs )
+        {
+            if( isATimePV( iter2.second.blmDataType ) )
+            {
+                blmNames.push_back( iter2.second.pvType );
+            }
         }
     }
     return blmNames;

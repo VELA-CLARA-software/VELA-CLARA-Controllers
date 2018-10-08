@@ -74,16 +74,23 @@ class blmInterface : public interface
         std::vector< double > getMaxOfTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< double > getTimeStamps( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
+        boost::circular_buffer< double > getTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< std::vector< double > > getPartOfTrace( const std::string & name, blmStructs::BLM_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< double > getAreaUnderPartOfTrace( const std::string & name, blmStructs::BLM_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< std::string > getStrTimeStamps( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
+        boost::circular_buffer< std::string > getStrTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         void updateTrace( blmStructs::monitorStruct * ms, const event_handler_args args );
         void monitorTracesForNShots( size_t N );
         void monitorATraceForNShots( const std::string trace, blmStructs::BLM_PV_TYPE channel, size_t N );
         void cancelDataMonitors();
         std::vector< double > getAvgNoise( const std::string & name, blmStructs::BLM_PV_TYPE & pvType, const int part1, const int part2 );
         std::vector< std::string > getBLMNames();
-        std::vector< std::string > getBLMPVs();
+        std::vector< blmStructs::BLM_PV_TYPE > getBLMPVs();
+        std::vector< blmStructs::BLM_PV_TYPE > getBLMTimePVs();
+        std::vector< blmStructs::BLM_PV_TYPE > getBLMWaveformPVs();
+        std::vector< std::string > getBLMPVStrings();
+        std::vector< std::string > getBLMTimePVStrings();
+        std::vector< std::string > getBLMWaveformPVStrings();
         std::vector< std::string > getBLMTracePVs();
         const blmStructs::blmTraceData & getBLMTraceDataStruct( const std::string & blmName );
         bool monitoringTraces = false;
@@ -125,8 +132,8 @@ class blmInterface : public interface
         /// static function that can be called back from epics to update values
         static void staticEntryrMonitor( const event_handler_args args );
 
-        bool isATimePV( blmStructs::BLM_PV_TYPE pv );
-        bool isAWaveformPV( blmStructs::BLM_PV_TYPE pv );
+        bool isATimePV( blmStructs::BLM_DATA_TYPE pv );
+        bool isAWaveformPV( blmStructs::BLM_DATA_TYPE pv );
         void resetTraceVectors( size_t N );
         void resetATraceVector( const std::string blmName, blmStructs::BLM_PV_TYPE channel, size_t N );
         void resetNumVectors( size_t N );

@@ -71,6 +71,8 @@ namespace blmStructs
         std::map< BLM_PV_TYPE, int >                                             shotCounts;
         std::map< BLM_PV_TYPE, bool >                                            isMonitoringMap;
         std::map< BLM_PV_TYPE, boost::circular_buffer< std::vector< double > > > traceDataBuffer;
+        std::map< BLM_PV_TYPE, boost::circular_buffer< double > >                timeStampsBuffer;
+        std::map< BLM_PV_TYPE, boost::circular_buffer< std::string > >           strTimeStampsBuffer;
         std::map< BLM_PV_TYPE, pvStruct > pvMonStructs;
     #endif
     };

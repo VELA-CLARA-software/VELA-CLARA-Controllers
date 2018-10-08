@@ -538,6 +538,7 @@ namespace UTL
     const std::string PV_SUFFIX_CH4_TIME = "PV_SUFFIX_CH4_TIME";
     const std::string CLARABLM01         = "CLARABLM01";
     const std::string CLARA_PH1_BLM_CONFIG           = "claraBLM.config";
+    const std::string CLARA_2_BA1_BA2_BLM_CONFIG           = "claraBLM.config";
 
 
     // NR-PSU

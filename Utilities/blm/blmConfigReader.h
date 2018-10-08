@@ -69,6 +69,8 @@ class blmConfigReader : public configReader
         std::vector< double >                           nums;
         boost::circular_buffer< double >                numsbuffer;
         boost::circular_buffer< std::vector< double > > tracesbuffer;
+        boost::circular_buffer< double >                timestampsbuffer;
+        boost::circular_buffer< std::string >           strtimestampsbuffer;
         int                                             shotcounts;
         int                                             numshotcounts;
 };

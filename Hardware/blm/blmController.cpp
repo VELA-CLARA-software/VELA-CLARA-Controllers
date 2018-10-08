@@ -98,11 +98,6 @@ void blmController::restartContinuousMonitoring()
     localInterface.restartContinuousMonitoring();
 }
 //______________________________________________________________________________
-void blmController::setTimebase( const std::string & name, const double timebase )
-{
-    localInterface.setTimebase( name, timebase );
-}
-//______________________________________________________________________________
 double blmController::getTimebase( const std::string & name )
 {
     return localInterface.getTimebase( name );
@@ -223,6 +218,16 @@ std::vector< std::string > blmController::getStrTimeStamps( const std::string & 
     return localInterface.getStrTimeStamps( name, pvType );
 }
 //______________________________________________________________________________
+boost::circular_buffer< double > blmController::getTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
+{
+    return localInterface.getTimeStampsBuffer( name, pvType );
+}
+//______________________________________________________________________________
+boost::circular_buffer< std::string > blmController::getStrTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
+{
+    return localInterface.getStrTimeStampsBuffer( name, pvType );
+}
+//______________________________________________________________________________
 std::vector< double > blmController::getAvgNoise( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
 {
     return localInterface.getAvgNoise( name, pvType, part1, part2 );
@@ -233,14 +238,34 @@ std::vector< std::string > blmController::getBLMNames()
     return localInterface.getBLMNames();
 }
 //______________________________________________________________________________
-std::vector< std::string > blmController::getBLMPVs()
+std::vector< std::string > blmController::getBLMPVStrings()
+{
+    return localInterface.getBLMPVStrings();
+}
+//______________________________________________________________________________
+std::vector< std::string > blmController::getBLMTimePVStrings()
+{
+    return localInterface.getBLMTimePVStrings();
+}
+//______________________________________________________________________________
+std::vector< std::string > blmController::getBLMWaveformPVStrings()
+{
+    return localInterface.getBLMWaveformPVStrings();
+}
+//______________________________________________________________________________
+std::vector< blmStructs::BLM_PV_TYPE > blmController::getBLMPVs()
 {
     return localInterface.getBLMPVs();
 }
 //______________________________________________________________________________
-std::vector< std::string > blmController::getBLMTracePVs()
+std::vector< blmStructs::BLM_PV_TYPE > blmController::getBLMTimePVs()
 {
-    return localInterface.getBLMTracePVs();
+    return localInterface.getBLMTimePVs();
+}
+//______________________________________________________________________________
+std::vector< blmStructs::BLM_PV_TYPE > blmController::getBLMWaveformPVs()
+{
+    return localInterface.getBLMWaveformPVs();
 }
 //______________________________________________________________________________
 #ifdef BUILD_DLL
@@ -364,6 +389,16 @@ boost::python::list blmController::getStrTimeStamps_Py( const std::string & name
     return toPythonList(getStrTimeStamps( name, pvType ));
 }
 //______________________________________________________________________________
+boost::python::list blmController::getTimeStampsBuffer_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
+{
+    return toPythonList(getTimeStampsBuffer( name, pvType ));
+}
+//______________________________________________________________________________
+boost::python::list blmController::getStrTimeStampsBuffer_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType )
+{
+    return toPythonList(getStrTimeStampsBuffer( name, pvType ));
+}
+//______________________________________________________________________________
 boost::python::list blmController::getAvgNoise_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 )
 {
     return toPythonList(getAvgNoise( name, pvType, part1, part2 ));
@@ -384,9 +419,29 @@ boost::python::list blmController::getBLMPVs_Py()
     return toPythonList(getBLMPVs());
 }
 //______________________________________________________________________________
-boost::python::list blmController::getBLMTracePVs_Py()
+boost::python::list blmController::getBLMTimePVs_Py()
 {
-    return toPythonList(getBLMTracePVs());
+    return toPythonList(getBLMTimePVs());
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMWaveformPVs_Py()
+{
+    return toPythonList(getBLMWaveformPVs());
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMPVStrings_Py()
+{
+    return toPythonList(getBLMPVStrings());
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMTimePVStrings_Py()
+{
+    return toPythonList(getBLMTimePVStrings());
+}
+//______________________________________________________________________________
+boost::python::list blmController::getBLMWaveformPVStrings_Py()
+{
+    return toPythonList(getBLMWaveformPVStrings());
 }
 #endif
 //______________________________________________________________________________________________

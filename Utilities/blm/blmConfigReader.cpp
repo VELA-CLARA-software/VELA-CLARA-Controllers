@@ -47,6 +47,8 @@ blmStructs::blmObject blmConfigReader::getBLMObject()
             it.second.strTimeStamps[ it2.pvType ] = strtstamps;
             it.second.shotCounts[ it2.pvType ] = shotcounts;
             it.second.traceDataBuffer[ it2.pvType ] = tracesbuffer;
+            it.second.timeStampsBuffer[ it2.pvType ] = timestampsbuffer;
+            it.second.strTimeStampsBuffer[ it2.pvType ] = strtimestampsbuffer;
         }
     }
 
@@ -131,22 +133,22 @@ void blmConfigReader::addToPVStruct( std::vector< blmStructs::pvStruct >  & pvSt
         else if( keyVal[0] == UTL::PV_SUFFIX_CH1_TIME  )
         {
             pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH1TIME;
-            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::TIME;
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_CH2_TIME  )
         {
             pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH2TIME;
-            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::TIME;
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_CH3_TIME  )
         {
             pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH3TIME;
-            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::TIME;
         }
         else if( keyVal[0] == UTL::PV_SUFFIX_CH4_TIME  )
         {
             pvStruct_v.back().pvType      = blmStructs::BLM_PV_TYPE::CH4TIME;
-            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::WAVE;
+            pvStruct_v.back().blmDataType = blmStructs::BLM_DATA_TYPE::TIME;
         }
         debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING( pvStruct_v.back().pvType) ) ;
     }

@@ -36,6 +36,9 @@ class VCblm : public VCbase
         blmController & virtual_CLARA_PH1_BLM_Controller();
         blmController & offline_CLARA_PH1_BLM_Controller();
         blmController & physical_CLARA_PH1_BLM_Controller();
+        blmController & virtual_C2B_BLM_Controller();
+        blmController & offline_C2B_BLM_Controller();
+        blmController & physical_C2B_BLM_Controller();
         blmController & getBLMController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area );
 
     protected:
@@ -54,6 +57,9 @@ class VCblm : public VCbase
         blmController * virtual_CLARA_PH1_BLM_Controller_Obj;
         blmController * offline_CLARA_PH1_BLM_Controller_Obj;
         blmController * physical_CLARA_PH1_BLM_Controller_Obj;
+        blmController * virtual_CLARA_2_BA1_BA2_BLM_Controller_Obj;
+        blmController * offline_CLARA_2_BA1_BA2_BLM_Controller_Obj;
+        blmController * physical_CLARA_2_BA1_BA2_BLM_Controller_Obj;
 };
 
 #ifdef BUILD_DLL
@@ -72,88 +78,44 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
     boost::python::type_info info = boost::python::type_id< std::map< blmStructs::BLM_PV_TYPE, bool > > ();
     const boost::python::converter::registration* reg = boost::python::converter::registry::query(info);
 
-    info = boost::python::type_id< std::vector< std::vector< double > > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::vector< std::vector< double > > >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< std::vector< double > > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::vector< std::vector< double > > >("std_vector_double")
-            .def( vector_indexing_suite< std::vector< std::vector< double > > >())
-            ;
-    }
+    boost::python::class_< boost::circular_buffer< double > >("Circular buffer definition for python ", boost::python::no_init)
+        .def(vector_indexing_suite< boost::circular_buffer< double > >())
+        ;
 
-    info = boost::python::type_id< std::map< blmStructs::BLM_PV_TYPE, bool > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >("std_scope_map_bool")
-            .def( map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, bool > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >("std_scope_map_bool")
-            .def( map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, bool > >())
-            ;
-    }
+    boost::python::class_< std::map< blmStructs::BLM_PV_TYPE, boost::circular_buffer< double > > >("map of BLM_PV_TYPE of circular buffer of doubles ", boost::python::no_init)
+        .def(map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, boost::circular_buffer< double > > >())
+        ;
 
-    info = boost::python::type_id< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >("std_scope_map_vector_double")
-            .def( map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >("std_scope_map_vector_double")
-            .def( map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, std::vector< double > > >())
-            ;
-    }
-
-    info = boost::python::type_id< std::map< blmStructs::BLM_PV_TYPE, std::vector< std::vector< double > > > > ();
-    reg = boost::python::converter::registry::query(info);
-    if (reg == NULL)  {
-        class_< std::map< blmStructs::BLM_PV_TYPE, std::vector< std::vector< double > > > >("std_scope_map_vector_vector_double")
-            .def( map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, std::vector< std::vector< double > > > >())
-            ;
-    } else if ((*reg).m_to_python == NULL) {
-        class_< std::map< blmStructs::BLM_PV_TYPE, std::vector< std::vector< double > > > >("std_scope_map_vector_vector_double")
-            .def( map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, std::vector< std::vector< double > > > >())
-            ;
-    }
+    boost::python::class_< boost::circular_buffer< std::vector< double > > >("Circular buffer of vector of doubles definition for python ", boost::python::no_init)
+        .def(vector_indexing_suite< boost::circular_buffer< std::vector< double > > >())
+        ;
 
     enum_<blmStructs::BLM_PV_TYPE>("BLM_PV_TYPE")
             .value("CH1WAVE", blmStructs::BLM_PV_TYPE::CH1WAVE )
             .value("CH2WAVE", blmStructs::BLM_PV_TYPE::CH2WAVE )
             .value("CH3WAVE", blmStructs::BLM_PV_TYPE::CH3WAVE )
             .value("CH4WAVE", blmStructs::BLM_PV_TYPE::CH4WAVE )
-            .value("CH1TIME",  blmStructs::BLM_PV_TYPE::CH1TIME  )
-            .value("CH2TIME",  blmStructs::BLM_PV_TYPE::CH2TIME  )
-            .value("CH3TIME",  blmStructs::BLM_PV_TYPE::CH3TIME  )
-            .value("CH4TIME",  blmStructs::BLM_PV_TYPE::CH4TIME  )
-            .value("UNKNOWN",  blmStructs::BLM_PV_TYPE::UNKNOWN  )
+            .value("CH1TIME", blmStructs::BLM_PV_TYPE::CH1TIME  )
+            .value("CH2TIME", blmStructs::BLM_PV_TYPE::CH2TIME  )
+            .value("CH3TIME", blmStructs::BLM_PV_TYPE::CH3TIME  )
+            .value("CH4TIME", blmStructs::BLM_PV_TYPE::CH4TIME  )
+            .value("UNKNOWN", blmStructs::BLM_PV_TYPE::UNKNOWN  )
             ;
 
     char const* blmTraceDataStructString = "This struct contains trace data for the four channels on the scope - e.g. tr1TraceData contains a vector of the EPICS PV for channel 1 on the scope.\n"
                                              "This will only contain real-time data if scope trace data is being submitted to EPICS - you will need to check this on the scope.\n";
                                              "traceData contains a vector of vectors, with data from all four channels on the scope.\n"
                                              "Timestamps can also be accessed.";
-//    boost::python::class_<blmStructs::blmTraceData,boost::noncopyable>
-//        ("blmTraceData",blmTraceDataStructString,boost::python::no_init)
-//        .def_readonly("isMonitoringMap", &blmStructs::blmTraceData::isMonitoringMap)
-//        .def_readonly("name",            &blmStructs::blmTraceData::name           )
-//        .def_readonly("pvRoot",          &blmStructs::blmTraceData::pvRoot         )
-//        .def_readonly("tr1TraceData",    &blmStructs::blmTraceData::tr1TraceData   )
-//        .def_readonly("tr2TraceData",    &blmStructs::blmTraceData::tr1TraceData   )
-//        .def_readonly("tr3TraceData",    &blmStructs::blmTraceData::tr1TraceData   )
-//        .def_readonly("tr4TraceData",    &blmStructs::blmTraceData::tr1TraceData   )
-//        .def_readonly("traceData",       &blmStructs::blmTraceData::traceData      )
-//        .def_readonly("tr1TimeStamps",   &blmStructs::blmTraceData::tr1TimeStamps  )
-//        .def_readonly("tr2TimeStamps",   &blmStructs::blmTraceData::tr2TimeStamps  )
-//        .def_readonly("tr3TimeStamps",   &blmStructs::blmTraceData::tr3TimeStamps  )
-//        .def_readonly("tr4TimeStamps",   &blmStructs::blmTraceData::tr4TimeStamps  )
-//        .def_readonly("shotCounts",      &blmStructs::blmTraceData::shotCounts     )
-//        .def_readonly("timebase",        &blmStructs::blmTraceData::timebase       )
-//        .def_readonly("timeStamps",      &blmStructs::blmTraceData::timeStamps     )
-//        ;
+    boost::python::class_<blmStructs::blmTraceData,boost::noncopyable>
+        ("blmTraceData",blmTraceDataStructString,boost::python::no_init)
+        .def_readonly("isMonitoringMap",     &blmStructs::blmTraceData::isMonitoringMap)
+        .def_readonly("name",                &blmStructs::blmTraceData::name           )
+        .def_readonly("pvRoot",              &blmStructs::blmTraceData::pvRoot         )
+        .def_readonly("traceData",           &blmStructs::blmTraceData::traceData   )
+        .def_readonly("traceDataBuffer",     &blmStructs::blmTraceData::traceDataBuffer   )
+        .def_readonly("timeStampsBuffer",    &blmStructs::blmTraceData::timeStampsBuffer   )
+        .def_readonly("strTimeStampsBuffer", &blmStructs::blmTraceData::strTimeStampsBuffer   )
+        ;
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
@@ -228,11 +190,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
             .def("isNotMonitoringBLMTrace",       &blmController::isNotMonitoringBLMTrace, isNotMonitoringNumDocString       )
             .def("setBufferSize",                   &blmController::setBufferSize, setBufferSizeDocString                        )
             .def("restartContinuousMonitoring",     &blmController::restartContinuousMonitoring, restartMonitoringDocString      )
-            .def("setTimebase",                     &blmController::setTimebase, setTimebaseDocString                            )
             .def("getTimebase",                     &blmController::getTimebase, getTimebaseDocString                            )
             .def("getBufferSize",                   &blmController::getBufferSize, getBufferSizeDocString                        )
-            .def("getBLMTrace",             &blmController::getBLMTraceBuffer_Py, getBLMTraceBufferDocString         )
-            .def("getBLMTraces",             &blmController::getBLMTraceBuffer_Py, getBLMTraceBufferDocString         )
+            .def("getBLMTrace",             &blmController::getBLMTrace_Py, getBLMTraceBufferDocString         )
+            .def("getBLMTraces",             &blmController::getBLMTraces_Py, getBLMTraceBufferDocString         )
             .def("getBLMTraceBuffer",             &blmController::getBLMTraceBuffer_Py, getBLMTraceBufferDocString         )
             .def("getBLMCH1WaveformBuffer",               &blmController::getBLMCH1WaveformBuffer_Py, getBLMTraceBufferDocString           )
             .def("getBLMCH2WaveformBuffer",               &blmController::getBLMCH2WaveformBuffer_Py, getBLMTraceBufferDocString           )
@@ -250,7 +211,6 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
             .def("getBLMCH2Time",               &blmController::getBLMCH2Time_Py, getBLMTraceBufferDocString           )
             .def("getBLMCH3Time",               &blmController::getBLMCH3Time_Py, getBLMTraceBufferDocString           )
             .def("getBLMCH4Time",               &blmController::getBLMCH4Time_Py, getBLMTraceBufferDocString           )
-            .def("getBLMTraces",                  &blmController::getBLMTraces, getBLMTracesDocString                      )
             .def("getMinOfTraces",                  &blmController::getMinOfTraces_Py, getMinOfTracesDocString                   )
             .def("getMaxOfTraces",                  &blmController::getMaxOfTraces_Py, getMaxOfTracesDocString                   )
             .def("getAreaUnderTraces",              &blmController::getAreaUnderTraces_Py, getAreaUnderTracesDocString           )
@@ -258,12 +218,18 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
             .def("getAvgNoise",                     &blmController::getAvgNoise_Py, getAvgNoiseDocString                         )
             .def("getPartOfTrace",                  &blmController::getPartOfTrace, getPartOfTraceDocString                      )
             .def("getTimeStamps",                   &blmController::getTimeStamps_Py, getTimeStampsDocString                     )
+            .def("getTimeStampsBuffer",                   &blmController::getTimeStampsBuffer_Py, getTimeStampsDocString                     )
             .def("getStrTimeStamps",                &blmController::getStrTimeStamps_Py, getStrTimeStampsDocString               )
+            .def("getStrTimeStampsBuffer",                &blmController::getStrTimeStampsBuffer_Py, getStrTimeStampsDocString               )
             .def("monitorTracesForNShots",          &blmController::monitorTracesForNShots, monitorTracesDocString               )
             .def("monitorATraceForNShots",          &blmController::monitorATraceForNShots, monitorATraceDocString               )
             .def("getBLMNames",                   &blmController::getBLMNames_Py                                             )
             .def("getBLMPVs",                     &blmController::getBLMPVs_Py                                               )
-            .def("getBLMTracePVs",                &blmController::getBLMTracePVs_Py                                          )
+            .def("getBLMTimePVs",                     &blmController::getBLMTimePVs_Py                                               )
+            .def("getBLMWaveformPVs",                     &blmController::getBLMWaveformPVs_Py                                               )
+            .def("getBLMPVStrings",                     &blmController::getBLMPVStrings_Py                                               )
+            .def("getBLMTimePVStrings",                     &blmController::getBLMTimePVStrings_Py                                               )
+            .def("getBLMWaveformPVStrings",                     &blmController::getBLMWaveformPVStrings_Py                                               )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &blmController::debugMessagesOff                       )
             .def("debugMessagesOn",                 &blmController::debugMessagesOn                        )
@@ -277,6 +243,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
         .def("virtual_CLARA_PH1_BLM_Controller",  &VCblm::virtual_CLARA_PH1_BLM_Controller, return_value_policy<reference_existing_object>())
         .def("offline_CLARA_PH1_BLM_Controller",  &VCblm::offline_CLARA_PH1_BLM_Controller, return_value_policy<reference_existing_object>())
         .def("physical_CLARA_PH1_BLM_Controller", &VCblm::physical_CLARA_PH1_BLM_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_C2B_BLM_Controller",  &VCblm::virtual_C2B_BLM_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_C2B_BLM_Controller",  &VCblm::offline_C2B_BLM_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_C2B_BLM_Controller", &VCblm::physical_C2B_BLM_Controller, return_value_policy<reference_existing_object>())
         .def("getBLMController",                  &VCblm::getBLMController, return_value_policy<reference_existing_object>())
         ;
 };

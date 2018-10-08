@@ -78,13 +78,20 @@ class blmController : public controller
         std::vector< double > getMaxOfTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< double > getAreaUnderTraces( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< double > getTimeStamps( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
+        boost::circular_buffer< double > getTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< std::string > getStrTimeStamps( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
+        boost::circular_buffer< std::string > getStrTimeStampsBuffer( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         std::vector< std::vector< double > > getPartOfTrace( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 );
         std::vector< double > getAreaUnderPartOfTrace( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 );
         std::vector< double > getAvgNoise( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 );
 
         std::vector< std::string > getBLMNames();
-        std::vector< std::string > getBLMPVs();
+        std::vector< blmStructs::BLM_PV_TYPE > getBLMPVs();
+        std::vector< blmStructs::BLM_PV_TYPE > getBLMTimePVs();
+        std::vector< blmStructs::BLM_PV_TYPE > getBLMWaveformPVs();
+        std::vector< std::string > getBLMPVStrings();
+        std::vector< std::string > getBLMTimePVStrings();
+        std::vector< std::string > getBLMWaveformPVStrings();
         std::vector< std::string > getBLMTracePVs();
 
         #ifdef BUILD_DLL
@@ -111,11 +118,18 @@ class blmController : public controller
         boost::python::list getMaxOfTraces_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         boost::python::list getAreaUnderTraces_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         boost::python::list getTimeStamps_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
+        boost::python::list getTimeStampsBuffer_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         boost::python::list getStrTimeStamps_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
+        boost::python::list getStrTimeStampsBuffer_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType );
         boost::python::list getAreaUnderPartOfTrace_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 );
         boost::python::list getAvgNoise_Py( const std::string & name, blmStructs::BLM_PV_TYPE pvType, const int part1, const int part2 );
         boost::python::list getBLMNames_Py();
+        boost::python::list getBLMPVStrings_Py();
+        boost::python::list getBLMTimePVStrings_Py();
+        boost::python::list getBLMWaveformPVStrings_Py();
         boost::python::list getBLMPVs_Py();
+        boost::python::list getBLMTimePVs_Py();
+        boost::python::list getBLMWaveformPVs_Py();
         boost::python::list getBLMTracePVs_Py();
         #endif
 
