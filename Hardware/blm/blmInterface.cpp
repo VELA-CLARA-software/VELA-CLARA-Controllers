@@ -234,10 +234,10 @@ void blmInterface::updateTrace( blmStructs::monitorStruct * ms, const event_hand
         td->shotCounts.at( ms -> monType ) = 0;
         if( td->timeStamps.at(ms->monType).size() == 0 )
         {
-            setBufferSize(UTL::TEN_SIZET);
+//            setBufferSize(td->buffer);
             td->timeStamps.at(ms->monType).push_back(1);
             td->strTimeStamps.at(ms->monType).push_back(UTL::UNKNOWN_STRING);
-            td->traceDataBuffer.at(ms->monType).resize(td->buffer);
+//            td->traceDataBuffer.at(ms->monType).resize(td->buffer);
             for( auto && it : td->traceDataBuffer.at(ms -> monType) )
             {
                 it.resize( td->pvMonStructs[ blmStructs::BLM_PV_TYPE::CH1WAVE ].COUNT );

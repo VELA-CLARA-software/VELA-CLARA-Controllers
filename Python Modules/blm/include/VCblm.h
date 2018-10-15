@@ -115,48 +115,47 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
         .def_readonly("traceDataBuffer",     &blmStructs::blmTraceData::traceDataBuffer   )
         .def_readonly("timeStampsBuffer",    &blmStructs::blmTraceData::timeStampsBuffer   )
         .def_readonly("strTimeStampsBuffer", &blmStructs::blmTraceData::strTimeStampsBuffer   )
+        .def_readonly("buffer",              &blmStructs::blmTraceData::buffer   )
         ;
 
     boost::python::class_<baseObject, boost::noncopyable>("baseObject", boost::python::no_init)
         ;
     char const* getBLMTraceDataStructString = "Returns the scope trace data struct for str(scopeName). See documentation on the blmTraceData struct for what this contains.";
-    char const* getBLMNumDataStructString = "Returns the scope number data struct for str(scopeName). See documentation on the scopeNumData struct for what this contains.";
     char const* isMonitoringTraceDocString = "Returns true if str(scopeName) traces are being monitored - these are defined in the config file.";
-    char const* isMonitoringNumDocString = "Returns true if str(scopeName) P values are being monitored - these are defined in the config file.";
     char const* isNotMonitoringTraceDocString = "Returns true if str(scopeName) traces are not being monitored - these are defined in the config file.";
-    char const* isNotMonitoringNumDocString = "Returns true if str(scopeName) P values are not being monitored - these are defined in the config file.";
     char const* setBufferSizeDocString = "Set size of buffer for continuous monitor.";
     char const* setNumBufferSizeDocString = "Set size of buffer for continuous P values monitor.";
     char const* setTraceBufferSizeDocString = "Set size of buffer for continuous trace monitor.";
     char const* restartMonitoringDocString = "Restarts continuous monitoring of scope parameters. !!!!!!!WILL RESET ALL VALUES!!!!!!!.";
-    char const* setTimebaseDocString = "Sets the timebase (number of points in trace / time window of trace).";
     char const* getTimebaseDocString = "Returns the timebase (number of points in trace / time window of trace).";
     char const* getBufferSizeDocString = "Returns the size of the buffer.";
-    char const* getDiagTypeDocString = "Returns the diagnostic type for a given channel on the scope (Trace or number).";
-    char const* getDiagTypeStrDocString = "Returns the diagnostic type for a given channel on the scope (Trace or number).";
-    char const* getBLMNumsDocString = "Returns a vector of doubles for str(scopeName), for the channel BLM_PV_TYPE(pvType), after using monitorNumsForNShots.";
-    char const* getBLMP1VecDocString = "Returns a vector of doubles for str(scopeName), for channel P1, after using monitorNumsForNShots.";
-    char const* getBLMP2VecDocString = "Returns a vector of doubles for str(scopeName), for channel P2, after using monitorNumsForNShots.";
-    char const* getBLMP3VecDocString = "Returns a vector of doubles for str(scopeName), for channel P3, after using monitorNumsForNShots.";
-    char const* getBLMP4VecDocString = "Returns a vector of doubles for str(scopeName), for channel P4, after using monitorNumsForNShots.";
-    char const* getBLMP1DocString = "Returns a double containing the value for channel P1 for str(scopeName).";
-    char const* getBLMP2DocString = "Returns a double containing the value for channel P2 for str(scopeName).";
-    char const* getBLMP3DocString = "Returns a double containing the value for channel P3 for str(scopeName).";
-    char const* getBLMP4DocString = "Returns a double containing the value for channel P4 for str(scopeName).";
-    char const* getBLMNumBufferDocString = "Returns a vector containing the last (buffersize) values for a given channel for str(scopeName).";
-    char const* getBLMTraceBufferDocString = "Returns a vector of vectors containing the last (buffersize) traces for a given channel for str(scopeName).";
-    char const* getWCMQDocString = "Returns a double containing the current value for the WCM, provided that the WCM channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS (not for dark current measurements).";
-    char const* getICT1QDocString = "Returns a double containing the current value for the ICT1, provided that the ICT1 channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getICT2QDocString = "Returns a double containing the current value for the ICT2, provided that the ICT2 channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getFCUPQDocString = "Returns a double containing the current value for the FCUP, provided that the FCUP channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getEDFCUPQDocString = "Returns a double containing the current value for the ED-FCUP, provided that the ED-FCUP channel is defined in the config file.\n"
-                          "This should work regardless of whether traces or P values are being submitted to EPICS.";
-    char const* getBLMTracesDocString = "Returns a vector of vectors of doubles for str(scopeName), for the channel BLM_PV_TYPE(pvType), after using monitorTracesForNShots.";
+    char const* getBLMCH1WaveformBufferDocString = "Returns a circular buffer of vectors of doubles for the voltage profile of channel 1 for str(blmName).";
+    char const* getBLMCH2WaveformBufferDocString = "Returns a circular buffer of vectors of doubles for the voltage profile of channel 2 for str(blmName).";
+    char const* getBLMCH3WaveformBufferDocString = "Returns a circular buffer of vectors of doubles for the voltage profile of channel 3 for str(blmName).";
+    char const* getBLMCH4WaveformBufferDocString = "Returns a circular buffer of vectors of doubles for the voltage profile of channel 4 for str(blmName).";
+    char const* getBLMCH1WaveformDocString = "Returns a vector of doubles for the voltage profile of channel 1 for str(blmName).";
+    char const* getBLMCH2WaveformDocString = "Returns a vector of doubles for the voltage profile of channel 2 for str(blmName).";
+    char const* getBLMCH3WaveformDocString = "Returns a vector of doubles for the voltage profile of channel 3 for str(blmName).";
+    char const* getBLMCH4WaveformDocString = "Returns a vector of doubles for the voltage profile of channel 4 for str(blmName).";
+    char const* getBLMCH1TimeBufferDocString = "Returns a circular buffer of vectors of doubles for the time profile of channel 1 for str(blmName).";
+    char const* getBLMCH2TimeBufferDocString = "Returns a circular buffer of vectors of doubles for the time profile of channel 2 for str(blmName).";
+    char const* getBLMCH3TimeBufferDocString = "Returns a circular buffer of vectors of doubles for the time profile of channel 3 for str(blmName).";
+    char const* getBLMCH4TimeBufferDocString = "Returns a circular buffer of vectors of doubles for the time profile of channel 4 for str(blmName).";
+    char const* getBLMCH1TimeDocString = "Returns a vector of doubles for the time profile of channel 1 for str(blmName).";
+    char const* getBLMCH2TimeDocString = "Returns a vector of doubles for the time profile of channel 2 for str(blmName).";
+    char const* getBLMCH3TimeDocString = "Returns a vector of doubles for the time profile of channel 3 for str(blmName).";
+    char const* getBLMCH4TimeDocString = "Returns a vector of doubles for the time profile of channel 4 for str(blmName).";
+    char const* getBLMTraceDocString = "Returns a vector of doubles containing the traces for a given BLM_PV_TYPE for str(blmName).";
+    char const* getBLMTraceBufferDocString = "Returns a circular_buffer of vectors containing the last (buffersize) traces for a given BLM_PV_TYPE for str(blmName).";
+    char const* getBLMTracesDocString = "Returns a vector of vectors of doubles for str(blmName), for the channel BLM_PV_TYPE(pvType), after using monitorTracesForNShots.";
     char const* getPartOfTraceDocString = "Returns a vector of vectors of doubles for str(scopeName), for the channel BLM_PV_TYPE(pvType), of a user-specified portion of the trace (between part1 and part2), after using monitorTracesForNShots.";
+    char const* getBLMNamesDocString = "Returns a list of strings for all BLM devices.";
+    char const* getBLMPVsDocString = "Returns a list of PVs (as string) for all BLMs defined in the config file.";
+    char const* getBLMPVStringsDocString = "Returns a list of PVs (as BLM_PV_TYPE) for all BLMs defined in the config file.";
+    char const* getBLMWaveformPVsDocString = "Returns a list of PVs (as BLM_PV_TYPE) for all waveform BLMs defined in the config file.";
+    char const* getBLMTimePVsDocString = "Returns a list of PVs (as BLM_PV_TYPE) for all time BLMs defined in the config file.";
+    char const* getBLMWaveformPVStringsDocString = "Returns a list of PVs (as string) for all BLMs defined in the config file.";
+    char const* getBLMTimePVStringsDocString = "Returns a list of PVs (as string) for all BLMs defined in the config file.";
     char const* getAreaUnderTracesDocString = "Returns a vector of doubles for str(scopeName), for the channel BLM_PV_TYPE(pvType), containing the area under each trace.\n"
                                               "This function should only be used after using monitorTracesForNShots.";
     char const* getAreaUnderPartOfTraceDocString = "Returns a vector of doubles for str(scopeName), for the channel BLM_PV_TYPE(pvType), containing the area under a user-specified portion of the trace (between part1 and part2).\n"
@@ -172,64 +171,60 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
                                          "To be used in conjunction with functions monitorNumsForNShots or monitorTracesForNShots.";
     char const* getStrTimeStampsDocString = "Returns a vector containing the timestamps as strings (if that's your thing) for str(scope), for the channel BLM_PV_TYPE(pvType) - these are defined in the config file.\n"
                                          "To be used in conjunction with functions monitorNumsForNShots or monitorTracesForNShots.";
-    char const* monitorNumsDocString = "Monitors P values (see scope) for str(scopeName) - these should be defined in the config file. This will fill four vectors of doubles with scope data.\n"
-                                      "Data can be accessed using getBLMNums, or getBLMP(1/2/3/4)Vec.\n";
     char const* monitorTracesDocString = "Monitors traces (see scope) for str(scopeName) - these should be defined in the config file. This will fill four vectors of vectors of doubles with scope trace data.\n"
                                       "Data can be accessed using getBLMTraces - see documentation.\n";
     char const* monitorATraceDocString = "Monitors a specific trace (see scope) for channel (pvType) of str(scopeName) - these should be defined in the config file. This will fill a vectors of vectors of doubles with scope trace data.\n"
-                                      "Data can be accessed using getBLMTraces - see documentation.\n";
-    char const* monitorANumDocString = "Monitors a specific P value (see scope) for channel (pvType) of str(scopeName) - these should be defined in the config file. This will fill a vector of doubles with scope data.\n"
                                       "Data can be accessed using getBLMTraces - see documentation.\n";
 
 	boost::python::class_<blmController, boost::python::bases<controller>, boost::noncopyable>
             ("blmController","blmController Doc String",boost::python::no_init)
             .def("get_CA_PEND_IO_TIMEOUT",          &blmController::get_CA_PEND_IO_TIMEOUT                    )
             .def("set_CA_PEND_IO_TIMEOUT",          &blmController::set_CA_PEND_IO_TIMEOUT                    )
-            .def("getBLMTraceDataStruct",         &blmController::getBLMTraceDataStruct, getBLMTraceDataStructString, return_value_policy<reference_existing_object>())
-            .def("isMonitoringBLMTrace",          &blmController::isMonitoringBLMTrace, isMonitoringTraceDocString           )
-            .def("isNotMonitoringBLMTrace",       &blmController::isNotMonitoringBLMTrace, isNotMonitoringNumDocString       )
-            .def("setBufferSize",                   &blmController::setBufferSize, setBufferSizeDocString                        )
-            .def("restartContinuousMonitoring",     &blmController::restartContinuousMonitoring, restartMonitoringDocString      )
-            .def("getTimebase",                     &blmController::getTimebase, getTimebaseDocString                            )
-            .def("getBufferSize",                   &blmController::getBufferSize, getBufferSizeDocString                        )
-            .def("getBLMTrace",             &blmController::getBLMTrace_Py, getBLMTraceBufferDocString         )
-            .def("getBLMTraces",             &blmController::getBLMTraces_Py, getBLMTraceBufferDocString         )
-            .def("getBLMTraceBuffer",             &blmController::getBLMTraceBuffer_Py, getBLMTraceBufferDocString         )
-            .def("getBLMCH1WaveformBuffer",               &blmController::getBLMCH1WaveformBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH2WaveformBuffer",               &blmController::getBLMCH2WaveformBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH3WaveformBuffer",               &blmController::getBLMCH3WaveformBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH4WaveformBuffer",               &blmController::getBLMCH4WaveformBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH1TimeBuffer",               &blmController::getBLMCH1TimeBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH2TimeBuffer",               &blmController::getBLMCH2TimeBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH3TimeBuffer",               &blmController::getBLMCH3TimeBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH4TimeBuffer",               &blmController::getBLMCH4TimeBuffer_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH1Waveform",               &blmController::getBLMCH1Waveform_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH2Waveform",               &blmController::getBLMCH2Waveform_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH3Waveform",               &blmController::getBLMCH3Waveform_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH4Waveform",               &blmController::getBLMCH4Waveform_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH1Time",               &blmController::getBLMCH1Time_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH2Time",               &blmController::getBLMCH2Time_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH3Time",               &blmController::getBLMCH3Time_Py, getBLMTraceBufferDocString           )
-            .def("getBLMCH4Time",               &blmController::getBLMCH4Time_Py, getBLMTraceBufferDocString           )
-            .def("getMinOfTraces",                  &blmController::getMinOfTraces_Py, getMinOfTracesDocString                   )
-            .def("getMaxOfTraces",                  &blmController::getMaxOfTraces_Py, getMaxOfTracesDocString                   )
-            .def("getAreaUnderTraces",              &blmController::getAreaUnderTraces_Py, getAreaUnderTracesDocString           )
-            .def("getAreaUnderPartOfTrace",         &blmController::getAreaUnderPartOfTrace_Py, getAreaUnderPartOfTraceDocString )
-            .def("getAvgNoise",                     &blmController::getAvgNoise_Py, getAvgNoiseDocString                         )
-            .def("getPartOfTrace",                  &blmController::getPartOfTrace, getPartOfTraceDocString                      )
-            .def("getTimeStamps",                   &blmController::getTimeStamps_Py, getTimeStampsDocString                     )
-            .def("getTimeStampsBuffer",                   &blmController::getTimeStampsBuffer_Py, getTimeStampsDocString                     )
-            .def("getStrTimeStamps",                &blmController::getStrTimeStamps_Py, getStrTimeStampsDocString               )
-            .def("getStrTimeStampsBuffer",                &blmController::getStrTimeStampsBuffer_Py, getStrTimeStampsDocString               )
-            .def("monitorTracesForNShots",          &blmController::monitorTracesForNShots, monitorTracesDocString               )
-            .def("monitorATraceForNShots",          &blmController::monitorATraceForNShots, monitorATraceDocString               )
-            .def("getBLMNames",                   &blmController::getBLMNames_Py                                             )
-            .def("getBLMPVs",                     &blmController::getBLMPVs_Py                                               )
-            .def("getBLMTimePVs",                     &blmController::getBLMTimePVs_Py                                               )
-            .def("getBLMWaveformPVs",                     &blmController::getBLMWaveformPVs_Py                                               )
-            .def("getBLMPVStrings",                     &blmController::getBLMPVStrings_Py                                               )
-            .def("getBLMTimePVStrings",                     &blmController::getBLMTimePVStrings_Py                                               )
-            .def("getBLMWaveformPVStrings",                     &blmController::getBLMWaveformPVStrings_Py                                               )
+            .def("getBLMTraceDataStruct",           &blmController::getBLMTraceDataStruct, getBLMTraceDataStructString, return_value_policy<reference_existing_object>())
+            .def("isMonitoringBLMTrace",            &blmController::isMonitoringBLMTrace, isMonitoringTraceDocString                )
+            .def("isNotMonitoringBLMTrace",         &blmController::isNotMonitoringBLMTrace, isNotMonitoringTraceDocString          )
+            .def("setBufferSize",                   &blmController::setBufferSize, setBufferSizeDocString                           )
+            .def("restartContinuousMonitoring",     &blmController::restartContinuousMonitoring, restartMonitoringDocString         )
+            .def("getTimebase",                     &blmController::getTimebase, getTimebaseDocString                               )
+            .def("getBufferSize",                   &blmController::getBufferSize, getBufferSizeDocString                           )
+            .def("getBLMTrace",                     &blmController::getBLMTrace_Py, getBLMTraceDocString                            )
+            .def("getBLMTraces",                    &blmController::getBLMTraces_Py, getBLMTracesDocString                          )
+            .def("getBLMTraceBuffer",               &blmController::getBLMTraceBuffer_Py, getBLMTraceBufferDocString                )
+            .def("getBLMCH1WaveformBuffer",         &blmController::getBLMCH1WaveformBuffer_Py, getBLMCH1WaveformBufferDocString    )
+            .def("getBLMCH2WaveformBuffer",         &blmController::getBLMCH2WaveformBuffer_Py, getBLMCH2WaveformBufferDocString    )
+            .def("getBLMCH3WaveformBuffer",         &blmController::getBLMCH3WaveformBuffer_Py, getBLMCH3WaveformBufferDocString    )
+            .def("getBLMCH4WaveformBuffer",         &blmController::getBLMCH4WaveformBuffer_Py, getBLMCH4WaveformBufferDocString    )
+            .def("getBLMCH1TimeBuffer",             &blmController::getBLMCH1TimeBuffer_Py, getBLMCH1TimeBufferDocString            )
+            .def("getBLMCH2TimeBuffer",             &blmController::getBLMCH2TimeBuffer_Py, getBLMCH2TimeBufferDocString            )
+            .def("getBLMCH3TimeBuffer",             &blmController::getBLMCH3TimeBuffer_Py, getBLMCH3TimeBufferDocString            )
+            .def("getBLMCH4TimeBuffer",             &blmController::getBLMCH4TimeBuffer_Py, getBLMCH4TimeBufferDocString            )
+            .def("getBLMCH1Waveform",               &blmController::getBLMCH1Waveform_Py, getBLMCH1WaveformDocString                )
+            .def("getBLMCH2Waveform",               &blmController::getBLMCH2Waveform_Py, getBLMCH2WaveformDocString                )
+            .def("getBLMCH3Waveform",               &blmController::getBLMCH3Waveform_Py, getBLMCH3WaveformDocString                )
+            .def("getBLMCH4Waveform",               &blmController::getBLMCH4Waveform_Py, getBLMCH4WaveformDocString                )
+            .def("getBLMCH1Time",                   &blmController::getBLMCH1Time_Py, getBLMCH1TimeDocString                        )
+            .def("getBLMCH2Time",                   &blmController::getBLMCH2Time_Py, getBLMCH2TimeDocString                        )
+            .def("getBLMCH3Time",                   &blmController::getBLMCH3Time_Py, getBLMCH3TimeDocString                        )
+            .def("getBLMCH4Time",                   &blmController::getBLMCH4Time_Py, getBLMCH4TimeDocString                        )
+            .def("getMinOfTraces",                  &blmController::getMinOfTraces_Py, getMinOfTracesDocString                      )
+            .def("getMaxOfTraces",                  &blmController::getMaxOfTraces_Py, getMaxOfTracesDocString                      )
+            .def("getAreaUnderTraces",              &blmController::getAreaUnderTraces_Py, getAreaUnderTracesDocString              )
+            .def("getAreaUnderPartOfTrace",         &blmController::getAreaUnderPartOfTrace_Py, getAreaUnderPartOfTraceDocString    )
+            .def("getAvgNoise",                     &blmController::getAvgNoise_Py, getAvgNoiseDocString                            )
+            .def("getPartOfTrace",                  &blmController::getPartOfTrace, getPartOfTraceDocString                         )
+            .def("getTimeStamps",                   &blmController::getTimeStamps_Py, getTimeStampsDocString                        )
+            .def("getTimeStampsBuffer",             &blmController::getTimeStampsBuffer_Py, getTimeStampsDocString                  )
+            .def("getStrTimeStamps",                &blmController::getStrTimeStamps_Py, getStrTimeStampsDocString                  )
+            .def("getStrTimeStampsBuffer",          &blmController::getStrTimeStampsBuffer_Py, getStrTimeStampsDocString            )
+            .def("monitorTracesForNShots",          &blmController::monitorTracesForNShots, monitorTracesDocString                  )
+            .def("monitorATraceForNShots",          &blmController::monitorATraceForNShots, monitorATraceDocString                  )
+            .def("getBLMNames",                     &blmController::getBLMNames_Py, getBLMNamesDocString                            )
+            .def("getBLMPVs",                       &blmController::getBLMPVs_Py, getBLMPVsDocString                                )
+            .def("getBLMTimePVs",                   &blmController::getBLMTimePVs_Py, getBLMTimePVsDocString                        )
+            .def("getBLMWaveformPVs",               &blmController::getBLMWaveformPVs_Py, getBLMWaveformPVsDocString                )
+            .def("getBLMPVStrings",                 &blmController::getBLMPVStrings_Py, getBLMPVStringsDocString                    )
+            .def("getBLMTimePVStrings",             &blmController::getBLMTimePVStrings_Py, getBLMTimePVStringsDocString            )
+            .def("getBLMWaveformPVStrings",         &blmController::getBLMWaveformPVStrings_Py, getBLMWaveformPVStringsDocString    )
             /// Don't forget functions in the base class we want to expose....
             .def("debugMessagesOff",                &blmController::debugMessagesOff                       )
             .def("debugMessagesOn",                 &blmController::debugMessagesOn                        )
