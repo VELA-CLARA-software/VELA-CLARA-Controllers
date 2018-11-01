@@ -79,6 +79,9 @@ class cameraControllerBase : public controller
         bool isClaraLEDOn();
         bool isClaraLEDOff();
 
+
+        std::string getLastDirectoryandFileName();
+
         bool velaLEDOn();
         bool velaLEDOff();
         bool isVelaLEDOn();
@@ -314,6 +317,12 @@ class cameraControllerBase : public controller
 
         std::vector<std::string> getCameraNames()const;
         std::vector<std::string> getCameraScreenNames()const;
+
+        std::string getSelectedCamName() const;
+        std::string getSelectedCamScrName() const;
+         size_t getNumPixX() const;
+         size_t  getNumPixY() const;
+
 
 #ifdef BUILD_DLL
         boost::python::list getCameraNames_Py()const;

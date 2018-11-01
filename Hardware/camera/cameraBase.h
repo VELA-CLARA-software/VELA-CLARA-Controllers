@@ -559,6 +559,11 @@ class cameraBase : public interface
          bool isMaskFeedbackOff(const std::string& name)const;
          bool isMaskFeedbackOff(const cameraStructs::cameraObject& cam)const;
          void maskFeedBack(cameraStructs::cameraObject& cam);
+
+         std::string getSelectedCamName() const;
+         std::string getSelectedCamScrName() const;
+         size_t getNumPixX() const;
+         size_t  getNumPixY() const;
 //--------------------------------------------------------------------------------------------------------------------
 //
 //  __   __        ___  __  ___     __   __        __  ___     __   ___  ___  __
@@ -744,6 +749,10 @@ class cameraBase : public interface
         void updateVelaLEDState(const event_handler_args& args);
         HWC_ENUM::STATE clara_led_state;
         HWC_ENUM::STATE vela_led_state;
+
+
+        std::string getLastDirectoryandFileName();
+
 
 
         // testing

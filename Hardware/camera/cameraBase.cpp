@@ -2294,6 +2294,31 @@ bool cameraBase::isAcquiringAndVelaCam(const cameraStructs::cameraObject& cam)co
     return false;
 }
 //---------------------------------------------------------------------------------
+
+size_t cameraBase::getNumPixX() const
+{
+    return selectedCamPtr->data.image.num_pix_x;
+}
+//---------------------------------------------------------------------------------
+
+size_t  cameraBase::getNumPixY() const
+{
+    return selectedCamPtr->data.image.num_pix_y;
+}
+//---------------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------------
+std::string cameraBase::getSelectedCamName() const
+{
+    return selectedCamPtr->name;
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getSelectedCamScrName() const
+{
+    return selectedCamPtr->screenName;
+}
 //---------------------------------------------------------------------------------
 bool cameraBase::isBusy_VC()const
 {
@@ -3306,8 +3331,8 @@ bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_h
         pointer to array we are expecting depends on type channel
     */
     /*
-            see EPICS 3.14 manual, we do no MALLOC here
-            we can probably improve this much
+        see EPICS 3.14 manual, we do no MALLOC here
+        we can probably improve this much
     */
     const dbr_time_long* p = (const struct dbr_time_long*)args.dbr;
     //pStamp = &p->stamp;

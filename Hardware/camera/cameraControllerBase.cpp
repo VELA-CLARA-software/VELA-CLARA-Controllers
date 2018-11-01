@@ -791,7 +791,32 @@ bool cameraControllerBase::isVelaLEDOff()
 }
 //---------------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------------
+std::string cameraControllerBase::getSelectedCamName() const
+{
+    return camBase->getSelectedCamName();
+}
 
+std::string cameraControllerBase::getSelectedCamScrName() const
+{
+    return camBase->getSelectedCamScrName();
+}
+
+std::string getLastDirectoryandFileName() const
+{
+
+}
+
+
+size_t cameraControllerBase::getNumPixX() const
+{
+    return camBase->getNumPixX();
+}
+
+size_t cameraControllerBase::getNumPixY() const
+{
+    return camBase->getNumPixY();
+}
 
 
 
