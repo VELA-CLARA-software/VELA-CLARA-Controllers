@@ -221,14 +221,10 @@ namespace llrfStructs
             num_elements_per_trace(UTL::DUMMY_SIZET),
             num_elements_per_trace_used(UTL::DUMMY_SIZET),
             num_start_zeroes_per_trace(UTL::DUMMY_SIZET),
-            trace_counter(UTL::ZERO_SIZET),
             buffer_size(UTL::BUFFER_500),
-            //buffer_size(5000),
-            //EVID_buffer(buffer_size),
             data_buffer(buffer_size),
             acqm(LLRF_ACQM::UNKNOWN_ACQM)
             {}
-        size_t trace_counter;
         size_t buffer_size;
         /*
             all the trace data goes here (online data)
@@ -602,7 +598,13 @@ namespace llrfStructs
             breakdown_rate(UTL::ZERO_DOUBLE),
             amp_drop_value(UTL::ZERO_DOUBLE),
             drop_amp_on_breakdown(false),
+
+            // how many active pulses have there been
             active_pulse_count(UTL::ZERO_SIZET),
+            // how many pulses, in total have there
+            pulse_count(UTL::ZERO_SIZET),
+
+
             pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET),
             trig_source(TRIG::UNKNOWN_TRIG),
@@ -627,6 +629,11 @@ namespace llrfStructs
 
         size_t omed_count;
 
+
+        size_t active_pulse_count;
+        size_t pulse_count;
+
+
         //bool collecting_outside_mask_data;
         //std::vector<std::string> outside_mask_trace_name;//????????????????
 
@@ -647,7 +654,7 @@ namespace llrfStructs
         size_t traceLength,event_count,num_outside_mask_traces,
            // the llrf doesn't fire immediatly after recieving a trigger
         // this is the (approx) number of elements of noise in an rf trace
-        pulse_latency, active_pulse_count, previous_pulseCount, pulseCountOffset;
+        pulse_latency, previous_pulseCount, pulseCountOffset;
         long long timer_start;
         //a map of 8 channels times 2 traces (power and phase) keys come from config and can't be changed
         // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER)
@@ -675,7 +682,6 @@ namespace llrfStructs
 
 
         // OLD get riud of this at some point
-        std::map<std::string, rf_trace_data> trace_data;
 
         /*
             This is so we can change the SCAN rate for each individual trace
@@ -691,6 +697,7 @@ namespace llrfStructs
 
 
         // OLD
+        std::map<std::string, rf_trace_data> trace_data;
         std::vector<std::string> tracesToSaveOnBreakDown;
         bool drop_amp_on_breakdown;
         std::vector<outside_mask_trace> outside_mask_traces;

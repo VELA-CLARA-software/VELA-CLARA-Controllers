@@ -141,12 +141,12 @@ const char* getOutsideMaskEventCount_ds = "Return latest count of outside_mask_e
 
 
 
-const char*  setActivePulsePowerLimit_ds = "Set active_pulse_kly_power_limit, the minimum klystron forward power to enable active_pulse_count "
-                                           "to increment (below this value active_pulse_count won't increment.).";
-const char*  getActivePulsePowerLimit_ds = "Get active_pulse_kly_power_limit, the minimum klystron forward power required to allow active_pulse_count to increment.";
-const char*  getActivePulseCount_ds      = "Get active_pulse_count: the number of active pulses.";
-const char*  addActivePulseCountOffset_ds= "Add 'value' (positive integer) to the active_pulse_count.";
-const char*  setActivePulseCount_ds      = "Set active_pulse_count to  'value'.";
+const char* setActivePulsePowerLimit_ds = "Set active_pulse_kly_power_limit, the minimum klystron forward power to enable active_pulse_count "
+                                          "to increment (below this value active_pulse_count won't increment.).";
+const char* getActivePulsePowerLimit_ds = "Get active_pulse_kly_power_limit, the minimum klystron forward power required to allow active_pulse_count to increment.";
+const char* getActivePulseCount_ds      = "Get active_pulse_count: the number of active pulses.";
+const char* addActivePulseCountOffset_ds= "Add 'value' (positive integer) to the active_pulse_count.";
+const char* setActivePulseCount_ds      = "Set active_pulse_count to  'value'.";
 
 
 

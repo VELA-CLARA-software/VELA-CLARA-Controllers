@@ -625,9 +625,9 @@ double liberaLLRFController::getAmpFF()
     return localInterface.getAmpFF();
 }
 //______________________________________________________________________________
-size_t liberaLLRFController::getShotCount(const std::string& name)
+size_t liberaLLRFController::getPulseCount()const
 {
-    return localInterface.getShotCount(name);
+    return localInterface.getPulseCount();
 }
 //______________________________________________________________________________
 double liberaLLRFController::getAmpSP()
@@ -696,10 +696,10 @@ size_t liberaLLRFController::getTraceLength()
     return localInterface.getTraceLength();
 }
 //______________________________________________________________________________
-std::vector<std::string> liberaLLRFController::getChannelNames()
-{
-    return localInterface.getChannelNames();
-}
+//std::vector<std::string> liberaLLRFController::getChannelNames()
+//{
+//    return localInterface.getChannelNames();
+//}
 //______________________________________________________________________________
 bool liberaLLRFController::setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value)
 {
@@ -762,10 +762,10 @@ boost::python::list liberaLLRFController::getAverageTraceData_Py(const std::stri
     return toPythonList(getAverageTraceData(name));
 }
 //______________________________________________________________________________
-boost::python::list liberaLLRFController::getChannelNames_Py()
-{
-    return toPythonList(getChannelNames());
-}
+//boost::python::list liberaLLRFController::getChannelNames_Py()
+//{
+//    return toPythonList(getChannelNames());
+//}
 //______________________________________________________________________________
 boost::python::list liberaLLRFController::getTraceNames_Py()
 {
@@ -1380,11 +1380,11 @@ bool liberaLLRFController::setAbsoluteMask(const size_t s1,const size_t s2,const
 {
     return localInterface.setAbsoluteMask(s1,s2,s3,s4,value2,name);
 }
-//______________________________________________________________________________
-bool liberaLLRFController::shouldCheckMasks(const std::string& name)
-{
-    return localInterface.shouldCheckMasks(name);
-}
+////______________________________________________________________________________
+//bool liberaLLRFController::shouldCheckMasks(const std::string& name)
+//{
+//    return localInterface.shouldCheckMasks(name);
+//}
 
 
 //--------------------------------------------------------------------------------------------------
@@ -1551,36 +1551,36 @@ bool liberaLLRFController::setMeanStopIndex(const std::string&name, size_t  valu
     return localInterface.setMeanStopIndex(name, value);
 }
 
+////______________________________________________________________________________
+//bool liberaLLRFController::isTracePV(const llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    return localInterface.Is_TracePV(pv);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::isNotTracePV(const llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    return localInterface.IsNot_TracePV(pv);
+//}
 //______________________________________________________________________________
-bool liberaLLRFController::isTracePV(const llrfStructs::LLRF_PV_TYPE pv)
-{
-    return localInterface.Is_TracePV(pv);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::isNotTracePV(const llrfStructs::LLRF_PV_TYPE pv)
-{
-    return localInterface.IsNot_TracePV(pv);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::isMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
-{
-    return localInterface.isMonitoring(pv);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
-{
-    return localInterface.isNotMonitoring(pv);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::isMonitoring(const std::string& name)
-{
-    return localInterface.isMonitoring(name);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::isNotMonitoring(const std::string& name)
-{
-    return localInterface.isNotMonitoring(name);
-}
+//bool liberaLLRFController::isMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    return localInterface.isMonitoring(pv);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    return localInterface.isNotMonitoring(pv);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::isMonitoring(const std::string& name)
+//{
+//    return localInterface.isMonitoring(name);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::isNotMonitoring(const std::string& name)
+//{
+//    return localInterface.isNotMonitoring(name);
+//}
 //______________________________________________________________________________
 bool liberaLLRFController::isCheckingMask(const std::string& name)
 {
@@ -1601,77 +1601,81 @@ bool liberaLLRFController::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.isNotCheckingMask(pv);
 }
-//______________________________________________________________________________
-void liberaLLRFController::startTraceMonitoring()
-{
-    localInterface.startTraceMonitoring();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::startTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
-{
-    return localInterface.startTraceMonitoring(pv);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::startTraceMonitoring(const std::string& name)
-{
-    return localInterface.startTraceMonitoring(name);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::startCavFwdTraceMonitor()
-{
-    return localInterface.startCavFwdTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::startCavRevTraceMonitor()
-{
-    return localInterface.startCavRevTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::startKlyFwdTraceMonitor()
-{
-    return localInterface.startKlyFwdTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::startKlyRevTraceMonitor()
-{
-    return localInterface.startKlyRevTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::stopTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
-{
-    return localInterface.stopTraceMonitoring(pv);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::stopTraceMonitoring(const std::string& name)
-{
-    return localInterface.stopTraceMonitoring(name);
-}
-//______________________________________________________________________________
-void liberaLLRFController::stopTraceMonitoring()
-{
-    return localInterface.stopTraceMonitoring();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::stopCavFwdTraceMonitor()
-{
-    return localInterface.stopCavFwdTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::stopCavRevTraceMonitor()
-{
-    return localInterface.stopCavRevTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::stopKlyFwdTraceMonitor()
-{
-    return localInterface.stopKlyFwdTraceMonitor();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::stopKlyRevTraceMonitor()
-{
-    return localInterface.stopKlyRevTraceMonitor();
-}
-//______________________________________________________________________________
+
+
+
+
+////______________________________________________________________________________
+//void liberaLLRFController::startTraceMonitoring()
+//{
+//    localInterface.startTraceMonitoring();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::startTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    return localInterface.startTraceMonitoring(pv);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::startTraceMonitoring(const std::string& name)
+//{
+//    return localInterface.startTraceMonitoring(name);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::startCavFwdTraceMonitor()
+//{
+//    return localInterface.startCavFwdTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::startCavRevTraceMonitor()
+//{
+//    return localInterface.startCavRevTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::startKlyFwdTraceMonitor()
+//{
+//    return localInterface.startKlyFwdTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::startKlyRevTraceMonitor()
+//{
+//    return localInterface.startKlyRevTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::stopTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv)
+//{
+//    return localInterface.stopTraceMonitoring(pv);
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::stopTraceMonitoring(const std::string& name)
+//{
+//    return localInterface.stopTraceMonitoring(name);
+//}
+////______________________________________________________________________________
+//void liberaLLRFController::stopTraceMonitoring()
+//{
+//    return localInterface.stopTraceMonitoring();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::stopCavFwdTraceMonitor()
+//{
+//    return localInterface.stopCavFwdTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::stopCavRevTraceMonitor()
+//{
+//    return localInterface.stopCavRevTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::stopKlyFwdTraceMonitor()
+//{
+//    return localInterface.stopKlyFwdTraceMonitor();
+//}
+////______________________________________________________________________________
+//bool liberaLLRFController::stopKlyRevTraceMonitor()
+//{
+//    return localInterface.stopKlyRevTraceMonitor();
+//}
+////______________________________________________________________________________
 //bool liberaLLRFController::setNumContinuousOutsideMaskCount(const std::string& name, size_t val)
 //{
 //    return localInterface.setNumContinuousOutsideMaskCount(name,val);

@@ -199,7 +199,7 @@ class liberaLLRFController : public controller
 
         bool isOutsideMaskEventDataCollecting()const;
         bool canGetOutsideMaskEventData()const;
-        size_t getShotCount(const std::string& name);
+        size_t getPulseCount()const;
         bool setDropAmpOnOutsideMaskEvent(const std::string& name, bool state, double amp_val = 0.0);
         bool setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val);
 
@@ -323,7 +323,7 @@ class liberaLLRFController : public controller
         llrfStructs::LLRF_TYPE getType();
         size_t getTraceLength();
 
-        std::vector<std::string> getChannelNames();
+//        std::vector<std::string> getChannelNames();
         std::vector<std::string> getTraceNames();
 
         std::vector<double> getTraceValues(const std::string& name);
@@ -498,21 +498,21 @@ class liberaLLRFController : public controller
 
 
         // Starters
-        void startTraceMonitoring();
-        bool startTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
-        bool startTraceMonitoring(const std::string& name);
-        bool startCavFwdTraceMonitor();
-        bool startCavRevTraceMonitor();
-        bool startKlyFwdTraceMonitor();
-        bool startKlyRevTraceMonitor();
+//        void startTraceMonitoring();
+//        bool startTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+//        bool startTraceMonitoring(const std::string& name);
+//        bool startCavFwdTraceMonitor();
+//        bool startCavRevTraceMonitor();
+//        bool startKlyFwdTraceMonitor();
+//        bool startKlyRevTraceMonitor();
         // Stoppers
-        bool stopTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
-        bool stopTraceMonitoring(const std::string& name);
-        void stopTraceMonitoring();
-        bool stopCavFwdTraceMonitor();
-        bool stopCavRevTraceMonitor();
-        bool stopKlyFwdTraceMonitor();
-        bool stopKlyRevTraceMonitor();
+//        bool stopTraceMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+//        bool stopTraceMonitoring(const std::string& name);
+//        void stopTraceMonitoring();
+//        bool stopCavFwdTraceMonitor();
+//        bool stopCavRevTraceMonitor();
+//        bool stopKlyFwdTraceMonitor();
+//        bool stopKlyRevTraceMonitor();
         // pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT()const;
         void   set_CA_PEND_IO_TIMEOUT(const double val);

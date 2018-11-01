@@ -231,16 +231,16 @@ class liberallrfInterface : public interface
         bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
 //--------------------------------------------------------------------------------------------------
-        std::vector<double> getCavRevPower();
-        std::vector<double> getCavFwdPower();
-        std::vector<double> getKlyRevPower();
-        std::vector<double> getKlyFwdPower();
-        std::vector<double> getCavRevPhase();
-        std::vector<double> getCavFwdPhase();
-        std::vector<double> getKlyRevPhase();
-        std::vector<double> getKlyFwdPhase();
-        std::vector<double> getProbePower();
-        std::vector<double> getProbePhase();
+        std::vector<double> getCavRevPower()const;
+        std::vector<double> getCavFwdPower()const;
+        std::vector<double> getKlyRevPower()const;
+        std::vector<double> getKlyFwdPower()const;
+        std::vector<double> getCavRevPhase()const;
+        std::vector<double> getCavFwdPhase()const;
+        std::vector<double> getKlyRevPhase()const;
+        std::vector<double> getKlyFwdPhase()const;
+        std::vector<double> getProbePower()const;
+        std::vector<double> getProbePhase()const;
 
 
 
@@ -337,46 +337,52 @@ class liberallrfInterface : public interface
         bool setUnwrapPhaseTolerance(const double value);
         bool setUnwrapPhaseTolerance(const std::string& name,const double value);
 
+/*
+       _________.__               .__             ________        __    __
+      /   _____/|__| _____ ______ |  |   ____    /  _____/  _____/  |__/  |_  ___________  ______
+      \_____  \ |  |/     \\____ \|  | _/ __ \  /   \  ____/ __ \   __\   __\/ __ \_  __ \/  ___/
+      /        \|  |  Y Y  \  |_> >  |_\  ___/  \    \_\  \  ___/|  |  |  | \  ___/|  | \/\___ \
+     /_______  /|__|__|_|  /   __/|____/\___  >  \______  /\___  >__|  |__|  \___  >__|  /____  >
+             \/          \/|__|             \/          \/     \/                \/           \/
 
-
-        int EVID_0;
-
-        // GETTERS
-        double getAmpFF();
-        double getAmpSP();
-        double getPhiFF();
-        double getPhiSP();
-        double getAmpLLRF();
-        double getPhiLLRF();
-        double getPhiDEG();
-        double getAmpMVM();
-        double getPulseLength();
-        double getPulseOffset();
-        double getPhiCalibration();
-        double getAmpCalibration();
-        double getCrestPhiLLRF();
-        llrfStructs::LLRF_TYPE getType();
-        size_t getTraceLength();
-//        size_t getActivePulseCount();
-
-
-
-
+    i.e. things to expose to python
+*/
+        double getAmpFF()const;
+        double getAmpSP()const;
+        double getPhiFF()const;
+        double getPhiSP()const;
+        double getAmpLLRF()const;
+        double getPhiLLRF()const;
+        double getPhiDEG()const;
+        double getAmpMVM()const;
+        double getPulseLength()const;
+        double getPulseOffset()const;
+        double getPhiCalibration()const;
+        double getAmpCalibration()const;
+        double getCrestPhiLLRF()const;
+        llrfStructs::LLRF_TYPE getType()const;
+        size_t getTraceLength()const;
         /*
             convert trace index to time and vice-versa
         */
-        size_t getIndex(const double time);
-        double getTime(const size_t  time);
+        size_t getIndex(const double time)const;
+        double getTime(const size_t  time)const;
 
-        size_t getShotCount(const std::string& name);
+        size_t getPulseCount()const;
 
 
-        std::vector<std::string> getChannelNames();
-        std::vector<std::string> getTraceNames();
+//        std::vector<std::string> getChannelNames()const;
+        std::vector<std::string> getTraceNames()const;
 
-        std::vector<double> getTraceValues(const std::string& name);
+        std::vector<double> getTraceValues(const std::string& name)const;
         std::vector<double> getTimeVector()const;
-        std::vector<double> getAverageTraceData(const std::string& name);
+
+        std::vector<double> getAverageTraceData(const std::string& name)const;
+
+
+
+
+
         llrfStructs::rf_trace getTraceData(const std::string& name);
         std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
@@ -391,6 +397,9 @@ class liberallrfInterface : public interface
         std::vector<double> getKlyFwdPhaseAv();
         std::vector<double> getProbePowerAv();
         std::vector<double> getProbePhaseAv();
+
+        const llrfStructs::liberallrfObject& getLLRFObjConstRef();
+        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
 
 
         llrfStructs::rf_trace getCavRevPowerData();
@@ -411,18 +420,16 @@ class liberallrfInterface : public interface
         std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
         std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 
-        const llrfStructs::liberallrfObject& getLLRFObjConstRef();
-        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
 
 
-        llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name);
+        llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name)const;
 
         llrfStructs::LLRF_PV_TYPE getEVID_pv(llrfStructs::LLRF_PV_TYPE pv);
 //        llrfStructs::LLRF_PV_TYPE getSCAN_pv(llrfStructs::LLRF_PV_TYPE pv);
 
-        std::string getLLRFChannelName(const llrfStructs::LLRF_PV_TYPE pv);
+        std::string getLLRFChannelName(const llrfStructs::LLRF_PV_TYPE pv)const;
 
-        size_t getNumBufferTraces(const std::string&name);
+        size_t getNumBufferTraces(const std::string&name)const;
 
         // SETTERS
         bool setPhiSP(double value);
@@ -476,17 +483,15 @@ class liberallrfInterface : public interface
         bool trigOff();
         bool trigExt();
         bool trigInt();
-        llrfStructs::TRIG getTrigSource();
+        llrfStructs::TRIG getTrigSource()const;
 
-        bool shouldCheckMasks(const std::string& name);
-
-
+//        bool shouldCheckMasks(const std::string& name);
 
 
 
         //  quantification
-        bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
-        bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
+//        bool Is_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
+//        bool IsNot_TracePV(const llrfStructs::LLRF_PV_TYPE pv);
         bool Is_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_EVID_PV(const llrfStructs::LLRF_PV_TYPE pv);
         bool Is_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv);
@@ -496,28 +501,28 @@ class liberallrfInterface : public interface
 
         //bool isPhaseTrace(const std::string& name);
 
-        bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
-        bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
-
-        bool isMonitoring(const std::string& name);
-        bool isNotMonitoring(const std::string& name);
+//        bool isMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+//        bool isNotMonitoring(const llrfStructs::LLRF_PV_TYPE pv);
+//
+//        bool isMonitoring(const std::string& name);
+//        bool isNotMonitoring(const std::string& name);
 
 
 
 
         // start trace monitoring (not automatic as mostly not needed)
-        bool startCavFwdTraceMonitor();
-        bool startCavRevTraceMonitor();
-        bool startKlyFwdTraceMonitor();
-        bool startKlyRevTraceMonitor();
-        // stop trace monitoring (not automatic as mostly not needed)
-        bool stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
-        bool stopTraceMonitoring(const std::string& name);
-        void stopTraceMonitoring();
-        bool stopCavFwdTraceMonitor();
-        bool stopCavRevTraceMonitor();
-        bool stopKlyFwdTraceMonitor();
-        bool stopKlyRevTraceMonitor();
+//        bool startCavFwdTraceMonitor();
+//        bool startCavRevTraceMonitor();
+//        bool startKlyFwdTraceMonitor();
+//        bool startKlyRevTraceMonitor();
+//        // stop trace monitoring (not automatic as mostly not needed)
+//        bool stopTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
+//        bool stopTraceMonitoring(const std::string& name);
+//        void stopTraceMonitoring();
+//        bool stopCavFwdTraceMonitor();
+//        bool stopCavRevTraceMonitor();
+//        bool stopKlyFwdTraceMonitor();
+//        bool stopKlyRevTraceMonitor();
 
         std::string fullCavityTraceName(const std::string& name)const;
 
@@ -581,18 +586,14 @@ class liberallrfInterface : public interface
 
 
         void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
-
         void updateSCAN(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
         void updateTrigState(const event_handler_args& args);
-
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
         void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
-
-        int updateIsTraceInMask(llrfStructs::rf_trace_data& trace);
-        void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
-        void handlePassedMask(llrfStructs::rf_trace_data& trace);
-        void handleFailedMask(llrfStructs::rf_trace_data& trace);
-
+//        int updateIsTraceInMask(llrfStructs::rf_trace_data& trace);
+//        void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
+//        void handlePassedMask(llrfStructs::rf_trace_data& trace);
+//        void handleFailedMask(llrfStructs::rf_trace_data& trace);
         void updateTraceIndex(size_t& index,const size_t trace_size);
         void updateTraceIndex(int& index,const size_t trace_size);
         void updateTraceCutMean(llrfStructs::rf_trace_data& tracedata,llrfStructs::rf_trace& trace);
@@ -603,7 +604,7 @@ class liberallrfInterface : public interface
 
 
         // OLD
-        void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
+        //void addToOutsideMaskTraces(llrfStructs::rf_trace_data& trace,const std::string& name);
 
 
 
