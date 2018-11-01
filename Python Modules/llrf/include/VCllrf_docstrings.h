@@ -1,5 +1,163 @@
-
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
+//  Author:      DJS
+//  Last edit:   16-10-2018
+//  FileName:    VCllrf_docstrings.h
+//  Description:
+//
+//
+//
+//*/
+#ifndef _VCLLRF_DOCSTRING_H_
+#define _VCLLRF_DOCSTRING_H_
+
+const char* setIndividualTraceBufferSize_1_ds = "Set the number of traces to buffer for trace 'name' to 'value'";
+const char* setIndividualTraceBufferSize_2_ds = "Set the number of traces to buffer for each individual traces to 'value'";
+const char* setAllTraceBufferSize_ds          = "Set the number of traces to buffer for the all-traces record to 'value'";
+
+
+
+//--------------------------------------------------------------------------------------------------
+/*       __   __                    __                ___  __        __   ___  __
+        |__) /  \ |    |    | |\ | / _`     /\  \  / |__  |__)  /\  / _` |__  /__`
+        |  \ \__/ |___ |___ | | \| \__>    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
+*/
+const char* clearAllRollingAverage_ds   = "Clear All Rolling Average Data for each trace.";
+const char* clearTraceRollingAverage_ds = "Clear Rolling Average Data for trace 'name'.";
+const char* setShouldKeepRollingAverage_1_ds = "Set keep rolling average to TRUE for trace 'name'.";
+const char* setShouldKeepRollingAverage_2_ds = "Set keep rolling average to TRUE for all traces.";
+const char* setShouldNotKeepRollingAverage_1_ds = "Set keep rolling average to FALSE for trace 'name'.";
+const char* setShouldNotKeepRollingAverage_2_ds = "Set keep rolling average to FALSE for all traces.";
+const char* setKeepRollingAverage_ds = "Set Keep Rolling Average for all Traces.";
+const char* setTraceRollingAverageSize_ds = "Set the number of traces to average for the Rolling Average for trace 'name' to 'value'.";
+const char* setAllRollingAverageSize_ds  = "Set the number of traces to average for the Rolling Average of every trace to 'value'.";
+const char* getTraceRollingAverage_Py_ds = "Get the latest Rolling Average for trace 'name'.";
+const char* getTraceRollingAverageSize_ds= "Return the number of traces to average for the Rolling Average of trace 'name'.";
+const char* getTraceRollingAverageCount_ds= "Return the number of traces that have been added to the Rolling Average for tarce 'name'.";
+const char* isKeepingRollingAverage_ds   = "Returns true if trace 'name' is keeping a Rolling Average.";
+const char* hasRollingAverage_ds = "Returns true if trace 'name' has a rolling average trace.";
+//--------------------------------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------------------------------
+/*             __           __   ___ ___ ___  ___  __   __
+    |\/|  /\  /__` |__/    /__` |__   |   |  |__  |__) /__`
+    |  | /~~\ .__/ |  \    .__/ |___  |   |  |___ |  \ .__/
+
+*/
+
+
+//--------------------------------------------------------------------------------------------------
+const char* setUsePercentMask_ds = "Automatic Masks for Trace 'name' will use percentages of Rolling Average.";
+const char* setUseAbsoluteMask_ds = "Automatic Masks for Trace 'name' will use absolute values.";
+const char* setMaskValue_ds = "Automatic Masks will use 'value' (either percentage or an absolute value) applied to the trace 'name' Rolling Average.";
+const char* setMaskStartIndex_ds = "Start index for trace 'name' will be set to 'value'.";
+const char* setMaskEndIndex_ds = "End index for trace 'name' will be set to 'value'.";
+const char* setMaskFloor_ds       = "Mask floor for trace 'name' will be set to 'value'.";
+const char* setMaskAbsMinValue_ds = "mask_abs_min for trace 'name' will be set to 'value'.";
+const char* setMaskWindowIndices_ds = "Mask Window indices for trace 'name' will be set to 'start_value' and 'end_value'.";
+const char* setMaskStartTime_ds = "Start time for trace 'name' will be set to 'value' (the time will be converted to the nearest index).";
+const char* setMaskEndTime_ds = "Start time for trace 'name' will be set to 'value' (the time will be converted to the nearest index).";
+const char* setMaskWindowTimes_ds = "Mask Window timea for trace 'name' will be set to 'start_value' and 'end_value' (times will be converted to the nearest index).";
+const char* setShouldCheckMask_ds = "Enable checking masks for trace 'name'.";
+const char* setShouldNotCheckMask_ds = "Disable checking masks for trace 'name'.";
+const char* setCheckMask_ds= "Set checking masks for trace 'name' to 'value' (true/false).";
+const char* clearMask_ds = "clear the hi and lo msks for trace 'name' and set hi/lo_mask_set to false";
+const char* setHiMask_ds = "Set trace 'name' hi_mask to 'value'.";
+const char* setLoMask_ds = "Set trace 'name' lo_mask to 'value'.";
+const char* setMaskParamatersIndices_ds = "Set trace 'name' mask parameters using trace indices,"
+                                          "'isPercent', true, use percentage masks, false defaults to absolute masks, "
+                                          "calls setMaskValue('name', mask_value'), "
+                                          "calls setMaskFloor('name','mask_floor'), "
+                                          "calls setMaskAbsMinValue('name','mask_abs_min'), "
+                                          "calls setMaskStartIndex('name','start'), "
+                                          "calls setMaskEndIndex('name','end'), "
+                                          "calls setMaskWindowIndices('name','window_start', 'window_end')";
+const char* setMaskParamatersTimes_ds = "Set trace 'name' mask parameters using trace times,"
+                                        "'isPercent', true, use percentage masks, false defaults to absolute masks, "
+                                        "calls setMaskValue('name', mask_value'), "
+                                        "calls setMaskFloor('name','mask_floor'), "
+                                        "calls setMaskAbsMinValue('name','mask_abs_min'), "
+                                        "calls setMaskStartTime('name','start'), "
+                                        "calls setMaskEndTime('name','end'), "
+                                        "calls setMaskWindowTimes('name','window_start', 'window_end')";
+const char* setGlobalCheckMask_ds          = "Set Global Check Mask Flag to 'value' (true or false)";
+const char* setGlobalShouldCheckMask_ds    = "Set Global Check Mask Flag to True";
+const char* setGlobalShouldNotCheckMask_ds = "Set Global check mask flag to False";
+
+const char* setNumContinuousOutsideMaskCount_1_ds = "Set the number of continuous points outside the mask required to trigger an "
+                                                    "'outiside mask event' for trace 'name'  to 'value' ";
+const char* setNumContinuousOutsideMaskCount_2_ds = "Set the number of continuous points outside the mask required to trigger an "
+                                                    "'outiside mask event' for all traces to 'value' ";
+
+const char* getHiMask_ds = "Get trace 'name' hi_mask.";
+const char* getLoMask_ds = "Get trace 'name' lo_mask.";
+
+
+
+const char* getMaskValue_ds = "Get trace 'name' mask_value";
+const char* getMaskStartIndex_ds = "Get trace 'name' mask_start as an index";
+const char* getMaskEndIndex_ds = "Get trace 'name' mask_end as an index";
+const char* getMaskFloor_ds = "Get trace 'name' mask_value as an index";
+const char* getMaskWindowStartIndex_ds = "Get trace 'name' mask_window_start as an index";
+const char* getMaskWindowEndIndex_ds = "Get trace 'name' mask_window_end as an index";
+const char* getMaskStartTime_ds = "Get trace 'name' mask_start as a time (us)";
+const char* getMaskEndTime_ds = "Get trace 'name' mask_end as a time (us)";
+const char* getMaskWindowStartTime_ds = "Get trace 'name' mask_window_start as a time (us)";
+const char* getMaskWindowEndTime_ds = "Get trace 'name' mask_window_end as a time (us)";
+
+
+const char* setTracesToSaveOnOutsideMaskEvent_Py_ds = "Set the traces to save when an outside_mask_event occurs to list 'names'.";
+const char* setTracesToSaveOnOutsideMaskEvent_2_ds  = "Set the traces to save when an outside_mask_event occurs to 'name'.";
+const char* getTracesToSaveOnOutsideMaskEvent_Py_ds = "Get the names of traces to save when an outside_mask_event occurs";
+
+
+const char* setNumExtraTracesOnOutsideMaskEvent_ds = "Set the number of extra traces to save after an outside_mask_event to 'value'.";
+const char* getNumExtraTracesOnOutsideMaskEvent_ds = "Get the number of extra traces to save after an outside_mask_event.";
+
+const char* setDropAmpOnOutsideMaskEvent_ds = "On outside_mask_event for trace 'name' the amplitude will be dropped to 'value', if enabled by 'bool_arg'.";
+const char* setDropAmpOnOutsideMaskEventValue_ds = "Sets if to drop the amplitude  on outside_mask_event to 'bool_arg' for trace 'name'.";
+
+
+const char* getOutsideMaskEventDataSize_ds = "Return the number of elements in outside_mask_traces";
+const char* getOutsideMaskEventData_ds = "Get the outside_mask_traces data as python dictionary.";
+const char* getOutsideMaskEventDataPart_ds =  "Return data at index 'part' from outside_mask_traces as python dictionary.";
+const char* isOutsideMaskEventDataCollecting_ds = "Return true if out_side_mask_traces is collecting future traces.";
+const char* canGetOutsideMaskEventData_ds = "Return omed.can_get_data (if true new omed is ready to collect).";
+const char* getOutsideMaskEventCount_ds = "Return latest count of outside_mask_event";
+
+
+
+const char*  setActivePulsePowerLimit_ds = "Set active_pulse_kly_power_limit, the minimum klystron forward power to enable active_pulse_count "
+                                           "to increment (below this value active_pulse_count won't increment.).";
+const char*  getActivePulsePowerLimit_ds = "Get active_pulse_kly_power_limit, the minimum klystron forward power required to allow active_pulse_count to increment.";
+const char*  getActivePulseCount_ds      = "Get active_pulse_count: the number of active pulses.";
+const char*  addActivePulseCountOffset_ds= "Add 'value' (positive integer) to the active_pulse_count.";
+const char*  setActivePulseCount_ds      = "Set active_pulse_count to  'value'.";
+
+
+
+const char* resetToValue_ds = "Resets llrf interlock, RF Ouptput, feed-forward phase and amplitude locks, and sets amplitude setpoint to 'value'";
+
+
+const char* setUnwrapPhaseTolerance_1_ds = "Sets phase_tolerance for trace 'name' to 'value', when phase jumps are > phase_tolerance (and within a mask) the phase is unwrapped ";
+const char* setUnwrapPhaseTolerance_2_ds = "Sets phase_tolerance for all traces to  'value', when phase jumps are > phase_tolerance (and within a mask) the phase is unwrapped ";
+//
+
+
 //char const* LLRF_PV_TYPE_docs = "enums for the llrf PVs";
 //char const* LIB_RF_OUTPUT_docs = "RF Output ";
 //char const* LIB_AMP_FF_docs = "Amplitude Feed-Forward";
@@ -536,3 +694,4 @@
 //        .def("setDebugMessage",  &VCllrf::setDebugMessage)
 
 
+#endif

@@ -230,6 +230,9 @@ class baseObject
 
         bool polaritiesMatch(const std::vector<double>& vals) const;
 
+        bool isDigits(const std::string &str);
+
+
         std::string currentDateTime() const;
         unsigned short getNumUS(const std::string& str) const;
         double         getNumD (const std::string& str) const;
@@ -247,6 +250,14 @@ class baseObject
             return std::vector<T>(boost::python::stl_input_iterator<T>(iterable),
                                   boost::python::stl_input_iterator<T>());
         }
+
+        template <typename T>
+        int sgn(T& val)
+        {
+            return (T(0) < val) - (val < T(0));
+
+        }
+
 
         template<class T,  class U>
         boost::python::dict enumMapToPythonDict(std::map<T, U> m)
@@ -324,7 +335,7 @@ class baseObject
                         //list2();
                         counter = UTL::ZERO_SIZET;
 
-//                    del(mylist[slice()]);
+//                    del(mylist[slice()]); !!!!!!!!!!! NOT WORKING !!!!!!!!!!!!!!!
                     }
                 }
             }
@@ -403,6 +414,7 @@ class baseObject
         }
 
 #endif
+
         /*  protected destructor to make sure this class is never instantiated
             the compiler won't let us call delete on any base class pointers */
    protected:

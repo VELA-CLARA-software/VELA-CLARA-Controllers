@@ -65,7 +65,7 @@ liberaLLRFController& VCllrf::virtual_CLARA_LRRG_LLRF_Controller()
 {
     std::string name  = "virtual_CLARA_LRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         CLARA_LRRG_LLRF_CONFIG,
+                         //CLARA_LRRG_LLRF_CONFIG,
                          name,
                          withVM,
                          withEPICS,
@@ -77,7 +77,7 @@ liberaLLRFController& VCllrf::offline_CLARA_LRRG_LLRF_Controller()
 {
     std::string name  = "offline_CLARA_LRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         CLARA_LRRG_LLRF_CONFIG,
+                         //CLARA_LRRG_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withoutEPICS,
@@ -89,7 +89,7 @@ liberaLLRFController& VCllrf::physical_CLARA_LRRG_LLRF_Controller()
 {
     std::string name  = "physical_CLARA_LRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         CLARA_LRRG_LLRF_CONFIG,
+                         //CLARA_LRRG_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withEPICS,
@@ -101,7 +101,7 @@ liberaLLRFController& VCllrf::virtual_CLARA_HRRG_LLRF_Controller()
 {
     std::string name  = "virtual_CLARA_HRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         CLARA_HRRG_LLRF_CONFIG,
+                         //CLARA_HRRG_LLRF_CONFIG,
                          name,
                          withVM,
                          withEPICS,
@@ -113,7 +113,7 @@ liberaLLRFController& VCllrf::offline_CLARA_HRRG_LLRF_Controller()
 {
     std::string name  = "offline_CLARA_HRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         CLARA_HRRG_LLRF_CONFIG,
+                         //CLARA_HRRG_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withoutEPICS,
@@ -125,18 +125,19 @@ liberaLLRFController& VCllrf::physical_CLARA_HRRG_LLRF_Controller()
 {
     std::string name  = "physical_CLARA_HRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         CLARA_HRRG_LLRF_CONFIG,
+                         //CLARA_HRRG_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withEPICS,
-                         llrfStructs::CLARA_HRRG,HWC_ENUM::RF_GUN);
+                         llrfStructs::CLARA_HRRG,
+                         HWC_ENUM::RF_GUN);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::virtual_VELA_LRRG_LLRF_Controller()
 {
     std::string name  = "virtual_VELA_LRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         VELA_LRRG_LLRF_CONFIG,
+                         //VELA_LRRG_LLRF_CONFIG,
                          name,
                          withVM,
                          withEPICS,
@@ -148,7 +149,7 @@ liberaLLRFController& VCllrf::offline_VELA_LRRG_LLRF_Controller()
 {
     std::string name  = "offline_VELA_LRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         VELA_LRRG_LLRF_CONFIG,
+                         //VELA_LRRG_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withoutEPICS,
@@ -160,7 +161,7 @@ liberaLLRFController& VCllrf::physical_VELA_LRRG_LLRF_Controller()
 {
     std::string name  = "physical_VELA_LRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         VELA_LRRG_LLRF_CONFIG,
+                         //VELA_LRRG_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withEPICS,
@@ -172,7 +173,7 @@ liberaLLRFController& VCllrf::virtual_VELA_HRRG_LLRF_Controller()
 {
     std::string name  = "virtual_VELA_HRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         VELA_HRRG_LLRF_CONFIG,
+                         //VELA_HRRG_LLRF_CONFIG,
                          name,
                          withVM,
                          withEPICS,
@@ -183,14 +184,19 @@ liberaLLRFController& VCllrf::virtual_VELA_HRRG_LLRF_Controller()
 liberaLLRFController& VCllrf::offline_VELA_HRRG_LLRF_Controller()
 {
     std::string name  = "offline_VELA_HRRG_LLRF_Controller";
-    return getController(GUN_LLRF_Controller_Obj,VELA_HRRG_LLRF_CONFIG,name,withoutVM,withoutEPICS,llrfStructs::VELA_HRRG,HWC_ENUM::RF_GUN);
+    return getController(GUN_LLRF_Controller_Obj,
+                         //VELA_HRRG_LLRF_CONFIG,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         llrfStructs::VELA_HRRG,HWC_ENUM::RF_GUN);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::physical_VELA_HRRG_LLRF_Controller()
 {
     std::string name  = "physical_VELA_HRRG_LLRF_Controller";
     return getController(GUN_LLRF_Controller_Obj,
-                         VELA_HRRG_LLRF_CONFIG,
+                         //VELA_HRRG_LLRF_CONFIG,
                          name,
                          withoutVM,withEPICS,llrfStructs::VELA_HRRG,HWC_ENUM::RF_GUN);
 }
@@ -199,7 +205,7 @@ liberaLLRFController& VCllrf::virtual_L01_LLRF_Controller()
 {
     std::string name  = "virtual_L01_LLRF_Controller";
     return getController(L01_LLRF_Controller_Obj,
-                         CLARA_L01_LLRF_CONFIG,
+                         //CLARA_L01_LLRF_CONFIG,
                          name,withVM,withEPICS,llrfStructs::L01,HWC_ENUM::RF_L01);
 }
 //______________________________________________________________________________
@@ -207,7 +213,7 @@ liberaLLRFController& VCllrf::physical_L01_LLRF_Controller()
 {
     std::string name  = "physical_L01_LLRF_Controller";
     return getController(L01_LLRF_Controller_Obj,
-                         CLARA_L01_LLRF_CONFIG,
+                         //CLARA_L01_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withEPICS,
@@ -219,14 +225,13 @@ liberaLLRFController& VCllrf::offline_L01_LLRF_Controller()
 {
     std::string name  = "offline_L01_LLRF_Controller";
     return getController(L01_LLRF_Controller_Obj,
-                         CLARA_L01_LLRF_CONFIG,
+                         //CLARA_L01_LLRF_CONFIG,
                          name,
                          withoutVM,
                          withoutEPICS,llrfStructs::L01,HWC_ENUM::RF_L01);
 }
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::getController(liberaLLRFController*& cont,
-                                           const std::string& conf,
                                            const std::string& name,
                                            const bool shouldVM,
                                            const bool shouldEPICS,
@@ -239,19 +244,40 @@ liberaLLRFController& VCllrf::getController(liberaLLRFController*& cont,
     }
     else
     {
-
-        std::cout << "Creating a s" << name << " object" <<std::endl;
+        std::cout << "Creating a " << name << " object" <<std::endl;
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
 
-        if(messageStates.at(cont).first)
-            std::cout << "shouldShowMessage = True" <<std::endl;
-        else
-            std::cout << "shouldShowMessage = False" <<std::endl;
-        if(messageStates.at(cont).second)
-            std::cout << "shouldShowDebugMessage = True" <<std::endl;
-        else
-            std::cout << "shouldShowDebugMessage = False" <<std::endl;
+        /*
+
+
+        */
+
+        std::string conf = UTL::UNKNOWN_STRING;
+
+        switch( llrfType )
+        {
+            case CLARA_HRRG:
+                conf = CLARA_HRRG_LLRF_CONFIG;
+                break;
+
+            case CLARA_LRRG:
+                conf = CLARA_LRRG_LLRF_CONFIG;
+                break;
+            case VELA_HRRG:
+                conf = VELA_HRRG_LLRF_CONFIG;
+                break;
+            case VELA_LRRG:
+                conf = VELA_LRRG_LLRF_CONFIG;
+                break;
+            case L01:
+                conf = CLARA_L01_LLRF_CONFIG;
+                break;
+            case UNKNOWN_TYPE:
+
+                break;
+
+        }
 
         cont = new liberaLLRFController(messageStates.at(cont).first,
                                      messageStates.at(cont).second,
@@ -263,9 +289,6 @@ liberaLLRFController& VCllrf::getController(liberaLLRFController*& cont,
                                      name);
 
     }
-    std::cout << "getController FIN" <<std::endl;
-    std::cout << "getController FIN" <<std::endl;
-    std::cout << "getController FIN" <<std::endl;
     std::cout << "getController FIN" <<std::endl;
     return *cont;
 }

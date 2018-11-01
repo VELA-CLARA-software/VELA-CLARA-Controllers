@@ -42,6 +42,8 @@ namespace UTL
     const std::string FALSE = "FALSE";
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
+    const double ONEEIGHTY_DOUBLE = 180.0;
+    const double ONEHUNDRED_DOUBLE = 100.0;
     const double TEN_POWER_MINUS_NINE  = 0.000000001;
     const double TEN_POWER_MINUS_THREE  = 0.001;
     const double ONE_DOUBLE   = 1.0;
@@ -64,6 +66,7 @@ namespace UTL
     const size_t BUFFER_EIGHTY= 80;
     const size_t BUFFER_36    = 36;
     const size_t BUFFER_60000 = 60000;
+    const size_t BUFFER_500   = 500;
     const long   ZERO_LONG    = 0;
     const int    ZERO_INT     = 0;
     const int    ONE_INT      = 1;
@@ -347,12 +350,20 @@ namespace UTL
     const std::string CLARA_HRRG_LLRF_CONFIG = "CLARA_HRRG_LLRF.config";
     const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
     // llrf traces
-    const std::string GUN_LLRF_TRACES = "gun_LLRF_TRACES.config";
+    const std::string GUN_LLRF_TRACES            = "gun_LLRF_TRACES.config";
+    const std::string GUN_LLRF_TRACES_ONE_RECORD = "gun_LLRF_TRACES_One_Record.config";
+    const std::string L01_LLRF_TRACES_ONE_RECORD = "L01_LLRF_TRACES_One_Record.config";
+    const std::string GUN_LLRF_TRACES_SCAN = "gun_LLRF_Traces_SCAN.config";
+    const std::string L01_LLRF_TRACES_SCAN = "L01_LLRF_Traces_SCAN.config";
     const std::string L01_LLRF_TRACES = "L01_LLRF_TRACES.config";
 
     // Faked the VM versions atm until (probably not needed now 14/7/2017
     const std::string VM_CLARA_LRRG_LLRF_CONFIG = "vmCLARA_LRRG_LLRF.config";
     const std::string VM_CLARA_L01_LLRF_CONFIG = "vmCLARA_L01_LLRF.config";
+
+
+
+
 
     // Not sure about this yet at all,
     // hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG
@@ -360,7 +371,7 @@ namespace UTL
     const std::string VM_VELA_HRRG_LLRF_CONFIG = "vmVELA_HRRG_LLRF.config";
     const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
     const std::string VELA_LRRG_LLRF_CONFIG    = "VELA_LRRG_LLRF.config";
-
+#
     // llrf object parameters
     const std::string LLRF_MAX_AMPLITUDE = "LLRF_MAX_AMPLITUDE";
     const std::string LLRF_AMP_CALIBRATION = "LLRF_AMP_CALIBRATION";
@@ -381,24 +392,72 @@ namespace UTL
     const std::string PV_SUFFIX_ILOCK_STATE     = "PV_SUFFIX_ILOCK_STATE";
     const std::string PV_SUFFIX_FF_AMP_LOCK_STATE   = "PV_SUFFIX_FF_AMP_LOCK_STATE";
     const std::string PV_SUFFIX_FF_PHASE_LOCK_STATE   = "PV_SUFFIX_FF_PHASE_LOCK_STATE";
-    const std::string PV_SUFFIX_LIB_PULSE_OFFSET= "PV_SUFFIX_LIB_PULSE_OFFSET";
-    const std::string PV_SUFFIX_LIB_CH1_PHASE_REM  = "PV_SUFFIX_LIB_CH1_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH2_PHASE_REM  = "PV_SUFFIX_LIB_CH2_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH3_PHASE_REM  = "PV_SUFFIX_LIB_CH3_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH4_PHASE_REM  = "PV_SUFFIX_LIB_CH4_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH5_PHASE_REM  = "PV_SUFFIX_LIB_CH5_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH6_PHASE_REM  = "PV_SUFFIX_LIB_CH6_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH7_PHASE_REM  = "PV_SUFFIX_LIB_CH7_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH8_PHASE_REM  = "PV_SUFFIX_LIB_CH8_PHASE_REM";
-    const std::string PV_SUFFIX_LIB_CH1_PWR_REM    = "PV_SUFFIX_LIB_CH1_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH2_PWR_REM    = "PV_SUFFIX_LIB_CH2_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH3_PWR_REM    = "PV_SUFFIX_LIB_CH3_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH4_PWR_REM    = "PV_SUFFIX_LIB_CH4_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH5_PWR_REM    = "PV_SUFFIX_LIB_CH5_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH6_PWR_REM    = "PV_SUFFIX_LIB_CH6_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH7_PWR_REM    = "PV_SUFFIX_LIB_CH7_PWR_REM";
-    const std::string PV_SUFFIX_LIB_CH8_PWR_REM    = "PV_SUFFIX_LIB_CH8_PWR_REM";
-    const std::string LLRF_CHANNEL    = "LLRF_CHANNEL";
+    const std::string PV_SUFFIX_LIB_PULSE_OFFSET = "PV_SUFFIX_LIB_PULSE_OFFSET";
+    const std::string PV_SUFFIX_LLRF_TRACES_SCAN = "PV_SUFFIX_LLRF_TRACES_SCAN";
+    const std::string PV_SUFFIX_LLRF_TRACES_EVID = "PV_SUFFIX_LLRF_TRACES_EVID";
+    const std::string PV_SUFFIX_LLRF_TRACES_ACQM = "PV_SUFFIX_LLRF_TRACES_ACQM";
+    const std::string PV_SUFFIX_LLRF_TRACES = "PV_SUFFIX_LLRF_TRACES";
+    const std::string PV_SUFFIX_INTERLOCK = "PV_SUFFIX_INTERLOCK";
+
+
+//
+//    const std::string PV_SUFFIX_LIB_CH1_PHASE_REM  = "PV_SUFFIX_LIB_CH1_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH2_PHASE_REM  = "PV_SUFFIX_LIB_CH2_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH3_PHASE_REM  = "PV_SUFFIX_LIB_CH3_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH4_PHASE_REM  = "PV_SUFFIX_LIB_CH4_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH5_PHASE_REM  = "PV_SUFFIX_LIB_CH5_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH6_PHASE_REM  = "PV_SUFFIX_LIB_CH6_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH7_PHASE_REM  = "PV_SUFFIX_LIB_CH7_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH8_PHASE_REM  = "PV_SUFFIX_LIB_CH8_PHASE_REM";
+//    const std::string PV_SUFFIX_LIB_CH1_PWR_REM    = "PV_SUFFIX_LIB_CH1_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH2_PWR_REM    = "PV_SUFFIX_LIB_CH2_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH3_PWR_REM    = "PV_SUFFIX_LIB_CH3_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH4_PWR_REM    = "PV_SUFFIX_LIB_CH4_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH5_PWR_REM    = "PV_SUFFIX_LIB_CH5_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH6_PWR_REM    = "PV_SUFFIX_LIB_CH6_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH7_PWR_REM    = "PV_SUFFIX_LIB_CH7_PWR_REM";
+//    const std::string PV_SUFFIX_LIB_CH8_PWR_REM    = "PV_SUFFIX_LIB_CH8_PWR_REM";
+
+    const std::string LLRF_CHANNEL = "LLRF_CHANNEL";
+    const std::string START_UP     = "START_UP";
+
+//    const std::string PV_SUFFIX_LLRF_TRACES = "PV_SUFFIX_LLRF_TRACES";
+//    const std::string PV_SUFFIX_LLRF_TRACES_SCAN = "PV_SUFFIX_LLRF_TRACES_SCAN";
+//    const std::string PV_SUFFIX_LLRF_TRACES_EVID = "PV_SUFFIX_LLRF_TRACES_EVID";
+
+//
+//    const std::string TRACE_1  = "TRACE_1";
+//    const std::string TRACE_2  = "TRACE_2";
+//    const std::string TRACE_3  = "TRACE_3";
+//    const std::string TRACE_4  = "TRACE_4";
+//    const std::string TRACE_5  = "TRACE_5";
+//    const std::string TRACE_6  = "TRACE_6";
+//    const std::string TRACE_7  = "TRACE_7";
+//    const std::string TRACE_8  = "TRACE_8";
+//    const std::string TRACE_9  = "TRACE_9";
+//    const std::string TRACE_10 = "TRACE_10";
+//    const std::string TRACE_11 = "TRACE_11";
+//    const std::string TRACE_12 = "TRACE_12";
+//    const std::string TRACE_13 = "TRACE_13";
+//    const std::string TRACE_14 = "TRACE_14";
+//    const std::string TRACE_15 = "TRACE_15";
+//    const std::string TRACE_16 = "TRACE_16";
+//    const std::string TRACE_17 = "TRACE_17";
+//    const std::string TRACE_18 = "TRACE_18";
+//    const std::string TRACE_19 = "TRACE_19";
+//    const std::string TRACE_20 = "TRACE_20";
+//    const std::string TRACE_21 = "TRACE_21";
+//    const std::string TRACE_22 = "TRACE_22";
+//    const std::string TRACE_23 = "TRACE_23";
+//    const std::string TRACE_24 = "TRACE_24";
+
+
+    const std::string  NUM_TRACES = "NUM_TRACES";
+    const std::string  TRACE_TYPE = "TRACE_TYPE";
+    const std::string  TRACE_NUM = "TRACE_NUM";
+    const std::string  TRACE_NUM_ELEMENTS_TOTAL = "TRACE_NUM_ELEMENTS_TOTAL";
+    const std::string  TRACE_NUM_ELEMENTS_USED = "TRACE_NUM_ELEMENTS_USED";
+    const std::string  TRACE_NUM_OF_START_ZEROS = "TRACE_NUM_OF_START_ZEROS";
 
 
     const std::string PV_SUFFIX_PWR_REM_EVID = "PV_SUFFIX_PWR_REM_EVID";
@@ -410,31 +469,31 @@ namespace UTL
     const std::string PV_SUFFIX_PHASE_REM      = "PV_SUFFIX_PHASE_REM";
 
     const std::string PV_SUFFIX_AMP_DER_DERIVATIVE      = "PV_SUFFIX_AMP_DER_DERIVATIVE";
-    const std::string PV_SUFFIX_AMP_DER_EVID            = "PV_SUFFIX_AMP_DER_EVID";
+    //const std::string PV_SUFFIX_AMP_DER_EVID            = "PV_SUFFIX_AMP_DER_EVID";
     const std::string PV_SUFFIX_AMP_DER_SCAN            = "PV_SUFFIX_AMP_DER_SCAN";
     const std::string PV_SUFFIX_PHASE_DER_SCAN          = "PV_SUFFIX_PHASE_DER_SCAN";
-    const std::string PV_SUFFIX_PHASE_DER_EVID          = "PV_SUFFIX_PHASE_DER_EVID";
+    //const std::string PV_SUFFIX_PHASE_DER_EVID          = "PV_SUFFIX_PHASE_DER_EVID";
     const std::string PV_SUFFIX_PHASE_DER_DERIVATIVE    = "PV_SUFFIX_PHASE_DER_DERIVATIVE";
-    const std::string PV_SUFFIX_PWR_LOC_EVID            = "PV_SUFFIX_PWR_LOC_EVID";
+    //const std::string PV_SUFFIX_PWR_LOC_EVID            = "PV_SUFFIX_PWR_LOC_EVID";
     const std::string PV_SUFFIX_PWR_LOC_SCAN            = "PV_SUFFIX_PWR_LOC_SCAN";
-    const std::string PV_SUFFIX_PWR_LOC_POWER           = "PV_SUFFIX_PWR_LOC_POWER";
+    //const std::string PV_SUFFIX_PWR_LOC_POWER           = "PV_SUFFIX_PWR_LOC_POWER";
 
-    const std::string PV_SUFFIX_LIB_CH1_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH1_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH2_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH2_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH3_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH3_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH4_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH4_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH5_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH5_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH6_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH6_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH7_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH7_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH8_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH8_PHASE_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH1_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH1_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH2_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH2_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH3_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH3_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH4_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH4_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH5_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH5_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH6_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH6_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH7_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH7_PWR_REM_EVID";
-    const std::string PV_SUFFIX_LIB_CH8_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH8_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH1_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH1_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH2_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH2_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH3_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH3_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH4_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH4_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH5_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH5_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH6_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH6_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH7_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH7_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH8_PHASE_REM_EVID  = "PV_SUFFIX_LIB_CH8_PHASE_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH1_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH1_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH2_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH2_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH3_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH3_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH4_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH4_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH5_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH5_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH6_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH6_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH7_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH7_PWR_REM_EVID";
+//    const std::string PV_SUFFIX_LIB_CH8_PWR_REM_EVID    = "PV_SUFFIX_LIB_CH8_PWR_REM_EVID";
 //    const std::string PV_SUFFIX_LIB_KLY_FWD     = "PV_SUFFIX_LIB_KLY_FWD";
 //    const std::string PV_SUFFIX_LIB_KLY_REV     = "PV_SUFFIX_LIB_KLY_REV";
     // specific names for common channels that have named functions to start/stop them in the llrfinterface/controller
@@ -658,7 +717,7 @@ namespace UTL
     const std::string PV_SUFFIX_SOLENOID_3_CURRENT              = "PV_SUFFIX_SOLENOID_3_CURRENT";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_READ               = "PV_SUFFIX_HVPS_VOLTAGE_READ" ;
     const std::string PV_SUFFIX_HVPS_CURRENT_READ               = "PV_SUFFIX_HVPS_CURRENT_READ" ;
-    const std::string PV_SUFFIX_SYSTEM_STATE_READ               = "PV_SUFFIX_SYSTEM_MAIN_STATE_READ";
+    const std::string PV_SUFFIX_SYSTEM_STATE_READ               = "PV_SUFFIX_SYSTEM_STATE_READ";
     const std::string PV_SUFFIX_SYSTEM_STATE_PUT                = "PV_SUFFIX_SYSTEM_STATE_PUT";
     const std::string PV_SUFFIX_HVPS_VOLTAGE_SET                = "PV_SUFFIX_HVPS_VOLTAGE_SET";
     const std::string PV_SUFFIX_ION_PUMP_VOLTAGE                = "PV_SUFFIX_ION_PUMP_VOLTAGE";
@@ -1042,11 +1101,15 @@ namespace UTL
     const boost::python::arg NAMES_ARG  = boost::python::arg("names");
     const boost::python::arg VALUE_ARG  = boost::python::arg("value");
     const boost::python::arg VALUES_ARG = boost::python::arg("values");
+    const boost::python::arg SVAL_ARG = boost::python::arg("start_value");
+    const boost::python::arg EVAL_ARG = boost::python::arg("end_value");
     const boost::python::arg TIME_ARG = boost::python::arg("time");
     const boost::python::arg AREA_ARG = boost::python::arg("area");
     const boost::python::arg MODE_ARG = boost::python::arg("mode");
     const boost::python::arg ID_ARG   = boost::python::arg("id");
-    const boost::python::arg IDS_ARG   = boost::python::arg("ids");
+    const boost::python::arg IDS_ARG  = boost::python::arg("ids");
+    const boost::python::arg BOOL_ARG  = boost::python::arg("bool_value");
+    const boost::python::arg PART_ARG  = boost::python::arg("part");
 #endif //BUILD_DLL
 
 

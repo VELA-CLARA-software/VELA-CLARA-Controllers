@@ -105,6 +105,24 @@ class runningStat
             return !Full();
         }
 
+        /*
+            get/set the current settings, so that you can prime the running-stat with
+            some known values
+        */
+        void getCurrentState(size_t& m_n_ret, double& m_oldM_ret, double& m_oldS_ret)
+        {
+            m_n_ret = m_n;
+            m_oldM_ret = m_oldM;
+            m_oldS_ret = m_oldS;
+        }
+        void setInitialValues(size_t m_n_init, double m_oldM_init, double m_oldS_init)
+        {
+            m_n = m_n_init;
+            m_oldM = m_oldM_init;
+            m_oldS = m_oldS_init;
+        }
+
+
 
     private:
         size_t m_n;
@@ -122,7 +140,6 @@ class runningStat
             {
                 return false;
             }
-
             if(m_n > max_n)
             {
                 rs_complete = true;

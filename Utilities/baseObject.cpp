@@ -24,6 +24,7 @@
 // project includes
 #include "baseObject.h"
 #include "configDefinitions.h"
+
 // stl includes
 #include <time.h>
 //  __  ___  __   __    /  __  ___  __   __
@@ -94,9 +95,22 @@ bool baseObject::getBool(const std::string& str) const
     return false;
 }
 //______________________________________________________________________________
+bool baseObject::isDigits(const std::string &str)
+{
+    return std::all_of(str.begin(), str.end(), ::isdigit);
+}
+//______________________________________________________________________________
 int baseObject::getNum(const std::string& str) const
 {
-    return std::stoi(str.c_str());
+    try
+    {
+        return std::stoi(str.c_str());
+    }
+    catch( const std::invalid_argument& ia )
+    {
+        message("std::stoi invalid_arg ", ia.what(), " ", str.c_str());
+    }
+    return 0;
 }
 //______________________________________________________________________________
 size_t baseObject::getSize(const std::string& str) const
@@ -134,11 +148,6 @@ bool baseObject::isNotDummyName(const std::string& name )const
 {
     return !isDummyName(name);
 }
-
-
-
-
-
 
 ////______________________________________________________________________________
 //boost::python::numpy::ndarray baseObject::toNumPyArray(const std::vector<double> & v ) const

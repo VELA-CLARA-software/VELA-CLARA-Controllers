@@ -67,8 +67,10 @@
 		<Unit filename="../../Utilities/configDefinitions.h" />
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
+		<Unit filename="../../Utilities/get_time.h" />
 		<Unit filename="../../Utilities/llrf/liberallrfConfigReader.cpp" />
 		<Unit filename="../../Utilities/llrf/liberallrfConfigReader.h" />
+		<Unit filename="../../Utilities/running_stat.h" />
 		<Unit filename="include/VCllrf.h" />
 		<Unit filename="include/VCllrf_docstrings.h" />
 		<Unit filename="main.cpp" />

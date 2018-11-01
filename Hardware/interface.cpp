@@ -424,10 +424,11 @@ void interface::updateTime(const epicsTimeStamp& stamp, double& val, std::string
 {
     /* for hints look in epicsTime.h */
     char timeString[UTL::BUFFER_36];
-    epicsTimeToStrftime(timeString, sizeof(timeString),
-                        "%a %b %d %Y %H:%M:%S.%f", &stamp);
-    val = ((double)stamp.nsec * UTL::TEN_POWER_MINUS_NINE) +
-          (double)stamp.secPastEpoch;
+    epicsTimeToStrftime(timeString, sizeof(timeString),"%a %b %d %Y %H:%M:%S.%f", &stamp);
+    val = getTime(stamp);
+
+//    ((double)stamp.nsec * UTL::TEN_POWER_MINUS_NINE) +
+//          (double)stamp.secPastEpoch;
     /*  prove it works
         std::cout <<std::setprecision(15) <<std::showpoint<< val <<std::endl;
     */
@@ -501,6 +502,10 @@ bool interface::getDBRbool(const event_handler_args& args)
     return *(bool*)args.dbr;
 }
 ////______________________________________________________________________________
+
+
+
+
 
 
 

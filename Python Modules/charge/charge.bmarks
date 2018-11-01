@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\Hardware\charge\chargeInterface.h" open="1" top="0" tabpos="1">
-		<Cursor position="1809" topLine="18" />
+	<File name="..\..\Hardware\charge\chargeController.cpp" open="1" top="0" tabpos="19">
+		<Cursor position="1548" topLine="24" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\charge\chargeController.h" open="1" top="0" tabpos="20">
+		<Cursor position="4714" topLine="69" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\charge\chargeInterface.h" open="1" top="0" tabpos="18">
+		<Cursor position="5245" topLine="75" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>

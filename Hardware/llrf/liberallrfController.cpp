@@ -48,35 +48,572 @@ void liberaLLRFController::initialise()
         message("liberaLLRFController instantiation success.");
 }
 //______________________________________________________________________________
-size_t liberaLLRFController::getActivePulseCount()
+bool liberaLLRFController::setTORSCANToIOIntr()
+{
+    return localInterface.setTORSCANToIOIntr();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setTORACQMEvent()
+{
+    return localInterface.setTORACQMEvent();
+}
+
+
+//--------------------------------------------------------------------------------------------------
+/*             __           __   ___ ___ ___  ___  __   __
+    |\/|  /\  /__` |__/    /__` |__   |   |  |__  |__) /__`
+    |  | /~~\ .__/ |  \    .__/ |___  |   |  |___ |  \ .__/
+
+*/
+bool liberaLLRFController::setUsePercentMask(const std::string& trace)
+{
+    return localInterface.setUsePercentMask(trace);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setUseAbsoluteMask(const std::string& trace)
+{
+    return localInterface.setUseAbsoluteMask(trace);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskValue(const std::string& trace, double value)
+{
+    return localInterface.setMaskValue(trace,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskStartIndex(const std::string& trace, size_t value)
+{
+    return localInterface.setMaskStartIndex(trace,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskEndIndex(const std::string& trace, size_t value)
+{
+    return localInterface.setMaskEndIndex(trace,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskFloor(const std::string& name, double value)
+{
+    return localInterface.setMaskFloor(name,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskAbsMinValue(const std::string& name, double value)
+{
+    return localInterface.setMaskAbsMinValue(name,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskWindowIndices(const std::string& name, size_t window_start, size_t window_end)
+{
+    return localInterface.setMaskWindowIndices(name,window_start, window_end);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskStartTime(const std::string& name, double value)
+{
+    return localInterface.setMaskStartTime(name,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskEndTime(const std::string& name, double value)
+{
+    return localInterface.setMaskEndTime(name,value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskWindowTimes(const std::string& name, double window_start, double window_end)
+{
+    return localInterface.setMaskWindowTimes(name,window_start, window_end);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setCheckMask(const std::string&name, bool value)
+{
+    return localInterface.setCheckMask(name, value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setShouldCheckMask(const std::string&name)
+{
+    return localInterface.setShouldCheckMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setShouldNotCheckMask(const std::string&name)
+{
+    return localInterface.setShouldNotCheckMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::clearMask(const std::string&name)
+{
+    return localInterface.clearMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setHiMask(const std::string&name,const std::vector<double>& value)
+{
+    return localInterface.setHiMask(name, value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setLoMask(const std::string&name,const std::vector<double>& value)
+{
+    return localInterface.setLoMask(name, value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskParamatersIndices(const std::string& name, bool isPercent,
+                              double mask_value, double mask_floor, double mask_abs_min,
+                              size_t start, size_t end, size_t window_start, size_t window_end)
+{
+    return localInterface.setMaskParamatersIndices(name, isPercent, mask_value, mask_floor, mask_abs_min,
+                                                   start, end, window_start, window_end);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskParamatersTimes(const std::string& name, bool isPercent,
+                            double mask_value, double mask_floor, double mask_abs_min,
+                            double start, double end,
+                            double window_start, double window_end)
+{
+    return localInterface.setMaskParamatersTimes(name, isPercent, mask_value, mask_floor, mask_abs_min,
+                                                 start, end, window_start, window_end);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setNumContinuousOutsideMaskCount(size_t value)
+{
+    return localInterface.setNumContinuousOutsideMaskCount(value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setNumContinuousOutsideMaskCount(const std::string&name, size_t value)
+{
+    return localInterface.setNumContinuousOutsideMaskCount(name, value);
+}
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setGlobalCheckMask(bool value)
+{
+    localInterface.setGlobalCheckMask(value);
+}
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setGlobalShouldCheckMask()
+{
+    localInterface.setGlobalShouldCheckMask();
+}
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setGlobalShouldNotCheckMask()
+{
+    localInterface.setGlobalShouldNotCheckMask();
+}
+//--------------------------------------------------------------------------------------------------
+/*             __           __   ___ ___ ___  ___  __   __
+    |\/|  /\  /__` |__/    / _` |__   |   |  |__  |__) /__`
+    |  | /~~\ .__/ |  \    \__> |___  |   |  |___ |  \ .__/
+
+    //
+*/
+#ifdef BUILD_DLL
+bool liberaLLRFController::setHiMask_Py(const std::string&name, boost::python::list& value)
+{
+    return setHiMask(name, to_std_vector<double>(value));
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setLoMask_Py(const std::string&name, boost::python::list& value)
+{
+    return setLoMask(name, to_std_vector<double>(value));
+}
+//--------------------------------------------------------------------------------------------------
+#endif
+//--------------------------------------------------------------------------------------------------
+std::vector<double> liberaLLRFController::getHiMask(const std::string&name)
+{
+    return localInterface.getHiMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+std::vector<double> liberaLLRFController::getLoMask(const std::string&name)
+{
+    return localInterface.getLoMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+#ifdef BUILD_DLL
+boost::python::list liberaLLRFController::getHiMask_Py(const std::string&name)
+{
+    return toPythonList(getHiMask(name));
+}
+//--------------------------------------------------------------------------------------------------
+boost::python::list liberaLLRFController::getLoMask_Py(const std::string&name)
+{
+    return toPythonList(getLoMask(name));
+}
+//--------------------------------------------------------------------------------------------------
+#endif
+double liberaLLRFController::getMaskValue(const std::string& name)
+{
+    return localInterface.getMaskValue(name);
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getMaskStartIndex(const std::string& name)
+{
+    return localInterface.getMaskStartIndex(name);
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getMaskEndIndex(const std::string& name)
+{
+    return localInterface.getMaskEndIndex(name);
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getMaskFloor(const std::string& name)
+{
+    return localInterface.getMaskFloor(name);
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getMaskWindowStartIndex(const std::string& name)
+{
+    return localInterface.getMaskWindowStartIndex(name);
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getMaskWindowEndIndex(const std::string& name)
+{
+    return localInterface.getMaskWindowEndIndex(name);
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getMaskStartTime(const std::string& name)
+{
+    return localInterface.getMaskStartTime(name);
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getMaskEndTime(const std::string& name)
+{
+    return localInterface.getMaskEndTime(name);
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getMaskWindowStartTime(const std::string& name)
+{
+    return localInterface.getMaskWindowStartTime(name);
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getMaskWindowEndTime(const std::string& name)
+{
+    return localInterface.getMaskWindowEndTime(name);
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getOutsideMaskEventCount()const
+{
+    return localInterface.getOutsideMaskEventCount();
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getOutsideMaskEventDataSize()
+{
+    return localInterface.getOutsideMaskEventDataSize();
+}
+//--------------------------------------------------------------------------------------------------
+llrfStructs::outside_mask_event_data liberaLLRFController::getOutsideMaskEventData()
+{
+    return localInterface.getOutsideMaskEventData();
+}
+//--------------------------------------------------------------------------------------------------
+const llrfStructs::outside_mask_event_data& liberaLLRFController::getOutsideMaskEventData_CRef()
+{
+    return localInterface.getOutsideMaskEventData_CRef();
+}
+
+
+#ifdef BUILD_DLL
+boost::python::dict liberaLLRFController::getOutsideMaskEventData_Py()
+{
+    const llrfStructs::outside_mask_event_data& data = localInterface.getOutsideMaskEventData_CRef();
+    boost::python::dict dictionary;
+    boost::python::dict dictionary2;
+    boost::python::list list;
+
+    std::string EVID;
+    std::string time;
+    std::string value;
+    std::string name;
+
+//    dictionary[ std::string("hi_mask") ] = toPythonList(data.hi_mask);
+//    dictionary[ std::string("lo_mask") ] = toPythonList(data.lo_mask);
+    dictionary[ std::string("trace_name") ] = boost::python::object(data.trace_that_caused_OME);
+    dictionary[ std::string("mask_floor") ] = boost::python::object(data.mask_floor);
+    dictionary[ std::string("time_vector") ] = getTimeVector_Py();
+    dictionary[ std::string("is_collecting") ] = boost::python::object(data.is_collecting);
+    dictionary[ std::string("num_collected_traces") ] = boost::python::object(data.num_collected);
+    dictionary[ std::string("message") ] = boost::python::object(data.outside_mask_trace_message);
+    dictionary[ std::string("outside_mask_index") ] = boost::python::object(data.outside_mask_index);
+
+//    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
+
+//    int i = -2;
+    size_t j = 0;
+    for(auto&&it: data.trace_data)
+    {
+        /// !!!!!!!!!!!!! FOR SOME REASON THIS IS THE ONLY WAY I COULD PROPERLY COPY THE DICTIONARY TO EXPORT
+        /// getOMT_Dict returns a dictionary of data from a single pulse
+        /// this loop combines those dictionaries into another dictariony keyed by index
+        /// maybe a simlar issue to 'how to clear a list'
+
+       // message("Getting dictionary for ", it.name );
+
+
+        int i = -2;
+        std::string EVID;
+        std::string time;
+        std::string value;
+        std::string name;
+
+        std::string hi_mask = "hi_mask_" + it.name;
+        std::string lo_mask = "lo_mask_" + it.name;
+
+        dictionary[hi_mask] = toPythonList(it.hi_mask);
+        //message("ADDED hi_mask for", it.name );
+
+        dictionary[lo_mask] = toPythonList(it.lo_mask);
+        //message("ADDED lo_mask for", it.name );
+
+
+        for(auto&& it2: it.data_buffer)
+        {
+            //message("ADDED data_buffer ", i + 2, " for ", it.name );
+            EVID = "EVID_"  + it.name + "_";
+            //time = "time_"  + it2.name + "_";
+            value= "value_" + it.name + "_";
+            name = "name_"  + it.name + "_";
+            time = "time_"  + it.name + "_";
+            dictionary[EVID  += std::to_string(i)] = i + 2;
+            dictionary[time  += std::to_string(i)] = it2.first;
+            dictionary[value += std::to_string(i)] = toPythonList(it2.second);
+            dictionary[name  += std::to_string(i)] = it.name;
+            ++i;
+        }
+        //dictionary[std::to_string(j)] = getOMT_Dict(it);
+        //++j;
+        //dictionary.clear();
+    }
+    //message("getOutsideMaskData_Py Returning a dictionary ");
+    return dictionary;
+}
+//______________________________________________________________________________
+//boost::python::dict liberaLLRFController::getOutsideMaskEventDataPart_Py(const size_t part)
+//{
+//    return getOMT_Dict(getOutsideMaskEventDataPart(part));
+//}
+//______________________________________________________________________________
+boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside_mask_event_trace_data& omt)
+{
+    //message("getOMT_Dict called ");
+    boost::python::dict dictionary;
+    int i = -2;
+    std::string EVID;
+    std::string time;
+    std::string value;
+    std::string name;
+
+    std::string hi_mask = "hi_mask_" + omt.name;
+    std::string lo_mask = "lo_mask_" + omt.name;
+
+    dictionary[hi_mask] = omt.hi_mask;
+    message("ADDED hi_mask for", omt.name );
+
+    dictionary[lo_mask] = omt.lo_mask;
+    message("ADDED lo_mask for", omt.name );
+
+
+    for(auto&& it2: omt.data_buffer)
+    {
+        message("ADDED data_buffer for ", omt.name );
+//        for(auto i: it2.second )
+//        {
+//            message(i);
+//        }
+
+        EVID = "EVID_"  + omt.name + "_";
+        //time = "time_"  + it2.name + "_";
+        value= "value_" + omt.name + "_";
+        name = "name_"  + omt.name + "_";
+        time = "time_"  + omt.name + "_";
+        dictionary[EVID  += std::to_string(i)] = i + 2;
+        dictionary[time  += std::to_string(i)] = it2.first;
+        dictionary[value += std::to_string(i)] = toPythonList(it2.second);
+        dictionary[name  += std::to_string(i)] = omt.name;
+        ++i;
+    }
+//    }
+    return dictionary;
+}
+#endif
+
+
+//______________________________________________________________________________
+void liberaLLRFController::setTracesToSaveOnOutsideMaskEvent(const std::vector<std::string>& name)
+{
+    localInterface.setTracesToSaveOnOutsideMaskEvent(name);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setTracesToSaveOnOutsideMaskEvent_2(const std::string& name)
+{
+    localInterface.setTracesToSaveOnOutsideMaskEvent(name);
+}
+//______________________________________________________________________________
+void liberaLLRFController::setNumExtraTracesOnOutsideMaskEvent(const size_t value)
+{
+    localInterface.setNumExtraTracesOnOutsideMaskEvent(value);
+}
+//____________________________________________________________________________________________
+size_t liberaLLRFController::getNumExtraTracesOnOutsideMaskEvent() const
+{
+    return localInterface.getNumExtraTracesOnOutsideMaskEvent();
+}
+//______________________________________________________________________________
+std::vector<std::string> liberaLLRFController::getTracesToSaveOnOutsideMaskEvent()
+{
+    return localInterface.getTracesToSaveOnOutsideMaskEvent();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setDropAmpOnOutsideMaskEvent(const std::string& name,bool state, double amp_val)
+{
+    return localInterface.setDropAmpOnOutsideMaskEvent(name, state,amp_val);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val)
+{
+    return localInterface.setDropAmpOnOutsideMaskEventValue(name, amp_val);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::isOutsideMaskEventDataCollecting()const
+{
+    return localInterface.isOutsideMaskEventDataCollecting();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::canGetOutsideMaskEventData()const
+{
+    return localInterface.canGetOutsideMaskEventData();
+}
+
+#ifdef BUILD_DLL
+//______________________________________________________________________________
+void liberaLLRFController::setTracesToSaveOnOutsideMaskEvent_Py(const boost::python::list& name)
+{
+    setTracesToSaveOnOutsideMaskEvent(to_std_vector<std::string>(name));
+}
+//______________________________________________________________________________
+boost::python::list liberaLLRFController::getTracesToSaveOnOutsideMaskEvent_Py()
+{
+    return toPythonList(getTracesToSaveOnOutsideMaskEvent());
+}
+#endif
+
+//--------------------------------------------------------------------------------------------------
+/*        __  ___         ___     __             __   ___  __
+     /\  /  `  |  | \  / |__     |__) |  | |    /__` |__  /__`
+    /~~\ \__,  |  |  \/  |___    |    \__/ |___ .__/ |___ .__/
+*/
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getActivePulseCount()const
 {
         return localInterface.getActivePulseCount();
 }
-//____________________________________________________________________________________________
-void liberaLLRFController::addPulseCountOffset(size_t val)
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::addActivePulseCountOffset(const size_t val)
 {
-    localInterface.addPulseCountOffset(val);
+    localInterface.addActivePulseCountOffset(val);
 }
-//______________________________________________________________________________
-size_t liberaLLRFController::getNumOutsideMaskTraces()
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setActivePulsePowerLimit(const double val)
 {
-    return localInterface.getNumOutsideMaskTraces();
+    localInterface.setActivePulsePowerLimit(val);
 }
-//______________________________________________________________________________
-std::vector<llrfStructs::outside_mask_trace> liberaLLRFController::getOutsideMaskData()
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getActivePulsePowerLimit() const
 {
-    return localInterface.getOutsideMaskData();
+    return localInterface.getActivePulsePowerLimit();
 }
-//______________________________________________________________________________
-llrfStructs::outside_mask_trace liberaLLRFController::getOutsideMaskData(const size_t part)
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setActivePulseCount(const size_t val)
 {
-    return localInterface.getOutsideMaskData(part);
+    localInterface.setActivePulseCount(val);
 }
-//______________________________________________________________________________
-bool liberaLLRFController::isOutsideMaskDataFinishedCollecting(size_t part)
+//--------------------------------------------------------------------------------------------------
+
+
+
+bool liberaLLRFController::isAmpFFLocked()const
 {
-    return localInterface.isOutsideMaskDataFinishedCollecting(part);
+    return localInterface.isAmpFFLocked();
 }
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isAmpFFNotLocked()const
+{
+    return localInterface.isAmpFFNotLocked();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isPhaseFFLocked()const
+{
+    return localInterface.isPhaseFFLocked();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isPhaseFFNotLocked()const
+{
+    return localInterface.isPhaseFFNotLocked();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isRFOutput() const
+{
+    return localInterface.isRFOutput();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isNotRFOutput() const
+{
+    return localInterface.isNotRFOutput();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isFFLocked()const
+{
+    return localInterface.isFFLocked();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isFFNotLocked()const
+{
+    return localInterface.isFFNotLocked();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::RFOutput()const
+{
+    return localInterface.RFOutput();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isInterlockActive()const
+{
+    return localInterface.isInterlockActive();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isInterlockNotActive()const
+{
+    return localInterface.isInterlockNotActive();
+}
+
+
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setUnwrapPhaseTolerance(const double value)
+{
+    return localInterface.setUnwrapPhaseTolerance(value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setUnwrapPhaseTolerance(const std::string& name,const double value)
+{
+    return localInterface.setUnwrapPhaseTolerance(name, value);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //______________________________________________________________________________
 llrfStructs::LLRF_TYPE liberaLLRFController::getType()
 {
@@ -86,16 +623,6 @@ llrfStructs::LLRF_TYPE liberaLLRFController::getType()
 double liberaLLRFController::getAmpFF()
 {
     return localInterface.getAmpFF();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setDropAmpOnOutsideMaskDetection(const std::string& name,bool state, double amp_val)
-{
-    return localInterface.setDropAmpOnOutsideMaskDetection(name, state,amp_val);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setDropAmpValue(const std::string& name, double amp_val)
-{
-    return localInterface.setDropAmpValue(name, amp_val);
 }
 //______________________________________________________________________________
 size_t liberaLLRFController::getShotCount(const std::string& name)
@@ -162,31 +689,7 @@ double liberaLLRFController::getCrestPhiLLRF()
 {
     return localInterface.getCrestPhiLLRF();
 }
-//______________________________________________________________________________
-bool liberaLLRFController::isFFLocked()
-{
-    return localInterface.isFFLocked();
-}
-//____________________________________________________________________________________________
-bool liberaLLRFController::RFOutput()
-{
-    return localInterface.RFOutput();
-}
-//____________________________________________________________________________________________
-bool liberaLLRFController::interlockActive()
-{
-    return localInterface.interlockActive();
-}
-//____________________________________________________________________________________________
-bool liberaLLRFController::interlockNotActive()
-{
-    return localInterface.interlockNotActive();
-}
-//____________________________________________________________________________________________
-bool liberaLLRFController::isFFNotLocked()
-{
-    return localInterface.isFFNotLocked();
-}
+
 //______________________________________________________________________________
 size_t liberaLLRFController::getTraceLength()
 {
@@ -223,31 +726,6 @@ std::vector<double> liberaLLRFController::getTraceValues(const std::string& name
     return localInterface.getTraceValues(name);
 }
 //______________________________________________________________________________
-std::vector<double> liberaLLRFController::getHiMask(const std::string& name)
-{
-    return localInterface.getHiMask(name);
-}
-//______________________________________________________________________________
-void liberaLLRFController::setTracesToSaveOnBreakDown(const std::vector<std::string>& name)
-{
-    localInterface.setTracesToSaveOnBreakDown(name);
-}
-//______________________________________________________________________________
-void liberaLLRFController::setTracesToSaveOnBreakDown_2(const std::string& name)
-{
-    localInterface.setTracesToSaveOnBreakDown(name);
-}
-//______________________________________________________________________________
-std::vector<std::string> liberaLLRFController::getTracesToSaveOnBreakDown()
-{
-    return localInterface.getTracesToSaveOnBreakDown();
-}
-//______________________________________________________________________________
-std::vector<double> liberaLLRFController::getLoMask(const std::string& name)
-{
-    return localInterface.getLoMask(name);
-}
-//______________________________________________________________________________
 llrfStructs::rf_trace liberaLLRFController::getTraceData(const std::string& name)
 {
     return localInterface.getTraceData(name);
@@ -263,35 +741,30 @@ std::vector<llrfStructs::rf_trace> liberaLLRFController::getTraceBuffer(const st
     return localInterface.getTraceBuffer(name);
 }
 //______________________________________________________________________________
+
+
+
+std::vector<double> liberaLLRFController::getTimeVector()const
+{
+    return localInterface.getTimeVector();
+}
+
+
+//______________________________________________________________________________
 #ifdef BUILD_DLL
+boost::python::list liberaLLRFController::getTimeVector_Py()const
+{
+    return toPythonList(getTimeVector());
+}
+
 boost::python::list liberaLLRFController::getAverageTraceData_Py(const std::string& name)
 {
     return toPythonList(getAverageTraceData(name));
 }
 //______________________________________________________________________________
-void liberaLLRFController::setTracesToSaveOnBreakDown_Py(const boost::python::list& name)
-{
-    setTracesToSaveOnBreakDown(to_std_vector<std::string>(name));
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getTracesToSaveOnBreakDown_Py()
-{
-    return toPythonList(getTracesToSaveOnBreakDown());
-}
-//______________________________________________________________________________
 boost::python::list liberaLLRFController::getChannelNames_Py()
 {
     return toPythonList(getChannelNames());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getHiMask_Py(const std::string& name)
-{
-    return toPythonList(getHiMask(name));
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getLoMask_Py(const std::string& name)
-{
-    return toPythonList(getLoMask(name));
 }
 //______________________________________________________________________________
 boost::python::list liberaLLRFController::getTraceNames_Py()
@@ -308,113 +781,9 @@ boost::python::list liberaLLRFController::getTraceBuffer_Py(const std::string& n
 {
     return toPythonList(getTraceBuffer(name));
 }
-//______________________________________________________________________________
-boost::python::dict liberaLLRFController::getOutsideMaskData2_Py(const size_t part)
-{
-    return getOMT_Dict(getOutsideMaskData(part));
-}
-//______________________________________________________________________________
-//boost::python::list liberaLLRFController::getOutsideMaskData_Py()
-boost::python::dict liberaLLRFController::getOutsideMaskData_Py()
-{
-    std::vector<llrfStructs::outside_mask_trace> data = localInterface.getOutsideMaskData();
-    boost::python::dict dictionary;
-    boost::python::dict dictionary2;
-    boost::python::list list;
 
-    std::string EVID;
-    std::string time;
-    std::string value;
-    std::string name;
-//    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
 
-//    int i = -2;
-    size_t j = 0;
-    for(auto it: data)
-    {
-//        dictionary[ std::string("hi_mask") ] = toPythonList(it.high_mask);
-//        dictionary[ std::string("lo_mask") ] = toPythonList(it.low_mask);
-//        dictionary[ std::string("trace_name") ] = boost::python::object(it.trace_name);
-//        //message(it.trace_name);
-//        for(auto&& t_name: traces_to_save_on_break_down)
-//        {
-//            message(t_name);
-//            i = -2;
-//            for(auto&& it2: it.traces)
-//            {
-//                message(it2.name);
-//                if(it2.name  == t_name)
-//                {
-//                    EVID = "EVID_"+it2.name+"_";
-//                    time = "time_"+it2.name+"_";
-//                    value= "value_"+it2.name+"_";
-//                    name = "name_"+it2.name+"_";
-//                    dictionary[ EVID  += std::to_string(i) ] = it2.EVID;
-//                    //message("it2.EVID = ", it2.EVID);
-//                    dictionary[ time  += std::to_string(i) ] = it2.time;
-//                    dictionary[ value += std::to_string(i) ] = toPythonList(it2.value);
-//                    dictionary[ name  += std::to_string(i) ] = it2.name;
-//                    ++i;
-//                }
-//            }
-//        }
-        /// !!!!!!!!!!!!! FOR SOME REASON THIS IS THE ONLY WAY I COULD PROPERLY COPY THE DICTIONARY TO EXPORT
-        //dictionary2[std::to_string(j)] = dictionary.copy();
-        dictionary2[std::to_string(j)] = getOMT_Dict(it);
-        ++j;
-        //dictionary.clear();
-    }
-    message("getOutsideMaskData_Py Returning a dictionary ");
-    return dictionary2;
-}
-//______________________________________________________________________________
-boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside_mask_trace& omt)
-{
-    //message("getOMT_Dict called ");
-    boost::python::dict dictionary;
-    int i = -2;
-    std::string EVID;
-    std::string time;
-    std::string value;
-    std::string name;
-    dictionary[ std::string("hi_mask") ] = toPythonList(omt.high_mask);
-    dictionary[ std::string("lo_mask") ] = toPythonList(omt.low_mask);
-    dictionary[ std::string("trace_name") ] = boost::python::object(omt.trace_name);
-    dictionary[ std::string("mask_floor") ] = boost::python::object(omt.mask_floor);
-    dictionary[ std::string("time_vector") ] = toPythonList(omt.time_vector);
-    dictionary[ std::string("is_collecting") ] = boost::python::object(omt.is_collecting);
-    dictionary[ std::string("num_traces_to_collect") ] = boost::python::object(omt.num_traces_to_collect);
-    dictionary[ std::string("message") ] = boost::python::object(omt.message);
-    dictionary[ std::string("outside_mask_index") ] = boost::python::object(omt.outside_mask_index);
-        //message(it.trace_name);
-    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();
 
-    for(auto && t_name: traces_to_save_on_break_down)
-    {
-        //message(t_name," ",i);
-        i = -2;
-        for(auto&& it2: omt.traces)
-        {
-            //message(it2.name," ",i);
-            if(it2.name == t_name)
-            {
-                EVID = "EVID_"  + it2.name + "_";
-                time = "time_"  + it2.name + "_";
-                value= "value_" + it2.name + "_";
-                name = "name_"  + it2.name + "_";
-                time = "time_"  + it2.name + "_";
-                dictionary[EVID  += std::to_string(i)] = it2.EVID;
-                dictionary[time  += std::to_string(i)] = it2.time;
-                dictionary[value += std::to_string(i)] = toPythonList(it2.value);
-                dictionary[name  += std::to_string(i)] = it2.name;
-                ++i;
-                //message(omt.trace_name," adding: ",it2.name," ",it2.EVID," ",it2.time);
-            }
-            //message("here");
-        }
-    }
-    return dictionary;
-}
 //______________________________________________________________________________
 boost::python::dict liberaLLRFController::dump_traces()
 {
@@ -837,6 +1206,11 @@ llrfStructs::TRIG liberaLLRFController::getTrigSource()
 // /__` |__   |   |  |__  |__) /__`
 // .__/ |___  |   |  |___ |  \ .__/
 //______________________________________________________________________________
+bool liberaLLRFController::resetToValue(const double value)
+{
+    return localInterface.resetToValue(value);
+}
+//______________________________________________________________________________
 bool liberaLLRFController::trigOff()
 {
     return localInterface.trigOff();
@@ -924,12 +1298,12 @@ void liberaLLRFController::setCrestPhiLLRF(double value)
 //______________________________________________________________________________
 bool liberaLLRFController::setHighMask(const std::string&name,const  std::vector<double>& value)
 {
-    return localInterface.setHighMask(name, value);
+    return localInterface.setHiMask(name, value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setLowMask(const std::string&name,const std::vector<double>& value)
 {
-    return localInterface.setLowMask(name, value);
+    return localInterface.setLoMask(name, value);
 }
 //______________________________________________________________________________
 bool liberaLLRFController::setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value)
@@ -1007,80 +1381,34 @@ bool liberaLLRFController::setAbsoluteMask(const size_t s1,const size_t s2,const
     return localInterface.setAbsoluteMask(s1,s2,s3,s4,value2,name);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::setMaskFloor(const std::string& name, double value)
-{
-    return localInterface.setMaskFloor(name,value);
-}
-//______________________________________________________________________________
 bool liberaLLRFController::shouldCheckMasks(const std::string& name)
 {
     return localInterface.shouldCheckMasks(name);
 }
-//______________________________________________________________________________
-bool liberaLLRFController::clearMask(const std::string&name)
+
+
+//--------------------------------------------------------------------------------------------------
+/*
+        ___  __        __   ___     __        ___  ___  ___  __      __    __  ___
+         |  |__)  /\  /  ` |__     |__) |  | |__  |__  |__  |__)    /__` |  / |__
+         |  |  \ /~~\ \__, |___    |__) \__/ |    |    |___ |  \    .__/ | /_ |___
+*/
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setAllTraceBufferSize(const size_t value)
 {
-    return localInterface.clearMask(name);
+    return localInterface.setAllTraceBufferSize(value);
+}
+bool liberaLLRFController::setIndividualTraceBufferSize(const std::string&name,const size_t value)
+{
+    return localInterface.setIndividualTraceBufferSize(name, value);
 }
 //______________________________________________________________________________
-bool liberaLLRFController::setNumBufferTraces(const std::string&name,const size_t value)
+bool liberaLLRFController::setIndividualTraceBufferSize(const size_t value)
 {
-    return localInterface.setNumBufferTraces(name, value);
+    return localInterface.setIndividualTraceBufferSize(value);
 }
-//______________________________________________________________________________
-void liberaLLRFController::setNumBufferTraces(const size_t value)
-{
-    localInterface.setNumBufferTraces(value);
-}
-//______________________________________________________________________________
-void liberaLLRFController::setNumExtraTraces(size_t value)
-{
-    localInterface.setNumExtraTraces(value);
-}
-//____________________________________________________________________________________________
-size_t liberaLLRFController::getNumExtraTraces()
-{
-    return localInterface.getNumExtraTraces();
-}
-//______________________________________________________________________________
-void liberaLLRFController::setActivePulsePowerLimit(const double& val)
-{
-    localInterface.setActivePulsePowerLimit(val);
-}
-//____________________________________________________________________________________________
-double liberaLLRFController::getActivePulsePowerLimit()
-{
-    return localInterface.getActivePulsePowerLimit();
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setCheckMask(const std::string&name, bool value)
-{
-    return localInterface.setCheckMask(name, value);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setShouldCheckMask(const std::string&name)
-{
-    return localInterface.setShouldCheckMask(name);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setShouldNotCheckMask(const std::string&name)
-{
-    return localInterface.setShouldNotCheckMask(name);
-}
-//______________________________________________________________________________
-void liberaLLRFController::setGlobalCheckMask(bool value)
-{
-    localInterface.setGlobalCheckMask(value);
-}
-//______________________________________________________________________________
-void liberaLLRFController::setGlobalShouldCheckMask()
-{
-    localInterface.setGlobalShouldCheckMask();
-}
-//______________________________________________________________________________
-void liberaLLRFController::setGlobalShouldNotCheckMask()
-{
-    localInterface.setGlobalShouldNotCheckMask();
-}
+
+
 //______________________________________________________________________________
 double liberaLLRFController::getBreakDownRate()
 {
@@ -1101,56 +1429,112 @@ long long liberaLLRFController::elapsedTime()
 {
     return localInterface.elapsedTime();
 }
-//______________________________________________________________________________
-bool liberaLLRFController::setKeepRollingAverage(const std::string&name, bool value)
+
+
+
+/*
+         __   __                    __                ___  __        __   ___  __
+        |__) /  \ |    |    | |\ | / _`     /\  \  / |__  |__)  /\  / _` |__  /__`
+        |  \ \__/ |___ |___ | | \| \__>    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
+
+// Set the parameters for the rolling avergaes
+*/
+void liberaLLRFController::clearAllRollingAverage()
 {
-    return localInterface.setKeepRollingAverage(name, value);
+    localInterface.clearAllRollingAverage();
 }
-//______________________________________________________________________________
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::clearTraceRollingAverage(const std::string& name)
+{
+    return localInterface.clearTraceRollingAverage(name);
+}
+//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setKeepRollingAverageNoReset(const bool value)
 {
-    return localInterface.setKeepRollingAverageNoReset(value);
+    localInterface.setKeepRollingAverageNoReset(value);
 }
-//______________________________________________________________________________
-void liberaLLRFController::setKeepRollingAverageNoReset(const std::string&name, const bool value)
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setKeepRollingAverageNoReset(const std::string&name, const bool value)
 {
     return localInterface.setKeepRollingAverageNoReset(name, value);
 }
-//______________________________________________________________________________
-bool liberaLLRFController::setShouldKeepRollingAverage(const std::string&name)
-{
-    return localInterface.setShouldKeepRollingAverage(name);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string&name)
-{
-    return localInterface.setShouldNotKeepRollingAverage(name);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::setNumRollingAverageTraces(const std::string&name,const size_t value)
-{
-    return localInterface.setNumRollingAverageTraces(name, value);
-}
-//______________________________________________________________________________
-void liberaLLRFController::setNumRollingAverageTraces(const size_t value)
-{
-    localInterface.setNumRollingAverageTraces(value);
-}
-//____________________________________________________________________________________________
-void liberaLLRFController::resetAverageTraces()
-{
-    localInterface.resetAverageTraces();
-}
-//____________________________________________________________________________________________
+//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setShouldKeepRollingAverage()
 {
     localInterface.setShouldKeepRollingAverage();
 }
-//____________________________________________________________________________________________
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setShouldKeepRollingAverage(const std::string&name)
+{
+    return localInterface.setShouldKeepRollingAverage(name);
+}
+//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setShouldNotKeepRollingAverage()
 {
     localInterface.setShouldNotKeepRollingAverage();
 }
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setKeepRollingAverage(const std::string&name, bool value)
+{
+    return localInterface.setKeepRollingAverage(name, value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setTraceRollingAverageSize(const std::string&name, const size_t value)
+{
+    return localInterface.setTraceRollingAverageSize(name, value);
+}
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setAllRollingAverageSize(const size_t value)
+{
+    localInterface.setAllRollingAverageSize(value);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string& name)
+{
+    return localInterface.setShouldNotKeepRollingAverage(name);
+}
+//--------------------------------------------------------------------------------------------------
+std::vector<double> liberaLLRFController::getTraceRollingAverage(const std::string&name)const
+{
+    return localInterface.getTraceRollingAverage(name);
+}
+//--------------------------------------------------------------------------------------------------
+#ifdef BUILD_DLL
+boost::python::list liberaLLRFController::getTraceRollingAverage_Py(const std::string&name)const
+{
+    return toPythonList(getTraceRollingAverage(name));
+}
+#endif
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getTraceRollingAverageSize(const std::string&name)const
+{
+    return localInterface.getTraceRollingAverageSize(name);
+}
+//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getTraceRollingAverageCount(const std::string&name) const
+{
+    return localInterface.getTraceRollingAverageCount(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isKeepingRollingAverage(const std::string&name)const
+{
+    return localInterface.isKeepingRollingAverage(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::hasRollingAverage(const std::string&name)const
+{
+    return localInterface.hasRollingAverage(name);
+}
+
+
+
+
+
+
+
+
+
+
 //____________________________________________________________________________________________
 bool liberaLLRFController::setMeanStartEndTime(const double start, const double end, const std::string&name)
 {
@@ -1166,16 +1550,7 @@ bool liberaLLRFController::setMeanStopIndex(const std::string&name, size_t  valu
 {
     return localInterface.setMeanStopIndex(name, value);
 }
-//____________________________________________________________________________________________
-size_t liberaLLRFController::getNumRollingAverageTraces(const std::string&name)
-{
-    return localInterface.getNumRollingAverageTraces(name);
-}
-//______________________________________________________________________________
-bool liberaLLRFController::clearRollingAverage(const std::string&name)
-{
-    return localInterface.clearRollingAverage(name);
-}
+
 //______________________________________________________________________________
 bool liberaLLRFController::isTracePV(const llrfStructs::LLRF_PV_TYPE pv)
 {
@@ -1297,10 +1672,10 @@ bool liberaLLRFController::stopKlyRevTraceMonitor()
     return localInterface.stopKlyRevTraceMonitor();
 }
 //______________________________________________________________________________
-bool liberaLLRFController::setNumContinuousOutsideMaskCount(const std::string& name, size_t val)
-{
-    return localInterface.setNumContinuousOutsideMaskCount(name,val);
-}
+//bool liberaLLRFController::setNumContinuousOutsideMaskCount(const std::string& name, size_t val)
+//{
+//    return localInterface.setNumContinuousOutsideMaskCount(name,val);
+//}
 //______________________________________________________________________________
 #ifdef BUILD_DLL
 //______________________________________________________________________________

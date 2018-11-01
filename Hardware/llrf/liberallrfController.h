@@ -14,15 +14,15 @@
 //    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
 //
 //  Author:      DJS
-//  Last edit:   13-04-2018
+//  Last edit:   16-10-2018
 //  FileName:    liberaLLRFController.h
 //  Description:
 //
 //
 //
 //*/
-#ifndef LASER_CONTROLLER_H_
-#define LASER_CONTROLLER_H_
+#ifndef _LIBERA_LLRF_CONTROLLER_H_
+#define _LIBERA_LLRF_CONTROLLER_H_
 // stl
 #include <string>
 #include <vector>
@@ -59,6 +59,219 @@ class liberaLLRFController : public controller
 
         ~liberaLLRFController();
 
+/*
+    ___  __        __   ___     __        ___  ___  ___  __      __    __  ___
+     |  |__)  /\  /  ` |__     |__) |  | |__  |__  |__  |__)    /__` |  / |__
+     |  |  \ /~~\ \__, |___    |__) \__/ |    |    |___ |  \    .__/ | /_ |___
+*/
+        bool setAllTraceBufferSize(const size_t value);
+        bool setIndividualTraceBufferSize(const std::string& name, const size_t value);
+        bool setIndividualTraceBufferSize(const size_t value);
+
+//--------------------------------------------------------------------------------------------------
+/*       __   __                    __                ___  __        __   ___  __
+        |__) /  \ |    |    | |\ | / _`     /\  \  / |__  |__)  /\  / _` |__  /__`
+        |  \ \__/ |___ |___ | | \| \__>    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
+
+  methods for the trace rolling avergaes
+*/
+        void clearAllRollingAverage();
+        bool clearTraceRollingAverage(const std::string& name);
+        void setKeepRollingAverageNoReset(const bool value);
+        bool setKeepRollingAverageNoReset(const std::string&name, const bool value);
+        void setShouldKeepRollingAverage();
+        bool setShouldKeepRollingAverage(const std::string&name);
+        void setShouldNotKeepRollingAverage();
+        bool setKeepRollingAverage(const std::string&name, bool value);
+        bool setTraceRollingAverageSize(const std::string&name, const size_t value);
+        void setAllRollingAverageSize(const size_t value);
+        bool setShouldNotKeepRollingAverage(const std::string& name);
+        std::vector<double> getTraceRollingAverage(const std::string&name)const;
+#ifdef BUILD_DLL
+        boost::python::list getTraceRollingAverage_Py(const std::string&name)const;
+#endif
+        size_t getTraceRollingAverageSize(const std::string&name)const;
+        size_t getTraceRollingAverageCount(const std::string&name)const;
+        bool isKeepingRollingAverage(const std::string&name)const;
+        bool hasRollingAverage(const std::string&name)const;
+//--------------------------------------------------------------------------------------------------
+
+
+
+//--------------------------------------------------------------------------------------------------
+/*             __           __   ___ ___ ___  ___  __   __
+    |\/|  /\  /__` |__/    /__` |__   |   |  |__  |__) /__`
+    |  | /~~\ .__/ |  \    .__/ |___  |   |  |___ |  \ .__/
+
+*/
+        bool setUsePercentMask(const std::string& name);
+        bool setUseAbsoluteMask(const std::string& name);
+        bool setMaskValue(const std::string& name, double value);
+        bool setMaskAbsMinValue(const std::string& name, double value);
+        bool setMaskStartIndex(const std::string& name, size_t value);
+        bool setMaskEndIndex(const std::string& name, size_t value);
+        bool setMaskFloor(const std::string& name, double value);
+        bool setMaskWindowIndices(const std::string& name, size_t window_start, size_t window_end);
+        bool setMaskStartTime(const std::string& name, double value);
+        bool setMaskEndTime(const std::string& name, double value);
+        bool setMaskWindowTimes(const std::string& name, double window_start, double window_end);
+        bool setShouldCheckMask(const std::string&name);
+        bool setShouldNotCheckMask(const std::string&name);
+        bool setCheckMask(const std::string&name, bool value);
+        bool setMaskParamatersIndices(const std::string& name, bool isPercent,
+                                      double mask_value, double mask_floor, double mask_abs_min,
+                                      size_t start, size_t end, size_t window_start, size_t window_end);
+        bool setMaskParamatersTimes(const std::string& name, bool isPercent,
+                                    double mask_value, double mask_floor, double mask_abs_min,
+                                    double start, double end,
+                                    double window_start, double window_end);
+        bool setHiMask(const std::string&name,const std::vector<double>& value);
+        bool setLoMask(const std::string&name,const std::vector<double>& value);
+#ifdef BUILD_DLL
+        bool setHiMask_Py(const std::string&name, boost::python::list& value);
+        bool setLoMask_Py(const std::string&name, boost::python::list& value);
+#endif
+        bool setNumContinuousOutsideMaskCount(size_t value);
+        bool setNumContinuousOutsideMaskCount(const std::string&name, size_t value);
+        void setGlobalCheckMask(bool value);
+        void setGlobalShouldCheckMask();
+        void setGlobalShouldNotCheckMask();
+        bool clearMask(const std::string&name);
+
+//--------------------------------------------------------------------------------------------------
+/*             __           __   ___ ___ ___  ___  __   __
+    |\/|  /\  /__` |__/    / _` |__   |   |  |__  |__) /__`
+    |  | /~~\ .__/ |  \    \__> |___  |   |  |___ |  \ .__/
+
+    //
+*/
+        std::vector<double> getHiMask(const std::string&name);
+        std::vector<double> getLoMask(const std::string&name);
+#ifdef BUILD_DLL
+        boost::python::list getHiMask_Py(const std::string&name);
+        boost::python::list getLoMask_Py(const std::string&name);
+#endif
+        double getMaskValue(const std::string& name);
+        size_t getMaskStartIndex(const std::string& name);
+        size_t getMaskEndIndex(const std::string& name);
+        double getMaskFloor(const std::string& name);
+        size_t getMaskWindowStartIndex(const std::string& name);
+        size_t getMaskWindowEndIndex(const std::string& name);
+        double getMaskStartTime(const std::string& name);
+        double getMaskEndTime(const std::string& name);
+        double getMaskWindowStartTime(const std::string& name);
+        double getMaskWindowEndTime(const std::string& name);
+
+//--------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------
+/*        __  ___         ___     __             __   ___  __
+     /\  /  `  |  | \  / |__     |__) |  | |    /__` |__  /__`
+    /~~\ \__,  |  |  \/  |___    |    \__/ |___ .__/ |___ .__/
+*/
+//--------------------------------------------------------------------------------------------------
+        void setActivePulsePowerLimit(const double val);
+        double getActivePulsePowerLimit()const;
+        size_t getActivePulseCount()const;
+        void addActivePulseCountOffset(const size_t val);
+        void setActivePulseCount(const size_t value);
+
+
+
+
+
+
+        void setTracesToSaveOnOutsideMaskEvent(const std::vector<std::string>& name);
+        void setTracesToSaveOnOutsideMaskEvent_2(const std::string& name);
+
+        void setNumExtraTracesOnOutsideMaskEvent(const size_t value);
+        size_t getNumExtraTracesOnOutsideMaskEvent()const;
+
+
+        size_t getOutsideMaskEventDataSize();
+
+
+        llrfStructs::outside_mask_event_data  getOutsideMaskEventData();
+        const llrfStructs::outside_mask_event_data&  getOutsideMaskEventData_CRef();
+
+
+        //llrfStructs::outside_mask_trace getOutsideMaskEventDataPart(const size_t part);
+
+        bool isOutsideMaskEventDataCollecting()const;
+        bool canGetOutsideMaskEventData()const;
+        size_t getShotCount(const std::string& name);
+        bool setDropAmpOnOutsideMaskEvent(const std::string& name, bool state, double amp_val = 0.0);
+        bool setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val);
+
+
+        std::vector<std::string> getTracesToSaveOnOutsideMaskEvent();
+
+#ifdef BUILD_DLL
+        void setTracesToSaveOnOutsideMaskEvent_Py(const boost::python::list& name);
+        boost::python::dict getOutsideMaskEventData_Py();
+        boost::python::dict getOutsideMaskEventDataPart_Py(const size_t part);
+        boost::python::list getTracesToSaveOnOutsideMaskEvent_Py();
+        // converts the Outside_Mask_Data to a python dictionary
+        // callled be
+    private:
+        boost::python::dict getOMT_Dict(const llrfStructs::outside_mask_event_trace_data& omt);
+    public:
+#endif
+
+
+
+
+
+
+
+
+        bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+        bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
+
+        bool setHighMask(const std::string& name, const std::vector<double>& value);
+        bool setLowMask(const std::string& name, const std::vector<double>& value);
+
+        bool setCavRevPwrHiMask(const std::vector<double>& value);
+        bool setCavRevPwrLoMask(const std::vector<double>& value);
+        bool setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+        bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
+
+
+
+
+        bool setAbsoluteTimeMask(const double s1,const double s2,const double s3,
+                                 const double s4,const double value2,const  std::string& name);
+        bool setPercentTimeMask(const double s1,const double s2,const double s3,
+                                const double s4,const double value2,const  std::string& name);
+
+
+#ifdef BUILD_DLL
+        bool setInfiniteMasks(const std::string& name);
+        bool setHighMask(const std::string& name,const  boost::python::list& value);
+        bool setLowMask(const std::string& name,const  boost::python::list& value);
+        bool setCavRevPwrHiMask_Py(const boost::python::list& value);
+        bool setCavRevPwrLoMask_Py(const boost::python::list& value);
+#endif
+        //bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
+        bool shouldCheckMasks(const std::string& name);
+
+
+
+
+
+
+        bool setTORSCANToIOIntr();
+        bool setTORACQMEvent();
+
+
+
+
+
+
+
+
         // GETTERS
         double getAmpFF();
         double getAmpSP();
@@ -73,15 +286,11 @@ class liberaLLRFController : public controller
         double getPhiCalibration();
         double getAmpCalibration();
         double getCrestPhiLLRF();
-        size_t getActivePulseCount();
-        void addPulseCountOffset(size_t val);
 
         bool trigOff();
         bool trigExt();
         bool trigInt();
 
-        void setActivePulsePowerLimit(const double& val);
-        double getActivePulsePowerLimit();
 
         llrfStructs::TRIG getTrigSource();
 
@@ -90,25 +299,24 @@ class liberaLLRFController : public controller
         bool setAllSCANToPassive();
 
 
-        void setTracesToSaveOnBreakDown(const std::vector<std::string>& name);
-        void setTracesToSaveOnBreakDown_2(const std::string& name);
-        std::vector<std::string> getTracesToSaveOnBreakDown();
+//____________________________________________________________________________________________
+        bool isAmpFFLocked()const;
+        bool isAmpFFNotLocked()const;
+        bool isPhaseFFLocked()const;
+        bool isPhaseFFNotLocked()const;
+        bool isFFLocked()const;
+        bool isFFNotLocked()const;
+        bool RFOutput()const;
+        bool isRFOutput() const;
+        bool isNotRFOutput() const;
+        bool isInterlockActive()const;
+        bool isInterlockNotActive()const;
+//____________________________________________________________________________________________
 
-        size_t getShotCount(const std::string& name);
 
-        size_t getNumOutsideMaskTraces();
-        std::vector<llrfStructs::outside_mask_trace>   getOutsideMaskData();
-        llrfStructs::outside_mask_trace getOutsideMaskData(const size_t part);
-        bool isOutsideMaskDataFinishedCollecting(size_t part);
+        bool setUnwrapPhaseTolerance(const double value);
+        bool setUnwrapPhaseTolerance(const std::string& name,const double value);
 
-
-        bool isFFLocked();
-        bool isFFNotLocked();
-        bool RFOutput();
-        bool interlockActive();
-        bool interlockNotActive();
-        bool setDropAmpOnOutsideMaskDetection(const std::string& name, bool state, double amp_val = 0.0);
-        bool setDropAmpValue(const std::string& name, double amp_val);
 
         //bool   isLocked();
 
@@ -122,23 +330,28 @@ class liberaLLRFController : public controller
         std::vector<double> getAverageTraceData(const std::string& name);
 
 
+
+//        bool usePercentMask(const std::string& trace);
+//        bool useAbsoluteMask(const std::string& trace);
+//        bool setMaskValue(const std::string& trace, double value);
+
+        size_t getOutsideMaskEventCount()const;
+
         llrfStructs::rf_trace getTraceData(const std::string& name);
         std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
-        std::vector<double> getHiMask(const std::string& name);
-        std::vector<double> getLoMask(const std::string& name);
 #ifdef BUILD_DLL
         boost::python::list getChannelNames_Py();
         boost::python::list getTraceNames_Py();
         boost::python::list getTraceValues_Py(const std::string& name);
         boost::python::list getTraceBuffer_Py(const std::string& name);
-        boost::python::list getHiMask_Py(const std::string& name);
-        boost::python::list getLoMask_Py(const std::string& name);
         //boost::python::list getOutsideMaskData_Py();
-        boost::python::dict getOutsideMaskData_Py();
-        boost::python::dict getOutsideMaskData2_Py(const size_t part);
         boost::python::list getAverageTraceData_Py(const std::string& name);
+
+        boost::python::list getTimeVector_Py()const;
+
 #endif
+        std::vector<double> getTimeVector()const;
         std::vector<double> getChannelTrace();
         std::vector<double> getCavRevPower();
         std::vector<double> getCavFwdPower();
@@ -189,8 +402,6 @@ class liberaLLRFController : public controller
         boost::python::list getProbePowerAv_Py();
         boost::python::list getProbePhaseAv_Py();
         boost::python::dict dump_traces();
-        void setTracesToSaveOnBreakDown_Py(const boost::python::list& name);
-        boost::python::list getTracesToSaveOnBreakDown_Py();
 #endif
         llrfStructs::rf_trace getCavRevPowerData();
         llrfStructs::rf_trace getCavFwdPowerData();
@@ -239,11 +450,7 @@ class liberaLLRFController : public controller
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
-        bool setShouldKeepRollingAverage(const std::string&name);
-        bool setShouldNotKeepRollingAverage(const std::string&name);
-
-        void setNumExtraTraces(size_t value);
-        size_t getNumExtraTraces();
+        bool resetToValue(const double value);
 
         bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
         bool disableInfiniteMaskEndByPower(const std::string& phase_trace);
@@ -251,12 +458,10 @@ class liberaLLRFController : public controller
         double getMaskInfiniteEndByPowerTime(const std::string& name);
 
 
-        bool setCheckMask(const std::string&name, bool value);
-        bool setShouldCheckMask(const std::string&name);
-        bool setShouldNotCheckMask(const std::string&name);
-        void setGlobalCheckMask(bool value);
-        void setGlobalShouldCheckMask();
-        void setGlobalShouldNotCheckMask();
+//        bool setCheckMask(const std::string&name, bool value);
+//        bool setShouldCheckMask(const std::string&name);
+//        bool setShouldNotCheckMask(const std::string&name);
+
 
         void startTimer();
         long long elapsedTime();
@@ -268,59 +473,15 @@ class liberaLLRFController : public controller
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
 
-        bool setHighMask(const std::string& name, const std::vector<double>& value);
-        bool setLowMask(const std::string& name, const std::vector<double>& value);
-
-        bool setCavRevPwrHiMask(const std::vector<double>& value);
-        bool setCavRevPwrLoMask(const std::vector<double>& value);
-        bool setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
-        bool setCavRevPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
-        bool setCavFwdPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
-        bool setCavFwdPwrMaskAbsolute(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value);
 
 
+        /* convert trace indices to times and vice-versa */
         size_t getIndex(const double time);
         double getTime(const size_t  time);
-        bool setAbsoluteTimeMask(const double s1,const double s2,const double s3,
-                                 const double s4,const double value2,const  std::string& name);
-        bool setPercentTimeMask(const double s1,const double s2,const double s3,
-                                const double s4,const double value2,const  std::string& name);
-
-        bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
-        bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value2,const std::string name);
-        bool setMaskFloor(const std::string& name, double value);
-        bool clearMask(const std::string&name);
-
-#ifdef BUILD_DLL
-        bool setInfiniteMasks(const std::string& name);
-        bool setHighMask(const std::string& name,const  boost::python::list& value);
-        bool setLowMask(const std::string& name,const  boost::python::list& value);
-        bool setCavRevPwrHiMask_Py(const boost::python::list& value);
-        bool setCavRevPwrLoMask_Py(const boost::python::list& value);
-#endif
-
-        bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
-
-        bool setNumBufferTraces(const std::string&name, const size_t value);
-        void setNumBufferTraces(const size_t value);
-
-        bool setKeepRollingAverage(const std::string&name, bool value);
-        void setKeepRollingAverageNoReset(const bool value);
-        void setKeepRollingAverageNoReset(const std::string&name, const bool value);
 
 
-        bool setNumRollingAverageTraces(const std::string&name,const size_t value);
-        void setNumRollingAverageTraces(const size_t value);
-
-        bool shouldCheckMasks(const std::string& name);
         std::string fullCavityTraceName(const std::string& name);
 
-        void resetAverageTraces();
-        void setShouldKeepRollingAverage();
-        void setShouldNotKeepRollingAverage();
-
-        size_t getNumRollingAverageTraces(const std::string&name);
-        bool clearRollingAverage(const std::string&name);
         // Qantifiers
         bool isTracePV(const llrfStructs::LLRF_PV_TYPE pv);
         bool isNotTracePV(const llrfStructs::LLRF_PV_TYPE pv);
@@ -371,6 +532,7 @@ class liberaLLRFController : public controller
         void initialise();
         const bool shouldStartEPICs;
         liberallrfInterface localInterface;
-        boost::python::dict getOMT_Dict(const llrfStructs::outside_mask_trace& omt);
+
+
 };
 #endif // VELA_MAG_CONTROLLER_H_

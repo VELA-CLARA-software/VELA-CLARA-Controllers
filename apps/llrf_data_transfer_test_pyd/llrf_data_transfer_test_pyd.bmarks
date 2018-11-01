@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5335" topLine="159" />
+	</File>
+	<File name="main.h" open="0" top="0" tabpos="0">
+		<Cursor position="462" topLine="85" />
+	</File>
+</BrowseTracker_layout_file>

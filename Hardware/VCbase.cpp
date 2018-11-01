@@ -23,6 +23,7 @@
 #include "VCbase.h"
 #include "configDefinitions.h"
 
+
 VCbase::VCbase():
 VCbase(UTL::UNKNOWN_NAME)
 {}

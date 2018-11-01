@@ -1533,6 +1533,10 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getFastImage2D",    &cameraControllerBase::getFastImage2D_Py1   ,getFastImage2D_Py1_ds)
         .def("getFastImage2D",    &cameraControllerBase::getFastImage2D_Py2   ,getFastImage2D_Py2_ds)
 
+        .def("getSelectedCam",    &cameraControllerBase::getSelectedCamName   ,"")
+        .def("getSelectedCamScrName",    &cameraControllerBase::getSelectedCamScrName   ,"")
+        .def("getNumPixX",    &cameraControllerBase::getNumPixX   ,"")
+        .def("getNumPixY",    &cameraControllerBase::getNumPixY   ,"")
 
         .def("getStepSize_VC", &cameraControllerBase::getStepSize_VC ,getStepSize_VC_ds)
         .def("getStepSize",    getStepSize_1,getStepSize_ds1)

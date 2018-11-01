@@ -145,7 +145,7 @@ class interface : public baseObject
         void updateBoolState(const event_handler_args& args, bool& parameter);
 
 
-        double getTime(const epicsTimeStamp& stamp);
+        static double getTime(const epicsTimeStamp& stamp);
 
 
         void setChannelCountandType(const chid& CHID,

@@ -1,34 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\Utilities\llrf\liberallrfConfigReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="1378" topLine="0" />
+	<File name="..\..\Hardware\llrf\liberallrfController.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="2955" topLine="39" />
 	</File>
-	<File name="..\..\Structs\llrf\llrfStructs.h" open="0" top="0" tabpos="0">
-		<Cursor position="24660" topLine="381" />
-	</File>
-	<File name="..\..\Hardware\llrf\liberallrfController.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1749" topLine="0" />
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="20210" topLine="449" />
 	</File>
 	<File name="..\..\Hardware\llrf\liberallrfController.h" open="0" top="0" tabpos="0">
-		<Cursor position="5216" topLine="84" />
+		<Cursor position="2654" topLine="51" />
 	</File>
-	<File name="include\VCllrf.h" open="1" top="0" tabpos="1">
-		<Cursor position="22007" topLine="401" />
+	<File name="src\VCllrf.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="15076" topLine="337" />
 	</File>
-	<File name="..\..\Utilities\llrf\liberallrfConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="5079" topLine="101" />
+	<File name="include\VCllrf.h" open="0" top="0" tabpos="3">
+		<Cursor position="8491" topLine="162" />
 	</File>
-	<File name="..\..\Hardware\llrf\liberallrfInterface.h" open="0" top="0" tabpos="0">
-		<Cursor position="17310" topLine="363" />
+	<File name="..\..\Utilities\llrf\liberallrfConfigReader.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="10012" topLine="106" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Hardware\llrf\liberallrfInterface.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="72110" topLine="1768" />
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0">
+		<Cursor position="6701" topLine="125" />
 	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
-		<Cursor position="50624" topLine="827" />
+	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2" topLine="6" />
 	</File>
-	<File name="src\VCllrf.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="956" topLine="0" />
+	<File name="..\..\Hardware\llrf\liberallrfInterface.h" open="1" top="0" tabpos="3">
+		<Cursor position="1633" topLine="33" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\llrf\liberallrfInterface.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1605" topLine="27" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Utilities\configDefinitions.h" open="1" top="0" tabpos="0">
+		<Cursor position="64810" topLine="1076" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="1558" topLine="34" />
+	</File>
+	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="1770" topLine="101" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="10510" topLine="239" />
+	</File>
+	<File name="..\..\Structs\structs.h" open="1" top="0" tabpos="0">
+		<Cursor position="16902" topLine="312" />
+	</File>
+	<File name="..\..\Utilities\llrf\liberallrfConfigReader.h" open="1" top="0" tabpos="5">
+		<Cursor position="1393" topLine="26" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Utilities\running_stat.h" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Structs\llrf\llrfStructs.h" open="1" top="0" tabpos="2">
+		<Cursor position="424" topLine="0" />
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="1" top="0" tabpos="0">
+		<Cursor position="4045" topLine="87" />
 	</File>
 </BrowseTracker_layout_file>

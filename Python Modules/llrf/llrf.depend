@@ -12,7 +12,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1535450382 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1538399963 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -21,7 +21,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1535096779 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1540308482 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -45,7 +45,7 @@
 	<boost/circular_buffer.hpp>
 	<boost/python/numpy.hpp>
 
-1533816250 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1538667689 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -54,7 +54,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1535463505 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1539596100 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	<iostream>
 	<sstream>
@@ -118,7 +118,7 @@
 	<vector>
 	<cadef.h>
 
-1535474713 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1540469197 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -177,7 +177,7 @@
 	"configReader.h"
 	"magnetStructs.h"
 
-1535096278 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1539596054 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
@@ -197,16 +197,17 @@
 1524756157 d:\vela\git projects\vela-clara-controllers\python modules\llrf\main.h
 	<windows.h>
 
-1524756158 source:d:\vela\git projects\vela-clara-controllers\python modules\llrf\src\vcllrf.cpp
+1538408433 source:d:\vela\git projects\vela-clara-controllers\python modules\llrf\src\vcllrf.cpp
 	"VCllrf.h"
 	<iostream>
 
-1535475487 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf.h
+1540561900 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf.h
 	<string>
 	"liberaLLRFController.h"
 	"llrfStructs.h"
 	"VCheader.h"
 	"VCbase.h"
+	"VCllrf_docstrings.h"
 
 1487876006 source:d:\vela\git projects\vela-clara-controllers\utilities\llrfconfigreader.cpp
 	"llrfConfigReader.h"
@@ -220,12 +221,12 @@
 	<algorithm>
 	<ctype.h>
 
-1534596681 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.cpp
+1540566602 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.cpp
 	"liberaLLRFController.h"
 	<fstream>
 	<iostream>
 
-1534596681 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.h
+1540566054 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -242,11 +243,12 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 
-1534596681 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.h
+1540565931 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.h
 	"interface.h"
 	"llrfStructs.h"
 	"structs.h"
 	"liberallrfConfigReader.h"
+	"running_stat.h"
 	<vector>
 	<string>
 	<atomic>
@@ -261,14 +263,19 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1534596681 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+1540571404 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
 	"liberallrfInterface.h"
 	"configDefinitions.h"
 	<iostream>
 	<sstream>
 	<algorithm>
+	<numeric>
 	<thread>
 	<math.h>
+	<utility>
+	<mutex>
+	<chrono>
+	<boost/circular_buffer.hpp>
 
 1523637260 source:d:\vela\git projects\vela-clara-controllers\utilities\liberallrfconfigreader.cpp
 	"liberallrfConfigReader.h"
@@ -282,7 +289,7 @@
 	<algorithm>
 	<ctype.h>
 
-1535119625 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1536941866 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -306,29 +313,33 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1534596681 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1537799283 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
 	<map>
 	<utility>
 
-1534596681 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+1537799335 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
 	"VCbase.h"
 	"configDefinitions.h"
 
-1534596693 d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.h
+1540556688 d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<string>
 	<map>
 	<vector>
+	<deque>
 	<chrono>
 	<thread>
 	<queue>
+	<tuple>
+	<utility>
 	<cadef.h>
+	<boost/circular_buffer.hpp>
 
-1534596693 d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.h
+1539613670 d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -337,7 +348,7 @@
 
 1534596693 source:d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.cpp
 
-1534596693 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
+1540473058 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
 	"liberallrfConfigReader.h"
 	"llrfStructs.h"
 	<iostream>
@@ -546,13 +557,13 @@
 	<map>
 	<utility>
 
-1535119463 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1539946884 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1535457435 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+1539946944 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -562,4 +573,12 @@
 	<string>
 	<vector>
 	<map>
+
+1539257938 d:\vela\git projects\vela-clara-controllers\utilities\get_time.h
+	<Windows.h>
+
+1539602003 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
+	<iostream>
+
+1540562191 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf_docstrings.h
 
