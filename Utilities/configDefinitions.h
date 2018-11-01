@@ -585,6 +585,21 @@ namespace UTL
     const std::string PV_SUFFIX_CHARGE_V = "PV_SUFFIX_CHARGE_V";
     const std::string PV_SUFFIX_CHARGE_Q = "PV_SUFFIX_CHARGE_Q";
 
+    /// Beam loss monitors
+    // Charge PVs
+    const std::string PV_SUFFIX_CH1_WAVE = "PV_SUFFIX_CH1_WAVE";
+    const std::string PV_SUFFIX_CH2_WAVE = "PV_SUFFIX_CH2_WAVE";
+    const std::string PV_SUFFIX_CH3_WAVE = "PV_SUFFIX_CH3_WAVE";
+    const std::string PV_SUFFIX_CH4_WAVE = "PV_SUFFIX_CH4_WAVE";
+    const std::string PV_SUFFIX_CH1_TIME = "PV_SUFFIX_CH1_TIME";
+    const std::string PV_SUFFIX_CH2_TIME = "PV_SUFFIX_CH2_TIME";
+    const std::string PV_SUFFIX_CH3_TIME = "PV_SUFFIX_CH3_TIME";
+    const std::string PV_SUFFIX_CH4_TIME = "PV_SUFFIX_CH4_TIME";
+    const std::string CLARABLM01         = "CLARABLM01";
+    const std::string CLARA_PH1_BLM_CONFIG           = "claraBLM.config";
+    const std::string CLARA_2_BA1_BA2_BLM_CONFIG           = "claraBLM.config";
+
+
     // NR-PSU
     const std::string PARENT_MAGNET   = "PARENT_MAGNET";
     const std::string MAG_GANG_MEMBER = "MAG_GANG_MEMBER";

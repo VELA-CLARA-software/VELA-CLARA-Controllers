@@ -25,10 +25,8 @@ namespace blmStructs
     struct blmTraceData;
     struct pvStruct;
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_PV_TYPE, (P1) (P2) (P3) (P4) (TR1) (TR2) (TR3) (TR4) (UNKNOWN) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_TYPE, (NUM) (ARRAY) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( SCOPE_NAME, (CLARASCOPE01) (VELASCOPE02) (UNKNOWN_SCOPE_NAME) )
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS( DIAG_TYPE, (WCM) (ICT1) (ED_FCUP) (ICT2) (FCUP) (UNKNOWN_DIAG_TYPE) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( BLM_PV_TYPE, (CH1WAVE) (CH2WAVE) (CH3WAVE) (CH4WAVE) (CH1TIME) (CH2TIME) (CH3TIME) (CH4TIME) (UNKNOWN) )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS( BLM_DATA_TYPE, (WAVE) (TIME) (UNKNOWN_BLM_DATA_TYPE) )
 
     /// monType could be used to switch in the staticCallbackFunction
     /// For the blm this is basically redundant, there is only one monitor: "Sta"
@@ -36,87 +34,53 @@ namespace blmStructs
 
     struct pvStruct
     {
-        SCOPE_PV_TYPE             pvType;
-        blmStructs::DIAG_TYPE      diagType;
-        SCOPE_TYPE                blmType;
-        chid                      CHID;
-        std::string               pvSuffix, objName;
-        unsigned long             COUNT, MASK;
-        chtype                    CHTYPE;
-    };
-
-    struct blmNumObject
-    {
-        blmNumObject() : p1ShotCount( -2 ),
-                           p2ShotCount( -2 ),
-                           p3ShotCount( -2 ),
-                           p4ShotCount( -2 ),
-                           p1( UTL::DUMMY_DOUBLE ),
-                           p2( UTL::DUMMY_DOUBLE ),
-                           p3( UTL::DUMMY_DOUBLE ),
-                           p4( UTL::DUMMY_DOUBLE ),
-                           numShots( UTL::ZERO_INT ),
-                           buffer( UTL::BUFFER_TEN ) {}
-        std::string                name, pvRoot;
-        blmStructs::DIAG_TYPE       diagType;
-        SCOPE_NAME      blmName;
-        bool                       isAContinuousMonitorStruct, isATemporaryMonitorStruct;
-        bool                       isMonitoring;
-        double                     p1, p2, p3, p4;
-        int                        p1ShotCount, p2ShotCount, p3ShotCount, p4ShotCount, numShots, shotCount;
-        double                     p1TimeStamp, p2TimeStamp, p3TimeStamp, p4TimeStamp;
-        size_t                     buffer;
-        std::vector< double >      p1Vec, p2Vec, p3Vec, p4Vec;
-        std::vector< std::string > strP1TimeStamps, strP2TimeStamps, strP3TimeStamps, strP4TimeStamps;
-        std::vector< double >      p1TimeStamps, p2TimeStamps, p3TimeStamps, p4TimeStamps;
-//        double *p1Mon, *p2Mon;
-    #ifndef __CINT__
-        std::map< SCOPE_PV_TYPE, pvStruct > pvMonStructs;
-        std::map< SCOPE_PV_TYPE, std::vector< double > > numData;
-        std::map< SCOPE_PV_TYPE, std::vector< double > > numTimeStamps;
-        std::map< SCOPE_PV_TYPE, std::vector< std::string > > numStrTimeStamps;
-        std::map< SCOPE_PV_TYPE, int > shotCounts;
-        std::map< SCOPE_PV_TYPE, bool > isMonitoringMap;
-        std::map< SCOPE_PV_TYPE, boost::circular_buffer< double > > numDataBuffer;
-    #endif
+        BLM_PV_TYPE    pvType;
+        BLM_DATA_TYPE  blmDataType;
+        chid           CHID;
+        std::string    pvSuffix, objName;
+        unsigned long  COUNT, MASK;
+        chtype         CHTYPE;
     };
 
     struct blmTraceData
     {
-        blmTraceData() : tr1ShotCount( 0 ),
-                           tr2ShotCount( 0 ),
-                           tr3ShotCount( 0 ),
-                           tr4ShotCount( 0 ),
-                           numShots( -2 ),
-                           buffer( UTL::BUFFER_TEN ) {}
+        blmTraceData() : timeCH1ShotCount( UTL::ZERO_INT ),
+                         timeCH2ShotCount( UTL::ZERO_INT ),
+                         timeCH3ShotCount( UTL::ZERO_INT ),
+                         timeCH4ShotCount( UTL::ZERO_INT ),
+                         waveCH1ShotCount( UTL::ZERO_INT ),
+                         waveCH2ShotCount( UTL::ZERO_INT ),
+                         waveCH3ShotCount( UTL::ZERO_INT ),
+                         waveCH4ShotCount( UTL::ZERO_INT ),
+                         numShots( -2 ),
+                         buffer( UTL::BUFFER_TEN ) {}
         std::string                          name, pvRoot;
-        blmStructs::DIAG_TYPE              diagType;
-        SCOPE_NAME                           blmName;
         bool                                 isAContinuousMonitorStruct, isATemporaryMonitorStruct, isMonitoring;
-        bool                                 isMonitoringTr1, isMonitoringTr2, isMonitoringTr3, isMonitoringTr4;
+        bool                                 isMonitoringWaveCH1, isMonitoringWaveCH2, isMonitoringWaveCH3, isMonitoringWaveCH4;
+        bool                                 isMonitoringTimeCH1, isMonitoringTimeCH2, isMonitoringTimeCH3, isMonitoringTimeCH4;
         double                               timebase, noiseFloor;
-        int                                  tr1ShotCount, tr2ShotCount, tr3ShotCount, tr4ShotCount, numShots; /// we allow -1 values here so NOT a size_t
+        int                                  waveCH1ShotCount, waveCH2ShotCount, waveCH3ShotCount, waveCH4ShotCount, numShots; /// we allow -1 values here so NOT a size_t
+        int                                  timeCH1ShotCount, timeCH2ShotCount, timeCH3ShotCount, timeCH4ShotCount;
         size_t                               buffer;
-        std::vector< double >                tr1TimeStamps, tr2TimeStamps, tr3TimeStamps, tr4TimeStamps;
-        std::vector< std::string >           strTr1TimeStamps, strTr2TimeStamps, strTr3TimeStamps, strTr4TimeStamps;
-        std::vector< std::vector< double > > tr1TraceData, tr2TraceData, tr3TraceData, tr4TraceData;
+        std::vector< std::vector< double > > waveCH1TraceData, waveCH2TraceData, waveCH3TraceData, waveCH4TraceData;
+        std::vector< std::vector< double > > timeCH1TraceData, timeCH2TraceData, timeCH3TraceData, timeCH4TraceData;
     #ifndef __CINT__
-        std::map< SCOPE_PV_TYPE, std::vector< std::vector< double > > >            traceData;
-        std::map< SCOPE_PV_TYPE, std::vector< double > >                           timeStamps;
-        std::map< SCOPE_PV_TYPE, std::vector< std::string  > >                     strTimeStamps;
-        std::map< SCOPE_PV_TYPE, int >                                             shotCounts;
-        std::map< SCOPE_PV_TYPE, bool >                                            isMonitoringMap;
-        std::map< SCOPE_PV_TYPE, boost::circular_buffer< std::vector< double > > > traceDataBuffer;
-        std::map< SCOPE_PV_TYPE, pvStruct > pvMonStructs;
+        std::map< BLM_PV_TYPE, std::vector< std::vector< double > > >            traceData;
+        std::map< BLM_PV_TYPE, std::vector< double > >                           timeStamps;
+        std::map< BLM_PV_TYPE, std::vector< std::string  > >                     strTimeStamps;
+        std::map< BLM_PV_TYPE, int >                                             shotCounts;
+        std::map< BLM_PV_TYPE, bool >                                            isMonitoringMap;
+        std::map< BLM_PV_TYPE, boost::circular_buffer< std::vector< double > > > traceDataBuffer;
+        std::map< BLM_PV_TYPE, boost::circular_buffer< double > >                timeStampsBuffer;
+        std::map< BLM_PV_TYPE, boost::circular_buffer< std::string > >           strTimeStampsBuffer;
+        std::map< BLM_PV_TYPE, pvStruct > pvMonStructs;
     #endif
     };
-
 
     struct blmObject
     {
         std::string name;
 //        blmNumObject numObject;
-        std::map< std::string, blmNumObject > numObjects;
         std::map< std::string, blmTraceData > traceObjects; /// There are four blm trace objects
         std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE > iLockStates;
         std::map< HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct > iLockPVStructs;
@@ -125,14 +89,13 @@ namespace blmStructs
 
     struct monitorStruct /// We use pointers when we wnat acces to the object (data) or... just  make a copy
     {
-        SCOPE_PV_TYPE        monType;
-        blmStructs::DIAG_TYPE diagType;
+        BLM_PV_TYPE        monType;
         blmObject*         blmObject;
-        std::string          objName;
-        chtype               CHTYPE;
-        void *               val;
+        std::string        objName;
+        chtype             CHTYPE;
+        void *             val;
         blmInterface *     interface;
-        evid                 EVID;
+        evid               EVID;
     };
 }
 #endif

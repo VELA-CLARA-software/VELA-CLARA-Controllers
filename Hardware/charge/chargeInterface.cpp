@@ -245,7 +245,7 @@ void chargeInterface::updateValue( chargeStructs::monitorStruct * ms, const even
         dobj.shotCounts.at(ms->monType) = 0;
         if( dobj.timeStamps.size() == 0 )
         {
-            setBufferSize(UTL::TEN_SIZET);
+//            setBufferSize(UTL::TEN_SIZET);
             dobj.timeStamps.push_back(UTL::DUMMY_DOUBLE);
             dobj.strTimeStamps.push_back(UTL::UNKNOWN_STRING);
             dobj.voltageVec.push_back(UTL::DUMMY_DOUBLE);
