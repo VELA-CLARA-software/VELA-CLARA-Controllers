@@ -332,6 +332,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* getHVMoverScreensString = "Returns a list of all H/V mover screens";
     char const* isClearForBeam_ds = "Are all elements (apart from, maybe,  an RF Cage) removed from the beam axis.";
 
+    docstruxt_vec ={};
+
     using namespace boost::python;
     class_<screenController, boost::python::bases<controller>, boost::noncopyable>
         ("screenController","screenController Doc String",boost::python::no_init)

@@ -30,6 +30,7 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/VCheader.h" />
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />

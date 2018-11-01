@@ -248,7 +248,7 @@ bool  (magnetController::*setSIZero_2)(cves &) = &magnetController::setSIZero;
 using namespace boost::python;
 BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
 {
-    /*  some doc-string options, to try an dreuce th eamount of
+    /*  some doc-string options, to try and reduce the amount of
         blurb python adds to documentation
     */
     docstring_options local_docstring_options(true, true, false);

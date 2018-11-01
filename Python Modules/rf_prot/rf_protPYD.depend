@@ -4,7 +4,7 @@
 	<iostream>
 	<sstream>
 
-1524850250 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1534596681 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -12,7 +12,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1524865288 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1538399963 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -21,13 +21,14 @@
 	"baseObject.h"
 	"structs.h"
 
-1524673432 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1540308482 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
 	<iostream>
+	<time.h>
 	<deque>
 	<boost/python.hpp>
 	<boost/python/detail/wrap_python.hpp>
@@ -42,8 +43,9 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
+	<boost/python/numpy.hpp>
 
-1524756163 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1538667689 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -55,14 +57,14 @@
 1524756152 source:d:\vela\git projects\vela-clara-controllers\hardware\gun_prot\gunprotcontroller.cpp
 	"gunProtController.h"
 
-1524756152 d:\vela\git projects\vela-clara-controllers\hardware\gun_prot\gunprotcontroller.h
+1534596681 d:\vela\git projects\vela-clara-controllers\hardware\gun_prot\gunprotcontroller.h
 	<string>
 	<vector>
 	<map>
 	"gunProtInterface.h"
 	"controller.h"
 
-1524756152 d:\vela\git projects\vela-clara-controllers\hardware\gun_prot\gunprotinterface.h
+1534596681 d:\vela\git projects\vela-clara-controllers\hardware\gun_prot\gunprotinterface.h
 	"interface.h"
 	"rfProtStructs.h"
 	"structs.h"
@@ -87,7 +89,7 @@
 	"configReader.h"
 	"rfProtStructs.h"
 
-1524756163 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+1534596693 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -95,7 +97,7 @@
 	<vector>
 	<cadef.h>
 
-1524756163 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1540469197 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -196,7 +198,7 @@
 	"VCrfprot.h"
 	<iostream>
 
-1524756159 d:\vela\git projects\vela-clara-controllers\python modules\rf_prot\include\vcrfprot.h
+1524928126 d:\vela\git projects\vela-clara-controllers\python modules\rf_prot\include\vcrfprot.h
 	<string>
 	<map>
 	<utility>
@@ -206,13 +208,15 @@
 	"VCHeader.h"
 	"configdEfinitions.h"
 
-1524756151 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1536941866 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
 	"controller.h"
 	"interface.h"
 	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
 	<string>
 	<vector>
 	<boost/python.hpp>
@@ -232,7 +236,7 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
-1524756151 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1537799283 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
@@ -432,18 +436,35 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1524756163 d:\vela\git projects\vela-clara-controllers\structs\rf_prot\rfprotstructs.h
+1534596693 d:\vela\git projects\vela-clara-controllers\structs\rf_prot\rfprotstructs.h
 	"structs.h"
 	<vector>
 	<string>
 	<map>
 	<cadef.h>
 
-1524756163 d:\vela\git projects\vela-clara-controllers\utilities\rf_prot\gunprotconfigreader.h
+1534596693 d:\vela\git projects\vela-clara-controllers\utilities\rf_prot\gunprotconfigreader.h
 	<string>
 	<vector>
 	<map>
 	<iostream>
 	"configReader.h"
 	"rfProtStructs.h"
+
+1539946884 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1539946944 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
 
