@@ -20,9 +20,9 @@ class l01ModInterface : public interface
 
         const rfModStructs::l01ModObject& getObjConstRef();
 
-
         bool reset();
 
+        bool setOff();
 
 //
         typedef std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> IlockMap1;
@@ -61,6 +61,6 @@ class l01ModInterface : public interface
 
         void killMonitor(rfModStructs::l01_monitorStruct* ms);
 
+        bool setModState(const rfModStructs::L01_MOD_STATE v)const;
 };
-
 #endif // L01MODINTERFACE_H

@@ -204,7 +204,11 @@ void l01ModInterface::staticEntryL01ModMonitor(const event_handler_args args)
 {
     rfModStructs::l01_monitorStruct* ms = static_cast<rfModStructs::l01_monitorStruct*>(args.usr);
 
-    //ms->interface->message("staticEntryL01ModMonitor PASSED ", ENUM_TO_STRING(ms->monType));
+
+    if(ms->monType == rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ)
+    {
+    ms->interface->message("staticEntryL01ModMonitor PASSED ", ENUM_TO_STRING(ms->monType));
+    }
 
     switch(ms->monType)
     {
@@ -481,6 +485,12 @@ void l01ModInterface::staticEntryL01ModMonitor(const event_handler_args args)
             //ms->rfModObject->system_state_put = *(int*)args.dbr;
             break;
         case rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ:
+
+            ms->interface->message("static entry passed rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ");
+            ms->interface->message("static entry passed rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ");
+            ms->interface->message("static entry passed rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ");
+            ms->interface->message("static entry passed rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ");
+
             ms->interface->updateL01_StateRead(args);
             break;
         default:
@@ -500,27 +510,30 @@ void l01ModInterface::updateL01_StateRead(const event_handler_args args)
 //    printf("\n");
 //    message("BITS");
 
+
+    message("updateL01_StateRead passed, ",*(int*)args.dbr);
+
     switch(*(int*)args.dbr)
     {
         case 0:
             message("SYSTEM_STATE_READ = 0 = STATE_OFF ");
-            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::STATE_OFF;
+            l01Mod.main_state = rfModStructs::L01_MOD_STATE::L01_OFF;
             break;
         case 1:
             message("SYSTEM_STATE_READ = 1 = STANDBY ");
-            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::L01_STANDBY;
+            l01Mod.main_state = rfModStructs::L01_MOD_STATE::L01_STANDBY;
             break;
         case 2:
             message("SYSTEM_STATE_READ = 2 = HV ?????");
-            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::HV;
+            l01Mod.main_state = rfModStructs::L01_MOD_STATE::L01_HV_ON;
             break;
         case 3:
-            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::TRANSMIT;
+            l01Mod.main_state = rfModStructs::L01_MOD_STATE::L01_RF_ON;
             message("SYSTEM_STATE_READ = 3 = TRANSMIT ");
             break;
         default:
             message("updateL01_StateRead passed  = ",*(int*)args.dbr);
-            l01Mod.system_state_read = rfModStructs::L01_MOD_STATE::STATE_UNKNOWN;
+            l01Mod.main_state = rfModStructs::L01_MOD_STATE::STATE_UNKNOWN;
             break;
     }
 }
@@ -552,4 +565,28 @@ void l01ModInterface::updateL01_Fault(const event_handler_args args)
     }
 }
 //______________________________________________________________________________
+bool l01ModInterface::setOff()
+{
+    return setModState(rfModStructs::L01_MOD_STATE::L01_OFF);
+}
 //______________________________________________________________________________
+bool l01ModInterface::setModState(const rfModStructs::L01_MOD_STATE v)const
+{
+    ca_put(
+        l01Mod.pvComStructs.at(rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_PUT).CHTYPE,
+        l01Mod.pvComStructs.at(rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_PUT).CHID,
+        &v);
+    bool ret = false;
+    int status = sendToEpics("ca_put", "", "Timeout sending Set LO1 Mod values");
+    if (status == ECA_NORMAL)
+        ret = true;
+    return ret;
+}
+
+
+
+
+
+
+
+

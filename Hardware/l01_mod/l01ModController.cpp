@@ -47,3 +47,7 @@ std::map<HWC_ENUM::ILOCK_NUMBER,std::string> l01ModController::getILockStatesStr
 {
     return localInterface.getILockStatesStr(name);
 }
+bool l01ModController::setOff()
+{
+    return localInterface.setOff();
+}

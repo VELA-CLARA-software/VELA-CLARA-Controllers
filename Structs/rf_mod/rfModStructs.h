@@ -245,11 +245,11 @@ namespace rfModStructs
                                                           (ERROR_WORD_19) (ERROR_DESC_19)
                                                           (ERROR_WORD_20) (ERROR_DESC_20))
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_STATE, (STATE_UNKNOWN)
-                                                       (STATE_OFF)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_STATE, (L01_OFF)
                                                        (L01_STANDBY)
-                                                       (HV)
-                                                       (TRANSMIT))
+                                                       (L01_HV_ON)
+                                                       (L01_RF_ON)
+                                                       (STATE_UNKNOWN))
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_FAULT, (FAULT_UNKNOWN)(NO_FAULT)(FAULT))
 
@@ -272,7 +272,7 @@ namespace rfModStructs
     struct l01ModObject
     {
         l01ModObject() :
-            system_state_read(L01_MOD_STATE::STATE_UNKNOWN),
+            main_state(L01_MOD_STATE::STATE_UNKNOWN),
             l01_fault(L01_MOD_FAULT::FAULT_UNKNOWN),
             safelyWarmedUP(false),
             modErrorDescs(20,""),
@@ -308,7 +308,7 @@ namespace rfModStructs
             system_state_put(UTL::DUMMY_INT)
             {}
         std::string name, pvRoot;
-        L01_MOD_STATE system_state_read;
+        L01_MOD_STATE main_state;
         long          warmuptime;
         bool          safelyWarmedUP;
         double        heater_voltage,heater_current,

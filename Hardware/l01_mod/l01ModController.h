@@ -16,6 +16,7 @@ class l01ModController : public controller
 
         const rfModStructs::l01ModObject& getObjConstRef();
         bool reset();
+        bool setOff();
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
         double get_CA_PEND_IO_TIMEOUT()const;

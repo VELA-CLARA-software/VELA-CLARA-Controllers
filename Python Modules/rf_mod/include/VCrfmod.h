@@ -40,7 +40,7 @@ class VCrfmod : public VCbase
         l01ModController* offline_L01_MOD_Controller_Obj ;
 
         const bool withEPICS, withoutEPICS, withoutVM, withVM;
-        bool  shouldShowDebugMessage, shouldShowMessage;
+
         const std::string gunModConf;
         const std::string l01ModConf;
         l01ModController& getL01Controller(l01ModController*& cont,
@@ -85,8 +85,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
     enum_<rfModStructs::L01_MOD_STATE>("L01_MOD_STATE","L01_MOD_STATE: a named integer giving the state of the L01 Modulator")
         .value("STATE_UNKNOWN",  rfModStructs::L01_MOD_STATE::STATE_UNKNOWN)
-        .value("STANDBY",       rfModStructs::L01_MOD_STATE::L01_STANDBY)
-        .value("TRANSMIT",       rfModStructs::L01_MOD_STATE::TRANSMIT)
+        .value("L01_OFF",       rfModStructs::L01_MOD_STATE::L01_OFF)
+        .value("L01_STANDBY",       rfModStructs::L01_MOD_STATE::L01_STANDBY)
+        .value("L01_HV_ON",       rfModStructs::L01_MOD_STATE::L01_HV_ON)
+        .value("L01_RF_ON",       rfModStructs::L01_MOD_STATE::L01_RF_ON)
         ;
 
     /// The main class that creates all the controller obejcts
@@ -123,7 +125,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ("l01ModController","l01ModController Doc String",boost::python::no_init )
         .def("getObjConstRef",&l01ModController::getObjConstRef,return_value_policy<reference_existing_object>(),
              "Return L01 Modulator Object Reference")
-        .def("reset",             &l01ModController::reset,"")
+        .def("reset",     &l01ModController::reset,"")
+        .def("setOff",    &l01ModController::setOff,"")
         ;
 
     class_<gunModController, bases<controller>, boost::noncopyable>
@@ -237,7 +240,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("solenoid_1_current",&rfModStructs::l01ModObject::solenoid_1_current,"")
         .def_readonly("solenoid_2_current",&rfModStructs::l01ModObject::solenoid_2_current,"")
         .def_readonly("solenoid_3_current",&rfModStructs::l01ModObject::solenoid_3_current,"")
-        .def_readonly("system_state_read",&rfModStructs::l01ModObject::system_state_read,"")
+        .def_readonly("main_state",&rfModStructs::l01ModObject::main_state,"")
         .def_readonly("hvps_voltage_set_read",&rfModStructs::l01ModObject::hvps_voltage_set_read,"")
         .def_readonly("hvps_voltage_low_alarm_set_read",&rfModStructs::l01ModObject::hvps_voltage_low_alarm_set_read,"")
         .def_readonly("hvps_voltage_hi_alarm_set_read",&rfModStructs::l01ModObject::hvps_voltage_hi_alarm_set_read,"")

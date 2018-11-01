@@ -154,7 +154,7 @@ bool l01ModConfigReader::readConfig()
         success = true;
     }
     else{
-        message("!!!! Error Can't Open  Gun Modulator Config File after searching in:  ",
+        message("!!!! Error Can't Open L01 Modulator Config File after searching in:  ",
                 configFile1, " !!!!");
     }
     return success;
@@ -318,21 +318,26 @@ void l01ModConfigReader::addToPVStruct(std::vector<rfModStructs::l01_pvStruct>& 
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::SOLENOID_2_CURRENT;
         else if(keyVal[0] == UTL::PV_SUFFIX_SOLENOID_3_CURRENT )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::SOLENOID_3_CURRENT;
+
         else if(keyVal[0] == UTL::PV_SUFFIX_SYSTEM_STATE_READ )
         {
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_READ;
-            debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType));
         }
         else if(keyVal[0] == UTL::PV_SUFFIX_HVPS_VOLTAGE_SET_READ )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::HVPS_VOLTAGE_SET_READ;
+
         else if(keyVal[0] == UTL::PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET_READ )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::HVPS_VOLTAGE_LOW_ALARM_SET_READ;
+
         else if(keyVal[0] == UTL::PV_SUFFIX_HVPS_VOLTAGE_HI_ALARM_SET_READ )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::HVPS_VOLTAGE_HI_ALARM_SET_READ;
+
         else if(keyVal[0] == UTL::PV_SUFFIX_L01_FAULT )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::L01_FAULT;
+
         else if(keyVal[0] == UTL::PV_SUFFIX_SYSTEM_STATE_PUT )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::SYSTEM_STATE_PUT;
+
         else if(keyVal[0] == UTL::PV_SUFFIX_HVPS_VOLTAGE_SET )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::HVPS_VOLTAGE_SET;
         else if(keyVal[0] == UTL::PV_SUFFIX_HVPS_VOLTAGE_LOW_ALARM_SET )
@@ -350,8 +355,8 @@ void l01ModConfigReader::addToPVStruct(std::vector<rfModStructs::l01_pvStruct>& 
     else
         addCOUNT_MASK_OR_CHTYPE(pvStruct_v, keyVal);
 
-    debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ",
-                 ENUM_TO_STRING(pvStruct_v.back().pvType)) ;
+//    debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ",
+//                 ENUM_TO_STRING(pvStruct_v.back().pvType));
 }
 //______________________________________________________________________________
 void l01ModConfigReader::addCOUNT_MASK_OR_CHTYPE(std::vector<rfModStructs::l01_pvStruct>& pvStruct_v,

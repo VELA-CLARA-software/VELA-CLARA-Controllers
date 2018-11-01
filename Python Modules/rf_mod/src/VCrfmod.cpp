@@ -13,11 +13,10 @@ l01ModConf(UTL::APCLARA1_CONFIG_PATH + UTL::L01_MOD_CONFIG),
 withEPICS(true),
 withoutEPICS(false),
 withoutVM(false),
-withVM(true),
-shouldShowDebugMessage(false),//default is quiet mode
-shouldShowMessage(false)//default is quiet mode
+withVM(true)
 {
    std::cout << "Instantiated a VCrfmod " << std::endl;
+
     //ctor
 }
 //______________________________________________________________________________
@@ -124,10 +123,15 @@ l01ModController& VCrfmod::getL01Controller(l01ModController*& cont,
     else
     {
         std::cout << "Creating " << name << " object" <<std::endl;
+
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
 
-        cont = new l01ModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
+        std::cout << "shouldShowMessage = " << shouldShowMessage << std::endl;
+        std::cout << "shouldShowDebugMessage = " << shouldShowDebugMessage << std::endl;
+
+
+        cont = new l01ModController(messageStates.at(cont).first,messageStates.at(cont).second,l01ModConf,shouldVM,shouldEPICS);
 
     }
     return *cont;
@@ -150,8 +154,10 @@ gunModController& VCrfmod::getGunController(gunModController*& cont,
         messageStates[cont].first  = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
 
-        cont = new gunModController(shouldShowMessage,shouldShowDebugMessage,gunModConf,withoutVM,withoutEPICS);
+        std::cout << "shouldShowMessage = " << shouldShowMessage << std::endl;
+        std::cout << "shouldShowDebugMessage = " << shouldShowDebugMessage << std::endl;
 
+        cont = new gunModController(messageStates.at(cont).first,messageStates.at(cont).second, gunModConf, shouldVM, shouldEPICS);
     }
     return *cont;
 }
