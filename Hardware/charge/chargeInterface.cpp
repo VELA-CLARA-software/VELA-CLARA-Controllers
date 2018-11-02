@@ -151,6 +151,7 @@ void chargeInterface::addChannel( const std::string & pvRoot, chargeStructs::pvS
 void chargeInterface::monitorCharges()
 {
     continuousMonitorStructs.clear();
+    setBufferSize(UTL::TEN_SIZET);
     for( auto && it1 : chargeObj.dataObjects )
     {
         for( auto && it2 : it1.second.pvMonStructs )
@@ -516,12 +517,12 @@ std::vector< std::string > chargeInterface::getStrTimeStamps( const std::string 
 //______________________________________________________________________________
 double chargeInterface::getCharge( const std::string & name )
 {
-    return chargeObj.dataObjects.at( name ).chargeBuffer.back();
+    return chargeObj.dataObjects.at( name ).charge;
 }
 //______________________________________________________________________________
 double chargeInterface::getVoltage( const std::string & name )
 {
-    return chargeObj.dataObjects.at( name ).voltageBuffer.back();
+    return chargeObj.dataObjects.at( name ).voltage;
 }
 //______________________________________________________________________________
 double chargeInterface::getWCMVoltage()
