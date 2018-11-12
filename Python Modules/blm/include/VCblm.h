@@ -14,18 +14,18 @@
 #include <utility>
 #include <list>
 //boost
-//#include <boost/python/detail/wrap_python.hpp>
-//#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
-//#define BOOST_LIB_DIAGNOSTIC
-//#include <boost/config.hpp>
-//#include <boost/python.hpp>
-//#include <boost/python/class.hpp>
-//#include <boost/python/module.hpp>
-//#include <boost/python/def.hpp>
-//#include <boost/python/object/function.hpp>
-//#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-//#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-//#include <boost/python/docstring_options.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#define BOOST_PYTHON_STATIC_LIB /// !!! This should come before  #include <boost/python.hpp>
+#define BOOST_LIB_DIAGNOSTIC
+#include <boost/config.hpp>
+#include <boost/python.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/object/function.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/docstring_options.hpp>
 //______________________________________________________________________________
 class VCblm : public VCbase
 {
@@ -88,6 +88,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_BLM_Control )
 
     boost::python::class_< boost::circular_buffer< std::vector< double > > >("Circular buffer of vector of doubles definition for python ", boost::python::no_init)
         .def(vector_indexing_suite< boost::circular_buffer< std::vector< double > > >())
+        ;
+
+    boost::python::class_< std::map< blmStructs::BLM_PV_TYPE, boost::circular_buffer< std::vector< double > > > >("map of BLM_PV_TYPE of circular buffer of doubles ", boost::python::no_init)
+        .def(map_indexing_suite< std::map< blmStructs::BLM_PV_TYPE, boost::circular_buffer< std::vector< double > > > >())
         ;
 
     enum_<blmStructs::BLM_PV_TYPE>("BLM_PV_TYPE")
