@@ -37,6 +37,8 @@
 #include <map>
 #include <vector>
 #include <thread>
+// timing
+
 
 
 class liberallrfInterface : public interface
@@ -149,10 +151,21 @@ class liberallrfInterface : public interface
         bool setMeanStartEndTime(const double start, const double end, const std::string&name);
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
+    private:
+        void updateTraceCutMeans();
+        void getTraceCutMean(llrfStructs::rf_trace_data_new& tracedata);
+        std::tuple<size_t,double,double> dummy_amp_set_kly_fwd_rs_state;
+    public:
+        void setKeepKlyFwdPwrRS(bool val);
+        void keepKlyFwdPwrRS();
+        void dontKeepKlyFwdPwrRS();
+        std::tuple<size_t,double,double> getKlyFwdPwrRSState(int ampSP_setting);
+
+
 
 
         /* masks are based on rolling averages */
-        void updateMasks();
+        void updateRollingAvergaesAndMasks();
 
 
 
@@ -209,7 +222,6 @@ class liberallrfInterface : public interface
     |  | /~~\ .__/ |  \    \__> |___  |   |  |___ |  \ .__/
 
     //
-
 */
         std::vector<double> getLoMask(const std::string&name);
         std::vector<double> getHiMask(const std::string&name);
@@ -224,7 +236,6 @@ class liberallrfInterface : public interface
         double getMaskEndTime(const std::string& name);
         double getMaskWindowStartTime(const std::string& name);
         double getMaskWindowEndTime(const std::string& name);
-
 //--------------------------------------------------------------------------------------------------
         bool isCheckingMask(const std::string& name);
         bool isNotCheckingMask(const std::string& name);
@@ -241,6 +252,7 @@ class liberallrfInterface : public interface
         std::vector<double> getKlyFwdPhase()const;
         std::vector<double> getProbePower()const;
         std::vector<double> getProbePhase()const;
+//--------------------------------------------------------------------------------------------------
 
 
 
@@ -309,8 +321,11 @@ class liberallrfInterface : public interface
         void newOutsideMaskEvent(const llrfStructs::rf_trace_data_new& trace);
 
         void copyTraceDataToOMED();
-
         void OME_interlock(const llrfStructs::setAmpHP_Struct& s);
+
+
+        std::map<int, std::pair<std::string, std::vector<double>>> dumpOneTraceData();
+
 
         bool setInterlockActive();
         bool setInterlockNonActive();
@@ -380,11 +395,8 @@ class liberallrfInterface : public interface
         std::vector<double> getAverageTraceData(const std::string& name)const;
 
 
-
-
-
-        llrfStructs::rf_trace getTraceData(const std::string& name);
-        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
+//        llrfStructs::rf_trace getTraceData(const std::string& name);
+//        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
 
         std::vector<double> getCavRevPowerAv();
@@ -399,27 +411,30 @@ class liberallrfInterface : public interface
         std::vector<double> getProbePhaseAv();
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
-        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
+        const llrfStructs::rf_trace_data_new& getTraceDataConstRef(const std::string& name);
 
 
-        llrfStructs::rf_trace getCavRevPowerData();
-        llrfStructs::rf_trace getCavFwdPowerData();
-        llrfStructs::rf_trace getKlyRevPowerData();
-        llrfStructs::rf_trace getKlyFwdPowerData();
-        llrfStructs::rf_trace getCavRevPhaseData();
-        llrfStructs::rf_trace getCavFwdPhaseData();
-        llrfStructs::rf_trace getKlyRevPhaseData();
-        llrfStructs::rf_trace getKlyFwdPhaseData();
+//        llrfStructs::rf_trace getCavRevPowerData();
+//        llrfStructs::rf_trace getCavFwdPowerData();
+//        llrfStructs::rf_trace getKlyRevPowerData();
+//        llrfStructs::rf_trace getKlyFwdPowerData();
+//        llrfStructs::rf_trace getCavRevPhaseData();
+//        llrfStructs::rf_trace getCavFwdPhaseData();
+//        llrfStructs::rf_trace getKlyRevPhaseData();
+//        llrfStructs::rf_trace getKlyFwdPhaseData();
+//
+//        std::vector<llrfStructs::rf_trace> getCavRevPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavFwdPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyRevPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavRevPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 
-        std::vector<llrfStructs::rf_trace> getCavRevPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getCavFwdPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyRevPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getCavRevPhaseBuffer();
-        std::vector<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 
+
+//        bool setCavFwdPwrSCAN(short val);
 
 
         llrfStructs::LLRF_PV_TYPE getLLRFPVType(const std::string& name)const;
@@ -447,7 +462,7 @@ class liberallrfInterface : public interface
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
-        bool resetToValue(const double value);
+
 
 /*   _____  _____          _   _
     / ____|/ ____|   /\   | \ | |
@@ -479,6 +494,9 @@ class liberallrfInterface : public interface
         double getBreakDownRate();
 
 //        bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
+
+        bool externalTriggerOff();
+        bool externalTriggerOn();
 
         bool trigOff();
         bool trigExt();
@@ -580,27 +598,27 @@ class liberallrfInterface : public interface
         int data_call_count;// = -2;
 
 
-
+        bool can_ran_off;
 
         runningStat data_time_RS;
 
 
-        void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
-        void updateSCAN(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
+//        void updateEVID(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
+//        void updateSCAN(const event_handler_args& args,llrfStructs::rf_trace_data& trace);
+
         void updateTrigState(const event_handler_args& args);
         void updateValues(const event_handler_args& args,llrfStructs::rf_trace& trace);
-        void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
+//        void updateTrace(const event_handler_args& args, llrfStructs::rf_trace_data& trace);
 //        int updateIsTraceInMask(llrfStructs::rf_trace_data& trace);
 //        void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
 //        void handlePassedMask(llrfStructs::rf_trace_data& trace);
 //        void handleFailedMask(llrfStructs::rf_trace_data& trace);
         void updateTraceIndex(size_t& index,const size_t trace_size);
         void updateTraceIndex(int& index,const size_t trace_size);
-        void updateTraceCutMean(llrfStructs::rf_trace_data& tracedata,llrfStructs::rf_trace& trace);
 
 
 
-        bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
+//        bool shouldCheckMasks(llrfStructs::rf_trace_data& trace);
 
 
         // OLD
@@ -622,13 +640,19 @@ class liberallrfInterface : public interface
         //static void staticEntrySetAmp(liberallrfInterface* interface, const double value);
         static void staticEntrySetAmp(llrfStructs::setAmpHP_Struct& s);
         void kill_finished_setAmpHP_threads();
+        bool resetToValueFromInterlockActive(const double value);
+        bool resetToValueFromTrigOff(const double value);
 
-        void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);
+
+
+
+
+//        void set_evid_ID_SET(llrfStructs::rf_trace_data& trace);
 
         std::stringstream outside_mask_trace_message;
 
         // duymmy data to return when real data doesn't exist
-        const llrfStructs::rf_trace_data dummy_trace_data;
+        const llrfStructs::rf_trace_data_new dummy_trace_data;
         const llrfStructs::outside_mask_trace dummy_outside_mask_trace;
 
 

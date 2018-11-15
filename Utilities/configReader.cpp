@@ -122,7 +122,7 @@ void configReader::setConfigFilePath(const std::string & path)
 std::string  configReader::getAfterEqualsSign(const std::string & str) const
 {
     std::size_t found = str.find_last_of(UTL::EQUALS_SIGN);
-    return str.substr(found + UTL::ONE_UINT, str.size());
+    return str.substr(found + UTL::ONE_U_SHORT, str.size());
 }
 //______________________________________________________________________________
 void configReader::getVersion(const std::string & str)
@@ -229,7 +229,7 @@ std::string configReader::getSubString(const std::string& str,
 {
     unsigned first = str.find(STARTDELIMITER);
     unsigned last  = str.find(STOPDELIMITER);
-    std::string temp = str.substr(first+UTL::ONE_UINT,last-first-UTL::ONE_UINT);
+    std::string temp = str.substr(first+UTL::ONE_U_SHORT,last-first-UTL::ONE_U_SHORT);
     return  trimWhiteSpaces(temp);
 }
 //______________________________________________________________________________
@@ -237,7 +237,7 @@ std::string configReader::trimWhiteSpaces(const std::string& str)  const
 {
     size_t first = str.find_first_not_of(UTL::SPACE_C);
     size_t last  = str.find_last_not_of(UTL::SPACE_C);
-    return str.substr(first, last - first + UTL::ONE_UINT);
+    return str.substr(first, last - first + UTL::ONE_U_SHORT);
 }
 //______________________________________________________________________________
 std::string configReader::trimBetween(std::string & str,
@@ -246,7 +246,7 @@ std::string configReader::trimBetween(std::string & str,
 {
     size_t first = str.find_first_not_of(STARTDELIMITER);
     size_t last  = str.find_last_not_of(STOPDELIMITER);
-    return str.substr(first, last - first + UTL::ONE_UINT);
+    return str.substr(first, last - first + UTL::ONE_U_SHORT);
     //return str.substr(first, (last-first+1));
 }
 //______________________________________________________________________________

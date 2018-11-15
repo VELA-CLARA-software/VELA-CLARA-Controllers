@@ -267,9 +267,13 @@ class liberaLLRFController : public controller
 
 
 
-
-
-
+        void setKeepKlyFwdPwrRS(bool val);
+        void keepKlyFwdPwrRS();
+        void dontKeepKlyFwdPwrRS();
+        std::tuple<size_t,double,double> getKlyFwdPwrRSState(int ampSP_setting);
+#ifdef BUILD_DLL
+        boost::python::list getKlyFwdPwrRSState_Py(int ampSP_setting);
+#endif
 
 
         // GETTERS
@@ -337,14 +341,14 @@ class liberaLLRFController : public controller
 
         size_t getOutsideMaskEventCount()const;
 
-        llrfStructs::rf_trace getTraceData(const std::string& name);
-        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
+//        llrfStructs::rf_trace getTraceData(const std::string& name);
+//        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
 #ifdef BUILD_DLL
         boost::python::list getChannelNames_Py();
         boost::python::list getTraceNames_Py();
         boost::python::list getTraceValues_Py(const std::string& name);
-        boost::python::list getTraceBuffer_Py(const std::string& name);
+//        boost::python::list getTraceBuffer_Py(const std::string& name);
         //boost::python::list getOutsideMaskData_Py();
         boost::python::list getAverageTraceData_Py(const std::string& name);
 
@@ -378,61 +382,61 @@ class liberaLLRFController : public controller
         std::vector<double> getProbePhaseAv();
 
 #ifdef BUILD_DLL
-        boost::python::list getCavRevPower_Py();
-        boost::python::list getCavFwdPower_Py();
-        boost::python::list getKlyRevPower_Py();
-        boost::python::list getKlyFwdPower_Py();
-        boost::python::list getCavRevPhase_Py();
-        boost::python::list getCavFwdPhase_Py();
-        boost::python::list getKlyRevPhase_Py();
-        boost::python::list getKlyFwdPhase_Py();
-
-        boost::python::list getProbePower_Py();
-        boost::python::list getProbePhase_Py();
-
-        boost::python::list  getCavRevPowerAv_Py();
-        boost::python::list  getCavFwdPowerAv_Py();
-        boost::python::list  getKlyRevPowerAv_Py();
-        boost::python::list  getKlyFwdPowerAv_Py();
-        boost::python::list  getCavRevPhaseAv_Py();
-        boost::python::list  getCavFwdPhaseAv_Py();
-        boost::python::list  getKlyRevPhaseAv_Py();
-        boost::python::list  getKlyFwdPhaseAv_Py();
-
-        boost::python::list getProbePowerAv_Py();
-        boost::python::list getProbePhaseAv_Py();
-        boost::python::dict dump_traces();
+//        boost::python::list getCavRevPower_Py();
+//        boost::python::list getCavFwdPower_Py();
+//        boost::python::list getKlyRevPower_Py();
+//        boost::python::list getKlyFwdPower_Py();
+//        boost::python::list getCavRevPhase_Py();
+//        boost::python::list getCavFwdPhase_Py();
+//        boost::python::list getKlyRevPhase_Py();
+//        boost::python::list getKlyFwdPhase_Py();
+//
+//        boost::python::list getProbePower_Py();
+//        boost::python::list getProbePhase_Py();
+//
+//        boost::python::list  getCavRevPowerAv_Py();
+//        boost::python::list  getCavFwdPowerAv_Py();
+//        boost::python::list  getKlyRevPowerAv_Py();
+//        boost::python::list  getKlyFwdPowerAv_Py();
+//        boost::python::list  getCavRevPhaseAv_Py();
+//        boost::python::list  getCavFwdPhaseAv_Py();
+//        boost::python::list  getKlyRevPhaseAv_Py();
+//        boost::python::list  getKlyFwdPhaseAv_Py();
+//
+//        boost::python::list getProbePowerAv_Py();
+//        boost::python::list getProbePhaseAv_Py();
+        //boost::python::dict dump_traces();
 #endif
-        llrfStructs::rf_trace getCavRevPowerData();
-        llrfStructs::rf_trace getCavFwdPowerData();
-        llrfStructs::rf_trace getKlyRevPowerData();
-        llrfStructs::rf_trace getKlyFwdPowerData();
-        llrfStructs::rf_trace getCavRevPhaseData();
-        llrfStructs::rf_trace getCavFwdPhaseData();
-        llrfStructs::rf_trace getKlyRevPhaseData();
-        llrfStructs::rf_trace getKlyFwdPhaseData();
+//        llrfStructs::rf_trace getCavRevPowerData();
+//        llrfStructs::rf_trace getCavFwdPowerData();
+//        llrfStructs::rf_trace getKlyRevPowerData();
+//        llrfStructs::rf_trace getKlyFwdPowerData();
+//        llrfStructs::rf_trace getCavRevPhaseData();
+//        llrfStructs::rf_trace getCavFwdPhaseData();
+//        llrfStructs::rf_trace getKlyRevPhaseData();
+//        llrfStructs::rf_trace getKlyFwdPhaseData();
 
-        std::vector<llrfStructs::rf_trace> getCavRevPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getCavFwdPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyRevPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
-        std::vector<llrfStructs::rf_trace> getCavRevPhaseBuffer();
-        std::vector<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
-        std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavRevPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavFwdPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyRevPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyFwdPowerBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavRevPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getCavFwdPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyRevPhaseBuffer();
+//        std::vector<llrfStructs::rf_trace> getKlyFwdPhaseBuffer();
 #ifdef BUILD_DLL
-        boost::python::list getCavRevPowerBuffer_Py();
-        boost::python::list getCavFwdPowerBuffer_Py();
-        boost::python::list getKlyRevPowerBuffer_Py();
-        boost::python::list getKlyFwdPowerBuffer_Py();
-        boost::python::list getCavRevPhaseBuffer_Py();
-        boost::python::list getCavFwdPhaseBuffer_Py();
-        boost::python::list getKlyRevPhaseBuffer_Py();
-        boost::python::list getKlyFwdPhaseBuffer_Py();
+//        boost::python::list getCavRevPowerBuffer_Py();
+//        boost::python::list getCavFwdPowerBuffer_Py();
+//        boost::python::list getKlyRevPowerBuffer_Py();
+//        boost::python::list getKlyFwdPowerBuffer_Py();
+//        boost::python::list getCavRevPhaseBuffer_Py();
+//        boost::python::list getCavFwdPhaseBuffer_Py();
+//        boost::python::list getKlyRevPhaseBuffer_Py();
+//        boost::python::list getKlyFwdPhaseBuffer_Py();
 #endif
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
-        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
+        const llrfStructs::rf_trace_data_new& getTraceDataConstRef(const std::string& name);
 
         // SETTERS
         bool setPhiSP(double value);
@@ -450,7 +454,6 @@ class liberaLLRFController : public controller
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
-        bool resetToValue(const double value);
 
         bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
         bool disableInfiniteMaskEndByPower(const std::string& phase_trace);

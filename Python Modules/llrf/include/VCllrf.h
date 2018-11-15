@@ -256,8 +256,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
     const char* rf_trace_ds = "rf_trace object holds the data from a LLRF "
                               "power/phase trace also holds timestamps, Event "
                               "IDs and indices used to calclate means";
-    const char* mean_start_index_ds = "start index for mean calculation.";
-    const char* mean_stop_index_ds = "stop index for mean calculation.";
+//    const char* mean_start_index_ds = "start index for mean calculation.";
+//    const char* mean_stop_index_ds = "stop index for mean calculation.";
     const char* EVID_timeStr_ds = "Trace EVID time as a string.";
     const char* EVID_time_ds = "Trace EVID time in ns since the epoch.";
     const char* timeStr_ds = "Epics TimeStamp ns since epoch (string).";
@@ -268,10 +268,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
                           "mean_stop_index.";
 
     class_<rf_trace,boost::noncopyable>("rf_trace",rf_trace_ds, no_init)
-        .def_readonly("mean_start_index",&rf_trace::mean_start_index,
-                      mean_start_index_ds)
-        .def_readonly("mean_stop_index", &rf_trace::mean_stop_index,
-                      mean_stop_index_ds)
+//        .def_readonly("mean_start_index",&rf_trace::mean_start_index,
+//                      mean_start_index_ds)
+//        .def_readonly("mean_stop_index", &rf_trace::mean_stop_index,
+//                      mean_stop_index_ds)
         .def_readonly("EVID_timeStr",    &rf_trace::EVID_timeStr,
                       EVID_timeStr_ds)
         .def_readonly("EVID_time",&rf_trace::EVID_time,
@@ -351,8 +351,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
         .def_readonly("shot",     &rf_trace_data::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)")
         //maybe have a ferernce to the latest trace??
-        .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"index for trace last updated.")
-        .def_readonly("current_trace",&rf_trace_data::current_trace,"index for current trace.")
+//        .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"index for trace last updated.")
+//        .def_readonly("current_trace",&rf_trace_data::current_trace,"index for current trace.")
         .def_readonly("amp_drop_value", &rf_trace_data::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
         .def_readonly("drop_amp_on_breakdown", &rf_trace_data::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         .def_readonly("mask_floor", &rf_trace_data::mask_floor,"Mask floor level.")
@@ -366,8 +366,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
-    class_< std::map<std::string, rf_trace_data> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)
-        .def(map_indexing_suite<std::map<std::string,rf_trace_data>>())
+    class_< std::map<std::string, rf_trace_data_new> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)
+        .def(map_indexing_suite<std::map<std::string,rf_trace_data_new>>())
         ;
 
 
@@ -418,9 +418,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("ff_ph_lock_state",  &liberallrfObject::ff_ph_lock_state,"status of the the phase FF check box.")
         .def_readonly("interlock_state",&liberallrfObject::interlock_state,"Libera interlock  state.")
         .def_readonly("traceLength", &liberallrfObject::traceLength,"Number of elements in a trace.")
-        .def_readonly("trace_data",  &liberallrfObject::trace_data,"Map of rf_trace_data objects, keyed by the Trace Name (defined in config file).")
+        .def_readonly("trace_data",  &liberallrfObject::trace_data_2,"Map of rf_trace_data objects, keyed by the Trace Name (defined in config file).")
         .def_readonly("time_vector", &liberallrfObject::time_vector,"The time vector, stored in a rf_trace_data object.")
-        .def_readonly("outside_mask_traces", &liberallrfObject::outside_mask_traces,"The saved outside_mask_traces, stored in a vector of outside_mask_trace objects.")
+        //.def_readonly("outside_mask_traces", &liberallrfObject::outside_mask_traces,"The saved outside_mask_traces, stored in a vector of outside_mask_trace objects.")
         .def_readonly("num_outside_mask_traces", &liberallrfObject::num_outside_mask_traces,"The number of outside_mask_traces.")
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
         .def_readonly("pulse_latency", &liberallrfObject::pulse_latency,"The number of elements in a pulse trace before the RF pulse is active (approx.).")
@@ -514,11 +514,11 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 
-        .def("getTraceData",   &liberaLLRFController::getTraceData,(NAME_ARG),"Return latest rf_trace object for Channel 'name'")
+//        .def("getTraceData",   &liberaLLRFController::getTraceData,(NAME_ARG),"Return latest rf_trace object for Channel 'name'")
         .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(NAME_ARG),"Return latest Trace Values for channel 'name'")
-        .def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(NAME_ARG),"Return buffer of rf_trace objects for channel 'name'")
-        .def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
+        //.def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(NAME_ARG),"Return buffer of rf_trace objects for channel 'name'")
+        //.def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
         .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(NAME_ARG,VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
         .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
 
@@ -530,48 +530,52 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 
-        .def("getCavRevPowerData",&liberaLLRFController::getCavRevPowerData,"Return latest cavity reverse power rf_trace object")
-        .def("getCavFwdPowerData",&liberaLLRFController::getCavFwdPowerData,"Return latest cavity forward power rf_trace object")
-        .def("getKlyRevPowerData",&liberaLLRFController::getKlyRevPowerData,"Return latest klystron reverse power rf_trace object")
-        .def("getKlyFwdPowerData",&liberaLLRFController::getKlyFwdPowerData,"Return latest klystron forward power rf_trace object")
-        .def("getCavRevPhaseData",&liberaLLRFController::getCavRevPhaseData,"Return latest cavity reverse phase rf_trace object")
-        .def("getCavFwdPhaseData",&liberaLLRFController::getCavFwdPhaseData,"Return latest cavity forward phase rf_trace object")
-        .def("getKlyRevPhaseData",&liberaLLRFController::getKlyRevPhaseData,"Return latest klystron reverse phase rf_trace object")
-        .def("getKlyFwdPhaseData",&liberaLLRFController::getKlyFwdPhaseData,"Return latest klystron forward phase rf_trace object")
+//        .def("getCavRevPowerData",&liberaLLRFController::getCavRevPowerData,"Return latest cavity reverse power rf_trace object")
+//        .def("getCavFwdPowerData",&liberaLLRFController::getCavFwdPowerData,"Return latest cavity forward power rf_trace object")
+//        .def("getKlyRevPowerData",&liberaLLRFController::getKlyRevPowerData,"Return latest klystron reverse power rf_trace object")
+//        .def("getKlyFwdPowerData",&liberaLLRFController::getKlyFwdPowerData,"Return latest klystron forward power rf_trace object")
+//        .def("getCavRevPhaseData",&liberaLLRFController::getCavRevPhaseData,"Return latest cavity reverse phase rf_trace object")
+//        .def("getCavFwdPhaseData",&liberaLLRFController::getCavFwdPhaseData,"Return latest cavity forward phase rf_trace object")
+//        .def("getKlyRevPhaseData",&liberaLLRFController::getKlyRevPhaseData,"Return latest klystron reverse phase rf_trace object")
+//        .def("getKlyFwdPhaseData",&liberaLLRFController::getKlyFwdPhaseData,"Return latest klystron forward phase rf_trace object")
+//
+//        .def("getCavRevPowerBuffer",&liberaLLRFController::getCavRevPowerBuffer_Py,"Return buffer of cavity reverse power rf_trace objects")
+//        .def("getCavFwdPowerBuffer",&liberaLLRFController::getCavFwdPowerBuffer_Py,"Return buffer of cavity forward power rf_trace objects")
+//        .def("getKlyRevPowerBuffer",&liberaLLRFController::getKlyRevPowerBuffer_Py,"Return buffer of klystron reverse power rf_trace objects")
+//        .def("getKlyFwdPowerBuffer",&liberaLLRFController::getKlyFwdPowerBuffer_Py,"Return buffer of klystron forward power rf_trace objects")
+//        .def("getCavRevPhaseBuffer",&liberaLLRFController::getCavRevPhaseBuffer_Py,"Return buffer of cavity reverse phase rf_trace objects")
+//        .def("getCavFwdPhaseBuffer",&liberaLLRFController::getCavFwdPhaseBuffer_Py,"Return buffer of cavity forward phase rf_trace objects")
+//        .def("getKlyRevPhaseBuffer",&liberaLLRFController::getKlyRevPhaseBuffer_Py,"Return buffer of klystron reverse phase rf_trace objects")
+//        .def("getKlyFwdPhaseBuffer",&liberaLLRFController::getKlyFwdPhaseBuffer_Py,"Return buffer of klystron forward phase rf_trace objects")
 
-        .def("getCavRevPowerBuffer",&liberaLLRFController::getCavRevPowerBuffer_Py,"Return buffer of cavity reverse power rf_trace objects")
-        .def("getCavFwdPowerBuffer",&liberaLLRFController::getCavFwdPowerBuffer_Py,"Return buffer of cavity forward power rf_trace objects")
-        .def("getKlyRevPowerBuffer",&liberaLLRFController::getKlyRevPowerBuffer_Py,"Return buffer of klystron reverse power rf_trace objects")
-        .def("getKlyFwdPowerBuffer",&liberaLLRFController::getKlyFwdPowerBuffer_Py,"Return buffer of klystron forward power rf_trace objects")
-        .def("getCavRevPhaseBuffer",&liberaLLRFController::getCavRevPhaseBuffer_Py,"Return buffer of cavity reverse phase rf_trace objects")
-        .def("getCavFwdPhaseBuffer",&liberaLLRFController::getCavFwdPhaseBuffer_Py,"Return buffer of cavity forward phase rf_trace objects")
-        .def("getKlyRevPhaseBuffer",&liberaLLRFController::getKlyRevPhaseBuffer_Py,"Return buffer of klystron reverse phase rf_trace objects")
-        .def("getKlyFwdPhaseBuffer",&liberaLLRFController::getKlyFwdPhaseBuffer_Py,"Return buffer of klystron forward phase rf_trace objects")
+//        .def("getCavRevPower",  &liberaLLRFController::getCavRevPower_Py,"Return latest cavity reverse power trace")
+//        .def("getCavFwdPower",  &liberaLLRFController::getCavFwdPower_Py,"Return latest cavity forward power trace")
+//        .def("getKlyRevPower",  &liberaLLRFController::getKlyRevPower_Py,"Return latest klystron reverse power trace")
+//        .def("getKlyFwdPower",  &liberaLLRFController::getKlyFwdPower_Py,"Return latest klystron forward power trace")
+//        .def("getCavRevPhase",  &liberaLLRFController::getCavRevPhase_Py,"Return latest cavity reverse phase trace")
+//        .def("getCavFwdPhase",  &liberaLLRFController::getCavFwdPhase_Py,"Return latest cavity forward phase trace")
+//        .def("getKlyRevPhase",  &liberaLLRFController::getKlyRevPhase_Py,"Return latest klystron reverse phase trace")
+//        .def("getKlyFwdPhase",  &liberaLLRFController::getKlyFwdPhase_Py,"Return latest klystron forward phase trace")
+//
+//        .def("getCavRevPowerAv",  &liberaLLRFController::getCavRevPowerAv_Py,"Return latest cavity reverse power average trace")
+//        .def("getCavFwdPowerAv",  &liberaLLRFController::getCavFwdPowerAv_Py,"Return latest cavity forward power average trace")
+//        .def("getKlyRevPowerAv",  &liberaLLRFController::getKlyRevPowerAv_Py,"Return latest klystron reverse power average trace")
+//        .def("getKlyFwdPowerAv",  &liberaLLRFController::getKlyFwdPowerAv_Py,"Return latest klystron forward power average trace")
+//        .def("getCavRevPhaseAv",  &liberaLLRFController::getCavRevPhaseAv_Py,"Return latest cavity reverse phase average trace")
+//        .def("getCavFwdPhaseAv",  &liberaLLRFController::getCavFwdPhaseAv_Py,"Return latest cavity forward phase average trace")
+//        .def("getKlyRevPhaseAv",  &liberaLLRFController::getKlyRevPhaseAv_Py,"Return latest klystron reverse phase average trace")
 
-        .def("getCavRevPower",  &liberaLLRFController::getCavRevPower_Py,"Return latest cavity reverse power trace")
-        .def("getCavFwdPower",  &liberaLLRFController::getCavFwdPower_Py,"Return latest cavity forward power trace")
-        .def("getKlyRevPower",  &liberaLLRFController::getKlyRevPower_Py,"Return latest klystron reverse power trace")
-        .def("getKlyFwdPower",  &liberaLLRFController::getKlyFwdPower_Py,"Return latest klystron forward power trace")
-        .def("getCavRevPhase",  &liberaLLRFController::getCavRevPhase_Py,"Return latest cavity reverse phase trace")
-        .def("getCavFwdPhase",  &liberaLLRFController::getCavFwdPhase_Py,"Return latest cavity forward phase trace")
-        .def("getKlyRevPhase",  &liberaLLRFController::getKlyRevPhase_Py,"Return latest klystron reverse phase trace")
-        .def("getKlyFwdPhase",  &liberaLLRFController::getKlyFwdPhase_Py,"Return latest klystron forward phase trace")
+//        .def("getProbePower",  &liberaLLRFController::getProbePower_Py,"Return cavity probe power")
+//        .def("getProbePhase",  &liberaLLRFController::getProbePhase_Py,"Return cavity probe phase")
 
-        .def("getCavRevPowerAv",  &liberaLLRFController::getCavRevPowerAv_Py,"Return latest cavity reverse power average trace")
-        .def("getCavFwdPowerAv",  &liberaLLRFController::getCavFwdPowerAv_Py,"Return latest cavity forward power average trace")
-        .def("getKlyRevPowerAv",  &liberaLLRFController::getKlyRevPowerAv_Py,"Return latest klystron reverse power average trace")
-        .def("getKlyFwdPowerAv",  &liberaLLRFController::getKlyFwdPowerAv_Py,"Return latest klystron forward power average trace")
-        .def("getCavRevPhaseAv",  &liberaLLRFController::getCavRevPhaseAv_Py,"Return latest cavity reverse phase average trace")
-        .def("getCavFwdPhaseAv",  &liberaLLRFController::getCavFwdPhaseAv_Py,"Return latest cavity forward phase average trace")
-        .def("getKlyRevPhaseAv",  &liberaLLRFController::getKlyRevPhaseAv_Py,"Return latest klystron reverse phase average trace")
+//        .def("getProbePowerAv",  &liberaLLRFController::getProbePowerAv_Py,"Return cavity probe power average ")
+//        .def("getProbePhaseAv",  &liberaLLRFController::getProbePhaseAv_Py,"Return cavity probe phase average ")
 
-        .def("getProbePower",  &liberaLLRFController::getProbePower_Py,"Return cavity probe power")
-        .def("getProbePhase",  &liberaLLRFController::getProbePhase_Py,"Return cavity probe phase")
+        .def("setKeepKlyFwdPwrRS", &liberaLLRFController::setKeepKlyFwdPwrRS,(VALUE_ARG),"Set keep klystron forward power running stat to 'val'")
+        .def("keepKlyFwdPwrRS",    &liberaLLRFController::keepKlyFwdPwrRS,    "Set should keep klystron forward power running stat")
+        .def("dontKeepKlyFwdPwrRS",&liberaLLRFController::dontKeepKlyFwdPwrRS,"Set should NOT keep klystron forward power running stat")
 
-        .def("getProbePowerAv",  &liberaLLRFController::getProbePowerAv_Py,"Return cavity probe power average ")
-        .def("getProbePhaseAv",  &liberaLLRFController::getProbePhaseAv_Py,"Return cavity probe phase average ")
-
-
+        .def("getKlyFwdPwrRSState",&liberaLLRFController::getKlyFwdPwrRSState_Py,(VALUE_ARG),"Get Klystron Forward Poewr Running Stat State for Ampset 'value'")
 
 
         .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(VALUE_ARG),"Set Phase in LLRF Units")
@@ -586,7 +590,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 
-        .def("resetToValue",  &liberaLLRFController::resetToValue,(VALUE_ARG), resetToValue_ds)
+        //.def("resetToValue",  &liberaLLRFController::resetToValue,(VALUE_ARG), resetToValue_ds)
 
 
         .def("isFFLocked",  &liberaLLRFController::isFFLocked,"Return true if both amp and phase feed-forward are locked.")

@@ -3,6 +3,7 @@
 //
 #include "structs.h"
 #include "configDefinitions.h"
+#include "running_stat.h"
 //stl
 #include <string>
 #include <map>
@@ -57,6 +58,7 @@ namespace llrfStructs
                                                      (LIB_PULSE_OFFSET)
                                                      (AMP_MVM)
                                                      (TRIG_SOURCE)
+                                                     (TIMING_TRIGGER)
                                                      (PHI_DEG)
                                                      (INTERLOCK)
 
@@ -148,12 +150,13 @@ namespace llrfStructs
     };
 
     //a custom struct will always stand up better under maintenance.
+    /// OLD ??????
     struct rf_trace
     {
         rf_trace():
             time(UTL::ZERO_DOUBLE),
-            mean_start_index(UTL::ZERO_SIZET),
-            mean_stop_index(UTL::ZERO_SIZET),
+            //mean_start_index(UTL::ZERO_SIZET),
+            //mean_stop_index(UTL::ZERO_SIZET),
             mean(UTL::DUMMY_DOUBLE),
             timeStr(UTL::UNKNOWN_STRING),
             name(UTL::UNKNOWN_STRING),
@@ -164,7 +167,7 @@ namespace llrfStructs
             procEnd(0)
             {}
         std::string    name;    // LLRF EVID string
-        size_t mean_start_index,mean_stop_index;
+        //size_t mean_start_index,mean_stop_index;
         bool   in_mask;
         std::vector<double> value;
         epicsTimeStamp etime;   // epics timestamp for value
@@ -175,6 +178,10 @@ namespace llrfStructs
         double         EVID_time;    // LLRF EVID string
         std::string    EVID_timeStr; // LLRF EVID string
         epicsTimeStamp EVID_etime;   // epics timestamp for value
+
+
+
+
         // when exposing a vector of rf_trace to python I ran into trouble...
         long long procStart, procEnd;
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
@@ -297,22 +304,24 @@ namespace llrfStructs
             mean_start_index(UTL::ZERO_SIZET),
             mean_stop_index(UTL::ZERO_SIZET),
 
-            previous_trace(UTL::MINUS_ONE_INT),
-            previous_previous_trace(UTL::MINUS_TWO_INT),
+
+            // NOT USED???
+//            previous_trace(UTL::MINUS_ONE_INT),
+//            previous_previous_trace(UTL::MINUS_TWO_INT),
+            outside_mask_index(UTL::ZERO_SIZET),
+
 
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
-
-            //add_next_trace(UTL::ZERO_SIZET),
-            outside_mask_index(UTL::ZERO_SIZET),
 
             outside_mask_trace_message(UTL::UNKNOWN_STRING),
 
             latest_max(UTL::ZERO_DOUBLE),
 
             buffersize(UTL::FIVE_SIZET),
+
             trace_max(UTL::DUMMY_DOUBLE),
 
-
+            // mask
             hi_mask_set(false),
             lo_mask_set(false),
             mask_value(UTL::ZERO_DOUBLE),
@@ -330,7 +339,9 @@ namespace llrfStructs
             drop_amp_on_breakdown(false),
             amp_drop_value(UTL::DUMMY_DOUBLE),
 
-            phase_tolerance(UTL::DUMMY_DOUBLE)
+            phase_tolerance(UTL::DUMMY_DOUBLE),
+
+            endInfiniteMask_Trace_Set(false)
 
             {}
         std::string name;
@@ -343,6 +354,7 @@ namespace llrfStructs
         double mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
         size_t mask_start, mask_end, mask_window_start, mask_window_end;
         std::vector<double> hi_mask, lo_mask;
+
         size_t num_continuous_outside_mask_count,outside_mask_index;
         bool   check_mask, use_percent_mask, use_abs_mask;
         double mask_value, mask_abs_min;
@@ -350,19 +362,22 @@ namespace llrfStructs
         double phase_tolerance;
 
 
+        bool endInfiniteMask_Trace_Set;
+
         bool keep_next_trace;
 
-        size_t buffersize, trace_size, mean_start_index,mean_stop_index;//rolling_sum_counter
+        size_t buffersize, trace_size;
+
+
+
+        ///?????????????????  OLD OLD
         size_t num_traces_at_this_power;
         // Counter allowing you to access/update the correct part of  traces
-        size_t  latest_trace_index,current_trace,evid_current_trace;//,add_next_trace;
-        int previous_previous_trace,previous_trace,previous_evid_trace;
-
-        // ????????
+        size_t  latest_trace_index, current_trace, evid_current_trace;//,add_next_trace;
+        //int previous_previous_trace, previous_trace, previous_evid_trace;
         std::pair<std::string, double> endMaskTrace_Bound; // ????????
-
-        // ????????
-        std::vector<rf_trace> traces;// ????????
+        //std::vector<rf_trace> traces;// ????????
+        ///?????????????????????????   OLD OLD
 /*       __   __                    __                ___  __        __   ___  __
         |__) /  \ |    |    | |\ | / _`     /\  \  / |__  |__)  /\  / _` |__  /__`
         |  \ \__/ |___ |___ | | \| \__>    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
@@ -377,13 +392,17 @@ namespace llrfStructs
         std::queue<std::vector<double>> average_trace_values;
 
 
-
         /*
             all the trace data goes here (online data)
         */
         boost::circular_buffer<std::pair<epicsTimeStamp, std::vector<double>>> data_buffer;
         double trace_max;
         std::vector<std::pair<size_t,size_t>> outside_mask_data_index_to_add_future_traces_to;
+        /* trace cut mean */
+        size_t mean_start_index, mean_stop_index;//rolling_sum_counter
+        double mean;
+
+
         //size_t outside_mask_trace_part;
 
         bool drop_amp_on_breakdown;
@@ -557,12 +576,6 @@ namespace llrfStructs
     };
 
 
-
-
-
-
-
-
     // The main hardware object
     struct liberallrfObject
     {
@@ -614,13 +627,21 @@ namespace llrfStructs
             can_increase_active_pulses(false),
             //collecting_outside_mask_data(false),
             active_pulse_kly_power_limit(UTL::ZERO_DOUBLE),
-
             interlock_state(INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE),
-            omed_count(UTL::ZERO_SIZET)
-
-                     {}
+            omed_count(UTL::ZERO_SIZET),
+            new_outside_mask_event(false),
+            keep_kly_fwd_pow_running_stat()
+                {}
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
+
+
+        short timing_trigger; // is the external timing on? needs updating to a proper enum at some point
+
+        // some flags
         bool can_increase_active_pulses;
+        bool new_outside_mask_event;
+        bool keep_kly_fwd_pow_running_stat;
+
         TRIG trig_source;
         INTERLOCK_STATE interlock_state;
 
@@ -646,6 +667,7 @@ namespace llrfStructs
         double amp_sp, amp_ff,maxAmp;
         double pulse_length,pulse_offset;
         double breakdown_rate, amp_drop_value;
+
         bool rf_output, check_mask, ff_amp_lock_state,ff_ph_lock_state; //,interlock_state;
 
         //long ampR,phiLLRF,ampW,crestPhi,maxAmp;
@@ -662,6 +684,9 @@ namespace llrfStructs
         std::vector<double> time_vector;
         std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct> iLockPVStructs;
 
+        /*
+        */
+
 
         /*
             this is the new all traces in one record object
@@ -669,10 +694,17 @@ namespace llrfStructs
         llrf_trace_one_shot all_traces;
 
         /*
+            Klystron Forward Power Running Stats
+            These are the running mean adn sigma for the KlyFwdPow
+            Note, they depend on th eposition of
             We keep the amp_set vs KLY_FWD_POWER running stat variables
             m_n, m_oldM, m_oldS, see running_stat.h
         */
-        std::map<int, std::tuple<int, double, double>> amp_set_kly_fwd_rs;
+        int this_pulse_amp_set;
+        // these are the running stats
+        std::map<int, runningStat> amp_set_kly_fwd_rs;
+        // this is the state of each running state, so we can save and re-apply settings
+        std::map<int, std::tuple<size_t, double, double>> amp_set_kly_fwd_rs_state;
 
 
         /*
@@ -697,10 +729,10 @@ namespace llrfStructs
 
 
         // OLD
-        std::map<std::string, rf_trace_data> trace_data;
+//        std::map<std::string, rf_trace_data> trace_data;
         std::vector<std::string> tracesToSaveOnBreakDown;
         bool drop_amp_on_breakdown;
-        std::vector<outside_mask_trace> outside_mask_traces;
+//        std::vector<outside_mask_trace> outside_mask_traces;
         size_t num_extra_traces;
 
     };

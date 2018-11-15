@@ -521,6 +521,40 @@ void liberaLLRFController::setActivePulseCount(const size_t val)
 //--------------------------------------------------------------------------------------------------
 
 
+void liberaLLRFController::setKeepKlyFwdPwrRS(bool val)
+{
+    localInterface.setActivePulseCount(val);
+}
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::keepKlyFwdPwrRS()
+{
+    localInterface.keepKlyFwdPwrRS();
+}
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::dontKeepKlyFwdPwrRS()
+{
+    localInterface.dontKeepKlyFwdPwrRS();
+}
+//--------------------------------------------------------------------------------------------------
+std::tuple<size_t,double,double> liberaLLRFController::getKlyFwdPwrRSState(int ampSP_setting)
+{
+    return localInterface.getKlyFwdPwrRSState(ampSP_setting);
+}
+#ifdef BUILD_DLL
+//--------------------------------------------------------------------------------------------------
+boost::python::list liberaLLRFController::getKlyFwdPwrRSState_Py(int ampSP_setting)
+{
+    std::tuple<size_t,double,double> r = getKlyFwdPwrRSState(ampSP_setting);
+    boost::python::list rlist;
+    rlist.append( std::get<UTL::ZERO_SIZET>(r));
+    rlist.append( std::get<UTL::ONE_SIZET>(r));
+    rlist.append( std::get<UTL::TWO_SIZET>(r));
+    return rlist;
+}
+#endif
+
+
+
 
 bool liberaLLRFController::isAmpFFLocked()const
 {
@@ -726,20 +760,24 @@ std::vector<double> liberaLLRFController::getTraceValues(const std::string& name
     return localInterface.getTraceValues(name);
 }
 //______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getTraceData(const std::string& name)
-{
-    return localInterface.getTraceData(name);
-}
+
+//llrfStructs::rf_trace liberaLLRFController::getTraceData(const std::string& name)
+//{
+//    return localInterface.getTraceData(name);
+//}
+
+
 //______________________________________________________________________________
 std::vector<double>liberaLLRFController::getAverageTraceData(const std::string& name)
 {
     return localInterface.getAverageTraceData(name);
 }
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getTraceBuffer(const std::string& name)
-{
-    return localInterface.getTraceBuffer(name);
-}
+
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getTraceBuffer(const std::string& name)
+//{
+//    return localInterface.getTraceBuffer(name);
+//}
 //______________________________________________________________________________
 
 
@@ -776,56 +814,60 @@ boost::python::list liberaLLRFController::getTraceValues_Py(const std::string& n
 {
     return toPythonList(getTraceValues(name));
 }
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getTraceBuffer_Py(const std::string& name)
-{
-    return toPythonList(getTraceBuffer(name));
-}
+
+
+
+
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getTraceBuffer_Py(const std::string& name)
+//{
+//    return toPythonList(getTraceBuffer(name));
+//}
 
 
 
 //______________________________________________________________________________
-boost::python::dict liberaLLRFController::dump_traces()
-{
-    const llrfStructs::liberallrfObject& ref = localInterface.getLLRFObjConstRef();
-
-    boost::python::dict dictionary;
-
-    std::string EVID;
-    std::string time;
-    std::string value;
-    std::string name;
-
-    int i;
-    for(auto&& it: ref.tracesToSaveOnBreakDown)
-    {
-        if(ref.trace_data.at(it).hi_mask_set)
-        {
-            dictionary[ std::string(it + "_hi_mask") ] = toPythonList(ref.trace_data.at(it).high_mask);
-        }
-        if(ref.trace_data.at(it).low_mask_set)
-        {
-            dictionary[ std::string(it + "_lo_mask") ] = toPythonList(ref.trace_data.at(it).low_mask);
-            dictionary[ std::string(it + "_mask_floor") ] = ref.trace_data.at(it).mask_floor;
-        }
-        i = 0;
-        for(auto && it2: ref.trace_data.at(it).traces)
-        {
-                EVID = "EVID_"  + it2.name + "_";
-                time = "time_"  + it2.name + "_";
-                value= "value_" + it2.name + "_";
-                name = "name_"  + it2.name + "_";
-                time = "time_"  + it2.name + "_";
-                dictionary[EVID  += std::to_string(i)] = it2.EVID;
-                dictionary[time  += std::to_string(i)] = it2.time;
-                dictionary[value += std::to_string(i)] = toPythonList(it2.value);
-                dictionary[name  += std::to_string(i)] = it2.name;
-                ++i;
-        }
-    }
-
-    return dictionary;
-}
+//boost::python::dict liberaLLRFController::dump_traces()
+//{
+//    const llrfStructs::liberallrfObject& ref = localInterface.getLLRFObjConstRef();
+//
+//    boost::python::dict dictionary;
+//
+//    std::string EVID;
+//    std::string time;
+//    std::string value;
+//    std::string name;
+//
+//    int i;
+//    for(auto&& it: ref.tracesToSaveOnBreakDown)
+//    {
+//        if(ref.trace_data.at(it).hi_mask_set)
+//        {
+//            dictionary[ std::string(it + "_hi_mask") ] = toPythonList(ref.trace_data.at(it).high_mask);
+//        }
+//        if(ref.trace_data.at(it).low_mask_set)
+//        {
+//            dictionary[ std::string(it + "_lo_mask") ] = toPythonList(ref.trace_data.at(it).low_mask);
+//            dictionary[ std::string(it + "_mask_floor") ] = ref.trace_data.at(it).mask_floor;
+//        }
+//        i = 0;
+//        for(auto && it2: ref.trace_data.at(it).traces)
+//        {
+//                EVID = "EVID_"  + it2.name + "_";
+//                time = "time_"  + it2.name + "_";
+//                value= "value_" + it2.name + "_";
+//                name = "name_"  + it2.name + "_";
+//                time = "time_"  + it2.name + "_";
+//                dictionary[EVID  += std::to_string(i)] = it2.EVID;
+//                dictionary[time  += std::to_string(i)] = it2.time;
+//                dictionary[value += std::to_string(i)] = toPythonList(it2.value);
+//                dictionary[name  += std::to_string(i)] = it2.name;
+//                ++i;
+//        }
+//    }
+//
+//    return dictionary;
+//}
 #endif
 //______________________________________________________________________________
 std::string liberaLLRFController::fullCavityTraceName(const std::string& name)
@@ -934,145 +976,145 @@ std::vector<double> liberaLLRFController::getProbePhaseAv()
 }
 #ifdef BUILD_DLL
 //______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavRevPowerAv_Py()
-{
-    return toPythonList(getCavRevPowerAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavFwdPowerAv_Py()
-{
-    return toPythonList(getCavFwdPowerAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyRevPowerAv_Py()
-{
-    return toPythonList(getKlyRevPowerAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyFwdPowerAv_Py()
-{
-    return toPythonList(getKlyFwdPowerAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavRevPhaseAv_Py()
-{
-    return toPythonList(getCavRevPhaseAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavFwdPhaseAv_Py()
-{
-    return toPythonList(getCavFwdPhaseAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyRevPhaseAv_Py()
-{
-    return toPythonList(getKlyRevPhaseAv());
-}
-//______________________________________________________________________________
-boost::python::list  liberaLLRFController::getKlyFwdPhaseAv_Py()
-{
-    return toPythonList(getKlyFwdPhaseAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavRevPower_Py()
-{
-    return toPythonList(getCavRevPower());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyFwdPower_Py()
-{
-    return toPythonList(getKlyFwdPower());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavFwdPower_Py()
-{
-    return toPythonList(getCavFwdPower());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyRevPower_Py()
-{
-    return toPythonList(getKlyRevPower());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavRevPhase_Py()
-{
-    return toPythonList(getCavRevPhase());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyFwdPhase_Py()
-{
-    return toPythonList(getKlyFwdPhase());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavFwdPhase_Py()
-{
-    return toPythonList(getCavFwdPhase());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyRevPhase_Py()
-{
-    return toPythonList(getKlyRevPhase());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getProbePower_Py()
-{
-    return toPythonList(getProbePower());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getProbePhase_Py()
-{
-    return toPythonList(getProbePhase());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavRevPowerBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavFwdPowerBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyRevPowerBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyFwdPowerBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavRevPhaseBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getCavFwdPhaseBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyRevPhaseBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getKlyFwdPhaseBuffer_Py()
-{
-    return toPythonList(getCavRevPowerBuffer());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getProbePowerAv_Py()
-{
-    return toPythonList(getProbePowerAv());
-}
-//______________________________________________________________________________
-boost::python::list liberaLLRFController::getProbePhaseAv_Py()
-{
-    return toPythonList(getProbePhaseAv());
-}
+//boost::python::list liberaLLRFController::getCavRevPowerAv_Py()
+//{
+//    return toPythonList(getCavRevPowerAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavFwdPowerAv_Py()
+//{
+//    return toPythonList(getCavFwdPowerAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyRevPowerAv_Py()
+//{
+//    return toPythonList(getKlyRevPowerAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyFwdPowerAv_Py()
+//{
+//    return toPythonList(getKlyFwdPowerAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavRevPhaseAv_Py()
+//{
+//    return toPythonList(getCavRevPhaseAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavFwdPhaseAv_Py()
+//{
+//    return toPythonList(getCavFwdPhaseAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyRevPhaseAv_Py()
+//{
+//    return toPythonList(getKlyRevPhaseAv());
+//}
+////______________________________________________________________________________
+//boost::python::list  liberaLLRFController::getKlyFwdPhaseAv_Py()
+//{
+//    return toPythonList(getKlyFwdPhaseAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavRevPower_Py()
+//{
+//    return toPythonList(getCavRevPower());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyFwdPower_Py()
+//{
+//    return toPythonList(getKlyFwdPower());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavFwdPower_Py()
+//{
+//    return toPythonList(getCavFwdPower());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyRevPower_Py()
+//{
+//    return toPythonList(getKlyRevPower());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavRevPhase_Py()
+//{
+//    return toPythonList(getCavRevPhase());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyFwdPhase_Py()
+//{
+//    return toPythonList(getKlyFwdPhase());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavFwdPhase_Py()
+//{
+//    return toPythonList(getCavFwdPhase());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyRevPhase_Py()
+//{
+//    return toPythonList(getKlyRevPhase());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getProbePower_Py()
+//{
+//    return toPythonList(getProbePower());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getProbePhase_Py()
+//{
+//    return toPythonList(getProbePhase());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavRevPowerBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavFwdPowerBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyRevPowerBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyFwdPowerBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavRevPhaseBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getCavFwdPhaseBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyRevPhaseBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getKlyFwdPhaseBuffer_Py()
+//{
+//    return toPythonList(getCavRevPowerBuffer());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getProbePowerAv_Py()
+//{
+//    return toPythonList(getProbePowerAv());
+//}
+////______________________________________________________________________________
+//boost::python::list liberaLLRFController::getProbePhaseAv_Py()
+//{
+//    return toPythonList(getProbePhaseAv());
+//}
 //______________________________________________________________________________
 bool liberaLLRFController::setHighMask(const std::string& name,const boost::python::list& value)
 {
@@ -1107,92 +1149,92 @@ bool liberaLLRFController::setCavRevPwrLoMask(const std::vector<double>& value)
     return localInterface.setCavRevPwrLoMask(value);
 }
 //______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getCavRevPowerData()
-{
-    return localInterface.getCavRevPowerData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getCavFwdPowerData()
-{
-    return localInterface.getCavFwdPowerData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getKlyRevPowerData()
-{
-    return localInterface.getKlyRevPowerData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getKlyFwdPowerData()
-{
-    return localInterface.getKlyFwdPowerData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getCavRevPhaseData()
-{
-    return localInterface.getCavRevPhaseData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getCavFwdPhaseData()
-{
-    return localInterface.getCavFwdPhaseData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getKlyRevPhaseData()
-{
-    return localInterface.getKlyRevPhaseData();
-}
-//______________________________________________________________________________
-llrfStructs::rf_trace liberaLLRFController::getKlyFwdPhaseData()
-{
-    return localInterface.getKlyFwdPhaseData();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavRevPowerBuffer()
-{
-    return localInterface.getCavRevPowerBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPowerBuffer()
-{
-    return localInterface.getCavFwdPowerBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPowerBuffer()
-{
-    return localInterface.getKlyRevPowerBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPowerBuffer()
-{
-    return localInterface.getKlyFwdPowerBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavRevPhaseBuffer()
-{
-    return localInterface.getCavRevPhaseBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPhaseBuffer()
-{
-    return localInterface.getCavFwdPhaseBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPhaseBuffer()
-{
-    return localInterface.getKlyRevPhaseBuffer();
-}
-//______________________________________________________________________________
-std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPhaseBuffer()
-{
-    return localInterface.getKlyFwdPhaseBuffer();
-}
+//llrfStructs::rf_trace liberaLLRFController::getCavRevPowerData()
+//{
+//    return localInterface.getCavRevPowerData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getCavFwdPowerData()
+//{
+//    return localInterface.getCavFwdPowerData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getKlyRevPowerData()
+//{
+//    return localInterface.getKlyRevPowerData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getKlyFwdPowerData()
+//{
+//    return localInterface.getKlyFwdPowerData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getCavRevPhaseData()
+//{
+//    return localInterface.getCavRevPhaseData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getCavFwdPhaseData()
+//{
+//    return localInterface.getCavFwdPhaseData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getKlyRevPhaseData()
+//{
+//    return localInterface.getKlyRevPhaseData();
+//}
+////______________________________________________________________________________
+//llrfStructs::rf_trace liberaLLRFController::getKlyFwdPhaseData()
+//{
+//    return localInterface.getKlyFwdPhaseData();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavRevPowerBuffer()
+//{
+//    return localInterface.getCavRevPowerBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPowerBuffer()
+//{
+//    return localInterface.getCavFwdPowerBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPowerBuffer()
+//{
+//    return localInterface.getKlyRevPowerBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPowerBuffer()
+//{
+//    return localInterface.getKlyFwdPowerBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavRevPhaseBuffer()
+//{
+//    return localInterface.getCavRevPhaseBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getCavFwdPhaseBuffer()
+//{
+//    return localInterface.getCavFwdPhaseBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyRevPhaseBuffer()
+//{
+//    return localInterface.getKlyRevPhaseBuffer();
+//}
+////______________________________________________________________________________
+//std::vector<llrfStructs::rf_trace> liberaLLRFController::getKlyFwdPhaseBuffer()
+//{
+//    return localInterface.getKlyFwdPhaseBuffer();
+//}
 //______________________________________________________________________________
 const llrfStructs::liberallrfObject& liberaLLRFController::getLLRFObjConstRef()
 {
     return localInterface.getLLRFObjConstRef();
 }
 //______________________________________________________________________________
-const llrfStructs::rf_trace_data& liberaLLRFController::getTraceDataConstRef(const std::string& name)
+const llrfStructs::rf_trace_data_new& liberaLLRFController::getTraceDataConstRef(const std::string& name)
 {
     return localInterface.getTraceDataConstRef(name);
 }
@@ -1206,10 +1248,7 @@ llrfStructs::TRIG liberaLLRFController::getTrigSource()
 // /__` |__   |   |  |__  |__) /__`
 // .__/ |___  |   |  |___ |  \ .__/
 //______________________________________________________________________________
-bool liberaLLRFController::resetToValue(const double value)
-{
-    return localInterface.resetToValue(value);
-}
+
 //______________________________________________________________________________
 bool liberaLLRFController::trigOff()
 {
