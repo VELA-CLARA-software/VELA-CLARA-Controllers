@@ -211,7 +211,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 //        .value("LIB_CH6_PHASE_REM", LLRF_PV_TYPE::LIB_CH6_PHASE_REM)
 //        .value("LIB_CH7_PHASE_REM", LLRF_PV_TYPE::LIB_CH7_PHASE_REM)
 //        .value("LIB_CH8_PHASE_REM", LLRF_PV_TYPE::LIB_CH8_PHASE_REM)
-//        .value("LIB_TIME_VECTOR",  LLRF_PV_TYPE::LIB_TIME_VECTOR)
+//        .value("LIB_TIME_VECFTORS",  LLRF_PV_TYPE::LIB_TIME_VECTOR)
 //        .value("LIB_PULSE_LENGTH", LLRF_PV_TYPE::LIB_PULSE_LENGTH)
 //        .value("LIB_PULSE_OFFSET", LLRF_PV_TYPE::LIB_PULSE_OFFSET)
 //        .value("TRIG_SOURCE", LLRF_PV_TYPE::TRIG_SOURCE)
@@ -331,25 +331,26 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("name",      &rf_trace_data::name,"tarce name")
         .def_readonly("check_mask",      &rf_trace_data::check_mask,"should check mask")
         .def_readonly("hi_mask_set",     &rf_trace_data::hi_mask_set,"is hi mask set")
-        .def_readonly("low_mask_set",    &rf_trace_data::low_mask_set,"is low mask set")
+        .def_readonly("lo_mask_set",     &rf_trace_data::lo_mask_set,"is low mask set")
         .def_readonly("keep_rolling_average",&rf_trace_data::keep_rolling_average,"should keep rolling average")
         .def_readonly("keep_next_trace",&rf_trace_data::keep_next_trace,"should keep next trace")
         .def_readonly("has_average",     &rf_trace_data::has_average,"has the trace calcualted an an average yet?")
         .def_readonly("buffersize",      &rf_trace_data::buffersize,"number of traces in buffer")
         .def_readonly("trace_size",      &rf_trace_data::trace_size,"number of elements in a trace")
-        .def_readonly("average_size",    &rf_trace_data::average_size,"number of traces to average")
-        .def_readonly("high_mask",       &rf_trace_data::high_mask,"high mask values")
-        .def_readonly("low_mask",        &rf_trace_data::low_mask,"low mask values")
+        .def_readonly("rolling_average_size",    &rf_trace_data::rolling_average_size,"number of traces to averag in rolling_average")
+        .def_readonly("hi_mask",        &rf_trace_data::hi_mask,"hi mask values")
+        .def_readonly("lo_mask",        &rf_trace_data::lo_mask,"lo mask values")
         .def_readonly("rolling_average", &rf_trace_data::rolling_average,"rolling average values")
         .def_readonly("rolling_sum",     &rf_trace_data::rolling_sum,"rolling sum values")
         .def_readonly("rolling_min",     &rf_trace_data::rolling_min,"rolling max values")
         .def_readonly("rolling_max",     &rf_trace_data::rolling_max,"rolling min values")
         .def_readonly("rolling_sd",      &rf_trace_data::rolling_sd,"rolling standard deviation values")
-        .def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects (stored in c++ as std::vector<rf_trace> does this work?)")
+        //.def_readonly("traces",          &rf_trace_data::traces,"all trace data in buffer of rf_trace objects (stored in c++ as std::vector<rf_trace> does this work?)")
         .def_readonly("mean_start_index",&rf_trace_data::mean_start_index,"start index for mean trace calculation.")
         .def_readonly("mean_stop_index", &rf_trace_data::mean_stop_index,"stop index for mean trace calculation.")
-        .def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
-        .def_readonly("shot",     &rf_trace_data::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)")
+        .def_readonly("mean",            &rf_trace_data::mean,"Mean value between mean_start_index and mean_stop_index for latest trace.")
+        //.def_readonly("EVID",              &rf_trace_data::EVID,"Latest EVID for this trace.")
+        //.def_readonly("shot",     &rf_trace_data::shot   ,"shot number, (currently number of traces since monitoring started, in future will be timing system shotnumber?)")
         //maybe have a ferernce to the latest trace??
 //        .def_readonly("latest_trace_index",&rf_trace_data::latest_trace_index,"index for trace last updated.")
 //        .def_readonly("current_trace",&rf_trace_data::current_trace,"index for current trace.")
@@ -359,40 +360,21 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("num_continuous_outside_mask_count", &rf_trace_data::num_continuous_outside_mask_count,"number of continuous outside mask.")
         .def_readonly("outside_mask_index", &rf_trace_data::outside_mask_index,"index of elmenet that caused outside mask event.")
         .def_readonly("latest_max", &rf_trace_data::latest_max,"maximum value of latest trace.")
-        .def_readonly("scan", &rf_trace_data::scan,"SCAN value.")
+        //.def_readonly("scan", &rf_trace_data::scan,"SCAN value.")
         .def_readonly("endInfiniteMask_Trace_Set", &rf_trace_data::endInfiniteMask_Trace_Set,"is endInfiniteMask_Trace_Set?.")
         .def_readonly("mask_end_by_power_index", &rf_trace_data::mask_end_by_power_index,"value mask_end_by_power_index.")
         .def_readonly("endMaskTrace_Bound", &rf_trace_data::endMaskTrace_Bound,"value mask_end_by_power_index.")
         ;
 
     // The map with all the TRACE data (keyed by trace name from conifg file
-    class_< std::map<std::string, rf_trace_data_new> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)
-        .def(map_indexing_suite<std::map<std::string,rf_trace_data_new>>())
+    class_< std::map<std::string, rf_trace_data> >("A map of all the rf_trace_data (keyed by trace name from config file)", no_init)
+        .def(map_indexing_suite<std::map<std::string,rf_trace_data>>())
         ;
 
 
     // The map with all the TRACE data (keyed by trace name from conifg file
     class_< std::vector<rf_trace>>("A vector of rf_trace structs ", no_init)
         .def(vector_indexing_suite< std::vector<rf_trace> >())
-        ;
-
-    // outside_mask_trace is a sturct that holds flagged traces...
-    class_<outside_mask_trace>
-        ("outside_mask_trace","outside_mask_trace Doc String", no_init)
-        .def_readonly("rf_trace",   &outside_mask_trace::traces   ,  "rf_trace object")
-        .def_readonly("trace_name", &outside_mask_trace::trace_name,"Channel name trace came from")
-        .def_readonly("message", &outside_mask_trace::message,"a useful message")
-        .def_readonly("high_mask",  &outside_mask_trace::high_mask, "High mask values")
-        .def_readonly("low_mask",   &outside_mask_trace::low_mask,  "Low mask values")
-        .def_readonly("time",       &outside_mask_trace::low_mask,  "ms (approx) between timner start and trace flagged")
-        .def_readonly("num_traces_to_collect",       &outside_mask_trace::num_traces_to_collect,  "expeted number of traces")
-        .def_readonly("time_vector",       &outside_mask_trace::time_vector,  "time_vector (us)")
-        .def_readonly("mask_floor",       &outside_mask_trace::mask_floor,  "mask_floor (W)")
-        .def_readonly("is_collecting",       &outside_mask_trace::is_collecting,  "finished collecting traces")
-        ;
-
-    class_<std::vector<outside_mask_trace>,boost::noncopyable>("std_vector_outside_mask_trace", no_init)
-        .def(vector_indexing_suite< std::vector<outside_mask_trace>>())
         ;
 
     // liberallrfObject object struct to be exposed, used when returning a liberallrfObject reference
@@ -418,8 +400,11 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("ff_ph_lock_state",  &liberallrfObject::ff_ph_lock_state,"status of the the phase FF check box.")
         .def_readonly("interlock_state",&liberallrfObject::interlock_state,"Libera interlock  state.")
         .def_readonly("traceLength", &liberallrfObject::traceLength,"Number of elements in a trace.")
-        .def_readonly("trace_data",  &liberallrfObject::trace_data_2,"Map of rf_trace_data objects, keyed by the Trace Name (defined in config file).")
-        .def_readonly("time_vector", &liberallrfObject::time_vector,"The time vector, stored in a rf_trace_data object.")
+        .def_readonly("trace_data",  &liberallrfObject::trace_data,"Map of rf_trace_data objects, keyed by the Trace Name (defined in config file).")
+
+        .add_property("time_vector", &liberallrfObject::getTimeVector, &liberallrfObject::setTimeVector,"List of values fo rthe time coordinate for LLRF trace data")
+
+        //.def_readonly("time_vector", &liberallrfObject::time_vector,"The time vector, stored in a rf_trace_data object.")
         //.def_readonly("outside_mask_traces", &liberallrfObject::outside_mask_traces,"The saved outside_mask_traces, stored in a vector of outside_mask_trace objects.")
         .def_readonly("num_outside_mask_traces", &liberallrfObject::num_outside_mask_traces,"The number of outside_mask_traces.")
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
@@ -445,6 +430,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("setTORACQMEvent",    &liberaLLRFController::setTORACQMEvent)
         .def("setTORSCANToIOIntr", &liberaLLRFController::setTORSCANToIOIntr)
+        .def("setTORSCANToPassive", &liberaLLRFController::setTORSCANToPassive)
+        .def("resetTORSCANToIOIntr", &liberaLLRFController::resetTORSCANToIOIntr)
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -472,8 +459,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 
-
-
+        .def("getOneTraceData",    &liberaLLRFController::getOneTraceData_Py, "Returns a nestedt list of time-stamp and onetrace data")
 
         .def("getILockStates",    &liberaLLRFController::getILockStates)
 
@@ -515,12 +501,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 //        .def("getTraceData",   &liberaLLRFController::getTraceData,(NAME_ARG),"Return latest rf_trace object for Channel 'name'")
-        .def("getAverageTraceData",   &liberaLLRFController::getAverageTraceData_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
+
+
+
+//        .def("getTraceRollingAverageData",   &liberaLLRFController::getTraceRollingAverageData_Py,(NAME_ARG),"Return the current traces being averaged and the average, for Trace 'name'")
+
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(NAME_ARG),"Return latest Trace Values for channel 'name'")
         //.def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(NAME_ARG),"Return buffer of rf_trace objects for channel 'name'")
         //.def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
-        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(NAME_ARG,VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
-        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
 
 
 
@@ -576,10 +564,13 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("dontKeepKlyFwdPwrRS",&liberaLLRFController::dontKeepKlyFwdPwrRS,"Set should NOT keep klystron forward power running stat")
 
         .def("getKlyFwdPwrRSState",&liberaLLRFController::getKlyFwdPwrRSState_Py,(VALUE_ARG),"Get Klystron Forward Poewr Running Stat State for Ampset 'value'")
+        .def("setKlyFwdPwrRSState",&liberaLLRFController::setKlyFwdPwrRSState,
+             (boost::python::arg("amp_sp"),boost::python::arg("n"),boost::python::arg("old_mean"),boost::python::arg("old_variance"))
+             ,"Set klystron amp set dictionary for 'amp_sp', 'n' = numvalues, 'old_mean', 'old_variance' ")
 
 
         .def("setPhiLLRF", &liberaLLRFController::setPhiLLRF,(VALUE_ARG),"Set Phase in LLRF Units")
-        .def("setAmpLLRF",&liberaLLRFController::setAmpLLRF,(VALUE_ARG),"Set Amplitude in LLRF units")
+        .def("setAmpLLRF", &liberaLLRFController::setAmpLLRF,(VALUE_ARG),"Set Amplitude in LLRF units")
         .def("setPhiDEG",  &liberaLLRFController::setPhiDEG,(VALUE_ARG),"Set Cavity Phase Relative to Creset [degrees] (+ve sense?)")
         .def("setAmpMVM",  &liberaLLRFController::setAmpMVM,(VALUE_ARG),"Set Cavity Amplitude [MV/m]")
         .def("setPhiSP",  &liberaLLRFController::setPhiSP,(VALUE_ARG),"Set Phase(SP) in LLRF Units")
@@ -587,6 +578,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setAmpSP",  &liberaLLRFController::setAmpSP,(VALUE_ARG),"Set Amplitude(SP) in LLRF Units")
         .def("setAmpHP",  &liberaLLRFController::setAmpHP,(VALUE_ARG),"Set Amplitude(HP) in LLRF Units")
         .def("setAmpFF",  &liberaLLRFController::setAmpFF,(VALUE_ARG),"Set Amplitude(FF) in LLRF Units")
+
+
 
 
 
@@ -636,7 +629,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("clearMask",  &liberaLLRFController::clearMask,(boost::python::arg("name")),"Clear the masks for trace 'name'")
 
-        .def("fullCavityTraceName",  &liberaLLRFController::fullCavityTraceName,(boost::python::arg("name")),"Returns trace name being used")
+        .def("fullLLRFTraceName",  &liberaLLRFController::fullLLRFTraceName,(NAME_ARG),"Returns full (i.e. longform) trace-name for 'name'")
+        .def("shortLLRFTraceName",  &liberaLLRFController::shortLLRFTraceName,(NAME_ARG),"Returns shorthand trace-name for 'name'")
 
         .def("getMaskInfiniteEndByPowerIndex",  &liberaLLRFController::getMaskInfiniteEndByPowerIndex,(boost::python::arg("name")),"Returns end index of trace 'name' from auto-setting end by power.")
         .def("getMaskInfiniteEndByPowerTime",  &liberaLLRFController::getMaskInfiniteEndByPowerTime,(boost::python::arg("name")),"Returns end time of trace 'name' from auto-setting end by power.")
@@ -726,11 +720,19 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setKeepRollingAverage",     &liberaLLRFController::setKeepRollingAverage,(NAME_ARG, VALUE_ARG),setKeepRollingAverage_ds)
         .def("setTraceRollingAverageSize",&liberaLLRFController::setTraceRollingAverageSize,(NAME_ARG, VALUE_ARG),setTraceRollingAverageSize_ds)
         .def("setAllRollingAverageSize",&liberaLLRFController::setAllRollingAverageSize,(VALUE_ARG),setAllRollingAverageSize_ds)
-        .def("getTraceRollingAverage",&liberaLLRFController::getTraceRollingAverage_Py,(NAME_ARG),getTraceRollingAverage_Py_ds)
+        //.def("getTraceRollingAverage",&liberaLLRFController::getTraceRollingAverage_Py,(NAME_ARG),getTraceRollingAverage_Py_ds)
         .def("getTraceRollingAverageSize",&liberaLLRFController::getTraceRollingAverageSize,(NAME_ARG),getTraceRollingAverageSize_ds)
         .def("getTraceRollingAverageCount",&liberaLLRFController::getTraceRollingAverageCount,(NAME_ARG),getTraceRollingAverageCount_ds)
         .def("isKeepingRollingAverage",&liberaLLRFController::isKeepingRollingAverage,(NAME_ARG),isKeepingRollingAverage_ds)
         .def("hasRollingAverage",&liberaLLRFController::hasRollingAverage,(NAME_ARG),hasRollingAverage_ds)
+
+
+        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(NAME_ARG,VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
+        .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
+        .def("getRollingAverage",   &liberaLLRFController::getRollingAverage_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
+        .def("getRollingAverageData",   &liberaLLRFController::getRollingAverageData_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
+
+
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //
 //
@@ -880,10 +882,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getLLRFController", &VCllrf::getLLRFController,
              return_value_policy<reference_existing_object>())
         .def("killGun",          &VCllrf::killGun)
-        .def("setQuiet",         &VCllrf::setQuiet)
-        .def("setVerbose",       &VCllrf::setVerbose)
-        .def("setMessage",       &VCllrf::setMessage)
-        .def("setDebugMessage",  &VCllrf::setDebugMessage)
+//        .def("setQuiet",         &VCllrf::setQuiet)
+//        .def("setVerbose",       &VCllrf::setVerbose)
+//        .def("setMessage",       &VCllrf::setMessage)
+//        .def("setDebugMessage",  &VCllrf::setDebugMessage)
         ;
 }
 

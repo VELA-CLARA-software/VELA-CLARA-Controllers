@@ -21,8 +21,8 @@
 //
 //
 //*/
-#ifndef VELA_MAG_INTERFACE_H
-#define VELA_MAG_INTERFACE_H
+#ifndef __VELA_CLARA_LLRF_INTERFACE_H__
+#define __VELA_CLARA_LLRF_INTERFACE_H__
 // djs
 #include "interface.h"
 #include "llrfStructs.h"
@@ -124,10 +124,10 @@ class liberallrfInterface : public interface
 
 // Set the parameters for the rolling avergaes
 */
-        void updateTraceRollingAverage(llrfStructs::rf_trace_data_new& data );
+        void updateTraceRollingAverage(llrfStructs::rf_trace_data& data );
         void clearAllRollingAverage();
         bool clearTraceRollingAverage(const std::string& name);
-        void clearTraceRollingAverage(llrfStructs::rf_trace_data_new& trace); /// internal
+        void clearTraceRollingAverage(llrfStructs::rf_trace_data& trace); /// internal
         // Exposed to Python
         // setters
         void setKeepRollingAverageNoReset(const bool value);
@@ -139,7 +139,9 @@ class liberallrfInterface : public interface
         bool setKeepRollingAverage(const std::string&name, bool value);
         bool setTraceRollingAverageSize(const std::string&name, const size_t value);
         void setAllRollingAverageSize(const size_t value);
-        std::vector<double> getTraceRollingAverage(const std::string&name)const;
+        std::vector<double> getRollingAverage(const std::string&name)const;
+        std::vector<std::vector<double>> getRollingAverageData(const std::string&name)const;
+
         size_t getTraceRollingAverageSize(const std::string&name)const;
         size_t getTraceRollingAverageCount(const std::string&name)const;
         bool isKeepingRollingAverage(const std::string&name)const;
@@ -147,34 +149,31 @@ class liberallrfInterface : public interface
 //--------------------------------------------------------------------------------------------------
 
 
-        /* mean calcs */
+/*
+    ___  __        __   ___           ___            __
+     |  |__)  /\  /  ` |__      |\/| |__   /\  |\ | /__`
+     |  |  \ /~~\ \__, |___     |  | |___ /~~\ | \| .__/
+*/
         bool setMeanStartEndTime(const double start, const double end, const std::string&name);
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
     private:
         void updateTraceCutMeans();
-        void getTraceCutMean(llrfStructs::rf_trace_data_new& tracedata);
+        void getTraceCutMean(llrfStructs::rf_trace_data& tracedata);
         std::tuple<size_t,double,double> dummy_amp_set_kly_fwd_rs_state;
     public:
         void setKeepKlyFwdPwrRS(bool val);
         void keepKlyFwdPwrRS();
         void dontKeepKlyFwdPwrRS();
         std::tuple<size_t,double,double> getKlyFwdPwrRSState(int ampSP_setting);
-
+        void setKlyFwdPwrRSState(int amp_sp, size_t n, double old_mean, double old_variance);
 
 
 
         /* masks are based on rolling averages */
         void updateRollingAvergaesAndMasks();
-
-
-
-
         void checkCollectingFutureTraces();
         void checkForOutsideMaskTrace();
-
-
-
 
 
 //--------------------------------------------------------------------------------------------------
@@ -214,7 +213,7 @@ class liberallrfInterface : public interface
         void setGlobalShouldNotCheckMask();
 
     private:// not availble higher up
-        void setNewMask(llrfStructs::rf_trace_data_new& data);
+        void setNewMask(llrfStructs::rf_trace_data& data);
     public:
 //--------------------------------------------------------------------------------------------------
 /*             __           __   ___ ___ ___  ___  __   __
@@ -223,8 +222,8 @@ class liberallrfInterface : public interface
 
     //
 */
-        std::vector<double> getLoMask(const std::string&name);
-        std::vector<double> getHiMask(const std::string&name);
+        std::vector<double> getLoMask(const std::string&name)const;
+        std::vector<double> getHiMask(const std::string&name)const;
 
         double getMaskValue(const std::string& name);
         size_t getMaskStartIndex(const std::string& name);
@@ -253,9 +252,6 @@ class liberallrfInterface : public interface
         std::vector<double> getProbePower()const;
         std::vector<double> getProbePhase()const;
 //--------------------------------------------------------------------------------------------------
-
-
-
 
 
         bool set_mask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,
@@ -289,14 +285,14 @@ class liberallrfInterface : public interface
 
 
         // MASK CHECKING
-        int updateIsTraceInMask(llrfStructs::rf_trace_data_new& trace);
+        int updateIsTraceInMask(llrfStructs::rf_trace_data& trace);
 
-        //bool liberallrfInterface::shouldCheckMasks(llrfStructs::rf_trace_data_new& trace)
+        //bool liberallrfInterface::shouldCheckMasks(llrfStructs::rf_trace_data& trace)
 
 
-        void handleTraceInMaskResult(llrfStructs::rf_trace_data_new& trace, int result);
-        void handlePassedMask(llrfStructs::rf_trace_data_new& trace);
-        void handleFailedMask(llrfStructs::rf_trace_data_new& trace);
+        void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
+        void handlePassedMask(llrfStructs::rf_trace_data& trace);
+        void handleFailedMask(llrfStructs::rf_trace_data& trace);
 
 
 
@@ -318,13 +314,12 @@ class liberallrfInterface : public interface
         bool isOutsideMaskEventDataCollecting()const;
         bool canGetOutsideMaskEventData()const;
 
-        void newOutsideMaskEvent(const llrfStructs::rf_trace_data_new& trace);
+        void newOutsideMaskEvent(const llrfStructs::rf_trace_data& trace);
 
         void copyTraceDataToOMED();
         void OME_interlock(const llrfStructs::setAmpHP_Struct& s);
 
 
-        std::map<int, std::pair<std::string, std::vector<double>>> dumpOneTraceData();
 
 
         bool setInterlockActive();
@@ -394,6 +389,10 @@ class liberallrfInterface : public interface
 
         std::vector<double> getAverageTraceData(const std::string& name)const;
 
+        std::vector< std::pair<std::string, std::vector<double>> > getOneTraceData()const;
+
+        llrfStructs::LLRF_SCAN getSCAN(const event_handler_args& args)const;
+        llrfStructs::LLRF_ACQM getACQM(const event_handler_args& args)const;
 
 //        llrfStructs::rf_trace getTraceData(const std::string& name);
 //        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
@@ -411,7 +410,7 @@ class liberallrfInterface : public interface
         std::vector<double> getProbePhaseAv();
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
-        const llrfStructs::rf_trace_data_new& getTraceDataConstRef(const std::string& name);
+        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
 
 
 //        llrfStructs::rf_trace getCavRevPowerData();
@@ -476,6 +475,8 @@ class liberallrfInterface : public interface
         bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
 
         bool setTORSCANToIOIntr();
+        bool setTORSCANToPassive();
+        bool resetTORSCANToIOIntr();
         bool setTORACQMEvent();
         void updateSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const event_handler_args& args);
 
@@ -542,7 +543,9 @@ class liberallrfInterface : public interface
 //        bool stopKlyFwdTraceMonitor();
 //        bool stopKlyRevTraceMonitor();
 
-        std::string fullCavityTraceName(const std::string& name)const;
+        std::string fullLLRFTraceName(const std::string& name)const;
+        std::string shortLLRFTraceName(const std::string& name_in)const;
+
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes
         // ********this will likely need updating*******
@@ -586,7 +589,7 @@ class liberallrfInterface : public interface
 
         void updateAllTracesEVID(const event_handler_args& args);
         void updateAllTraces(const event_handler_args& args);
-        void unwrapPhaseTrace(llrfStructs::rf_trace_data_new& data);
+        void unwrapPhaseTrace(llrfStructs::rf_trace_data& data);
 
 
 
@@ -652,8 +655,8 @@ class liberallrfInterface : public interface
         std::stringstream outside_mask_trace_message;
 
         // duymmy data to return when real data doesn't exist
-        const llrfStructs::rf_trace_data_new dummy_trace_data;
-        const llrfStructs::outside_mask_trace dummy_outside_mask_trace;
+        const llrfStructs::rf_trace_data dummy_trace_data;
+//        const llrfStructs::outside_mask_trace dummy_outside_mask_trace;
 
 
         liberallrfConfigReader configReader; /// class member so we can pass in file path in ctor

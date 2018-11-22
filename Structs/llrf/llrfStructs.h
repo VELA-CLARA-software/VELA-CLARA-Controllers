@@ -1,5 +1,27 @@
-#ifndef _VELA_PIL_SHUTTER_STRUCTS_H_
-#define _VELA_PIL_SHUTTER_STRUCTS_H_
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   16-11-2018
+//  FileName:    llrfStructs.h
+//  Description:
+//
+//
+//*/
+#ifndef __VELA_CLARA_LLRFSTRUCTS_H__
+#define __VELA_CLARA_LLRFSTRUCTS_H__
 //
 #include "structs.h"
 #include "configDefinitions.h"
@@ -11,13 +33,12 @@
 #include <deque>
 #include <chrono>
 #include <thread>
-#include <queue>
 #include <tuple>
 #include <utility>//std::pair
 //epics
 #include <cadef.h>
-
-
+// boost python
+#include <boost/python.hpp>
 #include <boost/circular_buffer.hpp>
 
 class liberallrfInterface;
@@ -87,11 +108,11 @@ namespace llrfStructs
                                                   (UNKNOWN_SCAN))
 
     /*
-        the order of these enums matters! NOW is SCAN = 1 etc.
+        the order of these enums matters! NOW is  1 etc.
     */
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_ACQM,(UNKNOWN_ACQM)
-                                                  (ACQM_NOW)
-                                                  (ACQM_EVENT))
+                                                  (ACQM_NOW)    // 1
+                                                  (ACQM_EVENT)) // 2
 
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(INTERLOCK_STATE,(NON_ACTIVE)
@@ -149,8 +170,6 @@ namespace llrfStructs
         double       value;
     };
 
-    //a custom struct will always stand up better under maintenance.
-    /// OLD ??????
     struct rf_trace
     {
         rf_trace():
@@ -281,9 +300,9 @@ namespace llrfStructs
     };
 
 
-    struct rf_trace_data_new
+    struct rf_trace_data
     {
-        rf_trace_data_new():
+        rf_trace_data():
             name(UTL::UNKNOWN_NAME),
             check_mask(false), //inside the mask or not
 
@@ -300,15 +319,12 @@ namespace llrfStructs
             latest_trace_index(UTL::ZERO_SIZET),
             current_trace(UTL::ZERO_SIZET),
 
-            //sub_trace(UTL::ZERO_SIZET),
             mean_start_index(UTL::ZERO_SIZET),
             mean_stop_index(UTL::ZERO_SIZET),
 
 
             // NOT USED???
-//            previous_trace(UTL::MINUS_ONE_INT),
-//            previous_previous_trace(UTL::MINUS_TWO_INT),
-            outside_mask_index(UTL::ZERO_SIZET),
+            //outside_mask_index(UTL::ZERO_SIZET),
 
 
             num_continuous_outside_mask_count(UTL::ONE_SIZET),
@@ -332,18 +348,16 @@ namespace llrfStructs
             mask_window_start(UTL::ZERO_SIZET),
             mask_window_end(UTL::ZERO_SIZET),
 
-
             use_percent_mask(false),
             use_abs_mask(false),
 
             drop_amp_on_breakdown(false),
             amp_drop_value(UTL::DUMMY_DOUBLE),
-
             phase_tolerance(UTL::DUMMY_DOUBLE),
-
             endInfiniteMask_Trace_Set(false)
-
             {}
+
+
         std::string name;
         std::string outside_mask_trace_message;
 
@@ -389,7 +403,7 @@ namespace llrfStructs
         bool keep_rolling_average,has_average;
         size_t rolling_average_size, rolling_average_count;
         std::vector<double> rolling_average, rolling_sum, rolling_max, rolling_min, rolling_sd;
-        std::queue<std::vector<double>> average_trace_values;
+        std::vector<std::vector<double>> average_trace_values;
 
 
         /*
@@ -447,7 +461,7 @@ namespace llrfStructs
         std::vector< outside_mask_event_trace_data > trace_data;
     };
 
-
+    // scan struct for each traces SCAN aparamters
     struct scan
     {
         scan():
@@ -459,120 +473,6 @@ namespace llrfStructs
         /* actual value for the scan types for each scn aobject */
         std::map<LLRF_PV_TYPE,LLRF_SCAN> value;
         std::map<LLRF_PV_TYPE,pvStruct> pvSCANStructs;
-    };
-
-
-
-
-  // OLD
-    struct rf_trace_data
-    {
-        rf_trace_data():
-            name(UTL::UNKNOWN_NAME),
-            scan(LLRF_SCAN::UNKNOWN_SCAN),
-            shot(UTL::ZERO_SIZET),
-            buffersize(UTL::TEN_SIZET),
-            check_mask(false), //inside the mask or not
-            hi_mask_set(false),
-            low_mask_set(false),
-            keep_rolling_average(false),
-            has_average(false),
-            keep_next_trace(true),
-            trace_size(UTL::ZERO_SIZET),
-            average_size(UTL::ONE_SIZET),
-            // how many traces have been added to rolling sums
-            // rolling_sum_counter(UTL::ZERO_SIZET),
-            latest_trace_index(UTL::ZERO_SIZET),
-            current_trace(UTL::ZERO_SIZET),
-            //evid_current_trace(UTL::ZERO_SIZET),
-            //previous_evid_trace(UTL::MINUS_ONE_INT),
-            //sub_trace(UTL::ZERO_SIZET),
-            mean_start_index(UTL::ZERO_SIZET),
-            mean_stop_index(UTL::ZERO_SIZET),
-
-            //previous_trace(UTL::MINUS_ONE_INT),
-            //previous_previous_trace(UTL::MINUS_TWO_INT),
-
-            //outside_mask_data_index_to_add_future_traces_to(false),
-            //outside_mask_trace_part(UTL::ZERO_SIZET),
-            amp_drop_value(UTL::ZERO_DOUBLE),
-            drop_amp_on_breakdown(false),
-            num_continuous_outside_mask_count(UTL::ONE_SIZET),
-            mask_floor(UTL::ZERO_DOUBLE),
-            EVID("NONE"),//MAGIC_STRING
-            //add_next_trace(UTL::ZERO_SIZET),
-            outside_mask_index(UTL::ZERO_SIZET),
-            outside_mask_trace_message(UTL::UNKNOWN_STRING),
-
-            num_traces_at_this_power(UTL::ZERO_SIZET),
-            latest_max(UTL::ZERO_DOUBLE),
-            endMaskTrace_Bound(UTL::UNKNOWN_STRING, UTL::ZERO_DOUBLE),
-            endInfiniteMask_Trace_Set(false)
-            {}
-        size_t shot,num_continuous_outside_mask_count,outside_mask_index;
-        bool    check_mask,hi_mask_set,low_mask_set,keep_rolling_average,has_average,keep_next_trace;
-        size_t  buffersize, trace_size, average_size,mean_start_index,mean_stop_index;//rolling_sum_counter
-        size_t num_traces_at_this_power;
-        // Counter allowing you to access/update the correct part of  traces
-        size_t  latest_trace_index,current_trace,evid_current_trace;//,add_next_trace;
-        int previous_previous_trace,previous_trace,previous_evid_trace;
-        // Counter allowing you to access the correct traces to delete off the rolling average
-        //size_t  sub_trace;
-        // EVID are always monitored and updated to the traces[evid_current_trace]
-        // when monitoring traces is enabled, new trace data is updated to traces[current_trace]
-        // this means these two can go out of synch
-        // traces has a length, buffersize
-        std::string EVID;
-        std::string name;
-        std::string outside_mask_trace_message;
-        bool endInfiniteMask_Trace_Set;
-        size_t mask_end_by_power_index;
-
-        std::pair<std::string, double> endMaskTrace_Bound;
-
-        std::vector<rf_trace> traces;
-        // rolling sum is the sum of the traces to be averaged,
-        // when a new trace arrives it adds it to rolling_sum and subtracts traces[sub_trace]
-        // rolling_average is then calculated by dividing rolling_sum by average_size
-        std::vector<double> high_mask, low_mask, rolling_average,rolling_sum,rolling_max,rolling_min,rolling_sd;
-        //std::vector<double> last_good_trace;
-        std::queue<std::vector<double>> average_trace_values;
-        double mask_floor;// values must be ABOVE this to be checked as outside_mask_trace
-        // whether to add the next trace to outside_mask_trace
-        // and the position in outside_mask_trace to add to
-        bool drop_amp_on_breakdown;
-        //std::map<size_t,std::vector<bool>> outside_mask_data_index_to_add_future_traces_to;
-        //std::vector<size_t> outside_mask_data_index_to_add_future_traces_to;
-        std::vector<std::pair<size_t,size_t>> outside_mask_data_index_to_add_future_traces_to;
-        //size_t outside_mask_trace_part;
-        double amp_drop_value,latest_max;
-        LLRF_SCAN scan;
-    };
-// OLD
-    struct outside_mask_trace
-    {
-        outside_mask_trace():
-            trace_name(UTL::UNKNOWN_NAME),
-            time(UTL::ZERO_SIZET),
-            mask_floor(UTL::ZERO_DOUBLE),
-            is_collecting(false),
-            num_traces_to_collect(UTL::ZERO_SIZET),
-            outside_mask_index(UTL::ZERO_SIZET)
-            {}
-        std::vector<rf_trace>  traces;
-        std::vector<double>  time_vector;
-        std::string trace_name,message;
-        bool is_collecting;
-        long long time;
-        double mask_floor;
-        size_t num_traces_to_collect,outside_mask_index;
-        std::vector<double> high_mask,low_mask;
-        // when exposing a vector of outside_mask_trace to python I ran into trouble...
-        //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
-        bool operator==(const outside_mask_trace& rhs)
-        {
-            return this == &rhs; //< implement your own rules.
-        }
     };
 
 
@@ -630,8 +530,10 @@ namespace llrfStructs
             interlock_state(INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE),
             omed_count(UTL::ZERO_SIZET),
             new_outside_mask_event(false),
-            keep_kly_fwd_pow_running_stat()
+            keep_kly_fwd_pow_running_stat(false),
+            interface(nullptr)
                 {}
+        liberallrfInterface* interface;
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
 
 
@@ -682,10 +584,14 @@ namespace llrfStructs
         // they name the channle source (i.e. KLYSTRON_FORWARD and the trac etype, PHASE or POWER)
         //rf_trace time_vector;
         std::vector<double> time_vector;
+    #ifdef BUILD_DLL
+        boost::python::list getTimeVector();
+        void setTimeVector();
+    #endif
+
+
         std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct> iLockPVStructs;
 
-        /*
-        */
 
 
         /*
@@ -710,16 +616,17 @@ namespace llrfStructs
         /*
             Individual traces go here
         */
-        std::map<std::string, rf_trace_data_new> trace_data_2;
+        std::map<std::string, rf_trace_data> trace_data;
 
 
         // OLD get riud of this at some point
 
         /*
             This is so we can change the SCAN rate for each individual trace
+            ACQM not currently used)
         */
         std::map<std::string, scan> trace_scans;
-
+        std::map<std::string, LLRF_ACQM> trace_acqm_map;
 
         std::map<LLRF_PV_TYPE,pvStruct> pvMonStructs;
         std::map<LLRF_PV_TYPE,pvStruct> pvComStructs;
@@ -728,13 +635,10 @@ namespace llrfStructs
         std::map<LLRF_PV_TYPE,pvStruct> pvOneTraceComStructs;
 
 
-        // OLD
-//        std::map<std::string, rf_trace_data> trace_data;
         std::vector<std::string> tracesToSaveOnBreakDown;
-        bool drop_amp_on_breakdown;
-//        std::vector<outside_mask_trace> outside_mask_traces;
-        size_t num_extra_traces;
 
+        bool drop_amp_on_breakdown;
+        size_t num_extra_traces;
     };
 }
 #endif

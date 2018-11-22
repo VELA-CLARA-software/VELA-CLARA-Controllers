@@ -519,7 +519,7 @@ const char* setUnwrapPhaseTolerance_2_ds = "Sets phase_tolerance for all traces 
 //
 //        .def("clearMask",  &liberaLLRFController::clearMask,(arg("name")),"Clear the masks for trace 'name'")
 //
-//        .def("fullCavityTraceName",  &liberaLLRFController::fullCavityTraceName,(arg("name")),"Returns trace name being used")
+//        .def("fullLLRFTraceName",  &liberaLLRFController::fullLLRFTraceName,(arg("name")),"Returns trace name being used")
 //
 //        .def("setPulseLength",  &liberaLLRFController::setPulseLength,(arg("value")),"Set RF pulse length [micro-s]")
 //        .def("setPulseOffset",  &liberaLLRFController::setPulseOffset,(arg("value")),"Set RF pulse offset [micro-sec]")

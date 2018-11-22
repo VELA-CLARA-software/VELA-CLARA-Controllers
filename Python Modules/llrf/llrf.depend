@@ -118,7 +118,7 @@
 	<vector>
 	<cadef.h>
 
-1542282654 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1542625174 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -201,7 +201,7 @@
 	"VCllrf.h"
 	<iostream>
 
-1542289754 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf.h
+1542881730 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf.h
 	<string>
 	"liberaLLRFController.h"
 	"llrfStructs.h"
@@ -221,12 +221,12 @@
 	<algorithm>
 	<ctype.h>
 
-1542287979 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.cpp
+1542881823 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.cpp
 	"liberaLLRFController.h"
 	<fstream>
 	<iostream>
 
-1542287754 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.h
+1542881736 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -243,7 +243,7 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 
-1542287676 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.h
+1542881340 d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.h
 	"interface.h"
 	"llrfStructs.h"
 	"structs.h"
@@ -263,7 +263,7 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1542285785 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+1542881665 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
 	"liberallrfInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -290,7 +290,7 @@
 	<algorithm>
 	<ctype.h>
 
-1536938266 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1542377170 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -325,7 +325,7 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
-1542291968 d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.h
+1542878226 d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	"running_stat.h"
@@ -335,10 +335,10 @@
 	<deque>
 	<chrono>
 	<thread>
-	<queue>
 	<tuple>
 	<utility>
 	<cadef.h>
+	<boost/python.hpp>
 	<boost/circular_buffer.hpp>
 
 1539610070 d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.h
@@ -348,7 +348,9 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1534593093 source:d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.cpp
+1542377050 source:d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.cpp
+	"llrfStructs.h"
+	"liberallrfInterface.h"
 
 1542281448 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
 	"liberallrfConfigReader.h"
@@ -582,5 +584,5 @@
 1539598403 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
 	<iostream>
 
-1541090173 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf_docstrings.h
+1542629076 d:\vela\git projects\vela-clara-controllers\python modules\llrf\include\vcllrf_docstrings.h
 

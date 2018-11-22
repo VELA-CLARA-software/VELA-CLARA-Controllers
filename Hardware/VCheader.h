@@ -52,7 +52,7 @@
 #include <vector>
 //______________________________________________________________________________
 // boost.python includes
-/// !!!IF YOU SIGNIFCANTLY CHANGE THIS FILE YOU MIGHT
+/// !!!IF YOU SIGNIFCANTLY CHANGE THIS FILE YOU MIGHT WANT TO
 /// RECOMPILE EVERY HARDWARE CONTROLLER!!!
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>

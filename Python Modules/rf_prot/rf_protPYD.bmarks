@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="src\VCrfprot.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1852" topLine="21" />
-	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1933" topLine="0" />
-	</File>
 	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0">
 		<Cursor position="2672" topLine="0" />
 	</File>
-	<File name="..\..\Utilities\rf_prot\gunProtConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="11964" topLine="249" />
-	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
-		<Cursor position="8773" topLine="12" />
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1776" topLine="21" />
 	</File>
 	<File name="..\..\Hardware\gun_prot\gunProtController.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="7735" topLine="162" />
 	</File>
-	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1776" topLine="21" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1933" topLine="0" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="8773" topLine="12" />
+	</File>
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
+		<Cursor position="19328" topLine="329" />
+	</File>
+	<File name="..\..\Utilities\rf_prot\gunProtConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="11964" topLine="249" />
 	</File>
 	<File name="..\..\Utilities\rf_prot\gunProtConfigReader.h" open="0" top="0" tabpos="0">
 		<Cursor position="1285" topLine="0" />
@@ -31,12 +29,16 @@
 		<Cursor position="2914" topLine="49" />
 	</File>
 	<File name="include\VCrfprot.h" open="0" top="0" tabpos="1">
-		<Cursor position="10172" topLine="184" />
+		<Cursor position="2157" topLine="39" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="src\VCrfprot.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1678" topLine="21" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Hardware\gun_prot\gunProtInterface.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="11723" topLine="261" />
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
-		<Cursor position="19328" topLine="329" />
+		<Cursor position="10930" topLine="243" />
 	</File>
 </BrowseTracker_layout_file>

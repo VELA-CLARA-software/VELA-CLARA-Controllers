@@ -53,6 +53,16 @@ bool liberaLLRFController::setTORSCANToIOIntr()
     return localInterface.setTORSCANToIOIntr();
 }
 //______________________________________________________________________________
+bool liberaLLRFController::setTORSCANToPassive()
+{
+    return localInterface.setTORSCANToPassive();
+}
+//______________________________________________________________________________
+bool liberaLLRFController::resetTORSCANToIOIntr()
+{
+    return localInterface.resetTORSCANToIOIntr();
+}
+//______________________________________________________________________________
 bool liberaLLRFController::setTORACQMEvent()
 {
     return localInterface.setTORACQMEvent();
@@ -540,6 +550,12 @@ std::tuple<size_t,double,double> liberaLLRFController::getKlyFwdPwrRSState(int a
 {
     return localInterface.getKlyFwdPwrRSState(ampSP_setting);
 }
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setKlyFwdPwrRSState(int amp_sp, size_t n, double old_mean, double old_variance)
+{
+    localInterface.setKlyFwdPwrRSState(amp_sp, n, old_mean, old_variance);
+}
+//--------------------------------------------------------------------------------------------------
 #ifdef BUILD_DLL
 //--------------------------------------------------------------------------------------------------
 boost::python::list liberaLLRFController::getKlyFwdPwrRSState_Py(int ampSP_setting)
@@ -552,10 +568,48 @@ boost::python::list liberaLLRFController::getKlyFwdPwrRSState_Py(int ampSP_setti
     return rlist;
 }
 #endif
+//--------------------------------------------------------------------------------------------------
+std::vector< std::pair<std::string, std::vector<double>> > liberaLLRFController::getOneTraceData()const
+{
+    return localInterface.getOneTraceData();
+}
+#ifdef BUILD_DLL
+//--------------------------------------------------------------------------------------------------
+boost::python::list liberaLLRFController::getOneTraceData_Py()const
+{
+    boost::python::list list_2;
+
+    std::vector< std::pair<std::string, std::vector<double>> > data = getOneTraceData();
+
+    bool first = true;
+    size_t counter = 0;
+    for(auto&&it:data)
+    {
+        boost::python::list list_1;
+
+        list_1.append(it.first);
+        list_1.append( toPythonList(it.second) );
 
 
+        std::string t = boost::python::extract<std::string>( list_1[0]            );
+        message("list_1,  ", t);
+
+        list_2.append( list_1 );
+
+//        std::string f = boost::python::extract<std::string>( list_2[ counter ][0] );
+//        message("list_2[", counter,  "][0] = ", f);
+        //list_1.pop();
+        //list_1.pop();
+
+        ++counter;
+
+    }
+    return list_2;
+}
+#endif
 
 
+//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::isAmpFFLocked()const
 {
     return localInterface.isAmpFFLocked();
@@ -870,10 +924,16 @@ boost::python::list liberaLLRFController::getTraceValues_Py(const std::string& n
 //}
 #endif
 //______________________________________________________________________________
-std::string liberaLLRFController::fullCavityTraceName(const std::string& name)
+std::string liberaLLRFController::fullLLRFTraceName(const std::string& name)const
 {
-    return localInterface.fullCavityTraceName(name);
+    return localInterface.fullLLRFTraceName(name);
 }
+//______________________________________________________________________________
+std::string liberaLLRFController::shortLLRFTraceName(const std::string& name)const
+{
+    return localInterface.shortLLRFTraceName(name);
+}
+
 //______________________________________________________________________________
 std::vector<double> liberaLLRFController::getCavRevPower()
 {
@@ -1234,7 +1294,7 @@ const llrfStructs::liberallrfObject& liberaLLRFController::getLLRFObjConstRef()
     return localInterface.getLLRFObjConstRef();
 }
 //______________________________________________________________________________
-const llrfStructs::rf_trace_data_new& liberaLLRFController::getTraceDataConstRef(const std::string& name)
+const llrfStructs::rf_trace_data& liberaLLRFController::getTraceDataConstRef(const std::string& name)
 {
     return localInterface.getTraceDataConstRef(name);
 }
@@ -1533,15 +1593,33 @@ bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string& nam
     return localInterface.setShouldNotKeepRollingAverage(name);
 }
 //--------------------------------------------------------------------------------------------------
-std::vector<double> liberaLLRFController::getTraceRollingAverage(const std::string&name)const
+std::vector<double> liberaLLRFController::getRollingAverage(const std::string&name)const
 {
-    return localInterface.getTraceRollingAverage(name);
+    return localInterface.getRollingAverage(name);
+}
+//--------------------------------------------------------------------------------------------------
+std::vector<std::vector<double>> liberaLLRFController::getRollingAverageData(const std::string&name)const
+{
+    return localInterface.getRollingAverageData(name);
 }
 //--------------------------------------------------------------------------------------------------
 #ifdef BUILD_DLL
-boost::python::list liberaLLRFController::getTraceRollingAverage_Py(const std::string&name)const
+boost::python::list liberaLLRFController::getRollingAverage_Py(const std::string&name)const
 {
-    return toPythonList(getTraceRollingAverage(name));
+    return toPythonList(getRollingAverage(name));
+}
+//--------------------------------------------------------------------------------------------------
+boost::python::list liberaLLRFController::getRollingAverageData_Py(const std::string&name)const
+{
+    std::vector<std::vector<double>> r = getRollingAverageData(name);
+    boost::python::list return_list;
+    for(auto&&it:r)
+    {
+        boost::python::list list_1;
+        list_1.append( toPythonList(it)) ;
+        return_list.append( list_1 );
+    }
+    return return_list;
 }
 #endif
 //--------------------------------------------------------------------------------------------------

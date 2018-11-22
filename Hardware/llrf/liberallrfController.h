@@ -86,9 +86,11 @@ class liberaLLRFController : public controller
         bool setTraceRollingAverageSize(const std::string&name, const size_t value);
         void setAllRollingAverageSize(const size_t value);
         bool setShouldNotKeepRollingAverage(const std::string& name);
-        std::vector<double> getTraceRollingAverage(const std::string&name)const;
+        std::vector<double> getRollingAverage(const std::string&name)const;
+        std::vector<std::vector<double>> getRollingAverageData(const std::string&name)const;
 #ifdef BUILD_DLL
-        boost::python::list getTraceRollingAverage_Py(const std::string&name)const;
+        boost::python::list getRollingAverage_Py(const std::string&name)const;
+        boost::python::list getRollingAverageData_Py(const std::string&name)const;
 #endif
         size_t getTraceRollingAverageSize(const std::string&name)const;
         size_t getTraceRollingAverageCount(const std::string&name)const;
@@ -264,15 +266,22 @@ class liberaLLRFController : public controller
 
         bool setTORSCANToIOIntr();
         bool setTORACQMEvent();
-
+        bool setTORSCANToPassive();
+        bool resetTORSCANToIOIntr();
 
 
         void setKeepKlyFwdPwrRS(bool val);
         void keepKlyFwdPwrRS();
         void dontKeepKlyFwdPwrRS();
         std::tuple<size_t,double,double> getKlyFwdPwrRSState(int ampSP_setting);
+        void setKlyFwdPwrRSState(int amp_sp, size_t n, double old_mean, double old_variance);
 #ifdef BUILD_DLL
         boost::python::list getKlyFwdPwrRSState_Py(int ampSP_setting);
+#endif
+
+        std::vector< std::pair<std::string, std::vector<double>> > getOneTraceData()const;
+#ifdef BUILD_DLL
+        boost::python::list getOneTraceData_Py()const;
 #endif
 
 
@@ -436,7 +445,7 @@ class liberaLLRFController : public controller
 #endif
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
-        const llrfStructs::rf_trace_data_new& getTraceDataConstRef(const std::string& name);
+        const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
 
         // SETTERS
         bool setPhiSP(double value);
@@ -483,7 +492,8 @@ class liberaLLRFController : public controller
         double getTime(const size_t  time);
 
 
-        std::string fullCavityTraceName(const std::string& name);
+        std::string fullLLRFTraceName(const std::string& name)const;
+        std::string shortLLRFTraceName(const std::string& name)const;
 
         // Qantifiers
         bool isTracePV(const llrfStructs::LLRF_PV_TYPE pv);

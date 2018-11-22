@@ -500,26 +500,60 @@ namespace UTL
     // specific names for common channels that have named functions to start/stop them in the llrfinterface/controller
     const std::string LRRG_CAVITY_REVERSE_PHASE   = "LRRG_CAVITY_REVERSE_PHASE";
     const std::string HRRG_CAVITY_REVERSE_PHASE   = "HRRG_CAVITY_REVERSE_PHASE";
+    const std::string L01_CAVITY_REVERSE_PHASE   = "L01_CAVITY_REVERSE_PHASE";
     const std::string CAVITY_REVERSE_PHASE        = "CAVITY_REVERSE_PHASE";
 
     const std::string LRRG_CAVITY_FORWARD_PHASE   = "LRRG_CAVITY_FORWARD_PHASE";
     const std::string HRRG_CAVITY_FORWARD_PHASE   = "HRRG_CAVITY_FORWARD_PHASE";
+    const std::string L01_CAVITY_FORWARD_PHASE   = "L01_CAVITY_FORWARD_PHASE";
     const std::string CAVITY_FORWARD_PHASE        = "CAVITY_FORWARD_PHASE";
 
     const std::string LRRG_CAVITY_REVERSE_POWER   = "LRRG_CAVITY_REVERSE_POWER";
     const std::string HRRG_CAVITY_REVERSE_POWER   = "HRRG_CAVITY_REVERSE_POWER";
+    const std::string L01_CAVITY_REVERSE_POWER   = "L01_CAVITY_REVERSE_POWER";
     const std::string CAVITY_REVERSE_POWER        = "CAVITY_REVERSE_POWER";
 
-    const std::string LRRG_CAVITY_FORWARD_POWER   = "LRRG_CAVITY_FORWARD_POWER";
-    const std::string HRRG_CAVITY_FORWARD_POWER   = "HRRG_CAVITY_FORWARD_POWER";
-    const std::string CAVITY_FORWARD_POWER        = "CAVITY_FORWARD_POWER";
+    const std::string LRRG_CAVITY_FORWARD_POWER = "LRRG_CAVITY_FORWARD_POWER";
+    const std::string HRRG_CAVITY_FORWARD_POWER = "HRRG_CAVITY_FORWARD_POWER";
+    const std::string L01_CAVITY_FORWARD_POWER  = "L01_CAVITY_FORWARD_POWER";
+    const std::string CAVITY_FORWARD_POWER      = "CAVITY_FORWARD_POWER";
+
+    const std::string CAVITY_PROBE_POWER      = "CAVITY_PROBE_POWER";
+    const std::string HRRG_CAVITY_PROBE_POWER = "HRRG_CAVITY_PROBE_POWER";
+    const std::string L01_CAVITY_PROBE_POWER  = "L01_CAVITY_PROBE_POWER";
+
+    const std::string CAVITY_PROBE_PHASE      = "CAVITY_PROBE_PHASE";
+    const std::string HRRG_CAVITY_PROBE_PHASE = "HRRG_CAVITY_PROBE_PHASE";
+    const std::string L01_CAVITY_PROBE_PHASE  = "L01_CAVITY_PROBE_PHASE";
 
     const std::string KLYSTRON_REVERSE_PHASE = "KLYSTRON_REVERSE_PHASE";
     const std::string KLYSTRON_REVERSE_POWER = "KLYSTRON_REVERSE_POWER";
     const std::string KLYSTRON_FORWARD_PHASE = "KLYSTRON_FORWARD_PHASE";
     const std::string KLYSTRON_FORWARD_POWER = "KLYSTRON_FORWARD_POWER";
-    const std::string CAVITY_PROBE_POWER = "CAVITY_PROBE_POWER";
-    const std::string CAVITY_PROBE_PHASE = "CAVITY_PROBE_PHASE";
+
+
+    const std::string  KRPOW = "KRPOW";
+    const std::string  KRPHA = "KRPHA";
+    const std::string  KFPOW = "KFPOW";
+    const std::string  KFPHA = "KFPHA";
+    const std::string  CRPOW = "CRPOW";
+    const std::string  CRPHA = "CRPHA";
+    const std::string  CPPOW = "CPPOW";
+    const std::string  CPPHA = "CPPHA";
+    const std::string  CFPOW = "CFPOW";
+    const std::string  CFPHA = "CFPHA";
+
+
+
+
+
+
+
+
+
+
+
+
 
 // L01 MODULATOR
     const std::string L01_MOD_CONFIG  = "claraL01Modulator.config";
