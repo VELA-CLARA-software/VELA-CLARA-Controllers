@@ -83,12 +83,13 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("NO_FAULT",       rfModStructs::L01_MOD_FAULT::NO_FAULT)
         ;
 
-    enum_<rfModStructs::L01_MOD_STATE>("L01_MOD_STATE","L01_MOD_STATE: a named integer giving the state of the L01 Modulator")
-        .value("STATE_UNKNOWN",  rfModStructs::L01_MOD_STATE::STATE_UNKNOWN)
+    enum_<rfModStructs::L01_MOD_STATE>("L01_MOD_STATE",
+                                       "L01_MOD_STATE: a named integer giving the state of the L01 Modulator")
+        .value("STATE_UNKNOWN", rfModStructs::L01_MOD_STATE::STATE_UNKNOWN)
         .value("L01_OFF",       rfModStructs::L01_MOD_STATE::L01_OFF)
-        .value("L01_STANDBY",       rfModStructs::L01_MOD_STATE::L01_STANDBY)
-        .value("L01_HV_ON",       rfModStructs::L01_MOD_STATE::L01_HV_ON)
-        .value("L01_RF_ON",       rfModStructs::L01_MOD_STATE::L01_RF_ON)
+        .value("L01_STANDBY",   rfModStructs::L01_MOD_STATE::L01_STANDBY)
+        .value("L01_HV_ON",     rfModStructs::L01_MOD_STATE::L01_HV_ON)
+        .value("L01_RF_ON",     rfModStructs::L01_MOD_STATE::L01_RF_ON)
         ;
 
     /// The main class that creates all the controller obejcts
@@ -123,7 +124,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
     class_<l01ModController, bases<controller>, boost::noncopyable>
         ("l01ModController","l01ModController Doc String",boost::python::no_init )
-        .def("getObjConstRef",&l01ModController::getObjConstRef,return_value_policy<reference_existing_object>(),
+        .def("getModObjConstRef",&l01ModController::getObjConstRef,return_value_policy<reference_existing_object>(),
              "Return L01 Modulator Object Reference")
         .def("reset",     &l01ModController::reset,"")
         .def("setOff",    &l01ModController::setOff,"")
@@ -132,6 +133,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
     class_<gunModController, bases<controller>, boost::noncopyable>
         ("gunModController","gunModController Doc String",boost::python::no_init )
         .def("getGunObjConstRef",&gunModController::getGunObjConstRef,return_value_policy<reference_existing_object>(),
+             "Return Gun Modulator Object Reference")
+        .def("getModObjConstRef",&gunModController::getGunObjConstRef,return_value_policy<reference_existing_object>(),
              "Return Gun Modulator Object Reference")
         .def("isErrorStateGood",&gunModController::isErrorStateGood,"Is the error state in GOOD")
         .def("isWarmedUp",&gunModController::isWarmedUp,"")
@@ -241,6 +244,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("solenoid_2_current",&rfModStructs::l01ModObject::solenoid_2_current,"")
         .def_readonly("solenoid_3_current",&rfModStructs::l01ModObject::solenoid_3_current,"")
         .def_readonly("main_state",&rfModStructs::l01ModObject::main_state,"")
+        .def_readonly("state",&rfModStructs::l01ModObject::main_state,"")
         .def_readonly("hvps_voltage_set_read",&rfModStructs::l01ModObject::hvps_voltage_set_read,"")
         .def_readonly("hvps_voltage_low_alarm_set_read",&rfModStructs::l01ModObject::hvps_voltage_low_alarm_set_read,"")
         .def_readonly("hvps_voltage_hi_alarm_set_read",&rfModStructs::l01ModObject::hvps_voltage_hi_alarm_set_read,"")

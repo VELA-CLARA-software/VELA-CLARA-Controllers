@@ -171,9 +171,13 @@ class liberallrfInterface : public interface
 
 
         /* masks are based on rolling averages */
-        void updateRollingAvergaesAndMasks();
+        void updateRollingAveragesAndMasks();
         void checkCollectingFutureTraces();
         void checkForOutsideMaskTrace();
+
+
+        /* update the amp_set_kly_fwd running stats */
+        void update_amp_set_kly_fwd_rs();
 
 
 //--------------------------------------------------------------------------------------------------

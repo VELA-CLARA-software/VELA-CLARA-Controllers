@@ -281,7 +281,7 @@ class liberaLLRFController : public controller
 
         std::vector< std::pair<std::string, std::vector<double>> > getOneTraceData()const;
 #ifdef BUILD_DLL
-        boost::python::list getOneTraceData_Py()const;
+        boost::python::dict getOneTraceData_Py()const;
 #endif
 
 

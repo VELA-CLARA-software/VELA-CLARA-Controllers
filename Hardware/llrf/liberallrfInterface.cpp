@@ -698,26 +698,10 @@ void liberallrfInterface::updateAllTraces(const event_handler_args& args)
         else
         {
             //message("UPDATE RA START");
-            updateRollingAvergaesAndMasks();
-
-
-                if(llrf.keep_kly_fwd_pow_running_stat)
-    {
-        runningStat& rs_ref = llrf.amp_set_kly_fwd_rs[(int)llrf.amp_sp];
-        std::tuple<size_t, double, double>& rs_state_ref = llrf.amp_set_kly_fwd_rs_state[(int)llrf.amp_sp];
-
-        rs_ref.Push( llrf.trace_data.at(UTL::KLYSTRON_FORWARD_POWER).mean );
-
-        rs_ref.getCurrentState(std::get<UTL::ZERO_SIZET>(rs_state_ref),
-                               std::get<UTL::ONE_SIZET>(rs_state_ref),
-                               std::get<UTL::TWO_SIZET>(rs_state_ref));
-//
-//        message("new val  = ", llrf.trace_data.at(UTL::KLYSTRON_FORWARD_POWER).mean,
-//                ", count    = ", std::get<UTL::ZERO_SIZET>(rs_state_ref),
-//                ", old_mean = ", std::get<UTL::ONE_SIZET>(rs_state_ref),
-//                ", old_var  = ", std::get<UTL::TWO_SIZET>(rs_state_ref)
-//        );
-    }
+            updateRollingAveragesAndMasks();
+            /* if we have can_increase_active_pulses and there was no event update the
+               amp_set  kly_fwd_pwr running stats*/
+            update_amp_set_kly_fwd_rs();
             //message("UPDATE RA FIN");
         }
     }
@@ -1022,7 +1006,7 @@ void liberallrfInterface::update_amp_set_kly_fwd_rs()
 
 
 //--------------------------------------------------------------------------------------------------
-void liberallrfInterface::updateRollingAvergaesAndMasks()
+void liberallrfInterface::updateRollingAveragesAndMasks()
 {
     for(auto&&it:llrf.trace_data)
     {
@@ -2015,12 +1999,9 @@ std::vector< std::pair<std::string, std::vector<double>> >  liberallrfInterface:
         double temp_d;
         updateTime( llrf.all_traces.data_buffer[i].first, temp_d, d.first);
 
-
         d.second = llrf.all_traces.data_buffer[i].second;
         r.push_back(d);
-
        // message(index," ", r.back().first);
-
         ++index;
     }
     return r;

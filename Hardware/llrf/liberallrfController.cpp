@@ -399,10 +399,10 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
     //message("getOMT_Dict called ");
     boost::python::dict dictionary;
     int i = -2;
-    std::string EVID;
-    std::string time;
-    std::string value;
-    std::string name;
+    //EVID;
+//    std::string time;
+//    std::string value;
+//    std::string name;
 
     std::string hi_mask = "hi_mask_" + omt.name;
     std::string lo_mask = "lo_mask_" + omt.name;
@@ -422,11 +422,11 @@ boost::python::dict liberaLLRFController::getOMT_Dict(const llrfStructs::outside
 //            message(i);
 //        }
 
-        EVID = "EVID_"  + omt.name + "_";
+        std::string EVID = "EVID_"  + omt.name + "_";
         //time = "time_"  + it2.name + "_";
-        value= "value_" + omt.name + "_";
-        name = "name_"  + omt.name + "_";
-        time = "time_"  + omt.name + "_";
+        std::string value= "value_" + omt.name + "_";
+        std::string name = "name_"  + omt.name + "_";
+        std::string time = "time_"  + omt.name + "_";
         dictionary[EVID  += std::to_string(i)] = i + 2;
         dictionary[time  += std::to_string(i)] = it2.first;
         dictionary[value += std::to_string(i)] = toPythonList(it2.second);
@@ -575,9 +575,9 @@ std::vector< std::pair<std::string, std::vector<double>> > liberaLLRFController:
 }
 #ifdef BUILD_DLL
 //--------------------------------------------------------------------------------------------------
-boost::python::list liberaLLRFController::getOneTraceData_Py()const
+boost::python::dict liberaLLRFController::getOneTraceData_Py()const
 {
-    boost::python::list list_2;
+    boost::python::dict dictionary;
 
     std::vector< std::pair<std::string, std::vector<double>> > data = getOneTraceData();
 
@@ -585,26 +585,13 @@ boost::python::list liberaLLRFController::getOneTraceData_Py()const
     size_t counter = 0;
     for(auto&&it:data)
     {
-        boost::python::list list_1;
-
-        list_1.append(it.first);
-        list_1.append( toPythonList(it.second) );
-
-
-        std::string t = boost::python::extract<std::string>( list_1[0]            );
-        message("list_1,  ", t);
-
-        list_2.append( list_1 );
-
-//        std::string f = boost::python::extract<std::string>( list_2[ counter ][0] );
-//        message("list_2[", counter,  "][0] = ", f);
-        //list_1.pop();
-        //list_1.pop();
-
+        std::string time = std::string("time_");
+        std::string data = std::string("data_");
+        dictionary[ time  += std::to_string(counter) ] = it.first;
+        dictionary[ data  += std::to_string(counter) ] = toPythonList(it.second);
         ++counter;
-
     }
-    return list_2;
+    return dictionary;
 }
 #endif
 
