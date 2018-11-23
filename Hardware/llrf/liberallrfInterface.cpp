@@ -1763,22 +1763,22 @@ void liberallrfInterface::handleTraceInMaskResult(llrfStructs::rf_trace_data& tr
         case UTL::ONE_INT: /* passed mask */
             {
                 handlePassedMask(trace);
-                if(counter % 1000 == 2)
-                {
-                    message(trace.name, " Passed masks ");
-                    for(auto i = 60; i < 200; ++i)
-                    {
-                        std::cout << trace.hi_mask[i] << " ";
-                    }
-                    std::cout <<std::endl;
-                    for(auto i = 60; i < 200; ++i)
-                    {
-                        std::cout << trace.lo_mask[i] << " ";
-                    }
-                    std::cout <<std::endl;
-
-                }
-                ++counter;
+//                if(counter % 1000 == 2)
+//                {
+//                    message(trace.name, " Passed masks ");
+//                    for(auto i = 60; i < 200; ++i)
+//                    {
+//                        std::cout << trace.hi_mask[i] << " ";
+//                    }
+//                    std::cout <<std::endl;
+//                    for(auto i = 60; i < 200; ++i)
+//                    {
+//                        std::cout << trace.lo_mask[i] << " ";
+//                    }
+//                    std::cout <<std::endl;
+//
+//                }
+//                ++counter;
             }
             break;
         case UTL::ZERO_INT: /* failed mask */
