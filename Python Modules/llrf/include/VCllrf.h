@@ -406,7 +406,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         //.def_readonly("time_vector", &liberallrfObject::time_vector,"The time vector, stored in a rf_trace_data object.")
         //.def_readonly("outside_mask_traces", &liberallrfObject::outside_mask_traces,"The saved outside_mask_traces, stored in a vector of outside_mask_trace objects.")
-        .def_readonly("num_outside_mask_traces", &liberallrfObject::num_outside_mask_traces,"The number of outside_mask_traces.")
+        .def_readonly("omed_count", &liberallrfObject::omed_count,"The number of omed_count.")
         .def_readonly("tracesToSaveOnBreakDown", &liberallrfObject::tracesToSaveOnBreakDown,"The names of the traces to save on break down event.")
         .def_readonly("pulse_latency", &liberallrfObject::pulse_latency,"The number of elements in a pulse trace before the RF pulse is active (approx.).")
         .def_readonly("timer_start", &liberallrfObject::timer_start,"ms since epoch since timer was started.")
@@ -562,6 +562,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setKeepKlyFwdPwrRS", &liberaLLRFController::setKeepKlyFwdPwrRS,(VALUE_ARG),"Set keep klystron forward power running stat to 'val'")
         .def("keepKlyFwdPwrRS",    &liberaLLRFController::keepKlyFwdPwrRS,    "Set should keep klystron forward power running stat")
         .def("dontKeepKlyFwdPwrRS",&liberaLLRFController::dontKeepKlyFwdPwrRS,"Set should NOT keep klystron forward power running stat")
+        .def("isKeepingKlyFwdPwrRS",&liberaLLRFController::isKeepingKlyFwdPwrRS,"Returns value of keep_kly_fwd_pow_running_stat ")
+
 
         .def("getKlyFwdPwrRSState",&liberaLLRFController::getKlyFwdPwrRSState_Py,(VALUE_ARG),"Get Klystron Forward Poewr Running Stat State for Ampset 'value'")
         .def("setKlyFwdPwrRSState",&liberaLLRFController::setKlyFwdPwrRSState,

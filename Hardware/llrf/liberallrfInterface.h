@@ -167,6 +167,7 @@ class liberallrfInterface : public interface
         void dontKeepKlyFwdPwrRS();
         std::tuple<size_t,double,double> getKlyFwdPwrRSState(int ampSP_setting);
         void setKlyFwdPwrRSState(int amp_sp, size_t n, double old_mean, double old_variance);
+        bool isKeepingKlyFwdPwrRS();
 
 
 
@@ -256,7 +257,7 @@ class liberallrfInterface : public interface
         std::vector<double> getProbePower()const;
         std::vector<double> getProbePhase()const;
 //--------------------------------------------------------------------------------------------------
-
+        static size_t counter;
 
         bool set_mask(const size_t s1,const size_t s2,const size_t s3,const size_t s4,
                       const double value, const std::string& name,const bool isPercent);

@@ -556,6 +556,12 @@ void liberaLLRFController::setKlyFwdPwrRSState(int amp_sp, size_t n, double old_
     localInterface.setKlyFwdPwrRSState(amp_sp, n, old_mean, old_variance);
 }
 //--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isKeepingKlyFwdPwrRS()
+{
+    return localInterface.isKeepingKlyFwdPwrRS();
+}
+
+//--------------------------------------------------------------------------------------------------
 #ifdef BUILD_DLL
 //--------------------------------------------------------------------------------------------------
 boost::python::list liberaLLRFController::getKlyFwdPwrRSState_Py(int ampSP_setting)

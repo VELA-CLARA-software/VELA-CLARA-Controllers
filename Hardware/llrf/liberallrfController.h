@@ -270,6 +270,7 @@ class liberaLLRFController : public controller
         bool resetTORSCANToIOIntr();
 
 
+        bool isKeepingKlyFwdPwrRS();
         void setKeepKlyFwdPwrRS(bool val);
         void keepKlyFwdPwrRS();
         void dontKeepKlyFwdPwrRS();
