@@ -110,6 +110,7 @@ namespace BOOST_PYTHON_INCLUDE
     {
         enum_<MACHINE_AREA>(py_name,py_docs)
             .value("CLARA_2_BA1_BA2", MACHINE_AREA::CLARA_2_BA1_BA2 )
+            .value("ALL_VELA_CLARA",    MACHINE_AREA::ALL_VELA_CLARA)
             .value("UNKNOWN_AREA",    MACHINE_AREA::UNKNOWN_AREA)
             .value("CLARA_2_VELA",    MACHINE_AREA::CLARA_2_VELA)
             .value("CLARA_2_BA1",     MACHINE_AREA::CLARA_2_BA1 )
