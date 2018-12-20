@@ -111,7 +111,6 @@ const char* isGlobalCheckMask_ds = "Returns state of Global Check Mask flag";
 const char* isAbsoluteMask_ds = "Returns if trace 'name' masks are derived from percentages";
 const char* isPercentMask_ds = "Returns if trace 'name' masks are derived from aboslutes";
 
-
 const char* getMaskValue_ds = "Get trace 'name' mask_value";
 const char* getMaskStartIndex_ds = "Get trace 'name' mask_start as an index";
 const char* getMaskEndIndex_ds = "Get trace 'name' mask_end as an index";
@@ -123,18 +122,15 @@ const char* getMaskEndTime_ds = "Get trace 'name' mask_end as a time (us)";
 const char* getMaskWindowStartTime_ds = "Get trace 'name' mask_window_start as a time (us)";
 const char* getMaskWindowEndTime_ds = "Get trace 'name' mask_window_end as a time (us)";
 
-
 const char* setTracesToSaveOnOutsideMaskEvent_Py_ds = "Set the traces to save when an outside_mask_event occurs to list 'names'.";
 const char* setTracesToSaveOnOutsideMaskEvent_2_ds  = "Set the traces to save when an outside_mask_event occurs to 'name'.";
 const char* getTracesToSaveOnOutsideMaskEvent_Py_ds = "Get the names of traces to save when an outside_mask_event occurs";
-
 
 const char* setNumExtraTracesOnOutsideMaskEvent_ds = "Set the number of extra traces to save after an outside_mask_event to 'value'.";
 const char* getNumExtraTracesOnOutsideMaskEvent_ds = "Get the number of extra traces to save after an outside_mask_event.";
 
 const char* setDropAmpOnOutsideMaskEvent_ds = "On outside_mask_event for trace 'name' the amplitude will be dropped to 'value', if enabled by 'bool_arg'.";
 const char* setDropAmpOnOutsideMaskEventValue_ds = "Sets if to drop the amplitude  on outside_mask_event to 'bool_arg' for trace 'name'.";
-
 
 const char* getOutsideMaskEventDataSize_ds = "Return the number of elements in outside_mask_traces";
 const char* getOutsideMaskEventData_ds = "Get the outside_mask_traces data as python dictionary.";
@@ -143,16 +139,12 @@ const char* isOutsideMaskEventDataCollecting_ds = "Return true if out_side_mask_
 const char* canGetOutsideMaskEventData_ds = "Return omed.can_get_data (if true new omed is ready to collect).";
 const char* getOutsideMaskEventCount_ds = "Return latest count of outside_mask_event";
 
-
-
 const char* setActivePulsePowerLimit_ds = "Set active_pulse_kly_power_limit, the minimum klystron forward power to enable active_pulse_count "
                                           "to increment (below this value active_pulse_count won't increment.).";
 const char* getActivePulsePowerLimit_ds = "Get active_pulse_kly_power_limit, the minimum klystron forward power required to allow active_pulse_count to increment.";
 const char* getActivePulseCount_ds      = "Get active_pulse_count: the number of active pulses.";
 const char* addActivePulseCountOffset_ds= "Add 'value' (positive integer) to the active_pulse_count.";
 const char* setActivePulseCount_ds      = "Set active_pulse_count to  'value'.";
-
-
 
 const char* resetToValue_ds = "Resets llrf interlock, RF Ouptput, feed-forward phase and amplitude locks, and sets amplitude setpoint to 'value'";
 
