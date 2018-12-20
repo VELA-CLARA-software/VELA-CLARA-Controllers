@@ -351,6 +351,7 @@ boost::python::dict liberaLLRFController::getOutsideMaskEventData_Py()
     dictionary[ std::string("is_collecting") ] = boost::python::object(data.is_collecting);
     dictionary[ std::string("num_collected_traces") ] = boost::python::object(data.num_collected);
     dictionary[ std::string("message") ] = boost::python::object(data.outside_mask_trace_message);
+    dictionary[ std::string("num_events") ] = boost::python::object(data.num_events);
     dictionary[ std::string("outside_mask_index") ] = boost::python::object(data.outside_mask_index);
 
 //    std::vector<std::string> traces_to_save_on_break_down = getTracesToSaveOnBreakDown();

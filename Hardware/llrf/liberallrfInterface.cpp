@@ -2240,16 +2240,18 @@ void liberallrfInterface::copyTraceDataToOMED()
         llrf.omed.trace_data.back().hi_mask = llrf.trace_data.at(trace_name).hi_mask;
         llrf.omed.trace_data.back().lo_mask = llrf.trace_data.at(trace_name).lo_mask;
 
-        size_t buffer_end_index = llrf.trace_data.at(trace_name).data_buffer.size() - UTL::ONE_SIZET;
-
-        for(auto i = 0; i > num_traces_to_copy; ++i)
+        size_t buffer_end_index = llrf.trace_data.at(trace_name).buffersize - UTL::ONE_SIZET;
+        //message("omed data_buffer  buffer_end_index  = ", buffer_end_index);
+        for(auto i = 0; i < num_traces_to_copy; ++i)
         {
-
             std::pair<epicsTimeStamp, std::vector<double>>& data_ref = llrf.trace_data.at(trace_name).data_buffer[ buffer_end_index - i];
             double temp_d;
             updateTime( data_ref.first, temp_d, temp_OMED_trace_item.first);
             temp_OMED_trace_item.second = data_ref.second;
             llrf.omed.trace_data.back().data_buffer.push_back( temp_OMED_trace_item );
+
+
+            message( temp_OMED_trace_item.first, " ", temp_OMED_trace_item.second[0], " ", temp_OMED_trace_item.second[1] );
 
 //            message(trace_name);
 //            size_t i2 = 0;
@@ -4144,8 +4146,6 @@ bool liberallrfInterface::setInfiniteMaskEndByPower(const std::string& power_tra
     return false;
 }
 
-
-
 //____________________________________________________________________________________________
 void liberallrfInterface::offsetTimer(long long value)
 {   // add an ofset to the internal timer
@@ -4155,6 +4155,7 @@ void liberallrfInterface::offsetTimer(long long value)
 //____________________________________________________________________________________________
 bool liberallrfInterface::setPulseLength(double value)
 {
+    message("setPulseLength setting ",value);
     return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_PULSE_LENGTH),value);
 }
 //____________________________________________________________________________________________
@@ -4376,7 +4377,7 @@ bool liberallrfInterface::setValue(llrfStructs::pvStruct& pvs, T value)
     ss << "setValue setting " << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
     bool ret = false;
     ca_put(pvs.CHTYPE, pvs.CHID, &value);
-    //debugMessage(ss);
+    debugMessage(ss);
     ss.str("");
     ss << "Timeout setting llrf, " << ENUM_TO_STRING(pvs.pvType) << " value to " << value;
     int status = sendToEpics("ca_put","",ss.str().c_str());
@@ -4400,6 +4401,7 @@ bool liberallrfInterface::setValue2(llrfStructs::pvStruct& pvs, T value)
         ret=true;
     return ret;
 }
+#
 //
 //
 //
