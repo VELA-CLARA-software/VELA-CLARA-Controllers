@@ -2,16 +2,6 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorController.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3411" topLine="50" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorInterface.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="17366" topLine="380" />
-		</Cursor>
-	</File>
 	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorInterface.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="8549" topLine="128" />
@@ -37,9 +27,9 @@
 			<Cursor1 position="4135" topLine="54" />
 		</Cursor>
 	</File>
-	<File name="..\..\Structs\beamPositionMonitorStructs.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Structs\beamPositionMonitorStructs.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3301" topLine="92" />
+			<Cursor1 position="4713" topLine="92" />
 		</Cursor>
 	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -57,19 +47,9 @@
 			<Cursor1 position="1774" topLine="264" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2446" topLine="30" />
-		</Cursor>
-	</File>
 	<File name="..\..\Utilities\beamPositionMonitorConfigReader.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="6834" topLine="144" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1801" topLine="11" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\beamPositionMonitorConfigReader.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -77,19 +57,9 @@
 			<Cursor1 position="3" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="26648" topLine="1937" />
-		</Cursor>
-	</File>
 	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="8856" topLine="160" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorController.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="17243" topLine="331" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -102,7 +72,7 @@
 			<Cursor1 position="2256" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\VCBPMs.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="include\VCBPMs.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="6938" topLine="117" />
 		</Cursor>
@@ -122,5 +92,35 @@
 			<Cursor1 position="4617" topLine="93" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="09ffa5a85be558cc0000600200000002=*0;bpms:include\VCBPMs.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09ffa5a85be558cc0000600200000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1801" topLine="11" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2446" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="26648" topLine="1937" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorController.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17243" topLine="331" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorController.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3411" topLine="50" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\beamPositionMonitor\beamPositionMonitorInterface.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6668" topLine="126" />
+		</Cursor>
+	</File>
+	<EditorTabsLayout layout="09f13a085c00033f06d2276300000002=0;bpms:..\..\Hardware\beamPositionMonitor\beamPositionMonitorInterface.cpp,1;bpms:..\..\Structs\beamPositionMonitorStructs.h,*2;llrfPYD:..\..\Hardware\interface.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=831;besth=353;minw=831;minh=353;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=09f13a085c00033f06d2276300000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

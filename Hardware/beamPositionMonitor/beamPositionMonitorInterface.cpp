@@ -141,10 +141,12 @@ void beamPositionMonitorInterface::initBPMChids()
             for( auto && it2 : it1.second.pvMonStructs )
             {
                 checkCHIDState( it2.second.CHID, ENUM_TO_STRING(it2.first)  );
+                message(it1.first, " ", ENUM_TO_STRING(it2.first), " failed connection");
             }
             for( auto && it2 : it1.second.pvComStructs )
             {
                 checkCHIDState( it2.second.CHID, ENUM_TO_STRING(it2.first)  );
+                message(it1.first, " ", ENUM_TO_STRING(it2.first), " failed connection");
             }
         }
         message("");
