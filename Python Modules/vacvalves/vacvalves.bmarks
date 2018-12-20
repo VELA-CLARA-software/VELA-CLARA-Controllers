@@ -2,7 +2,29 @@
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="include\VCvacValves.h" open="0" top="0" tabpos="6">
-		<Cursor position="2227" topLine="40" />
+		<Cursor position="15165" topLine="211" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="src\VCvacValves.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="16468" topLine="317" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="24" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0">
+		<Cursor position="5306" topLine="426" />
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveController.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="1964" topLine="6" />
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveController.h" open="0" top="0" tabpos="6">
+		<Cursor position="2666" topLine="33" />
+	</File>
+	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="18944" topLine="422" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>
@@ -12,42 +34,16 @@
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
 		<Cursor position="1241" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0">
-		<Cursor position="5306" topLine="426" />
-	</File>
-	<File name="src\VCvacValves.cpp" open="0" top="0" tabpos="5">
-		<Cursor position="18425" topLine="340" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveController.h" open="0" top="0" tabpos="6">
-		<Cursor position="2666" topLine="33" />
-	</File>
-	<File name="..\..\Utilities\vacuumValveConfigReader.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="711" topLine="9" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Utilities\vacuumValveConfigReader.h" open="0" top="0" tabpos="3">
-		<Cursor position="596" topLine="0" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
+	<File name="..\..\Structs\vacuumValveStructs.h" open="0" top="0" tabpos="0">
+		<Cursor position="624" topLine="0" />
 	</File>
 	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
 		<Cursor position="19127" topLine="323" />
 	</File>
-	<File name="..\..\Structs\vacuumValveStructs.h" open="0" top="0" tabpos="0">
-		<Cursor position="624" topLine="0" />
+	<File name="..\..\Utilities\vacuumValveConfigReader.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="711" topLine="9" />
 	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveInterface.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="19137" topLine="421" />
-	</File>
-	<File name="..\..\Hardware\vacuumValve\vacuumValveController.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="1964" topLine="6" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
-		<Cursor position="24" topLine="0" />
+	<File name="..\..\Utilities\vacuumValveConfigReader.h" open="0" top="0" tabpos="3">
+		<Cursor position="596" topLine="0" />
 	</File>
 </BrowseTracker_layout_file>

@@ -27,7 +27,7 @@
 gunModInterface::gunModInterface(const std::string &gunModConf,
                                 const bool startVirtualMachine,
                                 const bool& show_messages_ptr, const bool& show_debug_messages_ptr,
-                                const bool ):
+                                const bool shouldStartEPICs):
 configReader(gunModConf,startVirtualMachine, show_messages_ptr, show_debug_messages_ptr),
 interface(show_messages_ptr,show_debug_messages_ptr,shouldStartEPICs),
 //shouldStartEPICs(shouldStartEPICs),
