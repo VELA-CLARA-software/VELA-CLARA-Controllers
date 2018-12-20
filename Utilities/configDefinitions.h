@@ -45,7 +45,8 @@ namespace UTL
     const double ONEEIGHTY_DOUBLE = 180.0;
     const double ONEHUNDRED_DOUBLE = 100.0;
     const double TEN_POWER_MINUS_NINE  = 0.000000001;
-    const double TEN_POWER_MINUS_THREE  = 0.001;
+    const double TEN_POWER_MINUS_THREE = 0.001;
+    const double ZERO_POINT_ONE   = 0.01;
     const double ONE_DOUBLE   = 1.0;
     const double ZERO_DOUBLE  = 0.0;
     const double TEN_DOUBLE   = 10.0;
@@ -348,7 +349,11 @@ namespace UTL
 /// LIBERA LLRF
     const std::string CLARA_LRRG_LLRF_CONFIG = "CLARA_LRRG_LLRF.config";
     const std::string CLARA_HRRG_LLRF_CONFIG = "CLARA_HRRG_LLRF.config";
-    const std::string CLARA_L01_LLRF_CONFIG = "CLARA_L01_LLRF.config";
+    const std::string CLARA_L01_LLRF_CONFIG  = "CLARA_L01_LLRF.config";
+    const std::string VELA_HRRG_LLRF_CONFIG  = "VELA_HRRG_LLRF.config";
+    const std::string VELA_LRRG_LLRF_CONFIG  = "VELA_LRRG_LLRF.config";
+
+
     // llrf traces
     const std::string GUN_LLRF_TRACES            = "gun_LLRF_TRACES.config";
     const std::string GUN_LLRF_TRACES_ONE_RECORD = "gun_LLRF_TRACES_One_Record.config";
@@ -369,9 +374,7 @@ namespace UTL
     // hopefully very similar to CLARA_LRRG_LLRF_GUN_CONFIG
     // (its the same physical LLRF equipment)
     const std::string VM_VELA_HRRG_LLRF_CONFIG = "vmVELA_HRRG_LLRF.config";
-    const std::string VELA_HRRG_LLRF_CONFIG    = "VELA_HRRG_LLRF.config";
-    const std::string VELA_LRRG_LLRF_CONFIG    = "VELA_LRRG_LLRF.config";
-#
+
     // llrf object parameters
     const std::string LLRF_MAX_AMPLITUDE = "LLRF_MAX_AMPLITUDE";
     const std::string LLRF_AMP_CALIBRATION = "LLRF_AMP_CALIBRATION";
@@ -388,6 +391,7 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_PHI_FF      = "PV_SUFFIX_LIB_PHI_FF";
     const std::string PV_SUFFIX_LIB_PHI_SP      = "PV_SUFFIX_LIB_PHI_SP";
     const std::string PV_SUFFIX_LIB_TIME_VECTOR = "PV_SUFFIX_LIB_TIME_VECTOR";
+    const std::string PV_SUFFIX_LIB_PHASE_LOOP_LOCK= "PV_SUFFIX_LIB_PHASE_LOOP_LOCK";
     const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
     const std::string PV_SUFFIX_LIB_RF_OUTPUT        = "PV_SUFFIX_LIB_RF_OUTPUT";
     const std::string PV_SUFFIX_ILOCK_STATE     = "PV_SUFFIX_ILOCK_STATE";

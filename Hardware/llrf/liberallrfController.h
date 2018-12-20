@@ -510,6 +510,9 @@ class liberaLLRFController : public controller
         bool isNotCheckingMask(const std::string& name);
         bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
 
+        bool isGlobalCheckMask();
+        bool isPercentMask(const std::string& name);
+        bool isAbsoluteMask(const std::string& name);
 
         // Starters
 //        void startTraceMonitoring();

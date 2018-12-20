@@ -208,6 +208,22 @@ void liberaLLRFController::setGlobalShouldNotCheckMask()
 
     //
 */
+
+bool liberaLLRFController::isGlobalCheckMask()
+{
+    return localInterface.isGlobalCheckMask();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isPercentMask(const std::string& name)
+{
+    return localInterface.isPercentMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isAbsoluteMask(const std::string& name)
+{
+    return localInterface.isAbsoluteMask(name);
+}
+//--------------------------------------------------------------------------------------------------
 #ifdef BUILD_DLL
 bool liberaLLRFController::setHiMask_Py(const std::string&name, boost::python::list& value)
 {

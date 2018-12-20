@@ -107,6 +107,10 @@ const char* getHiMask_ds = "Get trace 'name' hi_mask.";
 const char* getLoMask_ds = "Get trace 'name' lo_mask.";
 
 
+const char* isGlobalCheckMask_ds = "Returns state of Global Check Mask flag";
+const char* isAbsoluteMask_ds = "Returns if trace 'name' masks are derived from percentages";
+const char* isPercentMask_ds = "Returns if trace 'name' masks are derived from aboslutes";
+
 
 const char* getMaskValue_ds = "Get trace 'name' mask_value";
 const char* getMaskStartIndex_ds = "Get trace 'name' mask_start as an index";

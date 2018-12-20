@@ -53,10 +53,10 @@ class liberallrfInterface : public interface
 
         liberallrfInterface::liberallrfInterface();
         liberallrfInterface(const std::string &llrfConf,
-                            const bool  startVirtualMachine,
+                            const bool startVirtualMachine,
                             const bool& show_messages,
-                            const bool& show_debug_messages_ptr,
-                            const bool  shouldStartEPICs,
+                            const bool& show_debug_messages,
+                            const bool shouldStartEPICs,
                             const llrfStructs::LLRF_TYPE type);
 
         ~liberallrfInterface();
@@ -240,6 +240,9 @@ class liberallrfInterface : public interface
         double getMaskEndTime(const std::string& name);
         double getMaskWindowStartTime(const std::string& name);
         double getMaskWindowEndTime(const std::string& name);
+        bool isGlobalCheckMask();
+        bool isPercentMask(const std::string& name);
+        bool isAbsoluteMask(const std::string& name);
 //--------------------------------------------------------------------------------------------------
         bool isCheckingMask(const std::string& name);
         bool isNotCheckingMask(const std::string& name);
@@ -284,9 +287,7 @@ class liberallrfInterface : public interface
                              const size_t s4,const double value,const std::string& name);
         /* all mask setting ends up here */
 
-
         size_t getOutsideMaskEventCount()const;
-
 
 
         // MASK CHECKING
@@ -298,10 +299,6 @@ class liberallrfInterface : public interface
         void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
         void handlePassedMask(llrfStructs::rf_trace_data& trace);
         void handleFailedMask(llrfStructs::rf_trace_data& trace);
-
-
-
-
         void setTracesToSaveOnOutsideMaskEvent(const std::vector<std::string>& name);
         void setTracesToSaveOnOutsideMaskEvent(const std::string& name);
         void setNumExtraTracesOnOutsideMaskEvent(const size_t value);
@@ -311,6 +308,9 @@ class liberallrfInterface : public interface
         bool setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val);
 
         std::vector<std::string> getTracesToSaveOnOutsideMaskEvent();
+
+
+        /// NOT USED ANYMORE
         size_t getOutsideMaskEventDataSize();
 
         llrfStructs::outside_mask_event_data  getOutsideMaskEventData();
@@ -318,14 +318,10 @@ class liberallrfInterface : public interface
 
         bool isOutsideMaskEventDataCollecting()const;
         bool canGetOutsideMaskEventData()const;
-
         void newOutsideMaskEvent(const llrfStructs::rf_trace_data& trace);
 
         void copyTraceDataToOMED();
         void OME_interlock(const llrfStructs::setAmpHP_Struct& s);
-
-
-
 
         bool setInterlockActive();
         bool setInterlockNonActive();
@@ -673,4 +669,4 @@ class liberallrfInterface : public interface
 
 
 };
-#endif // VELA_MAG_INTERFACE_H
+#endif // __VELA_CLARA_LLRF_INTERFACE_H__

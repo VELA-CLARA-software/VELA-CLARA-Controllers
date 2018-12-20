@@ -82,7 +82,7 @@ namespace llrfStructs
                                                      (TIMING_TRIGGER)
                                                      (PHI_DEG)
                                                      (INTERLOCK)
-
+                                                     (PHASE_LOOP_LOCK)
                                                      (UNKNOWN)
                                                   )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)
@@ -433,6 +433,7 @@ namespace llrfStructs
         std::string name;
         std::vector<double> hi_mask, lo_mask;
         std::vector< std::pair<std::string, std::vector<double> > > data_buffer;
+
     };
 
     struct outside_mask_event_data
@@ -445,7 +446,8 @@ namespace llrfStructs
             extra_traces_on_outside_mask_event(UTL::ZERO_SIZET),
             num_collected(UTL::ZERO_SIZET),
             outside_mask_index(UTL::ZERO_SIZET),
-            mask_floor(UTL::DUMMY_DOUBLE)
+            mask_floor(UTL::DUMMY_DOUBLE),
+            num_events(UTL::ZERO_SIZET)
             {}
 
         bool is_collecting, can_get_data;
@@ -457,7 +459,7 @@ namespace llrfStructs
         size_t outside_mask_index;
         std::vector< std::string> traces_to_save_on_outside_mask_event;
         std::vector<double> hi_mask, lo_mask;
-
+        size_t num_events;
         std::vector< outside_mask_event_trace_data > trace_data;
     };
 
@@ -496,6 +498,7 @@ namespace llrfStructs
             amp_MVM(UTL::DUMMY_DOUBLE),
             amp_sp(UTL::DUMMY_DOUBLE),
             amp_ff(UTL::DUMMY_DOUBLE),
+            phase_loop_lock(false),
             traceLength(UTL::ZERO_SIZET),
             rf_output(false),
             maxAmp(UTL::DUMMY_DOUBLE),
@@ -536,6 +539,7 @@ namespace llrfStructs
         liberallrfInterface* interface;
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
 
+        bool phase_loop_lock;
 
         short timing_trigger; // is the external timing on? needs updating to a proper enum at some point
 

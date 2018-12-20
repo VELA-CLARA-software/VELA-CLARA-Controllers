@@ -188,37 +188,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
     // containers
 
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
-
-//    enum_<LLRF_PV_TYPE>("LLRF_PV_TYPE")
-//        .value("LIB_LOCK",   LLRF_PV_TYPE::LIB_RF_OUTPUT)
-//        .value("LIB_AMP_FF", LLRF_PV_TYPE::LIB_AMP_FF)
-//        .value("LIB_AMP_SP", LLRF_PV_TYPE::LIB_AMP_SP)
-//        .value("LIB_PHI_FF", LLRF_PV_TYPE::LIB_PHI_FF)
-//        .value("LIB_PHI_SP", LLRF_PV_TYPE::LIB_PHI_SP)
-//        .value("LIB_CH1_PWR_REM", LLRF_PV_TYPE::LIB_CH1_PWR_REM)
-//        .value("LIB_CH2_PWR_REM", LLRF_PV_TYPE::LIB_CH2_PWR_REM)
-//        .value("LIB_CH3_PWR_REM", LLRF_PV_TYPE::LIB_CH3_PWR_REM)
-//        .value("LIB_CH4_PWR_REM", LLRF_PV_TYPE::LIB_CH4_PWR_REM)
-//        .value("LIB_CH5_PWR_REM", LLRF_PV_TYPE::LIB_CH5_PWR_REM)
-//        .value("LIB_CH6_PWR_REM", LLRF_PV_TYPE::LIB_CH6_PWR_REM)
-//        .value("LIB_CH7_PWR_REM", LLRF_PV_TYPE::LIB_CH7_PWR_REM)
-//        .value("LIB_CH8_PWR_REM", LLRF_PV_TYPE::LIB_CH8_PWR_REM)
-//        .value("LIB_CH1_PHASE_REM", LLRF_PV_TYPE::LIB_CH1_PHASE_REM)
-//        .value("LIB_CH2_PHASE_REM", LLRF_PV_TYPE::LIB_CH2_PHASE_REM)
-//        .value("LIB_CH3_PHASE_REM", LLRF_PV_TYPE::LIB_CH3_PHASE_REM)
-//        .value("LIB_CH4_PHASE_REM", LLRF_PV_TYPE::LIB_CH4_PHASE_REM)
-//        .value("LIB_CH5_PHASE_REM", LLRF_PV_TYPE::LIB_CH5_PHASE_REM)
-//        .value("LIB_CH6_PHASE_REM", LLRF_PV_TYPE::LIB_CH6_PHASE_REM)
-//        .value("LIB_CH7_PHASE_REM", LLRF_PV_TYPE::LIB_CH7_PHASE_REM)
-//        .value("LIB_CH8_PHASE_REM", LLRF_PV_TYPE::LIB_CH8_PHASE_REM)
-//        .value("LIB_TIME_VECFTORS",  LLRF_PV_TYPE::LIB_TIME_VECTOR)
-//        .value("LIB_PULSE_LENGTH", LLRF_PV_TYPE::LIB_PULSE_LENGTH)
-//        .value("LIB_PULSE_OFFSET", LLRF_PV_TYPE::LIB_PULSE_OFFSET)
-//        .value("TRIG_SOURCE", LLRF_PV_TYPE::TRIG_SOURCE)
-//        .value("AMP_MVM", LLRF_PV_TYPE::AMP_MVM)
-//        .value("PHI_DEG", LLRF_PV_TYPE::PHI_DEG)
-//        .value("UNKNOWN", LLRF_PV_TYPE::UNKNOWN)
-//        ;
 //
     enum_<LLRF_TYPE>("LLRF_TYPE")
         .value("CLARA_HRRG",LLRF_TYPE::CLARA_HRRG)
@@ -389,6 +358,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("phi_sp",   &liberallrfObject::phi_sp,"Current Libera Phase SP.")
         .def_readonly("phi_ff",   &liberallrfObject::phi_ff,"Current Libera Phase FF.")
         .def_readonly("amp_sp",   &liberallrfObject::amp_sp,"Current Libera Amplitude SP.")
+        .def_readonly("phase_loop_lock",   &liberallrfObject::phase_loop_lock,"Is the phase_loop locked?")
         .def_readonly("amp_ff",   &liberallrfObject::amp_ff,"Current Libera Amplitude FF.")
         .def_readonly("crestPhi", &liberallrfObject::crestPhi,"Crest Phase.")
         .def_readonly("maxAmp",   &liberallrfObject::maxAmp,"Maximum Amplitude Setting.")
@@ -508,6 +478,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getTraceValues", &liberaLLRFController::getTraceValues_Py,(NAME_ARG),"Return latest Trace Values for channel 'name'")
         //.def("getTraceBuffer", &liberaLLRFController::getTraceBuffer_Py,(NAME_ARG),"Return buffer of rf_trace objects for channel 'name'")
+
+
         //.def("dump_traces", &liberaLLRFController::dump_traces,"Dump trace history")
 
 
@@ -793,6 +765,12 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 
+        .def("isGlobalCheckMask", &liberaLLRFController::isGlobalCheckMask, isGlobalCheckMask_ds)
+
+        .def("isPercentMask", &liberaLLRFController::isPercentMask, isPercentMask_ds)
+        .def("isAbsoluteMask", &liberaLLRFController::isAbsoluteMask, isAbsoluteMask_ds)
+
+
         .def("setNumExtraTracesOnOutsideMaskEvent",  &liberaLLRFController::setNumExtraTracesOnOutsideMaskEvent,(VALUE_ARG),setNumExtraTracesOnOutsideMaskEvent_ds)
         .def("getNumExtraTracesOnOutsideMaskEvent",  &liberaLLRFController::getNumExtraTracesOnOutsideMaskEvent,getNumExtraTracesOnOutsideMaskEvent_ds)
         .def("setTracesToSaveOnOutsideMaskEvent",  &liberaLLRFController::setTracesToSaveOnOutsideMaskEvent_Py,(NAMES_ARG),setTracesToSaveOnOutsideMaskEvent_Py_ds)
@@ -804,12 +782,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getOutsideMaskEventDataSize", &liberaLLRFController::getOutsideMaskEventDataSize, getOutsideMaskEventDataSize_ds)
 
         //.def("getOutsideMaskEventDataPart",&liberaLLRFController::getOutsideMaskEventDataPart_Py,(PART_ARG), getOutsideMaskEventDataPart_ds)
-        .def("getOutsideMaskEventData",    &liberaLLRFController::getOutsideMaskEventData_Py, getOutsideMaskEventData_ds)
-
+        .def("getOutsideMaskEventData",         &liberaLLRFController::getOutsideMaskEventData_Py,      getOutsideMaskEventData_ds)
         .def("isOutsideMaskEventDataCollecting",&liberaLLRFController::isOutsideMaskEventDataCollecting,isOutsideMaskEventDataCollecting_ds)
         .def("canGetOutsideMaskEventData",      &liberaLLRFController::canGetOutsideMaskEventData,      canGetOutsideMaskEventData_ds)
-
-
 
 //        .def("getNumRollingAverageTraces",  &liberaLLRFController::getNumRollingAverageTraces,(boost::python::arg("name")),"Get the number of traces to average for trace 'name'")
 //        .def("clearRollingAverage",  &liberaLLRFController::clearRollingAverage,(boost::python::arg("name")),"Clear the Rolling Average data for trace 'name' This also rests other counters to zero, meaning any/all current data in the rolling averages will be lost. ")
