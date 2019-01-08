@@ -147,8 +147,6 @@ class liberallrfInterface : public interface
         bool isKeepingRollingAverage(const std::string&name)const;
         bool hasRollingAverage(const std::string&name)const;
 //--------------------------------------------------------------------------------------------------
-
-
 /*
     ___  __        __   ___           ___            __
      |  |__)  /\  /  ` |__      |\/| |__   /\  |\ | /__`
@@ -157,6 +155,13 @@ class liberallrfInterface : public interface
         bool setMeanStartEndTime(const double start, const double end, const std::string&name);
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
+
+        size_t getMeanStartIndex(const std::string&name)const;
+        size_t getMeanStopIndex(const std::string&name)const;
+
+        double getMean(const std::string&name)const;
+
+
     private:
         void updateTraceCutMeans();
         void getTraceCutMean(llrfStructs::rf_trace_data& tracedata);
@@ -168,8 +173,6 @@ class liberallrfInterface : public interface
         std::tuple<size_t,double,double> getKlyFwdPwrRSState(int ampSP_setting);
         void setKlyFwdPwrRSState(int amp_sp, size_t n, double old_mean, double old_variance);
         bool isKeepingKlyFwdPwrRS();
-
-
 
         /* masks are based on rolling averages */
         void updateRollingAveragesAndMasks();
@@ -344,7 +347,6 @@ class liberallrfInterface : public interface
         bool isPhaseFFLocked()const;
         bool isPhaseFFNotLocked()const;
 
-
         bool setUnwrapPhaseTolerance(const double value);
         bool setUnwrapPhaseTolerance(const std::string& name,const double value);
 
@@ -377,7 +379,7 @@ class liberallrfInterface : public interface
             convert trace index to time and vice-versa
         */
         size_t getIndex(const double time)const;
-        double getTime(const size_t  time)const;
+        double getTime(const size_t  index)const;
 
         size_t getPulseCount()const;
 
@@ -387,6 +389,14 @@ class liberallrfInterface : public interface
 
         std::vector<double> getTraceValues(const std::string& name)const;
         std::vector<double> getTimeVector()const;
+
+        std::vector<double> getPulseShape()const;
+
+        bool setPulseShape(std::vector<double>& values);
+        bool applyPulseShape();
+
+
+        bool getPulseShapeUpToDate()const;
 
         std::vector<double> getAverageTraceData(const std::string& name)const;
 
@@ -517,6 +527,7 @@ class liberallrfInterface : public interface
         bool Is_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv);
         bool IsNot_SCAN_PV(llrfStructs::LLRF_PV_TYPE pv);
         bool Is_Time_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
+        bool Is_Pulse_Shape_Vector_PV(const llrfStructs::LLRF_PV_TYPE pv);
 
 
         //bool isPhaseTrace(const std::string& name);
@@ -575,6 +586,10 @@ class liberallrfInterface : public interface
         bool updateAMPMVM();
 
         void updateTimeVector(const event_handler_args& args);
+        void updatePulseShape(const event_handler_args& args);
+
+
+
 
         void initialise();
         bool initObjects();

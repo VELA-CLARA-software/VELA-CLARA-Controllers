@@ -384,6 +384,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("amp_drop_value", &liberallrfObject::amp_drop_value,"(when enabled) amp value to set on detecting outside mask trace.")
         .def_readonly("drop_amp_on_breakdown", &liberallrfObject::drop_amp_on_breakdown,"If the amplitude should automatically be changed on detecting an outside mask trace.")
         .def_readonly("active_pulse_count", &liberallrfObject::active_pulse_count,"(Total) Number of pulses with amp > 0 since connection.")
+        .def_readonly("duplicate_pulse_count", &liberallrfObject::duplicate_pulse_count,"Number of pulses that had same Kly_FWd_Pwr max as previous trace.")
         .def_readonly("pulseCount", &liberallrfObject::previous_pulseCount,"EVID as number.")
         .def_readonly("pulseCountOffset", &liberallrfObject::pulseCountOffset,"offset to the pulseCountOffset.")
         .def_readonly("trig_source", &liberallrfObject::trig_source,"the trigger source.")
@@ -592,6 +593,18 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setMeanStartEndTime",  &liberaLLRFController::setMeanStartEndTime,(boost::python::arg("start"),boost::python::arg("end"),boost::python::arg("name")),"Set trace 'name' start and end times for mean")
         .def("setMeanStartIndex",  &liberaLLRFController::setMeanStartIndex,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' start index for mean calculation")
         .def("setMeanStopIndex",  &liberaLLRFController::setMeanStopIndex,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' stop index for mean calculation")
+
+
+        .def("getMeanStartIndex",  &liberaLLRFController::getMeanStartIndex,(boost::python::arg("name")),"Get trace 'name' start index for mean calculation")
+        .def("getMeanStopIndex",  &liberaLLRFController::getMeanStopIndex,(boost::python::arg("name")),"Get trace 'name' stop index for mean calculation")
+        .def("getMean",  &liberaLLRFController::getMean,(boost::python::arg("name")),"Get trace 'name' mean value.")
+
+
+
+        .def("getPulseShape",  &liberaLLRFController::getPulseShape_Py,"Get the Pulse Shape Array.")
+        .def("getPulseShapeUpToDate",  &liberaLLRFController::getPulseShapeUpToDate,"Get the value for pulse_shape_up_to_date.")
+
+
 
         .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
         .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(VALUE_ARG),"Set all monitoring traces SCAN rate to 'value'")

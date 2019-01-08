@@ -322,6 +322,17 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::LIB_PULSE_LENGTH,val);
         }
+
+        else if(key == PV_SUFFIX_LIB_PULSE_SHAPE)
+        {
+            addToPVStruct(pvs, LLRF_PV_TYPE::PULSE_SHAPE,val);
+        }
+        else if(key == PV_SUFFIX_LIB_PULSE_SHAPE_APPLY)
+        {
+            addToPVStruct(pvs, LLRF_PV_TYPE::PULSE_SHAPE_APPLY,val);
+        }
+
+
         else if(key == PV_SUFFIX_LIB_PULSE_OFFSET)
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::LIB_PULSE_OFFSET,val);

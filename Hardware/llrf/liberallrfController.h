@@ -363,8 +363,13 @@ class liberaLLRFController : public controller
         boost::python::list getAverageTraceData_Py(const std::string& name);
 
         boost::python::list getTimeVector_Py()const;
+        boost::python::list getPulseShape_Py()const;
 
 #endif
+        std::vector<double> getPulseShape()const;
+        bool getPulseShapeUpToDate()const;
+
+
         std::vector<double> getTimeVector()const;
         std::vector<double> getChannelTrace();
         std::vector<double> getCavRevPower();
@@ -486,6 +491,10 @@ class liberaLLRFController : public controller
         bool setMeanStartIndex(const std::string&name, size_t  value);
         bool setMeanStopIndex(const std::string&name, size_t  value);
 
+        size_t getMeanStartIndex(const std::string&name)const;
+        size_t getMeanStopIndex(const std::string&name)const;
+
+        double getMean(const std::string&name)const;
 
 
         /* convert trace indices to times and vice-versa */

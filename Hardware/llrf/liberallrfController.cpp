@@ -851,14 +851,26 @@ std::vector<double> liberaLLRFController::getTimeVector()const
     return localInterface.getTimeVector();
 }
 
-
+std::vector<double> liberaLLRFController::getPulseShape()const
+{
+    return localInterface.getPulseShape();
+}
+bool liberaLLRFController::getPulseShapeUpToDate()const
+{
+    return localInterface.getPulseShapeUpToDate();
+}
 //______________________________________________________________________________
 #ifdef BUILD_DLL
 boost::python::list liberaLLRFController::getTimeVector_Py()const
 {
     return toPythonList(getTimeVector());
 }
-
+//______________________________________________________________________________
+boost::python::list liberaLLRFController::getPulseShape_Py()const
+{
+    return toPythonList(getPulseShape());
+}
+//______________________________________________________________________________
 boost::python::list liberaLLRFController::getAverageTraceData_Py(const std::string& name)
 {
     return toPythonList(getAverageTraceData(name));
@@ -1652,14 +1664,21 @@ bool liberaLLRFController::hasRollingAverage(const std::string&name)const
 {
     return localInterface.hasRollingAverage(name);
 }
-
-
-
-
-
-
-
-
+//---------------------------------------------------------------------------------
+double liberaLLRFController::getMean(const std::string&name)const
+{
+    return localInterface.getMean(name);
+}
+//---------------------------------------------------------------------------------
+size_t liberaLLRFController::getMeanStartIndex(const std::string&name)const
+{
+    return localInterface.getMeanStartIndex(name);
+}
+//---------------------------------------------------------------------------------
+size_t liberaLLRFController::getMeanStopIndex(const std::string&name)const
+{
+    return localInterface.getMeanStopIndex(name);
+}
 
 
 //____________________________________________________________________________________________

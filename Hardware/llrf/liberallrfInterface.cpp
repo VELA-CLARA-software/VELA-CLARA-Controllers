@@ -179,6 +179,11 @@ bool liberallrfInterface::initObjects()
             {
                 llrf.time_vector.resize(it.second.COUNT);
             }
+            if(Is_Pulse_Shape_Vector_PV(it.first))
+            {
+                llrf.pulse_shape.resize(it.second.COUNT);
+            }
+
         }
         /*
             Here we are calculating the indices in the ALL-TRACES RECORD, that correpsond to each
@@ -442,6 +447,13 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
     using namespace llrfStructs;
     switch(pv)
     {
+        case LLRF_PV_TYPE::PULSE_SHAPE:
+            updatePulseShape(args);
+            break;
+        case LLRF_PV_TYPE::PULSE_SHAPE_APPLY:
+            updateBoolState(args, llrf.pulse_shape_up_to_date);
+            break;
+
         case LLRF_PV_TYPE::PHASE_LOOP_LOCK:
             updateBoolState(args, llrf.phase_loop_lock);
             break;
@@ -486,10 +498,15 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
             break;
         case LLRF_PV_TYPE::LIB_TIME_VECTOR:
             /* the time_vector is simlar to a trace, but we can just update the values straight away */
-            message(ENUM_TO_STRING(LLRF_PV_TYPE::LIB_TIME_VECTOR));
+            //message(ENUM_TO_STRING(LLRF_PV_TYPE::LIB_TIME_VECTOR));
             updateTimeVector(args);
             break;
         case LLRF_PV_TYPE::LIB_PULSE_LENGTH:
+            message("LIB_PULSE_LENGTH ",*((double*)args.dbr));
+            message("LIB_PULSE_LENGTH ",getDBRdouble(args));
+            message("LIB_PULSE_LENGTH ",*(float*)args.dbr);
+            message("LIB_PULSE_LENGTH ",*(float*)args.dbr);
+            message("LIB_PULSE_LENGTH ",*(float*)args.dbr);
             llrf.pulse_length = *(double*)args.dbr;
             break;
         case LLRF_PV_TYPE::LIB_PULSE_OFFSET:
@@ -549,6 +566,12 @@ void liberallrfInterface::updateTimeVector(const event_handler_args& args)
 {
     const dbr_double_t* p_data = (const dbr_double_t*)args.dbr;
     std::copy(p_data, p_data + llrf.time_vector.size(), llrf.time_vector.begin());
+}
+//--------------------------------------------------------------------------------------------------
+void liberallrfInterface::updatePulseShape(const event_handler_args& args)
+{
+    const dbr_double_t* p_data = (const dbr_double_t*)args.dbr;
+    std::copy(p_data, p_data + llrf.pulse_shape.size(), llrf.pulse_shape.begin());
 }
 //--------------------------------------------------------------------------------------------------
 void liberallrfInterface::updateSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const event_handler_args& args)
@@ -655,6 +678,8 @@ void liberallrfInterface::updateAllTraces(const event_handler_args& args)
         std::copy( data_start, data_end, llrf.trace_data.at(it.first).data_buffer.back().second.begin() );
         /*
             If this is a power trace then square it and divide by 100
+            ELSE if it is a phase trace add 180, so that phase goes from 0 to 360 degrees
+            (positive numbers are easier to handle compared with -180 to 180
         */
         if( it.second.type == llrfStructs::TRACE_TYPE::POWER)
         {
@@ -670,7 +695,6 @@ void liberallrfInterface::updateAllTraces(const event_handler_args& args)
             {
                 v += UTL::ONEEIGHTY_DOUBLE;
             }
-
             //unwrapPhaseTrace(llrf.trace_data.at(it.first));
         }
         // print max value for each trace
@@ -681,14 +705,16 @@ void liberallrfInterface::updateAllTraces(const event_handler_args& args)
 //    std::chrono::high_resolution_clock::time_point end1 = std::chrono::high_resolution_clock::now();
 //    message("Timing ",std::chrono::duration_cast<std::chrono::nanoseconds>(end1 - start2).count() );
 
-    // NOW WE FOLLOW THE PROCEDURE
+    // CHECK_KLYSTRON_FWD_PWR for active pulse
+    llrf.kly_fwd_power_max = getKlyFwdPwrMax();
+    updateActivePulses();
+
+
+    // NOW WE FOLLOW LC PROCEDURE
     // if collecting futre traces, collect and  increment counter
     checkCollectingFutureTraces();
 
 
-    // CHECK_KLYSTRON_FWD_PWR for active pulse
-    llrf.kly_fwd_power_max = getKlyFwdPwrMax();
-    updateActivePulses();
 
     if(llrf.can_increase_active_pulses)
     {
@@ -1537,8 +1563,6 @@ double liberallrfInterface::getMaskWindowEndTime(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-
-
 //
 //
 // MASKS
@@ -1688,6 +1712,11 @@ void liberallrfInterface::checkForOutsideMaskTrace()
         {
             int result = updateIsTraceInMask(it.second);
             handleTraceInMaskResult(it.second,result);
+            if( result == UTL::ZERO_INT)
+            {
+                message("Found an OME, not checking any more traces this pulse!");
+                break;
+            }
         }
     }
 //    if(llrf.check_mask)
@@ -1695,7 +1724,6 @@ void liberallrfInterface::checkForOutsideMaskTrace()
 //        std::chrono::high_resolution_clock::time_point end1 = std::chrono::high_resolution_clock::now();
 //        message("Timing ",std::chrono::duration_cast<std::chrono::nanoseconds>(end1 - start2).count() );
 //    }
-
 }
 //--------------------------------------------------------------------------------------------------
 int liberallrfInterface::updateIsTraceInMask(llrfStructs::rf_trace_data& trace)
@@ -1729,10 +1757,10 @@ int liberallrfInterface::updateIsTraceInMask(llrfStructs::rf_trace_data& trace)
                     /* write a message*/
                     outside_mask_trace_message << trace.name << " HI MASK FAIL: current average = "
                     << trace.rolling_average[i] << ", " << to_check[i] << " > "
-                    << hi[i] << " at i = " << i << " us = " << llrf.time_vector[i];
+                    << hi[i] << " at i = " << i << " us = " << llrf.time_vector[i] << ". Trace time-stamp = " << str;
                     trace.outside_mask_index = i;
                     trace.outside_mask_trace_message = outside_mask_trace_message.str();
-                    message(trace.outside_mask_trace_message);
+                    message("LLRF CONTROLLER MESSAGE: ", trace.outside_mask_trace_message);
                     /* return code 0 = FAIL */
                     return UTL::ZERO_INT;
                 }
@@ -1749,13 +1777,16 @@ int liberallrfInterface::updateIsTraceInMask(llrfStructs::rf_trace_data& trace)
                 /* if we have too many consecutive lo_breakdown_count trace fails */
                 if(lo_breakdown_count == trace.num_continuous_outside_mask_count)
                 {
+                    double t;
+                    std::string str;
+                    updateTime(trace.data_buffer.back().first, t, str);
                     /* write a message*/
                     outside_mask_trace_message << trace.name << " LO MASK FAIL: current average = "
                     << trace.rolling_average[i] << ", " << to_check[i] << " < "
-                    << lo[i] << " at i = " << i << " us = " << llrf.time_vector[i];
+                    << lo[i] << " at i = " << i << " us = " << llrf.time_vector[i] << ". Trace time-stamp = " << str;
                     trace.outside_mask_index = i;
                     trace.outside_mask_trace_message = outside_mask_trace_message.str();
-                    message(trace.outside_mask_trace_message);
+                    message("LLRF CONTROLLER MESSAGE: ", trace.outside_mask_trace_message);
                     /* return code 0 = FAIL */
                     return UTL::ZERO_INT;
                 }
@@ -1804,8 +1835,6 @@ void liberallrfInterface::handleTraceInMaskResult(llrfStructs::rf_trace_data& tr
 //            std::chrono::high_resolution_clock::time_point end2 = std::chrono::high_resolution_clock::now();
 //            message("Timing ",std::chrono::duration_cast<std::chrono::nanoseconds>(end2 - foundbreakdowntime).count() );
                 handleFailedMask(trace);
-
-
                 break;
             }
         case UTL::MINUS_ONE_INT:
@@ -1833,19 +1862,19 @@ void liberallrfInterface::handleFailedMask(llrfStructs::rf_trace_data& trace)
     if(trace.drop_amp_on_breakdown)
     {
         /* stop checking masks */
-        //message("setGlobalCheckMask(false);");
         llrf.check_mask = false;
+        message("LLRF CONTROLLER MESSAGE: llrf.check_mask (GlobalCheckMask)  is FALSE;");
         /* set amp to drop_value */
-        //message("setting amp to = ", trace.amp_drop_value, ", time = ",  elapsedTime());
+        message("handleFailedMask() is setting amp to = ", trace.amp_drop_value, ", time = ",  elapsedTime());
         setAmpSPCallback(trace.amp_drop_value);
     }
     // SECOND STOP ADDING TO THE ROLLING AVERAGE
-
+    //
+    message("handleFailedMask() is setting keep_rolling_average = FALSE, for all traces");
     for(auto&it:llrf.trace_data)
     {
         it.second.keep_rolling_average = false;
     }
-
     //
     newOutsideMaskEvent(trace);
 }
@@ -2159,7 +2188,7 @@ void liberallrfInterface::newOutsideMaskEvent(const llrfStructs::rf_trace_data& 
     llrf.omed.is_collecting = true;
     llrf.omed.num_events = UTL::ONE_SIZET;
     llrf.omed.can_get_data = false;
-    message("newOutsideMaskEvent llrf.omed.can_get_data = FALSE");
+    message("newOutsideMaskEvent() setting llrf.omed.can_get_data = FALSE");
     llrf.omed.num_collected = UTL::THREE_SIZET;
     llrf.omed.num_still_to_collect = llrf.omed.extra_traces_on_outside_mask_event;
     llrf.omed.trace_that_caused_OME = trace.name;
@@ -2178,7 +2207,7 @@ void liberallrfInterface::checkCollectingFutureTraces()
         llrf.omed.num_still_to_collect -= UTL::ONE_SIZET;
         llrf.omed.num_collected += UTL::ONE_SIZET;
 
-        message("Num collected = ", llrf.omed.num_collected, "/",llrf.omed.extra_traces_on_outside_mask_event + UTL::THREE_SIZET,
+        message("checkCollectingFutureTraces(): Num collected = ", llrf.omed.num_collected, "/",llrf.omed.extra_traces_on_outside_mask_event + UTL::THREE_SIZET,
                 " (",llrf.omed.num_still_to_collect  ,")");
 
         // we now check if there is a breakdown in the future trace
@@ -2187,6 +2216,7 @@ void liberallrfInterface::checkCollectingFutureTraces()
 
         if(llrf.can_increase_active_pulses)
         {
+            message("checkCollectingFutureTraces(): checking current trace for OMED");
             for( auto& it: llrf.trace_data) // loop over each trace
             {
                 // only check the masks we should be checking
@@ -2195,11 +2225,16 @@ void liberallrfInterface::checkCollectingFutureTraces()
                     int result = updateIsTraceInMask(it.second);
                     if(result == UTL::ZERO_INT)
                     {
+                        message("checkCollectingFutureTraces(): found another breakdown in ", it.second.name);
                         llrf.omed.num_events+= UTL::ONE_SIZET;
                         break;
                     }
                 }
             }
+        }
+        else
+        {
+            message("checkCollectingFutureTraces(): can't check for OMED as llrf.can_increase_active_pulses = FALSE");
         }
         //
         // sanity check
@@ -2251,7 +2286,7 @@ void liberallrfInterface::copyTraceDataToOMED()
             llrf.omed.trace_data.back().data_buffer.push_back( temp_OMED_trace_item );
 
 
-            message( temp_OMED_trace_item.first, " ", temp_OMED_trace_item.second[0], " ", temp_OMED_trace_item.second[1] );
+            //message( temp_OMED_trace_item.first, " ", temp_OMED_trace_item.second[0], " ", temp_OMED_trace_item.second[1] );
 
 //            message(trace_name);
 //            size_t i2 = 0;
@@ -2979,7 +3014,25 @@ void liberallrfInterface::updateActivePulses()
         its a repeat and don't increase pulse count */
     if(llrf.last_kly_fwd_power_max == llrf.kly_fwd_power_max)
     {
+        llrf.duplicate_pulse_count += UTL::ONE_SIZET;
         llrf.can_increase_active_pulses = false;
+        message("llrf.last_kly_fwd_power_max == llrf.kly_fwd_power_max ==> llrf.can_increase_active_pulses = false");
+
+        std::vector<double> kfp =  getKlyFwdPower();
+        bool equal = true;
+        for(auto i = 0; i <kfp.size(); ++i )
+        {
+            if( kfp[i] != llrf.last_kly_fwd_pwr_trace[i] )
+            {
+                message("last_kly_fwd_power_max = kly_fwd_power_max, but trace data is different");
+                equal = false;
+            }
+        }
+        if(equal)
+        {
+                message("last_kly_fwd_power_max = kly_fwd_power_max, AND trace data is the same");
+        }
+
     }
     else if(llrf.kly_fwd_power_max > llrf.active_pulse_kly_power_limit)
     {
@@ -2987,6 +3040,7 @@ void liberallrfInterface::updateActivePulses()
     }
     else
     {
+        //message("llrf.last_kly_fwd_power_max < llrf.kly_fwd_power_max ==> llrf.can_increase_active_pulses = false");
         llrf.can_increase_active_pulses = false;
     }
     /* the llrf object holds this paramter as well as the trace */
@@ -2995,7 +3049,9 @@ void liberallrfInterface::updateActivePulses()
         llrf.active_pulse_count += UTL::ONE_SIZET;
     }
     //message("AP max ", llrf.kly_fwd_power_max , " (", llrf.last_kly_fwd_power_max,") count = ",llrf.active_pulse_count, ", increase  = ",llrf.can_increase_active_pulses);
+    /* update last_kly_fwd_power_max */
     llrf.last_kly_fwd_power_max  = llrf.kly_fwd_power_max;
+    llrf.last_kly_fwd_pwr_trace  = getKlyFwdPower();
 }
 //--------------------------------------------------------------------------------------------------
 double liberallrfInterface::getActivePulsePowerLimit() const
@@ -3022,13 +3078,6 @@ void liberallrfInterface::addActivePulseCountOffset(const size_t val)
 {
     llrf.active_pulse_count += val;
 }
-
-
-
-
-
-
-
 //--------------------------------------------------------------------------------------------------
 /*
     ___  __        __   ___                          ___  __
@@ -3202,6 +3251,24 @@ bool liberallrfInterface::setMeanStartIndex(const std::string&name, size_t  valu
     return false;
 }
 //-------------------------------------------------------------------------------------------------------------------
+size_t liberallrfInterface::getMeanStopIndex(const std::string&name)const
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        return llrf.trace_data.at(name).mean_stop_index;
+    }
+    return UTL::ZERO_SIZET;
+}
+//-------------------------------------------------------------------------------------------------------------------
+size_t liberallrfInterface::getMeanStartIndex(const std::string&name)const
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        return llrf.trace_data.at(name).mean_start_index;
+    }
+    return UTL::ZERO_SIZET;
+}
+//-------------------------------------------------------------------------------------------------------------------
 bool  liberallrfInterface::setMeanStopIndex(const std::string&name, size_t  value)
 {
     if(entryExists(llrf.trace_data, name))
@@ -3239,7 +3306,21 @@ void liberallrfInterface::getTraceCutMean(llrfStructs::rf_trace_data& trace)
         trace.mean = std::accumulate(trace.data_buffer.back().second.cbegin() + trace.mean_start_index,
                                      trace.data_buffer.back().second.cbegin() + trace.mean_stop_index,
                                      UTL::ZERO_DOUBLE) / ( trace.mean_stop_index - trace.mean_start_index);
+
+//        if( trace.name == HRRG_CAVITY_PROBE_POWER )
+//        {
+//
+//        }
     }
+}
+//-------------------------------------------------------------------------------------------------------------------
+double liberallrfInterface::getMean(const std::string&name)const
+{
+    if(entryExists(llrf.trace_data, name))
+    {
+        return llrf.trace_data.at(name).mean;
+    }
+    return UTL::DUMMY_DOUBLE;
 }
 //-------------------------------------------------------------------------------------------------------------------
 void liberallrfInterface::setKeepKlyFwdPwrRS(bool val)
@@ -4116,6 +4197,13 @@ bool liberallrfInterface::Is_Time_Vector_PV(llrfStructs::LLRF_PV_TYPE pv)
         return true;
     return false;
 }
+//--------------------------------------------------------------------------------------------
+bool liberallrfInterface::Is_Pulse_Shape_Vector_PV(llrfStructs::LLRF_PV_TYPE pv)
+{
+    if(pv == llrfStructs::LLRF_PV_TYPE::PULSE_SHAPE)
+        return true;
+    return false;
+}
 //
 //
 //
@@ -4715,11 +4803,36 @@ llrfStructs::LLRF_PV_TYPE liberallrfInterface::getEVID_pv(llrfStructs::LLRF_PV_T
     i.e. things to expose to python
 */
 //____________________________________________________________________________________________
+std::vector<double> liberallrfInterface::getPulseShape()const
+{
+    //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    return llrf.pulse_shape;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getPulseShapeUpToDate()const
+{
+    return llrf.pulse_shape_up_to_date;
+}
+//____________________________________________________________________________________________
 std::vector<double> liberallrfInterface::getTimeVector()const
 {
     //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return llrf.time_vector;
 }
+
+
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::setPulseShape(std::vector<double>& values)
+{
+
+    return true;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::applyPulseShape()
+{
+    return true;
+}
+
 //--------------------------------------------------------------------------------------------------
 size_t liberallrfInterface::getIndex(const double time) const
 {

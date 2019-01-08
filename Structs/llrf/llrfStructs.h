@@ -83,6 +83,12 @@ namespace llrfStructs
                                                      (PHI_DEG)
                                                      (INTERLOCK)
                                                      (PHASE_LOOP_LOCK)
+
+                                                     (PULSE_SHAPE)
+                                                     (PULSE_SHAPE_APPLY)
+
+
+
                                                      (UNKNOWN)
                                                   )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)
@@ -517,9 +523,11 @@ namespace llrfStructs
 
             // how many active pulses have there been
             active_pulse_count(UTL::ZERO_SIZET),
+            duplicate_pulse_count(UTL::ZERO_SIZET),
             // how many pulses, in total have there
             pulse_count(UTL::ZERO_SIZET),
 
+            pulse_shape_up_to_date(false),
 
             pulseCountOffset(UTL::ZERO_SIZET),
             previous_pulseCount(UTL::ZERO_SIZET),
@@ -540,6 +548,9 @@ namespace llrfStructs
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
 
         bool phase_loop_lock;
+        bool pulse_shape_up_to_date;
+        std::vector<double> pulse_shape;
+        std::vector<double> last_kly_fwd_pwr_trace;
 
         short timing_trigger; // is the external timing on? needs updating to a proper enum at some point
 
@@ -558,6 +569,7 @@ namespace llrfStructs
 
 
         size_t active_pulse_count;
+        size_t duplicate_pulse_count;
         size_t pulse_count;
 
 
