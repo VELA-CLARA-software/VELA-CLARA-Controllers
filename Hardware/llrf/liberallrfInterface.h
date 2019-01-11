@@ -307,11 +307,21 @@ class liberallrfInterface : public interface
         void setNumExtraTracesOnOutsideMaskEvent(const size_t value);
         size_t getNumExtraTracesOnOutsideMaskEvent()const;
 
+
+        boost::circular_buffer<std::pair<epicsTimeStamp, std::vector<double>>> copy_buffer();
+        void getCutOneTraceData(std::vector<std::string>& keys,
+                                std::vector<std::string>& timestamps,
+                                std::vector<std::vector<double>>& data);
+
+        void setTracesToSaveWhenDumpingCutOneTraceData(const std::vector<std::string>& names);
+        std::vector<std::string> getTracesToSaveWhenDumpingCutOneTraceData()const;
+
+
+
         bool setDropAmpOnOutsideMaskEvent(const std::string& name, bool state, double amp_val = 0.0);
         bool setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val);
 
         std::vector<std::string> getTracesToSaveOnOutsideMaskEvent();
-
 
         /// NOT USED ANYMORE
         size_t getOutsideMaskEventDataSize();
@@ -337,6 +347,10 @@ class liberallrfInterface : public interface
         bool unlockAmpFF();
         bool unlockPhaseFF();
         bool enableRFOutput();
+        bool disableRFOutput();
+        bool enableRFandLock(); // also does the amp and phase lock check boxes ...
+
+
         bool isRFOutput() const;
         bool isNotRFOutput() const;
         bool RFOutput()const;
@@ -346,6 +360,7 @@ class liberallrfInterface : public interface
         bool isAmpFFNotLocked()const;
         bool isPhaseFFLocked()const;
         bool isPhaseFFNotLocked()const;
+        bool isTrigOff()const;
 
         bool setUnwrapPhaseTolerance(const double value);
         bool setUnwrapPhaseTolerance(const std::string& name,const double value);
@@ -392,6 +407,7 @@ class liberallrfInterface : public interface
 
         std::vector<double> getPulseShape()const;
 
+        bool setAndApplyPulseShape(std::vector<double>& values);
         bool setPulseShape(std::vector<double>& values);
         bool applyPulseShape();
 

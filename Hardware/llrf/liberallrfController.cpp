@@ -546,8 +546,40 @@ void liberaLLRFController::setActivePulseCount(const size_t val)
     localInterface.setActivePulseCount(val);
 }
 //--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setAndApplyPulseShape(std::vector<double>& values)
+{
+    message("setAndApplyPulseShape");
+    return localInterface.setAndApplyPulseShape(values);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setPulseShape(std::vector<double>& values)
+{
+    return localInterface.setPulseShape(values);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::applyPulseShape()
+{
+    return localInterface.applyPulseShape();
+}
+//--------------------------------------------------------------------------------------------------
+#ifdef BUILD_DLL
+bool liberaLLRFController::setAndApplyPulseShape_Py(boost::python::list values)
+{
+    return setAndApplyPulseShape( to_std_vector<double>(values) );
+}
+bool liberaLLRFController::setPulseShape_Py(boost::python::list values)
+{
+    return setPulseShape( to_std_vector<double>(values) );
+}
+#endif
+
+//--------------------------------------------------------------------------------------------------
 
 
+
+
+
+//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setKeepKlyFwdPwrRS(bool val)
 {
     localInterface.setActivePulseCount(val);
@@ -592,11 +624,74 @@ boost::python::list liberaLLRFController::getKlyFwdPwrRSState_Py(int ampSP_setti
 }
 #endif
 //--------------------------------------------------------------------------------------------------
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+void liberaLLRFController::setTracesToSaveWhenDumpingCutOneTraceData(const std::vector<std::string>& names)
+{
+    return localInterface.setTracesToSaveWhenDumpingCutOneTraceData(names);
+}
+//--------------------------------------------------------------------------------------------------
+std::vector<std::string> liberaLLRFController::getTracesToSaveWhenDumpingCutOneTraceData()const
+{
+    return localInterface.getTracesToSaveWhenDumpingCutOneTraceData();
+}
+//--------------------------------------------------------------------------------------------------
 std::vector< std::pair<std::string, std::vector<double>> > liberaLLRFController::getOneTraceData()const
 {
     return localInterface.getOneTraceData();
 }
 #ifdef BUILD_DLL
+//--------------------------------------------------------------------------------------------------
+
+void liberaLLRFController::setTracesToSaveWhenDumpingCutOneTraceData_Py(boost::python::list& names)
+{
+    setTracesToSaveWhenDumpingCutOneTraceData(to_std_vector<std::string>(names));
+}
+//--------------------------------------------------------------------------------------------------
+boost::python::list liberaLLRFController::getTracesToSaveWhenDumpingCutOneTraceData_Py()const
+{
+    return toPythonList(getTracesToSaveWhenDumpingCutOneTraceData());
+}
+//--------------------------------------------------------------------------------------------------
+boost::python::dict liberaLLRFController::getCutOneTraceData_Py()
+{
+    message("getCutOneTraceData_Py 1");
+
+    std::vector<std::string> keys;
+    std::vector<std::string> timestamps;
+    std::vector<std::vector<double>> data;
+
+    localInterface.getCutOneTraceData(keys,timestamps,data);
+
+    boost::python::dict dictionary;
+
+    std::string timestamp_suffix = "_timestamp";
+    std::string data_suffix      = "_data";
+
+    //message("getCutOneTraceData_Py 2");
+    //sanity check
+
+    if( keys.size() == timestamps.size() && keys.size() == data.size() )
+    {
+        for(auto i = UTL::ZERO_SIZET; i < data.size(); ++i)
+        {
+            std::string timestamp_key = keys[i] + timestamp_suffix;
+            std::string data_key      = keys[i] + data_suffix;
+
+            dictionary[ timestamp_key ] = timestamps[i];
+            dictionary[ data_key      ] = data[i];
+
+            message("Added ", timestamp_key );
+            message("Added ", data_key      );
+        }
+    }
+    return dictionary;
+
+}
 //--------------------------------------------------------------------------------------------------
 boost::python::dict liberaLLRFController::getOneTraceData_Py()const
 {
@@ -649,6 +744,32 @@ bool liberaLLRFController::isNotRFOutput() const
 {
     return localInterface.isNotRFOutput();
 }
+
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::enableRFOutput()
+{
+    return localInterface.enableRFOutput();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::disableRFOutput()
+{
+    return localInterface.disableRFOutput();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::enableRFandLock() // also does the amp and phase lock check boxes ...
+{
+    return localInterface.enableRFandLock();
+}
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::isFFLocked()const
 {

@@ -280,9 +280,24 @@ class liberaLLRFController : public controller
         boost::python::list getKlyFwdPwrRSState_Py(int ampSP_setting);
 #endif
 
+        /* these functions enable you to CHOOSE which traces from onetracedata you want to retuyrn !!oooh  */
+
+        void setTracesToSaveWhenDumpingCutOneTraceData(const std::vector<std::string>& names);
+        std::vector<std::string> getTracesToSaveWhenDumpingCutOneTraceData()const;
+
         std::vector< std::pair<std::string, std::vector<double>> > getOneTraceData()const;
 #ifdef BUILD_DLL
         boost::python::dict getOneTraceData_Py()const;
+        void setTracesToSaveWhenDumpingCutOneTraceData_Py(boost::python::list& names);
+        boost::python::list getTracesToSaveWhenDumpingCutOneTraceData_Py()const;
+        boost::python::dict getCutOneTraceData_Py();
+#endif
+        bool applyPulseShape();
+        bool setAndApplyPulseShape(std::vector<double>& values);
+        bool setPulseShape(std::vector<double>& values);
+#ifdef BUILD_DLL
+        bool setAndApplyPulseShape_Py(boost::python::list values);
+        bool setPulseShape_Py(boost::python::list values);
 #endif
 
 
@@ -469,6 +484,9 @@ class liberaLLRFController : public controller
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
+        bool enableRFOutput();
+        bool disableRFOutput();
+        bool enableRFandLock();
 
         bool setInfiniteMaskEndByPower(const std::string& power_trace,const std::string& phase_trace,const double level);
         bool disableInfiniteMaskEndByPower(const std::string& phase_trace);

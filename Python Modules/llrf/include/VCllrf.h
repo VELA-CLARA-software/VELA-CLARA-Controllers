@@ -429,8 +429,19 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 //        .def("setMaskValue", &liberaLLRFController::setMaskValue,(NAME_ARG,VALUE_ARG), setMaskValue_ds  )
 
 
+        .def("applyPulseShape",    &liberaLLRFController::applyPulseShape, "Apply the current pulse shape table.")
+        .def("setAndApplyPulseShape",    &liberaLLRFController::setAndApplyPulseShape_Py,(VALUE_ARG), "Set the Pulse-Shape table to 'value', then apply it.")
+        .def("setPulseShape",    &liberaLLRFController::setPulseShape_Py,(VALUE_ARG), "Set the Pulse-Shape Table to 'value'")
 
-        .def("getOneTraceData",    &liberaLLRFController::getOneTraceData_Py, "Returns a nestedt list of time-stamp and onetrace data")
+
+        .def("getOneTraceData",    &liberaLLRFController::getOneTraceData_Py, "Returns a dictionary of time-stamp and onetrace data")
+
+        .def("setTracesToSaveWhenDumpingCutOneTraceData",    &liberaLLRFController::setTracesToSaveWhenDumpingCutOneTraceData_Py,
+             "Set traces to return when calling getCutOneTraceData.")
+        .def("getTracesToSaveWhenDumpingCutOneTraceData",    &liberaLLRFController::getTracesToSaveWhenDumpingCutOneTraceData_Py,
+             "Get traces to return when calling getCutOneTraceData.")
+        .def("getCutOneTraceData",    &liberaLLRFController::getCutOneTraceData_Py,
+             "Returns getOneTraceData, (only for traces selected with setTracesToSaveWhenDumpingCutOneTraceDatafo).")
 
         .def("getILockStates",    &liberaLLRFController::getILockStates)
 
@@ -613,6 +624,13 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(boost::python::arg("name")),"Get Low mask for trace 'name'")
 
        // .def("resetAverageTraces",  &liberaLLRFController::resetAverageTraces,"Reset All Rolling Averages")
+
+        .def("disableRFOutput",  &liberaLLRFController::disableRFOutput,"Disable RF Output")
+        .def("enableRFOutput",  &liberaLLRFController::disableRFOutput,"Enable RF Output")
+        .def("enableRFandLock",  &liberaLLRFController::enableRFandLock,"Enable RF Output, and enable FF amp.phase check boxes. ")
+
+        //--------------------------------------------------------------------------------------------------
+
 
         .def("clearMask",  &liberaLLRFController::clearMask,(boost::python::arg("name")),"Clear the masks for trace 'name'")
 
@@ -818,7 +836,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("isNotCheckingMask", isNotCheckingMask_2,(boost::python::arg("LLRF_PV_TYPE")),"Is trace LLRF_PV_TYPE  NOT Checking against a mask?")
 
 
-        .def("getPulseCount", &liberaLLRFController::getPulseCount,(boost::python::arg("name")),"Get Number of traces recieved by this controller for trace 'name'")
+        .def("getPulseCount", &liberaLLRFController::getPulseCount,"Get Number of pulses logged by this controller")
 
 
 //        .def("startTraceMonitoring", startTraceMonitoring_1,"Start all LLRF Trace Monitors")

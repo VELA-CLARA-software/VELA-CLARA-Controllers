@@ -232,6 +232,8 @@ namespace llrfStructs
         std::string name;
         size_t position;
         TRACE_TYPE type;
+        size_t start_index;
+        size_t stop_index;
     };
     /*
         All the info associated with a ONE record for all traces
@@ -551,6 +553,11 @@ namespace llrfStructs
         bool pulse_shape_up_to_date;
         std::vector<double> pulse_shape;
         std::vector<double> last_kly_fwd_pwr_trace;
+
+
+        /* This list can be used when getting all_traces_data_buffer to cut the data  */
+        std::vector<std::string> traces_to_get_when_dumping_all_traces_data_buffer;
+
 
         short timing_trigger; // is the external timing on? needs updating to a proper enum at some point
 
