@@ -52,9 +52,7 @@ namespace llrfStructs
     struct pvStruct;
     // Use this MACRO to define enums. Consider putting ENUMS that are more 'global' in structs.h
     // the LIB_ prefix is for libera LLRF controls, maybe in teh fuitre we get different ones?
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_PV_TYPE,
-//                                                     (LIB_ILOCK_STATE)
-                                                     (LIB_FF_AMP_LOCK_STATE)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_PV_TYPE,(LIB_FF_AMP_LOCK_STATE)
                                                      (LIB_FF_PHASE_LOCK_STATE)
                                                      (LIB_RF_OUTPUT)
                                                      (LIB_AMP_FF)
@@ -62,33 +60,26 @@ namespace llrfStructs
                                                      (LIB_PHI_FF)
                                                      (LIB_PHI_SP)
                                                      (LIB_PWR_REM)
-
                                                      (LIB_PWR_REM_SCAN)
                                                      (LIB_PHASE_REM_SCAN)
                                                      (LIB_AMP_DER_SCAN)
                                                      (LIB_PHASE_DER_SCAN)
                                                      (LIB_PWR_LOCAL_SCAN)
-
                                                      (ALL_TRACES)
                                                      (ALL_TRACES_EVID)
                                                      (ALL_TRACES_SCAN)
                                                      (ALL_TRACES_ACQM)
-
                                                      (LIB_TIME_VECTOR)
                                                      (LIB_PULSE_LENGTH)
                                                      (LIB_PULSE_OFFSET)
                                                      (AMP_MVM)
                                                      (TRIG_SOURCE)
-                                                     (TIMING_TRIGGER)
+                                                     //(TIMING_TRIGGER)
                                                      (PHI_DEG)
                                                      (INTERLOCK)
                                                      (PHASE_LOOP_LOCK)
-
                                                      (PULSE_SHAPE)
                                                      (PULSE_SHAPE_APPLY)
-
-
-
                                                      (UNKNOWN)
                                                   )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)
@@ -122,14 +113,14 @@ namespace llrfStructs
 
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(INTERLOCK_STATE,(NON_ACTIVE)
-                                                  (ACTIVE)
-                                                  (UNKNOWN_INTERLOCK_STATE))
+                                                        (ACTIVE)
+                                                        (UNKNOWN_INTERLOCK_STATE))
 
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(TRIG,(OFF)
-                                                  (EXTERNAL)
-                                                  (INTERNAL)
-                                                  (UNKNOWN_TRIG))
+                                             (EXTERNAL)
+                                             (INTERNAL)
+                                             (UNKNOWN_TRIG))
 
     // monType is to switch in the staticCallbackFunction
     struct monitorStruct
@@ -544,8 +535,13 @@ namespace llrfStructs
             omed_count(UTL::ZERO_SIZET),
             new_outside_mask_event(false),
             keep_kly_fwd_pow_running_stat(false),
-            interface(nullptr)
-                {}
+            interface(nullptr),
+            mean_trace_freq_timer_count(UTL::ZERO_SIZET),
+            mean_trace_freq_timer_max(UTL::TEN_SIZET),
+            shot_to_shot_freq(UTL::DUMMY_DOUBLE),
+            num_traces_to_estimate_rep_rate(UTL::TEN_SIZET),
+            trace_rep_rate(UTL::DUMMY_DOUBLE)
+            {}
         liberallrfInterface* interface;
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
 
@@ -579,6 +575,11 @@ namespace llrfStructs
         size_t duplicate_pulse_count;
         size_t pulse_count;
 
+
+        std::chrono::high_resolution_clock::time_point shot_to_shot_trace_freq_timer;
+        std::chrono::high_resolution_clock::time_point mean_trace_freq_timer;
+        size_t mean_trace_freq_timer_count, mean_trace_freq_timer_max;
+        double mean_freq, shot_to_shot_freq;
 
         //bool collecting_outside_mask_data;
         //std::vector<std::string> outside_mask_trace_name;//????????????????
@@ -616,6 +617,9 @@ namespace llrfStructs
         std::map<HWC_ENUM::ILOCK_NUMBER,HWC_ENUM::iLockPVStruct> iLockPVStructs;
 
 
+        size_t num_traces_to_estimate_rep_rate;
+        std::vector<std::chrono::high_resolution_clock::time_point> trace_times_for_rep_rate;
+        double trace_rep_rate;
 
         /*
             this is the new all traces in one record object

@@ -42,6 +42,7 @@ namespace UTL
     const std::string FALSE = "FALSE";
     const double DUMMY_DOUBLE = -999.999;
     const double ONEEIGHTY_ZERO_DOUBLE = 180.0;
+    const double ONE_MILLION_DOUBLE = 1000000.0;
     const double ONEEIGHTY_DOUBLE = 180.0;
     const double ONEHUNDRED_DOUBLE = 100.0;
     const double TEN_POWER_MINUS_NINE  = 0.000000001;
@@ -384,7 +385,7 @@ namespace UTL
 
     // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
     // except, probably, the VELA TDC :((
-    const std::string PV_SUFFIX_TIMING     = "PV_SUFFIX_TIMING";
+//    const std::string PV_SUFFIX_TIMING     = "PV_SUFFIX_TIMING";
     const std::string PV_SUFFIX_TRIG_SOURCE     = "PV_SUFFIX_TRIG_SOURCE";
     const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
     const std::string PV_SUFFIX_LIB_AMP_SP      = "PV_SUFFIX_LIB_AMP_SP";

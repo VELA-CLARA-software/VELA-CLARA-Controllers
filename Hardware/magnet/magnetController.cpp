@@ -320,17 +320,34 @@ bool magnetController::applyMagnetStateStruct(const magnetStructs::magnetStateSt
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetController::getDBURT(const std::string & fileName)
 {
-    return localInterface.getDBURT(fileName);
+    magnetStructs::magnetStateStruct  temp = localInterface.getDBURT(fileName);
+
+    temp.psuStates_Py = toPythonList(temp.psuStates);
+    temp.magNames_Py  = toPythonList(temp.magNames);
+    temp.riValues_Py  = toPythonList(temp.riValues);
+    temp.siValues_Py  = toPythonList(temp.siValues);
+
+    return temp;
 }
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetController::getDBURTCorOnly(const std::string & fileName)
 {
-    return localInterface.getDBURTCorOnly(fileName);
+    magnetStructs::magnetStateStruct  temp = localInterface.getDBURTCorOnly(fileName);
+    temp.psuStates_Py = toPythonList(temp.psuStates);
+    temp.magNames_Py  = toPythonList(temp.magNames);
+    temp.riValues_Py  = toPythonList(temp.riValues);
+    temp.siValues_Py  = toPythonList(temp.siValues);
+    return temp;
 }
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct magnetController::getDBURTQuadOnly(const std::string & fileName)
 {
-    return localInterface.getDBURTQuadOnly(fileName);
+    magnetStructs::magnetStateStruct  temp = localInterface.getDBURTQuadOnly(fileName);
+    temp.psuStates_Py = toPythonList(temp.psuStates);
+    temp.magNames_Py  = toPythonList(temp.magNames);
+    temp.riValues_Py  = toPythonList(temp.riValues);
+    temp.siValues_Py  = toPythonList(temp.siValues);
+    return temp;
 }
 //______________________________________________________________________________
 bool magnetController::applyDBURT(const std::string & fileName)

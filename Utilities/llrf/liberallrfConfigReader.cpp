@@ -357,13 +357,10 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::TRIG_SOURCE, val);
         }
-        else if(key == PV_SUFFIX_TIMING)
-        {
-            addToPVStruct(pvs, LLRF_PV_TYPE::TIMING_TRIGGER, val);
-        }
-
-
-
+//        else if(key == PV_SUFFIX_TIMING)
+//        {
+//            addToPVStruct(pvs, LLRF_PV_TYPE::TIMING_TRIGGER, val);
+//        }
         // individual trace scans (needed so we can turn updating off)
         else if(key == PV_SUFFIX_PWR_REM_SCAN)
         {

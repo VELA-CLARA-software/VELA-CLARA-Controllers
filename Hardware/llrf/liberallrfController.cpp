@@ -67,8 +67,16 @@ bool liberaLLRFController::setTORACQMEvent()
 {
     return localInterface.setTORACQMEvent();
 }
-
-
+//------------------------------------------------------------------------------
+int liberaLLRFController::getTORACQM()const
+{
+    return localInterface.getTORACQM();
+}
+//------------------------------------------------------------------------------
+int liberaLLRFController::getTORSCAN()const
+{
+    return localInterface.getTORSCAN();
+}
 //--------------------------------------------------------------------------------------------------
 /*             __           __   ___ ___ ___  ___  __   __
     |\/|  /\  /__` |__/    /__` |__   |   |  |__  |__) /__`
@@ -683,10 +691,10 @@ boost::python::dict liberaLLRFController::getCutOneTraceData_Py()
             std::string data_key      = keys[i] + data_suffix;
 
             dictionary[ timestamp_key ] = timestamps[i];
-            dictionary[ data_key      ] = data[i];
+            dictionary[ data_key      ] = toPythonList(data[i]);
 
-            message("Added ", timestamp_key );
-            message("Added ", data_key      );
+            //message("Added ", timestamp_key );
+            //message("Added ", data_key      );
         }
     }
     return dictionary;
@@ -712,7 +720,37 @@ boost::python::dict liberaLLRFController::getOneTraceData_Py()const
     return dictionary;
 }
 #endif
-
+//--------------------------------------------------------------------------------------------------
+std::pair<std::string, std::vector<double>> liberaLLRFController::getTraceData(const std::string& name)const
+{
+    return localInterface.getTraceData(name);
+}
+//--------------------------------------------------------------------------------------------------
+std::vector<std::pair<std::string, std::vector<double>>> liberaLLRFController::getTraceDataBuffer(const std::string& name)const
+{
+    return localInterface.getTraceDataBuffer(name);
+}
+//--------------------------------------------------------------------------------------------------
+#ifdef BUILD_DLL
+boost::python::dict liberaLLRFController::getTraceData_Py(const std::string& name)
+{
+    std::pair<std::string, std::vector<double>> ret = localInterface.getTraceData(name);
+    boost::python::dict dictionary;
+    dictionary[ ret.first] = toPythonList(ret.second);
+    return dictionary;
+}
+//--------------------------------------------------------------------------------------------------
+boost::python::dict liberaLLRFController::getTraceDataBuffer_Py(const std::string& name)
+{
+    std::vector<std::pair<std::string, std::vector<double>>>  ret = localInterface.getTraceDataBuffer(name);
+    boost::python::dict dictionary;
+    for(auto&&it:ret)
+    {
+        dictionary[ it.first] = toPythonList(it.second);
+    }
+    return dictionary;
+}
+#endif
 
 //--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::isAmpFFLocked()const
@@ -795,24 +833,47 @@ bool liberaLLRFController::isInterlockNotActive()const
 {
     return localInterface.isInterlockNotActive();
 }
+bool liberaLLRFController::setInterlockNonActive()
+{
+    return localInterface.setInterlockNonActive();
+}
 
 
+////--------------------------------------------------------------------------------------------------
+//bool liberaLLRFController::externalTriggerOn()
+//{
+//    return localInterface.externalTriggerOn();
+//}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setUnwrapPhaseTolerance(const std::string& name,const double value)
+{
+    return localInterface.setUnwrapPhaseTolerance(name, value);
+}
 //--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setUnwrapPhaseTolerance(const double value)
 {
     return localInterface.setUnwrapPhaseTolerance(value);
 }
 //--------------------------------------------------------------------------------------------------
-bool liberaLLRFController::setUnwrapPhaseTolerance(const std::string& name,const double value)
+
+
+
+/* These functions calculte the rep rate of data as received by this interface. */
+void liberaLLRFController::setNumTracesToEstimateRepRate(size_t value)
 {
-    return localInterface.setUnwrapPhaseTolerance(name, value);
+     localInterface.setNumTracesToEstimateRepRate(value);
 }
-
 //--------------------------------------------------------------------------------------------------
-
-
-
-
+size_t liberaLLRFController::getNumTracesToEstimateRepRate() const
+{
+    return localInterface.getNumTracesToEstimateRepRate();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getTraceRepRate() const
+{
+    return localInterface.getTraceRepRate();
+}
+//--------------------------------------------------------------------------------------------------
 
 
 

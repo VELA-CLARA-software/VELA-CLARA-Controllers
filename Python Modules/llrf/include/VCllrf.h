@@ -204,6 +204,12 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("UNKNOWN_TRIG", TRIG::UNKNOWN_TRIG)
         ;
 
+    enum_<INTERLOCK_STATE>("INTERLOCK_STATE")
+        .value("NON_ACTIVE",INTERLOCK_STATE::NON_ACTIVE)
+        .value("ACTIVE",INTERLOCK_STATE::ACTIVE)
+        .value("UNKNOWN_INTERLOCK_STATE", INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE)
+        ;
+
     enum_<LLRF_SCAN>("LLRF_SCAN")
         .value("PASSIVE",LLRF_SCAN::PASSIVE)
         .value("EVENT",LLRF_SCAN::EVENT)
@@ -393,16 +399,21 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("kly_fwd_power_max", &liberallrfObject::kly_fwd_power_max,"Max value from latest Klystron Forward Power trace. (If monitored).")
         .def_readonly("check_mask",      &liberallrfObject::check_mask,"should check mask")
         .def_readonly("can_increase_active_pulses",      &liberallrfObject::can_increase_active_pulses,"can_increase_active_pulses value")
+        .def_readonly("num_traces_to_estimate_rep_rate",      &liberallrfObject::num_traces_to_estimate_rep_rate,"how many trace time stamps to use to calculwte rep-rate")
+        .def_readonly("trace_rep_rate",      &liberallrfObject::trace_rep_rate,"Repetation rate last of num_traces_to_estimate_rep_rate traces")
         ;
 
     using namespace UTL;
     class_<liberaLLRFController, bases<controller>, boost::noncopyable>
         ("liberaLLRFController","liberaLLRFController Doc String: Main functions for LLRF control",no_init )
 
-        .def("setTORACQMEvent",    &liberaLLRFController::setTORACQMEvent)
-        .def("setTORSCANToIOIntr", &liberaLLRFController::setTORSCANToIOIntr)
-        .def("setTORSCANToPassive", &liberaLLRFController::setTORSCANToPassive)
-        .def("resetTORSCANToIOIntr", &liberaLLRFController::resetTORSCANToIOIntr)
+
+        .def("getTORACQM",     &liberaLLRFController::getTORACQM,"get the current one-trace record ACQM value")
+        .def("getTORSCAN",    &liberaLLRFController::getTORSCAN,"get the current one-trace record SCAN value")
+        .def("setTORACQMEvent",    &liberaLLRFController::setTORACQMEvent,"get the current one-trace record ACQM Event")
+        .def("setTORSCANToIOIntr", &liberaLLRFController::setTORSCANToIOIntr,"set the current one-trace record SCAN to IO/Intr")
+        .def("setTORSCANToPassive", &liberaLLRFController::setTORSCANToPassive,"set the current one-trace record SCAN to passive")
+        .def("resetTORSCANToIOIntr", &liberaLLRFController::resetTORSCANToIOIntr,"set the current one-trace record ACQM value")
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -416,6 +427,11 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setActivePulseCount",  &liberaLLRFController::setActivePulseCount,(VALUE_ARG),setActivePulseCount_ds)
         .def("addActivePulseCountOffset",  &liberaLLRFController::addActivePulseCountOffset,(VALUE_ARG), addActivePulseCountOffset_ds)
 //--------------------------------------------------------------------------------------------------------------------------------------
+
+        .def("getTraceData",  &liberaLLRFController::getTraceData_Py,(NAME_ARG), "Get the lates trace data for trace 'name'")
+        .def("getTraceDataBuffer",  &liberaLLRFController::getTraceDataBuffer_Py,(NAME_ARG), "Get the lates trace data for trace 'name'")
+
+
 
 
         .def("setUnwrapPhaseTolerance",   setUnwrapPhaseTolerance_1,(NAME_ARG, VALUE_ARG), setUnwrapPhaseTolerance_1_ds)
@@ -497,6 +513,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
         .def("getOutsideMaskEventCount", &liberaLLRFController::getOutsideMaskEventCount, getOutsideMaskEventCount_ds )
+
+
+
+        /* These functions calculte the rep rate of data as received by this interface. */
+
+        .def("setNumTracesToEstimateRepRate", &liberaLLRFController::setNumTracesToEstimateRepRate,(VALUE_ARG), "setNumTracesToEstimateRepRate" )
+        .def("getNumTracesToEstimateRepRate", &liberaLLRFController::getNumTracesToEstimateRepRate, "getNumTracesToEstimateRepRate" )
+        .def("getTraceRepRate", &liberaLLRFController::getTraceRepRate, "getTraceRepRate" )
 
 
 
@@ -631,7 +655,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         //--------------------------------------------------------------------------------------------------
 
-
+        .def("setInterlockNonActive",  &liberaLLRFController::setInterlockNonActive,"Sets the LLRF interlock to NON active")
+        //.def("externalTriggerOn",  &liberaLLRFController::externalTriggerOn,"Sets the LLRF trigger to ON  to NON active")
         .def("clearMask",  &liberaLLRFController::clearMask,(boost::python::arg("name")),"Clear the masks for trace 'name'")
 
         .def("fullLLRFTraceName",  &liberaLLRFController::fullLLRFTraceName,(NAME_ARG),"Returns full (i.e. longform) trace-name for 'name'")

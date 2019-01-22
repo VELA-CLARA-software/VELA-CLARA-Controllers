@@ -1531,6 +1531,14 @@ magnetStateStruct magnetInterface::getDBURT(const std::string& fileName)
 {
     dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES, myMachineArea);
     message("getting DBURT ",fileName);
+
+#ifdef BUILD_DLL
+            boost::python::list magNames_Py;
+            boost::python::list psuStates_Py;
+            boost::python::list riValues_Py;
+            boost::python::list siValues_Py;
+#endif
+
     return dbr.readDBURT(fileName);
 }
 //______________________________________________________________________________

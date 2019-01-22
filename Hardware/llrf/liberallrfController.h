@@ -260,8 +260,8 @@ class liberaLLRFController : public controller
         bool shouldCheckMasks(const std::string& name);
 
 
-
-
+        int getTORACQM()const;
+        int getTORSCAN()const;
 
 
         bool setTORSCANToIOIntr();
@@ -300,6 +300,15 @@ class liberaLLRFController : public controller
         bool setPulseShape_Py(boost::python::list values);
 #endif
 
+        std::pair<std::string, std::vector<double>> getTraceData(const std::string& name)const;
+        std::vector<std::pair<std::string, std::vector<double>>> getTraceDataBuffer(const std::string& name)const;
+#ifdef BUILD_DLL
+        boost::python::dict getTraceData_Py(const std::string& name);
+        boost::python::dict getTraceDataBuffer_Py(const std::string& name);
+#endif
+
+        bool setInterlockNonActive();
+//        bool externalTriggerOn();
 
         // GETTERS
         double getAmpFF();
@@ -319,6 +328,12 @@ class liberaLLRFController : public controller
         bool trigOff();
         bool trigExt();
         bool trigInt();
+
+
+        /* These functions calculte the rep rate of data as received by this interface. */
+        void setNumTracesToEstimateRepRate(size_t value);
+        size_t getNumTracesToEstimateRepRate() const;
+        double getTraceRepRate() const;
 
 
         llrfStructs::TRIG getTrigSource();
