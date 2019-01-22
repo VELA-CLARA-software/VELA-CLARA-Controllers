@@ -34,6 +34,18 @@
 #ifndef __CINT__
 #include <cadef.h>
 #endif
+#ifdef BUILD_DLL
+#include <boost/python.hpp>
+#include <boost/python/detail/wrap_python.hpp>
+#include <boost/python.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/args.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/return_value_policy.hpp>
+#include <boost/python/overloads.hpp>
+#endif
 ////______________________________________________________________________________
 class magnetInterface;
 namespace magnetStructs
@@ -205,6 +217,12 @@ namespace magnetStructs
         std::vector<std::string> magNames;
         std::vector<MAG_PSU_STATE> psuStates;
         std::vector<double> siValues,riValues;
+        #ifdef BUILD_DLL
+            boost::python::list magNames_Py;
+            boost::python::list psuStates_Py;
+            boost::python::list riValues_Py;
+            boost::python::list siValues_Py;
+        #endif
     };
 }
 #endif // _VELA_MAGNET_STRUCTS_H_

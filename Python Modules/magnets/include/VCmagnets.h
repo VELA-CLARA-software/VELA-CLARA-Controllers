@@ -291,10 +291,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_Magnet_Control)
         ("magnetStateStruct","magnetStateStruct Doc String")
         .add_property("numMags",     &magnetStructs::magnetStateStruct::numMags)
         .add_property("machineArea", &magnetStructs::magnetStateStruct::machineArea)
-        .add_property("magNames",    &magnetStructs::magnetStateStruct::magNames)
-        .add_property("psuStates",   &magnetStructs::magnetStateStruct::psuStates)
-        .add_property("siValues",    &magnetStructs::magnetStateStruct::siValues)
-        .add_property("riValues",    &magnetStructs::magnetStateStruct::riValues)
+        .add_property("magNames",    &magnetStructs::magnetStateStruct::magNames_Py)
+        .add_property("psuStates",   &magnetStructs::magnetStateStruct::psuStates_Py)
+        .add_property("siValues",    &magnetStructs::magnetStateStruct::siValues_Py)
+        .add_property("riValues",    &magnetStructs::magnetStateStruct::riValues_Py)
         ;
 
     // magnet object struct to be exposed, used when returning a magnetobject reference
