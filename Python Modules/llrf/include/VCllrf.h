@@ -430,28 +430,17 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getTraceData",  &liberaLLRFController::getTraceData_Py,(NAME_ARG), "Get the lates trace data for trace 'name'")
         .def("getTraceDataBuffer",  &liberaLLRFController::getTraceDataBuffer_Py,(NAME_ARG), "Get the lates trace data for trace 'name'")
-
-
-
-
         .def("setUnwrapPhaseTolerance",   setUnwrapPhaseTolerance_1,(NAME_ARG, VALUE_ARG), setUnwrapPhaseTolerance_1_ds)
         .def("setUnwrapPhaseTolerance", setUnwrapPhaseTolerance_2,(VALUE_ARG),           setUnwrapPhaseTolerance_2_ds)
-
-
-
 
 //        .def("usePercentMask",  &liberaLLRFController::usePercentMask, (NAME_ARG), usePercentMask_ds  )
 //        .def("useAbsoluteMask", &liberaLLRFController::useAbsoluteMask,(NAME_ARG), useAbsoluteMask_ds  )
 //        .def("setMaskValue", &liberaLLRFController::setMaskValue,(NAME_ARG,VALUE_ARG), setMaskValue_ds  )
 
-
         .def("applyPulseShape",    &liberaLLRFController::applyPulseShape, "Apply the current pulse shape table.")
         .def("setAndApplyPulseShape",    &liberaLLRFController::setAndApplyPulseShape_Py,(VALUE_ARG), "Set the Pulse-Shape table to 'value', then apply it.")
         .def("setPulseShape",    &liberaLLRFController::setPulseShape_Py,(VALUE_ARG), "Set the Pulse-Shape Table to 'value'")
-
-
         .def("getOneTraceData",    &liberaLLRFController::getOneTraceData_Py, "Returns a dictionary of time-stamp and onetrace data")
-
         .def("setTracesToSaveWhenDumpingCutOneTraceData",    &liberaLLRFController::setTracesToSaveWhenDumpingCutOneTraceData_Py,
              "Set traces to return when calling getCutOneTraceData.")
         .def("getTracesToSaveWhenDumpingCutOneTraceData",    &liberaLLRFController::getTracesToSaveWhenDumpingCutOneTraceData_Py,
@@ -471,10 +460,16 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPhiLLRF", &liberaLLRFController::getPhiLLRF,"Return the Phase in LLRF Units")
         .def("getBreakDownRate", &liberaLLRFController::getBreakDownRate,"Return estimate of breakdowns per second.")
 
+
+        .def("isTrigExternal", &liberaLLRFController::isTrigExternal,"Return true if trig is in external mode.")
+
+
+        .def("lockAmpFF", &liberaLLRFController::lockAmpFF,"Lock the amp FF check box.")
+        .def("lockPhaseFF", &liberaLLRFController::lockPhaseFF,"Lock the phase FF check box.")
+
         .def("getPhiCalibration", &liberaLLRFController::getPhiCalibration,"Return Linear Conversion of Phase from LLRF units to degrees")
         .def("getAmpCalibration", &liberaLLRFController::getAmpCalibration,"Return Linear Conversion of Amplitude from LLRF units to MV/m")
         .def("getCrestPhiLLRF",   &liberaLLRFController::getCrestPhiLLRF,"Return the Crest Phase in LLRF Units")
-
 
         .def("getLLRFObjConstRef",&liberaLLRFController::getLLRFObjConstRef,return_value_policy<reference_existing_object>(),"Return LLRF Object Reference")
         .def("getTraceDataConstRef",&liberaLLRFController::getTraceDataConstRef,return_value_policy<reference_existing_object>(),(NAME_ARG),"Return reference to LLRF Trace Object 'name'")

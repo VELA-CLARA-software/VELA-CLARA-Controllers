@@ -328,7 +328,7 @@ class liberaLLRFController : public controller
         bool trigOff();
         bool trigExt();
         bool trigInt();
-
+        bool isTrigExternal();
 
         /* These functions calculte the rep rate of data as received by this interface. */
         void setNumTracesToEstimateRepRate(size_t value);
@@ -350,6 +350,11 @@ class liberaLLRFController : public controller
         bool isPhaseFFNotLocked()const;
         bool isFFLocked()const;
         bool isFFNotLocked()const;
+
+        bool lockAmpFF();
+        bool lockPhaseFF();
+
+
         bool RFOutput()const;
         bool isRFOutput() const;
         bool isNotRFOutput() const;

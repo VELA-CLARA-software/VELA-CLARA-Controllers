@@ -539,7 +539,7 @@ namespace llrfStructs
             mean_trace_freq_timer_count(UTL::ZERO_SIZET),
             mean_trace_freq_timer_max(UTL::TEN_SIZET),
             shot_to_shot_freq(UTL::DUMMY_DOUBLE),
-            num_traces_to_estimate_rep_rate(UTL::TEN_SIZET),
+            num_traces_to_estimate_rep_rate(UTL::HUNDRED_SIZET),
             trace_rep_rate(UTL::DUMMY_DOUBLE)
             {}
         liberallrfInterface* interface;

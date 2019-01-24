@@ -281,6 +281,8 @@ namespace UTL
     const std::string VELA_BA2_SCREENS_CONFIG  = "velaBA2Screens.config";
     const std::string CLARA_PH1_SCREENS_CONFIG = "claraPH1Screens.config";
     const std::string C2B_SCREENS_CONFIG       = "C2BScreens.config";
+    const std::string ALL_VELA_CLARA_SCREENS_CONFIG = "allScreen.config";
+
 /// PI Laser
     /// PI Laser configs
     const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";

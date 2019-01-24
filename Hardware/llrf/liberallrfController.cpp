@@ -802,7 +802,10 @@ bool liberaLLRFController::enableRFandLock() // also does the amp and phase lock
     return localInterface.enableRFandLock();
 }
 
-
+bool liberaLLRFController::isTrigExternal() // also does the amp and phase lock check boxes ...
+{
+    return localInterface.isTrigExternal();
+}
 
 
 //--------------------------------------------------------------------------------------------------
@@ -837,6 +840,19 @@ bool liberaLLRFController::setInterlockNonActive()
 {
     return localInterface.setInterlockNonActive();
 }
+
+bool liberaLLRFController::lockAmpFF()
+{
+    return localInterface.lockAmpFF();
+}
+//--------------------------------------------------------------------------------------------------
+
+bool liberaLLRFController::lockPhaseFF()
+{
+
+    return localInterface.lockPhaseFF();
+}
+//--------------------------------------------------------------------------------------------------
 
 
 ////--------------------------------------------------------------------------------------------------

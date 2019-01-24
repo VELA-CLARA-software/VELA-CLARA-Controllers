@@ -35,6 +35,9 @@
 #include <mutex>
 #include <chrono>
 #include <stdlib.h>
+
+#include <bitset>
+
 /* seems like we might be in some state of mutex-hell here, wher eto use them adn where not?? */
 std::mutex mtx;    // mutex for critical section
 /* boost */
@@ -428,15 +431,21 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
 //            break;
         case LLRF_PV_TYPE::TRIG_SOURCE:
             updateTrigState(args);
+            message("TRIG_SOURCE = ", ENUM_TO_STRING(llrf.trig_source));
+
             break;
         case LLRF_PV_TYPE::LIB_FF_AMP_LOCK_STATE:
             updateBoolState(args, llrf.ff_amp_lock_state);
+            message("LIB_FF_AMP_LOCK_STATE = ", llrf.ff_amp_lock_state);
             break;
         case LLRF_PV_TYPE::LIB_FF_PHASE_LOCK_STATE:
             updateBoolState(args, llrf.ff_ph_lock_state);
+            message("LIB_FF_PHASE_LOCK_STATE = ", llrf.ff_ph_lock_state);
             break;
         case LLRF_PV_TYPE::LIB_RF_OUTPUT:
             updateBoolState(args, llrf.rf_output);
+            message("LIB_RF_OUTPUT = ", llrf.rf_output);
+
             break;
         case LLRF_PV_TYPE::LIB_AMP_FF:
             llrf.amp_ff = getDBRdouble(args);
@@ -451,8 +460,17 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
             llrf.phi_DEG = (llrf.phi_ff) * (llrf.phiCalibration);
             break;
         case LLRF_PV_TYPE::LIB_PHI_SP:
+            {
+
             llrf.phi_sp = getDBRdouble(args);
             llrf.phi_DEG = (llrf.phi_sp) * (llrf.phiCalibration);
+            message("LLRF_PV_TYPE::LIB_PHI_SP = ", llrf.phi_sp);
+
+            double t = *(double*)args.dbr;
+
+            std::cout << std::bitset<32>(*(double*)args.dbr) << std::endl;
+
+            }
             break;
         case LLRF_PV_TYPE::LIB_TIME_VECTOR:
             /* the time_vector is simlar to a trace, but we can just update the values straight away */
@@ -497,8 +515,10 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
             {
                 case 0: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::NON_ACTIVE; break;
                 case 1: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::ACTIVE; break;
-                default: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::NON_ACTIVE;
+                default: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE;
             }
+            message("INTERLOCK = ", ENUM_TO_STRING(llrf.interlock_state));
+
             break;
         default:
             debugMessage("ERROR updateLLRFValue passed Unknown PV Type = ", ENUM_TO_STRING(pv));
@@ -1966,7 +1986,15 @@ bool liberallrfInterface::lockAmpFF()
 bool liberallrfInterface::lockPhaseFF()
 {
     if(isPhaseFFNotLocked())
+    {
+        message("isPhaseFFNotLocked() == TRUE, attempting to lock phase");
         return setValue<short>(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_FF_PHASE_LOCK_STATE),UTL::ONE_US);
+    }
+    else
+    {
+        message("isPhaseFFNotLocked() == FALSE, no need to lock phase");
+
+    }
     return true;
 }
 //---------------------------------------------------------------------------------------------------------
@@ -2076,7 +2104,7 @@ bool liberallrfInterface::isAmpFFNotLocked()const
 //---------------------------------------------------------------------------------------------------------
 bool liberallrfInterface::isPhaseFFLocked()const
 {
-    return llrf.ff_amp_lock_state;
+    return llrf.ff_ph_lock_state;
 }
 //---------------------------------------------------------------------------------------------------------
 bool liberallrfInterface::isPhaseFFNotLocked()const
@@ -4186,6 +4214,7 @@ bool liberallrfInterface::setPulseOffset(double value)
 //____________________________________________________________________________________________
 bool liberallrfInterface::setPhiSP(double value)
 {
+    message("liberallrfInterface::setPhiSP = ", value);
     return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP),value);
 }
 //____________________________________________________________________________________________
