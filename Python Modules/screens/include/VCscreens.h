@@ -73,6 +73,12 @@ class VCscreens : public VCbase
         screenController& offline_C2B_Screen_Controller();
         screenController& physical_C2B_Screen_Controller();
 
+
+        ///ALL_VELA_CLARA
+        screenController& virtual_Screen_Controller();
+        screenController& offline_Screen_Controller();
+        screenController& physical_Screen_Controller();
+
 //        void setQuiet();
 //        void setVerbose();
 //        void setMessage();
@@ -114,7 +120,12 @@ class VCscreens : public VCbase
         screenController* offline_C2B_Screen_Controller_Obj;
         screenController* physical_C2B_Screen_Controller_Obj;
 
-        const HWC_ENUM::MACHINE_AREA  VELA_INJ, VELA_BA1, VELA_BA2, CLARA_PH1, UNKNOWN_AREA;
+        screenController* virtual_Screen_Controller_Obj;
+        screenController* offline_Screen_Controller_Obj;
+        screenController* physical_Screen_Controller_Obj;
+
+
+        const HWC_ENUM::MACHINE_AREA  VELA_INJ, VELA_BA1, VELA_BA2, CLARA_PH1, UNKNOWN_AREA, ALL_VELA_CLARA;
 };
 /// FUNCTION OVERLOADING, if you have overloaded functions, or ones with default parameters
 /// Create a load of different function pointers and use them in the bindings
@@ -332,7 +343,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* getHVMoverScreensString = "Returns a list of all H/V mover screens";
     char const* isClearForBeam_ds = "Are all elements (apart from, maybe,  an RF Cage) removed from the beam axis.";
 
-    docstruxt_vec ={};
+//    docstruxt_vec ={};
 
     using namespace boost::python;
     class_<screenController, boost::python::bases<controller>, boost::noncopyable>
@@ -386,6 +397,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("messagesOn",              &screenController::messagesOn                               )
         .def("silence",                 &screenController::silence                                  )
         .def("verbose",                 &screenController::verbose                                  )
+        .def("get_SCREEN_STATE_Definition",                 &screenController::get_SCREEN_STATE_Definition , "return dict of screen_state enum and string versions")
+        .def("get_DRIVER_STATE_Definition",                 &screenController::get_DRIVER_STATE_Definition , "return dict of screen_driver enum and string versions")
     ;
 
     /// The main class that creates all the controller obejcts
@@ -422,6 +435,15 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
              return_value_policy<reference_existing_object>())
         .def("physical_C2B_Screen_Controller",  &VCscreens::physical_C2B_Screen_Controller,
              return_value_policy<reference_existing_object>())
+
+        .def("virtual_Screen_Controller",  &VCscreens::virtual_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("offline_Screen_Controller",  &VCscreens::offline_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+        .def("physical_Screen_Controller",  &VCscreens::physical_Screen_Controller,
+             return_value_policy<reference_existing_object>())
+
+
 
         .def("getScreenController",  &VCscreens::getScreenController,
              return_value_policy<reference_existing_object>())

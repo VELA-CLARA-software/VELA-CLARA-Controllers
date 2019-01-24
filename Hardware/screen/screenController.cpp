@@ -289,6 +289,9 @@ const std::vector< screenStructs::screenObject > screenController::getScreensWit
 {
     return localInterface.getScreensWithCameras();
 }
+
+
+
 ////________________________________________________________________________________
 //bool screenController::isScreenInPosition(const std::string & name, screenStructs::SCREEN_STATE sta)
 //{

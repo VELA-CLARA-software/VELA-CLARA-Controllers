@@ -40,10 +40,15 @@ physical_CLARA_PH1_Screen_Controller_Obj(nullptr),
 virtual_C2B_Screen_Controller_Obj(nullptr),
 offline_C2B_Screen_Controller_Obj(nullptr),
 physical_C2B_Screen_Controller_Obj(nullptr),
+virtual_Screen_Controller_Obj(nullptr),
+offline_Screen_Controller_Obj(nullptr),
+physical_Screen_Controller_Obj(nullptr),
+
 VELA_INJ ( HWC_ENUM::MACHINE_AREA::VELA_INJ ),
 VELA_BA1 ( HWC_ENUM::MACHINE_AREA::VELA_BA1 ),
 VELA_BA2 ( HWC_ENUM::MACHINE_AREA::VELA_BA2 ),
 CLARA_PH1( HWC_ENUM::MACHINE_AREA::CLARA_PH1 ),
+ALL_VELA_CLARA( HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA ),
 UNKNOWN_AREA(HWC_ENUM::MACHINE_AREA::UNKNOWN_AREA)
 {
     //ctor
@@ -171,7 +176,7 @@ screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
     return getController(offline_VELA_INJ_Screen_Controller_Obj,
                          screenconf,
                          name,
-                         withVM,
+                         withoutVM,
                          withoutEPICS,
                          HWC_ENUM::MACHINE_AREA::VELA_INJ);
 }
@@ -207,7 +212,7 @@ screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
     return getController(offline_VELA_BA1_Screen_Controller_Obj,
                          screenconf,
                          name,
-                         withVM,
+                         withoutVM,
                          withoutEPICS,
                          HWC_ENUM::MACHINE_AREA::VELA_BA1);
 }
@@ -243,7 +248,7 @@ screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
     return getController(offline_VELA_BA2_Screen_Controller_Obj,
                          screenconf,
                          name,
-                         withVM,
+                         withoutVM,
                          withoutEPICS,
                          HWC_ENUM::MACHINE_AREA::VELA_BA2);
 }
@@ -279,7 +284,7 @@ screenController& VCscreens::offline_CLARA_PH1_Screen_Controller()
     return getController(offline_CLARA_PH1_Screen_Controller_Obj,
                          screenconf,
                          name,
-                         withVM,
+                         withoutVM,
                          withoutEPICS,
                          HWC_ENUM::MACHINE_AREA::CLARA_PH1);
 }
@@ -315,7 +320,7 @@ screenController& VCscreens::offline_C2B_Screen_Controller()
     return getController(offline_C2B_Screen_Controller_Obj,
                          screenconf,
                          name,
-                         withVM,
+                         withoutVM,
                          withoutEPICS,
                          HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
 }
@@ -331,7 +336,43 @@ screenController& VCscreens::physical_C2B_Screen_Controller()
                          withEPICS,
                          HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
 }
-//______________________________________________________________________________
+//------------------------------------------------------------------------------------
+screenController& VCscreens::offline_Screen_Controller()
+{
+    std::string name  = "offline_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
+    return getController(virtual_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         ALL_VELA_CLARA);
+}
+//------------------------------------------------------------------------------------
+screenController& VCscreens::virtual_Screen_Controller()
+{
+    std::string name  = "virtual_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
+    return getController(virtual_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         ALL_VELA_CLARA);
+}
+//------------------------------------------------------------------------------------
+screenController& VCscreens::physical_Screen_Controller()
+{
+    std::string name  = "physical_Screen_Controller";
+    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
+    return getController(physical_Screen_Controller_Obj,
+                         screenconf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         ALL_VELA_CLARA);
+}
+//------------------------------------------------------------------------------------
 screenController& VCscreens::getScreenController( const HWC_ENUM::MACHINE_MODE mode, const HWC_ENUM::MACHINE_AREA area )
 {
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
@@ -368,6 +409,15 @@ screenController& VCscreens::getScreenController( const HWC_ENUM::MACHINE_MODE m
         return virtual_C2B_Screen_Controller();
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_2_BA1_BA2 )
         return physical_C2B_Screen_Controller();
+
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::ALL_VELA_CLARA)
+        return offline_Screen_Controller();
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::ALL_VELA_CLARA )
+        return virtual_Screen_Controller();
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::ALL_VELA_CLARA )
+        return physical_Screen_Controller();
+
+
 }
 //______________________________________________________________________________
 void VCscreens::updateMessageStates()
