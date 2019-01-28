@@ -48,6 +48,9 @@ class VCcharge : public VCbase
         chargeController & virtual_C2B_Charge_Controller();
         chargeController & offline_C2B_Charge_Controller();
         chargeController & physical_C2B_Charge_Controller();
+        chargeController & virtual_Charge_Controller();
+        chargeController & offline_Charge_Controller();
+        chargeController & physical_Charge_Controller();
         chargeController & getChargeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area );
 
     protected:
@@ -78,6 +81,9 @@ class VCcharge : public VCbase
         chargeController * virtual_C2B_Charge_Controller_Obj;
         chargeController * offline_C2B_Charge_Controller_Obj;
         chargeController * physical_C2B_Charge_Controller_Obj;
+        chargeController * virtual_Charge_Controller_Obj;
+        chargeController * offline_Charge_Controller_Obj;
+        chargeController * physical_Charge_Controller_Obj;
 };
 
 #ifdef BUILD_DLL
@@ -240,6 +246,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Charge_Control )
         .def("virtual_C2B_Charge_Controller",        &VCcharge::virtual_C2B_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("offline_C2B_Charge_Controller",        &VCcharge::offline_C2B_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("physical_C2B_Charge_Controller",       &VCcharge::physical_C2B_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("virtual_Charge_Controller",            &VCcharge::virtual_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("offline_Charge_Controller",            &VCcharge::offline_Charge_Controller, return_value_policy<reference_existing_object>())
+        .def("physical_Charge_Controller",           &VCcharge::physical_Charge_Controller, return_value_policy<reference_existing_object>())
         .def("getChargeController",                  &VCcharge::getChargeController, return_value_policy<reference_existing_object>())
         ;
 };

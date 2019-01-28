@@ -18,7 +18,10 @@ offline_CLARA_PH1_Charge_Controller_Obj(nullptr),
 physical_CLARA_PH1_Charge_Controller_Obj(nullptr),
 virtual_C2B_Charge_Controller_Obj(nullptr),
 offline_C2B_Charge_Controller_Obj(nullptr),
-physical_C2B_Charge_Controller_Obj(nullptr)
+physical_C2B_Charge_Controller_Obj(nullptr),
+virtual_Charge_Controller_Obj(nullptr),
+offline_Charge_Controller_Obj(nullptr),
+physical_Charge_Controller_Obj(nullptr)
 {
     //ctor
 }
@@ -99,6 +102,21 @@ VCcharge::~VCcharge()
     {
         delete physical_C2B_Charge_Controller_Obj;
                physical_C2B_Charge_Controller_Obj = nullptr;
+    }
+    if(virtual_Charge_Controller_Obj)
+    {
+        delete virtual_Charge_Controller_Obj;
+               virtual_Charge_Controller_Obj = nullptr;
+    }
+    if(offline_Charge_Controller_Obj)
+    {
+        delete offline_Charge_Controller_Obj;
+               offline_Charge_Controller_Obj = nullptr;
+    }
+    if(physical_Charge_Controller_Obj)
+    {
+        delete physical_Charge_Controller_Obj;
+               physical_Charge_Controller_Obj = nullptr;
     }
 }    //dtor
 //______________________________________________________________________________
@@ -308,6 +326,42 @@ chargeController & VCcharge::physical_C2B_Charge_Controller()
                          HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2);
 }
 //______________________________________________________________________________
+chargeController & VCcharge::virtual_Charge_Controller()
+{
+    std::string name  = "virtual_Charge_Controller";
+    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
+    return getController(virtual_Charge_Controller_Obj,
+                         chargeconf1,
+                         name,
+                         withEPICS,
+                         withVM,
+                         HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA);
+}
+//______________________________________________________________________________
+chargeController & VCcharge::offline_Charge_Controller()
+{
+    std::string name  = "offline_Charge_Controller";
+    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
+    return getController(offline_C2B_Charge_Controller_Obj,
+                         chargeconf1,
+                         name,
+                         withoutEPICS,
+                         withVM,
+                         HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA);
+}
+//______________________________________________________________________________
+chargeController & VCcharge::physical_Charge_Controller()
+{
+    std::string name  = "physical_Charge_Controller";
+    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
+    return getController(physical_C2B_Charge_Controller_Obj,
+                         chargeconf1,
+                         name,
+                         withEPICS,
+                         withoutVM,
+                         HWC_ENUM::MACHINE_AREA::ALL_VELA_CLARA);
+}
+//______________________________________________________________________________
 chargeController & VCcharge::getChargeController( HWC_ENUM::MACHINE_MODE mode, HWC_ENUM::MACHINE_AREA area )
 {
     if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::VELA_INJ )
@@ -340,6 +394,12 @@ chargeController & VCcharge::getChargeController( HWC_ENUM::MACHINE_MODE mode, H
         return virtual_C2B_Charge_Controller();
     else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::CLARA_2_BA1_BA2 )
         return physical_C2B_Charge_Controller();
+    else if( mode == HWC_ENUM::OFFLINE && area == HWC_ENUM::ALL_VELA_CLARA )
+        return offline_Charge_Controller();
+    else if( mode == HWC_ENUM::VIRTUAL && area == HWC_ENUM::ALL_VELA_CLARA )
+        return virtual_Charge_Controller();
+    else if( mode == HWC_ENUM::PHYSICAL && area == HWC_ENUM::ALL_VELA_CLARA )
+        return physical_Charge_Controller();
 }
 //______________________________________________________________________________
 void VCcharge::updateMessageStates()
