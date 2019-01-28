@@ -22,6 +22,7 @@
 //*/
 // project includes
 #include "interface.h"
+#include "structs.h"
 // stl
 #include <iostream>
 #include <sstream>
@@ -117,6 +118,24 @@ void interface::printStatusResult(const int   status,
             case ECA_TIMEOUT:
                 if(strlen(timeout) != UTL::ZERO_SIZET)
                     printMessage(timeout);
+                break;
+            case ECA_BADTYPE:
+                printMessage("Invalid DBR_XXXX type");
+                break;
+            case ECA_BADCHID :
+                printMessage("Corrupted CHID");
+                break;
+            case ECA_BADCOUNT:
+                printMessage("Requested count larger than native element count");
+                break;
+            case ECA_GETFAIL:
+                printMessage("A local database get failed");
+                break;
+            case ECA_NORDACCESS:
+                printMessage("Read access denied");
+                break;
+            case ECA_DISCONN:
+                printMessage("Unable to allocate memory");
                 break;
             default:
                 printMessage("!!! Unexpected error while searching: ",
@@ -476,6 +495,17 @@ size_t interface::getDBRsizet(const event_handler_args& args)
 double interface::getDBRdouble(const event_handler_args& args)
 {
     return *(double*)args.dbr;
+}
+//______________________________________________________________________________
+double interface::getDBRTimeDoubleValue(const event_handler_args& args)
+{
+    const dbr_time_double* p = (const struct dbr_time_double*)args.dbr;
+
+    HWC_ENUM::epics_timestamp ts;
+    ts.etime = p->stamp;
+    updateTime(ts.etime, ts.time_ns, ts.time_Str);
+    std::cout<< "ts.time_Str = " << ts.time_Str << std::endl;
+    return p->value;
 }
 //______________________________________________________________________________
 long interface::getDBRlong(const event_handler_args& args)
