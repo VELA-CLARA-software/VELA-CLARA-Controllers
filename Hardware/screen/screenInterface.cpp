@@ -105,7 +105,7 @@ void screenInterface::initialise()
 //_______________________________________________________________________________________
 void screenInterface::initIsLockedMap()
 {// this map is used to define if a screen has been locked by this app.
-    for( auto && it: allScreentData)
+    for( auto && it: allScreentData )
     {
         isLockedMap[it.first] = false;
         debugMessage("Added ", it.first, " to locked map ");
@@ -176,6 +176,20 @@ void screenInterface::monitorScreens()
         monitorIlocks( it1.second.iLockPVStructs, it1.second.iLockStates );
         // iterate over the velaINJscreenObject PvMon
         for( auto && it2 : it1.second.pvMonStructs )
+        {
+            //std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
+
+            addScreenObjectMonitors( it2.second,  it1.second );
+
+            ca_create_subscription( it2.second.CHTYPE,
+                                    it2.second.COUNT,
+                                    it2.second.CHID,
+                                    it2.second.MASK,
+                                    screenInterface::staticEntryScreenMonitor,
+                                    (void*)continuousMonitorStructsDEV.back(),
+                                    &continuousMonitorStructsDEV.back()->EVID );
+        }
+        for( auto && it2 : it1.second.pvComStructs )
         {
             //std::cout << it1.first <<  " monitorScreens " << ENUM_TO_STRING( it2.first ) << std::endl;
 
@@ -273,6 +287,7 @@ void screenInterface::staticEntryScreenMonitor( const event_handler_args args )
         case screenStructs::SCREEN_PV_TYPE::READY:
             break;
         case screenStructs::SCREEN_PV_TYPE::GET_DEV:
+            ms->interface->updateGetDev( ms, *(unsigned short*)args.dbr );
             break;
         case screenStructs::SCREEN_PV_TYPE::MAX_POS:
             break;
@@ -374,8 +389,8 @@ void screenInterface::updateGetDev( screenStructs::monitorStruct * ms, const uns
                     allScreentData.at(screenName).screenSetState = screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
             }
         }
-            message(screenName,": Set state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenSetState),
-                    " in ", ENUM_TO_STRING(ms->dir), " direction,");
+//            message(screenName,": Set state is ", ENUM_TO_STRING(allScreentData.at(screenName).screenSetState),
+//                    " in ", ENUM_TO_STRING(ms->dir), " direction,");
     }
 }
 //_________________________________________________________________________________________________________________
