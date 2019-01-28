@@ -222,6 +222,7 @@ namespace UTL
     const std::string VELA_BA2_CHARGE_CONFIG  = "velaBA2Charge.config";
     const std::string CLARA_PH1_CHARGE_CONFIG = "claraPH1Charge.config";
     const std::string C2B_CHARGE_CONFIG       = "C2BCharge.config";
+    const std::string ALL_VELA_CLARA_CHARGE_CONFIG = "allCharge.config";
 
 /// Gun Modulator
     const std::string VELA_RF_GUN_PWR_CONFIG           = "velaRFGunPower.config";
@@ -397,7 +398,6 @@ namespace UTL
     const std::string PV_SUFFIX_LIB_PHASE_LOOP_LOCK= "PV_SUFFIX_LIB_PHASE_LOOP_LOCK";
     const std::string PV_SUFFIX_LIB_PULSE_LENGTH= "PV_SUFFIX_LIB_PULSE_LENGTH";
     const std::string PV_SUFFIX_LIB_RF_OUTPUT        = "PV_SUFFIX_LIB_RF_OUTPUT";
-    const std::string PV_SUFFIX_ILOCK_STATE     = "PV_SUFFIX_ILOCK_STATE";
     const std::string PV_SUFFIX_FF_AMP_LOCK_STATE   = "PV_SUFFIX_FF_AMP_LOCK_STATE";
     const std::string PV_SUFFIX_FF_PHASE_LOCK_STATE   = "PV_SUFFIX_FF_PHASE_LOCK_STATE";
     const std::string PV_SUFFIX_LIB_PULSE_OFFSET = "PV_SUFFIX_LIB_PULSE_OFFSET";

@@ -300,6 +300,9 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
     std::string key = keyVal[ZERO_SIZET];
     std::string val = keyVal[ONE_SIZET];
 
+    message("addToPVMapV1 passed Key = ", key, ", value = ", val);
+
+
     if(stringIsSubString(key,"SUFFIX"))
     {
         if(key == PV_SUFFIX_LIB_AMP_FF)
@@ -406,6 +409,8 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         }
 
 
+
+
     }
     else
     {   // we assume the order in the config file is correct
@@ -420,6 +425,12 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         else if(key == PV_CHTYPE)
         {
             lastPVstruct->CHTYPE = getCHTYPE(val);
+
+            if(lastPVstruct->pvType == LLRF_PV_TYPE::LIB_PHI_SP)
+            {
+                message("lastPVstruct->CHTYPE, val = ", val);
+                message("lastPVstruct->CHTYPE, = ", lastPVstruct->CHTYPE);
+            }
         }
         else if(key == PV_NAME)
         {
@@ -693,275 +704,8 @@ bool liberallrfConfigReader::traceMatches_LLRF_TYPE(const std::string& val) cons
     return true;
 }
 
-//
-//
-////______________________________________________________________________________
-//bool liberallrfConfigReader::readConfig(const std::string & configFile1)
-//{
-//    debugMessage("\n", "**** Attempting to Read The LLRF TRACES Config File ****");
-//
-//    std::string line, trimmedLine;
-//    bool success = false;
-//
-//    pvPowerTraceStructs.clear();
-//    pvPhaseTraceStructs.clear();
-//    std::ifstream inputFile;
-//    std::vector<llrfStructs::pvStruct> pvMonStructsLocal;
-//    inputFile.open(configFile1, std::ios::in);
-//    if(inputFile)
-//    {
-//        bool readingData       = false;
-//        bool readingObjs       = false;
-//        bool readingCommandPVs = false;
-//        bool readingMonitorPVs = false;
-//
-//        debugMessage("Opened from ", configFile1);
-//        while(std::getline(inputFile, line)) /// Go through, reading file line by line
-//        {
-//            trimmedLine = trimAllWhiteSpace(trimToDelimiter(line, UTL::END_OF_LINE));
-//            if(trimmedLine.size() > 0)
-//            {
-//                if(stringIsSubString(line, UTL::END_OF_DATA))
-//                {
-//                    debugMessage("Found END_OF_DATA");
-//                    readingData = false;
-//                    readingObjs = false;
-//                    readingCommandPVs  = false;
-//                    readingMonitorPVs  = false;
-//                    break;
-//                }
-//                if(readingData)
-//                {
-//                    if(stringIsSubString(trimmedLine, UTL::VERSION))
-//                        getVersion(trimmedLine);
-//                    else if(stringIsSubString(trimmedLine, UTL::NUMBER_OF_OBJECTS))
-//                        getNumObjs(trimmedLine);
-//                    else if(stringIsSubString(trimmedLine, UTL::NUMBER_OF_ILOCKS))
-//                        getNumIlocks(trimmedLine);
-//                    else
-//                    {
-//                        switch(configVersion)
-//                        {
-//                            case 1:
-//                                if(trimmedLine.find_first_of(UTL::EQUALS_SIGN) != std::string::npos)
-//                                {
-//                                    std::vector<std::string> keyVal = getKeyVal(trimmedLine);
-//
-//                                    if(readingObjs)
-//                                        addToTraceObjectsV1(keyVal);
-//
-//                                    else if (readingCommandPVs)
-//                                        addToPVCommandMapV1(keyVal);
-//
-//                                    else if (readingMonitorPVs)
-//                                        addToTracePVMap(keyVal);
-//                                }
-//                                break;
-//                            default:
-//                                message("!!!!!WARNING DID NOT FIND CONFIG FILE VERSION NUMBER!!!!!!");
-//                        }
-//                    }
-//                }
-//                if(stringIsSubString(line, UTL::START_OF_DATA))
-//                {
-//                    readingData = true;
-//                    debugMessage("Found START_OF_DATA");
-//                }
-//                if(stringIsSubString(line, UTL::PV_COMMANDS_START))
-//                {
-//                    readingCommandPVs  = true;
-//                    readingObjs = false;
-//                    readingMonitorPVs = false;
-//                    debugMessage("Found PV_COMMANDS_START");
-//                }
-//                if(stringIsSubString(line, UTL::PV_MONITORS_START))
-//                {
-//                    readingCommandPVs = false;
-//                    readingObjs       = false;
-//                    readingMonitorPVs = true;
-//                    debugMessage("Found PV_MONITORS_START");
-//                }
-//                if(stringIsSubString(line, UTL::OBJECTS_START))
-//                {
-//                    readingObjs        = true;
-//                    readingCommandPVs  = false;
-//                    readingMonitorPVs  = false;
-//                    debugMessage("Found OBJECTS_START");
-//                }
-//            }
-//        }
-//        inputFile.close();
-//        debugMessage("File Closed");
-//
-////        if(numObjs == laserObjects.size())
-////            debugMessage("*** Created ", numObjs, " Shutter Objects, As Expected ***");
-////        else
-////            debugMessage("*** Created ", laserObjects.size() ," Expected ", numObjs,  " ERROR ***");
-//
-//        success = true;
-//    }
-//    else{
-//        message("!!!! Error Can't Open Config File after searching in:  ", configFile1, " !!!!");
-//    }
-//    return success;
-//    return false;
-//}
-////______________________________________________________________________________
-//void liberallrfConfigReader::addToTracePVMap(const std::vector<std::string>& keyVal)
-//{// here i've hardcoded in the monitor or command PVs
-//
-//    std::string key   = keyVal[UTL::ZERO_SIZET];
-//    std::string value = keyVal[UTL::ONE_SIZET];
-//
-//    if(stringIsSubString(key,"SUFFIX"))//MAGIC_STRING
-//    {
-//        /// TRACE SPECIFIC PVs
-//        if(key == UTL::PV_SUFFIX_PWR_REM_EVID)
-//        {
-//            addToPVStruct(pvTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM_EVID, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_PWR_REM_SCAN)
-//        {
-//            addToPVStruct(pvTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM_SCAN, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_PWR_REM)
-//        {
-//            addToPVStruct(pvTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_PHASE_REM_SCAN)
-//        {
-//            addToPVStruct(pvTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_PHASE_REM_SCAN, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_PHASE_REM)
-//        {
-//            addToPVStruct(pvTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_PHASE_REM, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_AMP_DER_SCAN)
-//        {
-//            addToPVStruct(pvTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_AMP_DER_SCAN, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_PHASE_DER_SCAN)
-//        {
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN, value);
-//        }
-//        else if(key == UTL::PV_SUFFIX_PWR_LOC_SCAN)
-//        {
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN, value);
-//        }
-//    }
-//    else
-//    {   // we assume the order in the config file is correct
-//        if(key == UTL::PV_COUNT)
-//            lastPVstruct->COUNT = getCOUNT(value);
-//        else if(key == UTL::PV_MASK)
-//            lastPVstruct->MASK = getMASK(value);
-//        else if(key == UTL::PV_CHTYPE)
-//            lastPVstruct->CHTYPE = getCHTYPE(value);
-//        else if(key == UTL::PV_NAME)
-//        {
-//            lastPVstruct->name = value;
-//            debugMessage("Added name =  ", lastPVstruct->name);
-//        }
-//    }
-//}
-////______________________________________________________________________________
-//void liberallrfConfigReader::addToTraceObjectsV1(const std::vector<std::string> &keyVal)
-//{
-//    if(keyVal[0] == UTL::NAME)
-//    {
-//        temp_name = keyVal[1];
-//        debugMessage("Added temp_name =  ", temp_name);
-//    }
-//    else if(keyVal[0] == UTL::PV_ROOT)
-//    {
-//            temp_pvroot = keyVal[1];
-//            debugMessage("Added temp_pvroot =  ", temp_pvroot);
-//    }
-//    else if(keyVal[0] == UTL::LLRF_CHANNEL)
-//    {
-//         if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH1_PHASE_REM)
-//         {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PHASE_REM);
-//         }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH2_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PHASE_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH3_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PHASE_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH4_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PHASE_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH5_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PHASE_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH6_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PHASE_REM);
-//
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH7_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH8_PHASE_REM)
-//        {
-//            addToPVStruct(pvPhaseTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM);
-//            addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH1_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH1_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH2_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH2_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH3_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH3_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH4_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH4_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH5_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH5_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH6_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH6_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH7_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH7_PWR_REM);
-//        }
-//        else if(keyVal[1] == UTL::PV_SUFFIX_LIB_CH8_PWR_REM)
-//        {
-//            addToPVStruct(pvPowerTraceStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM);
-//            //addToPVStruct(pvLocalDerStructs, llrfStructs::LLRF_PV_TYPE::LIB_CH8_PWR_REM);
-//        }
-//    }
-//}
+
+
 //______________________________________________________________________________
 void liberallrfConfigReader::addToPVStruct(std::vector<llrfStructs::pvStruct>& pvs,const llrfStructs::LLRF_PV_TYPE pvtypein)
 {
@@ -1113,6 +857,6 @@ llrfStructs::LLRF_PV_TYPE liberallrfConfigReader::getPVType(const llrfStructs::L
 //        return llrfStructs::LLRF_PV_TYPE::LIB_CH7_PHASE_DER_SCAN;
 //    if(main == llrfStructs::LLRF_PV_TYPE::LIB_CH8_PHASE_REM && sub == llrfStructs::LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
 //
-    return llrfStructs::LLRF_PV_TYPE::LIB_PHI_SP;
+    return llrfStructs::LLRF_PV_TYPE::UNKNOWN;
 
 }

@@ -127,7 +127,7 @@ bool VCgeneralMonitor::isRunningStatComplete(const std::string& id)
         if(entryExists(intPVMap, id))
         {    //message("getPVStruct ",  id, " isIntPV");
              return intPVMap[id].data[0]->rs_complete;
-        }f
+        }
     }
     else if(isFloatPV(id))
     {

@@ -4,7 +4,7 @@
 	"configDefinitions.h"
 	<time.h>
 
-1527265572 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1540304882 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -26,13 +26,14 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
+	<boost/python/numpy.hpp>
 
-1525973840 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1534593081 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1525973822 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
+1534593081 d:\vela\git projects\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -40,7 +41,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1527182727 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1548416564 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -49,7 +50,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1528111077 d:\vela\git projects\vela-clara-controllers\structs\structs.h
+1542115695 d:\vela\git projects\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -58,7 +59,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1528287692 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
+1534593085 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
 	<iostream>
 	<iomanip>
 	<numeric>
@@ -68,13 +69,13 @@
 	<epicsTime.h>
 	"VCgeneralMonitor.h"
 
-1528288037 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
+1534593085 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
 	<string>
 	"VCheader.h"
 	"VCbase.h"
 	"gmStructs.h"
 
-1528286483 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
+1534593093 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	"running_stat.h"
@@ -84,7 +85,7 @@
 	<cadef.h>
 	<epicsTime.h>
 
-1528286734 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1548329450 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -96,20 +97,22 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
-1527092951 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
+1537795683 d:\vela\git projects\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
 	<map>
 	<utility>
 
-1527096048 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1545321750 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
 	"controller.h"
 	"interface.h"
 	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
 	<string>
 	<vector>
 	<boost/python.hpp>
@@ -125,5 +128,23 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1527590870 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
+1539598403 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
+	<iostream>
+
+1539943284 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1539943344 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
 

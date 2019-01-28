@@ -276,11 +276,17 @@ unsigned long configReader::getMASK(const  std::string & val) const
     unsigned long r = DBE_VALUE; /// init to something
         /// ladder it?
     if(val == UTL::DBE_VALUE_STR)
+    {
         r = DBE_VALUE;
+    }
     else if(val == UTL::DBE_LOG_STR)
+    {
         r = DBE_LOG;
+    }
     else if(val == UTL::DBE_ALARM_STR)
+    {
         r = DBE_ALARM;
+    }
     return r;
 }
 //______________________________________________________________________________
@@ -295,37 +301,69 @@ chtype configReader::getCHTYPE(const std::string & val) const
     unsigned long r = DBR_CLASS_NAME;
     // ladder it?
     if(val == UTL::DBR_STRING_STR)
+    {
         r = DBR_STRING;
+    }
     else if(val == UTL::DBR_INT_STR)
+    {
         r = DBR_INT;
+    }
     else if(val == UTL::DBR_SHORT_STR)
+    {
         r = DBR_SHORT;
+    }
     else if(val == UTL::DBR_FLOAT_STR)
+    {
         r = DBR_FLOAT;
+    }
     else if(val == UTL::DBR_ENUM_STR)
+    {
         r = DBR_ENUM;
+    }
     else if(val == UTL::DBR_CHAR_STR)
+    {
         r = DBR_CHAR;
+    }
     else if(val == UTL::DBR_LONG_STR)
+    {
         r = DBR_LONG;
+    }
     else if(val == UTL::DBR_DOUBLE_STR)
+    {
         r = DBR_DOUBLE;
+    }
     else if(val == UTL::DBR_TIME_STRING_STR)
+    {
         r = DBR_TIME_STRING;
+    }
     else if(val == UTL::DBR_TIME_INT_STR)
+    {
         r = DBR_TIME_INT;
+    }
     else if(val == UTL::DBR_TIME_SHORT_STR)
+    {
         r = DBR_TIME_SHORT;
+    }
     else if(val == UTL::DBR_TIME_FLOAT_STR)
+    {
         r = DBR_TIME_FLOAT;
+    }
     else if(val == UTL::DBR_TIME_ENUM_STR)
+    {
         r = DBR_TIME_ENUM;
+    }
     else if(val == UTL::DBR_TIME_CHAR_STR)
+    {
         r = DBR_TIME_CHAR;
+    }
     else if(val == UTL::DBR_TIME_LONG_STR)
+    {
         r = DBR_TIME_LONG;
+    }
     else if(val == UTL::DBR_TIME_DOUBLE_STR)
+    {
         r = DBR_TIME_DOUBLE;
+    }
     return r;
 }
 //______________________________________________________________________________

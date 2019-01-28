@@ -365,13 +365,13 @@ void liberallrfInterface::startMonitors()
     {
         allMonitorsStarted = true; // interface base class member
     }
-/*
-//    LOOP OVER ALL CONTINUOUS MONITOR STRUCTS TO GET names debugging
-//    for(auto&&it:continuousMonitorStructs)
-//    {
-//        message(it->name," with ", ENUM_TO_STRING(it -> monType) );
-//    }
-*/
+
+    //LOOP OVER ALL CONTINUOUS MONITOR STRUCTS TO GET names debugging
+    for(auto&&it:continuousMonitorStructs)
+    {
+        message(it->name," with ", ENUM_TO_STRING(it -> monType) );
+    }
+
 }
 //--------------------------------------------------------------------------------------------------
 void liberallrfInterface::addTo_continuousMonitorStructs(const std::pair<llrfStructs::LLRF_PV_TYPE,llrfStructs::pvStruct>& it)
@@ -382,6 +382,7 @@ void liberallrfInterface::addTo_continuousMonitorStructs(const std::pair<llrfStr
     continuousMonitorStructs.back() -> llrfObj   = &llrf;
     continuousMonitorStructs.back() -> interface = this;
     continuousMonitorStructs.back() -> name      = ENUM_TO_STRING(llrf.type);
+
     ca_create_subscription(it.second.CHTYPE,
                            it.second.COUNT,
                            it.second.CHID,
@@ -404,6 +405,8 @@ void liberallrfInterface::addTo_continuousMonitorStructs(const std::pair<llrfStr
 void liberallrfInterface::staticEntryLLRFMonitor(const event_handler_args args)
 {
     llrfStructs::monitorStruct*ms = static_cast<llrfStructs::monitorStruct *>(args.usr);
+//    std::cout << "staticEntryLLRFMonitor " <<  ENUM_TO_STRING(ms->monType) << " = ";
+//    std::cout << std::bitset<32>(*(double*)args.dbr) << std::endl;
     ms->interface->updateLLRFValue(ms->monType, ms->name, args);
 }
 //--------------------------------------------------------------------------------------------------
@@ -425,26 +428,25 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
         case LLRF_PV_TYPE::PHASE_LOOP_LOCK:
             updateBoolState(args, llrf.phase_loop_lock);
             break;
-//        This was a special PV graham coz gave me to get som etiming signal, but i don't use it anymore, maybe in the future i will
+//        This was a special PV graham coz gave me to get some timing signal, but i don't use it anymore, maybe in the future i will
 //        case LLRF_PV_TYPE::TIMING_TRIGGER:
 //            llrf.timing_trigger = *(short*)args.dbr;
 //            break;
         case LLRF_PV_TYPE::TRIG_SOURCE:
             updateTrigState(args);
-            message("TRIG_SOURCE = ", ENUM_TO_STRING(llrf.trig_source));
-
+            //message("TRIG_SOURCE = ", ENUM_TO_STRING(llrf.trig_source));
             break;
         case LLRF_PV_TYPE::LIB_FF_AMP_LOCK_STATE:
             updateBoolState(args, llrf.ff_amp_lock_state);
-            message("LIB_FF_AMP_LOCK_STATE = ", llrf.ff_amp_lock_state);
+            //message("LIB_FF_AMP_LOCK_STATE = ", llrf.ff_amp_lock_state);
             break;
         case LLRF_PV_TYPE::LIB_FF_PHASE_LOCK_STATE:
             updateBoolState(args, llrf.ff_ph_lock_state);
-            message("LIB_FF_PHASE_LOCK_STATE = ", llrf.ff_ph_lock_state);
+            //message("LIB_FF_PHASE_LOCK_STATE = ", llrf.ff_ph_lock_state);
             break;
         case LLRF_PV_TYPE::LIB_RF_OUTPUT:
             updateBoolState(args, llrf.rf_output);
-            message("LIB_RF_OUTPUT = ", llrf.rf_output);
+            //message("LIB_RF_OUTPUT = ", llrf.rf_output);
 
             break;
         case LLRF_PV_TYPE::LIB_AMP_FF:
@@ -458,19 +460,11 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
         case LLRF_PV_TYPE::LIB_PHI_FF:
             llrf.phi_ff = getDBRdouble(args);
             llrf.phi_DEG = (llrf.phi_ff) * (llrf.phiCalibration);
+            message("LLRF_PV_TYPE::LIB_PHI_FF = ", llrf.phi_sp);
             break;
         case LLRF_PV_TYPE::LIB_PHI_SP:
-            {
-
             llrf.phi_sp = getDBRdouble(args);
-            llrf.phi_DEG = (llrf.phi_sp) * (llrf.phiCalibration);
-            message("LLRF_PV_TYPE::LIB_PHI_SP = ", llrf.phi_sp);
-
-            double t = *(double*)args.dbr;
-
-            std::cout << std::bitset<32>(*(double*)args.dbr) << std::endl;
-
-            }
+            message(args.type,  "  == DBR_DOUBLE");
             break;
         case LLRF_PV_TYPE::LIB_TIME_VECTOR:
             /* the time_vector is simlar to a trace, but we can just update the values straight away */
@@ -517,7 +511,7 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
                 case 1: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::ACTIVE; break;
                 default: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE;
             }
-            message("INTERLOCK = ", ENUM_TO_STRING(llrf.interlock_state));
+            //message("INTERLOCK = ", ENUM_TO_STRING(llrf.interlock_state));
 
             break;
         default:
@@ -4904,13 +4898,14 @@ double liberallrfInterface::getAmpLLRF()const// physics units
 //____________________________________________________________________________________________
 double liberallrfInterface::getPhiFF()const
 {
-    //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return llrf.phi_ff;
 }
 //____________________________________________________________________________________________
+
 double liberallrfInterface::getPhiSP()const
 {
-    //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return llrf.phi_sp;
 }
 //____________________________________________________________________________________________

@@ -12,7 +12,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1538396363 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1548416564 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -54,8 +54,9 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1542269914 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+1548419951 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
+	"structs.h"
 	<iostream>
 	<sstream>
 	<chrono>
@@ -118,7 +119,7 @@
 	<vector>
 	<cadef.h>
 
-1548163072 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1548426955 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -182,7 +183,7 @@
 	"configDefinitions.h"
 	<time.h>
 
-1542282729 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+1548426254 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<time.h>
@@ -263,7 +264,7 @@
 	"configReader.h"
 	"llrfStructs.h"
 
-1548324784 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+1548426596 source:d:\vela\git projects\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
 	"liberallrfInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -276,6 +277,7 @@
 	<mutex>
 	<chrono>
 	<stdlib.h>
+	<bitset>
 	<boost/circular_buffer.hpp>
 
 1523637260 source:d:\vela\git projects\vela-clara-controllers\utilities\liberallrfconfigreader.cpp
@@ -325,7 +327,7 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
-1548183459 d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.h
+1548422065 d:\vela\git projects\vela-clara-controllers\structs\llrf\llrfstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	"running_stat.h"
@@ -352,7 +354,7 @@
 	"llrfStructs.h"
 	"liberallrfInterface.h"
 
-1548163072 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
+1548426948 source:d:\vela\git projects\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
 	"liberallrfConfigReader.h"
 	"llrfStructs.h"
 	<iostream>
