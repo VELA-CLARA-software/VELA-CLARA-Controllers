@@ -2008,8 +2008,15 @@ bool liberallrfInterface::unlockPhaseFF()
 //---------------------------------------------------------------------------------------------------------
 bool liberallrfInterface::enableRFOutput()
 {
-    if(isNotRFOutput())
+    if(isRFOutput())
+    {
+        message("Called enableRFOutput(),  isRFOutput() == True, not need to enable RF output ");
+    }
+    else
+    {
+        message("Called enableRFOutput(),  isNotRFOutput() == True, attempting to enable RF output ");
         return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_RF_OUTPUT),UTL::ONE_US);
+    }
     return true;
 }
 

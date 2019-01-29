@@ -654,7 +654,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
        // .def("resetAverageTraces",  &liberaLLRFController::resetAverageTraces,"Reset All Rolling Averages")
 
         .def("disableRFOutput",  &liberaLLRFController::disableRFOutput,"Disable RF Output")
-        .def("enableRFOutput",  &liberaLLRFController::disableRFOutput,"Enable RF Output")
+        .def("enableRFOutput",  &liberaLLRFController::enableRFOutput,"Enable RF Output")
         .def("enableRFandLock",  &liberaLLRFController::enableRFandLock,"Enable RF Output, and enable FF amp.phase check boxes. ")
 
         //--------------------------------------------------------------------------------------------------

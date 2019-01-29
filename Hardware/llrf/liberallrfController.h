@@ -519,7 +519,6 @@ ___  __        __   ___     __        ___  ___  ___  __   __
 //        boost::python::list getKlyRevPhaseBuffer_Py();
 //        boost::python::list getKlyFwdPhaseBuffer_Py();
 #endif
-
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
         const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
 
