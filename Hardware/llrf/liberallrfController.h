@@ -300,12 +300,6 @@ class liberaLLRFController : public controller
         bool setPulseShape_Py(boost::python::list values);
 #endif
 
-        std::pair<std::string, std::vector<double>> getTraceData(const std::string& name)const;
-        std::vector<std::pair<std::string, std::vector<double>>> getTraceDataBuffer(const std::string& name)const;
-#ifdef BUILD_DLL
-        boost::python::dict getTraceData_Py(const std::string& name);
-        boost::python::dict getTraceDataBuffer_Py(const std::string& name);
-#endif
 
         bool setInterlockNonActive();
 //        bool externalTriggerOn();
@@ -375,11 +369,6 @@ class liberaLLRFController : public controller
 //        std::vector<std::string> getChannelNames();
         std::vector<std::string> getTraceNames();
 
-        std::vector<double> getTraceValues(const std::string& name);
-        std::vector<double> getAverageTraceData(const std::string& name);
-
-
-
 //        bool usePercentMask(const std::string& trace);
 //        bool useAbsoluteMask(const std::string& trace);
 //        bool setMaskValue(const std::string& trace, double value);
@@ -392,10 +381,6 @@ class liberaLLRFController : public controller
 #ifdef BUILD_DLL
         boost::python::list getChannelNames_Py();
         boost::python::list getTraceNames_Py();
-        boost::python::list getTraceValues_Py(const std::string& name);
-//        boost::python::list getTraceBuffer_Py(const std::string& name);
-        //boost::python::list getOutsideMaskData_Py();
-        boost::python::list getAverageTraceData_Py(const std::string& name);
 
         boost::python::list getTimeVector_Py()const;
         boost::python::list getPulseShape_Py()const;
@@ -404,59 +389,109 @@ class liberaLLRFController : public controller
         std::vector<double> getPulseShape()const;
         bool getPulseShapeUpToDate()const;
 
-
         std::vector<double> getTimeVector()const;
-        std::vector<double> getChannelTrace();
-        std::vector<double> getCavRevPower();
-        std::vector<double> getCavFwdPower();
-        std::vector<double> getKlyRevPower();
-        std::vector<double> getKlyFwdPower();
-        std::vector<double> getCavRevPhase();
-        std::vector<double> getCavFwdPhase();
-        std::vector<double> getKlyRevPhase();
-        std::vector<double> getKlyFwdPhase();
 
-        std::vector<double> getProbePower();
-        std::vector<double> getProbePhase();
+//--------------------------------------------------------------------------------------------------
+/* ___  __        __   ___                         ___  __
+    |  |__)  /\  /  ` |__     \  /  /\  |    |  | |__  /__`
+    |  |  \ /~~\ \__, |___     \/  /~~\ |___ \__/ |___ .__/
 
-        std::vector<double> getCavRevPowerAv();
-        std::vector<double> getCavFwdPowerAv();
-        std::vector<double> getKlyRevPowerAv();
-        std::vector<double> getKlyFwdPowerAv();
-        std::vector<double> getCavRevPhaseAv();
-        std::vector<double> getCavFwdPhaseAv();
-        std::vector<double> getKlyRevPhaseAv();
-        std::vector<double> getKlyFwdPhaseAv();
-
-        std::vector<double> getProbePowerAv();
-        std::vector<double> getProbePhaseAv();
-
+     Returns the current rolling_average of the requested trace
+*/
+        std::pair<std::string, std::vector<double>> getTraceData(const std::string& name)const;
+        std::vector<double> getTraceValues(const std::string& name)const;
+        std::vector<double> getCavRevPwr()const;
+        std::vector<double> getCavFwdPwr()const;
+        std::vector<double> getKlyRevPwr()const;
+        std::vector<double> getKlyFwdPwr()const;
+        std::vector<double> getCavRevPha()const;
+        std::vector<double> getCavFwdPha()const;
+        std::vector<double> getKlyRevPha()const;
+        std::vector<double> getKlyFwdPha()const;
+        std::vector<double> getProbePwr()const;
+        std::vector<double> getProbePha()const;
 #ifdef BUILD_DLL
-//        boost::python::list getCavRevPower_Py();
-//        boost::python::list getCavFwdPower_Py();
-//        boost::python::list getKlyRevPower_Py();
-//        boost::python::list getKlyFwdPower_Py();
-//        boost::python::list getCavRevPhase_Py();
-//        boost::python::list getCavFwdPhase_Py();
-//        boost::python::list getKlyRevPhase_Py();
-//        boost::python::list getKlyFwdPhase_Py();
-//
-//        boost::python::list getProbePower_Py();
-//        boost::python::list getProbePhase_Py();
-//
-//        boost::python::list  getCavRevPowerAv_Py();
-//        boost::python::list  getCavFwdPowerAv_Py();
-//        boost::python::list  getKlyRevPowerAv_Py();
-//        boost::python::list  getKlyFwdPowerAv_Py();
-//        boost::python::list  getCavRevPhaseAv_Py();
-//        boost::python::list  getCavFwdPhaseAv_Py();
-//        boost::python::list  getKlyRevPhaseAv_Py();
-//        boost::python::list  getKlyFwdPhaseAv_Py();
-//
-//        boost::python::list getProbePowerAv_Py();
-//        boost::python::list getProbePhaseAv_Py();
-        //boost::python::dict dump_traces();
+        boost::python::dict getTraceData_Py(const std::string& name);
+        boost::python::list getTraceValues_Py(const std::string& name)const;
+        boost::python::list getCavRevPwr_Py()const;
+        boost::python::list getCavFwdPwr_Py()const;
+        boost::python::list getKlyRevPwr_Py()const;
+        boost::python::list getKlyFwdPwr_Py()const;
+        boost::python::list getCavRevPha_Py()const;
+        boost::python::list getCavFwdPha_Py()const;
+        boost::python::list getKlyRevPha_Py()const;
+        boost::python::list getKlyFwdPha_Py()const;
+        boost::python::list getProbePha_Py()const;
+        boost::python::list getProbePwr_Py()const;
 #endif
+//--------------------------------------------------------------------------------------------------
+/*
+    ___  __        __   ___               ___  __        __   ___  __
+     |  |__)  /\  /  ` |__      /\  \  / |__  |__)  /\  / _` |__  /__`
+     |  |  \ /~~\ \__, |___    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
+
+     Returns the current rolling_average of the requested trace
+*/
+        /* this is the main funciton, the below specific ones all call this */
+        std::vector<double> getAverageTraceData(const std::string& name)const;
+        std::vector<double> getCavRevPwrAv()const;
+        std::vector<double> getCavFwdPwrAv()const;
+        std::vector<double> getKlyRevPwrAv()const;
+        std::vector<double> getKlyFwdPwrAv()const;
+        std::vector<double> getCavRevPhaAv()const;
+        std::vector<double> getCavFwdPhaAv()const;
+        std::vector<double> getKlyRevPhaAv()const;
+        std::vector<double> getKlyFwdPhaAv()const;
+        std::vector<double> getProbePwrAv()const;
+        std::vector<double> getProbePhaAv()const;
+#ifdef BUILD_DLL
+        boost::python::list getAverageTraceData_Py(const std::string& name)const;
+        boost::python::list getCavRevPwrAv_Py()const;
+        boost::python::list getCavFwdPwrAv_Py()const;
+        boost::python::list getKlyRevPwrAv_Py()const;
+        boost::python::list getKlyFwdPwrAv_Py()const;
+        boost::python::list getCavRevPhaAv_Py()const;
+        boost::python::list getCavFwdPhaAv_Py()const;
+        boost::python::list getKlyRevPhaAv_Py()const;
+        boost::python::list getKlyFwdPhaAv_Py()const;
+        boost::python::list getProbePwrAv_Py()const;
+        boost::python::list getProbePhaAv_Py()const;
+#endif
+//--------------------------------------------------------------------------------------------------
+/*
+
+___  __        __   ___     __        ___  ___  ___  __   __
+ |  |__)  /\  /  ` |__     |__) |  | |__  |__  |__  |__) /__`
+ |  |  \ /~~\ \__, |___    |__) \__/ |    |    |___ |  \ .__/
+
+     Returns the current datat buffer of the requested trace
+*/
+        std::vector<std::pair<std::string, std::vector<double>>> getTraceDataBuffer(const std::string& name)const;
+        std::vector<std::pair<std::string, std::vector<double>>> getCavRevPwrBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getCavFwdPwrBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getKlyRevPwrBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getKlyFwdPwrBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getCavRevPhaBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getCavFwdPhaBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getKlyRevPhaBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getKlyFwdPhaBuffer()const;
+        std::vector<std::pair<std::string, std::vector<double>>> getProbePwrBuffer( )const;
+        std::vector<std::pair<std::string, std::vector<double>>> getProbePhaBuffer( )const;
+#ifdef BUILD_DLL
+        boost::python::dict getTraceDataBuffer_Py(const std::string& name)const;
+        boost::python::dict getCavRevPwrBuffer_Py()const;
+        boost::python::dict getCavFwdPwrBuffer_Py()const;
+        boost::python::dict getKlyRevPwrBuffer_Py()const;
+        boost::python::dict getKlyFwdPwrBuffer_Py()const;
+        boost::python::dict getCavRevPhaBuffer_Py()const;
+        boost::python::dict getCavFwdPhaBuffer_Py()const;
+        boost::python::dict getKlyRevPhaBuffer_Py()const;
+        boost::python::dict getKlyFwdPhaBuffer_Py()const;
+        boost::python::dict getProbePwrBuffer_Py()const;
+        boost::python::dict getProbePhaBuffer_Py()const;
+#endif
+
+        //boost::python::dict dump_traces();
 //        llrfStructs::rf_trace getCavRevPowerData();
 //        llrfStructs::rf_trace getCavFwdPowerData();
 //        llrfStructs::rf_trace getKlyRevPowerData();
@@ -533,6 +568,18 @@ class liberaLLRFController : public controller
         size_t getMeanStopIndex(const std::string&name)const;
 
         double getMean(const std::string&name)const;
+        double getCutMean(const std::string&name)const;
+        double getKlyFwdPwrCutMean()const;
+        double getKlyFwdPhaCutMean()const;
+        double getKlyRevPwrCutMean()const;
+        double getKlyRevPhaCutMean()const;
+        double getCavFwdPwrCutMean()const;
+        double getCavFwdPhaCutMean()const;
+        double getCavRevPwrCutMean()const;
+        double getCavRevPhaCutMean()const;
+        double getProbePwrCutMean()const;
+        double getProbePhaCutMean()const;
+
 
 
         /* convert trace indices to times and vice-versa */

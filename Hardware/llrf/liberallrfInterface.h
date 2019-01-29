@@ -70,6 +70,23 @@ class liberallrfInterface : public interface
         bool setAllTraceBufferSize(const size_t value);
         bool setIndividualTraceBufferSize(const std::string& name, const size_t value);
         bool setIndividualTraceBufferSize(const size_t value);
+
+
+//--------------------------------------------------------------------------------------------------
+/*
+    ___  __        __   ___           ___            __
+     |  |__)  /\  /  ` |__      |\/| |__   /\  |\ | /__`
+     |  |  \ /~~\ \__, |___     |  | |___ /~~\ | \| .__/
+*/
+        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
+        bool setMeanStartIndex(const std::string&name, size_t  value);
+        bool setMeanStopIndex(const std::string&name, size_t  value);
+        size_t getMeanStartIndex(const std::string&name)const;
+        size_t getMeanStopIndex(const std::string&name)const;
+    private:
+        void updateTraceCutMeans();
+        void calculateTraceCutMean(llrfStructs::rf_trace_data& tracedata);
+        std::tuple<size_t,double,double> dummy_amp_set_kly_fwd_rs_state;
 /*
     ___  __        __   ___                          ___  __
      |  |__)  /\  /  ` |__      \  /  /\  |    |  | |__  /__`
@@ -77,6 +94,7 @@ class liberallrfInterface : public interface
 
     Simple processing for traces to find the max, mean etc.
 */
+    public:
         double getTraceMax(const std::string& name);
         double getKlyFwdPwrMax();
         double getKlyFwdPhaMax();
@@ -88,6 +106,20 @@ class liberallrfInterface : public interface
         double getCavRevPhaMax();
         double getProbePwrMax();
         double getProbePhaMax();
+
+        double getMean(const std::string&name)const;
+        double getCutMean(const std::string&name)const;
+        double getKlyFwdPwrCutMean()const;
+        double getKlyFwdPhaCutMean()const;
+        double getKlyRevPwrCutMean()const;
+        double getKlyRevPhaCutMean()const;
+        double getCavFwdPwrCutMean()const;
+        double getCavFwdPhaCutMean()const;
+        double getCavRevPwrCutMean()const;
+        double getCavRevPhaCutMean()const;
+        double getProbePwrCutMean()const;
+        double getProbePhaCutMean()const;
+
 
 //--------------------------------------------------------------------------------------------------
 /*
@@ -104,11 +136,6 @@ class liberallrfInterface : public interface
     private:
         void updateActivePulses();// private
     public:
-
-// we will always have trace monitoring on
-//        void startTraceMonitoring();
-//        bool startTraceMonitoring(llrfStructs::LLRF_PV_TYPE pv);
-//        bool startTraceMonitoring(const std::string& name);
 
 //--------------------------------------------------------------------------------------------------
 /*       __   __                    __                ___  __        __   ___  __
@@ -139,26 +166,9 @@ class liberallrfInterface : public interface
         size_t getTraceRollingAverageCount(const std::string&name)const;
         bool isKeepingRollingAverage(const std::string&name)const;
         bool hasRollingAverage(const std::string&name)const;
-//--------------------------------------------------------------------------------------------------
-/*
-    ___  __        __   ___           ___            __
-     |  |__)  /\  /  ` |__      |\/| |__   /\  |\ | /__`
-     |  |  \ /~~\ \__, |___     |  | |___ /~~\ | \| .__/
-*/
-        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
-        bool setMeanStartIndex(const std::string&name, size_t  value);
-        bool setMeanStopIndex(const std::string&name, size_t  value);
-
-        size_t getMeanStartIndex(const std::string&name)const;
-        size_t getMeanStopIndex(const std::string&name)const;
-
-        double getMean(const std::string&name)const;
 
 
-    private:
-        void updateTraceCutMeans();
-        void getTraceCutMean(llrfStructs::rf_trace_data& tracedata);
-        std::tuple<size_t,double,double> dummy_amp_set_kly_fwd_rs_state;
+
     public:
         void setKeepKlyFwdPwrRS(bool val);
         void keepKlyFwdPwrRS();
@@ -396,7 +406,6 @@ class liberallrfInterface : public interface
 //        std::vector<std::string> getChannelNames()const;
         std::vector<std::string> getTraceNames()const;
 
-        std::vector<double> getTraceValues(const std::string& name)const;
         std::vector<double> getTimeVector()const;
 
         std::vector<double> getPulseShape()const;
@@ -408,7 +417,6 @@ class liberallrfInterface : public interface
 
         bool getPulseShapeUpToDate()const;
 
-        std::vector<double> getAverageTraceData(const std::string& name)const;
 
         std::vector< std::pair<std::string, std::vector<double>> > getOneTraceData()const;
 
@@ -419,16 +427,35 @@ class liberallrfInterface : public interface
 //        std::vector<llrfStructs::rf_trace> getTraceBuffer(const std::string& name);
 
 
-        std::vector<double> getCavRevPowerAv();
-        std::vector<double> getCavFwdPowerAv();
-        std::vector<double> getKlyRevPowerAv();
-        std::vector<double> getKlyFwdPowerAv();
-        std::vector<double> getCavRevPhaseAv();
-        std::vector<double> getCavFwdPhaseAv();
-        std::vector<double> getKlyRevPhaseAv();
-        std::vector<double> getKlyFwdPhaseAv();
-        std::vector<double> getProbePowerAv();
-        std::vector<double> getProbePhaseAv();
+        std::vector<double> getAverageTraceData(const std::string& name)const;
+        /* NO NEED FOR THESEHERE THEY ARE ALL IN THE CONROLLER CLASS */
+//        std::vector<double> getCavRevPowerAv()const;
+//        std::vector<double> getCavFwdPowerAv()const;
+//        std::vector<double> getKlyRevPowerAv()const;
+//        std::vector<double> getKlyFwdPowerAv()const;
+//        std::vector<double> getCavRevPhaseAv()const;
+//        std::vector<double> getCavFwdPhaseAv()const;
+//        std::vector<double> getKlyRevPhaseAv()const;
+//        std::vector<double> getKlyFwdPhaseAv()const;
+//        std::vector<double> getProbePowerAv()const;
+//        std::vector<double> getProbePhaseAv()const;
+
+        std::vector<double> getTraceValues(const std::string& name)const;
+
+
+        /* NO NEED FOR THESEHERE THEY ARE ALL IN THE CONROLLER CLASS */
+//        std::vector<double> getCavRevPower()const;
+//        std::vector<double> getCavFwdPower()const;
+//        std::vector<double> getKlyRevPower()const;
+//        std::vector<double> getKlyFwdPower()const;
+//        std::vector<double> getCavRevPhase()const;
+//        std::vector<double> getCavFwdPhase()const;
+//        std::vector<double> getKlyRevPhase()const;
+//        std::vector<double> getKlyFwdPhase()const;
+//        std::vector<double> getProbePower()const;
+//        std::vector<double> getProbePhase()const;
+
+
 
         const llrfStructs::liberallrfObject& getLLRFObjConstRef();
         const llrfStructs::rf_trace_data& getTraceDataConstRef(const std::string& name);
@@ -577,9 +604,6 @@ class liberallrfInterface : public interface
         void updateTimeVector(const event_handler_args& args);
         void updatePulseShape(const event_handler_args& args);
 
-
-
-
         void initialise();
         bool initObjects();
         void initChids();
@@ -595,9 +619,6 @@ class liberallrfInterface : public interface
         void updateAllTracesEVID(const event_handler_args& args);
         void updateAllTraces(const event_handler_args& args);
         void unwrapPhaseTrace(llrfStructs::rf_trace_data& data);
-
-
-
 
 //        int evid_miss_count;// = -2;
 //        int data_miss_count;// = -2;

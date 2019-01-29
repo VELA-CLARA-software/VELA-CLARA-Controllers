@@ -2965,23 +2965,22 @@ void liberallrfInterface::updateActivePulses()
     {
         llrf.duplicate_pulse_count += UTL::ONE_SIZET;
         llrf.can_increase_active_pulses = false;
-        message("llrf.last_kly_fwd_power_max == llrf.kly_fwd_power_max ==> llrf.can_increase_active_pulses = false");
-
-        std::vector<double> kfp =  getKlyFwdPower();
-        bool equal = true;
-        for(auto i = 0; i <kfp.size(); ++i )
-        {
-            if( kfp[i] != llrf.last_kly_fwd_pwr_trace[i] )
-            {
-                message("last_kly_fwd_power_max = kly_fwd_power_max, but trace data is different");
-                equal = false;
-                break;
-            }
-        }
-        if(equal)
-        {
-                message("last_kly_fwd_power_max = kly_fwd_power_max, AND trace data is the same");
-        }
+        //message("llrf.last_kly_fwd_power_max == llrf.kly_fwd_power_max ==> llrf.can_increase_active_pulses = false");
+//        std::vector<double> kfp =  getKlyFwdPower();
+//        bool equal = true;
+//        for(auto i = 0; i <kfp.size(); ++i )
+//        {
+//            if( kfp[i] != llrf.last_kly_fwd_pwr_trace[i] )
+//            {
+//                message("last_kly_fwd_power_max = kly_fwd_power_max, but trace data is different");
+//                equal = false;
+//                break;
+//            }
+//        }
+//        if(equal)
+//        {
+//                message("last_kly_fwd_power_max = kly_fwd_power_max, AND trace data is the same");
+//        }
 
     }
     else if(llrf.kly_fwd_power_max > llrf.active_pulse_kly_power_limit)
@@ -3001,7 +3000,8 @@ void liberallrfInterface::updateActivePulses()
     //message("AP max ", llrf.kly_fwd_power_max , " (", llrf.last_kly_fwd_power_max,") count = ",llrf.active_pulse_count, ", increase  = ",llrf.can_increase_active_pulses);
     /* update last_kly_fwd_power_max */
     llrf.last_kly_fwd_power_max  = llrf.kly_fwd_power_max;
-    llrf.last_kly_fwd_pwr_trace  = getKlyFwdPower();
+    /* tried keeping the last KFpow trace, as sometimes we get **exactly** the same trace data sent from the liber-box */
+    llrf.last_kly_fwd_pwr_trace  = getTraceValues(UTL::KLYSTRON_FORWARD_POWER);
 }
 //--------------------------------------------------------------------------------------------------
 double liberallrfInterface::getActivePulsePowerLimit() const
@@ -3038,12 +3038,13 @@ void liberallrfInterface::addActivePulseCountOffset(const size_t val)
 */
 double liberallrfInterface::getTraceMax(const std::string& name)
 {
-    if(entryExists(llrf.trace_data, name))
+    std::string full_name = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, full_name))
     {
-        llrf.trace_data.at(name).trace_max =
-            *max_element(std::begin( llrf.trace_data.at(name).data_buffer.back().second ),
-                         std::end  ( llrf.trace_data.at(name).data_buffer.back().second ) );
-        return llrf.trace_data.at(name).trace_max;
+        llrf.trace_data.at(full_name).trace_max =
+            *max_element(std::begin( llrf.trace_data.at(full_name).data_buffer.back().second ),
+                         std::end  ( llrf.trace_data.at(full_name).data_buffer.back().second ) );
+        return llrf.trace_data.at(full_name).trace_max;
     }
     return UTL::DUMMY_DOUBLE;
 }
@@ -3109,56 +3110,59 @@ std::vector<double> liberallrfInterface::getTraceValues(const std::string& name)
     std::vector<double> r(UTL::ONE_SIZET, UTL::DUMMY_DOUBLE);//MAGIC_NUMBER
     return r;
 }
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getCavRevPower()const
-{
-    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_REVERSE_POWER));
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getCavRevPhase()const
-{
-    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_REVERSE_PHASE));
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getCavFwdPower()const
-{
-    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_FORWARD_POWER));
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getCavFwdPhase()const
-{
-    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_FORWARD_PHASE));
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getKlyRevPower()const
-{
-    return getTraceValues(UTL::KLYSTRON_REVERSE_POWER);
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getKlyRevPhase()const
-{
-    return getTraceValues(UTL::KLYSTRON_REVERSE_PHASE);
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getKlyFwdPower()const
-{
-    return getTraceValues(UTL::KLYSTRON_FORWARD_POWER);
-}
-//--------------------------------------------------------------------------------------------------
-std::vector<double> liberallrfInterface::getKlyFwdPhase()const
-{
-    return getTraceValues(UTL::KLYSTRON_FORWARD_PHASE);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getProbePower()const
-{
-    return getTraceValues(UTL::CAVITY_PROBE_POWER);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getProbePhase()const
-{
-    return getTraceValues(UTL::CAVITY_PROBE_PHASE);
-}
+
+
+
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getCavRevPower()const
+//{
+//    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_REVERSE_POWER));
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getCavRevPhase()const
+//{
+//    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_REVERSE_PHASE));
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getCavFwdPower()const
+//{
+//    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_FORWARD_POWER));
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getCavFwdPhase()const
+//{
+//    return getTraceValues(fullLLRFTraceName(UTL::CAVITY_FORWARD_PHASE));
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getKlyRevPower()const
+//{
+//    return getTraceValues(UTL::KLYSTRON_REVERSE_POWER);
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getKlyRevPhase()const
+//{
+//    return getTraceValues(UTL::KLYSTRON_REVERSE_PHASE);
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getKlyFwdPower()const
+//{
+//    return getTraceValues(UTL::KLYSTRON_FORWARD_POWER);
+//}
+////--------------------------------------------------------------------------------------------------
+//std::vector<double> liberallrfInterface::getKlyFwdPhase()const
+//{
+//    return getTraceValues(UTL::KLYSTRON_FORWARD_PHASE);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getProbePower()const
+//{
+//    return getTraceValues(UTL::CAVITY_PROBE_POWER);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getProbePhase()const
+//{
+//    return getTraceValues(UTL::CAVITY_PROBE_PHASE);
+//}
 
 
 
@@ -3187,11 +3191,12 @@ bool liberallrfInterface::setMeanStartEndTime(const double start, const double e
 //-------------------------------------------------------------------------------------------------------------------
 bool liberallrfInterface::setMeanStartIndex(const std::string&name, size_t  value)
 {
-    if(entryExists(llrf.trace_data, name))
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
     {
-        if(llrf.trace_data.at(name).trace_size - 1 >= value )
+        if(llrf.trace_data.at(n).trace_size - 1 >= value )
         {
-            llrf.trace_data.at(name).mean_start_index = value;
+            llrf.trace_data.at(n).mean_start_index = value;
             return true;
         }
     }
@@ -3202,29 +3207,32 @@ bool liberallrfInterface::setMeanStartIndex(const std::string&name, size_t  valu
 //-------------------------------------------------------------------------------------------------------------------
 size_t liberallrfInterface::getMeanStopIndex(const std::string&name)const
 {
-    if(entryExists(llrf.trace_data, name))
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
     {
-        return llrf.trace_data.at(name).mean_stop_index;
+        return llrf.trace_data.at(n).mean_stop_index;
     }
     return UTL::ZERO_SIZET;
 }
 //-------------------------------------------------------------------------------------------------------------------
 size_t liberallrfInterface::getMeanStartIndex(const std::string&name)const
 {
-    if(entryExists(llrf.trace_data, name))
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
     {
-        return llrf.trace_data.at(name).mean_start_index;
+        return llrf.trace_data.at(n).mean_start_index;
     }
     return UTL::ZERO_SIZET;
 }
 //-------------------------------------------------------------------------------------------------------------------
 bool  liberallrfInterface::setMeanStopIndex(const std::string&name, size_t  value)
 {
-    if(entryExists(llrf.trace_data, name))
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
     {
-        if(llrf.trace_data.at(name).trace_size - 1 >= value )
+        if(llrf.trace_data.at(n).trace_size - 1 >= value )
         {
-            llrf.trace_data.at(name).mean_stop_index = value;
+            llrf.trace_data.at(n).mean_stop_index = value;
             return true;
         }
     }
@@ -3236,11 +3244,11 @@ void liberallrfInterface::updateTraceCutMeans()
 {
     for(auto&it:llrf.trace_data)
     {
-        getTraceCutMean(it.second);
+        calculateTraceCutMean(it.second);
     }
 }
 //-------------------------------------------------------------------------------------------------------------------
-void liberallrfInterface::getTraceCutMean(llrfStructs::rf_trace_data& trace)
+void liberallrfInterface::calculateTraceCutMean(llrfStructs::rf_trace_data& trace)
 {
     /*
         The trace cut mean is the mean value between two indices on a trace
@@ -3271,6 +3279,64 @@ double liberallrfInterface::getMean(const std::string&name)const
     }
     return UTL::DUMMY_DOUBLE;
 }
+double liberallrfInterface::getCutMean(const std::string&name)const
+{
+    return getMean(name);
+}
+double liberallrfInterface::getKlyFwdPwrCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_FORWARD_POWER);
+}
+double liberallrfInterface::getKlyFwdPhaCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_FORWARD_PHASE);
+}
+double liberallrfInterface::getKlyRevPwrCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_REVERSE_POWER);
+}
+double liberallrfInterface::getKlyRevPhaCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_REVERSE_PHASE);
+}
+double liberallrfInterface::getCavFwdPwrCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_FORWARD_POWER);
+}
+double liberallrfInterface::getCavFwdPhaCutMean()const
+{
+    return getCutMean(UTL::CAVITY_FORWARD_PHASE);
+}
+double liberallrfInterface::getCavRevPwrCutMean()const
+{
+    return getCutMean(UTL::CAVITY_REVERSE_POWER);
+}
+double liberallrfInterface::getCavRevPhaCutMean()const
+{
+    return getCutMean(UTL::CAVITY_REVERSE_PHASE);
+}
+double liberallrfInterface::getProbePwrCutMean()const
+{
+    return getCutMean(UTL::CAVITY_PROBE_POWER);
+}
+double liberallrfInterface::getProbePhaCutMean()const
+{
+    return getCutMean(UTL::CAVITY_PROBE_PHASE);
+}
+//-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-------------------------------------------------------------------------------------------------------------------
 void liberallrfInterface::setKeepKlyFwdPwrRS(bool val)
 {
@@ -5032,6 +5098,11 @@ size_t liberallrfInterface::getNumBufferTraces(const std::string&name)const
         message("liberallrfInterface::getNumBufferTraces ERROR, trace ", n, " does not exist");
     return UTL::ZERO_SIZET;
 }
+
+
+
+
+
 //____________________________________________________________________________________________
 //size_t liberallrfInterface::getNumRollingAverageTraces(const std::string&name)
 //{
@@ -5183,56 +5254,58 @@ std::vector<double> liberallrfInterface::getAverageTraceData(const std::string& 
     std::vector<double> r;
     return r;
 }
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getCavRevPowerAv()
-{
-    return getAverageTraceData(UTL::CAVITY_REVERSE_POWER);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getCavFwdPowerAv()
-{
-    return getAverageTraceData(UTL::CAVITY_FORWARD_POWER);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getKlyRevPowerAv()
-{
-    return getAverageTraceData(UTL::KLYSTRON_REVERSE_POWER);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getKlyFwdPowerAv()
-{
-    return getAverageTraceData(UTL::KLYSTRON_FORWARD_POWER);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getCavRevPhaseAv()
-{
-    return getAverageTraceData(UTL::CAVITY_REVERSE_PHASE);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getCavFwdPhaseAv()
-{
-    return getAverageTraceData(UTL::CAVITY_FORWARD_PHASE);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getKlyRevPhaseAv()
-{
-    return getAverageTraceData(UTL::KLYSTRON_REVERSE_PHASE);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getKlyFwdPhaseAv()
-{
-    return getAverageTraceData(UTL::KLYSTRON_FORWARD_PHASE);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getProbePowerAv()
-{
-    return getAverageTraceData(UTL::CAVITY_PROBE_POWER);
-}
-//____________________________________________________________________________________________
-std::vector<double> liberallrfInterface::getProbePhaseAv()
-{
-    return getAverageTraceData(UTL::CAVITY_PROBE_PHASE);
-}
+
+
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getCavRevPowerAv()
+//{
+//    return getAverageTraceData(UTL::CAVITY_REVERSE_POWER);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getCavFwdPowerAv()
+//{
+//    return getAverageTraceData(UTL::CAVITY_FORWARD_POWER);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getKlyRevPowerAv()
+//{
+//    return getAverageTraceData(UTL::KLYSTRON_REVERSE_POWER);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getKlyFwdPowerAv()
+//{
+//    return getAverageTraceData(UTL::KLYSTRON_FORWARD_POWER);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getCavRevPhaseAv()
+//{
+//    return getAverageTraceData(UTL::CAVITY_REVERSE_PHASE);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getCavFwdPhaseAv()
+//{
+//    return getAverageTraceData(UTL::CAVITY_FORWARD_PHASE);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getKlyRevPhaseAv()
+//{
+//    return getAverageTraceData(UTL::KLYSTRON_REVERSE_PHASE);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getKlyFwdPhaseAv()
+//{
+//    return getAverageTraceData(UTL::KLYSTRON_FORWARD_PHASE);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getProbePowerAv()
+//{
+//    return getAverageTraceData(UTL::CAVITY_PROBE_POWER);
+//}
+////____________________________________________________________________________________________
+//std::vector<double> liberallrfInterface::getProbePhaseAv()
+//{
+//    return getAverageTraceData(UTL::CAVITY_PROBE_PHASE);
+//}
 //____________________________________________________________________________________________
 //
 //
