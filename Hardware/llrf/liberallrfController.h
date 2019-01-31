@@ -59,6 +59,42 @@ class liberaLLRFController : public controller
 
         ~liberaLLRFController();
 
+//--------------------------------------------------------------------------------------------------
+/*  ___  __        __   ___           ___                                   ___  __
+     |  |__)  /\  /  ` |__      |\/| |__   /\  |\ |    \  /  /\  |    |  | |__  /__`
+     |  |  \ /~~\ \__, |___     |  | |___ /~~\ | \|     \/  /~~\ |___ \__/ |___ .__/
+*/
+        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
+        bool setMeanStartIndex(const std::string&name, size_t  value);
+        bool setMeanStopIndex(const std::string&name, size_t  value);
+        size_t getMeanStartIndex(const std::string&name)const;
+        size_t getMeanStopIndex(const std::string&name)const;
+        double getMean(const std::string&name)const;
+        double getCutMean(const std::string&name)const;
+        double getKlyFwdPwrCutMean()const;
+        double getKlyFwdPhaCutMean()const;
+        double getKlyRevPwrCutMean()const;
+        double getKlyRevPhaCutMean()const;
+        double getCavFwdPwrCutMean()const;
+        double getCavFwdPhaCutMean()const;
+        double getCavRevPwrCutMean()const;
+        double getCavRevPhaCutMean()const;
+        double getProbePwrCutMean()const;
+        double getProbePhaCutMean()const;
+//--------------------------------------------------------------------------------------------------
+/* ___  __        __   ___
+    |  |__)  /\  /  ` |__      |\/|  /\  \_/
+    |  |  \ /~~\ \__, |___     |  | /~~\ / \
+
+    It doesn't much sense to ask for the trace max of a phase trace ...
+*/
+        double getTraceMax(const std::string& name)const;
+        double getKlyFwdPwrMax()const;        //double getKlyFwdPhaMax()const;
+        double getKlyRevPwrMax()const;        //double getKlyRevPhaMax()const;
+        double getCavFwdPwrMax()const;        //double getCavFwdPhaMax()const;
+        double getCavRevPwrMax()const;        //double getCavRevPhaMax()const;
+        double getProbePwrMax()const;         //double getProbePhaMax()const;
+//--------------------------------------------------------------------------------------------------
 /*
     ___  __        __   ___     __        ___  ___  ___  __      __    __  ___
      |  |__)  /\  /  ` |__     |__) |  | |__  |__  |__  |__)    /__` |  / |__
@@ -86,16 +122,37 @@ class liberaLLRFController : public controller
         bool setTraceRollingAverageSize(const std::string&name, const size_t value);
         void setAllRollingAverageSize(const size_t value);
         bool setShouldNotKeepRollingAverage(const std::string& name);
-        std::vector<double> getRollingAverage(const std::string&name)const;
-        std::vector<std::vector<double>> getRollingAverageData(const std::string&name)const;
-#ifdef BUILD_DLL
-        boost::python::list getRollingAverage_Py(const std::string&name)const;
-        boost::python::list getRollingAverageData_Py(const std::string&name)const;
-#endif
         size_t getTraceRollingAverageSize(const std::string&name)const;
         size_t getTraceRollingAverageCount(const std::string&name)const;
         bool isKeepingRollingAverage(const std::string&name)const;
         bool hasRollingAverage(const std::string&name)const;
+        /* this is the main function, the below specific ones all call this */
+        std::vector<double> getRollingAverage(const std::string&name)const;
+        std::vector<double> getCavRevPwrRollingAverage()const;
+        std::vector<double> getCavFwdPwrRollingAverage()const;
+        std::vector<double> getKlyRevPwrRollingAverage()const;
+        std::vector<double> getKlyFwdPwrRollingAverage()const;
+        std::vector<double> getCavRevPhaRollingAverage()const;
+        std::vector<double> getCavFwdPhaRollingAverage()const;
+        std::vector<double> getKlyRevPhaRollingAverage()const;
+        std::vector<double> getKlyFwdPhaRollingAverage()const;
+        std::vector<double> getProbePwrRollingAverage()const;
+        std::vector<double> getProbePhaRollingAverage()const;
+        std::vector<std::vector<double>> getRollingAverageData(const std::string&name)const;
+#ifdef BUILD_DLL
+        boost::python::list getRollingAverage_Py(const std::string&name)const;
+        boost::python::list getCavRevPwrRollingAverage_Py()const;
+        boost::python::list getCavFwdPwrRollingAverage_Py()const;
+        boost::python::list getKlyRevPwrRollingAverage_Py()const;
+        boost::python::list getKlyFwdPwrRollingAverage_Py()const;
+        boost::python::list getCavRevPhaRollingAverage_Py()const;
+        boost::python::list getCavFwdPhaRollingAverage_Py()const;
+        boost::python::list getKlyRevPhaRollingAverage_Py()const;
+        boost::python::list getKlyFwdPhaRollingAverage_Py()const;
+        boost::python::list getProbePwrRollingAverage_Py()const;
+        boost::python::list getProbePhaRollingAverage_Py()const;
+        boost::python::list getRollingAverageData_Py(const std::string&name)const;
+#endif
 //--------------------------------------------------------------------------------------------------
 
 
@@ -332,7 +389,7 @@ class liberaLLRFController : public controller
 
         llrfStructs::TRIG getTrigSource();
 
-        bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
+        bool setTraceSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const llrfStructs::LLRF_SCAN value);
         bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
         bool setAllSCANToPassive();
 
@@ -396,7 +453,7 @@ class liberaLLRFController : public controller
     |  |__)  /\  /  ` |__     \  /  /\  |    |  | |__  /__`
     |  |  \ /~~\ \__, |___     \/  /~~\ |___ \__/ |___ .__/
 
-     Returns the current rolling_average of the requested trace
+     Returns the current values of the requested trace
 */
         std::pair<std::string, std::vector<double>> getTraceData(const std::string& name)const;
         std::vector<double> getTraceValues(const std::string& name)const;
@@ -424,39 +481,7 @@ class liberaLLRFController : public controller
         boost::python::list getProbePha_Py()const;
         boost::python::list getProbePwr_Py()const;
 #endif
-//--------------------------------------------------------------------------------------------------
-/*
-    ___  __        __   ___               ___  __        __   ___  __
-     |  |__)  /\  /  ` |__      /\  \  / |__  |__)  /\  / _` |__  /__`
-     |  |  \ /~~\ \__, |___    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
 
-     Returns the current rolling_average of the requested trace
-*/
-        /* this is the main funciton, the below specific ones all call this */
-        std::vector<double> getAverageTraceData(const std::string& name)const;
-        std::vector<double> getCavRevPwrAv()const;
-        std::vector<double> getCavFwdPwrAv()const;
-        std::vector<double> getKlyRevPwrAv()const;
-        std::vector<double> getKlyFwdPwrAv()const;
-        std::vector<double> getCavRevPhaAv()const;
-        std::vector<double> getCavFwdPhaAv()const;
-        std::vector<double> getKlyRevPhaAv()const;
-        std::vector<double> getKlyFwdPhaAv()const;
-        std::vector<double> getProbePwrAv()const;
-        std::vector<double> getProbePhaAv()const;
-#ifdef BUILD_DLL
-        boost::python::list getAverageTraceData_Py(const std::string& name)const;
-        boost::python::list getCavRevPwrAv_Py()const;
-        boost::python::list getCavFwdPwrAv_Py()const;
-        boost::python::list getKlyRevPwrAv_Py()const;
-        boost::python::list getKlyFwdPwrAv_Py()const;
-        boost::python::list getCavRevPhaAv_Py()const;
-        boost::python::list getCavFwdPhaAv_Py()const;
-        boost::python::list getKlyRevPhaAv_Py()const;
-        boost::python::list getKlyFwdPhaAv_Py()const;
-        boost::python::list getProbePwrAv_Py()const;
-        boost::python::list getProbePhaAv_Py()const;
-#endif
 //--------------------------------------------------------------------------------------------------
 /*
 
@@ -559,25 +584,6 @@ ___  __        __   ___     __        ___  ___  ___  __   __
         double getBreakDownRate();
 
 
-        bool setMeanStartEndTime(const double start, const double end, const std::string&name);
-        bool setMeanStartIndex(const std::string&name, size_t  value);
-        bool setMeanStopIndex(const std::string&name, size_t  value);
-
-        size_t getMeanStartIndex(const std::string&name)const;
-        size_t getMeanStopIndex(const std::string&name)const;
-
-        double getMean(const std::string&name)const;
-        double getCutMean(const std::string&name)const;
-        double getKlyFwdPwrCutMean()const;
-        double getKlyFwdPhaCutMean()const;
-        double getKlyRevPwrCutMean()const;
-        double getKlyRevPhaCutMean()const;
-        double getCavFwdPwrCutMean()const;
-        double getCavFwdPhaCutMean()const;
-        double getCavRevPwrCutMean()const;
-        double getCavRevPhaCutMean()const;
-        double getProbePwrCutMean()const;
-        double getProbePhaCutMean()const;
 
 
 

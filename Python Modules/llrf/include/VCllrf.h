@@ -223,6 +223,16 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("UNKNOWN_SCAN", LLRF_SCAN::UNKNOWN_SCAN)
         ;
 
+    /* thes ear eused when you change a scan */
+    enum_<LLRF_PV_TYPE>("SCAN_TYPE")
+        .value("LIB_PHASE_REM_SCAN",LLRF_PV_TYPE::LIB_PHASE_REM_SCAN)
+        .value("LIB_AMP_DER_SCAN",LLRF_PV_TYPE::LIB_AMP_DER_SCAN)
+        .value("LIB_PHASE_DER_SCAN", LLRF_PV_TYPE::LIB_PHASE_DER_SCAN)
+        .value("LIB_PWR_LOCAL_SCAN", LLRF_PV_TYPE::LIB_PWR_LOCAL_SCAN)
+        .value("ALL_TRACES_SCAN", LLRF_PV_TYPE::ALL_TRACES_SCAN)
+        ;
+
+
     class_<std::pair<std::string, double> >("string_double_pair")
         .def_readonly("first",  &std::pair<std::string, double>::first)
         .def_readonly("second", &std::pair<std::string, double>::second)
@@ -513,25 +523,6 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getProbePha", &liberaLLRFController::getProbePha_Py, "Return latest probe phase trace data")
         .def("getProbePwr", &liberaLLRFController::getProbePwr_Py, "Return latest probe power phase trace data")
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
-        /*
-            ___  __        __   ___               ___  __        __   ___  __
-             |  |__)  /\  /  ` |__      /\  \  / |__  |__)  /\  / _` |__  /__`
-             |  |  \ /~~\ \__, |___    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
-
-             Returns the current rolling_average of the requested trace
-        */
-        .def("getAverageTraceData_Py", &liberaLLRFController::getAverageTraceData_Py,(NAME_ARG),"Return latest Trace Values for channel 'name'")
-        .def("getCavRevPwrAv",&liberaLLRFController::getCavRevPwrAv_Py, "Return latest cavity reverse power trace data")
-        .def("getCavFwdPwrAv",&liberaLLRFController::getCavFwdPwrAv_Py, "Return latest cavity forward power trace data")
-        .def("getKlyRevPwrAv_Py",&liberaLLRFController::getKlyRevPwrAv_Py,"Return latest klystron forwad power trace data")
-        .def("getKlyFwdPwrAv_Py",&liberaLLRFController::getKlyFwdPwrAv_Py,"Return latest klystron reverse power trace data")
-        .def("getCavRevPhaAv_Py",&liberaLLRFController::getCavRevPhaAv_Py,"Return latest cavity forward power trace data")
-        .def("getCavFwdPhaAv",&liberaLLRFController::getCavFwdPhaAv_Py,"Return latest cavity forward phase trace data")
-        .def("getKlyRevPhaAv",&liberaLLRFController::getKlyRevPhaAv_Py,"Return latest cavity reverse  phase trace data")
-        .def("getKlyFwdPhaAv",&liberaLLRFController::getKlyFwdPhaAv_Py,"Return latest klystron reverse phase trace data")
-        .def("getProbePwrAv", &liberaLLRFController::getProbePwrAv_Py, "Return latest probe phase trace data")
-        .def("getProbePhaAv", &liberaLLRFController::getProbePhaAv_Py, "Return latest probe power phase trace data")
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -764,13 +755,20 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTraceRollingAverageCount",&liberaLLRFController::getTraceRollingAverageCount,(NAME_ARG),getTraceRollingAverageCount_ds)
         .def("isKeepingRollingAverage",&liberaLLRFController::isKeepingRollingAverage,(NAME_ARG),isKeepingRollingAverage_ds)
         .def("hasRollingAverage",&liberaLLRFController::hasRollingAverage,(NAME_ARG),hasRollingAverage_ds)
-
-
         .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_1,(NAME_ARG,VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
         .def("setKeepRollingAverageNoReset", setKeepRollingAverageNoReset_2,(VALUE_ARG),"set tKeepRollingAverage flag, but don't chnage current average data")
         .def("getRollingAverage",   &liberaLLRFController::getRollingAverage_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
         .def("getRollingAverageData",   &liberaLLRFController::getRollingAverageData_Py,(NAME_ARG),"Return latest average trace data for Channel 'name'")
-
+        .def("getCavRevPwrRollingAverage",&liberaLLRFController::getCavRevPwrRollingAverage_Py, "Return latest cavity reverse power rolling average")
+        .def("getCavFwdPwrRollingAverage",&liberaLLRFController::getCavFwdPwrRollingAverage_Py, "Return latest cavity forward power rolling average")
+        .def("getKlyRevPwrRollingAverage_Py",&liberaLLRFController::getKlyRevPwrRollingAverage_Py,"Return latest klystron forwad power rolling average")
+        .def("getKlyFwdPwrRollingAverage_Py",&liberaLLRFController::getKlyFwdPwrRollingAverage_Py,"Return latest klystron reverse power rolling average")
+        .def("getCavRevPhaRollingAverage_Py",&liberaLLRFController::getCavRevPhaRollingAverage_Py,"Return latest cavity reverse phase rolling average")
+        .def("getCavFwdPhaRollingAverage",&liberaLLRFController::getCavFwdPhaRollingAverage_Py,"Return latest cavity forward phase rolling average")
+        .def("getKlyRevPhaRollingAverage",&liberaLLRFController::getKlyRevPhaRollingAverage_Py,"Return latest klystron reverse  phase rolling average")
+        .def("getKlyFwdPhaRollingAverage",&liberaLLRFController::getKlyFwdPhaRollingAverage_Py,"Return latest klystron forward phase rolling average")
+        .def("getProbePwrRollingAverage", &liberaLLRFController::getProbePwrRollingAverage_Py, "Return latest probe phase rolling average")
+        .def("getProbePhaRollingAverage", &liberaLLRFController::getProbePhaRollingAverage_Py, "Return latest probe power phase rolling average")
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //

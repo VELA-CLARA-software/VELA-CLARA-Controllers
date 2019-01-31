@@ -66,7 +66,7 @@ namespace llrfStructs
                                                      (LIB_PHASE_DER_SCAN)
                                                      (LIB_PWR_LOCAL_SCAN)
                                                      (ALL_TRACES)
-                                                     (ALL_TRACES_EVID)
+//                                                     (ALL_TRACES_EVID)
                                                      (ALL_TRACES_SCAN)
                                                      (ALL_TRACES_ACQM)
                                                      (LIB_TIME_VECTOR)

@@ -391,10 +391,10 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
             message(PV_SUFFIX_LLRF_TRACES_SCAN, " =|", val,"|");
             addToPVStruct(pvs, LLRF_PV_TYPE::ALL_TRACES_SCAN, val);
         }
-        else if(key == UTL::PV_SUFFIX_LLRF_TRACES_EVID)
-        {
-            addToPVStruct(pvs, LLRF_PV_TYPE::ALL_TRACES_EVID, val);
-        }
+//        else if(key == UTL::PV_SUFFIX_LLRF_TRACES_EVID)
+//        {
+//            addToPVStruct(pvs, LLRF_PV_TYPE::ALL_TRACES_EVID, val);
+//        }
         else if(key == PV_SUFFIX_LLRF_TRACES_ACQM)
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::ALL_TRACES_ACQM, val);

@@ -41,6 +41,122 @@ shouldStartEPICs(shouldStartEPICs)
 }
 //______________________________________________________________________________
 liberaLLRFController::~liberaLLRFController(){}    //dtor
+
+
+
+
+//---------------------------------------------------------------------------------
+/*  ___  __        __   ___           ___                                   ___  __
+     |  |__)  /\  /  ` |__      |\/| |__   /\  |\ |    \  /  /\  |    |  | |__  /__`
+     |  |  \ /~~\ \__, |___     |  | |___ /~~\ | \|     \/  /~~\ |___ \__/ |___ .__/
+
+*/
+double liberaLLRFController::getMean(const std::string&name)const
+{
+    return localInterface.getMean(name);
+}
+size_t liberaLLRFController::getMeanStartIndex(const std::string&name)const
+{
+    return localInterface.getMeanStartIndex(name);
+}
+size_t liberaLLRFController::getMeanStopIndex(const std::string&name)const
+{
+    return localInterface.getMeanStopIndex(name);
+}
+bool liberaLLRFController::setMeanStartEndTime(const double start, const double end, const std::string&name)
+{
+    return localInterface.setMeanStartEndTime(start, end,name);
+}
+bool liberaLLRFController::setMeanStartIndex(const std::string&name, size_t  value)
+{
+    return localInterface.setMeanStartIndex(name, value);
+}
+bool liberaLLRFController::setMeanStopIndex(const std::string&name, size_t  value)
+{
+    return localInterface.setMeanStopIndex(name, value);
+}
+double liberaLLRFController::getCutMean(const std::string&name)const
+{
+    return getMean(name);
+}
+double liberaLLRFController::getKlyFwdPwrCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_FORWARD_POWER);
+}
+double liberaLLRFController::getKlyFwdPhaCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_FORWARD_PHASE);
+}
+double liberaLLRFController::getKlyRevPwrCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_REVERSE_POWER);
+}
+double liberaLLRFController::getKlyRevPhaCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_REVERSE_PHASE);
+}
+double liberaLLRFController::getCavFwdPwrCutMean()const
+{
+    return getCutMean(UTL::KLYSTRON_FORWARD_POWER);
+}
+double liberaLLRFController::getCavFwdPhaCutMean()const
+{
+    return getCutMean(UTL::CAVITY_FORWARD_PHASE);
+}
+double liberaLLRFController::getCavRevPwrCutMean()const
+{
+    return getCutMean(UTL::CAVITY_REVERSE_POWER);
+}
+double liberaLLRFController::getCavRevPhaCutMean()const
+{
+    return getCutMean(UTL::CAVITY_REVERSE_PHASE);
+}
+double liberaLLRFController::getProbePwrCutMean()const
+{
+    return getCutMean(UTL::CAVITY_PROBE_POWER);
+}
+double liberaLLRFController::getProbePhaCutMean()const
+{
+    return getCutMean(UTL::CAVITY_PROBE_PHASE);
+}
+//--------------------------------------------------------------------------------------------------
+/* ___  __        __   ___
+    |  |__)  /\  /  ` |__      |\/|  /\  \_/
+    |  |  \ /~~\ \__, |___     |  | /~~\ / \
+
+    It doesn't much sense to ask for the trace max of a phase trace ...
+*/
+double liberaLLRFController::getTraceMax(const std::string& name)const
+{
+    return localInterface.getTraceMax(name);
+}
+double liberaLLRFController::getKlyFwdPwrMax()const
+{
+    return getTraceMax(UTL::KLYSTRON_FORWARD_POWER);
+}
+double liberaLLRFController::getKlyRevPwrMax()const
+{
+    return getTraceMax(UTL::KLYSTRON_REVERSE_POWER);
+}
+double liberaLLRFController::getCavFwdPwrMax()const
+{
+    return getTraceMax(UTL::CAVITY_FORWARD_POWER);
+}
+double liberaLLRFController::getCavRevPwrMax()const
+{
+    return getTraceMax(UTL::CAVITY_REVERSE_POWER);
+}
+double liberaLLRFController::getProbePwrMax()const
+{
+    return getTraceMax(UTL::CAVITY_PROBE_POWER);
+}
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 //______________________________________________________________________________
 void liberaLLRFController::initialise()
 {
@@ -981,9 +1097,9 @@ size_t liberaLLRFController::getTraceLength()
 //    return localInterface.getChannelNames();
 //}
 //______________________________________________________________________________
-bool liberaLLRFController::setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value)
+bool liberaLLRFController::setTraceSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const llrfStructs::LLRF_SCAN value)
 {
-    return localInterface.setTraceSCAN(trace, value);
+    return localInterface.setTraceSCAN(name, pv,  value);
 }
 //______________________________________________________________________________
 bool  liberaLLRFController::setAllTraceSCAN(const llrfStructs::LLRF_SCAN value)
@@ -1305,105 +1421,6 @@ std::string liberaLLRFController::shortLLRFTraceName(const std::string& name)con
 
 
 
-
-//--------------------------------------------------------------------------------------------------
-/*
-    ___  __        __   ___               ___  __        __   ___  __
-     |  |__)  /\  /  ` |__      /\  \  / |__  |__)  /\  / _` |__  /__`
-     |  |  \ /~~\ \__, |___    /~~\  \/  |___ |  \ /~~\ \__> |___ .__/
-
-     Returns the current rolling_average of the requested trace
-*/
-std::vector<double>liberaLLRFController::getAverageTraceData(const std::string& name)const
-{
-    return localInterface.getAverageTraceData(name);
-}
-std::vector<double> liberaLLRFController::getCavRevPwrAv()const
-{
-    return getAverageTraceData(UTL::CAVITY_REVERSE_POWER);
-}
-std::vector<double> liberaLLRFController::getCavFwdPwrAv()const
-{
-    return getAverageTraceData(UTL::CAVITY_FORWARD_POWER);
-}
-std::vector<double> liberaLLRFController::getKlyRevPwrAv()const
-{
-    return getAverageTraceData(UTL::KLYSTRON_REVERSE_POWER);
-}
-std::vector<double> liberaLLRFController::getKlyFwdPwrAv()const
-{
-    return getAverageTraceData(UTL::KLYSTRON_FORWARD_POWER);
-}
-std::vector<double> liberaLLRFController::getCavRevPhaAv()const
-{
-    return getAverageTraceData(UTL::CAVITY_REVERSE_PHASE);
-}
-std::vector<double> liberaLLRFController::getCavFwdPhaAv()const
-{
-    return getAverageTraceData(UTL::CAVITY_FORWARD_PHASE);
-}
-std::vector<double> liberaLLRFController::getKlyRevPhaAv()const
-{
-    return getAverageTraceData(UTL::KLYSTRON_REVERSE_PHASE);
-}
-std::vector<double> liberaLLRFController::getKlyFwdPhaAv()const
-{
-    return getAverageTraceData(UTL::KLYSTRON_FORWARD_PHASE);
-}
-std::vector<double> liberaLLRFController::getProbePwrAv()const
-{
-    return getAverageTraceData(UTL::CAVITY_PROBE_POWER);
-}
-std::vector<double> liberaLLRFController::getProbePhaAv()const
-{
-    return getAverageTraceData(UTL::CAVITY_PROBE_PHASE);
-}
-#ifdef BUILD_DLL
-boost::python::list liberaLLRFController::getAverageTraceData_Py(const std::string& name)const
-{
-    return toPythonList(getAverageTraceData(name));
-}
-boost::python::list liberaLLRFController::getCavRevPwrAv_Py()const
-{
-    return toPythonList(getCavRevPwrAv());
-}
-boost::python::list liberaLLRFController::getCavFwdPwrAv_Py()const
-{
-    return toPythonList(getCavFwdPwrAv());
-}
-boost::python::list liberaLLRFController::getKlyRevPwrAv_Py()const
-{
-    return toPythonList(getKlyRevPwrAv());
-}
-boost::python::list liberaLLRFController::getKlyFwdPwrAv_Py()const
-{
-    return toPythonList(getKlyFwdPwrAv());
-}
-boost::python::list liberaLLRFController::getCavRevPhaAv_Py()const
-{
-    return toPythonList(getCavRevPhaAv());
-}
-boost::python::list liberaLLRFController::getCavFwdPhaAv_Py()const
-{
-    return toPythonList(getCavFwdPhaAv());
-}
-boost::python::list liberaLLRFController::getKlyRevPhaAv_Py()const
-{
-    return toPythonList(getKlyRevPhaAv());
-}
-boost::python::list liberaLLRFController::getKlyFwdPhaAv_Py()const
-{
-    return toPythonList(getKlyFwdPhaAv());
-}
-boost::python::list liberaLLRFController::getProbePwrAv_Py()const
-{
-    return toPythonList(getProbePwrAv());
-}
-boost::python::list liberaLLRFController::getProbePhaAv_Py()const
-{
-    return toPythonList(getProbePhaAv());
-}
-#endif
 //--------------------------------------------------------------------------------------------------
 
 
@@ -1920,75 +1937,158 @@ void liberaLLRFController::clearAllRollingAverage()
 {
     localInterface.clearAllRollingAverage();
 }
-//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::clearTraceRollingAverage(const std::string& name)
 {
     return localInterface.clearTraceRollingAverage(name);
 }
-//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setKeepRollingAverageNoReset(const bool value)
 {
     localInterface.setKeepRollingAverageNoReset(value);
 }
-//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setKeepRollingAverageNoReset(const std::string&name, const bool value)
 {
     return localInterface.setKeepRollingAverageNoReset(name, value);
 }
-//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setShouldKeepRollingAverage()
 {
     localInterface.setShouldKeepRollingAverage();
 }
-//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setShouldKeepRollingAverage(const std::string&name)
 {
     return localInterface.setShouldKeepRollingAverage(name);
 }
-//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setShouldNotKeepRollingAverage()
 {
     localInterface.setShouldNotKeepRollingAverage();
 }
-//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setKeepRollingAverage(const std::string&name, bool value)
 {
     return localInterface.setKeepRollingAverage(name, value);
 }
-//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setTraceRollingAverageSize(const std::string&name, const size_t value)
 {
     return localInterface.setTraceRollingAverageSize(name, value);
 }
-//--------------------------------------------------------------------------------------------------
 void liberaLLRFController::setAllRollingAverageSize(const size_t value)
 {
     localInterface.setAllRollingAverageSize(value);
 }
-//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setShouldNotKeepRollingAverage(const std::string& name)
 {
     return localInterface.setShouldNotKeepRollingAverage(name);
 }
-//--------------------------------------------------------------------------------------------------
+size_t liberaLLRFController::getTraceRollingAverageSize(const std::string&name)const
+{
+    return localInterface.getTraceRollingAverageSize(name);
+}
+size_t liberaLLRFController::getTraceRollingAverageCount(const std::string&name) const
+{
+    return localInterface.getTraceRollingAverageCount(name);
+}
+bool liberaLLRFController::isKeepingRollingAverage(const std::string&name)const
+{
+    return localInterface.isKeepingRollingAverage(name);
+}
+bool liberaLLRFController::hasRollingAverage(const std::string&name)const
+{
+    return localInterface.hasRollingAverage(name);
+}
 std::vector<double> liberaLLRFController::getRollingAverage(const std::string&name)const
 {
     return localInterface.getRollingAverage(name);
 }
-//--------------------------------------------------------------------------------------------------
+std::vector<double> liberaLLRFController::getCavRevPwrRollingAverage()const
+{
+    return getRollingAverage(UTL::CAVITY_REVERSE_POWER);
+}
+std::vector<double> liberaLLRFController::getCavFwdPwrRollingAverage()const
+{
+    return getRollingAverage(UTL::CAVITY_FORWARD_POWER);
+}
+std::vector<double> liberaLLRFController::getKlyRevPwrRollingAverage()const
+{
+    return getRollingAverage(UTL::KLYSTRON_REVERSE_POWER);
+}
+std::vector<double> liberaLLRFController::getKlyFwdPwrRollingAverage()const
+{
+    return getRollingAverage(UTL::KLYSTRON_FORWARD_POWER);
+}
+std::vector<double> liberaLLRFController::getCavRevPhaRollingAverage()const
+{
+    return getRollingAverage(UTL::CAVITY_REVERSE_PHASE);
+}
+std::vector<double> liberaLLRFController::getCavFwdPhaRollingAverage()const
+{
+    return getRollingAverage(UTL::CAVITY_FORWARD_PHASE);
+}
+std::vector<double> liberaLLRFController::getKlyRevPhaRollingAverage()const
+{
+    return getRollingAverage(UTL::KLYSTRON_REVERSE_PHASE);
+}
+std::vector<double> liberaLLRFController::getKlyFwdPhaRollingAverage()const
+{
+    return getRollingAverage(UTL::KLYSTRON_FORWARD_PHASE);
+}
+std::vector<double> liberaLLRFController::getProbePwrRollingAverage()const
+{
+    return getRollingAverage(UTL::CAVITY_PROBE_POWER);
+}
+std::vector<double> liberaLLRFController::getProbePhaRollingAverage()const
+{
+    return getRollingAverage(UTL::CAVITY_PROBE_PHASE);
+}
 std::vector<std::vector<double>> liberaLLRFController::getRollingAverageData(const std::string&name)const
 {
     return localInterface.getRollingAverageData(name);
 }
-//--------------------------------------------------------------------------------------------------
 #ifdef BUILD_DLL
-boost::python::list liberaLLRFController::getRollingAverage_Py(const std::string&name)const
+boost::python::list liberaLLRFController::getRollingAverage_Py(const std::string& name)const
 {
     return toPythonList(getRollingAverage(name));
 }
-//--------------------------------------------------------------------------------------------------
+boost::python::list liberaLLRFController::getCavRevPwrRollingAverage_Py()const
+{
+    return toPythonList(getCavRevPwrRollingAverage());
+}
+boost::python::list liberaLLRFController::getCavFwdPwrRollingAverage_Py()const
+{
+    return toPythonList(getCavFwdPwrRollingAverage());
+}
+boost::python::list liberaLLRFController::getKlyRevPwrRollingAverage_Py()const
+{
+    return toPythonList(getKlyRevPwrRollingAverage());
+}
+boost::python::list liberaLLRFController::getKlyFwdPwrRollingAverage_Py()const
+{
+    return toPythonList(getKlyFwdPwrRollingAverage());
+}
+boost::python::list liberaLLRFController::getCavRevPhaRollingAverage_Py()const
+{
+    return toPythonList(getCavRevPhaRollingAverage());
+}
+boost::python::list liberaLLRFController::getCavFwdPhaRollingAverage_Py()const
+{
+    return toPythonList(getCavFwdPhaRollingAverage());
+}
+boost::python::list liberaLLRFController::getKlyRevPhaRollingAverage_Py()const
+{
+    return toPythonList(getKlyRevPhaRollingAverage());
+}
+boost::python::list liberaLLRFController::getKlyFwdPhaRollingAverage_Py()const
+{
+    return toPythonList(getKlyFwdPhaRollingAverage());
+}
+boost::python::list liberaLLRFController::getProbePwrRollingAverage_Py()const
+{
+    return toPythonList(getProbePwrRollingAverage());
+}
+boost::python::list liberaLLRFController::getProbePhaRollingAverage_Py()const
+{
+    return toPythonList(getProbePhaRollingAverage());
+}
 boost::python::list liberaLLRFController::getRollingAverageData_Py(const std::string&name)const
 {
+    /* a vector of vect or to python list shouldbe a generic templat fucntion somewhere */
     std::vector<std::vector<double>> r = getRollingAverageData(name);
     boost::python::list return_list;
     for(auto&&it:r)
@@ -1999,119 +2099,12 @@ boost::python::list liberaLLRFController::getRollingAverageData_Py(const std::st
     }
     return return_list;
 }
+//--------------------------------------------------------------------------------------------------
 #endif
-//--------------------------------------------------------------------------------------------------
-size_t liberaLLRFController::getTraceRollingAverageSize(const std::string&name)const
-{
-    return localInterface.getTraceRollingAverageSize(name);
-}
-//--------------------------------------------------------------------------------------------------
-size_t liberaLLRFController::getTraceRollingAverageCount(const std::string&name) const
-{
-    return localInterface.getTraceRollingAverageCount(name);
-}
-//--------------------------------------------------------------------------------------------------
-bool liberaLLRFController::isKeepingRollingAverage(const std::string&name)const
-{
-    return localInterface.isKeepingRollingAverage(name);
-}
-//--------------------------------------------------------------------------------------------------
-bool liberaLLRFController::hasRollingAverage(const std::string&name)const
-{
-    return localInterface.hasRollingAverage(name);
-}
-//---------------------------------------------------------------------------------
-double liberaLLRFController::getMean(const std::string&name)const
-{
-    return localInterface.getMean(name);
-}
-
-double liberaLLRFController::getCutMean(const std::string&name)const
-{
-    return localInterface.getCutMean(name);
-}
-
-double liberaLLRFController::getKlyFwdPwrCutMean()const
-{
-    return localInterface.getKlyFwdPwrCutMean();
-}
-
-double liberaLLRFController::getKlyFwdPhaCutMean()const
-{
-    return localInterface.getKlyFwdPhaCutMean();
-}
-
-double liberaLLRFController::getKlyRevPwrCutMean()const
-{
-    return localInterface.getKlyRevPwrCutMean();
-}
-
-double liberaLLRFController::getKlyRevPhaCutMean()const
-{
-    return localInterface.getKlyRevPhaCutMean();
-}
-
-double liberaLLRFController::getCavFwdPwrCutMean()const
-{
-    return localInterface.getCavFwdPwrCutMean();
-}
-double liberaLLRFController::getCavFwdPhaCutMean()const
-{
-    return localInterface.getCavFwdPhaCutMean();
-}
-double liberaLLRFController::getCavRevPwrCutMean()const
-{
-    return localInterface.getCavRevPwrCutMean();
-}
-double liberaLLRFController::getCavRevPhaCutMean()const
-{
-    return localInterface.getCavRevPhaCutMean();
-}
-double liberaLLRFController::getProbePwrCutMean()const
-{
-    return localInterface.getProbePwrCutMean();
-}
-double liberaLLRFController::getProbePhaCutMean()const
-{
-    return localInterface.getProbePhaCutMean();
-}
 
 
 
 
-
-
-
-
-
-
-//---------------------------------------------------------------------------------
-size_t liberaLLRFController::getMeanStartIndex(const std::string&name)const
-{
-    return localInterface.getMeanStartIndex(name);
-}
-//---------------------------------------------------------------------------------
-size_t liberaLLRFController::getMeanStopIndex(const std::string&name)const
-{
-    return localInterface.getMeanStopIndex(name);
-}
-
-
-//____________________________________________________________________________________________
-bool liberaLLRFController::setMeanStartEndTime(const double start, const double end, const std::string&name)
-{
-    return localInterface.setMeanStartEndTime(start, end,name);
-}
-//____________________________________________________________________________________________
-bool liberaLLRFController::setMeanStartIndex(const std::string&name, size_t  value)
-{
-    return localInterface.setMeanStartIndex(name, value);
-}
-//____________________________________________________________________________________________
-bool liberaLLRFController::setMeanStopIndex(const std::string&name, size_t  value)
-{
-    return localInterface.setMeanStopIndex(name, value);
-}
 
 ////______________________________________________________________________________
 //bool liberaLLRFController::isTracePV(const llrfStructs::LLRF_PV_TYPE pv)
