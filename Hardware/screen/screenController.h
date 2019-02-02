@@ -74,6 +74,7 @@ class screenController : public controller
         //boost::python::list getScreenNames_Py();
         /// SETTERS
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
+        void moveScreensTo( const std::vector< const std::string > names, const std::vector< screenStructs::SCREEN_STATE > states );
         void insertYAG( const std::string & name );
         void moveScreenOut( const std::string & name );
         void resetPosition( const std::string & name );
@@ -98,8 +99,8 @@ class screenController : public controller
         boost::python::list getHVMoverScreens_Py( const std::vector< std::string > & names );
         boost::python::dict get_SCREEN_STATE_Definition();
         boost::python::dict get_DRIVER_STATE_Definition();
+        void moveScreensTo_Py( const boost::python::list names, const boost::python::list states );
 #endif // BUILD_DLL
-
     private:
         void initialise();
         ///No singletons, no pointers, let's just have an object

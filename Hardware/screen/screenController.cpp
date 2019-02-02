@@ -120,6 +120,11 @@ void screenController::moveScreenTo( const std::string & name, const screenStruc
     localInterface.moveScreenTo(name, state);
 }
 //________________________________________________________________________________
+void screenController::moveScreensTo( const std::vector< const std::string > names, const std::vector< screenStructs::SCREEN_STATE > states )
+{
+    localInterface.moveScreensTo(names, states);
+}
+//________________________________________________________________________________
 void screenController::insertYAG( const std::string & name )
 {
     localInterface.insertYAG(name);
@@ -365,6 +370,16 @@ boost::python::list screenController::getHVMoverScreens_Py( const std::vector< s
 {
     return toPythonList(getHVMoverScreens(names));
 }
+//______________________________________________________________________________
+void screenController::moveScreensTo_Py( const boost::python::list names, const boost::python::list states )
+{
+    moveScreensTo( to_std_vector<const std::string>(names), to_std_vector<screenStructs::SCREEN_STATE>(states) );
+}
+////________________________________________________________________________________
+//void screenController::moveScreensTo_Py( boost::python::dict scrmap )
+//{
+//    return toPythonList(getVELAPneumaticScreens(names));
+//}
 ////________________________________________________________________________________
 //boost::python::list screenController::isScreenIn_Py(const std::vector<std::string> & name )
 //{

@@ -256,6 +256,9 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     class_<std::map<std::string,bool>>("std_map_string_bool")
         .def(map_indexing_suite< std::map<std::string, bool> >())
         ;
+    class_<std::map<const std::string, screenStructs::SCREEN_STATE>>("std_map_str_SCREEN_STATE")
+        .def(map_indexing_suite<  std::map<const std::string, screenStructs::SCREEN_STATE> >())
+        ;
     class_<std::pair<screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE>>("std_pair_SCREEN_STATE_DRIVER_DIRECTION")
         .def(boost::python::init<  std::pair<screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE> >())
         .def_readonly( "first",  &std::pair< screenStructs::DRIVER_DIRECTION,screenStructs::SCREEN_STATE >::first  )
@@ -311,6 +314,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* isVMovingString = "Returns true if the vertical stage is moving.";
     char const* isScreenMovingString = "Returns true if the screen stage is moving.";
     char const* moveScreenToString = "Will move the screen (name) to SCREEN_STATE state if it exists (as defined in the config file).";
+    char const* moveScreensToString = "Will move the screens (name) to SCREEN_STATEs states if they exist (as defined in the config file).";
     char const* insertYAGString = "Inserts the YAG screen.";
     char const* moveScreenOutString = "Will remove both horizontal and vertical devices.";
     char const* setScreenSDEVString = "Set screen device - the first part of moving a screen. Set the device to SCREEN_STATE state.";
@@ -351,6 +355,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         ("screenController","screenController Doc String",boost::python::no_init)
         .def("getScreenObject",         &screenController::getScreenObject, (boost::python::arg("name")), getScreenObjectString, return_value_policy<reference_existing_object>() )
         .def("moveScreenTo",            &screenController::moveScreenTo, (boost::python::arg("name"),boost::python::arg("state"),boost::python::arg("dir")), moveScreenToString       )
+        .def("moveScreensTo",           &screenController::moveScreensTo_Py, (boost::python::arg("map<str,SCREEN_STATE>")), moveScreenToString       )
         .def("getILockStates",          &screenController::getILockStates                                                                                   )
         .def("isHOut",                  &screenController::isHOut, (boost::python::arg("name")), isHOutString                                               )
         .def("isVOut",                  &screenController::isVOut, (boost::python::arg("name")), isVOutString                                               )
