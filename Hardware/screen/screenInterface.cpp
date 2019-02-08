@@ -1016,12 +1016,13 @@ const std::vector< std::string > screenInterface::getNamesOfScreensWithCameras()
 bool screenInterface::isScreenInState(const std::string & name, screenStructs::SCREEN_STATE sta)
 {
     bool r = false;
-    if( entryExists( allScreentData, name ) )
+    if( entryExists( allScreentData, name ) && allScreentData.at(name).screenState == sta )
     {
-        return r = allScreentData.at(name).screenState;
+        r = true;
+//        return r = allScreentData.at(name).screenState;
     }
-    else
-        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
+//    else
+//        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
     return r;
 }
 //___________________________________________________________________________________________________________
@@ -1209,7 +1210,16 @@ void screenInterface::moveScreenTo( const std::string & name, const screenStruct
 //        setEN( name, screenStructs::DRIVER_DIRECTION::VERTICAL );
 //    }
     setScreenSDEV( name, state );
+    UTL::PAUSE_500;
     setScreenTrigger( name, state );
+}
+//___________________________________________________________________________________________________________
+void screenInterface::moveScreensTo( const std::vector< const std::string > names, const std::vector< screenStructs::SCREEN_STATE > states )
+{
+    for (std::size_t n = 0; n < std::min( names.size(), states.size() ); n++)
+    {
+        moveScreenTo( names[ n ], states[ n ]);
+    }
 }
 //___________________________________________________________________________________________________________
 void screenInterface::insertYAG( const std::string & name )
@@ -1239,7 +1249,7 @@ void screenInterface::moveScreenOut( const std::string & name )
         }
         else if( isVElement( name, allScreentData.at(name).screenState ) )
         {
-            moveScreenTo( name, screenStructs::SCREEN_STATE::V_RETRACTED );
+            moveScreenTo( name, screenStructs::SCREEN_STATE::V_RF );
         }
         else if( isPElement( name, allScreentData.at(name).screenState ) )
         {
