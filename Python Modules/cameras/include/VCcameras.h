@@ -51,6 +51,8 @@ class VCcameras : public VCbase
         cameraControllerBase& physical_VELA_VC_Camera_Controller();
 
 
+        cameraControllerBase& physical_NEW_VELA_Camera_Controller();
+
         cameraControllerBase& virtual_CLARA_Camera_Controller();
         cameraControllerBase& offline_CLARA_Camera_Controller();
         cameraControllerBase& physical_CLARA_Camera_Controller();
@@ -69,6 +71,8 @@ class VCcameras : public VCbase
         cameraControllerBase* virtual_CLARA_Camera_Controller_Obj;
         cameraControllerBase* offline_CLARA_Camera_Controller_Obj;
         cameraControllerBase* physical_CLARA_Camera_Controller_Obj;
+
+        cameraControllerBase* physical_NEW_VELA_Camera_Controller_Obj;
 
         cameraControllerBase* virtual_VELA_Camera_Controller_Obj;
         cameraControllerBase* offline_VELA_Camera_Controller_Obj;
@@ -90,7 +94,7 @@ class VCcameras : public VCbase
                                            const HWC_ENUM::MACHINE_AREA area
                                            );
 
-        const std::string claraCamConfig, velaCamConfig;
+        const std::string claraCamConfig, velaCamConfig, velaCam2Config;
         /*
             map of showmessage showdebugmessage states
             pointers to these bools are passed down the class
@@ -164,6 +168,11 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Camera_Control )
         .def("physical_VELA_VC_Camera_Controller",  &VCcameras::physical_VELA_VC_Camera_Controller,
              return_value_policy<reference_existing_object>(),
              "returns a reference to the Physical VELA Virtual Cathode camera object.")
+        .def("physical_NEW_VELA_Camera_Controller",  &VCcameras::physical_NEW_VELA_Camera_Controller,
+             return_value_policy<reference_existing_object>(),
+             "returns a reference to the Physical NEW VELA camera object.")
+
+
         ;
 }
 #endif // VC_CAMERAS_H

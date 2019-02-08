@@ -88,6 +88,9 @@ class cameraControllerBase : public controller
         bool isVelaLEDOff();
 
 
+        std::string getLatestFilename_VC()const;
+        std::string getLatestFilename(const std::string& cam)const;
+
         bool takeFastImage(const std::string& cam);
         bool takeFastImage_VC();
         bool takeFastImage();
@@ -100,6 +103,7 @@ class cameraControllerBase : public controller
         bool startAcquiring_VC();
         bool startAcquiring(const std::string& cam);
         bool startAcquiring();
+        bool startAcquiringMultiCam(const std::string& cam);
         bool stopAcquiring_VC();
         bool stopAcquiring(const std::string& cam);
         bool stopAcquiring();

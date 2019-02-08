@@ -67,7 +67,9 @@ class cameraBase : public interface
 
         bool startAcquiring_VC();
         bool startAcquiring(const std::string& cam);
-        bool startAcquiring(cameraStructs::cameraObject& cam);
+        bool startAcquiring(cameraStructs::cameraObject& cam,bool stopall);
+        bool startAcquiringMultiCam(const std::string& cam);
+
         bool startAcquiring();
         bool stopAcquiring_VC();
         bool stopAcquiring(const std::string& cam);

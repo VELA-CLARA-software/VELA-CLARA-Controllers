@@ -113,7 +113,7 @@ namespace cameraStructs
 
     // so far, two types of camera
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_TYPE,
-                                        (VELA_CAM)(CLARA_CAM)(UNKNOWN_CAM))
+                                        (VELA_CAM)(CLARA_CAM)(VELA_CLARA_HYBRID)(UNKNOWN_CAM))
     // ON/OFF state of camera
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(CAM_STATE,
                                         (CAM_OFF)(CAM_ON)(CAM_ERROR))
@@ -340,12 +340,10 @@ namespace cameraStructs
             buffer_full(false),
             avg_pix_beam_level(UTL::DUMMY_DOUBLE),
             pix_values_counter(UTL::ZERO_SIZET),
-
             pix_val_x_hi(UTL::DUMMY_DOUBLE),
             pix_val_x_lo(UTL::DUMMY_DOUBLE),
             pix_val_y_hi(UTL::DUMMY_DOUBLE),
             pix_val_y_lo(UTL::DUMMY_DOUBLE)
-
             {};
         std::string name;
         /*

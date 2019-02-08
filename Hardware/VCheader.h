@@ -618,7 +618,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("screenName",         &cameraObject::screenName,         screenName_ds)
             .def_readonly("streamingIPAddress", &cameraObject::streamingIPAddress, streamingIPAddress_ds)
             .def_readonly("type",               &cameraObject::type,               type_ds)
-            .def_readonly("state",              &cameraObject::state,             state_ds)
+            .def_readonly("state",              &cameraObject::state,              state_ds)
             .def_readonly("daq",                &cameraObject::daq,                daq_ds)
             .def_readonly("data",               &cameraObject::data,               data_ds)
             ;
@@ -632,6 +632,9 @@ namespace BOOST_PYTHON_INCLUDE
         const char* startAcquiring_VC_ds = "";
         const char* startAcquiring_ds_1 = "";
         const char* startAcquiring_ds_2 = "";
+        const char* startAcquiringMultiCam_ds = "";
+
+
         const char* stopAcquiring_VC_ds = "";
         const char* stopAcquiring_ds1 = "";
         const char* stopAcquiring_ds2 = "";
@@ -1065,6 +1068,7 @@ namespace BOOST_PYTHON_INCLUDE
         bool(cameraControllerBase::*takeFastImage_2)()      = &cameraControllerBase::takeFastImage;
 
 
+
         bool(cameraControllerBase::*useNPoint_1)(bool,cstr&)       = &cameraControllerBase::useNPoint;
         bool(cameraControllerBase::*useNPoint_2)(bool)= &cameraControllerBase::useNPoint;
         bool(cameraControllerBase::*startAnalysis_1)(cstr&)     = &cameraControllerBase::startAnalysis;
@@ -1334,6 +1338,12 @@ namespace BOOST_PYTHON_INCLUDE
         .def("hasNoBeam",  hasNoBeam_2       ,  hasNoBeam_ds2 )
 
 
+        .def("getLatestFilename_VC",  &cameraControllerBase::getLatestFilename_VC ,"" )
+        .def("getLatestFilename",  &cameraControllerBase::getLatestFilename ,"" )
+
+
+
+
 
         .def("stopAnalysing_VC",  &cameraControllerBase::stopAnalysing_VC ,stopAnalysing_VC_ds )
         .def("stopAnalysing",  stopAnalysing_1       ,  stopAnalysing_ds1 )
@@ -1418,6 +1428,10 @@ namespace BOOST_PYTHON_INCLUDE
         .def("startAcquiring_VC",              &cameraControllerBase::startAcquiring_VC              ,                                               startAcquiring_VC_ds)
         .def("startAcquiring",                 startAcquiring_1                                      ,                                               startAcquiring_ds_1)
         .def("startAcquiring",                 startAcquiring_2                                      ,                                               startAcquiring_ds_2)
+
+        .def("startAcquiringMultiCam",         &cameraControllerBase::startAcquiringMultiCam         ,                                               startAcquiringMultiCam_ds)
+
+
         .def("isAcquiring_VC",                 &cameraControllerBase::isAcquiring_VC                 ,                                               isAcquiring_VC_ds)
         .def("isAcquiring",                                                    isAcquiring_1                                   ,                                  isAcquiring_ds_1)
         .def("isAcquiring",                                                    isAcquiring_2                                   ,                                  isAcquiring_ds_2)

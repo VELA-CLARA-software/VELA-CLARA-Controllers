@@ -17,7 +17,7 @@
 //  Last edit:   19-03-2018
 //  FileName:    configDefinitions.h
 //  Description: Constant definitions for strings, numbers, etc. to be defined here
-//               Mostly used for configfile defintions,
+//               Mostly used for configfile d#efintions,
 //               but also numerical constants that are used throughout
 //
 //*/
@@ -284,6 +284,10 @@ namespace UTL
     const std::string C2B_SCREENS_CONFIG       = "C2BScreens.config";
     const std::string ALL_VELA_CLARA_SCREENS_CONFIG = "allScreen.config";
 
+///
+    const std::string BA1_STAGES_CONFIG = "BA1Stages.config";
+
+
 /// PI Laser
     /// PI Laser configs
     const std::string PIL_SHUTTER_CONFIG       = "photoInjectorLaserShutter.config";
@@ -369,7 +373,6 @@ namespace UTL
     // Faked the VM versions atm until (probably not needed now 14/7/2017
     const std::string VM_CLARA_LRRG_LLRF_CONFIG = "vmCLARA_LRRG_LLRF.config";
     const std::string VM_CLARA_L01_LLRF_CONFIG = "vmCLARA_L01_LLRF.config";
-
 
 
 
@@ -556,11 +559,13 @@ namespace UTL
 
 
 
+// BA1 Stages
 
-
-
-
-
+    const std::string PV_SUFFIX_BA1_MPOS = "PV_SUFFIX_BA1_MPOS";
+    const std::string PV_SUFFIX_BA1_RPOS = "PV_SUFFIX_BA1_RPOS";
+    const std::string MAX_POS = "MAX_POS";
+    const std::string MIN_POS = "MIN_POS";
+    const std::string HAS_YAG = "HAS_YAG";
 
 
 
@@ -839,6 +844,7 @@ namespace UTL
    //Cameras
     const std::string CLARA_CAMERA_CONFIG  = "claraCam.config";
     const std::string VELA_CAMERA_CONFIG  = "velaCam.config";
+    const std::string VELA_CAMERA2_CONFIG  = "velaCam2.config";
 
    /// camera
     const std::string PV_SUFFIX_START     = "PV_SUFFIX_START";

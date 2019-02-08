@@ -132,6 +132,7 @@ void cameraBase::initialise(bool VConly)
                 startCamMonitors(true);
                 /*
                     The pause allows EPICS callbacks to catch up.
+                    not neeeded
                 */
                 pause_500();
             }
@@ -386,6 +387,7 @@ void cameraBase::initCamChids(bool sendToEPICS = false)
             message("\n", "Checking camera ChIds.");
             for(auto&& it:allCamData)
             {
+
                 message("\n", it.first);
                 for(auto&& mon_it:it.second.pvMonStructs)
                 {
@@ -1376,23 +1378,26 @@ bool cameraBase::collectAndSave(const int numbOfShots)
     message("cameraBase::collectAndSave");
     message("collectAndSave passed ",selectedCamPtr->name," shots = ",numbOfShots);
     if(isAcquiringAndClaraCam(*selectedCamPtr))
+    {
         return collectAndSave(selectedCamPtr->name, numbOfShots);
+    }
     else
     {
-        message(selectedCamPtr->name," is not acquiring, can't collectAndSave");
+        message("isAcquiringAndClaraCam( ",selectedCamPtr->name," ) == FALSE,  can't collectAndSave");
     }
     return false;
 }
 //-------------------------------------------------------------------------------------------------------
-bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
+bool cameraBase::collectAndSave(const std::string& name, const int numbOfShots)
 {
-    if(isNotAcquiring(n))
+    if(isNotAcquiring(name))
         return false;
-    if(isVelaCam(n))
+    if(isVelaCam(name))
         return false;
     else
     {
-        message("collectAndSave passed ",n);
+        std::string n = useCameraFrom(name);
+        message("collectAndSave passed ",name, " = (", n,")");
         /*
             kill any finished threads
         */
@@ -1404,17 +1409,19 @@ bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
 
              if( !imageCollectStructs.at(n).isBusy)
              {
+                message(n," is not busy");
 
                 if(numbOfShots <= allCamData.at(n).daq.maxShots)
                 {
-                    message("create new imageCollectStructs");
+                    message("Requested number of shots ok, create new imageCollectStructs");
 
                     imageCollectStructs.at(n).isBusy   = true;
                     imageCollectStructs.at(n).success  = false;
                     imageCollectStructs.at(n).numShots = numbOfShots;
                     imageCollectStructs.at(n).thread
                         = new std::thread(staticEntryImageCollectAndSave, std::ref(imageCollectStructs.at(n)));
-                    message("new imageCollectStruct created");
+
+                    message("new imageCollectStruct created and running");
 
                     return true;
                 }
@@ -1429,15 +1436,21 @@ bool cameraBase::collectAndSave(const std::string& n, const int numbOfShots)
                 message(n," imageCollectStructs is busy ");
              }
         }
+        else
+        {
+            message("!!!ERROR!!! imageCollectStructs has no entry ", n );
+        }
     }
     return false;
 }
 //-------------------------------------------------------------------------------------------------------
 void cameraBase::staticEntryImageCollectAndSave(imageCollectStruct& ics)
 {
+    ics.camInterface -> message("staticEntryImageCollectAndSave running");
     ics.camInterface -> attachTo_thisCAContext();
     ics.camInterface -> imageCollectAndSave(ics);
     ics.camInterface -> detachFrom_thisCAContext();
+    ics.camInterface -> message("staticEntryImageCollectAndSave complete");
 }
 //-------------------------------------------------------------------------------------------------------
 void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
@@ -2267,6 +2280,9 @@ bool cameraBase::isClaraCam(const cameraStructs::cameraObject& cam)const
     return cam.type == CAM_TYPE::CLARA_CAM;
 }
 //---------------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------------
 bool cameraBase::isClaraCam(const std::string& cam)const
 {
     return isClaraCam(getCamObj(cam));
@@ -2281,8 +2297,14 @@ bool cameraBase::isClaraCam()const
 bool cameraBase::isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)const
 {
     if(isAcquiring(cam))
+    {
+        message(cam.name," is acquiring, ", ENUM_TO_STRING(cam.type));
         if(isClaraCam(cam))
+        {
+            message(cam.name," is isClaraCam");
             return true;
+        }
+    }
     return false;
 }
 //---------------------------------------------------------------------------------
@@ -4064,7 +4086,7 @@ bool cameraBase::stopAnalysis()
 //---------------------------------------------------------------------------------
 bool cameraBase::startAcquiring_VC()
 {
-    return startAcquiring(*vcCamPtr);
+    return startAcquiring(*vcCamPtr,false);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::startAcquiring(const std::string& cam)
@@ -4072,18 +4094,21 @@ bool cameraBase::startAcquiring(const std::string& cam)
     if(isVC(cam))
         return startAcquiring_VC();
     else
-        return startAcquiring(getCamObj(cam));
+        return startAcquiring(getCamObj(cam),true);
     return false;
 }
 //---------------------------------------------------------------------------------
-bool cameraBase::startAcquiring(cameraObject& cam)
+bool cameraBase::startAcquiring(cameraObject& cam,bool stopall = true)
 {
     //message("isNotAcquiring(",cam.name,") = ",isNotAcquiring(cam));
     if(isNotAcquiring(cam))
     {
         if(isNotVC(cam.name))
         {
-            stopAllAcquiringExceptVC();
+            if(stopall)
+            {
+                stopAllAcquiringExceptVC();
+            }
         }
         //message("Try startAcquiring ",cam.name);
         unsigned short c = UTL::ONE_US;
@@ -4093,6 +4118,18 @@ bool cameraBase::startAcquiring(cameraObject& cam)
         return true;
     return false;
 }
+//---------------------------------------------------------------------------------
+bool cameraBase::startAcquiringMultiCam(const std::string& cam)
+{
+    if(isVC(cam))
+        return startAcquiring_VC();
+    else
+        return startAcquiring(getCamObj(cam),false);
+    return false;
+}
+
+
+
 //---------------------------------------------------------------------------------
 bool cameraBase::startAcquiring()
 {
@@ -4787,4 +4824,27 @@ bool cameraBase::isLED_PV(CAM_PV_TYPE pv)
     }
     return false;
 }
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestFilename_VC()const
+{
+    return getLatestFilename(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestFilename(const std::string& cam)const
+{
+    return getLatestFilename(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestFilename(const cameraStructs::cameraObject& cam)const
+{
+    return cam.daq.latestFilename;
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestFilename()const
+{
+    return getLatestFilename(*selectedCamPtr);
+}
+
+
+
 

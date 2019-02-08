@@ -40,7 +40,8 @@ virtual_VELA_VC_Camera_Controller_Obj(nullptr),
 offline_VELA_VC_Camera_Controller_Obj(nullptr),
 physical_VELA_VC_Camera_Controller_Obj(nullptr),
 claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG),
-velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG)
+velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
+velaCam2Config(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA2_CONFIG)
 {
     std::cout << "Instantiated a VCcameras in Quiet Mode" << std::endl;
     //ctor
@@ -121,6 +122,30 @@ cameraControllerBase& VCcameras::getController(const HWC_ENUM::MACHINE_MODE mode
     else if( mode == HWC_ENUM::PHYSICAL)
         return physical_Camera_Controller();
 }
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::physical_NEW_VELA_Camera_Controller()
+{
+    std::string name = "physical_NEW_VELA_Camera_Controller";
+    std::cout <<"physical_NEW_VELA_Camera_Controller" <<std::endl;
+
+
+    messageStates[physical_NEW_VELA_Camera_Controller_Obj].first     = shouldShowMessage;
+    messageStates.at(physical_NEW_VELA_Camera_Controller_Obj).second = shouldShowDebugMessage;
+    std::cout << "Creating " << name << " object" <<std::endl;
+    physical_NEW_VELA_Camera_Controller_Obj = new cameraControllerBase(messageStates.at(physical_NEW_VELA_Camera_Controller_Obj).first,
+                                        messageStates.at(physical_NEW_VELA_Camera_Controller_Obj).second,
+                                        withoutVM,
+                                        withEPICS,
+                                        name,
+                                        "",
+                                        velaCam2Config,
+                                        HWC_ENUM::CONTROLLER_TYPE::CAMERA,
+                                        HWC_ENUM::MACHINE_AREA::VELA,
+                                        false);
+
+    return *physical_NEW_VELA_Camera_Controller_Obj;
+}
+
 //______________________________________________________________________________
 cameraControllerBase& VCcameras::physical_Camera_Controller()
 {

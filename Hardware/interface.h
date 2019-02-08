@@ -92,9 +92,9 @@ class interface : public baseObject
             The below was written back in the days when i assumed operational
            consistency:
             some EPICS constants
-            send ...1 to enable open / close shutter, screen etc,
+            send ...1 to enable open / close ba1Stages, screen etc,
                 therefore these are available to all interface classes
-            send ...0 to send open / close shutter
+            send ...0 to send open / close ba1Stages
                 (???, i'm guessing here, but it seems to work)
            I'm also not 100 % certain on the type,
            but unsigned short works so far

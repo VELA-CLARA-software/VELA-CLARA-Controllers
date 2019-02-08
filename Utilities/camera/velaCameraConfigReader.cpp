@@ -162,6 +162,8 @@ void velaCameraConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&
     using namespace UTL;
     if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX"))
     {
+        std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
+        std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
         using namespace cameraStructs;
         if(keyVal[ZERO_SIZET] == PV_SUFFIX_GAIN_RBV)//1
         {
@@ -179,6 +181,192 @@ void velaCameraConfigReader::addToPVMonitorMapV1(const std::vector<std::string>&
         {
             addPVStruct(pvMonStructs, CAM_PV_TYPE::VELA_LED_STA,keyVal[ONE_SIZET]);
         }
+
+
+        // copy-pasta of the cam
+        else if(key == PV_IA_SUFFIX_X_RBV)//1
+        {
+            //message("addToPVMonitorMapV1 ",key );
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::X_RBV, value);
+        }
+        else if(key == PV_IA_SUFFIX_Y_RBV)//2
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_RBV, value);
+        }
+        else if(key == PV_IA_SUFFIX_SIGMA_X_RBV)//3
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_X_RBV, value);
+        }
+        else if(key == PV_IA_SUFFIX_SIGMA_Y_RBV)//4
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_Y_RBV, value);
+        }
+        else if(key == PV_IA_SUFFIX_X_PIX_RBV)//5
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::X_PIX_RBV, value);
+        }
+        else if(key == PV_IA_SUFFIX_Y_PIX_RBV)//6
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_PIX_RBV, value);
+        }
+        else if(key == PV_IA_SUFFIX_SIGMA_X_PIX_RBV)//7
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_X_PIX_RBV,value);
+        }
+        else if(key == PV_IA_SUFFIX_SIGMA_Y_PIX_RBV)//8
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SIGMA_Y_PIX_RBV,value);
+        }
+        else if(key == PV_IA_SUFFIX_COV_XY_RBV)//9
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::COV_XY_RBV,value);
+        }
+        else if(key == PV_IA_SUFFIX_COV_XY_PIX_RBV)//10
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::COV_XY_PIX_RBV,keyVal[ONE_SIZET]);
+        }
+        // intensity
+        else if(key == PV_IA_SUFFIX_AV_PIX_INTENSITY_RBV)//11
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::AVG_PIX_INTENSITY_RBV,keyVal[ONE_SIZET]);
+        }
+        else if(key == PV_IA_SUFFIX_SUM_PIX_INTENSITY_RBV)//12
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::SUM_PIX_INTENSITY_RBV,keyVal[ONE_SIZET]);
+        }
+        else if(key == PV_IA_SUFFIX_PIXEL_RESULTS_RBV)//13
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::PIXEL_RESULTS_RBV,keyVal[ONE_SIZET]);
+        }
+        // mask parameters
+        else if(key == PV_IA_SUFFIX_MASK_X_RBV)//14
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_X_RBV,value);
+        }
+        else if(key == PV_IA_SUFFIX_MASK_Y_RBV)//15
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_Y_RBV,keyVal[ONE_SIZET]);
+        }
+        else if(key == PV_IA_SUFFIX_MASK_X_RAD_RBV)//16
+        {
+            addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_X_RAD_RBV,keyVal[ONE_SIZET]);
+        }
+        else if(key == PV_IA_SUFFIX_MASK_Y_RAD_RBV)//17
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::MASK_Y_RAD_RBV,keyVal[ONE_SIZET]);
+        }
+        // image centre and pix 2 mm
+        //
+        else  if(key == PV_IA_SUFFIX_PIX_MM_RBV)//18
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::PIX_MM_RBV,keyVal[ONE_SIZET]);
+        }
+        else  if(key == PV_IA_SUFFIX_CENTER_X_RBV)//19
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::X_CENTER_RBV,keyVal[ONE_SIZET]);
+        }
+        else  if(key == PV_IA_SUFFIX_CENTER_Y_RBV)//20
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::Y_CENTER_RBV,keyVal[ONE_SIZET]);
+        }
+        else if( key == PV_IA_SUFFIX_STEP_SIZE_RBV)//21
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::STEP_SIZE_RBV,value);
+        }
+        else if( key == PV_IA_SUFFIX_START_IA_RBV  )//22
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::START_IA_RBV,keyVal[ONE_SIZET]);
+        }
+        // image analysis States
+        else if( key == PV_IA_SUFFIX_USE_B_RBV  )//23
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::USE_BKGRND_RBV,keyVal[ONE_SIZET]);
+        }
+        else if( key == PV_IA_SUFFIX_USE_NPOINT_RBV  )//24
+        {
+             addPVStruct(pvMonStructs,CAM_PV_TYPE::USE_NPOINT_RBV,keyVal[ONE_SIZET]);
+        }
+        //NOT NEEDED else if( key == PV_IA_SUFFIX_CAM_STATE  )
+        else if( key == PV_DAQ_SUFFIX_ACQUIRE_RBV  )//25
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_CAPTURE_RBV  )//26
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_CAPTURE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURED_RBV  )//27
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_NUM_CAPTURED_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURE_RBV  )//28
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_NUM_CAPTURE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_WRITE_STATUS  )//29
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FILE_WRITE_STATUS,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_WRITE_FILE_RBV  )//3ZERO_SIZET
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_WRITE_FILE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_WRITE_MESSAGE  )//31
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FILE_WRITE_ERROR_MESSAGE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_CAPTURE_RBV_J  )//32
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_CAPTURE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURED_J  )//33
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_NUM_CAPTURED,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_NUM_CAPTURE_RBV_J )//34
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_NUM_CAPTURE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_WRITE_CHECK_J )//35
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_CHECK,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_WRITE_RBV_J  )//36
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_WRITE_MESSAGE_J  )//37
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::JPG_FILE_WRITE_MESSAGE,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_EXPOSURE_RBV  )//38
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_EXPOSURE_TIME_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_ACQ_PERIOD_RBV  )//39
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_ACQUIRE_PERIOD_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_FREQ_RBV  )//4ZERO_SIZET
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_FREQ_RBV,value);
+        }
+        else if( key == PV_DAQ_SUFFIX_SENSOR_TEMP_RBV)//41
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::CAM_SENSOR_TEMP_RBV,value);
+        }
+        //        // actual cam image data
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)//9
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
+        }
+
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_LED_STA)//9
+        {
+            addPVStruct(pvMonStructs, CAM_PV_TYPE::LED_STA,keyVal[ONE_SIZET]);
+        }
+
+
 
     }
     else
@@ -204,6 +392,8 @@ void velaCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string>
     //message("addToPVCommandMapV1, ", keyVal[0]);
     if(stringIsSubString(keyVal[ZERO_SIZET], "SUFFIX"))
     {
+        std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
+        std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
         using namespace cameraStructs;
         if(keyVal[ZERO_SIZET] == UTL::PV_DAQ_SUFFIX_START_ACQUIRE )//1
         {
@@ -232,6 +422,137 @@ void velaCameraConfigReader::addToPVCommandMapV1(const  std::vector<std::string>
         else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_LED_ON)//9
         {
             addPVStruct(pvComStructs, CAM_PV_TYPE::VELA_LED_ON, keyVal[ONE_SIZET]);
+        }
+
+
+        if( key == UTL::PV_IA_SUFFIX_START_IA  )//1
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::START_IA, value);
+        }
+        else if( key == UTL::PV_IA_SUFFIX_SET_B  )//2
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::SET_BKGRND,value);
+        }
+        else if( key == UTL::PV_IA_SUFFIX_USE_B  )//3
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::USE_BKGRND,value);
+        }
+        else if( key == UTL::PV_IA_SUFFIX_USE_NPOINT  )//4
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::USE_NPOINT,value);
+        }
+        // image centre and pix 2 mm
+        else  if(key == PV_IA_SUFFIX_CENTER_X)//5
+        {
+             addPVStruct(pvComStructs,CAM_PV_TYPE::X_CENTER,keyVal[ONE_SIZET]);
+        }
+        else  if(key == PV_IA_SUFFIX_CENTER_Y)//6
+        {
+             addPVStruct(pvComStructs,CAM_PV_TYPE::Y_CENTER,keyVal[ONE_SIZET]);
+        }
+        else  if(key == PV_IA_SUFFIX_PIX_MM)//7
+        {
+             addPVStruct(pvComStructs,CAM_PV_TYPE::PIX_MM,keyVal[ONE_SIZET]);
+        }
+        // how the image is decimated before anlaysis ?????????
+        else  if(key == PV_IA_SUFFIX_STEP_SIZE)//8
+        {
+             addPVStruct(pvComStructs,CAM_PV_TYPE::STEP_SIZE,keyVal[ONE_SIZET]);
+        }
+        // actual cam image data
+        else if(keyVal[UTL::ZERO_SIZET] == UTL::PV_SUFFIX_DATA)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::ARRAY_DATA,keyVal[ONE_SIZET]);
+        }
+        // mask setters
+        else if(key == PV_IA_SUFFIX_MASK_X)//1ZERO_SIZET
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_X,value);
+        }
+        else if(key == PV_IA_SUFFIX_MASK_Y)//11
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_Y,keyVal[ONE_SIZET]);
+        }
+        else if(key == PV_IA_SUFFIX_MASK_X_RAD)//12
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_X_RAD,keyVal[ONE_SIZET]);
+        }
+        else if(key == PV_IA_SUFFIX_MASK_Y_RAD)//13
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::MASK_Y_RAD,keyVal[ONE_SIZET]);
+        }
+        //
+
+        // copy-pasta from clarcams
+        else if(key == PV_DAQ_SUFFIX_START_ACQUIRE)//14
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_START_ACQUIRE, value);
+        }
+        else if(key == PV_DAQ_SUFFIX_STOP_ACQUIRE)//15
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_STOP_ACQUIRE, value);
+        }
+        else if(key == PV_DAQ_SUFFIX_FILE_PATH)//16
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_PATH, value);
+        }
+        else if(key == PV_DAQ_SUFFIX_FILE_NAME)//17
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_NAME, value);
+        }
+        else if( key == UTL::PV_DAQ_SUFFIX_CAPTURE  )//18
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_CAPTURE,value);
+        }
+        else if(key == PV_DAQ_SUFFIX_FILE_NUMBER)//19
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_NUMBER, value);
+        }
+        else if( key == UTL::PV_DAQ_SUFFIX_WRITE  )//20
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_FILE_WRITE,value);
+        }
+        else if( key == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE  )//21
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::CAM_NUM_CAPTURE,value);
+        }
+        else if(key == PV_DAQ_SUFFIX_FILE_PATH_J)//22
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_PATH, value);
+        }
+        else if(key == PV_DAQ_SUFFIX_FILE_NAME_J)//23
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_NAME, value);
+        }
+        else if( key == UTL::PV_DAQ_SUFFIX_CAPTURE_J  )//24
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::JPG_CAPTURE,value);
+        }
+        else if(key == PV_DAQ_SUFFIX_FILE_NUMBER_J)//25
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_NUMBER, value);
+        }
+        else if(key == PV_DAQ_SUFFIX_WRITE_J)//26
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::JPG_FILE_WRITE, value);
+        }
+        else if( key == UTL::PV_DAQ_SUFFIX_NUM_CAPTURE_J  )//27
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::JPG_NUM_CAPTURE,value);
+        }
+        // this is not used, what is it ??????????????????????????????
+        else if(key == PV_DAQ_SUFFIX_FILE_TEMPLATE)//30????????????????
+        {
+            addPVStruct(pvComStructs,CAM_PV_TYPE::CAM_FILE_TEMPLATE, value);
+        }
+
+        else if(key == UTL::PV_SUFFIX_LED_OFF)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::LED_OFF, value);
+        }
+        else if(key == UTL::PV_SUFFIX_LED_ON)//9
+        {
+            addPVStruct(pvComStructs, CAM_PV_TYPE::LED_ON, value);
         }
 
     }
@@ -411,8 +732,16 @@ void velaCameraConfigReader::addToCameraObjects(const std::vector<std::string> &
 cameraStructs::CAM_TYPE velaCameraConfigReader::getCameType(const std::string& value)
 {
     if(value == ENUM_TO_STRING(cameraStructs::CAM_TYPE::VELA_CAM))
+    {
        return cameraStructs::CAM_TYPE::VELA_CAM;
+    }
     if(value == ENUM_TO_STRING(cameraStructs::CAM_TYPE::CLARA_CAM))
+    {
         return cameraStructs::CAM_TYPE::CLARA_CAM;
+    }
+    if(value == ENUM_TO_STRING(cameraStructs::CAM_TYPE::VELA_CLARA_HYBRID))
+    {
+        return cameraStructs::CAM_TYPE::VELA_CLARA_HYBRID;
+    }
     return cameraStructs::CAM_TYPE::UNKNOWN_CAM;
 }

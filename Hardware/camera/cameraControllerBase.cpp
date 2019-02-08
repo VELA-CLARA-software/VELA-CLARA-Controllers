@@ -126,6 +126,11 @@ bool cameraControllerBase::startAcquiring()
     return camBase->startAcquiring();
 }
 //---------------------------------------------------------------------------------
+bool cameraControllerBase::startAcquiringMultiCam(const std::string& cam)
+{
+    return camBase->startAcquiringMultiCam(cam);
+}
+//---------------------------------------------------------------------------------
 bool cameraControllerBase::stopAcquiring_VC()
 {
     return camBase->stopAcquiring_VC();
@@ -220,6 +225,20 @@ bool cameraControllerBase::startAcquireAndAnalysis()
 {
     return camBase->startAcquireAndAnalysis();
 }
+
+std::string cameraControllerBase::getLatestFilename_VC()const
+{
+    return camBase->getLatestFilename_VC();
+}
+std::string cameraControllerBase::getLatestFilename(const std::string& cam)const
+{
+    return camBase->getLatestFilename(cam);
+}
+
+
+
+
+
 //-----------------------------------------------------------------------------------------
 //  __  ___      ___  ___     __                 ___    ___    __       ___    __
 // /__`  |   /\   |  |__     /  \ |  |  /\  |\ |  |  | |__  | /  `  /\   |  | /  \ |\ |
@@ -802,10 +821,10 @@ std::string cameraControllerBase::getSelectedCamScrName() const
     return camBase->getSelectedCamScrName();
 }
 
-std::string getLastDirectoryandFileName() const
-{
-
-}
+//std::string getLastDirectoryandFileName() const
+//{
+//
+//}
 
 
 size_t cameraControllerBase::getNumPixX() const

@@ -43,6 +43,11 @@ claraCameraConfigReader::~claraCameraConfigReader(){}
 //______________________________________________________________________________
 bool claraCameraConfigReader::readConfig()
 {
+    if(configFile1 == "")
+    {
+        message("Dummy config file sent to claraCameraConfigReader::readConfig() returning True ");
+        return true;
+    }
     debugMessage("\n", "**** Attempting to Read CLARA camera Config File ****" );
 
     std::string line, trimmedLine;
