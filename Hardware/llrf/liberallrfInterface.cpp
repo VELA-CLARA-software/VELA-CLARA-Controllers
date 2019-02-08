@@ -498,12 +498,16 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
         case LLRF_PV_TYPE::INTERLOCK:
             switch(getDBRunsignedShort(args))
             {
-                case 0: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::NON_ACTIVE; break;
-                case 1: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::ACTIVE; break;
-                default: llrf.interlock_state = llrfStructs::INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE;
+                case 0:
+                    llrf.interlock_state = llrfStructs::INTERLOCK_STATE::NON_ACTIVE;
+                    break;
+                case 1:
+                    llrf.interlock_state = llrfStructs::INTERLOCK_STATE::ACTIVE;
+                    break;
+                default:
+                    llrf.interlock_state = llrfStructs::INTERLOCK_STATE::UNKNOWN_INTERLOCK_STATE;
             }
             //message("INTERLOCK = ", ENUM_TO_STRING(llrf.interlock_state));
-
             break;
         default:
             debugMessage("ERROR updateLLRFValue passed Unknown PV Type = ", ENUM_TO_STRING(pv));
@@ -927,7 +931,7 @@ double liberallrfInterface::getTraceRepRate() const
 //
 void liberallrfInterface::setGlobalCheckMask(bool value)
 {
-    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     llrf.check_mask = value;
     /*
         we are coupling this to taking rolling averages (!)
@@ -959,7 +963,7 @@ bool liberallrfInterface::setShouldNotCheckMask(const std::string&name)
 }
 bool liberallrfInterface::setCheckMask(const std::string&name, bool value)
 {
-    std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
     {
