@@ -1,75 +1,132 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
+		<Cursor position="14820" topLine="264" />
+	</File>
+	<File name="..\..\Hardware\camera\cameraBase.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="83241" topLine="2154" />
+	</File>
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="8124" topLine="307" />
+	</File>
+	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="3676" topLine="89" />
+	</File>
+	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="5045" topLine="105" />
+	</File>
+	<File name="..\..\Hardware\camera\cameraBase.h" open="0" top="0" tabpos="5">
+		<Cursor position="28916" topLine="530" />
+	</File>
+	<File name="..\..\Utilities\pi_laser\laserTransportMirrorConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8068" topLine="163" />
+	</File>
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5273" topLine="130" />
+	</File>
+	<File name="..\..\Utilities\pi_laser\laserTransportMirrorConfigReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="1306" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="3">
+		<Cursor position="3604" topLine="63" />
+	</File>
+	<File name="..\..\Utilities\pi_laser\pilaserConfigReader.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="8724" topLine="184" />
+	</File>
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2862" topLine="40" />
+	</File>
+	<File name="..\..\Utilities\pi_laser\pilaserConfigReader.h" open="0" top="0" tabpos="3">
+		<Cursor position="2295" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0">
+		<Cursor position="5339" topLine="91" />
+	</File>
+	<File name="..\..\Utilities\running_stat.h" open="0" top="0" tabpos="0">
+		<Cursor position="3513" topLine="109" />
+	</File>
+	<File name="..\..\Hardware\pilaser\pilaserController.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="1187" topLine="18" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
 	<File name="..\..\Utilities\shutter\shutterConfigReader.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="6557" topLine="133" />
+	</File>
+	<File name="..\..\Hardware\pilaser\pilaserController.h" open="0" top="0" tabpos="8">
+		<Cursor position="1903" topLine="24" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Utilities\shutter\shutterConfigReader.h" open="0" top="0" tabpos="0">
 		<Cursor position="1827" topLine="0" />
 	</File>
+	<File name="..\..\Hardware\pilaser\pilaserInterface.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="3329" topLine="56" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
 	<File name="include\VCpilaser.h" open="0" top="0" tabpos="11">
 		<Cursor position="3999" topLine="77" />
+	</File>
+	<File name="..\..\Hardware\pilaser\pilaserInterface.h" open="0" top="0" tabpos="2">
+		<Cursor position="3380" topLine="134" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>
 	<File name="src\VCpilaser.cpp" open="0" top="0" tabpos="14">
 		<Cursor position="3351" topLine="102" />
+	</File>
+	<File name="..\..\Hardware\shutter\expose_shutter.h" open="0" top="0" tabpos="10">
+		<Cursor position="2656" topLine="49" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\shutter\shutterController.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="3478" topLine="60" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Hardware\shutter\shutterController.h" open="0" top="0" tabpos="8">
-		<Cursor position="2351" topLine="28" />
+		<Cursor position="2278" topLine="37" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Hardware\shutter\shutterInterface.cpp" open="1" top="0" tabpos="5">
+	<File name="..\..\Hardware\shutter\shutterInterface.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="16295" topLine="373" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Hardware\shutter\shutterInterface.h" open="0" top="0" tabpos="0">
 		<Cursor position="1282" topLine="33" />
 	</File>
-	<File name="..\..\Structs\camera\cameraStructs.cpp" open="1" top="0" tabpos="3">
+	<File name="..\..\Structs\camera\cameraStructs.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="13039" topLine="387" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Structs\camera\cameraStructs.h" open="1" top="0" tabpos="2">
+	<File name="..\..\Structs\camera\cameraStructs.h" open="0" top="0" tabpos="2">
 		<Cursor position="9265" topLine="271" />
-	</File>
-	<File name="..\..\Hardware\shutter\expose_shutter.h" open="1" top="0" tabpos="10">
-		<Cursor position="571" topLine="9" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Structs\pi_laser\pilaserStructs.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="2" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\pilaser\pilaserInterface.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="3658" topLine="56" />
-	</File>
 	<File name="..\..\Structs\pi_laser\pilaserStructs.h" open="0" top="0" tabpos="1">
 		<Cursor position="7142" topLine="115" />
 	</File>
-	<File name="..\..\Hardware\camera\cameraBase.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="83241" topLine="2154" />
-	</File>
-	<File name="..\..\Structs\structs.h" open="1" top="0" tabpos="0">
+	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
 		<Cursor position="13209" topLine="242" />
-	</File>
-	<File name="..\..\Hardware\pilaser\pilaserController.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="3462" topLine="63" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3889" topLine="84" />
 	</File>
-	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="3676" topLine="89" />
-	</File>
 	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="5">
 		<Cursor position="8030" topLine="141" />
-	</File>
-	<File name="..\..\Hardware\camera\cameraBase.h" open="0" top="0" tabpos="5">
-		<Cursor position="28916" topLine="530" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Utilities\camera\claraCameraConfigReader.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="25187" topLine="622" />
@@ -80,79 +137,16 @@
 	<File name="..\..\Utilities\camera\claraCameraConfigReader.h" open="0" top="0" tabpos="4">
 		<Cursor position="3016" topLine="40" />
 	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0">
-		<Cursor position="5339" topLine="91" />
+	<File name="..\..\Hardware\camera\cameraControllerBase.h" open="0" top="0" tabpos="21">
+		<Cursor position="14229" topLine="297" />
 	</File>
 	<File name="..\..\Utilities\camera\velaCameraConfigReader.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1227" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\pilaser\pilaserController.h" open="0" top="0" tabpos="8">
-		<Cursor position="4897" topLine="78" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="5273" topLine="130" />
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
-		<Cursor position="14820" topLine="264" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\camera\cameraControllerBase.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1288" topLine="15" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="6">
-		<Cursor position="8124" topLine="307" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="3">
-		<Cursor position="3604" topLine="63" />
-	</File>
-	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="5045" topLine="105" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2862" topLine="40" />
-	</File>
-	<File name="..\..\Utilities\pi_laser\laserTransportMirrorConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="8068" topLine="163" />
-	</File>
-	<File name="..\..\Hardware\pilaser\pilaserInterface.h" open="0" top="0" tabpos="2">
-		<Cursor position="3418" topLine="65" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Utilities\pi_laser\laserTransportMirrorConfigReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="1306" topLine="0" />
-	</File>
 	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="6">
 		<Cursor position="1685" topLine="37" />
 	</File>
-	<File name="..\..\Utilities\pi_laser\pilaserConfigReader.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="8724" topLine="184" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\shutter\shutterController.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="4127" topLine="78" />
-	</File>
-	<File name="..\..\Utilities\pi_laser\pilaserConfigReader.h" open="0" top="0" tabpos="3">
-		<Cursor position="2295" topLine="0" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Hardware\camera\cameraControllerBase.h" open="0" top="0" tabpos="21">
-		<Cursor position="14229" topLine="297" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="..\..\Utilities\running_stat.h" open="0" top="0" tabpos="0">
-		<Cursor position="3513" topLine="109" />
+	<File name="..\..\Hardware\camera\cameraControllerBase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1288" topLine="15" />
 	</File>
 </BrowseTracker_layout_file>
