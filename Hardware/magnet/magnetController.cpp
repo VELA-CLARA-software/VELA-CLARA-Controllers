@@ -297,6 +297,8 @@ bool magnetController::isRIequalVal(const std::string & magName, const  double v
 {
     return localInterface.isRIequalVal(magName, value, tolerance);
 }
+
+
 //______________________________________________________________________________
 bool magnetController::isRIequalSI(const std::string & magName)
 {

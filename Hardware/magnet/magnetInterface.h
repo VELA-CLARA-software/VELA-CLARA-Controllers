@@ -73,6 +73,10 @@ class magnetInterface : public interface
         bool isON (const std::string& magName)const;
         bool isRIequalVal(const std::string& magName,const double value,const double tolerance)const;
         bool isRIequalSI (const std::string& magName)const;
+
+        bool isRIequalSI (const std::vector<std::string>& magName)const;
+
+
         bool is_si_same_as_magnetStateStruct(const magnetStructs::magnetStateStruct& magState);
 
         int  getRemainingDegaussSteps(const std::string& magName);

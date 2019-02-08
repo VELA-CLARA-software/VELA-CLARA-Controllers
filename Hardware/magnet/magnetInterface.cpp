@@ -1284,6 +1284,37 @@ bool magnetInterface::isRIequalSI(const std::string& magName)const
     }
     return ret;
 }
+
+bool magnetInterface::isRIequalSI(const std::vector<std::string>& magNames)const
+{
+    bool ret = false;
+    for(auto&&entry : magNames)
+    {
+        if(entryExists(allMagnetData, magName))
+        {
+            ret = areSame(allMagnetData.at(magName).riWithPol,
+                          allMagnetData.at(magName).siWithPol,
+                          allMagnetData.at(magName).riTolerance);
+        }
+        else
+        {
+            ret = false;
+            break;
+        }
+        if( ret)
+        {
+        }
+        else
+        {
+          break;
+        }
+    }
+    return ret;
+}
+
+isRIequalSI
+
+
 /////
 /////   __   ___ ___ ___  ___  __   __
 /////  / _` |__   |   |  |__  |__) /__`
