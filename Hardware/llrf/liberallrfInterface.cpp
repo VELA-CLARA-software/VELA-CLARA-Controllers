@@ -457,11 +457,11 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
         case LLRF_PV_TYPE::LIB_PHI_FF:
             llrf.phi_ff = getDBRdouble(args);
             llrf.phi_DEG = (llrf.phi_ff) * (llrf.phiCalibration);
-            message("LLRF_PV_TYPE::LIB_PHI_FF = ", llrf.phi_sp);
+            //message("LLRF_PV_TYPE::LIB_PHI_FF = ", llrf.phi_sp);
             break;
         case LLRF_PV_TYPE::LIB_PHI_SP:
             llrf.phi_sp = getDBRdouble(args);
-            message(args.type,  "  == DBR_DOUBLE");
+            //message(args.type,  "  == DBR_DOUBLE");
             break;
         case LLRF_PV_TYPE::LIB_TIME_VECTOR:
             /* the time_vector is simlar to a trace, but we can just update the values straight away */
