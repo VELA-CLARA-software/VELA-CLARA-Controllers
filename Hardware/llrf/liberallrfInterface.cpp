@@ -249,7 +249,14 @@ void liberallrfInterface::initChids()
     /* command only PVs for the LLRF to set "high level" phase and amplitide */
     for(auto && it:llrf.pvComStructs)
     {
-        addChannel(llrf.pvRoot, it.second);
+        if(it.second.pvType == llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE)
+        {
+            addChannel("", it.second);
+        }
+        else
+        {
+            addChannel(llrf.pvRoot, it.second);
+        }
     }
     for(auto && it:llrf.pvOneTraceMonStructs)
     {
@@ -2150,7 +2157,8 @@ void liberallrfInterface::checkCollectingFutureTraces()
         llrf.omed.num_still_to_collect -= UTL::ONE_SIZET;
         llrf.omed.num_collected += UTL::ONE_SIZET;
 
-        message("checkCollectingFutureTraces(): Num collected = ", llrf.omed.num_collected, "/",llrf.omed.extra_traces_on_outside_mask_event + UTL::THREE_SIZET,
+        message("checkCollectingFutureTraces(): Num collected = ", llrf.omed.num_collected, "/",
+                llrf.omed.extra_traces_on_outside_mask_event + UTL::THREE_SIZET,
                 " (",llrf.omed.num_still_to_collect  ,")");
 
         // we now check if there is a breakdown in the future trace
@@ -2163,8 +2171,10 @@ void liberallrfInterface::checkCollectingFutureTraces()
             for( auto& it: llrf.trace_data) // loop over each trace
             {
                 // only check the masks we should be checking
-                if(it.second.check_mask && it.second.hi_mask_set && it.second.lo_mask_set)
+                //if(it.second.check_mask && it.second.hi_mask_set && it.second.lo_mask_set)
+                if(it.second.hi_mask_set && it.second.lo_mask_set)
                 {
+                    message("Checking future traces for ", it.first );
                     int result = updateIsTraceInMask(it.second);
                     if(result == UTL::ZERO_INT)
                     {
@@ -2982,10 +2992,6 @@ std::vector<std::pair<std::string, std::vector<double>>> liberallrfInterface::ge
     }
     return r;
 }
-
-
-
-
 //--------------------------------------------------------------------------------------------------
 /*        __  ___         ___     __             __   ___  __
      /\  /  `  |  | \  / |__     |__) |  | |    /__` |__  /__`
@@ -2994,19 +3000,22 @@ std::vector<std::pair<std::string, std::vector<double>>> liberallrfInterface::ge
 //--------------------------------------------------------------------------------------------------
 void liberallrfInterface::updateActivePulses()
 {
-    /* if there is no trigger or RF output then this IS not an active pulse */
-    if( isTrigOff() )
-    {
-        llrf.can_increase_active_pulses = false;
-    }
-    else if( isNotRFOutput() )
-    {
-        llrf.can_increase_active_pulses = false;
-    }
+    /*
+        too paranoid here, we don't care if the trig is off, or RF output is off,
+    */
+//    /* if there is no trigger or RF output then this IS not an active pulse */
+//    if( isTrigOff() )
+//    {
+//        llrf.can_increase_active_pulses = false;
+//    }
+//    else if( isNotRFOutput() )
+//    {
+//        llrf.can_increase_active_pulses = false;
+//    }
     /*  if we get exactly the same max as previous pulse we assume
         its a repeat and don't increase pulse count
     */
-    else if(llrf.last_kly_fwd_power_max == llrf.kly_fwd_power_max)
+    if(llrf.last_kly_fwd_power_max == llrf.kly_fwd_power_max)
     {
         llrf.duplicate_pulse_count += UTL::ONE_SIZET;
         llrf.can_increase_active_pulses = false;
@@ -3301,6 +3310,30 @@ bool liberallrfInterface::isKeepingKlyFwdPwrRS()
 
     TOR = Trace-one-record, ie. the traces concatenated into a single array
 */
+//____________________________________________________________________________________________
+bool liberallrfInterface::setPowerRemoteTraceSCAN10sec(const std::string& name)
+{
+    bool r = true;
+    message("setPowerRemoteTraceSCAN10sec passed ", name);
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_scans,n))
+    {
+        llrfStructs::LLRF_PV_TYPE pv = llrfStructs::LLRF_PV_TYPE::LIB_PWR_REM_SCAN;
+        if(entryExists(llrf.trace_scans.at(n).pvSCANStructs, pv) )
+        {
+            r = setValue(llrf.trace_scans.at(n).pvSCANStructs.at(pv), llrfStructs::LLRF_SCAN::TEN);
+        }
+        else
+        {
+            message(ENUM_TO_STRING(pv)," does not exist");
+        }
+    }
+    else
+    {
+        message(n," does not exist");
+    }
+    return r;
+}
 //____________________________________________________________________________________________
 bool liberallrfInterface::setTraceSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const llrfStructs::LLRF_SCAN value)
 {
@@ -4551,13 +4584,42 @@ size_t liberallrfInterface::getNumBufferTraces(const std::string&name)const
         message("liberallrfInterface::getNumBufferTraces ERROR, trace ", n, " does not exist");
     return UTL::ZERO_SIZET;
 }
+//--------------------------------------------------------------------------------------------------
 
 
 
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::canKeepAlive()const
+{
+    return llrf.should_keep_alive;
+}
 
 
-
-
+//--------------------------------------------------------------------------------------------------
+void liberallrfInterface::setKeepAlive(bool val)
+{
+    llrf.should_keep_alive = val;
+}
+//--------------------------------------------------------------------------------------------------
+void liberallrfInterface::keepAlive()
+{
+    if(llrf.should_keep_alive)
+    {
+        if(entryExists(llrf.pvComStructs,llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE))
+        {
+            if( llrf.last_keep_alive == UTL::ZERO_DOUBLE)
+            {
+                setValue( llrf.pvComStructs.at(llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE), UTL::ONE_DOUBLE);
+                llrf.last_keep_alive = UTL::ONE_DOUBLE;
+            }
+            else
+            {
+                setValue( llrf.pvComStructs.at(llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE), UTL::ZERO_DOUBLE);
+                llrf.last_keep_alive  = UTL::ZERO_DOUBLE;
+            }
+        }
+    }
+}
 
 
 

@@ -636,11 +636,15 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 
-        .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(boost::python::arg("name"),VALUE_ARG),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
+        .def("setTraceSCAN",  &liberaLLRFController::setTraceSCAN,(NAME_ARG,VALUE_ARG),"Set trace 'name' SCAN rate to 'value' (if monitoring)")
         .def("setAllTraceSCAN",  &liberaLLRFController::setAllTraceSCAN,(VALUE_ARG),"Set all monitoring traces SCAN rate to 'value'")
         .def("setAllSCANToPassive",  &liberaLLRFController::setAllSCANToPassive,"Set all SCAN to Passive")
-        .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(boost::python::arg("name")),"Get High mask for trace 'name'")
-        .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(boost::python::arg("name")),"Get Low mask for trace 'name'")
+        .def("setPowerRemoteTraceSCAN10sec",  &liberaLLRFController::setPowerRemoteTraceSCAN10sec,(NAME_ARG),"Set trace 'name' power remote SCAN to 10 seconds")
+
+
+
+        .def("getHiMask",  &liberaLLRFController::getHiMask_Py,(NAME_ARG),"Get High mask for trace 'name'")
+        .def("getLoMask",  &liberaLLRFController::getLoMask_Py,(NAME_ARG),"Get Low mask for trace 'name'")
 
        // .def("resetAverageTraces",  &liberaLLRFController::resetAverageTraces,"Reset All Rolling Averages")
 
@@ -863,6 +867,12 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
         .def("getPulseCount", &liberaLLRFController::getPulseCount,"Get Number of pulses logged by this controller")
+
+
+        .def("canKeepAlive", &liberaLLRFController::canKeepAlive,"Get Number of pulses logged by this controller")
+        .def("setKeepAlive", &liberaLLRFController::setKeepAlive,(VALUE_ARG),"set keep_alive to 'val' enabling or disabling keep_alive mode")
+        .def("keepAlive", &liberaLLRFController::keepAlive,"send keep alive signal to RF conditioning interlock")
+
 
         // general methods THESE NEED TO GO
         .def("get_CA_PEND_IO_TIMEOUT", &liberaLLRFController::get_CA_PEND_IO_TIMEOUT,"Time before Timeout when getting values")

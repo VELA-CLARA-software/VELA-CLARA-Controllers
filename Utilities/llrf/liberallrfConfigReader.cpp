@@ -305,6 +305,8 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
 
     if(stringIsSubString(key,"SUFFIX"))
     {
+        message("stringIsSubString = true", key);
+
         if(key == PV_SUFFIX_LIB_AMP_FF)
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::LIB_AMP_FF, val);
@@ -333,6 +335,12 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         else if(key == PV_SUFFIX_LIB_PULSE_SHAPE_APPLY)
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::PULSE_SHAPE_APPLY,val);
+        }
+
+        else if(key == PV_SUFFIX_LIB_KEEP_ALIVE)
+        {
+            message("PV_SUFFIX_LIB_KEEP_ALIVE");
+            addToPVStruct(pvs, LLRF_PV_TYPE::KEEP_ALIVE,val);
         }
 
 
@@ -722,12 +730,6 @@ void liberallrfConfigReader::addToPVStruct(std::vector<llrfStructs::pvStruct>& p
     }
 }
 //______________________________________________________________________________
-
-
-
-
-
-
 
 
 

@@ -80,6 +80,7 @@ namespace llrfStructs
                                                      (PHASE_LOOP_LOCK)
                                                      (PULSE_SHAPE)
                                                      (PULSE_SHAPE_APPLY)
+                                                     (KEEP_ALIVE)
                                                      (UNKNOWN)
                                                   )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)
@@ -540,7 +541,9 @@ namespace llrfStructs
             mean_trace_freq_timer_max(UTL::TEN_SIZET),
             shot_to_shot_freq(UTL::DUMMY_DOUBLE),
             num_traces_to_estimate_rep_rate(UTL::HUNDRED_SIZET),
-            trace_rep_rate(UTL::DUMMY_DOUBLE)
+            trace_rep_rate(UTL::DUMMY_DOUBLE),
+            should_keep_alive(false),
+            last_keep_alive(UTL::ZERO_DOUBLE)
             {}
         liberallrfInterface* interface;
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
@@ -549,6 +552,10 @@ namespace llrfStructs
         bool pulse_shape_up_to_date;
         std::vector<double> pulse_shape;
         std::vector<double> last_kly_fwd_pwr_trace;
+
+        // should we send a keep_alive signal to a PV ?
+        bool should_keep_alive;
+        double last_keep_alive;
 
 
         /* This list can be used when getting all_traces_data_buffer to cut the data  */

@@ -392,6 +392,14 @@ class liberaLLRFController : public controller
         bool setTraceSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const llrfStructs::LLRF_SCAN value);
         bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
         bool setAllSCANToPassive();
+        bool setPowerRemoteTraceSCAN10sec(const std::string& name);
+
+
+
+        bool canKeepAlive()const;
+        void setKeepAlive(bool val);
+        void keepAlive();
+
 
 
 //____________________________________________________________________________________________

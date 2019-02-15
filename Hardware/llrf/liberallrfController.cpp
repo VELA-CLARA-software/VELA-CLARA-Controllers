@@ -998,8 +998,19 @@ double liberaLLRFController::getTraceRepRate() const
 
 
 
+bool liberaLLRFController::canKeepAlive()const
+{
+    return localInterface.canKeepAlive();
+}
 
-
+void liberaLLRFController::setKeepAlive(bool val)
+{
+    localInterface.setKeepAlive(val);
+}
+void liberaLLRFController::keepAlive()
+{
+    localInterface.keepAlive();
+}
 
 
 
@@ -1116,7 +1127,12 @@ std::vector<std::string> liberaLLRFController::getTraceNames()
 {
     return localInterface.getTraceNames();
 }
+//----------------------------------------------------------------------------------
+bool liberaLLRFController::setPowerRemoteTraceSCAN10sec(const std::string& name)
+{
+    return localInterface.setPowerRemoteTraceSCAN10sec(name);
 
+}
 
 
 

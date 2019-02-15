@@ -338,6 +338,15 @@ class liberallrfInterface : public interface
         bool setUnwrapPhaseTolerance(const double value);
         bool setUnwrapPhaseTolerance(const std::string& name,const double value);
 
+
+
+
+
+        bool canKeepAlive()const;
+        void setKeepAlive(bool val);
+        void keepAlive();
+
+
 /*
        _________.__               .__             ________        __    __
       /   _____/|__| _____ ______ |  |   ____    /  _____/  _____/  |__/  |_  ___________  ______
@@ -491,6 +500,9 @@ class liberallrfInterface : public interface
         //bool setTraceSCAN(const std::string& trace, const llrfStructs::LLRF_SCAN value);
         bool setTraceSCAN(const std::string& name, const llrfStructs::LLRF_PV_TYPE pv, const llrfStructs::LLRF_SCAN value);
         bool setAllSCANToPassive();
+        bool setPowerRemoteTraceSCAN10sec(const std::string& name);
+
+
         bool setAllTraceSCAN(const llrfStructs::LLRF_SCAN value);
         bool setTORSCANToIOIntr();
         bool setTORSCANToPassive();
