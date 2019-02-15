@@ -103,6 +103,7 @@ bool cameraControllerBase::takeFastImage(const std::string& cam)
 //-----------------------------------------------------------------------------------------
 bool cameraControllerBase::takeFastImage_VC()
 {
+    message("cameraControllerBase::takeFastImage_VC()");
     return camBase->takeFastImage_VC();
 }
 //-----------------------------------------------------------------------------------------
@@ -236,7 +237,16 @@ std::string cameraControllerBase::getLatestFilename(const std::string& cam)const
 }
 
 
+double cameraControllerBase::getSumIntensity(const std::string& cam)const
+{
+    return camBase->getSumIntensity(cam);
+}
 
+
+//double cameraControllerBase::getSumIntensity()const;
+//{
+//    return camBase->getSumIntensity();
+//}
 
 
 //-----------------------------------------------------------------------------------------

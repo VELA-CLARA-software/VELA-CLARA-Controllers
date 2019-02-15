@@ -684,11 +684,11 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
     }
     else if(key == ARRAY_DATA_X_PIX_2_MM)
     {
-        camObjects.back().data.image.x_pix_to_mm  = getSize(value);
+        camObjects.back().data.image.x_pix_to_mm  = getNumD(value);
     }
     else if(key == ARRAY_DATA_Y_PIX_2_MM)
     {
-        camObjects.back().data.image.y_pix_to_mm = getSize(value);
+        camObjects.back().data.image.y_pix_to_mm = getNumD(value);
     }
     else if(key == IP_ADDRESS_STREAM)
     {

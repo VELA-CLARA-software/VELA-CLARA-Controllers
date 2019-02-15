@@ -319,19 +319,29 @@ class baseObject
         template <class T>
         boost::python::list toPythonList2D(const std::vector<T>& vec,const size_t num_row, const size_t num_col) const
         {
+            boost::python::list list3;
+            boost::python::list list2;
             boost::python::list list;
             if(vec.size() == num_row *num_col )
             {
-                boost::python::list list2;
                 size_t counter = UTL::ZERO_SIZET;
                 for(auto&& it: vec)
                 {
                     list2.append(it);
+                    //list2.insert(it, counter + UTL::ONE_SIZET);
                     counter +=  UTL::ONE_SIZET;
-                    if( counter  == num_col )
+                    if( counter == num_col )
                     {
-                        list.append(list2);
-                        list2[boost::python::slice()];
+                        list.extend(list2);
+
+                        for(auto i = UTL::ZERO_SIZET; i<num_col; ++i)
+                        {
+                            list2.pop();
+                        }
+
+
+                        //list2 = [boost::python::slice()];
+                        //list2.clear(); = list3;
                         //list2();
                         counter = UTL::ZERO_SIZET;
 

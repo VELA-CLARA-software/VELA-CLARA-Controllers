@@ -1513,7 +1513,6 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
         {
             message("!!!ERROR COLLECTING DATA!!! ",cam.name," ");
         }
-
     }//(setNumberOfShots(cam, ics.numShots))
     else
     {
@@ -1541,6 +1540,15 @@ bool cameraBase::collect(cameraObject& cam)
     }
     return ans;
 }
+////-------------------------------------------------------------------------------------------------------
+//bool cameraBase::collect(const std::string& cam, int numShots )
+//{
+//
+//}
+
+
+
+
 //-------------------------------------------------------------------------------------------------------
 bool cameraBase::makeANewDirectoryAndName(cameraObject& camera,int numbOfShots)///YUCK (make it look nice)
 {
@@ -3330,6 +3338,7 @@ std::vector<int> cameraBase::getFastImage(const cameraObject& cam)const
 //---------------------------------------------------------------------------------
 bool cameraBase::takeFastImage_VC()
 {
+    message("takeFastImage_VC");
     return takeFastImage(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
@@ -3345,6 +3354,7 @@ bool cameraBase::takeFastImage(const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_handler_args& args)
 {
+    message("updateArrayData");
     std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     /*
         this function actually gets the new values from EPICS
@@ -3418,7 +3428,6 @@ bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_h
                   pValue + cam.data.image.array_data.size(),
                   cam.data.image.array_data.begin());
 
-
         //message("tn    time = ", tn_time_d, ", ", tn_time_str);
         /*
             update the local version of min/max pixel values etc
@@ -3443,9 +3452,10 @@ bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_h
         cam.data.image.data   = toPythonList(cam.data.image.array_data);
 
 //    // toPythonList2D does not work yet!!!
-//    cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
-//                                                cam.data.image.num_pix_x,
-//                                                cam.data.image.num_pix_y);
+    message("Converting to 2D Python LIST");
+    cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
+                                           cam.data.image.num_pix_x,
+                                           cam.data.image.num_pix_y);
 #endif
     }//if(cam.state.is_camera_image_updating)
     /*
@@ -4845,6 +4855,13 @@ std::string cameraBase::getLatestFilename()const
     return getLatestFilename(*selectedCamPtr);
 }
 
-
+double cameraBase::getSumIntensity(const std::string& cam)const
+{
+    return getSumIntensity(getCamObj(cam));
+}
+double cameraBase::getSumIntensity(const cameraStructs::cameraObject& cam)const
+{
+    return cam.data.analysis.sum_pix;
+}
 
 

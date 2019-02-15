@@ -335,10 +335,12 @@ class cameraBase : public interface
         double getSigXYPix(const std::string& cam)const;
         double getSigXYPix(const cameraStructs::cameraObject& cam)const;
         double getSigXYPix()const;
-        double getSumIntensity_VC()const;
+
+        //double getSumIntensity_VC()const;
         double getSumIntensity(const std::string& cam)const;
         double getSumIntensity(const cameraStructs::cameraObject& cam)const;
-        double getSumIntensity()const;
+        //double getSumIntensity()const;
+
         double getAvgIntensity_VC()const;
         double getAvgIntensity(const std::string& cam)const;
         double getAvgIntensity(const cameraStructs::cameraObject& cam)const;

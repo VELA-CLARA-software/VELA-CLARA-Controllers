@@ -1343,8 +1343,6 @@ namespace BOOST_PYTHON_INCLUDE
 
 
 
-
-
         .def("stopAnalysing_VC",  &cameraControllerBase::stopAnalysing_VC ,stopAnalysing_VC_ds )
         .def("stopAnalysing",  stopAnalysing_1       ,  stopAnalysing_ds1 )
         .def("stopAnalysing",  stopAnalysing_2       ,  stopAnalysing_ds2 )
@@ -1357,6 +1355,10 @@ namespace BOOST_PYTHON_INCLUDE
         .def("takeFastImage_VC", &cameraControllerBase::takeFastImage_VC, takeFastImage_VC_ds)
         .def("takeFastImage",    takeFastImage_1                        , takeFastImage_ds1)
         .def("takeFastImage",    takeFastImage_2                        , takeFastImage_ds2)
+
+
+
+        .def("getSumIntensity",    &cameraControllerBase::getSumIntensity , "")
 
         .def("takeAndGetFastImage_VC", &cameraControllerBase::takeAndGetFastImage_VC, takeAndGetFastImage_VC_ds)
         .def("takeAndGetFastImage",    takeAndGetFastImage_1                        , takeAndGetFastImage_ds1)

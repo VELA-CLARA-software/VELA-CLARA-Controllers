@@ -87,6 +87,8 @@ class cameraControllerBase : public controller
         bool isVelaLEDOn();
         bool isVelaLEDOff();
 
+        double getSumIntensity(const std::string& cam)const;
+        //double getSumIntensity()const;
 
         std::string getLatestFilename_VC()const;
         std::string getLatestFilename(const std::string& cam)const;

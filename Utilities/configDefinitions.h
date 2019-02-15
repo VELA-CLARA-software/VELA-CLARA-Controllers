@@ -392,6 +392,7 @@ namespace UTL
     // new LLRF pvs that should hopefully be similar for all CLARA / VELA LLRF
     // except, probably, the VELA TDC :((
 //    const std::string PV_SUFFIX_TIMING     = "PV_SUFFIX_TIMING";
+    const std::string PV_SUFFIX_LIB_KEEP_ALIVE  = "PV_SUFFIX_LIB_KEEP_ALIVE";
     const std::string PV_SUFFIX_TRIG_SOURCE     = "PV_SUFFIX_TRIG_SOURCE";
     const std::string PV_SUFFIX_LIB_AMP_FF      = "PV_SUFFIX_LIB_AMP_FF";
     const std::string PV_SUFFIX_LIB_AMP_SP      = "PV_SUFFIX_LIB_AMP_SP";
