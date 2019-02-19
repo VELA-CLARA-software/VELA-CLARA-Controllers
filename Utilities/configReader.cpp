@@ -271,6 +271,33 @@ std::vector<int> configReader::getIntVector(const std::string& str) const
     return getNumVector<int>(str);
 }
 //______________________________________________________________________________
+std::vector<std::string> configReader::stringToVector(const std::string& str_in, const std::string& token) const
+{
+    std::string str = str_in;
+    std::vector<std::string>result;
+    while(str.size())
+    {
+        int index = str.find(token);
+        if(index!=std::string::npos)
+        {
+            result.push_back(str.substr(UTL::ZERO_SIZET,index));
+            str = str.substr(index+token.size());
+            if(str.size()==UTL::ZERO_SIZET)result.push_back(str);
+        }
+        else
+        {
+            result.push_back(str);
+            str = "";
+        }
+    }
+    return result;
+}
+//______________________________________________________________________________
+std::vector<std::string> configReader::stringSplitComma(const std::string& str_in)const
+{
+    return stringToVector(str_in,UTL::COMMA_STRING);
+}
+//______________________________________________________________________________
 unsigned long configReader::getMASK(const  std::string & val) const
 {
     unsigned long r = DBE_VALUE; /// init to something

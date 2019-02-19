@@ -117,7 +117,11 @@ class configReader : public baseObject
 
         bool isNO_CONFIG_FILE(const std::string& str) const;
         bool isnotNO_CONFIG_FILE(const  std::string& str) const;
-    private:
+
+        std::vector<std::string> stringToVector( const std::string& str_in, const std::string& token)const;
+        std::vector<std::string> stringSplitComma(const std::string& str_in)const;
+
+
         template<typename T>
         std::vector<T> getNumVector(const std::string& str) const
         {
@@ -140,6 +144,6 @@ class configReader : public baseObject
             }
             return ret;
         }
-
+    private:
 };
 #endif //CONFIG_READER_H_

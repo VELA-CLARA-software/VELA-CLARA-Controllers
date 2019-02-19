@@ -3338,7 +3338,6 @@ std::vector<int> cameraBase::getFastImage(const cameraObject& cam)const
 //---------------------------------------------------------------------------------
 bool cameraBase::takeFastImage_VC()
 {
-    message("takeFastImage_VC");
     return takeFastImage(*vcCamPtr);
 }
 //---------------------------------------------------------------------------------
@@ -3354,7 +3353,7 @@ bool cameraBase::takeFastImage(const std::string& cam)
 //---------------------------------------------------------------------------------
 bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_handler_args& args)
 {
-    message("updateArrayData");
+    //message("updateArrayData");
     std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     /*
         this function actually gets the new values from EPICS
@@ -3452,10 +3451,10 @@ bool cameraBase::updateArrayData(cameraStructs::cameraObject& cam, const event_h
         cam.data.image.data   = toPythonList(cam.data.image.array_data);
 
 //    // toPythonList2D does not work yet!!!
-    message("Converting to 2D Python LIST");
-    cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
-                                           cam.data.image.num_pix_x,
-                                           cam.data.image.num_pix_y);
+//    message("Converting to 2D Python LIST");
+//    cam.data.image.data2D = toPythonList2D(cam.data.image.array_data,
+//                                           cam.data.image.num_pix_x,
+//                                           cam.data.image.num_pix_y);
 #endif
     }//if(cam.state.is_camera_image_updating)
     /*

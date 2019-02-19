@@ -103,7 +103,7 @@ bool cameraControllerBase::takeFastImage(const std::string& cam)
 //-----------------------------------------------------------------------------------------
 bool cameraControllerBase::takeFastImage_VC()
 {
-    message("cameraControllerBase::takeFastImage_VC()");
+//    message("cameraControllerBase::takeFastImage_VC()");
     return camBase->takeFastImage_VC();
 }
 //-----------------------------------------------------------------------------------------

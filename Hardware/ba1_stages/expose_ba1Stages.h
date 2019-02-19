@@ -72,7 +72,11 @@ namespace BOOST_PYTHON_INCLUDE
             .def("getMaxPos",   &ba1StagesController::getMaxPos,(UTL::NAME_ARG),"Returns max position of stage 'name'")
             .def("getStageNames",   &ba1StagesController::getStageNames_Py,"Returns names of stages")
             .def("getStagePosition",   &ba1StagesController::getStagePosition,(UTL::NAME_ARG),"Returns read position for stage 'name'")
-            .def("setStagePosition",   &ba1StagesController::setStagePosition,(UTL::NAME_ARG,UTL::VALUE_ARG),"Sets stage 'name' to position 'value'")
+            .def("getStageSetPosition",   &ba1StagesController::getStageSetPosition,(UTL::NAME_ARG),"Returns set position for stage 'name'")
+            .def("setStagePosition",   &ba1StagesController::setStagePosition,(UTL::NAME_ARG,UTL::DEVICE_ARG),"Sets stage 'name' to position for 'device'")
+            .def("setDevice",   &ba1StagesController::setDevice,(UTL::NAME_ARG,UTL::VALUE_ARG),"Sets stage 'name' to position 'value'")
+            .def("getDevices",   &ba1StagesController::getDevices_Py,(UTL::NAME_ARG),"Returns devices on stage 'name'")
+            .def("getStageDeviceAndPositionMap",   &ba1StagesController::getStageDeviceAndPositionMap_Py,(UTL::NAME_ARG,UTL::VALUE_ARG),"returns dictionary of devices and positions for stage 'name'")
             ;
     }
 }

@@ -54,13 +54,7 @@ std::vector<std::string> ba1StagesController::getStageNames()const
 {
     return localInterface.getStageNames();
 }
-//--------------------------------------------------------------------------------
-#ifdef BUILD_DLL
-boost::python::list ba1StagesController::getStageNames_Py()const
-{
-    return toPythonList(getStageNames());
-}
-#endif
+
 //--------------------------------------------------------------------------------
 double ba1StagesController::getStagePosition(const std::string& stage)const
 {
@@ -96,12 +90,43 @@ double ba1StagesController::getMaxPos(const std::string& stage)const
 {
     return localInterface.getMaxPos(stage);
 }
-
-
-
-
-
-
+//--------------------------------------------------------------------------------
+bool ba1StagesController::setDevice(const std::string& stage, const std::string& device)
+{
+    return localInterface.setDevice(stage, device);
+}
+//--------------------------------------------------------------------------------
+double ba1StagesController::getStageSetPosition(const std::string& stage)const
+{
+    return localInterface.getStageSetPosition(stage);
+}
+//--------------------------------------------------------------------------------
+std::vector<std::string> ba1StagesController::getDevices(const std::string& stage)const
+{
+    return localInterface.getDevices(stage);
+}
+//--------------------------------------------------------------------------------
+std::map<std::string, double>  ba1StagesController::getStageDeviceAndPositionMap(const std::string& stage)const
+{
+   return localInterface.getStageDeviceAndPositionMap(stage);
+}
+//--------------------------------------------------------------------------------
+#ifdef BUILD_DLL
+boost::python::list ba1StagesController::getStageNames_Py()const
+{
+    return toPythonList(getStageNames());
+}
+//--------------------------------------------------------------------------------
+boost::python::list ba1StagesController::getDevices_Py(const std::string& stage)const
+{
+    return toPythonList(getDevices(stage));
+}
+//--------------------------------------------------------------------------------
+boost::python::dict ba1StagesController::getStageDeviceAndPositionMap_Py(const std::string& stage)
+{
+    return toPythonDict(getStageDeviceAndPositionMap(stage));
+}
+#endif
 
 
 

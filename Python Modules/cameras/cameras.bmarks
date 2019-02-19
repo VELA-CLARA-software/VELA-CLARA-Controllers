@@ -1,72 +1,104 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\Utilities\camera\claraCameraConfigReader.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="14413" topLine="382" />
+	<File name="..\..\Hardware\camera\cameraBase.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="60778" topLine="1128" />
+		<BrowseMarks positions="125806,125909" />
+		<Book_Marks positions="125888" />
 	</File>
-	<File name="..\..\Structs\camera\cameraStructs.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="6809" topLine="189" />
+	<File name="..\..\Structs\structs.h" open="1" top="0" tabpos="0">
+		<Cursor position="4377" topLine="69" />
 	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="7">
-		<Cursor position="75015" topLine="1246" />
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="4">
+		<Cursor position="21611" topLine="348" />
 	</File>
 	<File name="..\..\Hardware\camera\cameraBase.h" open="0" top="0" tabpos="1">
-		<Cursor position="39700" topLine="732" />
-	</File>
-	<File name="include\VCcameras.h" open="0" top="0" tabpos="2">
-		<Cursor position="7133" topLine="120" />
-	</File>
-	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="3680" topLine="68" />
-	</File>
-	<File name="scr\VCcameras.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="6660" topLine="133" />
-	</File>
-	<File name="..\..\Utilities\camera\claraCameraConfigReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="1446" topLine="9" />
-	</File>
-	<File name="..\..\Hardware\camera\cameraControllerBase.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="1386" topLine="45" />
+		<Cursor position="21419" topLine="383" />
 		<BrowseMarks positions="" />
 		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0">
-		<Cursor position="9982" topLine="122" />
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="7">
+		<Cursor position="26170" topLine="451" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Utilities\camera\velaCameraConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="13146" topLine="296" />
+	<File name="..\..\Structs\camera\cameraStructs.h" open="1" top="0" tabpos="3">
+		<Cursor position="18605" topLine="397" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Hardware\camera\cameraControllerBase.h" open="1" top="0" tabpos="1">
-		<Cursor position="3756" topLine="70" />
+	<File name="..\..\Utilities\baseObject.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="4744" topLine="78" />
 	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
-		<Cursor position="12804" topLine="287" />
+	<File name="..\..\Hardware\controller.cpp" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\Structs\camera\cameraStructs.h" open="0" top="0" tabpos="3">
-		<Cursor position="22182" topLine="622" />
+	<File name="..\..\Hardware\camera\cameraControllerBase.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="4830" topLine="57" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
 	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0">
-		<Cursor position="1258" topLine="24" />
+		<Cursor position="3649" topLine="67" />
 	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="51" topLine="1" />
+	<File name="..\..\Structs\camera\cameraStructs.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7441" topLine="177" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="4">
-		<Cursor position="25606" topLine="436" />
+	<File name="..\..\Utilities\camera\claraCameraConfigReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="1480" topLine="9" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="4440" topLine="78" />
-	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="14204" topLine="306" />
-	</File>
-	<File name="..\..\Hardware\camera\cameraBase.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="62970" topLine="1554" />
-	</File>
-	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
-		<Cursor position="4377" topLine="69" />
+	<File name="..\..\Utilities\configReader.cpp" open="1" top="0" tabpos="0">
+		<Cursor position="12523" topLine="279" />
 	</File>
 	<File name="..\..\Utilities\camera\velaCameraConfigReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="1704" topLine="0" />
+		<Cursor position="3276" topLine="28" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\camera\cameraControllerBase.h" open="0" top="0" tabpos="1">
+		<Cursor position="4154" topLine="47" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="3680" topLine="82" />
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="0">
+		<Cursor position="10941" topLine="223" />
+	</File>
+	<File name="include\VCcameras.h" open="0" top="0" tabpos="2">
+		<Cursor position="6649" topLine="112" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="14634" topLine="323" />
+	</File>
+	<File name="..\..\Utilities\camera\claraCameraConfigReader.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="19267" topLine="445" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="1574" topLine="1" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="scr\VCcameras.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="6056" topLine="124" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Utilities\camera\velaCameraConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="28311" topLine="484" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="13157" topLine="236" />
 	</File>
 </BrowseTracker_layout_file>

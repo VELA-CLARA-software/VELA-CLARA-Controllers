@@ -52,7 +52,12 @@ class ba1StagesInterface : public interface
         std::vector<std::string> getStageNames()const;
 
         double getStagePosition(const std::string& stage)const;
+
+        double getStageSetPosition(const std::string& stage)const;
+
         bool setStagePosition(const std::string& stage, double val);
+
+        bool setDevice(const std::string& stage, const std::string& device);
 
         bool screenIn(const std::string& stage);
         bool screenOut(const std::string& stage);
@@ -61,6 +66,9 @@ class ba1StagesInterface : public interface
 
         double getMaxPos(const std::string& stage)const;
         double getMinPos(const std::string& stage)const;
+
+        std::vector<std::string> getDevices(const std::string& stage)const;
+        std::map<std::string, double>  ba1StagesInterface::getStageDeviceAndPositionMap(const std::string& stage)const;
 
     protected:
     private:

@@ -104,6 +104,11 @@ namespace ba1StagesStructs
         std::string name, pvRoot;
         BA1STAGE_STATE state;
         bool has_yag;
+        // defined in config file
+        std::vector<std::string> devices;
+        std::vector<double> positions;
+        // from which we create this ...
+        std::map<std::string, double> device_position_map;
         double r_position, m_position,yag_in_pos,yag_out_pos, min_pos, max_pos;
         std::map<BA1STAGE_PV_TYPE, pvStruct > pvMonStructs;
         std::map<BA1STAGE_PV_TYPE, pvStruct > pvComStructs;

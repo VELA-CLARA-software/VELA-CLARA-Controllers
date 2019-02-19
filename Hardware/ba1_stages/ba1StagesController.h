@@ -55,15 +55,21 @@ class ba1StagesController : public controller
         double getMaxPos(const std::string& stage)const;
 
         double getStagePosition(const std::string& stage)const;
+        double getStageSetPosition(const std::string& stage)const;
+        bool setDevice(const std::string& stage, const std::string& device);
         bool setStagePosition(const std::string& stage, double val);
         bool screenOut(const std::string& stage);
         bool screenIn(const std::string& stage);
         bool isReadPosEqualSetPos(const std::string& stage, double tolerance);
 
         std::vector<std::string> getStageNames()const;
+        std::vector<std::string> getDevices(const std::string& stage)const;
+        std::map<std::string, double>  getStageDeviceAndPositionMap(const std::string& stage)const;
 
 #ifdef BUILD_DLL
         boost::python::list getStageNames_Py()const;
+        boost::python::list getDevices_Py(const std::string& stage)const;
+        boost::python::dict getStageDeviceAndPositionMap_Py(const std::string& stage);
 #endif
 
 //

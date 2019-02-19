@@ -127,6 +127,7 @@ namespace UTL
     const std::string COMMENT_CHAR = "#";
     const std::string SLASH_SLASH = "\\";
     const std::string EQUALS_SIGN = "=";
+    const std::string COMMA_STRING = ",";
     const char EQUALS_SIGN_C      = '=';
     const char COLON_C            = ':';
     const char DOUBLE_QUOTE_C     = '"';
@@ -567,6 +568,8 @@ namespace UTL
     const std::string MAX_POS = "MAX_POS";
     const std::string MIN_POS = "MIN_POS";
     const std::string HAS_YAG = "HAS_YAG";
+    const std::string DEVICE_POSITIONS = "DEVICE_POSITIONS";
+    const std::string DEVICES = "DEVICES";
 
 
 
@@ -1163,6 +1166,7 @@ namespace UTL
 //                                                                   SLIT_POS, OUT_POS };
 
 #ifdef BUILD_DLL
+    const boost::python::arg DEVICE_ARG   = boost::python::arg("device");
     const boost::python::arg NAME_ARG   = boost::python::arg("name");
     const boost::python::arg NAMES_ARG  = boost::python::arg("names");
     const boost::python::arg VALUE_ARG  = boost::python::arg("value");

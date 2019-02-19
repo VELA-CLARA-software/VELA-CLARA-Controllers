@@ -256,7 +256,15 @@ void ba1StagesInterface::updateBa1StageValue(const ba1StagesStructs::BA1STAGE_PV
 //
 //______________________________________________________________________________
 
-
+//______________________________________________________________________________
+double ba1StagesInterface::getStageSetPosition(const std::string& stage)const
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        return allBA1StageData.at(stage).m_position;
+    }
+    return UTL::DUMMY_DOUBLE;
+}
 //______________________________________________________________________________
 double ba1StagesInterface::getStagePosition(const std::string& stage)const
 {
@@ -271,16 +279,48 @@ bool ba1StagesInterface::setStagePosition(const std::string& stage, double val)
 {
     if(entryExists(allBA1StageData, stage))
     {
-        if(val > allBA1StageData.at(stage).min_pos)
+        if(val >= allBA1StageData.at(stage).min_pos)
         {
             message(val," > ", allBA1StageData.at(stage).min_pos);
-            if(val < allBA1StageData.at(stage).max_pos)
+            if(val <= allBA1StageData.at(stage).max_pos)
             {
                 message(val," < ", allBA1StageData.at(stage).max_pos);
                 message("Attempting to move ", stage);
                 return  moveTo(allBA1StageData.at(stage).pvMonStructs.at(ba1StagesStructs::BA1STAGE_PV_TYPE::MPOS), val);
             }
+            else
+            {
+                message(val, " > max  possible val (", allBA1StageData.at(stage).max_pos,")");
+            }
         }
+        else
+        {
+            message(val, " < min possible val (", allBA1StageData.at(stage).min_pos,")");
+        }
+    }
+    else
+    {
+        message("Can't find stage = ", stage);
+    }
+    return false;
+}
+//--------------------------------------------------------------------------------
+bool ba1StagesInterface::setDevice(const std::string& stage, const std::string& device)
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        if(entryExists(allBA1StageData.at(stage).device_position_map, device))
+        {
+            return setStagePosition(stage, allBA1StageData.at(stage).device_position_map.at(device));
+        }
+        else
+        {
+            message("Can't find device = ", device, " on stage = ", stage);
+        }
+    }
+    else
+    {
+        message("Can't find stage = ", stage);
     }
     return false;
 }
@@ -299,7 +339,26 @@ bool ba1StagesInterface::moveTo(const ba1StagesStructs::pvStruct& pvs, double va
         ret=true;
     return ret;
 }
-
+//--------------------------------------------------------------------------------
+std::vector<std::string> ba1StagesInterface::getDevices(const std::string& stage)const
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        return allBA1StageData.at(stage).devices;
+    }
+    std::vector<std::string> r;
+    return r;
+}
+//--------------------------------------------------------------------------------
+std::map<std::string, double>  ba1StagesInterface::getStageDeviceAndPositionMap(const std::string& stage)const
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        return allBA1StageData.at(stage).device_position_map;
+    }
+    std::map<std::string, double>  r;
+    return r;
+}
 //--------------------------------------------------------------------------------
 bool ba1StagesInterface::screenIn(const std::string& stage)
 {

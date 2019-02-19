@@ -36,6 +36,7 @@
 					<Add directory="../../Hardware/invertedMagnetronGauge" />
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/ba1_stages" />
+					<Add directory="../../Structs/ba1_stages" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -53,6 +54,7 @@
 		<Unit filename="../../Hardware/ba1_stages/ba1StagesController.h" />
 		<Unit filename="../../Hardware/ba1_stages/ba1StagesInterface.cpp" />
 		<Unit filename="../../Hardware/ba1_stages/ba1StagesInterface.h" />
+		<Unit filename="../../Hardware/ba1_stages/expose_ba1Stages.h" />
 		<Unit filename="../../Hardware/controller.cpp" />
 		<Unit filename="../../Hardware/controller.h" />
 		<Unit filename="../../Hardware/interface.cpp" />
@@ -61,6 +63,10 @@
 		<Unit filename="../../Structs/structs.h" />
 		<Unit filename="../../Utilities/ba1_stages/ba1StagesConfigReader.cpp" />
 		<Unit filename="../../Utilities/ba1_stages/ba1StagesConfigReader.h" />
+		<Unit filename="../../Utilities/baseObject.cpp" />
+		<Unit filename="../../Utilities/baseObject.h" />
+		<Unit filename="../../Utilities/configDefinitions.h" />
+		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="include/VCba1stages.h" />
 		<Unit filename="src/VCba1stages.cpp" />
 		<Extensions>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="include\VCgeneralMonitor.h" open="1" top="0" tabpos="4">
-		<Cursor position="2350" topLine="36" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
-	<File name="src\VCgeneralMonitor.cpp" open="1" top="1" tabpos="3">
-		<Cursor position="70502" topLine="1980" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
-	</File>
 	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="19405" topLine="467" />
+	</File>
+	<File name="include\VCgeneralMonitor.h" open="0" top="0" tabpos="4">
+		<Cursor position="2605" topLine="39" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="src\VCgeneralMonitor.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="71571" topLine="2001" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
 	</File>
 </BrowseTracker_layout_file>

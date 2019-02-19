@@ -247,6 +247,19 @@ void ba1StagesConfigReader::addToBA1StageObjectsV1(const std::vector<std::string
     {
         ba1StagesObjects.back().has_yag = getBool(keyVal[UTL::ONE_SIZET]);
     }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::DEVICES)
+    {
+        ba1StagesObjects.back().devices = stringSplitComma(keyVal[UTL::ONE_SIZET]);
+
+        for(auto i : ba1StagesObjects.back().devices)
+        {
+            message("Added device = ", i );
+        }
+    }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::DEVICE_POSITIONS)
+    {
+        ba1StagesObjects.back().positions = getNumVector<double>(keyVal[UTL::ONE_SIZET]);
+    }
 }
 //______________________________________________________________________________
 const std::vector< ba1StagesStructs::ba1StagesObject > ba1StagesConfigReader::getBA1StageObjects()
@@ -270,6 +283,20 @@ const std::vector< ba1StagesStructs::ba1StagesObject > ba1StagesConfigReader::ge
     {
         it.pvComStructs = pvComStructs_m;
         it.pvMonStructs = pvMonStructs_m;
+
+        // sanity check devices and positions
+        if(it.devices.size() != it.positions.size())
+        {
+            message("Config Error for ",it.name,", num devices =  ",it.devices.size(), ", num device positions = ",it.positions.size());
+        }
+        else
+        {
+            // meh
+            for(auto i = UTL::ZERO_SIZET; i < it.devices.size(); ++i)
+            {
+                it.device_position_map[it.devices[i]] = it.positions[i];
+            }
+        }
     }
     return ba1StagesObjects;
 }
