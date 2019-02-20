@@ -66,7 +66,22 @@ shutterController(show_messages,
 }
 //______________________________________________________________________________
 pilaserController::~pilaserController()
-{}    //dtor
+{
+    if(set_pos_struct.thread)
+    {
+        cameraControllerBase::message("Joining Thread");
+        set_pos_struct.thread->join();
+
+        cameraControllerBase::message("Deleting Thread");
+
+        delete set_pos_struct.thread;
+
+        cameraControllerBase::message("Set  Thread to nullptr");
+
+        set_pos_struct.thread = nullptr;
+    }
+
+}    //dtor
 //______________________________________________________________________________
 void  pilaserController::set_CA_PEND_IO_TIMEOUT(double val)
 {
@@ -233,6 +248,7 @@ bool pilaserController::moveLeft(const double value)
             //cameraControllerBase::message("isBeamy_x_Lo_VC = true");
             return false;
         }
+        cameraControllerBase::message("pilaserController::moveLeft val = ",value);
         return localInterface.moveLeft(value);
     }
     return false;
@@ -247,7 +263,7 @@ bool pilaserController::moveRight(const double value)
             //cameraControllerBase::message("isBeamy_x_Hi_VC = true");
             return false;
         }
-
+        cameraControllerBase::message("pilaserController::moveRight val = ",value);
         return localInterface.moveRight(value);
     }
     return false;
@@ -262,6 +278,7 @@ bool pilaserController::moveUp(const double value)
             //cameraControllerBase::message("isBeam_y_Hi_VC = true");
             return false;
         }
+        cameraControllerBase::message("pilaserController::moveUp val = ",value);
         return localInterface.moveUp(value);
     }
     return false;
@@ -276,6 +293,7 @@ bool pilaserController::moveDown(const double value)
             //cameraControllerBase::message("isBeamy_y_Lo_VC = true");
             return false;
         }
+        cameraControllerBase::message("pilaserController::moveDown val = ",value);
         return localInterface.moveDown(value);
     }
     return false;

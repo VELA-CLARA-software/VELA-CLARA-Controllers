@@ -378,20 +378,26 @@ void pilaserInterface::updatePixelResults(const event_handler_args& args)
 //____________________________________________________________________________________________
 void pilaserInterface::addToBuffer(const double val,std::vector<double>& buffer)
 {
-//    buffer.push_back(val);
-//    pilaser.vcData.buffer_count += UTL::ONE_SIZET;
-//    if(buffer.size()> pilaser.vcData.buffer_size )
-//    {
-//        buffer.pop_front();
-//        pilaser.vcData.buffer_full = true;
-//        //message("BUFFER FULL!!! ");
-//        pilaser.vcData.buffer_count -= UTL::ONE_SIZET;
-//    }
-//    else
-//    {
-//        pilaser.vcData.buffer_full = false;
-//    }
+    buffer.push_back(val);
+    pilaser.max_buffer_count += UTL::ONE_SIZET;
+    if(buffer.size()> pilaser.max_buffer_count )
+    {
+        buffer.erase(buffer.begin());
+        pilaser.buffer_full = true;
+        //message("BUFFER FULL!!! ");
+        pilaser.buffer_count -= UTL::ONE_SIZET;
+    }
+    else
+    {
+        pilaser.buffer_full = false;
+    }
 }
+//____________________________________________________________________________________________
+
+
+
+
+
 //____________________________________________________________________________________________
 void pilaserInterface::updateAnalysisBuffers()
 {
@@ -666,6 +672,7 @@ bool pilaserInterface::setVpos(const double value)
 //____________________________________________________________________________________________
 bool pilaserInterface::moveLeft(const double value)
 {
+    message("pilaserInterface::moveLeft, ", value, ", ", value * pilaser.mirror.left_sense);
     //message("pilaserInterface::moveLeft");
     setHstep( value * pilaser.mirror.left_sense);
     return moveH();
@@ -673,23 +680,21 @@ bool pilaserInterface::moveLeft(const double value)
 //____________________________________________________________________________________________
 bool pilaserInterface::moveRight(const double value)
 {
-    //message("pilaserInterface::moveRight");
+    message("pilaserInterface::moveRight, ", value, ", ", value * pilaser.mirror.right_sense);
     setHstep( value * pilaser.mirror.right_sense);
     return moveH();
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::moveUp(const double value)
 {
-    //message("pilaserInterface::moveUp");
-    double val2 = value * pilaser.mirror.up_sense;
-    //message("pilaserInterface::moveUp val2, val, up_sense = ", val2, ", ", value, ", ", pilaser.mirror.up_sense );
+    message("pilaserInterface::moveUp, ", value, ", ", value * pilaser.mirror.up_sense);
     setVstep(value * pilaser.mirror.up_sense);
     return moveV();
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::moveDown(const double value)
 {
-    //message("pilaserInterface::moveDown");
+    message("pilaserInterface::moveDown, ", value, ", ", value * pilaser.mirror.down_sense);
     setVstep( value * pilaser.mirror.down_sense);
     return moveV();
 }
@@ -713,8 +718,7 @@ bool pilaserInterface::moveV()
 //____________________________________________________________________________________________
 bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* m1,const char* m2)
 {
-    //need to figure out how to move th elaser form command line...
-
+    //need to figure out how to move th elaser from command line...
     int status = caput<double>(cht, chi, val, m1, m2);
     if(status == ECA_NORMAL)
     {

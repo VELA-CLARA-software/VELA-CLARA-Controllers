@@ -123,7 +123,7 @@ class pilaserInterface : public cameraBase
 
         // position settign stuff
         bool check_data_timestamps(const cameraStructs::cameraObject& cam);
-        static void staticEntry_set_VC_xpos(double xpos);
+        //static void staticEntry_set_VC_xpos(double xpos);
 
 
 //
