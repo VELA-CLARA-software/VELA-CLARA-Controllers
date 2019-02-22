@@ -73,6 +73,7 @@ class screenInterface: public interface
         bool isPMoving(const std::string & name);
         bool isScreenMoving(const std::string & name);
         const screenStructs::SCREEN_STATE getScreenState(const std::string & name);
+        const screenStructs::SCREEN_STATE getScreenSetState(const std::string & name);
         const screenStructs::SCREEN_TYPE getScreenType(const std::string & name);
         const std::string getScreenTypeStr(const std::string & name);
         std::vector< std::string > getScreenNames();

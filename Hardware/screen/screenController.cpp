@@ -210,6 +210,16 @@ const std::string screenController::getScreenStateStr( const std::string & name 
     return ENUM_TO_STRING(localInterface.getScreenState(name));
 }
 //________________________________________________________________________________
+const screenStructs::SCREEN_STATE screenController::getScreenSetState( const std::string & name )
+{
+    return localInterface.getScreenSetState(name);
+}
+//________________________________________________________________________________
+const std::string screenController::getScreenSetStateStr( const std::string & name )
+{
+    return ENUM_TO_STRING(localInterface.getScreenSetState(name));
+}
+//________________________________________________________________________________
 const std::string screenController::getScreenType( const std::string & name )
 {
     return localInterface.getScreenTypeStr(name);

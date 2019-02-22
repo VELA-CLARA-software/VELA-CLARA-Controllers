@@ -947,6 +947,18 @@ const screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::str
     return screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
 }
 //___________________________________________________________________________________________________________
+const screenStructs::SCREEN_STATE screenInterface::getScreenSetState(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name).screenSetState;
+    }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
+
+    return screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+}
+//___________________________________________________________________________________________________________
 const screenStructs::screenObject & screenInterface::getScreenObject(const std::string & name)
 {
     if( entryExists( allScreentData, name ) )
@@ -1101,11 +1113,11 @@ double screenInterface::getACTPOS(const std::string & name)
     bool r = false;
     if( entryExists( allScreentData, name ) && isMover(name) )
     {
-        if( isVEnabled(name) )
+        if( allScreentData.at(name).screenState != screenStructs::SCREEN_STATE::V_RETRACTED )
         {
             return allScreentData.at(name).actPOSV;
         }
-        else if( isHEnabled(name) )
+        else if( allScreentData.at(name).screenState != screenStructs::SCREEN_STATE::H_RETRACTED )
         {
             return allScreentData.at(name).actPOSH;
         }

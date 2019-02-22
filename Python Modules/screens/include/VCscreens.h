@@ -319,6 +319,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* moveScreenOutString = "Will remove both horizontal and vertical devices.";
     char const* setScreenSDEVString = "Set screen device - the first part of moving a screen. Set the device to SCREEN_STATE state.";
     char const* setScreenTriggerString = "Set screen trigger == 1 - the second part of moving a screen. This will set the stage in motion.";
+    char const* getScreenSetStateString = "Returns the set SCREEN_STATE.";
     char const* getScreenStateString = "Returns the current SCREEN_STATE.";
     char const* getScreenTypeString = "Returns the SCREEN_TYPE.";
     char const* getAvailableDevicesString = "Returns the devices available on the screen.";
@@ -370,6 +371,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("setScreenTrigger",        &screenController::setScreenTrigger, (boost::python::arg("name")), setScreenTriggerString                           )
         .def("getScreenState",          &screenController::getScreenState, (boost::python::arg("name")), getScreenStateString                               )
         .def("getScreenStateStr",       &screenController::getScreenStateStr, (boost::python::arg("name")), getScreenStateString                            )
+        .def("getScreenSetState",       &screenController::getScreenSetState, (boost::python::arg("name")), getScreenSetStateString                         )
+        .def("getScreenSetStateStr",    &screenController::getScreenSetStateStr, (boost::python::arg("name")), getScreenSetStateString                      )
         .def("getScreenType",           &screenController::getScreenType, (boost::python::arg("name")), getScreenTypeString                                 )
         .def("isScreenInState",         &screenController::isScreenInState, (boost::python::arg("name"),boost::python::arg("state")), isScreenInStateString )
         .def("isMover",                 &screenController::isMover, (boost::python::arg("name")), isYAGInString                                             )

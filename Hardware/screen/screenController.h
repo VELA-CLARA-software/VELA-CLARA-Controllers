@@ -43,6 +43,8 @@ class screenController : public controller
 //        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
         const std::string getScreenStateStr( const std::string & name );
         const screenStructs::SCREEN_STATE getScreenState( const std::string & name );
+        const std::string getScreenSetStateStr( const std::string & name );
+        const screenStructs::SCREEN_STATE getScreenSetState( const std::string & name );
         const std::string getScreenType(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
         std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
