@@ -43,6 +43,8 @@ class screenController : public controller
 //        screenStructs::SCREEN_STATE getScreenState( const std::string & name, const bool weKnowEntryExists = false );
         const std::string getScreenStateStr( const std::string & name );
         const screenStructs::SCREEN_STATE getScreenState( const std::string & name );
+        const std::string getScreenSetStateStr( const std::string & name );
+        const screenStructs::SCREEN_STATE getScreenSetState( const std::string & name );
         const std::string getScreenType(const std::string & name);
         const screenStructs::screenObject & getScreenObject(const std::string & name);
         std::vector< screenStructs::SCREEN_STATE > getAvailableDevices(const std::string & name);
@@ -76,6 +78,10 @@ class screenController : public controller
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void moveScreensTo( const std::vector< const std::string > names, const std::vector< screenStructs::SCREEN_STATE > states );
         void insertYAG( const std::string & name );
+        void makeReadEqualSet( const std::string & name );
+        void makeReadEqualSetAll();
+        void makeSetEqualRead( const std::string & name );
+        void makeSetEqualReadAll();
         void moveScreenOut( const std::string & name );
         void resetPosition( const std::string & name );
         void jogScreen( const std::string & name, const double jog );

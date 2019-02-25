@@ -947,6 +947,18 @@ const screenStructs::SCREEN_STATE screenInterface::getScreenState(const std::str
     return screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
 }
 //___________________________________________________________________________________________________________
+const screenStructs::SCREEN_STATE screenInterface::getScreenSetState(const std::string & name)
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        return allScreentData.at(name).screenSetState;
+    }
+    else
+        std::cout << name << " !!ERRROR!! " << name <<  " is not a screen!!" << std::endl;
+
+    return screenStructs::SCREEN_STATE::UNKNOWN_POSITION;
+}
+//___________________________________________________________________________________________________________
 const screenStructs::screenObject & screenInterface::getScreenObject(const std::string & name)
 {
     if( entryExists( allScreentData, name ) )
@@ -1101,11 +1113,11 @@ double screenInterface::getACTPOS(const std::string & name)
     bool r = false;
     if( entryExists( allScreentData, name ) && isMover(name) )
     {
-        if( isVEnabled(name) )
+        if( allScreentData.at(name).screenState != screenStructs::SCREEN_STATE::V_RETRACTED )
         {
             return allScreentData.at(name).actPOSV;
         }
-        else if( isHEnabled(name) )
+        else if( allScreentData.at(name).screenState != screenStructs::SCREEN_STATE::H_RETRACTED )
         {
             return allScreentData.at(name).actPOSH;
         }
@@ -1198,6 +1210,54 @@ std::vector< screenStructs::SCREEN_STATE > screenInterface::getAvailableDevices(
 //___________________________________________________________________________________________________________
 //   CREATE ONE HIGH LEVEL SCREEN MOVER FUNCTION THAT IS CALLED BY ALL THE HIGHER LEVEL VERSIONS OF screenIN,
 //   screenOUT AND MOVE TO CASSETTE ELEMENT POSITION
+//___________________________________________________________________________________________________________
+void screenInterface::makeReadEqualSet( const std::string & name )
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        if( allScreentData.at(name).screenState != allScreentData.at(name).screenSetState )
+        {
+            message("Moving screen ", name, " to state ", ENUM_TO_STRING(allScreentData.at(name).screenSetState) );
+            moveScreenTo( name, allScreentData.at(name).screenSetState );
+        }
+        else
+        {
+            message(name, " read state == set state" );
+        }
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::makeReadEqualSetAll()
+{
+    for ( auto it : allScreentData )
+    {
+        makeReadEqualSet( it.first );
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::makeSetEqualRead( const std::string & name )
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        if( allScreentData.at(name).screenState != allScreentData.at(name).screenSetState )
+        {
+            message("Moving screen ", name, " to state ", ENUM_TO_STRING(allScreentData.at(name).screenState) );
+            moveScreenTo( name, allScreentData.at(name).screenState );
+        }
+        else
+        {
+            message(name, " set state == read state" );
+        }
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::makeSetEqualReadAll()
+{
+    for ( auto it : allScreentData )
+    {
+        makeSetEqualRead( it.first );
+    }
+}
 //___________________________________________________________________________________________________________
 void screenInterface::moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {

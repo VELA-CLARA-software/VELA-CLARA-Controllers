@@ -135,6 +135,26 @@ void screenController::moveScreenOut( const std::string & name )
     localInterface.moveScreenOut(name);
 }
 //________________________________________________________________________________
+void screenController::makeReadEqualSet( const std::string & name )
+{
+    localInterface.makeReadEqualSet(name);
+}
+//________________________________________________________________________________
+void screenController::makeReadEqualSetAll()
+{
+    localInterface.makeReadEqualSetAll();
+}
+//________________________________________________________________________________
+void screenController::makeSetEqualRead( const std::string & name )
+{
+    localInterface.makeSetEqualRead(name);
+}
+//________________________________________________________________________________
+void screenController::makeSetEqualReadAll()
+{
+    localInterface.makeSetEqualReadAll();
+}
+//________________________________________________________________________________
 void screenController::resetPosition( const std::string & name )
 {
     localInterface.resetPosition(name);
@@ -208,6 +228,16 @@ const screenStructs::SCREEN_STATE screenController::getScreenState( const std::s
 const std::string screenController::getScreenStateStr( const std::string & name )
 {
     return ENUM_TO_STRING(localInterface.getScreenState(name));
+}
+//________________________________________________________________________________
+const screenStructs::SCREEN_STATE screenController::getScreenSetState( const std::string & name )
+{
+    return localInterface.getScreenSetState(name);
+}
+//________________________________________________________________________________
+const std::string screenController::getScreenSetStateStr( const std::string & name )
+{
+    return ENUM_TO_STRING(localInterface.getScreenSetState(name));
 }
 //________________________________________________________________________________
 const std::string screenController::getScreenType( const std::string & name )

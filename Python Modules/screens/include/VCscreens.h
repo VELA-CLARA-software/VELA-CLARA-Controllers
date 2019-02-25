@@ -319,6 +319,7 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* moveScreenOutString = "Will remove both horizontal and vertical devices.";
     char const* setScreenSDEVString = "Set screen device - the first part of moving a screen. Set the device to SCREEN_STATE state.";
     char const* setScreenTriggerString = "Set screen trigger == 1 - the second part of moving a screen. This will set the stage in motion.";
+    char const* getScreenSetStateString = "Returns the set SCREEN_STATE.";
     char const* getScreenStateString = "Returns the current SCREEN_STATE.";
     char const* getScreenTypeString = "Returns the SCREEN_TYPE.";
     char const* getAvailableDevicesString = "Returns the devices available on the screen.";
@@ -346,6 +347,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
     char const* getVELAHVMoverScreensString = "Returns a list of the VELA H/V mover screens";
     char const* getMoverScreensString = "Returns a list of all mover screens screens";
     char const* getHVMoverScreensString = "Returns a list of all H/V mover screens";
+    char const* makeReadEqualSetString = "Checks if the set state is equal to the read state; if not, it moves arg(name) to set state.";
+    char const* makeReadEqualSetAllString = "Checks if the set state is equal to the read state; if not, it moves all screens to set state.";
+    char const* makeSetEqualReadString = "Checks if the set state is equal to the read state; if not, it moves arg(name) to read state.";
+    char const* makeSetEqualReadAllString = "Checks if the set state is equal to the read state; if not, it all screens to read state.";
     char const* isClearForBeam_ds = "Are all elements (apart from, maybe,  an RF Cage) removed from the beam axis.";
 
 //    docstruxt_vec ={};
@@ -370,6 +375,8 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("setScreenTrigger",        &screenController::setScreenTrigger, (boost::python::arg("name")), setScreenTriggerString                           )
         .def("getScreenState",          &screenController::getScreenState, (boost::python::arg("name")), getScreenStateString                               )
         .def("getScreenStateStr",       &screenController::getScreenStateStr, (boost::python::arg("name")), getScreenStateString                            )
+        .def("getScreenSetState",       &screenController::getScreenSetState, (boost::python::arg("name")), getScreenSetStateString                         )
+        .def("getScreenSetStateStr",    &screenController::getScreenSetStateStr, (boost::python::arg("name")), getScreenSetStateString                      )
         .def("getScreenType",           &screenController::getScreenType, (boost::python::arg("name")), getScreenTypeString                                 )
         .def("isScreenInState",         &screenController::isScreenInState, (boost::python::arg("name"),boost::python::arg("state")), isScreenInStateString )
         .def("isMover",                 &screenController::isMover, (boost::python::arg("name")), isYAGInString                                             )
@@ -394,6 +401,10 @@ BOOST_PYTHON_MODULE( VELA_CLARA_Screen_Control )
         .def("jogScreen",               &screenController::jogScreen, (boost::python::arg("name"),boost::python::arg("jog (mm)")), jogScreenString            )
         .def("resetPosition",           &screenController::resetPosition, (boost::python::arg("name")), resetPositionString                                   )
         .def("setEX",                   &screenController::setEX, (boost::python::arg("name")), setEXString                                                   )
+        .def("makeReadEqualSet",        &screenController::makeReadEqualSet, (boost::python::arg("name")), makeReadEqualSetString                           )
+        .def("makeReadEqualSetAll",     &screenController::makeReadEqualSetAll, makeReadEqualSetAllString                                                   )
+        .def("makeSetEqualRead",        &screenController::makeSetEqualRead, (boost::python::arg("name")), makeSetEqualReadString                           )
+        .def("makeSetEqualReadAll",     &screenController::makeSetEqualReadAll, makeSetEqualReadAllString                                                   )
         .def("setPosition",             &screenController::setPosition, (boost::python::arg("name"),boost::python::arg("pos (mm)")), setPositionString        )
         .def("isClearForBeam",          &screenController::isClearForBeam, (boost::python::arg("name")), isClearForBeam_ds )
         .def("getNamesOfScreensWithCameras", &screenController::getNamesOfScreensWithCameras_Py, getScreenNamesWCamsString  )
