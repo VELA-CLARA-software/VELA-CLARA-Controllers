@@ -1211,6 +1211,54 @@ std::vector< screenStructs::SCREEN_STATE > screenInterface::getAvailableDevices(
 //   CREATE ONE HIGH LEVEL SCREEN MOVER FUNCTION THAT IS CALLED BY ALL THE HIGHER LEVEL VERSIONS OF screenIN,
 //   screenOUT AND MOVE TO CASSETTE ELEMENT POSITION
 //___________________________________________________________________________________________________________
+void screenInterface::makeReadEqualSet( const std::string & name )
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        if( allScreentData.at(name).screenState != allScreentData.at(name).screenSetState )
+        {
+            message("Moving screen ", name, " to state ", ENUM_TO_STRING(allScreentData.at(name).screenSetState) );
+            moveScreenTo( name, allScreentData.at(name).screenSetState );
+        }
+        else
+        {
+            message(name, " read state == set state" );
+        }
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::makeReadEqualSetAll()
+{
+    for ( auto it : allScreentData )
+    {
+        makeReadEqualSet( it.first );
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::makeSetEqualRead( const std::string & name )
+{
+    if( entryExists( allScreentData, name ) )
+    {
+        if( allScreentData.at(name).screenState != allScreentData.at(name).screenSetState )
+        {
+            message("Moving screen ", name, " to state ", ENUM_TO_STRING(allScreentData.at(name).screenState) );
+            moveScreenTo( name, allScreentData.at(name).screenState );
+        }
+        else
+        {
+            message(name, " set state == read state" );
+        }
+    }
+}
+//___________________________________________________________________________________________________________
+void screenInterface::makeSetEqualReadAll()
+{
+    for ( auto it : allScreentData )
+    {
+        makeSetEqualRead( it.first );
+    }
+}
+//___________________________________________________________________________________________________________
 void screenInterface::moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state )
 {
 //    if( isHElement( name, state ) )

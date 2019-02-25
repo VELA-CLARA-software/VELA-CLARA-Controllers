@@ -113,6 +113,10 @@ class screenInterface: public interface
         void moveScreenTo( const std::string & name, const screenStructs::SCREEN_STATE & state );
         void moveScreensTo( const std::vector< const std::string > names, const std::vector< screenStructs::SCREEN_STATE > states );
         void insertYAG( const std::string & name );
+        void makeReadEqualSet( const std::string & name );
+        void makeReadEqualSetAll();
+        void makeSetEqualRead( const std::string & name );
+        void makeSetEqualReadAll();
         void moveScreenOut( const std::string & name );
         void resetPosition( const std::string & name );
         void jogScreen( const std::string & name, const double jog );

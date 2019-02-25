@@ -135,6 +135,26 @@ void screenController::moveScreenOut( const std::string & name )
     localInterface.moveScreenOut(name);
 }
 //________________________________________________________________________________
+void screenController::makeReadEqualSet( const std::string & name )
+{
+    localInterface.makeReadEqualSet(name);
+}
+//________________________________________________________________________________
+void screenController::makeReadEqualSetAll()
+{
+    localInterface.makeReadEqualSetAll();
+}
+//________________________________________________________________________________
+void screenController::makeSetEqualRead( const std::string & name )
+{
+    localInterface.makeSetEqualRead(name);
+}
+//________________________________________________________________________________
+void screenController::makeSetEqualReadAll()
+{
+    localInterface.makeSetEqualReadAll();
+}
+//________________________________________________________________________________
 void screenController::resetPosition( const std::string & name )
 {
     localInterface.resetPosition(name);
