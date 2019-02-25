@@ -40,7 +40,9 @@ localInterface(show_messages,
                configFile)
 {
     if(localInterface.interfaceInitReport() )
+    {
         message("shutterController instantiation success.");
+    }
 }
 //______________________________________________________________________________
 bool shutterController::interfaceInitReport()
@@ -48,7 +50,10 @@ bool shutterController::interfaceInitReport()
     return localInterface.interfaceInitReport();
 }
 //______________________________________________________________________________
-shutterController::~shutterController(){}    //dtor
+shutterController::~shutterController()
+{
+    message("shutterController destructor complete.");
+}    //dtor
 //______________________________________________________________________________
 void shutterController::open(const std::string& name)
 {

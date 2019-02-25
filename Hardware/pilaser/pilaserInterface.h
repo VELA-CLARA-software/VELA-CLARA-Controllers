@@ -159,8 +159,6 @@ class pilaserInterface : public cameraBase
         // testing
         epicsTime et;
         epicsTime timestamp;
-
-
 };
 //______________________________________________________________________________
 #endif // _PI_LASER_INTERFACE_H

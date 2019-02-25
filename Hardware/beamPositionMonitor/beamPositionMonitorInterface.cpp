@@ -1310,9 +1310,11 @@ double beamPositionMonitorInterface::getXFromPV( const std::string & bpmName )
     /// x value directly from EPICS. Use the function getX/Y for the calculated values.
     double r = UTL::DUMMY_DOUBLE;
     if( entryExists( bpmObj.dataObjects, bpmName ) )
+    {
         return bpmObj.dataObjects.at( bpmName ).xPV;
-    else
-        return r;
+    }
+    message("!!WWarning!! getXFromPV can't find BPM with name = ",bpmName);
+    return r;
 }
 //______________________________________________________________________________
 double beamPositionMonitorInterface::getYFromPV( const std::string & bpmName )

@@ -56,11 +56,13 @@ interface(show_messages,
 //______________________________________________________________________________
 shutterInterface::~shutterInterface()
 {
+    debugMessage("shutterInterface DESTRUCTOR");
     for(auto&& it : continuousMonitorStructs)
     {
         debugMessage("delete shutterInterface continuousMonitorStructs entry.");
         delete it;
     }
+    debugMessage("shutterInterface DESTRUCTOR COMPLETE ");
 }
 //______________________________________________________________________________
 void shutterInterface::initialise()

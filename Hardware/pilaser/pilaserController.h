@@ -36,7 +36,7 @@
     !!!!WARNING MULTIPLE INHERITANCES!!!!
     https://stackoverflow.com/questions/406081/why-should-i-avoid-multiple-inheritance-in-c
 */
-class pilaserController : public cameraControllerBase, public shutterController
+class pilaserController : public shutterController, public cameraControllerBase
 {
     public:
         pilaserController(bool& show_messages,

@@ -67,6 +67,7 @@ shutterController(show_messages,
 //______________________________________________________________________________
 pilaserController::~pilaserController()
 {
+    cameraControllerBase::debugMessage("pilaserController DESTRUCTOR");
     if(set_pos_struct.thread)
     {
         cameraControllerBase::message("Joining Thread");
@@ -80,7 +81,7 @@ pilaserController::~pilaserController()
 
         set_pos_struct.thread = nullptr;
     }
-
+    cameraControllerBase::debugMessage("pilaserController DESTRUCTOR Complete");
 }    //dtor
 //______________________________________________________________________________
 void  pilaserController::set_CA_PEND_IO_TIMEOUT(double val)

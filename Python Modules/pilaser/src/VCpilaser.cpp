@@ -42,6 +42,7 @@ claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 //______________________________________________________________________________
 VCpilaser::~VCpilaser()
 {
+    std::cout <<"starting desctruction" <<std::endl;
     //dtor
     if(virtual_VELA_pilaser_Controller_Obj)
     {

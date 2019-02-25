@@ -90,8 +90,8 @@ class cameraControllerBase : public controller
         double getSumIntensity(const std::string& cam)const;
         //double getSumIntensity()const;
 
-        std::string getLatestFilename_VC()const;
-        std::string getLatestFilename(const std::string& cam)const;
+//        std::string getLatestFilename_VC()const;
+//        std::string getLatestFilename(const std::string& cam)const;
 
         bool takeFastImage(const std::string& cam);
         bool takeFastImage_VC();
@@ -326,9 +326,16 @@ class cameraControllerBase : public controller
 
         std::string getSelectedCamName() const;
         std::string getSelectedCamScrName() const;
-         size_t getNumPixX() const;
-         size_t  getNumPixY() const;
+        size_t getNumPixX() const;
+        size_t  getNumPixY() const;
 
+        std::string getLatestDirectory_VC()const;
+        std::string getLatestDirectory(const std::string& cam)const;
+        std::string getLatestDirectory()const;
+
+        std::string getLatestFilename_VC()const;
+        std::string getLatestFilename(const std::string& cam)const;
+        std::string getLatestFilename()const;
 
 #ifdef BUILD_DLL
         boost::python::list getCameraNames_Py()const;

@@ -758,6 +758,8 @@ class cameraBase : public interface
         std::string getLastDirectoryandFileName();
 
 
+        /* called during destruction ... */
+        void killMonitor(cameraStructs::monitorStruct * ms);
 
         // testing
         epicsTime et;

@@ -88,7 +88,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
 
     BOOST_PYTHON_INCLUDE::expose_shutter();
-
     /*
         // IF WE BUILD INDIVIDUAL CONTRLLERS FOR EACH SUB-HARDWARE SYSTEM
         // THEN THE DEFINITIONS NEED TO MOVE TO THOSE CLASSES
@@ -168,8 +167,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("setCharge",  &pilaserObject::setCharge,          setCharge_ds)
         .def_readonly("setVCPosState", &pilaserObject::setVCPosState, setVCPosState_ds)
         ;
-
-
 
 //    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
 //    const char* closeAndWait_doc = "closeAndWait_doc.";

@@ -55,11 +55,15 @@ cameraBase(show_messages,show_debug_messages,startVirtualMachine,shouldStartEPIC
 //______________________________________________________________________________
 pilaserInterface::~pilaserInterface()
 {
+    debugMessage("pilaserInterface DESTRUCTOR");
     killILockMonitors();
     for(auto&& it:continuousMonitorStructs)
     {
-        killMonitor(it);
-        delete it;
+        if(it)
+        {
+            killMonitor(it);
+            delete it;
+        }
     }
     debugMessage("pilaserInterface DESTRUCTOR COMPLETE ");
 }

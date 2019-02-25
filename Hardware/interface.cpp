@@ -69,10 +69,14 @@ baseObject(show_messages, show_debug_messages,"from int")
 //______________________________________________________________________________
 interface::~interface()
 {
+    debugMessage("interface DESTRUCTOR");
     for(auto&& it : continuousILockMonitorStructs)
     {
-       debugMessage("delete interface continuousILockMonitorStructs entry.");
-       delete it;
+        if(it)
+        {
+            debugMessage("delete interface continuousILockMonitorStructs entry.");
+            delete it;
+        }
     }
     debugMessage("interface DESTRUCTOR COMPLETE ");
 }
@@ -438,6 +442,7 @@ double interface::getTime(const epicsTimeStamp& stamp)
     return ((double)stamp.nsec * UTL::TEN_POWER_MINUS_NINE) +
           (double)stamp.secPastEpoch;
 }
+
 //______________________________________________________________________________
 void interface::updateTime(const epicsTimeStamp& stamp, double& val, std::string& str)
 {

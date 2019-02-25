@@ -73,7 +73,45 @@ myarea(area)
 }
 //---------------------------------------------------------------------------------
 cameraBase::~cameraBase()
-{}
+{
+    debugMessage("cameraBase DESTRUCTOR");
+    killILockMonitors();
+//    if(selectedCamPtr)
+//    {
+//        delete selectedCamPtr;
+//        selectedCamPtr = nullptr;
+//    }
+//    if(vcCamPtr)
+//    {
+//        delete vcCamPtr;
+//        vcCamPtr = nullptr;
+//    }
+    for(auto&&it: continuousCamMonitorStructs)
+    {
+        if(it)
+        {
+            killMonitor(it);
+        }
+    }
+    debugMessage("cameraBase DESTRUCTOR COMPLETE ");
+}
+//______________________________________________________________________________
+void cameraBase::killMonitor(cameraStructs::monitorStruct * ms)
+{
+    int status = ca_clear_subscription(ms->EVID);
+    if(status == ECA_NORMAL)
+    {
+        debugMessage(ms->objName, " ",
+                     ENUM_TO_STRING(ms->monType), " monitoring = false ");
+    }
+    else
+    {
+        debugMessage("ERROR pilaserInterface: in killMonitor: "
+                     "ca_clear_subscription failed for ",
+                     ms->objName, " ",
+                     ENUM_TO_STRING(ms->monType));
+    }
+}
 //---------------------------------------------------------------------------------
 void cameraBase::initialise(bool VConly)
 {
@@ -1391,9 +1429,13 @@ bool cameraBase::collectAndSave(const int numbOfShots)
 bool cameraBase::collectAndSave(const std::string& name, const int numbOfShots)
 {
     if(isNotAcquiring(name))
+    {
         return false;
+    }
     if(isVelaCam(name))
+    {
         return false;
+    }
     else
     {
         std::string n = useCameraFrom(name);
@@ -2734,11 +2776,7 @@ bool cameraBase::isCollectingOrSaving(const std::string& cam)const
 //---------------------------------------------------------------------------------
 bool cameraBase::isCollectingOrSaving(const cameraObject& cam)const
 {
-    if(isCollecting(cam))
-        return true;
-    if(isSaving(cam))
-        return true;
-    return false;
+    return isBusy(cam);
 }
 //---------------------------------------------------------------------------------
 bool cameraBase::isCollectingOrSaving()const
@@ -4853,6 +4891,33 @@ std::string cameraBase::getLatestFilename()const
 {
     return getLatestFilename(*selectedCamPtr);
 }
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestDirectory_VC()const
+{
+    return getLatestDirectory(*vcCamPtr);
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestDirectory(const std::string& cam)const
+{
+    return getLatestDirectory(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestDirectory(const cameraStructs::cameraObject& cam)const
+{
+
+    return cam.daq.latestDirectory;
+}
+//---------------------------------------------------------------------------------
+std::string cameraBase::getLatestDirectory()const
+{
+    return getLatestFilename(*selectedCamPtr);
+}
+
+
+
+
+
+
 
 double cameraBase::getSumIntensity(const std::string& cam)const
 {

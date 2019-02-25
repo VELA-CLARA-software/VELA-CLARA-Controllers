@@ -1035,6 +1035,14 @@ namespace BOOST_PYTHON_INCLUDE
         const char*isVelaLEDOn_ds;
         const char*isVelaLEDOff_ds;
 
+        const char*getLatestDirectory_VC_ds = "";
+        const char*getLatestDirectory_ds1 = "";
+        const char*getLatestDirectory_ds2 = "";
+
+        const char*getLatestFilename_VC_ds = "";
+        const char*getLatestFilename_ds1 = "";
+        const char*getLatestFilename_ds2 = "";
+
         /*
             function pointers for overloads to expose to Python...
         */
@@ -1248,6 +1256,15 @@ namespace BOOST_PYTHON_INCLUDE
 
 
 
+        std::string(cameraControllerBase::*getLatestDirectory_1)(cstr&)const = &cameraControllerBase::getLatestDirectory;
+        std::string(cameraControllerBase::*getLatestDirectory_2)()const      = &cameraControllerBase::getLatestDirectory;
+
+        std::string(cameraControllerBase::*getLatestFilename_1)(cstr&)const = &cameraControllerBase::getLatestFilename;
+        std::string(cameraControllerBase::*getLatestFilename_2)()const      = &cameraControllerBase::getLatestFilename;
+
+
+
+
         //Py_Initialize();
         //boost::python::numpy::initialize();
 
@@ -1336,10 +1353,6 @@ namespace BOOST_PYTHON_INCLUDE
         .def("hasNoBeam_VC",  &cameraControllerBase::hasNoBeam_VC ,hasNoBeam_VC_ds )
         .def("hasNoBeam",  hasNoBeam_1       ,  hasNoBeam_ds1 )
         .def("hasNoBeam",  hasNoBeam_2       ,  hasNoBeam_ds2 )
-
-
-        .def("getLatestFilename_VC",  &cameraControllerBase::getLatestFilename_VC ,"" )
-        .def("getLatestFilename",  &cameraControllerBase::getLatestFilename ,"" )
 
 
 
@@ -1715,6 +1728,18 @@ namespace BOOST_PYTHON_INCLUDE
         .def("getBufferMaxCount",                  getBufferMaxCount_1        ,    getBufferMaxCount_ds1)
         .def("getBufferMaxCount",                  getBufferMaxCount_2        ,    getBufferMaxCount_ds2)
 
+        .def("getLatestFilename_VC", &cameraControllerBase::getLatestFilename_VC , getLatestDirectory_VC_ds)
+        .def("getLatestFilename",                            getLatestFilename_1 , getLatestFilename_ds1)
+        .def("getLatestFilename",                            getLatestFilename_2 , getLatestFilename_ds2)
+
+        .def("getLatestDirectory_VC", &cameraControllerBase::getLatestDirectory_VC , getLatestDirectory_VC_ds)
+        .def("getLatestDirectory",                            getLatestDirectory_1  ,    getLatestDirectory_ds1)
+        .def("getLatestDirectory",                            getLatestDirectory_2  ,    getLatestDirectory_ds2)
+
+        //.def("getLatestFilename_VC",  &cameraControllerBase::getLatestFilename_VC ,"" )
+        //.def("getLatestFilename",  &cameraControllerBase::getLatestFilename ,"" )
+
+
 
         .def("isNotCollecting_VC",  &cameraControllerBase::isNotCollecting_VC  , isNotCollecting_VC_ds)
         .def("isNotCollecting",                            isNotCollecting_1   , isNotCollecting_ds1)
@@ -1725,8 +1750,10 @@ namespace BOOST_PYTHON_INCLUDE
         .def("collectAndSave",      collectAndSave_1      , collectAndSave_ds1)
         .def("collectAndSave",      collectAndSave_2      , collectAndSave_ds2)
 
-         .def("latestCollectAndSaveSuccess_VC",   &cameraControllerBase::latestCollectAndSaveSuccess_VC   , latestCollectAndSaveSuccess_VC_ds)
-         .def("latestCollectAndSaveSuccess",   &cameraControllerBase::latestCollectAndSaveSuccess   , latestCollectAndSaveSuccess_ds)
+        .def("latestCollectAndSaveSuccess_VC",   &cameraControllerBase::latestCollectAndSaveSuccess_VC   , latestCollectAndSaveSuccess_VC_ds)
+        .def("latestCollectAndSaveSuccess",   &cameraControllerBase::latestCollectAndSaveSuccess   , latestCollectAndSaveSuccess_ds)
+
+
 
         ;
 

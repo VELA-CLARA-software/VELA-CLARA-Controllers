@@ -28,6 +28,7 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+#include <utility>
 #include <iostream>
 #include <time.h>
 // boost.python includes
@@ -278,6 +279,19 @@ class baseObject
             }
             return dictionary;
         }
+
+        template<class T,  class U>
+        boost::python::dict toPythonDict(std::vector<std::pair<T, U>> m)
+        {
+            boost::python::dict dictionary;
+            for(auto&&it:m)
+            {
+                message(it.first,"  ",it.second);
+                dictionary[it.first] = it.second;
+            }
+            return dictionary;
+        }
+
 
         template<class T>
         boost::python::dict enumStringMapToPythonDict(const std::map<T,std::string>& m) const

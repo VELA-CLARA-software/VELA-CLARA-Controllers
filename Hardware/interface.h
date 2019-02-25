@@ -148,6 +148,7 @@ class interface : public baseObject
 
 
         static double getTime(const epicsTimeStamp& stamp);
+        static void getTime(const epicsTimeStamp& stamp, std::string& str);
 
 
         void setChannelCountandType(const chid& CHID,

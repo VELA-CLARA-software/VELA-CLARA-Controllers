@@ -76,8 +76,13 @@ controller(show_messages,show_debug_messages, type, name)
 //---------------------------------------------------------------------------------
 cameraControllerBase::~cameraControllerBase()
 {
-    if(shoudlDeletecamBase)
-        delete camBase;
+    debugMessage("cameraControllerBase DESTRUCTOR");
+//    if(camBase)
+//    {
+//        message("cameraControllerBase destructor deleting camBase");
+//        delete camBase;
+//    }
+    debugMessage("cameraControllerBase DESTRUCTOR COMPLETE ");
 }
 //
 //---------------------------------------------------------------------------------
@@ -226,15 +231,38 @@ bool cameraControllerBase::startAcquireAndAnalysis()
 {
     return camBase->startAcquireAndAnalysis();
 }
-
+//---------------------------------------------------------------------------------
 std::string cameraControllerBase::getLatestFilename_VC()const
 {
     return camBase->getLatestFilename_VC();
 }
+//---------------------------------------------------------------------------------
 std::string cameraControllerBase::getLatestFilename(const std::string& cam)const
 {
     return camBase->getLatestFilename(cam);
 }
+//---------------------------------------------------------------------------------
+std::string cameraControllerBase::getLatestFilename()const
+{
+    return camBase->getLatestFilename();
+}
+
+//---------------------------------------------------------------------------------
+std::string cameraControllerBase::getLatestDirectory_VC()const
+{
+    return camBase->getLatestDirectory_VC();
+}
+//---------------------------------------------------------------------------------
+std::string cameraControllerBase::getLatestDirectory(const std::string& cam)const
+{
+    return camBase->getLatestDirectory(cam);
+}
+//---------------------------------------------------------------------------------
+std::string cameraControllerBase::getLatestDirectory()const
+{
+    return camBase->getLatestDirectory();
+}
+
 
 
 double cameraControllerBase::getSumIntensity(const std::string& cam)const
