@@ -8,9 +8,13 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <utility>
 //epics
 #include <cadef.h>
 #include <epicsTime.h>
+
+//
+#include "configDefinitions.h"
 
 class  VCgeneralMonitor;
 
@@ -36,25 +40,22 @@ namespace gmStructs
     template <typename T>
     struct dataEntry
     {   dataEntry():
-            c(0),
-            rs_count(0),
-            rs_count_max(0),
+            c(UTL::ZERO_SIZET),
+            rs_count(UTL::ZERO_SIZET),
+            rs_count_max(UTL::ZERO_SIZET),
             rs_complete(false)
         {}
         epicsTimeStamp t; // epics timestamp for value
-        double         s; // epics timestamp doncerted into nano-sec
+        double         s; // epics timestamp converted into nano-sec
         size_t         c; // count, how mnay times has epics updated this value
         T              v; // the actual value EPICS is to update
         runningStat    rs; //running_stat
-        size_t         rs_count; //running_stat
-        size_t         rs_count_max; //running_stat
-        bool           rs_complete;
-
+        size_t         rs_count; //running_stat current count of entires used in running stat
+        size_t         rs_count_max; //running_stat max count of entires to be used in running stat
+        bool           rs_complete; // flag for when rs_count == rs_count_max
+        std::vector<std::pair<std::string,T>> buffer;// a buffer of values up to size = rs_count_max
     };
     // monType could be used to switch in the staticCallbackFunction
-    // For the shutter this is basically redundant, there is only one monitor: "Sta"
-    // (apart from interlocks, these are handled in the base class)
-    // monType could be used to switch in the statisCallbackFunction
     template <typename T>
     struct pvData
     {
@@ -67,7 +68,7 @@ namespace gmStructs
         std::string                id;
         bool                       fully_connected;
     };
-    // this gets sent t to the callback function, and from the ID and interfcace everything can be
+    // this gets sent to the callback function, and from the ID and interface everything can be
     // updated
     struct monitorStruct
     {

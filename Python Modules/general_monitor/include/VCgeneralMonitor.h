@@ -53,14 +53,25 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         size_t getCounter(const std::string& id );
 
         void clearRunningValues(const std::string& id );
+
         bool isRunningStatComplete(const std::string& id);
+
+
+        bool isBufferFull(const std::string& id);
+        void clearBuffer(const std::string& id);
+        void setBufferSize(const std::string& id , const size_t value );
+        size_t getBufferCount(const std::string& id );
+        size_t getBufferSize(const std::string & id);
+
+
         bool isRunningStatNotComplete(const std::string& id);
 
         void   setRunningStatCountMax(const std::string& id, const size_t value );
         size_t getRunningStatCountMax(const std::string & id);
 
-
         size_t getRunningStatCount(const std::string & id);
+
+
 
 
 #ifdef BUILD_DLL
@@ -78,7 +89,13 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         boost::python::dict getCounterAndValue(const boost::python::list& ids);
         boost::python::dict getCounterAndTotalValue(const std::string& id);
         boost::python::object getValue(const std::string& id, const int position);
-        boost::python::list getValue(const std::string& id, const int start_position, const int end_position);
+        boost::python::list getValue(const std::string& id,
+                                     const int start_position,
+                                     const int end_position);
+
+        boost::python::dict getBuffer(const std::string& id);
+
+
 #endif
 
         size_t getPVCount(const std::string & id);
@@ -183,6 +200,8 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         gmStructs::pvStruct* addToStringPVMap();
 
         void updateTime_ns(const epicsTimeStamp & stamp, double& s);
+        void updateTime_str(const epicsTimeStamp & stamp, std::string& s);
+
 
         template<typename T, size_t size>
         size_t GetArrLength(T(&)[size]){ return size; }
@@ -302,6 +321,13 @@ const char * getRunningStatCount_doc =
  "Get the running stat. maximum number of shots for this id";
 
 
+const char * isBufferFull_docstring = "returns if buffer is full for 'id'";
+const char * clearBuffer_docstring = "clears buffer for 'id'";
+const char * setBufferSize_docstring = "sets buffer size to 'value' for 'id'";
+const char * getBuffer_docstring = "returns buffer (dictionary of <timestamp, value>) for 'id'";
+const char * getBufferCount_docstring = "returns number of entries in buffer for 'id'";
+const char * getBufferSize_docstring = "returns max size of buffer for 'id'";
+
 using namespace boost::python;
 BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
 {
@@ -341,7 +367,26 @@ BOOST_PYTHON_MODULE(VELA_CLARA_General_Monitor)
                         (ID_ARG,VALUE_ARG,
                         setRunningStatShotCount_docstring))
 
+        .def("isBufferFull",  &VCgeneralMonitor::isBufferFull,
+                        (ID_ARG,
+                        isBufferFull_docstring))
 
+        .def("clearBuffer",  &VCgeneralMonitor::clearBuffer,
+                        (ID_ARG,
+                        clearBuffer_docstring))
+        .def("setBufferSize",  &VCgeneralMonitor::setBufferSize,
+                        (ID_ARG,VALUE_ARG,
+                        setBufferSize_docstring))
+
+        .def("getBuffer",  &VCgeneralMonitor::getBuffer,
+                        (ID_ARG,
+                        getBuffer_docstring))
+        .def("getBufferCount",  &VCgeneralMonitor::getBufferCount,
+                        (ID_ARG,
+                        getBufferCount_docstring))
+        .def("getBufferSize",  &VCgeneralMonitor::getBufferSize,
+                        (ID_ARG,
+                        getBufferSize_docstring))
 
         .def("isRunningStatComplete",  &VCgeneralMonitor::isRunningStatComplete,
                           (ID_ARG,

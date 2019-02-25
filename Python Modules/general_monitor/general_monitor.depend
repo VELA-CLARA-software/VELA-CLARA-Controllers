@@ -1,15 +1,16 @@
 # depslib dependency file v1.0
-1525973726 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
+1549545932 source:d:\vela\git projects\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
 
-1540304882 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
+1550845785 d:\vela\git projects\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
 	<cmath>
 	<algorithm>
+	<utility>
 	<iostream>
 	<time.h>
 	<deque>
@@ -28,7 +29,7 @@
 	<boost/circular_buffer.hpp>
 	<boost/python/numpy.hpp>
 
-1534593081 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
+1550745264 source:d:\vela\git projects\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
@@ -41,7 +42,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1549485143 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
+1550840954 d:\vela\git projects\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -59,33 +60,36 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1534593085 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
+1550845713 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
 	<iostream>
 	<iomanip>
 	<numeric>
 	<sstream>
 	<thread>
 	<chrono>
+	<utility>
 	<epicsTime.h>
 	"VCgeneralMonitor.h"
 
-1534593085 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
+1550844906 d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
 	<string>
 	"VCheader.h"
 	"VCbase.h"
 	"gmStructs.h"
 
-1534593093 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
+1550841964 d:\vela\git projects\vela-clara-controllers\structs\gmstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	"running_stat.h"
 	<string>
 	<vector>
 	<map>
+	<utility>
 	<cadef.h>
 	<epicsTime.h>
+	"configDefinitions.h"
 
-1549545167 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
+1550510148 d:\vela\git projects\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -93,7 +97,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1537795735 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
+1550745289 source:d:\vela\git projects\vela-clara-controllers\hardware\vcbase.cpp
 	"VCbase.h"
 	"configDefinitions.h"
 
@@ -104,7 +108,7 @@
 	<map>
 	<utility>
 
-1549474801 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
+1550148545 d:\vela\git projects\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -131,13 +135,13 @@
 1539598403 d:\vela\git projects\vela-clara-controllers\utilities\running_stat.h
 	<iostream>
 
-1539943284 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1549642966 d:\vela\git projects\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1539943344 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
+1550746491 d:\vela\git projects\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -148,6 +152,29 @@
 	<vector>
 	<map>
 
-1534593085 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\main.cpp
-	"VCgeneralMonitor.h"
+1550834992 source:d:\vela\git projects\vela-clara-controllers\python modules\general_monitor\main.cpp
+
+1550840941 source:d:\vela\git projects\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	"structs.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1550570414 source:d:\vela\git projects\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1550570197 d:\vela\git projects\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
 

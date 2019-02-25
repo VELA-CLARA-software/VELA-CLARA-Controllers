@@ -1,3 +1,25 @@
+/*
+//              This file is part of VELA-CLARA-Controllers.                          //
+//------------------------------------------------------------------------------------//
+//    VELA-CLARA-Controllers is free software: you can redistribute it and/or modify  //
+//    it under the terms of the GNU General Public License as published by            //
+//    the Free Software Foundation, either version 3 of the License, or               //
+//    (at your option) any later version.                                             //
+//    VELA-CLARA-Controllers is distributed in the hope that it will be useful,       //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of                  //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   //
+//    GNU General Public License for more details.                                    //
+//                                                                                    //
+//    You should have received a copy of the GNU General Public License               //
+//    along with VELA-CLARA-Controllers.  If not, see <http://www.gnu.org/licenses/>. //
+//
+//  Author:      DJS
+//  Last edit:   22-02-2019
+//  FileName:    VCgeneralMonitor.cpp
+//  Description:
+//
+//
+//*/
 // stl
 #include <iostream>
 #include <iomanip>
@@ -5,6 +27,7 @@
 #include <sstream>
 #include <thread>
 #include <chrono>
+#include <utility>
 // epics
 #include <epicsTime.h>
 // VC-HWC
@@ -67,6 +90,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if(entryExists(stringPVMap, id))
         {    //message("getPVStruct ",  id, " isIntPV");
              stringPVMap[id].data[0]->rs_count_max = value;
+             stringPVMap[id].data[0]->buffer.resize(value);
         }
     }
     else if(isIntPV(id))
@@ -74,6 +98,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if(entryExists(intPVMap, id))
         {    //message("getPVStruct ",  id, " isIntPV");
              intPVMap[id].data[0]->rs_count_max = value;
+             intPVMap[id].data[0]->buffer.resize(value);
         }
     }
     else if(isFloatPV(id))
@@ -81,6 +106,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if(entryExists(floatPVMap, id))
         {//message("getPVStruct ",  id, " isFloatPV");
             floatPVMap[id].data[0]->rs_count_max = value;
+            floatPVMap[id].data[0]->buffer.resize(value);
         }
     }
     else if(isEnumPV(id))
@@ -88,6 +114,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if(entryExists(enumPVMap, id))
         {//message("getPVStruct ",  id, " isEnumPV");
             enumPVMap[id].data[0]->rs_count_max = value;
+            enumPVMap[id].data[0]->buffer.resize(value);
         }
     }
     else if(isCharPV(id))
@@ -95,6 +122,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if( entryExists(charPVMap, id))
         {//message("getPVStruct ",  id, " isCharPV");
             charPVMap[id].data[0]->rs_count_max = value;
+            charPVMap[id].data[0]->buffer.resize(value);
         }
     }
     else if(isLongPV(id))
@@ -102,6 +130,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if(entryExists(longPVMap, id))
         {//message("getPVStruct ",  id, " isLongPV");
             longPVMap[id].data[0]->rs_count_max = value;
+            longPVMap[id].data[0]->buffer.resize(value);
         }
     }
     else if(isDoublePV(id))
@@ -109,6 +138,7 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
         if(entryExists(doublePVMap, id))
         {//message("getPVStruct ",  id, " isDoublePV");
             doublePVMap[id].data[0]->rs_count_max = value;
+            doublePVMap[id].data[0]->buffer.resize(value);
         }
     }
 }
@@ -181,6 +211,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
              stringPVMap[id].data[0]->rs.Clear();
              stringPVMap[id].data[0]->rs_count = 0;
              stringPVMap[id].data[0]->rs_complete = false;
+             stringPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isIntPV(id))
@@ -190,6 +221,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
              intPVMap[id].data[0]->rs.Clear();
              intPVMap[id].data[0]->rs_count = 0;
              intPVMap[id].data[0]->rs_complete = false;
+             intPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isFloatPV(id))
@@ -199,6 +231,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             floatPVMap[id].data[0]->rs.Clear();
             floatPVMap[id].data[0]->rs_count = 0;
             floatPVMap[id].data[0]->rs_complete = false;
+            floatPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isEnumPV(id))
@@ -208,6 +241,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             enumPVMap[id].data[0]->rs.Clear();
             enumPVMap[id].data[0]->rs_count = 0;
             enumPVMap[id].data[0]->rs_complete = false;
+            enumPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isCharPV(id))
@@ -217,6 +251,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             charPVMap[id].data[0]->rs.Clear();
             charPVMap[id].data[0]->rs_count = 0;
             charPVMap[id].data[0]->rs_complete = false;
+            charPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isLongPV(id))
@@ -226,6 +261,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             longPVMap[id].data[0]->rs.Clear();
             longPVMap[id].data[0]->rs_count = 0;
             longPVMap[id].data[0]->rs_complete = false;
+            longPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isDoublePV(id))
@@ -235,6 +271,7 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             doublePVMap[id].data[0]->rs.Clear();
             doublePVMap[id].data[0]->rs_count = 0;
             doublePVMap[id].data[0]->rs_complete = false;
+            doublePVMap[id].data[0]->buffer.clear();
         }
     }
 }
@@ -295,6 +332,11 @@ size_t VCgeneralMonitor::getRunningStatCountMax(const std::string & id)
 }
 
 
+size_t VCgeneralMonitor::getBufferSize(const std::string & id)
+{
+    return getRunningStatCountMax(id);
+}
+
 //______________________________________________________________________________
 size_t VCgeneralMonitor::getRunningStatCount(const std::string & id)
 {
@@ -349,9 +391,85 @@ size_t VCgeneralMonitor::getRunningStatCount(const std::string & id)
     }
     return 0;
 }
-
+//______________________________________________________________________________
+size_t VCgeneralMonitor::getBufferCount(const std::string& id )
+{
+    return getRunningStatCount(id);
+}
+//______________________________________________________________________________
+bool VCgeneralMonitor::isBufferFull(const std::string& id)
+{
+    return isRunningStatComplete(id);
+}
+//______________________________________________________________________________
+void VCgeneralMonitor::clearBuffer(const std::string& id)
+{
+    clearRunningValues(id);
+}
+//______________________________________________________________________________
+void VCgeneralMonitor::setBufferSize(const std::string& id, const size_t value  )
+{
+    setRunningStatCountMax(id, value );
+}
+//______________________________________________________________________________
 
 #ifdef BUILD_DLL
+//______________________________________________________________________________
+boost::python::dict VCgeneralMonitor::getBuffer(const std::string& id)
+{
+    if(isStringPV(id))
+    {
+        if(entryExists(stringPVMap, id))
+        {    //message("getPVStruct ",  id, " isIntPV");
+             return toPythonDict(stringPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isIntPV(id))
+    {
+        if(entryExists(intPVMap, id))
+        {    //message("getPVStruct ",  id, " isIntPV");
+             return toPythonDict(intPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isFloatPV(id))
+    {
+        if(entryExists(floatPVMap, id))
+        {//message("getPVStruct ",  id, " isFloatPV");
+            return toPythonDict(floatPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isEnumPV(id))
+    {
+        if(entryExists(enumPVMap, id))
+        {//message("getPVStruct ",  id, " isEnumPV");
+            return toPythonDict(enumPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isCharPV(id))
+    {
+        if( entryExists(charPVMap, id))
+        {//message("getPVStruct ",  id, " isCharPV");
+            return toPythonDict(charPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isLongPV(id))
+    {
+        if(entryExists(longPVMap, id))
+        {//message("getPVStruct ",  id, " isLongPV");
+            return toPythonDict(longPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isDoublePV(id))
+    {
+        if(entryExists(doublePVMap, id))
+        {
+            message("toPythonDict ",  id, " ...");
+            return toPythonDict(doublePVMap[id].data[0]->buffer);
+        }
+    }
+    boost::python::dict d ;
+    return d;
+}
 //______________________________________________________________________________
 boost::python::dict VCgeneralMonitor::getValue(const boost::python::list& ids)
 {
@@ -1061,6 +1179,10 @@ bool VCgeneralMonitor::isValidID(const std::string& id)
     return false;
 }
 //______________________________________________________________________________
+
+
+
+//______________________________________________________________________________
 std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
 {
     debugMessage("Looking for ", pvFullName);
@@ -1080,25 +1202,25 @@ std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
             {
                 case 0:
                     message("PV ", pvFullName, " is a DBR_STRING, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_STRING");
+                    r = connectPV(pvFullName, "DBR_STRING");
                     break;
                 case 1:
                     message("PV ", pvFullName, " is a DBR_INT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_INT");
+                    r = connectPV(pvFullName, "DBR_INT");
                 case 2:
                     message("PV ", pvFullName, " is a DBR_FLOAT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_FLOAT");
+                    r = connectPV(pvFullName, "DBR_FLOAT");
                     break;
                 case 3:
                     message("PV ", pvFullName," is a DBR_ENUM, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_ENUM");
+                    r = connectPV(pvFullName, "DBR_ENUM");
                 case 4:
                     message("PV ", pvFullName, " is a DBR_CHAR, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_CHAR");
+                    r = connectPV(pvFullName, "DBR_CHAR");
                     break;
                 case 5:
                     message("PV ", pvFullName, " is a DBR_LONG, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_LONG");
+                    r = connectPV(pvFullName, "DBR_LONG");
                 case 6:
                     if( COUNT > 1)
                     {
@@ -1279,7 +1401,7 @@ void VCgeneralMonitor::staticEntryMonitor(const event_handler_args args)
 //______________________________________________________________________________
 void VCgeneralMonitor::addSingleDouble(const std::string& id,
                                        const event_handler_args& args)
-{   //message("addSingleDouble called");
+{   message("addSingleDouble called");
     if( doublePVMap[id].data.size() == 0)
     {
         doublePVMap[id].data.push_back(new gmStructs::dataEntry<double>());
@@ -1288,10 +1410,17 @@ void VCgeneralMonitor::addSingleDouble(const std::string& id,
     doublePVMap[id].data[0]->c += 1;// MAGIC_NUMBER
 
 
-    doublePVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
 
-    if(doublePVMap[id].data[0]->rs_count <= doublePVMap[id].data[0]->rs_count_max)
+    if(doublePVMap[id].data[0]->rs_count < doublePVMap[id].data[0]->rs_count_max)
     {
+        doublePVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+
+
+            std::pair<std::string,double> new_pair;
+            doublePVMap.at(id).data[0]->buffer.push_back(new_pair);
+            doublePVMap.at(id).data[0]->buffer.back().first = currentDateTime();
+            doublePVMap.at(id).data[0]->buffer.back().second = *(double*)args.dbr;
+
         doublePVMap[id].data[0]->rs.Push(doublePVMap[id].data[0]->v);
         if(doublePVMap[id].data[0]->rs_count ==  doublePVMap[id].data[0]->rs_count_max)
         {
@@ -1302,6 +1431,7 @@ void VCgeneralMonitor::addSingleDouble(const std::string& id,
             doublePVMap[id].data[0]->rs_complete = false;
         }
     }
+    message("DOUBLE");
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::addArrayDouble(const std::string & id,
@@ -1375,6 +1505,24 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                     //stringPVMap.at(id).data[0]->v = *(std::string*)args.dbr;// meh
                     stringPVMap.at(id).data[0]->v = temp;// meh
                     stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+                 if(stringPVMap[id].data[0]->rs_count < stringPVMap[id].data[0]->rs_count_max)
+                {
+                    stringPVMap[id].data[0]->rs_count += 1;
+
+
+            std::pair<std::string,std::string> new_pair;
+            stringPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            stringPVMap.at(id).data[0]->buffer.back().first = currentDateTime();
+            stringPVMap.at(id).data[0]->buffer.back().second = stringPVMap.at(id).data[0]->v;
+                        if(stringPVMap.at(id).data[0]->buffer.size() ==  stringPVMap[id].data[0]->rs_count_max)
+                        {
+                            stringPVMap[id].data[0]->rs_complete = true;
+                        }
+                        else
+                        {
+                            stringPVMap[id].data[0]->rs_complete = false;
+                        }
+                    }
                 }
                 break;
             case  DBR_TIME_SHORT:
@@ -1401,10 +1549,15 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                     intPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
                     intPVMap[id].data[0]->rs.Push((double)intPVMap[id].data[0]->v);
 
-                    intPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
 
                     if(intPVMap[id].data[0]->rs_count <= intPVMap[id].data[0]->rs_count_max)
                     {
+                    intPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+
+            std::pair<std::string,int> new_pair;
+            intPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            intPVMap.at(id).data[0]->buffer.back().first = currentDateTime();
+            intPVMap.at(id).data[0]->buffer.back().second = *(int*)args.dbr;
                         intPVMap[id].data[0]->rs.Push(intPVMap[id].data[0]->v);
                         if(intPVMap[id].data[0]->rs_count ==  intPVMap[id].data[0]->rs_count_max)
                         {
@@ -1431,10 +1584,14 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                 enumPVMap[id].data[0]->v = *(unsigned short*)args.dbr;// MAGIC_NUMBER
                 enumPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
                 enumPVMap[id].data[0]->rs.Push((double)enumPVMap[id].data[0]->v);
-                enumPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-
                 if(enumPVMap[id].data[0]->rs_count <= enumPVMap[id].data[0]->rs_count_max)
                 {
+                enumPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+            std::pair<std::string,unsigned short> new_pair;
+            enumPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            enumPVMap.at(id).data[0]->buffer.back().first = currentDateTime();
+            enumPVMap.at(id).data[0]->buffer.back().second = *(unsigned short*)args.dbr;
+
                     enumPVMap[id].data[0]->rs.Push(enumPVMap[id].data[0]->v);
                     if(enumPVMap[id].data[0]->rs_count ==  enumPVMap[id].data[0]->rs_count_max)
                     {
@@ -1455,9 +1612,14 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                 longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
                 longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
                 longPVMap[id].data[0]->rs.Push((double)longPVMap[id].data[0]->v);
-                longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
                 if(longPVMap[id].data[0]->rs_count <= longPVMap[id].data[0]->rs_count_max)
                 {
+                longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+            std::pair<std::string,long> new_pair;
+            longPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            longPVMap.at(id).data[0]->buffer.back().first = currentDateTime();
+            longPVMap.at(id).data[0]->buffer.back().second = *(unsigned short*)args.dbr;
+
                     longPVMap[id].data[0]->rs.Push(longPVMap[id].data[0]->v);
                     if(longPVMap[id].data[0]->rs_count ==  longPVMap[id].data[0]->rs_count_max)
                     {
@@ -1477,8 +1639,10 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
     }
 }
 //______________________________________________________________________________
+//______________________________________________________________________________
 void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * dbr)
 {
+    message("updateTimeAndValue");
     if(isStringPV(id))
     {
         // see db_access.h
@@ -1491,6 +1655,22 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         stringPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
         stringPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
         updateTime_ns(stringPVMap.at(id).data[0]->t, stringPVMap.at(id).data[0]->s);
+        //
+        // buffering
+        if( stringPVMap.at(id).data[0]->buffer.size() < stringPVMap.at(id).data[0]->rs_count_max )
+        {
+            std::pair<std::string,std::string> new_pair;
+            stringPVMap.at(id).data[0]->buffer.push_back(new_pair);
+
+            updateTime_str(p->stamp , stringPVMap.at(id).data[0]->buffer.back().first );
+            stringPVMap.at(id).data[0]->buffer.back().second = p->value;
+            stringPVMap.at(id).data[0]->rs_complete = false;
+        }
+        else if(stringPVMap.at(id).data[0]->buffer.size() == stringPVMap.at(id).data[0]->rs_count_max)
+        {
+            stringPVMap.at(id).data[0]->rs_complete = true;
+        }
+
         //message("stringPVMap.at(id).data[0]->v = ", stringPVMap.at(id).data[0]->v);
     }
     else if(isIntPV(id))
@@ -1505,9 +1685,15 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         intPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
         intPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         intPVMap[id].data[0]->rs.Push((double)intPVMap[id].data[0]->v);
-        intPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
         if(intPVMap[id].data[0]->rs_count <= intPVMap[id].data[0]->rs_count_max)
         {
+
+            std::pair<std::string,int> new_pair;
+            intPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            updateTime_str(p->stamp , intPVMap.at(id).data[0]->buffer.back().first );
+            intPVMap.at(id).data[0]->buffer.back().second = p->value;
+        intPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+
             intPVMap[id].data[0]->rs.Push(intPVMap[id].data[0]->v);
             if(intPVMap[id].data[0]->rs_count ==  intPVMap[id].data[0]->rs_count_max)
             {
@@ -1549,11 +1735,16 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         floatPVMap.at(id).data[0]->v = p->value;// MAGIC_NUMBER
         floatPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
         floatPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
-        floatPVMap[id].data[0]->rs.Push((double)floatPVMap[id].data[0]->v);
-        floatPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-        if(floatPVMap[id].data[0]->rs_count <= floatPVMap[id].data[0]->rs_count_max)
+        if(floatPVMap[id].data[0]->rs_count < floatPVMap[id].data[0]->rs_count_max)
         {
+           floatPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
             floatPVMap[id].data[0]->rs.Push(floatPVMap[id].data[0]->v);
+
+            std::pair<std::string,double> new_pair;
+            floatPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            updateTime_str(p->stamp , floatPVMap.at(id).data[0]->buffer.back().first );
+            floatPVMap.at(id).data[0]->buffer.back().second = p->value;
+
             if(floatPVMap[id].data[0]->rs_count ==  floatPVMap[id].data[0]->rs_count_max)
             {
                 floatPVMap[id].data[0]->rs_complete = true;
@@ -1578,9 +1769,15 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         enumPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
         enumPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
         enumPVMap[id].data[0]->rs.Push((double)enumPVMap[id].data[0]->v);
-        enumPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-        if(enumPVMap[id].data[0]->rs_count <= enumPVMap[id].data[0]->rs_count_max)
+        if(enumPVMap[id].data[0]->rs_count < enumPVMap[id].data[0]->rs_count_max)
         {
+        enumPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+            std::pair<std::string,unsigned short> new_pair;
+            enumPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            updateTime_str(p->stamp , enumPVMap.at(id).data[0]->buffer.back().first );
+            enumPVMap.at(id).data[0]->buffer.back().second = p->value;
+
+
             enumPVMap[id].data[0]->rs.Push(enumPVMap[id].data[0]->v);
             if(enumPVMap[id].data[0]->rs_count ==  enumPVMap[id].data[0]->rs_count_max)
             {
@@ -1607,9 +1804,14 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         charPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
 
         charPVMap[id].data[0]->rs.Push((double)charPVMap[id].data[0]->v);
-        charPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-        if(charPVMap[id].data[0]->rs_count <= charPVMap[id].data[0]->rs_count_max)
+        if(charPVMap[id].data[0]->rs_count < charPVMap[id].data[0]->rs_count_max)
         {
+            charPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+            std::pair<std::string,char> new_pair;
+            charPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            updateTime_str(p->stamp , charPVMap.at(id).data[0]->buffer.back().first );
+            charPVMap.at(id).data[0]->buffer.back().second = p->value;
+
             charPVMap[id].data[0]->rs.Push(charPVMap[id].data[0]->v);
             if(charPVMap[id].data[0]->rs_count ==  charPVMap[id].data[0]->rs_count_max)
             {
@@ -1636,9 +1838,14 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         longPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
         longPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
         longPVMap[id].data[0]->rs.Push((double)longPVMap[id].data[0]->v);
-        longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-        if(longPVMap[id].data[0]->rs_count <= longPVMap[id].data[0]->rs_count_max)
+        if(longPVMap[id].data[0]->rs_count < longPVMap[id].data[0]->rs_count_max)
         {
+            longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+            std::pair<std::string,long> new_pair;
+            longPVMap.at(id).data[0]->buffer.push_back(new_pair);
+            updateTime_str(p->stamp , longPVMap.at(id).data[0]->buffer.back().first );
+            longPVMap.at(id).data[0]->buffer.back().second = p->value;
+
             longPVMap[id].data[0]->rs.Push(longPVMap[id].data[0]->v);
             if(longPVMap[id].data[0]->rs_count ==  longPVMap[id].data[0]->rs_count_max)
             {
@@ -1664,9 +1871,14 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
         doublePVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
         doublePVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
         doublePVMap[id].data[0]->rs.Push((double)doublePVMap[id].data[0]->v);
-        doublePVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-        if(doublePVMap[id].data[0]->rs_count <= doublePVMap[id].data[0]->rs_count_max)
+        if(doublePVMap[id].data[0]->rs_count < doublePVMap[id].data[0]->rs_count_max)
         {
+            doublePVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+            std::pair<std::string,double> new_pair;
+            doublePVMap.at(id).data[0]->buffer.push_back(new_pair);
+            updateTime_str(p->stamp , doublePVMap.at(id).data[0]->buffer.back().first );
+            doublePVMap.at(id).data[0]->buffer.back().second = p->value;
+
             doublePVMap[id].data[0]->rs.Push(doublePVMap[id].data[0]->v);
             if(doublePVMap[id].data[0]->rs_count ==  doublePVMap[id].data[0]->rs_count_max)
             {
@@ -1707,6 +1919,15 @@ void VCgeneralMonitor::updateTime_ns(const epicsTimeStamp& stamp, double& s)
 {
     s =  ((double)stamp.nsec * 0.000000001) + (double)stamp.secPastEpoch;//MAGIC_NUMBER
 }
+//______________________________________________________________________________
+void VCgeneralMonitor::updateTime_str(const epicsTimeStamp& stamp, std::string& str)
+{
+    /* for hints look in epicsTime.h */
+    char timeString[UTL::BUFFER_36];
+    epicsTimeToStrftime(timeString, sizeof(timeString),"%a %b %d %Y %H:%M:%S.%f", &stamp);
+    str = timeString;
+}
+//______________________________________________________________________________
 //______________________________________________________________________________
 void VCgeneralMonitor::printTimeStamp( const epicsTimeStamp & stamp)
 {// look in epicsTime.h
