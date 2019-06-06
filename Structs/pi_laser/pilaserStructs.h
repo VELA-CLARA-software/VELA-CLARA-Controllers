@@ -174,7 +174,7 @@ namespace pilaserStructs
         std::vector<double> Q_buf;
         std::vector<double> E_buf;
         runningStat Q_rs, energy_rs;
-        pilMirrorObject             mirror;
+        pilMirrorObject mirror;
         HWC_ENUM::STATE status, stabilisation_status;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
@@ -182,12 +182,22 @@ namespace pilaserStructs
         VC_SET_POS_STATE setVCPosState;
         void   Q_clear();
         void   energy_clear();
+        void   Q_rs_buffer_size(size_t new_size);
+        void   energy_rs_buffer_size(size_t new_size);
+
+        bool   Q_full();
+        bool   energy_full();
+
+
         double Q_mean();
         double energy_mean();
         double Q_sd();
         double energy_sd();
         size_t Q_n();
         size_t energy_n();
+
+
+
     };
 
     struct set_vc_position

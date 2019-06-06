@@ -140,12 +140,14 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* Q_n_ds= "";
     const char* Q_sd_ds= "";
     const char* Q_clear_ds= "";
+    const char* Q_full_ds= "";
 
     const char* energy_ds= "";
     const char* energy_mean_ds= "";
     const char* energy_n_ds= "";
     const char* energy_sd_ds= "";
     const char* energy_clear_ds= "";
+    const char* energy_full_ds= "";
     const char* status_ds= "";
     const char* HWP_ds= "";
     const char* setCharge_ds= "";
@@ -159,6 +161,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("Q_n",     &pilaserObject::Q_n,    Q_n_ds)
         .def_readonly("Q_sd",    &pilaserObject::Q_sd,   Q_sd_ds)
         .def_readonly("Q_clear", &pilaserObject::Q_clear, Q_clear_ds)
+
+//        .def_readonly("Q_full",  &pilaserObject::Q_full, Q_full_ds)
+        //.def_readonly("energy_full",  &pilaserObject::energy_full,  energy_full_ds)
+
+//        .add_property("SI", &magnetStructs::magnetObject::siWithPol,
+//                    &magnetStructs::magnetObject::setSI)
+
         .def_readonly("energy",  &pilaserObject::energy,    energy_ds)
         .def_readonly("energy_mean",  &pilaserObject::energy_mean,    energy_mean_ds)
         .def_readonly("energy_n",    &pilaserObject::energy_n,        energy_n_ds)
@@ -228,17 +237,30 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
     const char* clearLaserRunningValues_doc  = "getQBuffer_doc.";
 
     const char* setVCPos_doc1  = "setVCPos using the default parameters.";
-    const char* setVCPos_doc2  = "setVCPos with full control of all parameters, ";
+    const char* setVCPos_doc2  = "setVCPos with full control of all parameters: "
+                                  "xpos (to move to), ypos (to move to), "
+                                  "x_prec (tolerance for x), y_prec (tolerance for y), "
+                                  "mirror_step_x_0 (initial mirror stepsize in horizontal), "
+                                  "mirror_step_y_0 (initial mirror stepsize in vertical ), "
+                                  "num_points_x (number of points to take position average), "
+                                  "num_points_y (number of points to take position average), "
+                                  "max_it (maximum numbe of iterations before stopping), "
+                                  "time_out( macimum time (seconds) before quitting)";
 
     const char* setVCPosition_doc  = "setVCPosition_doc, to position 'horizonal' and 'vertical' in mm.";
-    const char* getSetVCPosState_doc  = "getSetVCPosState_doc, gets current status of SetVCPosState.";
+    const char* getSetVCPosState_doc = "getSetVCPosState_doc, gets current status of SetVCPosState.";
+    const char* isRSBufferFull_doc   = "isRSBufferFull_doc, return tue if the Running Stat Buffer is full.";
+    const char* getRSBufferSize_doc   = "getRSBufferSize_doc, return size of Running Stat Buffer.";
 
     /*
         some function pointers for exposing overloads to python
     */
 
     bool(pilaserController::*setVCPos_1)(double, double)         = &pilaserController::setVCPos;
-    bool(pilaserController::*setVCPos_2)(double, double, double, double, double, double,size_t, size_t, size_t, size_t) = &pilaserController::setVCPos;
+
+    // buggy with exposing all the vairble names, try setVCPosPy instead,... :(
+    //bool(pilaserController::*setVCPos_2)(double, double, double, double, double, double,size_t, size_t, size_t, size_t) = &pilaserController::setVCPos;
+
 
 
     class_<pilaserController, bases<cameraControllerBase,shutterController>, noncopyable>
@@ -276,8 +298,26 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
         .def("clearRunningValues",   &pilaserController::clearRunningValues,   clearLaserRunningValues_doc )
 
+
+        .def("isRSBufferFull",   &pilaserController::isRSBufferFull,   isRSBufferFull_doc   )
+        .def("getRSBufferSize",   &pilaserController::getRSBufferSize,   getRSBufferSize_doc   )
+
+
+        .def("isSettingPos",   &pilaserController::isSettingPos,   "" )
+
         .def("setVCPos",   setVCPos_1,   setVCPos_doc1 )
-        .def("setVCPos",   setVCPos_2,   setVCPos_doc2 )
+        //.def("setVCPos",   setVCPos_2,   setVCPos_doc2 )
+        .def("setVCPos",   &pilaserController::setVCPosPy,   setVCPos_doc2 )
+        //.def("setVCPos",   setVCPos_2, (xpos_ARG,ypos_ARG),setVCPos_doc2)
+//                                        ypos_ARG,
+//                                        x_prec_ARG,
+//                                        y_prec_ARG,
+//                                        mirror_step_x_0_ARG,
+//                                        mirror_step_y_0_ARG,
+//                                        num_points_x_ARG,
+//                                        num_points_y_ARG,
+//                                        max_it_ARG,
+//                                        time_out_ARG) setVCPos_doc2 )
 
         .def("getQ",        &pilaserController::getQ,          getQ_doc)
         .def("getQBuffer",  &pilaserController::getQBuffer_Py, getQBuffer_doc)

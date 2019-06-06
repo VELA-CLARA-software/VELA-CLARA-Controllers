@@ -71,3 +71,24 @@ size_t pilaserStructs::pilaserObject::energy_n()
     return energy_rs.NumDataValues();
 }
 //______________________________________________________________________________
+void pilaserStructs::pilaserObject::Q_rs_buffer_size(size_t new_size)
+{
+     Q_rs.setMaxCount(new_size);
+     Q_clear();
+}
+//______________________________________________________________________________
+void pilaserStructs::pilaserObject::energy_rs_buffer_size(size_t new_size)
+{
+     energy_rs.setMaxCount(new_size);
+     energy_clear();
+}
+//______________________________________________________________________________
+bool pilaserStructs::pilaserObject::Q_full()
+{
+     return Q_rs.Full();
+}
+//______________________________________________________________________________
+bool pilaserStructs::pilaserObject::energy_full()
+{
+     return energy_rs.Full();
+}

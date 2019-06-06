@@ -1180,6 +1180,29 @@ namespace UTL
     const boost::python::arg IDS_ARG  = boost::python::arg("ids");
     const boost::python::arg BOOL_ARG  = boost::python::arg("bool_value");
     const boost::python::arg PART_ARG  = boost::python::arg("part");
+
+
+    const boost::python::arg xpos_ARG   = boost::python::arg("xpos");
+    const boost::python::arg ypos_ARG   = boost::python::arg("ypos");
+    const boost::python::arg x_prec_ARG  = boost::python::arg("x_prec");
+    const boost::python::arg y_prec_ARG  = boost::python::arg("y_prec");
+    const boost::python::arg mirror_step_x_0_ARG = boost::python::arg("mirror_step_x_0");
+    const boost::python::arg mirror_step_y_0_ARG = boost::python::arg("mirror_step_y_0");
+    const boost::python::arg num_points_x_ARG = boost::python::arg("num_points_x");
+    const boost::python::arg num_points_y_ARG = boost::python::arg("num_points_y");
+    const boost::python::arg max_it_ARG = boost::python::arg("max_it");
+    const boost::python::arg time_out_ARG = boost::python::arg("time_out");
+//    boost::python::arg("xpos")), setVCPos_doc2 )
+//                                         boost::python::arg("ypos"),
+//                                         boost::python::arg("x_prec"),
+//                                         boost::python::arg("y_prec"),
+//                                         boost::python::arg("mirror_step_x_0"),
+//                                         boost::python::arg("mirror_step_y_0"),
+//                                         boost::python::arg("num_points_x"),
+//                                         boost::python::arg("num_points_y"),
+//                                         boost::python::arg("max_it"),
+//                                         boost::python::arg("time_out")
+
 #endif //BUILD_DLL
 
 

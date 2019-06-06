@@ -447,6 +447,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("avg_pix_n",   &analysis_data::avg_pix_n,avg_pix_n_ds)
 
 
+            .def_readonly("x_full",         &analysis_data::x_full, x_full_ds)
             .def_readonly("y_full",         &analysis_data::y_full, y_full_ds)
             .def_readonly("sig_x_full",     &analysis_data::sig_x_full, sig_x_full_ds)
             .def_readonly("sig_y_full",     &analysis_data::sig_y_full,sig_y_full_ds)
@@ -458,6 +459,8 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_xy_pix_full",&analysis_data::sig_xy_pix_full,sig_xy_pix_full_ds)
             .def_readonly("sum_pix_full",   &analysis_data::sum_pix_full,sum_pix_full_ds)
             .def_readonly("avg_pix_full",   &analysis_data::avg_pix_full,avg_pix_full_ds)
+
+
 
             .def_readonly("step_size",   &analysis_data::step_size,step_size_ds)
             ;

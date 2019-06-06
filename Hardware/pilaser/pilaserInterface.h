@@ -75,7 +75,6 @@ class pilaserInterface : public cameraBase
         const pilaserStructs::pilMirrorObject&  getpilMirrorObjConstRef() const;
         const pilaserStructs::pilaserObject&    getPILObjConstRef() const;
 
-
         //const cameraStructs::analysis_data& getVCDataObjConstRef() const;
 
         double getHpos() const;
@@ -104,6 +103,13 @@ class pilaserInterface : public cameraBase
         void clearRunningValues();
 
         bool isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)const;
+
+        bool setAllRSBufferSize(size_t size );
+
+
+        bool isRSBufferFull()const;
+
+        size_t getRSBufferSize()const;
 
 
     private:

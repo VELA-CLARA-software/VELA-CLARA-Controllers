@@ -336,8 +336,11 @@ bool pilaserController::can_move_test_1()
     cameraControllerBase::message("can_move_test_1 failed");
     return false;
 }
-
-
+//---------------------------------------------------------------------------------------------
+bool pilaserController::isSettingPos()const
+{
+    return is_setting_position;
+}
 //
 
 //---------------------------------------------------------------------------------------------
@@ -345,6 +348,15 @@ bool pilaserController::setVCPos(double h, double v)
 {
     // 0.06 is about 1 pixel rpecision
     return setVCPos(h,v, 0.06, 0.06, 100.0, 100.0,  10, 10, 100, 120); // MAGIC_NUMBER
+}
+//---------------------------------------------------------------------------------------------
+bool pilaserController::setVCPosPy(double h, double v, double h_prec, double v_prec,
+                                 double mirror_step_x_0, double mirror_step_y_0,
+                                 size_t num_points_x, size_t num_points_y,
+                                 size_t max_it, size_t time_out)
+{
+    // 0.06 is about 1 pixel rpecision
+    return setVCPos(h,v, h_prec, v_prec, mirror_step_x_0, mirror_step_y_0,  num_points_x, num_points_y, max_it, time_out); // MAGIC_NUMBER
 }
 //---------------------------------------------------------------------------------------------
 bool pilaserController::setVCPos(double h, double v, double h_prec, double v_prec,
@@ -676,8 +688,18 @@ bool pilaserController::VCPositionEssentialRequirements_areBad()
 
     return false;
 }
+//______________________________________________________________________________
+bool pilaserController::isRSBufferFull()const
+{
+    return localInterface.isRSBufferFull();
+}
+//______________________________________________________________________________
+size_t pilaserController::getRSBufferSize()const
+{
+    return localInterface.getRSBufferSize();
+}
 
-
+//______________________________________________________________________________
 //______________________________________________________________________________
 //bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
 //{

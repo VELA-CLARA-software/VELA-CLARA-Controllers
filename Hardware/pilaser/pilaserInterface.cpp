@@ -397,7 +397,15 @@ void pilaserInterface::addToBuffer(const double val,std::vector<double>& buffer)
     }
 }
 //____________________________________________________________________________________________
-
+bool pilaserInterface::isRSBufferFull() const
+{
+    return pilaser.buffer_full;
+}
+//____________________________________________________________________________________________
+size_t pilaserInterface::getRSBufferSize()const
+{
+    return pilaser.max_buffer_count;
+}
 
 
 
@@ -736,7 +744,6 @@ void pilaserInterface::clearRunningValues()
     pilaser.Q_clear();
     pilaser.energy_clear();
 }
-
 //______________________________________________________________________________
 bool pilaserInterface::check_data_timestamps(const cameraStructs::cameraObject& cam)
 {
@@ -784,11 +791,11 @@ bool pilaserInterface::check_data_timestamps(const cameraStructs::cameraObject& 
 
     if(cam.state.latest_avg_pix_has_beam)
     {
-        message("I think there is laser bema on the screen");
+        message("I think there is laser beam on the screen");
     }
     else
     {
-        message("I think there is NO laser bema on the screen");
+        message("I think there is NO laser beam on the screen");
     }
     return false;
 
@@ -810,6 +817,15 @@ bool pilaserInterface::shortCaput(unsigned short comm, pilaserStructs::pvStruct&
 
 
 
+bool pilaserInterface::setAllRSBufferSize(const size_t new_size)
+{
+    setBufferMaxCount_VC(new_size);
+    pilaser.Q_rs_buffer_size(new_size);
+    pilaser.energy_rs_buffer_size(new_size);
+
+
+    return true;
+}
 
 
 //void staticEntry_set_VC_xpos(const double xpos, const time_t waitTime, pilaserInterface* interface)

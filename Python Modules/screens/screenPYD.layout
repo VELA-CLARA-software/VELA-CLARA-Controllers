@@ -2,9 +2,34 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
+	<File name="src\VCscreens.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6921" topLine="144" />
+		</Cursor>
+	</File>
 	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="218" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2688" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenController.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="21042" topLine="420" />
+		</Cursor>
+	</File>
+	<File name="..\..\Structs\screenStructs.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3427" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenInterface.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="38241" topLine="838" />
 		</Cursor>
 	</File>
 	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
@@ -17,64 +42,24 @@
 			<Cursor1 position="1782" topLine="10" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3084" topLine="38" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\screen\screenController.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="12442" topLine="260" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\screen\screenController.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4463" topLine="29" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\screen\screenInterface.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="51475" topLine="1184" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\screen\screenInterface.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6021" topLine="92" />
-		</Cursor>
-	</File>
-	<File name="..\..\Structs\screenStructs.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8547" topLine="117" />
-		</Cursor>
-	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2190" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2341" topLine="31" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="11761" topLine="276" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1904" topLine="20" />
-		</Cursor>
-	</File>
 	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5883" topLine="84" />
+			<Cursor1 position="6006" topLine="97" />
 		</Cursor>
 	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4750" topLine="64" />
+			<Cursor1 position="114301" topLine="1722" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\screen\screenController.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1505" topLine="6" />
 		</Cursor>
 	</File>
 	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -82,34 +67,49 @@
 			<Cursor1 position="2286" topLine="36" />
 		</Cursor>
 	</File>
+	<File name="..\..\Hardware\screen\screenInterface.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8358" topLine="122" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11761" topLine="276" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2341" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3084" topLine="38" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="68342" topLine="1175" />
+		</Cursor>
+	</File>
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4750" topLine="64" />
+		</Cursor>
+	</File>
 	<File name="..\..\Utilities\screenConfigReader.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="12873" topLine="238" />
 		</Cursor>
 	</File>
-	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2688" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="..\..\Utilities\screenConfigReader.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="..\..\Utilities\screenConfigReader.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2602" topLine="42" />
 		</Cursor>
 	</File>
-	<File name="include\VCscreens.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="include\VCscreens.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9686" topLine="182" />
-		</Cursor>
-	</File>
-	<File name="src\VCscreens.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="15324" topLine="322" />
-		</Cursor>
-	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="114301" topLine="1722" />
+			<Cursor1 position="28946" topLine="386" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

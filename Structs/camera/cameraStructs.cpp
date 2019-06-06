@@ -338,6 +338,13 @@ size_t analysis_data::sum_pix_n()
 {
     return sum_pix_rs.NumDataValues();
 }
+
+
+
+
+
+
+
 //______________________________________________________________________________
 bool analysis_data::x_full()
 {
@@ -398,9 +405,80 @@ bool analysis_data::sum_pix_full()
 {
     return sum_pix_rs.Full();
 }
-//______________________________________________________________________________
 
-
+////-------------------------------------------------------------------------------
+//void analysis_data::x_buffer_size(const size_t new_size)
+//{
+//    x_rs.NumDataValues(new_size);
+//    x_lear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::y_buffer_size(const size_t new_size)
+//{
+//    y_rs.NumDataValues(new_size);
+//    y_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sig_x_buffer_size(const size_t new_size)
+//{
+//    sig_x_rs.NumDataValues(new_size);
+//    sig_x_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sig_y_buffer_size(const size_t new_size)
+//{
+//    sig_y_rs.NumDataValues(new_size);
+//    sig_y_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sig_xy_buffer_size(const size_t new_size)
+//{
+//    sig_xy_rs.NumDataValues(new_size);
+//    sig_xy_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::x_pix_buffer_size(const size_t new_size)
+//{
+//    x_pix_rs.NumDataValues(new_size);
+//    x_pix_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::y_pix_buffer_size(const size_t new_size)
+//{
+//    y_pix_rs.NumDataValues(new_size);
+//    y_pix_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sig_x_pix_buffer_size(const size_t new_size)
+//{
+//    sig_x_pix_rs.NumDataValues(new_size);
+//    sig_x_pix_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sig_y_pix_buffer_size(const size_t new_size)
+//{
+//    sig_y_pix_rs.NumDataValues(new_size);
+//    sig_y_pix_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sig_xy_pix_buffer_size(const size_t new_size)
+//{
+//    sig_xy_pix_rs.NumDataValues(new_size);
+//    sig_xy_pix_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::avg_pix_buffer_size(const size_t new_size)
+//{
+//    avg_pix_rs.NumDataValues(new_size);
+//    avg_pix_clear();
+//}
+////-------------------------------------------------------------------------------
+//void analysis_data::sum_pix_buffer_size(const size_t new_size)
+//{
+//    sum_pix_rs.NumDataValues(new_size);
+//    sum_pix_clear();
+//}
+////-------------------------------------------------------------------------------
 
 //______________________________________________________________________________
 #ifdef BUILD_DLL

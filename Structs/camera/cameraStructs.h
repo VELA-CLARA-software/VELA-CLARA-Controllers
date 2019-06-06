@@ -485,8 +485,8 @@ namespace cameraStructs
         size_t avg_pix_n();
         size_t sum_pix_n();
 
-        bool x_private_full();
-        bool y_private_full();
+//        bool x_private_full();
+//        bool y_private_full();
         bool x_full();
         bool y_full();
         bool sig_x_full();
@@ -499,6 +499,20 @@ namespace cameraStructs
         bool sig_xy_pix_full();
         bool avg_pix_full();
         bool sum_pix_full();
+
+//        void x_buffer_size(const size_t new_size);
+//        void y_buffer_size(const size_t new_size);
+//        void sig_x_buffer_size(const size_t new_size);
+//        void sig_y_buffer_size(const size_t new_size);
+//        void sig_xy_buffer_size(const size_t new_size);
+//        void x_pix_buffer_size(const size_t new_size);
+//        void y_pix_buffer_size(const size_t new_size);
+//        void sig_x_pix_buffer_size(const size_t new_size);
+//        void sig_y_pix_buffer_size(const size_t new_size);
+//        void sig_xy_pix_buffer_size(const size_t new_size);
+//        void avg_pix_buffer_size(const size_t new_size);
+//        void sum_pix_buffer_size(const size_t new_size);
+
     };
     /*
         fast_image is an VELA pixel array or decimated CLARA pixel array

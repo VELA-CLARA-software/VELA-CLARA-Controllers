@@ -1230,9 +1230,6 @@ void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject
             {
                 cam.data.analysis.pix_values_buf.pop_front();
             }
-
-
-
         }
     }
     else //if(isTimeType(args.type))
@@ -1519,6 +1516,7 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
             if(makeANewDirectoryAndName(cam, ics.numShots))
             {
                 pause_500();
+                pause_500();
                 message("imageCollectAndSave ",cam.name," is going to write collected data");
                 if(write(cam))
                 {
@@ -1529,6 +1527,7 @@ void cameraBase::imageCollectAndSave(imageCollectStruct& ics)
                     }
                     message("imageCollectAndSave ",cam.name," writing has finished");
                     // pause and wait for EPICS to UPDATE
+                    pause_500();
                     pause_500();
                     //check status of save/write
                     if (cam.daq.writeCheck == WRITE_CHECK::WRITE_CHECK_OK)
@@ -4451,6 +4450,8 @@ void cameraBase::setBufferMaxCount(const size_t s,cameraObject& cam)
 
     message("Setting rs max counts");
     clearBuffer(cam);
+
+
     clearRunningValues(cam);
 }
 //---------------------------------------------------------------------------------
