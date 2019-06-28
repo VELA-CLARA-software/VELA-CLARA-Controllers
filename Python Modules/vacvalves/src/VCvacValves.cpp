@@ -4,6 +4,7 @@
 #include <iostream>
 
 VCvacValves::VCvacValves():
+VCbase("VCvacValves"),
 virtual_VELA_INJ_Vac_Valve_Controller_Obj(nullptr),
 offline_VELA_INJ_Vac_Valve_Controller_Obj(nullptr),
 physical_VELA_INJ_Vac_Valve_Controller_Obj(nullptr),

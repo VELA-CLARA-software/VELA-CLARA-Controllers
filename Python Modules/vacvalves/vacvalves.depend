@@ -495,3 +495,117 @@
 	"VCbase.h"
 	"configDefinitions.h"
 
+1534596682 source:c:\users\djs56\github\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
+	"vacuumValveController.h"
+	<iostream>
+	"vacuumValveInterface.h"
+
+1534596682 c:\users\djs56\github\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.h
+	"vacuumValveStructs.h"
+	"vacuumValveInterface.h"
+	"controller.h"
+	"structs.h"
+	<string>
+	<vector>
+
+1534596694 c:\users\djs56\github\vela-clara-controllers\structs\vacuumvalvestructs.h
+	"structs.h"
+	<string>
+	<map>
+	<cadef.h>
+
+1542119296 c:\users\djs56\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1551216178 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1534596682 c:\users\djs56\github\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.h
+	"interface.h"
+	"vacuumValveStructs.h"
+	"vacuumValveConfigReader.h"
+	<vector>
+	<string>
+
+1550844556 c:\users\djs56\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1550849386 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+	<boost/python/numpy.hpp>
+
+1534596696 c:\users\djs56\github\vela-clara-controllers\utilities\vacuumvalveconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"vacuumValveStructs.h"
+
+1550573798 c:\users\djs56\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1534596682 c:\users\djs56\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1534596682 source:c:\users\djs56\github\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
+	"vacuumValveInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<thread>
+
+1534596694 source:c:\users\djs56\github\vela-clara-controllers\python modules\vacvalves\main.cpp
+	"main.h"
+
+1534596694 c:\users\djs56\github\vela-clara-controllers\python modules\vacvalves\main.h
+	<windows.h>
+
