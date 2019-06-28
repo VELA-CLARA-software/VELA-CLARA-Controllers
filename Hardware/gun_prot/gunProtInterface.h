@@ -78,7 +78,7 @@ class gunProtInterface : public interface
 
         std::vector<std::string> getProtNames() const;
 
-        const rfProtStructs::rfGunProtObject& getRFProtObjConstRef(const std::string& name)const;
+        const rfProtStructs::rfProtObject& getRFProtObjConstRef(const std::string& name)const;
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
         map_ilck_string getILockStatesStr(const std::string& name) const;
@@ -97,14 +97,14 @@ class gunProtInterface : public interface
         const std::string EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL;
 
         bool exists_in_allGunProts(const std::string& name,
-                                   rfProtStructs::RF_GUN_PROT_PV_TYPE pv) const;
+                                   rfProtStructs::RF_PROT_PV_TYPE pv) const;
 
         rfProtStructs::RF_PROT_TYPE currentMode;
 
-        bool allkeybitsaregood(const rfProtStructs::rfGunProtObject& obj) const;
+        bool allkeybitsaregood(const rfProtStructs::rfProtObject& obj) const;
 
         bool sendCommand(const std::vector<std::string>& names,
-                                   rfProtStructs::RF_GUN_PROT_PV_TYPE pv
+                                   rfProtStructs::RF_PROT_PV_TYPE pv
                                    ) const;
         bool sendCommand(const std::vector<const chtype*>& CHTYPE,
                          const std::vector<const chid*>& CHID,
@@ -112,15 +112,15 @@ class gunProtInterface : public interface
 //        bool sendCommand(const chtype& CHTYPE, const chid& CHID,
 //                         const std::string& m1, const std::string& m2) const;
 
-        std::map<std::string, rfProtStructs::rfGunProtObject> allGunProts;
+        std::map<std::string, rfProtStructs::rfProtObject> allGunProts;
 
         std::vector<rfProtStructs::monitorStruct*> continuousMonitorStructs;
         // all EPICS callbacks route here
         static void staticEntryMonitor(const event_handler_args args);
-        void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const unsigned short value);
-        void updateProtStatus(rfProtStructs::rfGunProtObject& obj,const event_handler_args args);
+        void updateProtStatus(rfProtStructs::rfProtObject& obj,const unsigned short value);
+        void updateProtStatus(rfProtStructs::rfProtObject& obj,const event_handler_args args);
 
-        void updateCMIBits(rfProtStructs::rfGunProtObject& obj);
+        void updateCMIBits(rfProtStructs::rfProtObject& obj);
 
         gunProtConfigReader configReader; /// class member so we can pass in file path in ctor
 };

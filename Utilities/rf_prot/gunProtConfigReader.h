@@ -43,13 +43,13 @@ class gunProtConfigReader : public configReader
         ~gunProtConfigReader();
 
         bool readConfig();
-        bool getrfGunProtObjects(std::map<std::string,
-                                 rfProtStructs::rfGunProtObject>& mapToFill);
+        bool getrfProtObjects(std::map<std::string,
+                                 rfProtStructs::rfProtObject>& mapToFill);
     private:
         /* local virtual hardware object, copied to the interface in
-            getrfGunProtObjects()
+            getrfProtObjects()
         */
-        rfProtStructs::rfGunProtObject localrfGunProtObject;
+        rfProtStructs::rfProtObject localrfProtObject;
         /*
             pvMonStructs hold the data for PVs to be monitored
             pvComStructs hold the data for PVs to be monitored and/or controlled
@@ -62,7 +62,7 @@ class gunProtConfigReader : public configReader
         void addToPVMonitorMapV1(const std::vector<std::string> &keyVal );
         void addToPVCommandMapV1(const std::vector<std::string> &keyVal );
 
-        std::vector<rfProtStructs::rfGunProtObject> gunProtObjects;
+        std::vector<rfProtStructs::rfProtObject> gunProtObjects;
 
         void addToPVStruct(std::vector<rfProtStructs::pvStruct>& pvStruct_v,
                            const std::vector<std::string>& keyVal);

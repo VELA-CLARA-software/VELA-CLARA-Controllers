@@ -27,7 +27,8 @@ VCbase("VCrfprot"),
 virtual_Gun_Protection_Controller_Obj(nullptr),
 physical_Gun_Protection_Controller_Obj(nullptr),
 offline_Gun_Protection_Controller_Obj(nullptr),
-allGunProtsConf(UTL::APCLARA1_CONFIG_PATH + UTL::RF_GUN_PROTECTION_CONFIG)
+allGunProtsConf(UTL::APCLARA1_CONFIG_PATH + UTL::RF_GUN_PROTECTION_CONFIG),
+L01ProtsConf(UTL::APCLARA1_CONFIG_PATH + UTL::RF_L01_PROTECTION_CONFIG)
 {
    std::cout << "Instantiated a VCrfprot " << std::endl;
     //ctor
@@ -152,6 +153,64 @@ gunProtController& VCrfprot::getController(gunProtController*& cont,
         messageStates.at(cont).second = shouldShowDebugMessage;
         cont = new gunProtController(messageStates.at(cont).first,
                                      messageStates.at(cont).second,
+                                     conf, shouldVM, shouldEPICS,name);
+    }
+    return *cont;
+}
+
+
+//______________________________________________________________________________
+L01ProtController& VCrfprot::virtual_L01_Protection_Controller()
+{
+    std::string name  = "virtual_L01_Protection_Controller_Obj";
+    return getL01Controller(virtual_L01_Protection_Controller_Obj,
+                         L01ProtsConf,
+                         name,
+                         withVM,
+                         withEPICS,
+                         RF_L01);
+}
+//______________________________________________________________________________
+L01ProtController& VCrfprot::physical_L01_Protection_Controller()
+{
+    std::string name  = "physical_L01_Protection_Controller_Obj";
+    return getL01Controller(physical_L01_Protection_Controller_Obj,
+                         L01ProtsConf,
+                         name,
+                         withoutVM,
+                         withEPICS,
+                         RF_L01);
+}
+//______________________________________________________________________________
+L01ProtController& VCrfprot::offline_L01_Protection_Controller()
+{
+    std::string name  = "offline_L01_Protection_Controller_Obj";
+    return getL01Controller(offline_L01_Protection_Controller_Obj,
+                         L01ProtsConf,
+                         name,
+                         withoutVM,
+                         withoutEPICS,
+                         RF_L01);
+}
+//______________________________________________________________________________
+L01ProtController& VCrfprot::getL01Controller(L01ProtController*& cont,
+                                           const std::string& conf,
+                                           const std::string& name,
+                                           const bool shouldVM,
+                                           const bool shouldEPICS,
+                                           const HWC_ENUM::MACHINE_AREA myMachineArea)
+{
+    if(cont)
+    {
+        std::cout << name << " object already exists," <<std::endl;
+    }
+    else
+    {
+        std::cout << "Creating " << name << " object" <<std::endl;
+        messageStatesL01[cont].first  = shouldShowMessage;
+        messageStatesL01.at(cont).second = shouldShowDebugMessage;
+        cont = new L01ProtController(messageStatesL01.at(cont).first,
+                                     messageStatesL01.at(cont).second,
                                      conf, shouldVM, shouldEPICS,name);
     }
     return *cont;

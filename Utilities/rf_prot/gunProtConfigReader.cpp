@@ -48,7 +48,7 @@ configReader(configFileLocation1, show_messages_ptr, show_debug_messages_ptr,sta
 //______________________________________________________________________________
 gunProtConfigReader::~gunProtConfigReader(){}
 //______________________________________________________________________________
-bool gunProtConfigReader::getrfGunProtObjects(std::map<std::string, rfProtStructs::rfGunProtObject>& mapToFill )
+bool gunProtConfigReader::getrfProtObjects(std::map<std::string, rfProtStructs::rfProtObject>& mapToFill )
 {
     mapToFill.clear();
     for(auto && it : gunProtObjects)
@@ -196,7 +196,7 @@ void gunProtConfigReader::addToProtObjectsV1(const std::vector<std::string> &key
 {
     if(keyVal[0] == UTL::NAME)
     {
-        rfProtStructs::rfGunProtObject prot = rfProtStructs::rfGunProtObject();
+        rfProtStructs::rfProtObject prot = rfProtStructs::rfProtObject();
         prot.name = keyVal[1];
         prot.numIlocks = (size_t)numIlocks;
         gunProtObjects.push_back(prot);
@@ -227,6 +227,8 @@ void gunProtConfigReader::addToProtObjectsV1(const std::vector<std::string> &key
             gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_LRRG;
         else if( keyVal[1] == UTL::VELA_HRRG)
             gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_HRRG;
+        else if( keyVal[1] == UTL::L01)
+            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::L01;
         else if( keyVal[1] == UTL::TEST)
             gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::TEST;
         else
@@ -244,19 +246,19 @@ void gunProtConfigReader::addToPVStruct(std::vector< rfProtStructs::pvStruct >  
         pvStruct_v.back().pvSuffix = keyVal[1];
         //GUN  Protection
         if(keyVal[0] == UTL::PV_SUFFIX_ON  )
-            pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::ON;
+            pvStruct_v.back().pvType = rfProtStructs::RF_PROT_PV_TYPE::ON;
 
         else if(keyVal[0] == UTL::PV_SUFFIX_OFF  )
-            pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::OFF;
+            pvStruct_v.back().pvType = rfProtStructs::RF_PROT_PV_TYPE::OFF;
 
         else if(keyVal[0] == UTL::PV_SUFFIX_STA  )
-            pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::STATUS;
+            pvStruct_v.back().pvType = rfProtStructs::RF_PROT_PV_TYPE::STATUS;
 
         else if(keyVal[0] == UTL::PV_SUFFIX_CMI  )
-            pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::CMI;
+            pvStruct_v.back().pvType = rfProtStructs::RF_PROT_PV_TYPE::CMI;
 
         else if(keyVal[0] == UTL::PV_SUFFIX_RST  )
-            pvStruct_v.back().pvType = rfProtStructs::RF_GUN_PROT_PV_TYPE::RESET;
+            pvStruct_v.back().pvType = rfProtStructs::RF_PROT_PV_TYPE::RESET;
 
          debugMessage("Added ", pvStruct_v.back().pvSuffix, " suffix for ", ENUM_TO_STRING(pvStruct_v.back().pvType) ) ;
     }

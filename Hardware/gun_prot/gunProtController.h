@@ -65,7 +65,7 @@ class gunProtController : public controller
         std::string getCurrentModeProtName()const;
         std::vector<std::string> getProtNames()const;
 
-        const rfProtStructs::rfGunProtObject&
+        const rfProtStructs::rfProtObject&
             getRFProtObjConstRef(const std::string& name)const;
 
         /*  These are pure virtual methods,
@@ -80,8 +80,8 @@ class gunProtController : public controller
 
     #ifdef BUILD_DLL
         boost::python::list getProtNames_Py() const;
-        boost::python::dict getILockStatesStr_Py(const std::string& name) const;
-        boost::python::dict getILockStates_Py(const std::string& name) const;
+        boost::python::dict getILockStatesStr_Py(const std::string& name);
+        boost::python::dict getILockStates_Py(const std::string& name);
     #endif
     protected:
     private:

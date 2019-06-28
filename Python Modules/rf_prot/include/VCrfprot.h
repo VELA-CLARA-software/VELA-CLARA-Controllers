@@ -28,6 +28,7 @@
 #include <utility>
 // Project includes
 #include "gunProtController.h"
+#include "L01ProtController.h"
 #include "rfProtStructs.h"
 #include "VCbase.h"
 #include "VCHeader.h"
@@ -43,6 +44,10 @@ class VCrfprot : public VCbase
         gunProtController& physical_Gun_Protection_Controller();
         gunProtController& offline_Gun_Protection_Controller();
 
+        L01ProtController& virtual_L01_Protection_Controller();
+        L01ProtController& physical_L01_Protection_Controller();
+        L01ProtController& offline_L01_Protection_Controller();
+
         gunProtController& getProtectionController(const HWC_ENUM::MACHINE_MODE mode,
                                                    const HWC_ENUM::MACHINE_AREA area);
 
@@ -52,6 +57,19 @@ class VCrfprot : public VCbase
         gunProtController* virtual_Gun_Protection_Controller_Obj ;
         gunProtController* physical_Gun_Protection_Controller_Obj;
         gunProtController* offline_Gun_Protection_Controller_Obj ;
+
+        L01ProtController* virtual_L01_Protection_Controller_Obj ;
+        L01ProtController* physical_L01_Protection_Controller_Obj;
+        L01ProtController* offline_L01_Protection_Controller_Obj ;
+
+        /* all get controller functions route here */
+        L01ProtController& getL01Controller(L01ProtController*& cont,
+                                         const std::string& conf,
+                                         const std::string& name,
+                                         const bool shouldVM,
+                                         const bool shouldEPICS,
+                                         const HWC_ENUM::MACHINE_AREA myMachineArea);
+
 
         /* all get controller functions route here */
         gunProtController& getController(gunProtController*& cont,
@@ -66,10 +84,11 @@ class VCrfprot : public VCbase
             heirarchy
         */
         std::map<const gunProtController*, std::pair<bool,bool>> messageStates;
+        std::map<const L01ProtController*, std::pair<bool,bool>> messageStatesL01;
 
         void updateMessageStates();
 
-        const std::string allGunProtsConf;
+        const std::string allGunProtsConf, L01ProtsConf;
 };
 /* yay, function pointers for boost.python overloads */
 using namespace boost::python;
@@ -86,6 +105,24 @@ bool(gunProtController::*disable_1)(const std::string&) const=
                                                 &gunProtController::disable;
 bool(gunProtController::*disable_2)(const std::vector<std::string>&) const=
                                                 &gunProtController::disable;
+
+
+    // There is a gun controller and a linac controller
+    // This is clearly nuts - for CATAP 2.0 make better !
+
+bool(L01ProtController::*reset_1L01)(const std::string&) const=
+                                                &L01ProtController::reset;
+bool(L01ProtController::*reset_2L01)(const std::vector<std::string>&) const=
+                                                &L01ProtController::reset;
+bool(L01ProtController::*enable_1L01)(const std::string&) const=
+                                                &L01ProtController::enable;
+bool(L01ProtController::*enable_2L01)(const std::vector<std::string>&) const=
+                                                &L01ProtController::enable;
+bool(L01ProtController::*enable_3L01)() const= &L01ProtController::enable;
+bool(L01ProtController::*disable_1L01)(const std::string&) const=
+                                                &L01ProtController::disable;
+bool(L01ProtController::*disable_2L01)(const std::vector<std::string>&) const=
+                                                &L01ProtController::disable;
 //______________________________________________________________________________
 using namespace boost::python;
 using namespace rfProtStructs;
@@ -98,22 +135,23 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
     /* Main project objects and enums are defined in here */
     BOOST_PYTHON_INCLUDE::export_BaseObjects();
         /* docstrings will be defined like this  */
-    const char * RF_GUN_PROT_STATUS_doc = "RF_GUN_PROT_STATUS: a named integer"
+    const char * RF_PROT_STATUS_doc = "RF_PROT_STATUS: a named integer"
                                 " giving the state of an RF protection object";
-    enum_<RF_GUN_PROT_STATUS>("RF_GUN_PROT_STATUS",RF_GUN_PROT_STATUS_doc)
-        .value("UNKNOWN",RF_GUN_PROT_STATUS::UNKNOWN)
-        .value("ERROR",  RF_GUN_PROT_STATUS::ERROR)
-        .value("GOOD",   RF_GUN_PROT_STATUS::GOOD)
-        .value("BAD",    RF_GUN_PROT_STATUS::BAD)
+    enum_<RF_PROT_STATUS>("RF_PROT_STATUS",RF_PROT_STATUS_doc)
+        .value("UNKNOWN",RF_PROT_STATUS::UNKNOWN)
+        .value("ERROR",  RF_PROT_STATUS::ERROR)
+        .value("GOOD",   RF_PROT_STATUS::GOOD)
+        .value("BAD",    RF_PROT_STATUS::BAD)
         ;
-    const char* RF_GUN_PROT_TYPE_doc = "RF_PROT_TYPE: a named integer"
+    const char* RF_PROT_TYPE_doc = "RF_PROT_TYPE: a named integer"
                     " giving the type of RF protection object";
-    enum_<rfProtStructs::RF_PROT_TYPE>("RF_PROT_TYPE",RF_GUN_PROT_TYPE_doc)
+    enum_<rfProtStructs::RF_PROT_TYPE>("RF_PROT_TYPE",RF_PROT_TYPE_doc)
         .value("CLARA_HRRG",RF_PROT_TYPE::CLARA_HRRG)
         .value("VELA_LRRG",  RF_PROT_TYPE::VELA_LRRG)
         .value("VELA_HRRG",   RF_PROT_TYPE::VELA_HRRG)
         .value("CLARA_LRRG",    RF_PROT_TYPE::CLARA_LRRG)
         .value("TEST",    RF_PROT_TYPE::TEST)
+        .value("L01",    RF_PROT_TYPE::L01)
         .value("NOT_KNOWN",    RF_PROT_TYPE::NOT_KNOWN)
         .value("GENERAL",    RF_PROT_TYPE::GENERAL)
         .value("ENABLE",    RF_PROT_TYPE::ENABLE)
@@ -130,24 +168,26 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
     const char* cmi_doc                 = "cmi value";
 
     using namespace boost;
-    class_<rfGunProtObject,noncopyable>
-        ("rfGunProtObject","rfGunProtObject member variables (read access only)", no_init)
+    class_<rfProtObject,noncopyable>
+        ("rfProtObject","rfProtObject member variables (read access only)", no_init)
         .def_readonly("gunProtKeyBitValues",
-                      &rfGunProtObject::gunProtKeyBitValues,gunProtKeyBitValues_doc)
+                      &rfProtObject::gunProtKeyBitValues,gunProtKeyBitValues_doc)
         .def_readonly("gunProtKeyBits",
-                      &rfGunProtObject::gunProtKeyBits,gunProtKeyBits_doc)
+                      &rfProtObject::gunProtKeyBits,gunProtKeyBits_doc)
         .def_readonly("protType",
-                      &rfGunProtObject::protType,protType_doc)
+                      &rfProtObject::protType,protType_doc)
         .def_readonly("pvRoot",
-                      &rfGunProtObject::pvRoot, pvRoot_doc)
+                      &rfProtObject::pvRoot, pvRoot_doc)
         .def_readonly("status",
-                      &rfGunProtObject::status, status_doc)
+                      &rfProtObject::status, status_doc)
         .def_readonly("name",
-                      &rfGunProtObject::name,name_doc)
+                      &rfProtObject::name,name_doc)
         .def_readonly("cmi",
-                      &rfGunProtObject::cmi, cmi_doc)
+                      &rfProtObject::cmi, cmi_doc)
         ;
 
+    // There is a gun controller and a linac controller
+    // This is clearly nuts - for CATAP 2.0 make better !
 
     const char* gunProtController_doc = "Monitors and controls the Gun protections";
     const char* getILockStates_doc = "Return the state of interlocks as an integer."
@@ -217,11 +257,61 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
              &gunProtController::getProtNames_Py,getProtNames_doc)
         ;
 
+
+
+
+    const char* L01ProtController_doc = "Monitors and controls the Gun protections";
+
+
+    class_<L01ProtController, bases<controller>, noncopyable>
+        ("L01ProtController",L01ProtController_doc, no_init)
+        .def("getILockStates",
+             &L01ProtController::getILockStates_Py,getILockStates_doc)
+        .def("getILockStatesStr",
+             &L01ProtController::getILockStatesStr_Py,getILockStatesStr_doc)
+        .def("get_CA_PEND_IO_TIMEOUT",
+             &L01ProtController::get_CA_PEND_IO_TIMEOUT,get_CA_PEND_IO_TIMEOUT_doc)
+        .def("set_CA_PEND_IO_TIMEOUT",
+             &L01ProtController::set_CA_PEND_IO_TIMEOUT,
+             (TIME_ARG,set_CA_PEND_IO_TIMEOUT_doc))
+        .def("getRFProtObjConstRef",
+             &L01ProtController::getRFProtObjConstRef,
+             return_value_policy<reference_existing_object>(),
+             (NAME_ARG,getRFProtObjConstRef_doc))
+        .def("isGood",
+             &L01ProtController::isGood,    (NAME_ARG,isGood_doc))
+        .def("isNotGood",
+             &L01ProtController::isNotGood, (NAME_ARG,isNotGood_doc))
+        .def("isBad",
+             &L01ProtController::isBad,(NAME_ARG,isBad_doc))
+        .def("reset",       reset_1L01,   (NAME_ARG,reset1_doc))
+        .def("reset",       reset_2L01,   (NAMES_ARG,reset2_doc))
+        .def("enable",      enable_1L01,  (NAME_ARG,enable1_doc))
+        .def("enable",      enable_2L01,  (NAMES_ARG,enable2_doc))
+        .def("enable",      enable_3L01,   enable3_doc)
+        .def("disable",     disable_1L01, (NAME_ARG,disable1_doc))
+        .def("disable",     disable_2L01, (NAMES_ARG,disable2_doc))
+        .def("getGeneralProtName",
+             &L01ProtController::getGeneralProtName,getGeneralProtName_doc)
+        .def("getEnableProtName",
+             &L01ProtController::getEnableProtName,getEnableProtName_doc)
+        .def("getCurrentModeProtName",
+             &L01ProtController::getCurrentModeProtName,getCurrentModeProtName_doc)
+        .def("getProtNames",
+             &L01ProtController::getProtNames_Py,getProtNames_doc)
+        ;
+
+
+
+
     const char* GPC_doc = "Returns a reference to the protection object given "
                           "by 'mode' and 'area'.";
-    const char* vGPC_doc = "Returns a reference to the virtual gun protection object.";
-    const char* pGPC_doc = "Returns a reference to the physical gun protection object.";
-    const char* oGPC_doc = "Returns a reference to the offline gun protection object.";
+    const char* vGPC_doc = "Returns a reference to the virtual gun RF protection object.";
+    const char* pGPC_doc = "Returns a reference to the physical gun RF protection object.";
+    const char* oGPC_doc = "Returns a reference to the offline gun RF protection object.";
+    const char* vL01PC_doc = "Returns a reference to the virtual L01 RF protection object.";
+    const char* pL01PC_doc = "Returns a reference to the physical L01 RF protection object.";
+    const char* oL01PC_doc= "Returns a reference to the offline L01 RF protection object.";
 
     class_<VCrfprot, bases<VCbase>, noncopyable>("init")
         .def("getProtectionController",
@@ -236,6 +326,16 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         .def("offline_Gun_Protection_Controller",
              &VCrfprot::offline_Gun_Protection_Controller,
              return_value_policy<reference_existing_object>(),oGPC_doc)
+
+        .def("virtual_L01_Protection_Controller",
+             &VCrfprot::virtual_L01_Protection_Controller,
+             return_value_policy<reference_existing_object>(),vL01PC_doc)
+        .def("physical_L01_Protection_Controller",
+             &VCrfprot::physical_L01_Protection_Controller,
+             return_value_policy<reference_existing_object>(),pL01PC_doc)
+        .def("offline_L01_Protection_Controller",
+             &VCrfprot::offline_L01_Protection_Controller,
+             return_value_policy<reference_existing_object>(),oL01PC_doc)
 //        .def("setQuiet",         &VCbase::setQuiet)
 //        .def("setVerbose",       &VCbase::setVerbose)
 //        .def("setMessage",       &VCbase::setMessage)

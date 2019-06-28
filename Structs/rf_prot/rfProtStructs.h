@@ -34,10 +34,11 @@
 #endif
 
 class gunProtInterface;
+class L01ProtInterface;
 //______________________________________________________________________________
 namespace rfProtStructs
 {
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_PV_TYPE, (RESET)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_PV_TYPE, (RESET)
                                                              (STATUS)
                                                              (ON)
                                                              (OFF)
@@ -49,6 +50,7 @@ namespace rfProtStructs
                                                       (VELA_LRRG)
                                                       (VELA_HRRG)
                                                       (CLARA_LRRG)
+                                                      (L01)
                                                       (TEST)
                                                       (NOT_KNOWN)
                                                       (GENERAL)
@@ -56,7 +58,7 @@ namespace rfProtStructs
                                                       (NO_MODE)
                                         )
 
-    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_GUN_PROT_STATUS, (GOOD)
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_STATUS, (GOOD)
                                                             (BAD)
                                                             (ERROR)
                                                             (UNKNOWN)
@@ -71,16 +73,16 @@ namespace rfProtStructs
             MASK(UTL::ZERO_UL)
             {}
         std::string     pvSuffix, objName;
-        RF_GUN_PROT_PV_TYPE pvType;
+        RF_PROT_PV_TYPE pvType;
         unsigned long   COUNT, MASK;
         // defaults for chtype and chid ???
         chtype          CHTYPE;
         chid            CHID;
     };
 
-    struct rfGunProtObject
+    struct rfProtObject
     {
-        rfGunProtObject():
+        rfProtObject():
             status(UNKNOWN),
             protType(NOT_KNOWN),
             name(UTL::UNKNOWN_NAME),
@@ -89,7 +91,7 @@ namespace rfProtStructs
             cmi(UTL::ZERO_UL)
             {}
         std::string         name,pvRoot;
-        RF_GUN_PROT_STATUS  status;
+        RF_PROT_STATUS  status;
         long       cmi;
         //unsigned long       cmi;
         // the bit position of the key bits in the prot cmi
@@ -99,8 +101,8 @@ namespace rfProtStructs
         size_t              numIlocks;
         RF_PROT_TYPE        protType;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> iLockStates;
-        std::map<RF_GUN_PROT_PV_TYPE, pvStruct> pvMonStructs;
-        std::map<RF_GUN_PROT_PV_TYPE, pvStruct> pvComStructs;
+        std::map<RF_PROT_PV_TYPE, pvStruct> pvMonStructs;
+        std::map<RF_PROT_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
     };
 
@@ -109,11 +111,15 @@ namespace rfProtStructs
         monitorStruct():
             rfProtObject(nullptr),
             interface(nullptr),
+            interface_L01(nullptr),
             monType(UNKNOWN_PV)
             {}
-        RF_GUN_PROT_PV_TYPE monType;
-        rfGunProtObject*    rfProtObject;
+        RF_PROT_PV_TYPE monType;
+        rfProtObject*    rfProtObject;
         gunProtInterface*   interface;
+        // hacking the belwo in before we move to CATAP 2.0 probably don't need two seperate objects here ... ??
+        // needs a bit of a re-wrrite
+        L01ProtInterface*   interface_L01;
         // default values for epics types??
         chtype              CHTYPE;
         evid                EVID;

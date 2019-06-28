@@ -75,7 +75,7 @@ bool gunProtController::isNotGood(const std::string& name)const
     return localInterface.isNotGood(name);
 }
 //______________________________________________________________________________
-const rfGunProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)const
+const rfProtObject& gunProtController::getRFProtObjConstRef(const std::string& name)const
 {
     return localInterface.getRFProtObjConstRef(name);
 }
@@ -174,12 +174,12 @@ boost::python::list gunProtController::getProtNames_Py() const
     return toPythonList(getProtNames());
 }
 //______________________________________________________________________________
-boost::python::dict gunProtController::getILockStatesStr_Py(const std::string& name) const
+boost::python::dict gunProtController::getILockStatesStr_Py(const std::string& name)
 {
     return toPythonDict(getILockStatesStr(name));
 }
 //______________________________________________________________________________
-boost::python::dict gunProtController::getILockStates_Py(const std::string& name) const
+boost::python::dict gunProtController::getILockStates_Py(const std::string& name)
 {
     return toPythonDict(getILockStates(name));
 }
