@@ -106,6 +106,13 @@ bool(gunProtController::*disable_1)(const std::string&) const=
 bool(gunProtController::*disable_2)(const std::vector<std::string>&) const=
                                                 &gunProtController::disable;
 
+const rfProtStructs::rfProtObject&(gunProtController::*getRFProtObjConstRef_1)(const std::string&) const=
+                                                &gunProtController::getRFProtObjConstRef;
+
+
+const rfProtStructs::rfProtObject&(gunProtController::*getRFProtObjConstRef_2)(const rfProtStructs::RF_PROT_TYPE type) const=
+                                                &gunProtController::getRFProtObjConstRef;
+
 
     // There is a gun controller and a linac controller
     // This is clearly nuts - for CATAP 2.0 make better !
@@ -123,6 +130,15 @@ bool(L01ProtController::*disable_1L01)(const std::string&) const=
                                                 &L01ProtController::disable;
 bool(L01ProtController::*disable_2L01)(const std::vector<std::string>&) const=
                                                 &L01ProtController::disable;
+
+const rfProtStructs::rfProtObject&(L01ProtController::*getRFProtObjConstRef_1L01)(const std::string&) const=
+&L01ProtController::getRFProtObjConstRef;
+
+const rfProtStructs::rfProtObject&(L01ProtController::*getRFProtObjConstRef_2L01)(const rfProtStructs::RF_PROT_TYPE type) const=
+                                                &L01ProtController::getRFProtObjConstRef;
+
+
+
 //______________________________________________________________________________
 using namespace boost::python;
 using namespace rfProtStructs;
@@ -200,7 +216,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         " when sending commands to EPICS.";
     const char* set_CA_PEND_IO_TIMEOUT_doc = "Set the waiting time to 'time'(seconds) "
         "when sending commands to EPICS";
-    const char* getRFProtObjConstRef_doc = "Return RF protection object 'name'";
+    const char* getRFProtObjConstRef_1_doc = "Return RF protection object 'name' where name is a string";
+    const char* getRFProtObjConstRef_2_doc = "Return RF protection object 'name' where name is a RF_PROT_TYPE";
     const char* getCurrentModeProtName_doc = "returns the object name for the 'current"
         " mode' protection. Current mode depends on which physical keys are active.";
     const char* getGeneralProtName_doc= "returns the object name for the 'general protection'";
@@ -231,9 +248,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
              &gunProtController::set_CA_PEND_IO_TIMEOUT,
              (TIME_ARG,set_CA_PEND_IO_TIMEOUT_doc))
         .def("getRFProtObjConstRef",
-             &gunProtController::getRFProtObjConstRef,
+             getRFProtObjConstRef_1,
              return_value_policy<reference_existing_object>(),
-             (NAME_ARG,getRFProtObjConstRef_doc))
+             (NAME_ARG,getRFProtObjConstRef_1_doc))
+        .def("getRFProtObjConstRef",
+             getRFProtObjConstRef_2,
+             return_value_policy<reference_existing_object>(),
+             (NAME_ARG,getRFProtObjConstRef_2))
         .def("isGood",
              &gunProtController::isGood,    (NAME_ARG,isGood_doc))
         .def("isNotGood",
@@ -275,9 +296,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
              &L01ProtController::set_CA_PEND_IO_TIMEOUT,
              (TIME_ARG,set_CA_PEND_IO_TIMEOUT_doc))
         .def("getRFProtObjConstRef",
-             &L01ProtController::getRFProtObjConstRef,
+             getRFProtObjConstRef_1L01,
              return_value_policy<reference_existing_object>(),
-             (NAME_ARG,getRFProtObjConstRef_doc))
+             (NAME_ARG,getRFProtObjConstRef_1_doc))
+        .def("getRFProtObjConstRef",
+             getRFProtObjConstRef_2L01,
+             return_value_policy<reference_existing_object>(),
+             (NAME_ARG,getRFProtObjConstRef_2_doc))
         .def("isGood",
              &L01ProtController::isGood,    (NAME_ARG,isGood_doc))
         .def("isNotGood",

@@ -67,6 +67,9 @@ class gunProtController : public controller
 
         const rfProtStructs::rfProtObject&
             getRFProtObjConstRef(const std::string& name)const;
+        const rfProtStructs::rfProtObject&
+            getRFProtObjConstRef(const rfProtStructs::RF_PROT_TYPE type)const;
+
 
         /*  These are pure virtual methods,
             so need to have some implmentation in derived classes

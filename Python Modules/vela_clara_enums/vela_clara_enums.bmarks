@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="main.cpp" open="1" top="0" tabpos="14">
+	<File name="main.h" open="1" top="1" tabpos="4">
+		<Cursor position="1420" topLine="18" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0">
+		<Cursor position="5746" topLine="102" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="3">
 		<Cursor position="1286" topLine="0" />
+		<BrowseMarks positions="" />
 	</File>
 	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
 		<Cursor position="6300" topLine="96" />
-	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="0">
-		<Cursor position="4987" topLine="102" />
 	</File>
 </BrowseTracker_layout_file>

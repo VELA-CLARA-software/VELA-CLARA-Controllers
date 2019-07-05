@@ -80,6 +80,11 @@ const rfProtObject& L01ProtController::getRFProtObjConstRef(const std::string& n
     return localInterface.getRFProtObjConstRef(name);
 }
 //______________________________________________________________________________
+const rfProtObject& L01ProtController::getRFProtObjConstRef(const rfProtStructs::RF_PROT_TYPE type)const
+{
+    return localInterface.getRFProtObjConstRef(type);
+}
+//______________________________________________________________________________
 bool L01ProtController::isBad(const std::string& name)const
 {
     return localInterface.isBad(name);

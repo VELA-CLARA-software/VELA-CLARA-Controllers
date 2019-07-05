@@ -79,6 +79,7 @@ class gunProtInterface : public interface
         std::vector<std::string> getProtNames() const;
 
         const rfProtStructs::rfProtObject& getRFProtObjConstRef(const std::string& name)const;
+        const rfProtStructs::rfProtObject& getRFProtObjConstRef(const rfProtStructs::RF_PROT_TYPE type)const;
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
         map_ilck_string getILockStatesStr(const std::string& name) const;

@@ -61,6 +61,7 @@
 					<Add directory="../../Hardware/pilaser" />
 					<Add directory="../../Utilities/rf_prot" />
 					<Add directory="../../Structs/rf_prot" />
+					<Add directory="../../Hardware/L01_prot" />
 				</Compiler>
 				<Linker>
 					<Add option="/INCREMENTAL:NO" />
@@ -71,6 +72,10 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<Unit filename="../../Hardware/L01_prot/L01ProtController.cpp" />
+		<Unit filename="../../Hardware/L01_prot/L01ProtController.h" />
+		<Unit filename="../../Hardware/L01_prot/L01ProtInterface.cpp" />
+		<Unit filename="../../Hardware/L01_prot/L01ProtInterface.h" />
 		<Unit filename="../../Hardware/VCbase.cpp" />
 		<Unit filename="../../Hardware/VCbase.h" />
 		<Unit filename="../../Hardware/VCheader.h" />
@@ -93,6 +98,8 @@
 		</Unit>
 		<Unit filename="../../Utilities/configReader.cpp" />
 		<Unit filename="../../Utilities/configReader.h" />
+		<Unit filename="../../Utilities/rf_prot/L01ProtConfigReader.cpp" />
+		<Unit filename="../../Utilities/rf_prot/L01ProtConfigReader.h" />
 		<Unit filename="../../Utilities/rf_prot/gunProtConfigReader.cpp" />
 		<Unit filename="../../Utilities/rf_prot/gunProtConfigReader.h" />
 		<Unit filename="include/VCrfprot.h" />
@@ -102,6 +109,7 @@
 			<envvars />
 			<debugger />
 			<lib_finder disable_auto="1" />
+			<fortran_project />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

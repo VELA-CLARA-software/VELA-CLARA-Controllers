@@ -79,6 +79,7 @@ class L01ProtInterface : public interface
         std::vector<std::string> getProtNames() const;
 
         const rfProtStructs::rfProtObject& getRFProtObjConstRef(const std::string& name)const;
+        const rfProtStructs::rfProtObject& getRFProtObjConstRef(const rfProtStructs::RF_PROT_TYPE type)const;
 
         // These are pure virtual methods, so need to have some implmentation in derived classes
         map_ilck_string getILockStatesStr(const std::string& name) const;
@@ -96,7 +97,7 @@ class L01ProtInterface : public interface
 
         const std::string EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL;
 
-        bool exists_in_allGunProts(const std::string& name,
+        bool exists_in_allL01Prots(const std::string& name,
                                    rfProtStructs::RF_PROT_PV_TYPE pv) const;
 
         rfProtStructs::RF_PROT_TYPE currentMode;
@@ -112,7 +113,7 @@ class L01ProtInterface : public interface
 //        bool sendCommand(const chtype& CHTYPE, const chid& CHID,
 //                         const std::string& m1, const std::string& m2) const;
 
-        std::map<std::string, rfProtStructs::rfProtObject> allGunProts;
+        std::map<std::string, rfProtStructs::rfProtObject> allL01Prots;
 
         std::vector<rfProtStructs::monitorStruct*> continuousMonitorStructs;
         // all EPICS callbacks route here

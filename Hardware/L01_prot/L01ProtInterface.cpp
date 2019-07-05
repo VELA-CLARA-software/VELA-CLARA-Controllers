@@ -91,10 +91,10 @@ void L01ProtInterface::initialise()
         message("The L01ProtInterface has read the config file, "
                 "acquiring objects");
         /* initialise the objects based on what is read from the config file */
-        bool getDataSuccess = configReader.getrfProtObjects(allGunProts);
+        bool getDataSuccess = configReader.getrfProtObjects(allL01Prots);
         if(getDataSuccess)
         {
-            message("Found ", allGunProts.size(), " RF objects");
+            message("Found ", allL01Prots.size(), " RF objects");
             if(shouldStartEPICs)
             {
                 message("The L01ProtInterface has acquired objects, "
@@ -119,39 +119,39 @@ void L01ProtInterface::initialise()
 //______________________________________________________________________________
 void L01ProtInterface::initChids()
 {
-    message("\n", "Searching for allGunProts ChIds...");
-    for(auto&& allGunProts_it: allGunProts)
+    message("\n", "Searching for allL01Prots ChIds...");
+    for(auto&& allL01Prots_it: allL01Prots)
     {
         /*  iterate over command and monitor stucts
             adding channels
         */
-        for(auto&& pvMonStructs_it:allGunProts_it.second.pvMonStructs)
+        for(auto&& pvMonStructs_it:allL01Prots_it.second.pvMonStructs)
         {
-         addChannel(allGunProts_it.second.pvRoot, pvMonStructs_it.second);
+         addChannel(allL01Prots_it.second.pvRoot, pvMonStructs_it.second);
         }
-        for(auto&& pvComStructs_it : allGunProts_it.second.pvComStructs)
+        for(auto&& pvComStructs_it : allL01Prots_it.second.pvComStructs)
         {
-         addChannel(allGunProts_it.second.pvRoot, pvComStructs_it.second);
+         addChannel(allL01Prots_it.second.pvRoot, pvComStructs_it.second);
         }
     }
     /* connect channels */
     int status = sendToEpics("ca_create_channel",
-                             "Found allGunProts ChIds.",
-                             "!!TIMEOUT!! Not all allGunProts ChIds found.");
+                             "Found allL01Prots ChIds.",
+                             "!!TIMEOUT!! Not all allL01Prots ChIds found.");
     /* if connection fails run a diagnositc: checkCHIDState */
     if(status != ECA_NORMAL)
     {
         UTL::PAUSE_500;
-        message("\n", "Checking allGunProts ChIds ");
-        for(auto&& allGunProts_it: allGunProts)
+        message("\n", "Checking allL01Prots ChIds ");
+        for(auto&& allL01Prots_it: allL01Prots)
         {
-            for(auto&& pvMonStructs_it:allGunProts_it.second.pvMonStructs)
+            for(auto&& pvMonStructs_it:allL01Prots_it.second.pvMonStructs)
             {
                 checkCHIDState(pvMonStructs_it.second.CHID,
                                ENUM_TO_STRING(pvMonStructs_it.first));
             }
 
-            for(auto&& pvComStructs_it:allGunProts_it.second.pvComStructs)
+            for(auto&& pvComStructs_it:allL01Prots_it.second.pvComStructs)
             {
                 checkCHIDState(pvComStructs_it.second.CHID,
                                ENUM_TO_STRING(pvComStructs_it.first) );
@@ -181,7 +181,7 @@ void L01ProtInterface::startMonitors()
     */
     continuousMonitorStructs.clear();
     continuousILockMonitorStructs.clear();
-    for(auto && obj : allGunProts)
+    for(auto && obj : allL01Prots)
     {
         for(auto && it : obj.second.pvMonStructs)
         {
@@ -260,23 +260,12 @@ void L01ProtInterface::updateCMIBits(rfProtStructs::rfProtObject& obj)
         message("Allkeybits for ", ENUM_TO_STRING(obj.protType), " ARE GOOD");
         switch( obj.protType)
         {
-            case rfProtStructs::RF_PROT_TYPE::CLARA_HRRG:
-                currentMode = obj.protType;
-                break;
-            case rfProtStructs::RF_PROT_TYPE::VELA_LRRG:
-                currentMode = obj.protType;
-                break;
-            case rfProtStructs::RF_PROT_TYPE::VELA_HRRG:
-                currentMode = obj.protType;
-                break;
-            case rfProtStructs::RF_PROT_TYPE::CLARA_LRRG:
-                currentMode = obj.protType;
-                break;
+            // TODOD: This is completely wrong for the lINAC we need to test it
             case rfProtStructs::RF_PROT_TYPE::TEST:
                 currentMode = obj.protType;
                 break;
             default:
-                currentMode = rfProtStructs::RF_PROT_TYPE::NO_MODE;
+                currentMode = rfProtStructs::RF_PROT_TYPE::L01;
         }
         message("RF GUN Mode is ", ENUM_TO_STRING(currentMode));
     }
@@ -285,9 +274,9 @@ void L01ProtInterface::updateCMIBits(rfProtStructs::rfProtObject& obj)
 bool L01ProtInterface::allkeybitsaregood(const std::string & name) const
 {
     bool r = false;
-    if(entryExists(allGunProts, name))
+    if(entryExists(allL01Prots, name))
     {
-        r = allkeybitsaregood(allGunProts.at(name));
+        r = allkeybitsaregood(allL01Prots.at(name));
     }
     return r;
 }
@@ -350,7 +339,7 @@ void L01ProtInterface::updateProtStatus(rfProtStructs::rfProtObject& obj,
 //____________________________________________________________________________________________
 std::string L01ProtInterface::getGeneralProtName() const
 {
-    for( auto&& it : allGunProts)
+    for( auto&& it : allL01Prots)
     {
         if( isProtOfType( it.first, rfProtStructs::RF_PROT_TYPE::GENERAL))
             return it.first;
@@ -361,7 +350,7 @@ std::string L01ProtInterface::getGeneralProtName() const
 //____________________________________________________________________________________________
 std::string L01ProtInterface::getEnableProtName() const
 {
-    for(auto&& it : allGunProts)
+    for(auto&& it : allL01Prots)
     {
         if( isProtOfType( it.first, rfProtStructs::RF_PROT_TYPE::ENABLE))
             return it.first;
@@ -373,7 +362,7 @@ std::string L01ProtInterface::getEnableProtName() const
 std::string L01ProtInterface::getCurrentModeProtName() const
 {
     message("getCurrentModeProtName ", ENUM_TO_STRING(currentMode));
-    for(auto&& it : allGunProts)
+    for(auto&& it : allL01Prots)
     {
         if( isProtOfType( it.first, currentMode))
             return it.first;
@@ -386,9 +375,9 @@ bool L01ProtInterface::isProtOfType(const std::string& name,
                                     const rfProtStructs::RF_PROT_TYPE type) const
 {
     bool r = false;
-    if(entryExists(allGunProts,name))
+    if(entryExists(allL01Prots,name))
     {
-        r = allGunProts.at(name).protType == type;
+        r = allL01Prots.at(name).protType == type;
     }
     return r;
 }
@@ -506,7 +495,7 @@ bool L01ProtInterface::enable()const
 bool L01ProtInterface::reset() const
 {
     std::vector<std::string> names;
-    for(auto&& it : allGunProts)
+    for(auto&& it : allL01Prots)
     {
         names.push_back( it.first);
     }
@@ -546,11 +535,11 @@ bool L01ProtInterface::disable(const std::vector<std::string>& names)const
     return sendCommand(names,rfProtStructs::RF_PROT_PV_TYPE::OFF);
 }
 //____________________________________________________________________________________________
-bool L01ProtInterface::exists_in_allGunProts(const std::string& name,
+bool L01ProtInterface::exists_in_allL01Prots(const std::string& name,
                                              rfProtStructs::RF_PROT_PV_TYPE pv) const
 {
-    if(entryExists(allGunProts, name))
-        if(entryExists(allGunProts.at(name).pvComStructs, pv))
+    if(entryExists(allL01Prots, name))
+        if(entryExists(allL01Prots.at(name).pvComStructs, pv))
            return true;
     return false;
 }
@@ -564,10 +553,10 @@ bool L01ProtInterface::sendCommand(const std::vector<std::string>& names,
     std::vector<const chtype*> CHTYPES;
     for( auto && name : names)
     {
-        if(exists_in_allGunProts(name,pv))
+        if(exists_in_allL01Prots(name,pv))
         {
-            CHIDS.push_back( &allGunProts.at(name).pvComStructs.at(pv).CHID);
-            CHTYPES.push_back( &allGunProts.at(name).pvComStructs.at(pv).CHTYPE);
+            CHIDS.push_back( &allL01Prots.at(name).pvComStructs.at(pv).CHID);
+            CHTYPES.push_back( &allL01Prots.at(name).pvComStructs.at(pv).CHTYPE);
         }
     }
     if(CHIDS.size() > UTL::ZERO_SIZET)
@@ -605,8 +594,8 @@ bool L01ProtInterface::sendCommand(const std::vector<const chtype*>& CHTYPE,
 bool L01ProtInterface::isGood(const std::string & name) const
 {
     bool ans = false;
-    if(entryExists(allGunProts, name))
-        if(allGunProts.at(name).status == rfProtStructs::RF_PROT_STATUS::GOOD)
+    if(entryExists(allL01Prots, name))
+        if(allL01Prots.at(name).status == rfProtStructs::RF_PROT_STATUS::GOOD)
             ans = true;
     return ans;
 }
@@ -619,8 +608,8 @@ bool L01ProtInterface::isNotGood(const std::string & name) const
 bool L01ProtInterface::isBad(const std::string& name) const
 {
     bool ans = false;
-    if(entryExists(allGunProts, name))
-        if(allGunProts.at(name).status == rfProtStructs::RF_PROT_STATUS::BAD)
+    if(entryExists(allL01Prots, name))
+        if(allL01Prots.at(name).status == rfProtStructs::RF_PROT_STATUS::BAD)
             ans = true;
     return ans;
 }
@@ -628,9 +617,23 @@ bool L01ProtInterface::isBad(const std::string& name) const
 const rfProtStructs::rfProtObject&
     L01ProtInterface::getRFProtObjConstRef(const std::string& name)  const
 {
-    if(entryExists(allGunProts, name))
+    if(entryExists(allL01Prots, name))
     {
-        return allGunProts.at(name);
+        return allL01Prots.at(name);
+    }
+    rfProtStructs::rfProtObject r = rfProtStructs::rfProtObject();
+    return r;
+}
+//____________________________________________________________________________________________
+const rfProtStructs::rfProtObject&
+    L01ProtInterface::getRFProtObjConstRef(const rfProtStructs::RF_PROT_TYPE type)const
+{
+    for(auto&&it:allL01Prots)
+    {
+        if(it.second.protType == type)
+        {
+            return allL01Prots.at(it.second.name);
+        }
     }
     rfProtStructs::rfProtObject r = rfProtStructs::rfProtObject();
     return r;
@@ -639,9 +642,9 @@ const rfProtStructs::rfProtObject&
 interface::map_ilck_state L01ProtInterface::getILockStates(const std::string& name) const
 {
     interface::map_ilck_state r;
-    if(entryExists(allGunProts, name))
+    if(entryExists(allL01Prots, name))
     {
-        return allGunProts.at(name).iLockStates;
+        return allL01Prots.at(name).iLockStates;
     }
     return r;
 }
@@ -649,9 +652,9 @@ interface::map_ilck_state L01ProtInterface::getILockStates(const std::string& na
 interface::map_ilck_string L01ProtInterface::getILockStatesStr(const std::string& name) const
 {
     interface::map_ilck_string r;
-    if(entryExists(allGunProts, name))
+    if(entryExists(allL01Prots, name))
     {
-        for( auto && it : allGunProts.at(name).iLockStates)
+        for( auto && it : allL01Prots.at(name).iLockStates)
             r.at(it.first) = ENUM_TO_STRING(it.second);
     }
     return r;
@@ -660,7 +663,7 @@ interface::map_ilck_string L01ProtInterface::getILockStatesStr(const std::string
 std::vector<std::string> L01ProtInterface::getProtNames() const
 {
     std::vector<std::string> r;
-    for(auto&& it: allGunProts)
+    for(auto&& it: allL01Prots)
     {
         r.push_back(it.second.name);
     }
@@ -675,10 +678,10 @@ std::vector<std::string> L01ProtInterface::getProtNames() const
 //    std::vector<chtype*> CHTYPES;
 //    for( auto && name : names)
 //    {
-//        if(entryExists(allGunProts, name))
+//        if(entryExists(allL01Prots, name))
 //        {
-//            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::RESET].CHID);
-//            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::RESET].CHTYPE);
+//            CHIDS.push_back( &allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::RESET].CHID);
+//            CHTYPES.push_back( &allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::RESET].CHTYPE);
 //        }
 //    }
 //    if(CHIDS.size()>0)
@@ -693,11 +696,11 @@ std::vector<std::string> L01ProtInterface::getProtNames() const
 //{
 //    bool r = false;
 //    rfProtStructs::RF_PROT_PV_TYPE reset = rfProtStructs::RF_PROT_PV_TYPE::RESET;
-//    if(exists_in_allGunProts(name,reset))
+//    if(exists_in_allL01Prots(name,reset))
 //    {
 //        r = sendCommand(
-//            allGunProts.at(name).pvComStructs.at(reset).CHTYPE,
-//            allGunProts.at(name).pvComStructs.at(reset).CHID,
+//            allL01Prots.at(name).pvComStructs.at(reset).CHTYPE,
+//            allL01Prots.at(name).pvComStructs.at(reset).CHID,
 //            EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
 //    }
 //    return r;
@@ -706,13 +709,13 @@ std::vector<std::string> L01ProtInterface::getProtNames() const
 //bool L01ProtInterface::enable(const std::string& name)
 //{
 //    bool r = false;
-//    if(entryExists(allGunProts, name))
+//    if(entryExists(allL01Prots, name))
 //    {
 //        std::string m1 = "Failed to send EPICS_ACTIVATE";
 //        std::string m2 = "Failed to send EPICS_SEND";
 //        r = sendCommand(
-//            allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHTYPE,
-//            allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHID,
+//            allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHTYPE,
+//            allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHID,
 //            EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
 //    }
 //    return r;
@@ -725,10 +728,10 @@ std::vector<std::string> L01ProtInterface::getProtNames() const
 //    std::vector<chtype*> CHTYPES;
 //    for( auto && name : names)
 //    {
-//        if(entryExists(allGunProts, name))
+//        if(entryExists(allL01Prots, name))
 //        {
-//            CHIDS.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHID);
-//            CHTYPES.push_back( &allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHTYPE);
+//            CHIDS.push_back( &allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHID);
+//            CHTYPES.push_back( &allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::ON].CHTYPE);
 //        }
 //    }
 //    if(CHIDS.size()>0)
@@ -743,20 +746,20 @@ std::vector<std::string> L01ProtInterface::getProtNames() const
 //bool L01ProtInterface::disable(const std::string& name)
 //{
 //    bool r = false;
-//    if(entryExists(allGunProts, name))
+//    if(entryExists(allL01Prots, name))
 //    {
 //        std::string m1 = "Failed to send EPICS_ACTIVATE";
 //        std::string m2 = "Failed to send EPICS_SEND";
 //
-//                    if(entryExists(allGunProts.at(name).pvComStructs, off))
+//                    if(entryExists(allL01Prots.at(name).pvComStructs, off))
 //            {
-//                CHIDS.push_back(&allGunProts.at(name).pvComStructs.at(off).CHID);
-//                CHTYPES.push_back(&allGunProts.at(name).pvComStructsat(off).CHTYPE);
+//                CHIDS.push_back(&allL01Prots.at(name).pvComStructs.at(off).CHID);
+//                CHTYPES.push_back(&allL01Prots.at(name).pvComStructsat(off).CHTYPE);
 //            }
 //
 //        r = sendCommand(
-//            allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::OFF].CHTYPE,
-//            allGunProts[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::OFF].CHID,
+//            allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::OFF].CHTYPE,
+//            allL01Prots[name].pvComStructs[rfProtStructs::RF_PROT_PV_TYPE::OFF].CHID,
 //            EPICS_ACTIVATE_FAIL, EPICS_SEND_FAIL);
 //    }
 //    return r;
@@ -770,12 +773,12 @@ std::vector<std::string> L01ProtInterface::getProtNames() const
 //    rfProtStructs::RF_PROT_PV_TYPE off = rfProtStructs::RF_PROT_PV_TYPE::OFF;
 //    for( auto && name : names)
 //    {
-//        if(entryExists(allGunProts, name))
+//        if(entryExists(allL01Prots, name))
 //        {
-//            if(entryExists(allGunProts.at(name).pvComStructs, off))
+//            if(entryExists(allL01Prots.at(name).pvComStructs, off))
 //            {
-//                CHIDS.push_back(&allGunProts.at(name).pvComStructs.at(off).CHID);
-//                CHTYPES.push_back(&allGunProts.at(name).pvComStructsat(off).CHTYPE);
+//                CHIDS.push_back(&allL01Prots.at(name).pvComStructs.at(off).CHID);
+//                CHTYPES.push_back(&allL01Prots.at(name).pvComStructsat(off).CHTYPE);
 //            }
 //        }
 //    }

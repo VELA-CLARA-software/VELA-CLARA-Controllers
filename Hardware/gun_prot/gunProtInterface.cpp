@@ -636,6 +636,20 @@ const rfProtStructs::rfProtObject&
     return r;
 }
 //____________________________________________________________________________________________
+const rfProtStructs::rfProtObject&
+    gunProtInterface::getRFProtObjConstRef(const rfProtStructs::RF_PROT_TYPE type)const
+{
+    for(auto&&it:allGunProts)
+    {
+        if(it.second.protType == type)
+        {
+            return allGunProts.at(it.second.name);
+        }
+    }
+    rfProtStructs::rfProtObject r = rfProtStructs::rfProtObject();
+    return r;
+}
+//____________________________________________________________________________________________
 interface::map_ilck_state gunProtInterface::getILockStates(const std::string& name) const
 {
     interface::map_ilck_state r;
