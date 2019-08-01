@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="src\offlineImageAnalyser.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="16593" topLine="388" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="include\fitter.h" open="1" top="0" tabpos="3">
+		<Cursor position="2117" topLine="0" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="src\editor.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="10807" topLine="202" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="include\offlineImageAnalyser.h" open="0" top="0" tabpos="0">
+		<Cursor position="1502" topLine="0" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="src\fitter.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="1585" topLine="0" />
+		<BrowseMarks positions="" />
+	</File>
+</BrowseTracker_layout_file>
