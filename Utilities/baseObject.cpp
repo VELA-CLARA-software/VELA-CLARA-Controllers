@@ -77,9 +77,33 @@ std::string baseObject::currentDateTime() const
     localtime_s(&tstruct, &now);
     // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
     // for more information about date/time format
-    strftime(buf, sizeof(buf), "%Y-%m-%d-%H%M",&tstruct);
+    strftime(buf, sizeof(buf), "%Y-%m-%d-%H%M%",&tstruct);
     return buf;
 }
+//______________________________________________________________________________
+std::string baseObject::getLocalTime() const
+{
+  auto now(std::chrono::system_clock::now());
+  auto seconds_since_epoch(
+    std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()));
+
+  // Construct time_t using 'seconds_since_epoch' rather than 'now' since it is
+  // implementation-defined whether the value is rounded or truncated.
+  std::time_t now_t(
+    std::chrono::system_clock::to_time_t(
+      std::chrono::system_clock::time_point(seconds_since_epoch)));
+
+  char temp[10];
+  if (!std::strftime(temp, 10, "%H:%M:%S.", std::localtime(&now_t)))
+    return "";
+
+  std::string nanoseconds = std::to_string(
+    (std::chrono::duration<long long, std::nano>(
+      now.time_since_epoch() - seconds_since_epoch)).count());
+
+  return std::string(temp) + std::string(9-nanoseconds.length(),'0') + nanoseconds;
+}
+
 //______________________________________________________________________________
 bool baseObject::getBool(const std::string& str) const
 {

@@ -93,6 +93,8 @@ class baseObject
             }
         }
 
+        std::string getLocalTime() const;
+
         template<typename T = std::string, typename U = std::string,
                  typename V = std::string, typename W = std::string,
                  typename X = std::string, typename Y = std::string,
@@ -259,6 +261,18 @@ class baseObject
 
         }
 
+        template<class U>
+        boost::python::dict toPythonDict2(std::vector<std::pair<std::string, std::vector<U>>> m)
+        {
+            boost::python::dict dictionary;
+            for(auto&&it:m)
+            {
+                //message(it.first,"  ",it.second);
+                dictionary[it.first] = toPythonList(it.second);
+            }
+            return dictionary;
+        }
+
 
         template<class T,  class U>
         boost::python::dict enumMapToPythonDict(std::map<T, U> m)
@@ -286,12 +300,11 @@ class baseObject
             boost::python::dict dictionary;
             for(auto&&it:m)
             {
-                message(it.first,"  ",it.second);
+                //message(it.first,"  ",it.second);
                 dictionary[it.first] = it.second;
             }
             return dictionary;
         }
-
 
         template<class T>
         boost::python::dict enumStringMapToPythonDict(const std::map<T,std::string>& m) const
