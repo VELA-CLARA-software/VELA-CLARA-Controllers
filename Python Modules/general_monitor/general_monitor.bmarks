@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2241" topLine="0" />
+	<File name="src\VCgeneralMonitor.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="95363" topLine="2101" />
+		<BrowseMarks positions="82864" />
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="3620" topLine="42" />
 	</File>
 	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
-		<Cursor position="1794" topLine="0" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
+		<Cursor position="2822" topLine="6" />
 	</File>
-	<File name="include\VCgeneralMonitor.h" open="1" top="0" tabpos="4">
-		<Cursor position="19507" topLine="404" />
-		<BrowseMarks positions="17724" />
-		<Book_Marks positions="" />
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="3786" topLine="25" />
 	</File>
-	<File name="main.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="578" topLine="0" />
+	<File name="include\VCgeneralMonitor.h" open="1" top="0" tabpos="2">
+		<Cursor position="5125" topLine="80" />
 		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
 	</File>
 	<File name="main.h" open="0" top="0" tabpos="0">
 		<Cursor position="353" topLine="0" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
 	</File>
-	<File name="src\VCgeneralMonitor.cpp" open="1" top="1" tabpos="3">
-		<Cursor position="69042" topLine="1632" />
-		<BrowseMarks positions="50953" />
-		<Book_Marks positions="" />
+	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3607" topLine="17" />
 	</File>
 	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="17847" topLine="431" />
 	</File>
-	<File name="..\..\Structs\gmStructs.h" open="0" top="0" tabpos="0">
-		<Cursor position="1362" topLine="0" />
-		<BrowseMarks positions="" />
-		<Book_Marks positions="" />
+	<File name="main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="578" topLine="0" />
+	</File>
+	<File name="..\..\Structs\gmStructs.h" open="1" top="0" tabpos="3">
+		<Cursor position="1986" topLine="0" />
 	</File>
 </BrowseTracker_layout_file>

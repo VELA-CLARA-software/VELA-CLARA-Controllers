@@ -725,6 +725,10 @@ namespace UTL
     // chtypes
 
 
+    const std::string DBR_TIME_ARRAY_FLOAT_STR  ="DBR_TIME_ARRAY_FLOAT";
+    const std::string DBR_ARRAY_FLOAT_STR       ="DBR_ARRAY_FLOAT";
+    const std::string DBR_TIME_ARRAY_INT_STR    ="DBR_TIME_ARRAY_INT";
+    const std::string DBR_ARRAY_INT_STR         ="DBR_ARRAY_INT";
      const std::string DBR_TIME_ARRAY_DOUBLE_STR = "DBR_TIME_ARRAY_DOUBLE";
      const std::string DBR_TIME_ARRY_INT_STR     = "DBR_TIME_ARRAY_INT";
      const std::string DBR_ARRAY_DOUBLE_STR      = "DBR_ARRAY_DOUBLE";

@@ -110,6 +110,7 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         bool isMonitoring(const std::string& id);
         bool isArrayDoublePV(const std::string& id);
         bool isArrayIntPV(const std::string& id);
+        bool isArrayFloatPV(const std::string& id);
         bool isArrayPV(const std::string& id);
         bool isValidID(const std::string& id);
       /// These are pure virtual methods, so need to have some implmentation in derived classes
@@ -177,14 +178,18 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         std::map<std::string,gmStructs::pvData<long>>                 longPVMap;
         std::map<std::string,gmStructs::pvData<double>>               doublePVMap;
         std::map<std::string,gmStructs::pvData<std::vector<double>> > vec_doublePVMap;
+        std::map<std::string,gmStructs::pvData<std::vector<float>> >  vec_floatPVMap;
         std::map<std::string,gmStructs::pvData<std::vector<int>>>     vec_intPVMap;
         std::map<std::string,gmStructs::pvData<std::string>>          stringPVMap;
 
         const std::string stringPrefix,intPrefix,shortPrefix,floatPrefix,enumPrefix,
-                          charPrefix,longPrefix,doublePrefix,vecdoublePrefix,vecintPrefix;
+                          charPrefix,longPrefix,doublePrefix,vecdoublePrefix,vecintPrefix,
+                          vecfloatPrefix;
 
         void addSingleDouble(const std::string & id,const event_handler_args& args);
+        void addSingleFloat(const std::string & id,const event_handler_args& args);
         void addArrayDouble(const std::string & id,const event_handler_args& args);
+        void addArrayFloat(const std::string & id,const event_handler_args& args);
         void addArrayInt(const std::string & id,const event_handler_args& args);
 
         int pvMonitorMapCount;
@@ -197,6 +202,7 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         gmStructs::pvStruct* addToEnumPVMap();
         gmStructs::pvStruct* addToVecDoublePVMap();
         gmStructs::pvStruct* addToVecIntPVMap();
+        gmStructs::pvStruct* addToVecFloatPVMap();
         gmStructs::pvStruct* addToStringPVMap();
 
         void updateTime_ns(const epicsTimeStamp & stamp, double& s);

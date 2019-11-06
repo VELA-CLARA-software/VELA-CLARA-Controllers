@@ -52,6 +52,7 @@ longPrefix("l"),
 doublePrefix("d"),
 vecdoublePrefix("D"),
 vecintPrefix("I"),
+vecfloatPrefix("F"),
 ca_chid_successmess("Successfully found ChId."),
 ca_chid_failuremess("!!TIMEOUT!! ChIds NOT found."),
 ca_subs_successmess("Succesfully subscribed, now monitoring."),
@@ -158,6 +159,14 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
             //vec_intPVMap[id].data[0]->buffer.resize(value);
         }
     }
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists(vec_floatPVMap, id))
+        {//message("getPVStruct ",  id, " isDoublePV");
+            vec_floatPVMap[id].data[0]->rs_count_max = value;
+            //vec_intPVMap[id].data[0]->buffer.resize(value);
+        }
+    }
 }
 //______________________________________________________________________________
 bool VCgeneralMonitor::isRunningStatComplete(const std::string& id)
@@ -226,7 +235,13 @@ bool VCgeneralMonitor::isRunningStatComplete(const std::string& id)
             return vec_intPVMap[id].data[0]->rs_complete;
         }
     }
-
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists(vec_floatPVMap, id))
+        {//message("getPVStruct ",  id, " vec_intPVMap");
+            return vec_floatPVMap[id].data[0]->rs_complete;
+        }
+    }
     return false;
 }
 //______________________________________________________________________________
@@ -325,7 +340,15 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             vec_intPVMap[id].data[0]->buffer.clear();
         }
     }
-
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists(vec_floatPVMap, id))
+        {//message("getPVStruct ",  id, " isDoublePV");
+            vec_floatPVMap[id].data[0]->rs_count = 0;
+            vec_floatPVMap[id].data[0]->rs_complete = false;
+            vec_floatPVMap[id].data[0]->buffer.clear();
+        }
+    }
 
 }
 //______________________________________________________________________________
@@ -396,7 +419,13 @@ size_t VCgeneralMonitor::getRunningStatCountMax(const std::string & id)
             return vec_intPVMap[id].data[0]->rs_count_max;
         }
     }
-
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists(vec_floatPVMap, id))
+        {//message("getPVStruct ",  id, " vec_floatPVMap");
+            return vec_floatPVMap[id].data[0]->rs_count_max;
+        }
+    }
     return 0;
 }
 
@@ -548,6 +577,13 @@ boost::python::dict VCgeneralMonitor::getBuffer(const std::string& id)
         if(entryExists(vec_intPVMap, id))
         {//message("getPVStruct ",  id, " vec_intPVMap");
             return toPythonDict2(vec_intPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists(vec_floatPVMap, id))
+        {//message("getPVStruct ",  id, " vec_intPVMap");
+            return toPythonDict2(vec_floatPVMap[id].data[0]->buffer);
         }
     }
     boost::python::dict d ;
@@ -824,6 +860,13 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id)
             return toPythonList( vec_intPVMap[id].data[0]->v);
         }
     }
+    else if(isArrayFloatPV(id))
+    {
+        if( entryExists(vec_floatPVMap,id))
+        {
+            return toPythonList( vec_floatPVMap[id].data[0]->v);
+        }
+    }
     return object();
 }
 #endif
@@ -892,6 +935,13 @@ size_t VCgeneralMonitor::getCounter(const std::string & id)
         if( entryExists(vec_intPVMap,id))
         {
             r = vec_intPVMap[id].data[0]->c;
+        }
+    }
+    else if(isArrayFloatPV(id))
+    {
+        if( entryExists(vec_floatPVMap,id))
+        {
+            r = vec_floatPVMap[id].data[0]->c;
         }
     }
     return r;
@@ -964,6 +1014,13 @@ boost::python::dict VCgeneralMonitor::getCounterAndValue(const std::string& id)
             r[vec_intPVMap[id].data[0]->c] = vec_intPVMap[id].data[0]->v;
         }
     }
+    else if(isArrayFloatPV(id))
+    {
+        if( entryExists(vec_floatPVMap,id))
+        {
+            r[vec_floatPVMap[id].data[0]->c] = vec_floatPVMap[id].data[0]->v;
+        }
+    }
     return r;
 }
 //______________________________________________________________________________
@@ -988,6 +1045,16 @@ boost::python::dict VCgeneralMonitor::getCounterAndTotalValue(const std::string&
                 boost::python::dict r;
                 r[vec_intPVMap[id].data[0]->c] = std::accumulate(vec_intPVMap[id].data[0]->v.begin(),
                                                                  vec_intPVMap[id].data[0]->v.end(), 0);
+                return r;
+            }
+        }
+        else if(isArrayFloatPV(id))
+        {
+            if( entryExists(vec_floatPVMap,id))
+            {
+                boost::python::dict r;
+                r[vec_floatPVMap[id].data[0]->c] = std::accumulate(vec_floatPVMap[id].data[0]->v.begin(),
+                                                                 vec_floatPVMap[id].data[0]->v.end(), 0);
                 return r;
             }
         }
@@ -1022,6 +1089,16 @@ boost::python::object VCgeneralMonitor::getTotalValue(const std::string& id)
                 return object(total);
             }
         }
+        else if(isArrayFloatPV(id))
+        {
+            if( entryExists(vec_floatPVMap,id))
+            {
+                float total = std::accumulate(vec_floatPVMap[id].data[0]->v.begin(),
+                                            vec_floatPVMap[id].data[0]->v.end(), 0);
+                message("total = ", total);
+                return object(total);
+            }
+        }
     }
     else
     {
@@ -1047,6 +1124,14 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id,const in
         {//            size_t index_positive = getArrayIndex(index, vec_intPVMap[id].data[0]->v.size());
             index_positive = getArrayIndex(index, vec_intPVMap[id].data[0]->v.size());
             return object(  vec_intPVMap[id].data[0]->v[index_positive]);
+        }
+    }
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists(vec_floatPVMap, id))
+        {//            size_t index_positive = getArrayIndex(index, vec_floatPVMap[id].data[0]->v.size());
+            index_positive = getArrayIndex(index, vec_floatPVMap[id].data[0]->v.size());
+            return object(vec_floatPVMap[id].data[0]->v[index_positive]);
         }
     }
     return object();
@@ -1100,6 +1185,17 @@ boost::python::list VCgeneralMonitor::getValue(const std::string & id,const int 
             auto first = vec_intPVMap[id].data[0]->v.begin() + pos[0];
             auto last  = vec_intPVMap[id].data[0]->v.begin() + pos[1];
             std::vector< int > r(first, last);
+            output = toPythonList( r);
+        }
+    }
+    else if(isArrayFloatPV(id))
+    {
+        if(entryExists( vec_floatPVMap, id))
+        {
+            std::vector< size_t > pos = getArrayRegionOfInterest(start_pos, end_pos, vec_floatPVMap[id].data[0]->v.size());
+            auto first = vec_floatPVMap[id].data[0]->v.begin() + pos[0];
+            auto last  = vec_floatPVMap[id].data[0]->v.begin() + pos[1];
+            std::vector< float > r(first, last);
             output = toPythonList( r);
         }
     }
@@ -1236,6 +1332,13 @@ size_t VCgeneralMonitor::getPVCount(const std::string & id )
             return vec_intPVMap[id].pvs.COUNT;
         }
     }
+    else if(isArrayFloatPV(id))
+    {
+        if( entryExists(vec_floatPVMap,id))
+        {
+            return vec_floatPVMap[id].pvs.COUNT;
+        }
+    }
     return 0; //MAGIC_NUMBER
 }
 //______________________________________________________________________________
@@ -1291,8 +1394,16 @@ std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
                     message("PV ", pvFullName, " is a DBR_INT, connecting to channel");
                     r = connectPV(pvFullName, "DBR_INT");
                 case 2:
-                    message("PV ", pvFullName, " is a DBR_FLOAT, connecting to channel");
-                    r = connectPV(pvFullName, "DBR_FLOAT");
+                    if( COUNT > 1)
+                    {
+                        message("PV ", pvFullName, " is a DBR_ARRAY_FLOAT, connecting to channel");
+                        r= connectPV(pvFullName, "DBR_ARRAY_FLOAT");
+                    }
+                    else
+                    {
+                        message("PV ", pvFullName, " is a DBR_FLOAT, connecting to channel");
+                        r= connectPV(pvFullName, "DBR_FLOAT");
+                    }
                     break;
                 case 3:
                     message("PV ", pvFullName," is a DBR_ENUM, connecting to channel");
@@ -1442,6 +1553,7 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
     gmStructs::pvStruct* pvs =  getCHTYPEandPrefix(pvType);
     if(pvs)
     {// we recognise the PV channel type
+        message(" PV channel type recognised");
         pvs->pvFullName = pvFullName;
         pvs->COUNT= defaultCOUNT;
         pvs->MASK = defaultMASK;
@@ -1516,6 +1628,41 @@ void VCgeneralMonitor::addSingleDouble(const std::string& id,
     }
     message("DOUBLE");
 }
+//--------------------------------------------------------------------------------
+void VCgeneralMonitor::addSingleFloat(const std::string& id,
+                                       const event_handler_args& args)
+{   message("addSingleDouble called");
+    if( floatPVMap[id].data.size() == 0)
+    {
+        floatPVMap[id].data.push_back(new gmStructs::dataEntry<float>());
+    }
+    floatPVMap[id].data[0]->v = *(float*)args.dbr;// MAGIC_NUMBER
+    floatPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+
+
+
+    if(floatPVMap[id].data[0]->rs_count < floatPVMap[id].data[0]->rs_count_max)
+    {
+        floatPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+
+
+        std::pair<std::string,float> new_pair;
+        floatPVMap.at(id).data[0]->buffer.push_back(new_pair);
+        floatPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
+        floatPVMap.at(id).data[0]->buffer.back().second = *(float*)args.dbr;
+
+        floatPVMap[id].data[0]->rs.Push(floatPVMap[id].data[0]->v);
+        if(floatPVMap[id].data[0]->rs_count ==  floatPVMap[id].data[0]->rs_count_max)
+        {
+            floatPVMap[id].data[0]->rs_complete = true;
+        }
+        else
+        {
+            floatPVMap[id].data[0]->rs_complete = false;
+        }
+    }
+    message("DOUBLE");
+}
 //______________________________________________________________________________
 void VCgeneralMonitor::addArrayDouble(const std::string & id,
                                       const event_handler_args& args)
@@ -1555,6 +1702,46 @@ void VCgeneralMonitor::addArrayDouble(const std::string & id,
     }
     //std::cout<< "buffer count = " << vec_doublePVMap[id].data[0]->rs_count << std::endl;
     //std::cout<< "buffer size  = " << vec_doublePVMap.at(id).data[0]->buffer.size() << std::endl;
+}
+//______________________________________________________________________________
+void VCgeneralMonitor::addArrayFloat(const std::string & id,
+                                      const event_handler_args& args)
+{   //message(vec_floatPVMap[id].data.size());
+    if( vec_floatPVMap[id].data.size() == 0)
+    {
+        vec_floatPVMap[id].data.push_back(new gmStructs::dataEntry<std::vector<float>>());
+        //message(vec_floatPVMap[id].data.size());
+        //message("resize to output array to  ", vec_floatPVMap[id].pvs.COUNT);
+        vec_floatPVMap[id].data[0]->v.resize(vec_floatPVMap[id].pvs.COUNT);
+    }
+    size_t counter = 0;
+    for( auto && it : vec_floatPVMap[id].data[0]->v)
+    {
+        it = *( (float*) args.dbr + counter);
+        ++counter;
+    }
+    vec_floatPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+
+    if(vec_floatPVMap[id].data[0]->rs_count < vec_floatPVMap[id].data[0]->rs_count_max)
+    {
+        vec_floatPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+        std::pair<std::string,std::vector<float>> new_pair;
+        vec_floatPVMap.at(id).data[0]->buffer.push_back(new_pair);
+        vec_floatPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
+        vec_floatPVMap.at(id).data[0]->buffer.back().second = vec_floatPVMap[id].data[0]->v;
+
+        if(vec_floatPVMap[id].data[0]->rs_count ==  vec_floatPVMap[id].data[0]->rs_count_max)
+        {
+            vec_floatPVMap[id].data[0]->rs_complete = true;
+        }
+        else
+        {
+            vec_floatPVMap[id].data[0]->rs_complete = false;
+        }
+    //std::cout<< "buffer[0].first = " << vec_floatPVMap.at(id).data[0]->buffer[0].first << std::endl;
+    }
+    //std::cout<< "buffer count = " << vec_floatPVMap[id].data[0]->rs_count << std::endl;
+    //std::cout<< "buffer size  = " << vec_floatPVMap.at(id).data[0]->buffer.size() << std::endl;
 }
 //______________________________________________________________________________
 void VCgeneralMonitor::addArrayInt(const std::string & id,const event_handler_args& args)
@@ -1657,6 +1844,17 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
                 else if( args.count > 0)
                 {
                     addArrayDouble(id,args);
+                }
+                break;
+            case  DBR_FLOAT:
+                if( args.count == 1)
+                {
+                    addSingleFloat(id,args);
+                }
+                else if( args.count > 0)
+                {
+                    //message("CALLIGN addArrayFloat");
+                    addArrayFloat(id,args);
                 }
                 break;
             case  DBR_INT:
@@ -1876,6 +2074,24 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
             }
         }
         updateTime_ns(floatPVMap.at(id).data[0]->t, floatPVMap.at(id).data[0]->s);
+
+    }
+    else if(isArrayFloatPV(id))
+    {
+        if( vec_floatPVMap.at(id).data.size() == 0)// MAGIC_NUMBER
+        {
+            vec_floatPVMap.at(id).data.push_back(new gmStructs::dataEntry<std::vector<float>>());
+        }
+        const dbr_time_short * p = (const struct dbr_time_short*)dbr;
+        size_t counter = 0;
+        for( auto && it : vec_floatPVMap[id].data[0]->v)
+        {
+            it = *( (float*) p->value + counter);
+            ++counter;
+        }
+        vec_floatPVMap.at(id).data[0]->t = p->stamp;// MAGIC_NUMBER
+        vec_floatPVMap.at(id).data[0]->c += 1;// MAGIC_NUMBER
+        updateTime_ns(vec_floatPVMap.at(id).data[0]->t, vec_floatPVMap.at(id).data[0]->s);
 
     }
     else if(isEnumPV(id))
@@ -2191,6 +2407,25 @@ gmStructs::pvStruct* VCgeneralMonitor::getCHTYPEandPrefix(const std::string & pv
     {
         r  = addToVecDoublePVMap();
     }
+
+    else if(pvType == UTL::DBR_ARRAY_FLOAT_STR)
+    {
+        r  = addToVecFloatPVMap();
+    }
+    else if(pvType == UTL::DBR_TIME_ARRAY_FLOAT_STR)
+    {
+        r  = addToVecFloatPVMap();
+    }
+
+    else if(pvType == UTL::DBR_ARRAY_INT_STR)
+    {
+        r  = addToVecDoublePVMap();
+    }
+    else if(pvType == UTL::DBR_TIME_ARRAY_INT_STR)
+    {
+        r  = addToVecDoublePVMap();
+    }
+
     else if(pvType == UTL::DBR_STRING_STR)
     {
         r  = addToStringPVMap();
@@ -2493,6 +2728,11 @@ bool VCgeneralMonitor::isArrayIntPV(const std::string & id)
     return id.substr(0,1) == vecintPrefix  ? true : false;
 }
 //______________________________________________________________________________
+bool VCgeneralMonitor::isArrayFloatPV(const std::string & id)
+{
+    return id.substr(0,1) == vecfloatPrefix  ? true : false;
+}
+//______________________________________________________________________________
 bool VCgeneralMonitor::isArrayPV(const std::string& id)
 {
     bool r = false;
@@ -2501,6 +2741,10 @@ bool VCgeneralMonitor::isArrayPV(const std::string& id)
         r = true;
     }
     else if(isArrayIntPV(id))
+    {
+        r = true;
+    }
+    else if(isArrayFloatPV(id))
     {
         r = true;
     }
@@ -2636,6 +2880,18 @@ gmStructs::pvStruct* VCgeneralMonitor::addToVecIntPVMap()
     vec_intPVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
     debugMessage("connectPV Passed a DBR_ARRAY_INT. Entry with id =  ",id, " created");
     return &vec_intPVMap.at(id).pvs;
+}
+//______________________________________________________________________________
+gmStructs::pvStruct* VCgeneralMonitor::addToVecFloatPVMap()
+{
+    std::string id = vecfloatPrefix;
+    id += std::to_string(pvMonitorMapCount);
+    vec_floatPVMap[id].id = id;
+    vec_floatPVMap.at(id).pvs.CHTYPE = DBR_FLOAT;
+    vec_floatPVMap.at(id).pvs.id = id;
+    vec_floatPVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
+    debugMessage("connectPV Passed a DBR_ARRAY_FLOAT. Entry with id =  ",id, " created");
+    return &vec_floatPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
 /// base class memebr functions
