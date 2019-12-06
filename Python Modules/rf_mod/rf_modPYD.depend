@@ -387,3 +387,249 @@
 	<vector>
 	<map>
 
+1545318480 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.cpp
+	"gunModController.h"
+
+1545318480 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.h
+	<string>
+	<vector>
+	<map>
+	"gunModInterface.h"
+	"controller.h"
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+
+1545318480 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.h
+	"interface.h"
+	"rfModStructs.h"
+	"structs.h"
+	"gunModConfigReader.h"
+	"gunModHexStringMap.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1550840956 c:\users\djs56\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1572620313 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+	<boost/python/numpy.hpp>
+
+1542115696 c:\users\djs56\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1574935822 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1537794560 c:\users\djs56\github\vela-clara-controllers\structs\rf_mod\rfmodstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<vector>
+	<string>
+	<map>
+	<cadef.h>
+
+1534593094 c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfModStructs.h"
+
+1550570198 c:\users\djs56\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1534593082 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodhexstringmap.h
+	<string>
+	<map>
+
+1534593082 c:\users\djs56\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1545321752 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.cpp
+	"gunModInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<algorithm>
+	<thread>
+
+1537794058 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.cpp
+	"l01ModController.h"
+
+1537794062 c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.h
+	"controller.h"
+	"l01ModInterface.h"
+
+1537794072 c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.h
+	"interface.h"
+	"rfModStructs.h"
+	"structs.h"
+	"l01ModConfigReader.h"
+	<string>
+
+1534593094 c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfModStructs.h"
+
+1537797838 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.cpp
+	"l01ModInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<algorithm>
+	<thread>
+
+1534593094 source:c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.cpp
+	"gunModConfigReader.h"
+	"configDefinitions.h"
+	"rfModStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1537798188 source:c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.cpp
+	"l01ModConfigReader.h"
+	"configDefinitions.h"
+	"rfModStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1534593090 source:c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\main.cpp
+
+1537796564 source:c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\src\vcrfmod.cpp
+	"VCrfmod.h"
+	<iostream>
+
+1545318480 c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\include\vcrfmod.h
+	<string>
+	"gunModController.h"
+	"l01ModController.h"
+	"rfModStructs.h"
+	"rfModStructs.h"
+	"VCheader.h"
+	"VCbase.h"
+
+1552996608 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1537795684 c:\users\djs56\github\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1551095810 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1550746492 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
