@@ -415,9 +415,46 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::INTERLOCK, val);
         }
-
-
-
+        else if(key == PV_SUFFIX_CH1_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH1_INTERLOCK_STATUS , val); }
+        else if(key == PV_SUFFIX_CH1_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH1_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH1_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH1_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH1_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH1_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH1_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH1_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH2_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH2_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH2_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH2_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH2_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH2_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH2_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH2_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH2_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH2_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH3_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH3_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH3_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH3_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH3_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH3_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH3_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH3_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH3_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH3_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH4_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH4_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH4_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH4_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH4_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH4_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH4_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH4_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH4_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH4_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH5_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH5_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH5_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH5_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH5_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH5_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH5_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH5_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH5_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH5_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH6_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH6_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH6_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH6_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH6_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH6_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH6_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH6_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH6_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH6_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH7_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH7_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH7_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH7_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH7_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH7_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH7_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH7_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH7_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH7_INTERLOCK_PDBM  , val); }
+        else if(key == PV_SUFFIX_CH8_INTERLOCK_STATUS){ addToPVStruct(pvs, LLRF_PV_TYPE::CH8_INTERLOCK_STATUS, val); }
+        else if(key == PV_SUFFIX_CH8_INTERLOCK_ENABLE){ addToPVStruct(pvs, LLRF_PV_TYPE::CH8_INTERLOCK_ENABLE, val); }
+        else if(key == PV_SUFFIX_CH8_INTERLOCK_U     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH8_INTERLOCK_U     , val); }
+        else if(key == PV_SUFFIX_CH8_INTERLOCK_P     ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH8_INTERLOCK_P     , val); }
+        else if(key == PV_SUFFIX_CH8_INTERLOCK_PDBM  ){ addToPVStruct(pvs, LLRF_PV_TYPE::CH8_INTERLOCK_PDBM  , val); }
 
     }
     else

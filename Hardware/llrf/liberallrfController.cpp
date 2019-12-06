@@ -1022,12 +1022,12 @@ void liberaLLRFController::keepAlive()
 
 
 //______________________________________________________________________________
-llrfStructs::LLRF_TYPE liberaLLRFController::getType()
+llrfStructs::LLRF_TYPE liberaLLRFController::getType()const
 {
     return localInterface.getType();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getAmpFF()
+double liberaLLRFController::getAmpFF()const
 {
     return localInterface.getAmpFF();
 }
@@ -1037,68 +1037,72 @@ size_t liberaLLRFController::getPulseCount()const
     return localInterface.getPulseCount();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getAmpSP()
+double liberaLLRFController::getAmpSP()const
 {
     return localInterface.getAmpSP();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPhiFF()
+double liberaLLRFController::getPhiFF()const
 {
     return localInterface.getPhiFF();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPhiSP()
+double liberaLLRFController::getPhiSP()const
 {
     return localInterface.getPhiSP();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getAmpLLRF()
+double liberaLLRFController::getAmpLLRF()const
 {
     return localInterface.getAmpLLRF();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPhiLLRF()
+double liberaLLRFController::getPhiLLRF()const
 {
     return localInterface.getPhiLLRF();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPhiDEG()
+double liberaLLRFController::getPhiDEG()const
 {
     return localInterface.getPhiDEG();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getAmpMVM()
+double liberaLLRFController::getAmpMVM()const
 {
     return localInterface.getAmpMVM();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPulseLength()
+double liberaLLRFController::getPulseLength()const
 {
     return localInterface.getPulseLength();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPulseOffset()
+double liberaLLRFController::getPulseOffset()const
 {
     return localInterface.getPulseOffset();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getPhiCalibration()
+double liberaLLRFController::getPhiCalibration()const
 {
     return localInterface.getPhiCalibration();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getAmpCalibration()
+double liberaLLRFController::getAmpCalibration()const
 {
     return localInterface.getAmpCalibration();
 }
 //______________________________________________________________________________
-double liberaLLRFController::getCrestPhiLLRF()
+double liberaLLRFController::getCrestPhiLLRF()const
 {
     return localInterface.getCrestPhiLLRF();
 }
-
+//____________________________________________________________________________________________
+double liberaLLRFController::getMaxAmpSP()const
+{
+    return localInterface.getMaxAmpSP();
+}
 //______________________________________________________________________________
-size_t liberaLLRFController::getTraceLength()
+size_t liberaLLRFController::getTraceLength()const
 {
     return localInterface.getTraceLength();
 }
@@ -2172,6 +2176,240 @@ bool liberaLLRFController::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
 {
     return localInterface.isNotCheckingMask(pv);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
+/*
+.____    .____   _____________________ .__        __               .__                 __
+|    |   |    |  \______   \_   _____/ |__| _____/  |_  ___________|  |   ____   ____ |  | __  ______
+|    |   |    |   |       _/|    __)   |  |/    \   __\/ __ \_  __ \  |  /  _ \_/ ___\|  |/ / /  ___/
+|    |___|    |___|    |   \|     \    |  |   |  \  | \  ___/|  | \/  |_(  <_> )  \___|    <  \___ \
+|_______ \_______ \____|_  /\___  /    |__|___|  /__|  \___  >__|  |____/\____/ \___  >__|_ \/____  >
+        \/       \/      \/     \/             \/          \/                       \/     \/     \/
+*/
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::areLLRFTraceInterlocksGood() const
+{
+    return localInterface.areLLRFTraceInterlocksGood();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::areLLRFTraceInterlocksBad() const
+{
+    return localInterface.areLLRFTraceInterlocksBad();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh1Interlock() const
+{
+    return localInterface.getCh1Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh1InterlockEnable() const
+{
+    return localInterface.getCh1InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh1InterlockU() const
+{
+    return localInterface.getCh1InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh1InterlockP() const
+{
+    return localInterface.getCh1InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh1InterlockPdbm() const
+{
+    return localInterface.getCh1InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh2Interlock() const
+{
+    return localInterface.getCh2Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh2InterlockEnable() const
+{
+    return localInterface.getCh2InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh2InterlockU() const
+{
+    return localInterface.getCh2InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh2InterlockP() const
+{
+    return localInterface.getCh2InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh2InterlockPdbm() const
+{
+    return localInterface.getCh2InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh3Interlock() const
+{
+    return localInterface.getCh3Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh3InterlockEnable() const
+{
+    return localInterface.getCh3InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh3InterlockU() const
+{
+    return localInterface.getCh3InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh3InterlockP() const
+{
+    return localInterface.getCh3InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh3InterlockPdbm() const
+{
+    return localInterface.getCh3InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh4Interlock() const
+{
+    return localInterface.getCh4Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh4InterlockEnable() const
+{
+    return localInterface.getCh4InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh4InterlockU() const
+{
+    return localInterface.getCh4InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh4InterlockP() const
+{
+    return localInterface.getCh4InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh4InterlockPdbm() const
+{
+    return localInterface.getCh4InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh5Interlock() const
+{
+    return localInterface.getCh5Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh5InterlockEnable() const
+{
+    return localInterface.getCh5InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh5InterlockU() const
+{
+    return localInterface.getCh5InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh5InterlockP() const
+{
+    return localInterface.getCh5InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh5InterlockPdbm() const
+{
+    return localInterface.getCh5InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh6Interlock() const
+{
+    return localInterface.getCh6Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh6InterlockEnable() const
+{
+    return localInterface.getCh6InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh6InterlockU() const
+{
+    return localInterface.getCh6InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh6InterlockP() const
+{
+    return localInterface.getCh6InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh6InterlockPdbm() const
+{
+    return localInterface.getCh6InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh7Interlock() const
+{
+    return localInterface.getCh7Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh7InterlockEnable() const
+{
+    return localInterface.getCh7InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh7InterlockU() const
+{
+    return localInterface.getCh7InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh7InterlockP() const
+{
+    return localInterface.getCh7InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh7InterlockPdbm() const
+{
+    return localInterface.getCh7InterlockPdbm();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh8Interlock() const
+{
+    return localInterface.getCh8Interlock();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::getCh8InterlockEnable() const
+{
+    return localInterface.getCh8InterlockEnable();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh8InterlockU() const
+{
+    return localInterface.getCh8InterlockU();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh8InterlockP() const
+{
+    return localInterface.getCh8InterlockP();
+}
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getCh8InterlockPdbm() const
+{
+    return localInterface.getCh8InterlockPdbm();
+}
+
+
+
 
 
 

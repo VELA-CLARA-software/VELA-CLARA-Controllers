@@ -357,6 +357,7 @@ class liberallrfInterface : public interface
 
     i.e. things to expose to python
 */
+        double getMaxAmpSP()const;
         double getAmpFF()const;
         double getAmpSP()const;
         double getPhiFF()const;
@@ -550,6 +551,80 @@ class liberallrfInterface : public interface
 
         std::string fullLLRFTraceName(const std::string& name)const;
         std::string shortLLRFTraceName(const std::string& name_in)const;
+
+
+
+
+        bool areLLRFTraceInterlocksGood() const;
+        bool areLLRFTraceInterlocksBad() const;
+
+        bool   getCh1Interlock() const;
+        bool   getCh1InterlockEnable() const;
+        double getCh1InterlockU() const;
+        double getCh1InterlockP() const;
+        double getCh1InterlockPdbm() const;
+        bool   getCh2Interlock() const;
+        bool   getCh2InterlockEnable() const;
+        double getCh2InterlockU() const;
+        double getCh2InterlockP() const;
+        double getCh2InterlockPdbm() const;
+        bool   getCh3Interlock() const;
+        bool   getCh3InterlockEnable() const;
+        double getCh3InterlockU() const;
+        double getCh3InterlockP() const;
+        double getCh3InterlockPdbm() const;
+        bool   getCh4Interlock() const;
+        bool   getCh4InterlockEnable() const;
+        double getCh4InterlockU() const;
+        double getCh4InterlockP() const;
+        double getCh4InterlockPdbm() const;
+        bool   getCh5Interlock() const;
+        bool   getCh5InterlockEnable() const;
+        double getCh5InterlockU() const;
+        double getCh5InterlockP() const;
+        double getCh5InterlockPdbm() const;
+        bool   getCh6Interlock() const;
+        bool   getCh6InterlockEnable() const;
+        double getCh6InterlockU() const;
+        double getCh6InterlockP() const;
+        double getCh6InterlockPdbm() const;
+        bool   getCh7Interlock() const;
+        bool   getCh7InterlockEnable() const;
+        double getCh7InterlockU() const;
+        double getCh7InterlockP() const;
+        double getCh7InterlockPdbm() const;
+        bool   getCh8Interlock() const;
+        bool   getCh8InterlockEnable() const;
+        double getCh8InterlockU() const ;
+        double getCh8InterlockP() const;
+        double getCh8InterlockPdbm() const;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /// These are pure virtual methods, so need to have some implmentation in derived classes

@@ -516,6 +516,46 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
             }
             //message("INTERLOCK = ", ENUM_TO_STRING(llrf.interlock_state));
             break;
+        case LLRF_PV_TYPE::CH1_INTERLOCK_STATUS: llrf.llrf_interlock.ch1        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH1_INTERLOCK_ENABLE: llrf.llrf_interlock.ch1_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH1_INTERLOCK_U:      llrf.llrf_interlock.ch1_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH1_INTERLOCK_P:      llrf.llrf_interlock.ch1_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH1_INTERLOCK_PDBM:   llrf.llrf_interlock.ch1_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH2_INTERLOCK_STATUS: llrf.llrf_interlock.ch2        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH2_INTERLOCK_ENABLE: llrf.llrf_interlock.ch2_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH2_INTERLOCK_U:      llrf.llrf_interlock.ch2_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH2_INTERLOCK_P:      llrf.llrf_interlock.ch2_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH2_INTERLOCK_PDBM:   llrf.llrf_interlock.ch2_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH3_INTERLOCK_STATUS: llrf.llrf_interlock.ch3        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH3_INTERLOCK_ENABLE: llrf.llrf_interlock.ch3_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH3_INTERLOCK_U:      llrf.llrf_interlock.ch3_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH3_INTERLOCK_P:      llrf.llrf_interlock.ch3_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH3_INTERLOCK_PDBM:   llrf.llrf_interlock.ch3_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH4_INTERLOCK_STATUS: llrf.llrf_interlock.ch4        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH4_INTERLOCK_ENABLE: llrf.llrf_interlock.ch4_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH4_INTERLOCK_U:      llrf.llrf_interlock.ch4_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH4_INTERLOCK_P:      llrf.llrf_interlock.ch4_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH4_INTERLOCK_PDBM:   llrf.llrf_interlock.ch4_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH5_INTERLOCK_STATUS: llrf.llrf_interlock.ch5        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH5_INTERLOCK_ENABLE: llrf.llrf_interlock.ch5_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH5_INTERLOCK_U:      llrf.llrf_interlock.ch5_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH5_INTERLOCK_P:      llrf.llrf_interlock.ch5_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH5_INTERLOCK_PDBM:   llrf.llrf_interlock.ch5_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH6_INTERLOCK_STATUS: llrf.llrf_interlock.ch6        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH6_INTERLOCK_ENABLE: llrf.llrf_interlock.ch6_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH6_INTERLOCK_U:      llrf.llrf_interlock.ch6_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH6_INTERLOCK_P:      llrf.llrf_interlock.ch6_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH6_INTERLOCK_PDBM:   llrf.llrf_interlock.ch6_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH7_INTERLOCK_STATUS: llrf.llrf_interlock.ch7        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH7_INTERLOCK_ENABLE: llrf.llrf_interlock.ch7_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH7_INTERLOCK_U:      llrf.llrf_interlock.ch7_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH7_INTERLOCK_P:      llrf.llrf_interlock.ch7_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH7_INTERLOCK_PDBM:   llrf.llrf_interlock.ch7_Pdbm   = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH8_INTERLOCK_STATUS: llrf.llrf_interlock.ch8        = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH8_INTERLOCK_ENABLE: llrf.llrf_interlock.ch8_enable = getDBRbool(args);   break;
+        case LLRF_PV_TYPE::CH8_INTERLOCK_U:      llrf.llrf_interlock.ch8_U      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH8_INTERLOCK_P:      llrf.llrf_interlock.ch8_P      = getDBRdouble(args); break;
+        case LLRF_PV_TYPE::CH8_INTERLOCK_PDBM:   llrf.llrf_interlock.ch8_Pdbm   = getDBRdouble(args); break;
         default:
             debugMessage("ERROR updateLLRFValue passed Unknown PV Type = ", ENUM_TO_STRING(pv));
     }
@@ -767,7 +807,7 @@ void liberallrfInterface::updateRollingAveragesAndMasks()
     /*  updates the rolling average for each trace,
         and then sets maks based on the curren trolling average
     */
-    // mutex from updateLLRFValue()
+    // mutex from updateLLRFVasetMaskStartIndexlue()
     for(auto&&it:llrf.trace_data)
     {
         updateTraceRollingAverage(it.second);
@@ -781,6 +821,7 @@ void liberallrfInterface::updateRollingAveragesAndMasks()
         }
     }
 }
+//--------------------------------------------------------------------------------------------------
 void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
 {
     /*
@@ -796,6 +837,13 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
      5) element mask_end+1          and end               set very default hi/lo (+/-inf)
 
     /* ref to the latest rolling average, this is used to define the mask */
+
+
+//    if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//    {
+//        message("setNewMask Called, ", llrf.active_pulse_count);
+//    }
+
     std::vector<double>& ra = data.rolling_average;
 
     double hi_max =  std::numeric_limits<double>::infinity();
@@ -809,18 +857,9 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
     //
     // mask_value is what to add or subtrace from the
     // rolling_average to set the hi/lo mask
-    double mask_value = UTL::ZERO_DOUBLE;
-//    std::string mask_type;
-//    if(data.use_percent_mask)
-//    {
-//        mask_type = "setPercentMask";
-//    }
-//    else if(data.use_abs_mask)
-//    {
-//        mask_type = "setAbsoluteMask";
-//        mask_value = data.mask_value;
-//    }
-    //
+    //double mask_value = UTL::ZERO_DOUBLE;
+    double mask_value = data.mask_value;
+
     // MASK part 1
     for(auto i = UTL::ZERO_SIZET; i <= data.mask_start; ++i)
     {
@@ -830,24 +869,34 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
     //message("2aa");
     //
     // MASK part 2
+    size_t mask_max_index = 0;
+    double mask_max = 0.0;
     for(auto i = data.mask_start + UTL::ONE_SIZET; i <= data.mask_end; ++i)
     {
         if(data.use_percent_mask)
         {
-            /* data.mask_value is in units o fpercent, so mulitply by 0.01 */
-            mask_value = fabs(ra[i] * data.mask_value * UTL::ZERO_POINT_ONE);
-            if( mask_value < data.mask_abs_min )
-            {
-                mask_value = data.mask_abs_min;
-            }
+            /* data.mask_value is in units of percent, so mulitply by 0.01 */
+            mask_value = fabs(ra[i] * data.mask_value * UTL::ZERO_POINT_ZERO_ONE);
         }
         hi_mask[i] = ra[i] + mask_value;
         lo_mask[i] = ra[i] - mask_value;
 
+        if( lo_mask[i] < data.mask_abs_min )
+        {
+            lo_mask[i] = data.mask_abs_min;
+        }
         //std::cout << hi_mask[i] <<  " " << lo_mask[i] << ". ";
+        if( hi_mask[i] > mask_max )
+        {
+            mask_max = hi_mask[i];
+            mask_max_index = i;
+        }
     }
-    //std::cout << std::endl;
-    //message(mask_type," 3");
+//    if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//    {
+//        message("data.mask_value = ", data.mask_value);
+//        message("NEW mask_max = ", mask_max, " RA at mask_max = ",ra[mask_max_index], " at index = ", mask_max_index);
+//    }
     //
     // MASK part 3
     for(auto i = data.mask_window_start + UTL::ONE_SIZET; i <= data.mask_window_end; ++i)
@@ -1633,13 +1682,13 @@ void liberallrfInterface::handleFailedMask(llrfStructs::rf_trace_data& trace)
         message("handleFailedMask() is setting amp to = ", trace.amp_drop_value, ", time = ",  elapsedTime());
         setAmpSPCallback(trace.amp_drop_value);
     }
-    // SECOND STOP ADDING TO THE ROLLING AVERAGE
-    //
-    message("handleFailedMask() is setting keep_rolling_average = FALSE, for all traces");
-    for(auto&it:llrf.trace_data)
-    {
-        it.second.keep_rolling_average = false;
-    }
+//    // SECOND STOP ADDING TO THE ROLLING AVERAGE
+//    // NO we only add to averages if the pulse is ACTIVE
+//    message("handleFailedMask() is setting keep_rolling_average = FALSE, for all traces");
+//    for(auto&it:llrf.trace_data)
+//    {
+//        it.second.keep_rolling_average = false;
+//    }
     //
     newOutsideMaskEvent(trace);
 }
@@ -2555,24 +2604,42 @@ void liberallrfInterface::updateTraceRollingAverage(llrfStructs::rf_trace_data& 
     // updateMasks()
     //
     //
-    //message("updateTraceRollingAverage, ", data.name);
+//    if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//    {
+//        message("updateTraceRollingAverage, ", llrf.active_pulse_count);
+//    }
     if(data.keep_rolling_average)
     {
-        //message("keep_rolling_average = true, ", data.name);
+//        if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//        {
+//            message("keep_rolling_average = true, ");
+//        }
         if(data.rolling_average_size == UTL::ZERO_SIZET)
         {
-
+            //message("rolling_average_size = 0");
         }
         else if(data.rolling_average_size == UTL::ONE_SIZET)
         {
+            //message("rolling_average_size = 1");
             data.rolling_average = data.data_buffer.back().second;
             data.rolling_average_count = data.rolling_average_size;
             data.has_average = true;
         }
         else
         {
+//            if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//            {
+//                message("data.rolling_average_size = ", data.rolling_average_size);
+//                message("data.average_trace_values.size() =  ", data.average_trace_values.size() );
+//            }
+
             // append new data to average_trace_values
             data.average_trace_values.push_back( data.data_buffer.back().second );
+
+//            if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//            {
+//                message("Added new values, data.average_trace_values.size() =  ", data.average_trace_values.size() );
+//            }
 
             // add the new trace to data.rolling_sum
             std::vector<double>& to_add = data.average_trace_values.back();
@@ -2585,24 +2652,53 @@ void liberallrfInterface::updateTraceRollingAverage(llrfStructs::rf_trace_data& 
                 *sum_it += *to_add_it;
             }
 
-            // if we have aquuired data.average_size traces then we can take an average
-            if(data.average_trace_values.size() == data.rolling_average_size)
+            // if we have aquired data.average_size traces then we can take an average
+            if(data.average_trace_values.size() < data.rolling_average_size)
+            {
+                data.has_average = false;
+                //message("data.average_trace_values.size() < data.rolling_average_size, data.has_average = false");
+            }
+            else
             {
                 data.has_average = true;
+                //message("data.average_trace_values.size() !< data.rolling_average_size, data.has_average = true");
             }
-            //
+
+            // If we have one trace more than required for the average, subtract it from rolling sum
             if(data.average_trace_values.size() > data.rolling_average_size)
             {
-//                debugMessage(data.name, "  average_trace_values.size() > data.rolling_average_size ",
-//                             data.average_trace_values.size()," >  ",data.rolling_average_size);
+//                if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//                {
+//                    message("data.average_trace_values.size() > data.rolling_average_size, ", data.average_trace_values.size(), " > ", data.rolling_average_size);
+//                }
                 // if so subtract the first trace in average_trace_values
                 std::vector<double>& to_sub = data.average_trace_values.front();
                 for(auto i1=to_sub.begin(), i2=sum.begin(); i1<to_sub.end() && i2<sum.end(); ++i1,++i2)
                 {
                     *i2 -= *i1;
                 }
+
+
+//                if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//                {
+//                    message("FIRST VALUE FOR EACH TRACE = ",
+//                            data.average_trace_values[0][0]," ",
+//                            data.average_trace_values[1][0]," ",
+//                            data.average_trace_values[2][0]," ",
+//                            data.average_trace_values[3][0]," ",
+//                            data.average_trace_values[4][0]," ",
+//                            data.average_trace_values[5][0]
+//                            );
+//                }
                 // erase the trace we just subtraced
                 data.average_trace_values.erase(data.average_trace_values.begin());
+
+
+//                if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//                {
+//                    message("Subtracted old values, data.average_trace_values.size() =  ", data.average_trace_values.size() );
+//                }
+
             }
             if(data.has_average)
             {
@@ -2614,9 +2710,13 @@ void liberallrfInterface::updateTraceRollingAverage(llrfStructs::rf_trace_data& 
                     *i2 = *i1 / s;
                 }
 
-                //message(data.name," new average, max  = ", *std::max_element(av.begin(),av.begin()+1000));
-             }
+//                if( data.name == "LRRG_CAVITY_REVERSE_POWER" )
+//                {
+//                    message("New average, [0] =  ", av[0],", max  = ", *std::max_element(av.begin(),av.begin()+1000));
+//                }
+            }
             data.rolling_average_count = data.average_trace_values.size();
+            //message("data.average_trace_values.size() < data.rolling_average_size, data.has_average = False");
         }
     }
 }
@@ -3814,6 +3914,7 @@ bool liberallrfInterface::setPhiFF(double value)
 {
     return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_PHI_FF),value);
 }
+
 //____________________________________________________________________________________________
 bool liberallrfInterface::setAmpSP(double value)
 {
@@ -3822,12 +3923,8 @@ bool liberallrfInterface::setAmpSP(double value)
         message("Error!! Requested amplitude, ",value,"  too high");
         return false;
     }
-    return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP),value);
+    return setValue(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_AMP_SP), value);
 }
-
-
-
-
 //____________________________________________________________________________________________
 bool liberallrfInterface::setAmpFF(double value)
 {
@@ -4471,6 +4568,12 @@ double liberallrfInterface::getCrestPhiLLRF()const// in LLRF units
     return llrf.crestPhi;
 }
 //____________________________________________________________________________________________
+//____________________________________________________________________________________________
+double liberallrfInterface::getMaxAmpSP()const
+{
+    return llrf.maxAmp;
+}
+//____________________________________________________________________________________________
 double liberallrfInterface::getAmpFF()const
 {
     //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
@@ -4801,6 +4904,243 @@ void liberallrfInterface::unwrapPhaseTrace(llrfStructs::rf_trace_data& trace_dat
 ////    std::cout << std::endl;
 //   // message(data.name, " unwrapped phase ");
 }
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
+/*
+.____    .____   _____________________ .__        __               .__                 __
+|    |   |    |  \______   \_   _____/ |__| _____/  |_  ___________|  |   ____   ____ |  | __  ______
+|    |   |    |   |       _/|    __)   |  |/    \   __\/ __ \_  __ \  |  /  _ \_/ ___\|  |/ / /  ___/
+|    |___|    |___|    |   \|     \    |  |   |  \  | \  ___/|  | \/  |_(  <_> )  \___|    <  \___ \
+|_______ \_______ \____|_  /\___  /    |__|___|  /__|  \___  >__|  |____/\____/ \___  >__|_ \/____  >
+        \/       \/      \/     \/             \/          \/                       \/     \/     \/
+*/
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh1Interlock() const
+{
+    return llrf.llrf_interlock.ch1;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh1InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch1_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh1InterlockU() const
+{
+    return llrf.llrf_interlock.ch1_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh1InterlockP() const
+{
+    return llrf.llrf_interlock.ch1_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh1InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch1_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh2Interlock() const
+{
+    return llrf.llrf_interlock.ch2;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh2InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch2_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh2InterlockU() const
+{
+    return llrf.llrf_interlock.ch2_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh2InterlockP() const
+{
+    return llrf.llrf_interlock.ch2_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh2InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch2_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh3Interlock() const
+{
+    return llrf.llrf_interlock.ch3;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh3InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch3_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh3InterlockU() const
+{
+    return llrf.llrf_interlock.ch3_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh3InterlockP() const
+{
+    return llrf.llrf_interlock.ch3_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh3InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch3_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh4Interlock() const
+{
+    return llrf.llrf_interlock.ch4;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh4InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch4_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh4InterlockU() const
+{
+    return llrf.llrf_interlock.ch4_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh4InterlockP() const
+{
+    return llrf.llrf_interlock.ch4_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh4InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch4_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh5Interlock() const
+{
+    return llrf.llrf_interlock.ch5;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh5InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch5_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh5InterlockU() const
+{
+    return llrf.llrf_interlock.ch5_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh5InterlockP() const
+{
+    return llrf.llrf_interlock.ch5_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh5InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch5_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh6Interlock() const
+{
+    return llrf.llrf_interlock.ch6;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh6InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch6_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh6InterlockU() const
+{
+    return llrf.llrf_interlock.ch6_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh6InterlockP() const
+{
+    return llrf.llrf_interlock.ch6_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh6InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch6_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh7Interlock() const
+{
+    return llrf.llrf_interlock.ch7;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh7InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch7_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh7InterlockU() const
+{
+    return llrf.llrf_interlock.ch7_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh7InterlockP() const
+{
+    return llrf.llrf_interlock.ch7_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh7InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch7_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh8Interlock() const
+{
+    return llrf.llrf_interlock.ch8;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getCh8InterlockEnable() const
+{
+    return llrf.llrf_interlock.ch8_enable;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh8InterlockU() const
+{
+    return llrf.llrf_interlock.ch8_U;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh8InterlockP() const
+{
+    return llrf.llrf_interlock.ch8_P;
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getCh8InterlockPdbm() const
+{
+    return llrf.llrf_interlock.ch8_Pdbm;
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::areLLRFTraceInterlocksGood() const
+{
+    return !areLLRFTraceInterlocksBad();
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::areLLRFTraceInterlocksBad() const
+{
+    if( getCh1Interlock() ) { return true;  }
+    if( getCh2Interlock() ) { return true;  }
+    if( getCh3Interlock() ) { return true;  }
+    if( getCh4Interlock() ) { return true;  }
+    if( getCh5Interlock() ) { return true;  }
+    if( getCh6Interlock() ) { return true;  }
+    if( getCh7Interlock() ) { return true;  }
+    if( getCh8Interlock() ) { return true;  }
+    return false;
+}
+
+
+
 
 
 

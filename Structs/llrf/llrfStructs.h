@@ -82,7 +82,49 @@ namespace llrfStructs
                                                      (PULSE_SHAPE_APPLY)
                                                      (KEEP_ALIVE)
                                                      (UNKNOWN)
-                                                  )
+
+                                        (CH1_INTERLOCK_STATUS)
+                                        (CH1_INTERLOCK_ENABLE)
+                                        (CH1_INTERLOCK_U     )
+                                        (CH1_INTERLOCK_P     )
+                                        (CH1_INTERLOCK_PDBM  )
+                                        (CH2_INTERLOCK_STATUS)
+                                        (CH2_INTERLOCK_ENABLE)
+                                        (CH2_INTERLOCK_U     )
+                                        (CH2_INTERLOCK_P     )
+                                        (CH2_INTERLOCK_PDBM  )
+                                        (CH3_INTERLOCK_STATUS)
+                                        (CH3_INTERLOCK_ENABLE)
+                                        (CH3_INTERLOCK_U     )
+                                        (CH3_INTERLOCK_P     )
+                                        (CH3_INTERLOCK_PDBM  )
+                                        (CH4_INTERLOCK_STATUS)
+                                        (CH4_INTERLOCK_ENABLE)
+                                        (CH4_INTERLOCK_U     )
+                                        (CH4_INTERLOCK_P     )
+                                        (CH4_INTERLOCK_PDBM  )
+                                        (CH5_INTERLOCK_STATUS)
+                                        (CH5_INTERLOCK_ENABLE)
+                                        (CH5_INTERLOCK_U     )
+                                        (CH5_INTERLOCK_P     )
+                                        (CH5_INTERLOCK_PDBM  )
+                                        (CH6_INTERLOCK_STATUS)
+                                        (CH6_INTERLOCK_ENABLE)
+                                        (CH6_INTERLOCK_U     )
+                                        (CH6_INTERLOCK_P     )
+                                        (CH6_INTERLOCK_PDBM  )
+                                        (CH7_INTERLOCK_STATUS)
+                                        (CH7_INTERLOCK_ENABLE)
+                                        (CH7_INTERLOCK_U     )
+                                        (CH7_INTERLOCK_P     )
+                                        (CH7_INTERLOCK_PDBM  )
+                                        (CH8_INTERLOCK_STATUS)
+                                        (CH8_INTERLOCK_ENABLE)
+                                        (CH8_INTERLOCK_U     )
+                                        (CH8_INTERLOCK_P     )
+                                        (CH8_INTERLOCK_PDBM)
+                                        )
+
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(LLRF_TYPE,(CLARA_HRRG)
                                                   (CLARA_LRRG)
                                                   (VELA_HRRG)
@@ -311,7 +353,7 @@ namespace llrfStructs
             has_average(false),
             keep_next_trace(true),
             trace_size(UTL::ZERO_SIZET),
-            rolling_average_size(UTL::ONE_SIZET),
+            rolling_average_size(UTL::FIVE_SIZET),
             rolling_average_count(UTL::ZERO_SIZET),
 
             // how many traces have been added to rolling sums
@@ -478,6 +520,30 @@ namespace llrfStructs
     };
 
 
+
+
+
+    // All the values for the LLRF interlocks
+    struct liberallrfInterlock
+    {
+        liberallrfInterlock():
+            ch1(false),ch2(false),ch3(false),ch4(false),ch5(false),ch6(false),ch7(false),ch8(false),
+            ch1_enable(false),ch2_enable(false),ch3_enable(false),ch4_enable(false),ch5_enable(false),
+            ch6_enable(false),ch7_enable(false),ch8_enable(false),
+            ch1_U(UTL::DUMMY_DOUBLE),ch2_U(UTL::DUMMY_DOUBLE),ch3_U(UTL::DUMMY_DOUBLE),ch4_U(UTL::DUMMY_DOUBLE),
+            ch5_U(UTL::DUMMY_DOUBLE),ch6_U(UTL::DUMMY_DOUBLE),ch7_U(UTL::DUMMY_DOUBLE),ch8_U(UTL::DUMMY_DOUBLE),
+            ch1_P(UTL::DUMMY_DOUBLE),ch2_P(UTL::DUMMY_DOUBLE),ch3_P(UTL::DUMMY_DOUBLE),ch4_P(UTL::DUMMY_DOUBLE),
+            ch5_P(UTL::DUMMY_DOUBLE),ch6_P(UTL::DUMMY_DOUBLE),ch7_P(UTL::DUMMY_DOUBLE),ch8_P(UTL::DUMMY_DOUBLE),
+            ch1_Pdbm(UTL::DUMMY_DOUBLE),ch2_Pdbm(UTL::DUMMY_DOUBLE),ch3_Pdbm(UTL::DUMMY_DOUBLE),ch4_Pdbm(UTL::DUMMY_DOUBLE),
+            ch5_Pdbm(UTL::DUMMY_DOUBLE),ch6_Pdbm(UTL::DUMMY_DOUBLE),ch7_Pdbm(UTL::DUMMY_DOUBLE),ch8_Pdbm(UTL::DUMMY_DOUBLE)
+            {}
+        bool ch1,ch2,ch3,ch4,ch5,ch6,ch7,ch8;
+        bool ch1_enable,ch2_enable,ch3_enable,ch4_enable,ch5_enable,ch6_enable,ch7_enable,ch8_enable;
+        double ch1_U,ch2_U,ch3_U,ch4_U,ch5_U,ch6_U,ch7_U,ch8_U;
+        double ch1_P,ch2_P,ch3_P,ch4_P,ch5_P,ch6_P,ch7_P,ch8_P;
+        double ch1_Pdbm,ch2_Pdbm,ch3_Pdbm,ch4_Pdbm,ch5_Pdbm,ch6_Pdbm,ch7_Pdbm,ch8_Pdbm;
+    };
+
     // The main hardware object
     struct liberallrfObject
     {
@@ -556,6 +622,9 @@ namespace llrfStructs
         // should we send a keep_alive signal to a PV ?
         bool should_keep_alive;
         double last_keep_alive;
+
+        /* interlock object */
+        liberallrfInterlock llrf_interlock;
 
 
         /* This list can be used when getting all_traces_data_buffer to cut the data  */

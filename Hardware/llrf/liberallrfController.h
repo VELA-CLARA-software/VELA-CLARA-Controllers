@@ -362,19 +362,20 @@ class liberaLLRFController : public controller
 //        bool externalTriggerOn();
 
         // GETTERS
-        double getAmpFF();
-        double getAmpSP();
-        double getPhiFF();
-        double getPhiSP();
-        double getAmpLLRF();
-        double getPhiLLRF();
-        double getPhiDEG();
-        double getAmpMVM();
-        double getPulseLength();
-        double getPulseOffset();
-        double getPhiCalibration();
-        double getAmpCalibration();
-        double getCrestPhiLLRF();
+        double getMaxAmpSP()const;
+        double getAmpFF()const;
+        double getAmpSP()const;
+        double getPhiFF()const;
+        double getPhiSP()const;
+        double getAmpLLRF()const;
+        double getPhiLLRF()const;
+        double getPhiDEG()const;
+        double getAmpMVM()const;
+        double getPulseLength()const;
+        double getPulseOffset()const;
+        double getPhiCalibration()const;
+        double getAmpCalibration()const;
+        double getCrestPhiLLRF()const;
 
         bool trigOff();
         bool trigExt();
@@ -399,6 +400,51 @@ class liberaLLRFController : public controller
         bool canKeepAlive()const;
         void setKeepAlive(bool val);
         void keepAlive();
+
+        bool   getCh1Interlock() const;
+        bool   getCh1InterlockEnable() const;
+        double getCh1InterlockU() const;
+        double getCh1InterlockP() const;
+        double getCh1InterlockPdbm() const;
+        bool   getCh2Interlock() const;
+        bool   getCh2InterlockEnable() const;
+        double getCh2InterlockU() const;
+        double getCh2InterlockP() const;
+        double getCh2InterlockPdbm() const;
+        bool   getCh3Interlock() const;
+        bool   getCh3InterlockEnable() const;
+        double getCh3InterlockU() const;
+        double getCh3InterlockP() const;
+        double getCh3InterlockPdbm() const;
+        bool   getCh4Interlock() const;
+        bool   getCh4InterlockEnable() const;
+        double getCh4InterlockU() const;
+        double getCh4InterlockP() const;
+        double getCh4InterlockPdbm() const;
+        bool   getCh5Interlock() const;
+        bool   getCh5InterlockEnable() const;
+        double getCh5InterlockU() const;
+        double getCh5InterlockP() const;
+        double getCh5InterlockPdbm() const;
+        bool   getCh6Interlock() const;
+        bool   getCh6InterlockEnable() const;
+        double getCh6InterlockU() const;
+        double getCh6InterlockP() const;
+        double getCh6InterlockPdbm() const;
+        bool   getCh7Interlock() const;
+        bool   getCh7InterlockEnable() const;
+        double getCh7InterlockU() const;
+        double getCh7InterlockP() const;
+        double getCh7InterlockPdbm() const;
+        bool   getCh8Interlock() const;
+        bool   getCh8InterlockEnable() const;
+        double getCh8InterlockU() const ;
+        double getCh8InterlockP() const;
+        double getCh8InterlockPdbm() const;
+
+        bool areLLRFTraceInterlocksGood()const;
+        bool areLLRFTraceInterlocksBad()const;
+
 
 
 
@@ -428,8 +474,8 @@ class liberaLLRFController : public controller
 
         //bool   isLocked();
 
-        llrfStructs::LLRF_TYPE getType();
-        size_t getTraceLength();
+        llrfStructs::LLRF_TYPE getType()const;
+        size_t getTraceLength()const;
 
 //        std::vector<std::string> getChannelNames();
         std::vector<std::string> getTraceNames();
