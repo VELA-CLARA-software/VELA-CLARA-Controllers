@@ -37,7 +37,7 @@
 VCgeneralMonitor::VCgeneralMonitor(const bool showmess ,const bool  showdebug ):
 shouldShowDebugMessage(showdebug),
 shouldShowMessage(showmess),
-VCbase("VCpilaser"),
+VCbase("gen_mon"),
 controller( shouldShowMessage, shouldShowDebugMessage,HWC_ENUM::CONTROLLER_TYPE::GENERAL_MONITOR,"General Monitor"),
 pvMonitorMapCount(UTL::ZERO_INT),
 defaultCOUNT(1),
@@ -51,6 +51,7 @@ charPrefix("c"),
 longPrefix("l"),
 doublePrefix("d"),
 vecdoublePrefix("D"),
+veclongPrefix("L"),
 vecintPrefix("I"),
 vecfloatPrefix("F"),
 ca_chid_successmess("Successfully found ChId."),
@@ -142,7 +143,14 @@ void VCgeneralMonitor::setRunningStatCountMax(const std::string& id, const size_
             //doublePVMap[id].data[0]->buffer.resize(value);
         }
     }
-
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isDoublePV");
+            vec_longPVMap[id].data[0]->rs_count_max = value;
+            //vec_doublePVMap[id].data[0]->buffer.resize(value);
+        }
+    }
     else if(isArrayDoublePV(id))
     {
         if(entryExists(vec_doublePVMap, id))
@@ -242,6 +250,13 @@ bool VCgeneralMonitor::isRunningStatComplete(const std::string& id)
             return vec_floatPVMap[id].data[0]->rs_complete;
         }
     }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " vec_intPVMap");
+            return vec_longPVMap[id].data[0]->rs_complete;
+        }
+    }
     return false;
 }
 //______________________________________________________________________________
@@ -310,6 +325,16 @@ void VCgeneralMonitor::clearRunningValues(const std::string& id )
             longPVMap[id].data[0]->rs_count = 0;
             longPVMap[id].data[0]->rs_complete = false;
             longPVMap[id].data[0]->buffer.clear();
+        }
+    }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isLongPV");
+            vec_longPVMap[id].data[0]->rs.Clear();
+            vec_longPVMap[id].data[0]->rs_count = 0;
+            vec_longPVMap[id].data[0]->rs_complete = false;
+            vec_longPVMap[id].data[0]->buffer.clear();
         }
     }
     else if(isDoublePV(id))
@@ -395,6 +420,13 @@ size_t VCgeneralMonitor::getRunningStatCountMax(const std::string & id)
         if(entryExists(longPVMap, id))
         {//message("getPVStruct ",  id, " isLongPV");
             return longPVMap[id].data[0]->rs_count_max;
+        }
+    }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isLongPV");
+            return vec_longPVMap[id].data[0]->rs_count_max;
         }
     }
     else if(isDoublePV(id))
@@ -555,6 +587,13 @@ boost::python::dict VCgeneralMonitor::getBuffer(const std::string& id)
         if(entryExists(longPVMap, id))
         {//message("getPVStruct ",  id, " isLongPV");
             return toPythonDict(longPVMap[id].data[0]->buffer);
+        }
+    }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isDoublePV");
+            return toPythonDict2(vec_longPVMap[id].data[0]->buffer);
         }
     }
     else if(isDoublePV(id))
@@ -839,6 +878,13 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id)
             return object(longPVMap[id].data[0]->v);
         }
     }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isLongPV");
+            return toPythonList(vec_longPVMap[id].data[0]->v);
+        }
+    }
     else if(isDoublePV(id))
     {
         if(entryExists(doublePVMap, id))
@@ -914,6 +960,13 @@ size_t VCgeneralMonitor::getCounter(const std::string & id)
         if(entryExists(longPVMap, id))
         {//message("getPVStruct ",  id, " isLongPV");
             r = longPVMap[id].data[0]->c;
+        }
+    }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isLongPV");
+            r = vec_longPVMap[id].data[0]->c;
         }
     }
     else if(isDoublePV(id))
@@ -993,6 +1046,13 @@ boost::python::dict VCgeneralMonitor::getCounterAndValue(const std::string& id)
             r[longPVMap[id].data[0]->c] = longPVMap[id].data[0]->v;
         }
     }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//message("getPVStruct ",  id, " isLongPV");
+            r[vec_longPVMap[id].data[0]->c] = vec_longPVMap[id].data[0]->v;
+        }
+    }
     else if(isDoublePV(id))
     {
         if(entryExists(doublePVMap, id))
@@ -1058,6 +1118,16 @@ boost::python::dict VCgeneralMonitor::getCounterAndTotalValue(const std::string&
                 return r;
             }
         }
+        else if(isArrayLongPV(id))
+        {
+            if( entryExists(vec_longPVMap,id))
+            {
+                boost::python::dict r;
+                r[vec_longPVMap[id].data[0]->c] = std::accumulate(vec_longPVMap[id].data[0]->v.begin(),
+                                                                  vec_longPVMap[id].data[0]->v.end(), 0);
+                return r;
+            }
+        }
     }
     else
     {
@@ -1099,6 +1169,16 @@ boost::python::object VCgeneralMonitor::getTotalValue(const std::string& id)
                 return object(total);
             }
         }
+        else if(isArrayLongPV(id))
+        {
+            if( entryExists(vec_longPVMap,id))
+            {
+                long total = std::accumulate(vec_longPVMap[id].data[0]->v.begin(),
+                                             vec_longPVMap[id].data[0]->v.end(), 0);
+                message("total = ", total);
+                return object(total);
+            }
+        }
     }
     else
     {
@@ -1132,6 +1212,14 @@ boost::python::object VCgeneralMonitor::getValue(const std::string & id,const in
         {//            size_t index_positive = getArrayIndex(index, vec_floatPVMap[id].data[0]->v.size());
             index_positive = getArrayIndex(index, vec_floatPVMap[id].data[0]->v.size());
             return object(vec_floatPVMap[id].data[0]->v[index_positive]);
+        }
+    }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {//            size_t index_positive = getArrayIndex(index, vec_floatPVMap[id].data[0]->v.size());
+            index_positive = getArrayIndex(index, vec_longPVMap[id].data[0]->v.size());
+            return object(vec_longPVMap[id].data[0]->v[index_positive]);
         }
     }
     return object();
@@ -1196,6 +1284,17 @@ boost::python::list VCgeneralMonitor::getValue(const std::string & id,const int 
             auto first = vec_floatPVMap[id].data[0]->v.begin() + pos[0];
             auto last  = vec_floatPVMap[id].data[0]->v.begin() + pos[1];
             std::vector< float > r(first, last);
+            output = toPythonList( r);
+        }
+    }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists( vec_longPVMap, id))
+        {
+            std::vector< size_t > pos = getArrayRegionOfInterest(start_pos, end_pos, vec_longPVMap[id].data[0]->v.size());
+            auto first = vec_longPVMap[id].data[0]->v.begin() + pos[0];
+            auto last  = vec_longPVMap[id].data[0]->v.begin() + pos[1];
+            std::vector< long > r(first, last);
             output = toPythonList( r);
         }
     }
@@ -1311,6 +1410,13 @@ size_t VCgeneralMonitor::getPVCount(const std::string & id )
             return longPVMap[id].pvs.COUNT;
         }
     }
+    else if(isArrayLongPV(id))
+    {
+        if(entryExists(vec_longPVMap, id))
+        {
+            return vec_doublePVMap[id].pvs.COUNT;
+        }
+    }
     else if(isDoublePV(id))
     {
         if(entryExists(doublePVMap, id))
@@ -1360,6 +1466,8 @@ bool VCgeneralMonitor::isValidID(const std::string& id)
         return true;
     else if(entryExists(vec_intPVMap, id))
         return true;
+    else if(entryExists(vec_longPVMap, id))
+        return true;
     else if(entryExists(stringPVMap, id))
         return true;
     return false;
@@ -1371,7 +1479,7 @@ bool VCgeneralMonitor::isValidID(const std::string& id)
 //______________________________________________________________________________
 std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
 {
-    debugMessage("Looking for ", pvFullName);
+    message("Looking for ", pvFullName);
     std::string r = returnFail;
     chid CHID;
     ca_create_channel(pvFullName.c_str(), 0, 0, 0,&CHID);
@@ -1384,157 +1492,168 @@ std::string VCgeneralMonitor::connectPV(const std::string& pvFullName)
     {
         status = ca_field_type(CHID);
         int COUNT = ca_element_count(CHID);
-            switch( status)
-            {
-                case 0:
-                    message("PV ", pvFullName, " is a DBR_STRING, connecting to channel");
-                    r = connectPV(pvFullName, "DBR_STRING");
-                    break;
-                case 1:
-                    message("PV ", pvFullName, " is a DBR_INT, connecting to channel");
-                    r = connectPV(pvFullName, "DBR_INT");
-                case 2:
-                    if( COUNT > 1)
-                    {
-                        message("PV ", pvFullName, " is a DBR_ARRAY_FLOAT, connecting to channel");
-                        r= connectPV(pvFullName, "DBR_ARRAY_FLOAT");
-                    }
-                    else
-                    {
-                        message("PV ", pvFullName, " is a DBR_FLOAT, connecting to channel");
-                        r= connectPV(pvFullName, "DBR_FLOAT");
-                    }
-                    break;
-                case 3:
-                    message("PV ", pvFullName," is a DBR_ENUM, connecting to channel");
-                    r = connectPV(pvFullName, "DBR_ENUM");
-                case 4:
-                    message("PV ", pvFullName, " is a DBR_CHAR, connecting to channel");
-                    r = connectPV(pvFullName, "DBR_CHAR");
-                    break;
-                case 5:
+        switch( status)
+        {
+            case 0:
+                message("PV ", pvFullName, " is a DBR_STRING, connecting to channel");
+                r = connectPV(pvFullName, "DBR_STRING");
+                break;
+            case 1:
+                message("PV ", pvFullName, " is a DBR_INT, connecting to channel");
+                r = connectPV(pvFullName, "DBR_INT");
+                break;
+            case 2:
+                if( COUNT > 1)
+                {
+                    message("PV ", pvFullName, " is a DBR_ARRAY_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ARRAY_FLOAT");
+                }
+                else
+                {
+                    message("PV ", pvFullName, " is a DBR_FLOAT, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_FLOAT");
+                }
+                break;
+            case 3:
+                message("PV ", pvFullName," is a DBR_ENUM, connecting to channel");
+                r = connectPV(pvFullName, "DBR_ENUM");
+                break;
+            case 4:
+                message("PV ", pvFullName, " is a DBR_CHAR, connecting to channel");
+                r = connectPV(pvFullName, "DBR_CHAR");
+                break;
+            case 5:
+                if( COUNT > 1)
+                {
+                    message("PV ", pvFullName, " is a DBR_ARRAY_LONG, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ARRAY_LONG");
+                }
+                else
+                {
                     message("PV ", pvFullName, " is a DBR_LONG, connecting to channel");
-                    r = connectPV(pvFullName, "DBR_LONG");
-                case 6:
-                    if( COUNT > 1)
-                    {
-                        message("PV ", pvFullName, " is a DBR_ARRAY_DOUBLE, connecting to channel");
-                        r= connectPV(pvFullName, "DBR_ARRAY_DOUBLE");
-                    }
-                    else
-                    {
-                        message("PV ", pvFullName, " is a DBR_DOUBLE, connecting to channel");
-                        r= connectPV(pvFullName, "DBR_DOUBLE");
-                    }
-                    break;
-                case 7:
-                    message("PV ", pvFullName, " is a DBR_STS_STRING, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_STRING");
-                    break;
-                case 8:
-                    message("PV ", pvFullName, " is a DBR_STS_SHORT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_SHORT");
-                    break;
-                case 9:
-                    message("PV ", pvFullName, " is a DBR_STS_FLOAT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_FLOAT");
-                    break;
-                case 10:
-                    message("PV ", pvFullName, " is a DBR_STS_ENUM, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_ENUM");
-                case 11:
-                    message("PV ", pvFullName, " is a DBR_STS_CHAR, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_CHAR");
-                    break;
-                case 12:
-                    message("PV ", pvFullName," is a DBR_STS_LONG, connecting to channel");
                     r= connectPV(pvFullName, "DBR_LONG");
-                case 13:
-                    message("PV ", pvFullName, " is a DBR_STS_DOUBLE, connecting to channel");
+                }
+                break;
+            case 6:
+                if( COUNT > 1)
+                {
+                    message("PV ", pvFullName, " is a DBR_ARRAY_DOUBLE, connecting to channel");
+                    r= connectPV(pvFullName, "DBR_ARRAY_DOUBLE");
+                }
+                else
+                {
+                    message("PV ", pvFullName, " is a DBR_DOUBLE, connecting to channel");
                     r= connectPV(pvFullName, "DBR_DOUBLE");
-                    break;
-                case 14:
-                    message("PV ", pvFullName, " is a DBR_TIME_STRING, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_STRING");
-                case 15:
-                    message("PV ", pvFullName, " is a DBR_TIME_INT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_INT");
-                    break;
-                case 16:
-                    message("PV ", pvFullName, " is a DBR_TIME_FLOAT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_FLOAT");
-                    break;
-                case 17:
-                    message("PV ", pvFullName, " is a DBR_TIME_ENUM, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_ENUM");
-                    break;
-                case 18:
-                    message("PV ", pvFullName, " is a DBR_TIME_CHAR, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_CHAR");
-                    break;
-                case 19:
-                    message("PV ", pvFullName, " is a DBR_TIME_LONG, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_LONG");
-                case 20:
-                    message("PV ", pvFullName, " is a DBR_TIME_DOUBLE, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_TIME_DOUBLE");
-                    break;
-                case 21:
-                    message("PV ", pvFullName," is a DBR_GR_STRING, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_STRING");
-                case 22:
-                    message("PV ", pvFullName, " is a DBR_GR_INT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_INT");
-                    break;
-                case 23:
-                    message("PV ", pvFullName, " is a DBR_GR_FLOAT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_FLOAT");
-                case 24:
-                    message("PV ", pvFullName, " is a DBR_GR_ENUM, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_ENUM");
-                    break;
-                case 25:
-                    message("PV ", pvFullName, " is a DBR_GR_CHAR, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_CHAR");
-                    break;
-                case 26:
-                    message("PV ", pvFullName, " is a DBR_GR_LONG, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_LONG");
-                    break;
-                case 27:
-                    message("PV ", pvFullName, " is a DBR_GR_DOUBLE, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_DOUBLE");
-                    break;
-                case 28:
-                    message("PV ", pvFullName, " is a DBR_CTRL_STRING, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_STRING");
-                    break;
-                case 29:
-                    message("PV ", pvFullName, " is a DBR_CTRL_INT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_INT");
-                    break;
-                case 30:
-                    message("PV ", pvFullName," is a DBR_CTRL_FLOAT, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_FLOAT");
-                case 31:
-                    message("PV ", pvFullName, " is a DBR_CTRL_ENUM, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_ENUM");
-                    break;
-                case 32:
-                    message("PV ", pvFullName, " is a DBR_CTRL_CHAR, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_CHAR");
-                    break;
-                case 33:
-                    message("PV ", pvFullName, " is a DBR_CTRL_LONG, connecting to channel");
-                    r= connectPV(pvFullName, "DBR_LONG");
-                    break;
-                case 34:
-                    message("PV ", pvFullName, " is a DBR_CTRL_DOUBLE, connecting to channel");
-                    r= connectPV(pvFullName,"DBR_DOUBLE");
-                    break;
-                default:
-                    message("PV ", pvFullName," is an unrecognised EPICS Type.");
-            }
+                }
+                break;
+            case 7:
+                message("PV ", pvFullName, " is a DBR_STS_STRING, connecting to channel");
+                r= connectPV(pvFullName, "DBR_STRING");
+                break;
+            case 8:
+                message("PV ", pvFullName, " is a DBR_STS_SHORT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_SHORT");
+                break;
+            case 9:
+                message("PV ", pvFullName, " is a DBR_STS_FLOAT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_FLOAT");
+                break;
+            case 10:
+                message("PV ", pvFullName, " is a DBR_STS_ENUM, connecting to channel");
+                r= connectPV(pvFullName, "DBR_ENUM");
+            case 11:
+                message("PV ", pvFullName, " is a DBR_STS_CHAR, connecting to channel");
+                r= connectPV(pvFullName, "DBR_CHAR");
+                break;
+            case 12:
+                message("PV ", pvFullName," is a DBR_STS_LONG, connecting to channel");
+                r= connectPV(pvFullName, "DBR_LONG");
+            case 13:
+                message("PV ", pvFullName, " is a DBR_STS_DOUBLE, connecting to channel");
+                r= connectPV(pvFullName, "DBR_DOUBLE");
+                break;
+            case 14:
+                message("PV ", pvFullName, " is a DBR_TIME_STRING, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_STRING");
+            case 15:
+                message("PV ", pvFullName, " is a DBR_TIME_INT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_INT");
+                break;
+            case 16:
+                message("PV ", pvFullName, " is a DBR_TIME_FLOAT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_FLOAT");
+                break;
+            case 17:
+                message("PV ", pvFullName, " is a DBR_TIME_ENUM, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_ENUM");
+                break;
+            case 18:
+                message("PV ", pvFullName, " is a DBR_TIME_CHAR, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_CHAR");
+                break;
+            case 19:
+                message("PV ", pvFullName, " is a DBR_TIME_LONG, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_LONG");
+            case 20:
+                message("PV ", pvFullName, " is a DBR_TIME_DOUBLE, connecting to channel");
+                r= connectPV(pvFullName, "DBR_TIME_DOUBLE");
+                break;
+            case 21:
+                message("PV ", pvFullName," is a DBR_GR_STRING, connecting to channel");
+                r= connectPV(pvFullName, "DBR_STRING");
+            case 22:
+                message("PV ", pvFullName, " is a DBR_GR_INT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_INT");
+                break;
+            case 23:
+                message("PV ", pvFullName, " is a DBR_GR_FLOAT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_FLOAT");
+            case 24:
+                message("PV ", pvFullName, " is a DBR_GR_ENUM, connecting to channel");
+                r= connectPV(pvFullName, "DBR_ENUM");
+                break;
+            case 25:
+                message("PV ", pvFullName, " is a DBR_GR_CHAR, connecting to channel");
+                r= connectPV(pvFullName, "DBR_CHAR");
+                break;
+            case 26:
+                message("PV ", pvFullName, " is a DBR_GR_LONG, connecting to channel");
+                r= connectPV(pvFullName, "DBR_LONG");
+                break;
+            case 27:
+                message("PV ", pvFullName, " is a DBR_GR_DOUBLE, connecting to channel");
+                r= connectPV(pvFullName, "DBR_DOUBLE");
+                break;
+            case 28:
+                message("PV ", pvFullName, " is a DBR_CTRL_STRING, connecting to channel");
+                r= connectPV(pvFullName, "DBR_STRING");
+                break;
+            case 29:
+                message("PV ", pvFullName, " is a DBR_CTRL_INT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_INT");
+                break;
+            case 30:
+                message("PV ", pvFullName," is a DBR_CTRL_FLOAT, connecting to channel");
+                r= connectPV(pvFullName, "DBR_FLOAT");
+            case 31:
+                message("PV ", pvFullName, " is a DBR_CTRL_ENUM, connecting to channel");
+                r= connectPV(pvFullName, "DBR_ENUM");
+                break;
+            case 32:
+                message("PV ", pvFullName, " is a DBR_CTRL_CHAR, connecting to channel");
+                r= connectPV(pvFullName, "DBR_CHAR");
+                break;
+            case 33:
+                message("PV ", pvFullName, " is a DBR_CTRL_LONG, connecting to channel");
+                r= connectPV(pvFullName, "DBR_LONG");
+                break;
+            case 34:
+                message("PV ", pvFullName, " is a DBR_CTRL_DOUBLE, connecting to channel");
+                r= connectPV(pvFullName,"DBR_DOUBLE");
+                break;
+            default:
+                message("PV ", pvFullName," is an unrecognised EPICS Type.");
+        }
         }
         else
             message("When looking for ", pvFullName," EPICS return  status != ECA_NORMAL");
@@ -1549,7 +1668,7 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
     std::string returnvalue = returnFail;
     //chtype tempchtype;
     //std::string id;
-    debugMessage("Getting pvType for ", pvType);
+    message("Getting pvType for ", pvType);
     gmStructs::pvStruct* pvs =  getCHTYPEandPrefix(pvType);
     if(pvs)
     {// we recognise the PV channel type
@@ -1557,7 +1676,7 @@ std::string VCgeneralMonitor::connectPV(const std::string & pvFullName,const std
         pvs->pvFullName = pvFullName;
         pvs->COUNT= defaultCOUNT;
         pvs->MASK = defaultMASK;
-        debugMessage(pvType, " found. Setting up channel with id ",pvs->id, " to, ", pvFullName);
+        message(pvType, " found. Setting up channel with id ",pvs->id, " to, ", pvFullName);
         bool shouldCarryOn = setUpChannel(*pvs);
         if(shouldCarryOn)
         {
@@ -1779,12 +1898,54 @@ void VCgeneralMonitor::addArrayInt(const std::string & id,const event_handler_ar
     }
 
 }
+
+
+//______________________________________________________________________________
+void VCgeneralMonitor::addArrayLong(const std::string & id,const event_handler_args& args)
+{   //message(vec_longPVMap[id].data.size());
+    if( vec_longPVMap[id].data.size() == 0)
+    {
+        vec_longPVMap[id].data.push_back(new gmStructs::dataEntry<std::vector<long>>());
+        //message(vec_longPVMap[id].data.size());
+        //message("resize to output array to  ", vec_longPVMap[id].pvs.COUNT);
+        vec_longPVMap[id].data[0]->v.resize(vec_longPVMap[id].pvs.COUNT);
+    }
+    size_t counter = 0;
+    for( auto && it : vec_longPVMap[id].data[0]->v)
+    {
+        it = *( (long*) args.dbr + counter);
+        ++counter;
+    }
+    vec_longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+    if(vec_longPVMap[id].data[0]->rs_count < vec_longPVMap[id].data[0]->rs_count_max)
+    {
+        //message("adding to vec_long buffer ... ");
+        vec_longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+        std::pair<std::string,std::vector<long>> new_pair;
+        vec_longPVMap.at(id).data[0]->buffer.push_back(new_pair);
+        vec_longPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
+        vec_longPVMap.at(id).data[0]->buffer.back().second = vec_longPVMap[id].data[0]->v;
+
+        if(vec_longPVMap[id].data[0]->rs_count ==  vec_longPVMap[id].data[0]->rs_count_max)
+        {
+            vec_longPVMap[id].data[0]->rs_complete = true;
+        }
+        else
+        {
+            vec_longPVMap[id].data[0]->rs_complete = false;
+        }
+    }
+
+}
+
+
+
 //______________________________________________________________________________
 void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_args& args)
 {
     if(args.status != ECA_NORMAL)
     {
-        std::cout<<"please god, no, never show this... "<<std::endl;
+        std::cout<<"please god, no, never show this... status = " << args.status <<std::endl;
     }
     else
     {
@@ -1871,13 +2032,13 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
 
                     if(intPVMap[id].data[0]->rs_count <= intPVMap[id].data[0]->rs_count_max)
                     {
-                    intPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+                        intPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
 
-            std::pair<std::string,int> new_pair;
-            intPVMap.at(id).data[0]->buffer.push_back(new_pair);
-            intPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
-            intPVMap.at(id).data[0]->buffer.back().second = *(int*)args.dbr;
-                        intPVMap[id].data[0]->rs.Push(intPVMap[id].data[0]->v);
+                        std::pair<std::string,int> new_pair;
+                        intPVMap.at(id).data[0]->buffer.push_back(new_pair);
+                        intPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
+                        intPVMap.at(id).data[0]->buffer.back().second = *(int*)args.dbr;
+                                    intPVMap[id].data[0]->rs.Push(intPVMap[id].data[0]->v);
                         if(intPVMap[id].data[0]->rs_count ==  intPVMap[id].data[0]->rs_count_max)
                         {
                             intPVMap[id].data[0]->rs_complete = true;
@@ -1924,31 +2085,41 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
 
                 break;
             case DBR_LONG:
-                if( longPVMap[id].data.size() == 0)
-                {
-                    longPVMap[id].data.push_back(new gmStructs::dataEntry<long>());
-                }
-                longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
-                longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
-                longPVMap[id].data[0]->rs.Push((double)longPVMap[id].data[0]->v);
-                if(longPVMap[id].data[0]->rs_count <= longPVMap[id].data[0]->rs_count_max)
-                {
-                longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
-            std::pair<std::string,long> new_pair;
-            longPVMap.at(id).data[0]->buffer.push_back(new_pair);
-            longPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
-            longPVMap.at(id).data[0]->buffer.back().second = *(unsigned short*)args.dbr;
 
-                    longPVMap[id].data[0]->rs.Push(longPVMap[id].data[0]->v);
-                    if(longPVMap[id].data[0]->rs_count ==  longPVMap[id].data[0]->rs_count_max)
+                if( args.count == 1)
+                {
+                    if( longPVMap[id].data.size() == 0)
                     {
-                        longPVMap[id].data[0]->rs_complete = true;
+                        longPVMap[id].data.push_back(new gmStructs::dataEntry<long>());
                     }
-                    else
+                    longPVMap[id].data[0]->v = *(long*)args.dbr;// MAGIC_NUMBER
+                    longPVMap[id].data[0]->c += 1;// MAGIC_NUMBER
+                    longPVMap[id].data[0]->rs.Push((double)longPVMap[id].data[0]->v);
+                    if(longPVMap[id].data[0]->rs_count <= longPVMap[id].data[0]->rs_count_max)
                     {
-                        longPVMap[id].data[0]->rs_complete = false;
+                    longPVMap[id].data[0]->rs_count += 1;// MAGIC_NUMBER
+                        std::pair<std::string,long> new_pair;
+                        longPVMap.at(id).data[0]->buffer.push_back(new_pair);
+                        longPVMap.at(id).data[0]->buffer.back().first = getLocalTime();
+                        longPVMap.at(id).data[0]->buffer.back().second = *(unsigned short*)args.dbr;
+
+                        longPVMap[id].data[0]->rs.Push(longPVMap[id].data[0]->v);
+                        if(longPVMap[id].data[0]->rs_count ==  longPVMap[id].data[0]->rs_count_max)
+                        {
+                            longPVMap[id].data[0]->rs_complete = true;
+                        }
+                        else
+                        {
+                            longPVMap[id].data[0]->rs_complete = false;
+                        }
                     }
                 }
+                else if( args.count > 0)
+                {
+                    //message("CALLIGN addArrayFloat");
+                    addArrayLong(id,args);
+                }
+
 
                 break;
 
@@ -1961,7 +2132,7 @@ void VCgeneralMonitor::updateValue(const std::string & id,const event_handler_ar
 //______________________________________________________________________________
 void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * dbr)
 {
-    message("updateTimeAndValue");
+    //message("updateTimeAndValue");
     if(isStringPV(id))
     {
         // see db_access.h
@@ -2227,7 +2398,7 @@ void VCgeneralMonitor::updateTimeAndValue(const std::string & id,const  void * d
             }
         }
         updateTime_ns(doublePVMap.at(id).data[0]->t, doublePVMap.at(id).data[0]->s);
-//        debugMessage("updated, value = ", doublePVMap.at(id).data[0]->v);// MAGIC_NUMBER
+//        message("updated, value = ", doublePVMap.at(id).data[0]->v);// MAGIC_NUMBER
 //        printTimeStamp( doublePVMap.at(id).data[0]->t);
     }
     else if(isArrayDoublePV(id))
@@ -2277,14 +2448,14 @@ void VCgeneralMonitor::printTimeStamp( const epicsTimeStamp & stamp)
     double val =  ((double)stamp.nsec * 0.000000001) + (double)stamp.secPastEpoch;//MAGIC_NUMBER
     std::cout << std::setprecision(15) << std::showpoint<<  val << std::endl;
     std::string str = timeString;
-    debugMessage("time string = ",str);// MAGIC_NUMBER
-    debugMessage("time double = ",val);// MAGIC_NUMBER
+    message("time string = ",str);// MAGIC_NUMBER
+    message("time double = ",val);// MAGIC_NUMBER
     std::cout << std::setprecision(4) << std::showpoint<<   val << std::endl;
 }
 //______________________________________________________________________________
 bool VCgeneralMonitor::setUpChannel(gmStructs::pvStruct& pvs)
 {
-    debugMessage("setUpChannel is connecting ", pvs.id, "  to ", pvs.pvFullName);
+    message("setUpChannel is connecting ", pvs.id, "  to ", pvs.pvFullName);
     ca_create_channel(pvs.pvFullName.c_str(), 0, 0, 0,&pvs.CHID);
     int status = sendToEpics(ca_create_channel_str,ca_chid_successmess,ca_chid_failuremess);
     if( status == ECA_TIMEOUT)
@@ -2293,7 +2464,7 @@ bool VCgeneralMonitor::setUpChannel(gmStructs::pvStruct& pvs)
     }
     else if( status == ECA_NORMAL)
     {
-        debugMessage(pvs.id, " channel created.");
+        message(pvs.id, " channel created.");
         pvs.CHIDConnected = true;
     }
     return pvs.CHIDConnected;
@@ -2320,7 +2491,7 @@ bool VCgeneralMonitor::setupMonitor(gmStructs::pvStruct& pvs)
     else if( status == ECA_NORMAL)
     {
         pvs.MonitorConnected = true;
-        debugMessage( continuousMonitorStructs.back()->id , " subscription successfull.");
+        message( continuousMonitorStructs.back()->id , " subscription successfull.");
 
     }
     return pvs.MonitorConnected;
@@ -2347,7 +2518,7 @@ void VCgeneralMonitor::printStatusResult( const int status, const char * success
     {
         case ECA_NORMAL:
             if( strlen( success) != 0)//MAGIC_NUMBER
-                debugMessage( success);
+                message( success);
             break;
         case ECA_TIMEOUT:
             if( strlen( timeout) != 0)//MAGIC_NUMBER
@@ -2394,6 +2565,10 @@ gmStructs::pvStruct* VCgeneralMonitor::getCHTYPEandPrefix(const std::string & pv
     else if(pvType == UTL::DBR_LONG_STR)
     {
         r = addToLongPVMap();
+    }
+    else if(pvType == UTL::DBR_ARRAY_LONG_STR)
+    {
+        r = addToVecLongPVMap();
     }
     else if(pvType == UTL::DBR_DOUBLE_STR)
     {
@@ -2561,7 +2736,7 @@ gmStructs::pvStruct* VCgeneralMonitor::getPVStruct_Ptr(const std::string& id)
     }
     if(pvs)
     {
-        debugMessage("getPVStruct found ", id);
+        message("getPVStruct found ", id);
     }
     else
     {
@@ -2581,7 +2756,7 @@ void VCgeneralMonitor::killMonitor(gmStructs::pvStruct& pvs)
     else if( status == ECA_NORMAL)
     {
         pvs.MonitorConnected = false;
-        debugMessage(pvs.id, " killMonitor successfull.");
+        message(pvs.id, " killMonitor successfull.");
     }
     else
     {
@@ -2600,7 +2775,7 @@ void VCgeneralMonitor::killChannel(gmStructs::pvStruct& pvs)
     else if( status == ECA_NORMAL)
     {
         pvs.CHIDConnected = false;
-        debugMessage(pvs.id, " killChannel successfull.");
+        message(pvs.id, " killChannel successfull.");
     }
     else
     {
@@ -2627,7 +2802,7 @@ bool VCgeneralMonitor::deleteMapEntry(std::map<std::string, T>& map, const std::
     if( it != map.end())
     {
         map.erase( it);
-        debugMessage(id," deleted");
+        message(id," deleted");
         r = true;
     }
     else
@@ -2713,6 +2888,12 @@ bool VCgeneralMonitor::isLongPV(const std::string& id)
     return id.substr(0,1) == longPrefix  ? true : false;
 }
 //______________________________________________________________________________
+//______________________________________________________________________________
+bool VCgeneralMonitor::isArrayLongPV(const std::string& id)
+{
+    return id.substr(0,1) == veclongPrefix  ? true : false;
+}
+//______________________________________________________________________________
 bool VCgeneralMonitor::isDoublePV(const std::string& id)
 {
     return id.substr(0,1) == doublePrefix  ? true : false;
@@ -2756,7 +2937,7 @@ bool VCgeneralMonitor::isConnected(const std::string & id)
     gmStructs::pvStruct* pvs = getPVStruct_Ptr(id);
     if( pvs)
     {
-        debugMessage("isConnected found ", id);
+        message("isConnected found ", id);
         return pvs->CHIDConnected;
     }
     else
@@ -2771,7 +2952,7 @@ bool VCgeneralMonitor::isMonitoring(const std::string & id)
     gmStructs::pvStruct* pvs = getPVStruct_Ptr(id);
     if(pvs)
     {
-        debugMessage("isMonitoring found ", id);
+        message("isMonitoring found ", id);
         return pvs->MonitorConnected;
     }
     else
@@ -2788,7 +2969,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToStringPVMap()
     stringPVMap[id].id = id;
     stringPVMap.at(id).pvs.id = id;
     stringPVMap.at(id).pvs.CHTYPE = DBR_TIME_STRING;
-    debugMessage("connectPV Passed a DBR_STRING. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_STRING. Entry with id =  ",id, " created");
     return &stringPVMap[id].pvs;
 }
 //______________________________________________________________________________
@@ -2799,7 +2980,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToIntPVMap()
     intPVMap[id].id = id;
     intPVMap.at(id).pvs.id = id;
     intPVMap.at(id).pvs.CHTYPE = DBR_TIME_INT;
-    debugMessage("connectPV Passed a DBR_INT. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_INT. Entry with id =  ",id, " created");
     return &intPVMap[id].pvs;
 }
 //______________________________________________________________________________
@@ -2810,7 +2991,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToFloatPVMap()
     floatPVMap[id].id = id;
     floatPVMap.at(id).pvs.CHTYPE = DBR_TIME_FLOAT;
     floatPVMap.at(id).pvs.id = id;
-    debugMessage("connectPV Passed a DBR_FLOAT. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_FLOAT. Entry with id =  ",id, " created");
     return &floatPVMap[id].pvs;
 }
 //______________________________________________________________________________
@@ -2821,7 +3002,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToDoublePVMap()
     doublePVMap[id].id = id;
     doublePVMap.at(id).pvs.CHTYPE = DBR_TIME_DOUBLE;
     doublePVMap.at(id).pvs.id = id;
-    debugMessage("connectPV Passed a DBR_DOUBLE. Entry with id =  ",id, " created, doublemapo.size = ", doublePVMap.size());
+    message("connectPV Passed a DBR_DOUBLE. Entry with id =  ",id, " created, doublemapo.size = ", doublePVMap.size());
     return &doublePVMap.at(id).pvs;
 }
 //______________________________________________________________________________
@@ -2832,7 +3013,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToCharPVMap()
     charPVMap[id].id = id;
     charPVMap.at(id).pvs.CHTYPE = DBR_TIME_CHAR;
     charPVMap.at(id).pvs.id = id;
-    debugMessage("connectPV Passed a DBR_CHAR. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_CHAR. Entry with id =  ",id, " created");
     return &charPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
@@ -2843,7 +3024,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToLongPVMap()
     longPVMap[id].id = id;
     longPVMap.at(id).pvs.CHTYPE = DBR_TIME_LONG;
     longPVMap.at(id).pvs.id = id;
-    debugMessage("connectPV Passed a DBR_LONG. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_LONG. Entry with id =  ",id, " created");
     return &longPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
@@ -2854,7 +3035,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToEnumPVMap()
     enumPVMap[id].id = id;
     enumPVMap.at(id).pvs.CHTYPE = DBR_TIME_ENUM;
     enumPVMap.at(id).pvs.id = id;
-    debugMessage("connectPV Passed a DBR_ENUM. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_ENUM. Entry with id =  ",id, " created");
     return &enumPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
@@ -2866,8 +3047,21 @@ gmStructs::pvStruct* VCgeneralMonitor::addToVecDoublePVMap()
     vec_doublePVMap.at(id).pvs.CHTYPE = DBR_DOUBLE;
     vec_doublePVMap.at(id).pvs.id = id;
     vec_doublePVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
-    debugMessage("connectPV Passed a DBR_ARRAY_DOUBLE. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_ARRAY_DOUBLE. Entry with id =  ",id, " created");
     return &vec_doublePVMap.at(id).pvs;
+}
+//______________________________________________________________________________
+//______________________________________________________________________________
+gmStructs::pvStruct* VCgeneralMonitor::addToVecLongPVMap()
+{
+    std::string id = veclongPrefix;
+    id += std::to_string(pvMonitorMapCount);
+    vec_longPVMap[id].id = id;
+    vec_longPVMap.at(id).pvs.CHTYPE = DBR_LONG;
+    vec_longPVMap.at(id).pvs.id = id;
+    vec_longPVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
+    message("connectPV Passed a DBR_ARRAY_LONG. Entry with id =  ",id, " created");
+    return &vec_longPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
 gmStructs::pvStruct* VCgeneralMonitor::addToVecIntPVMap()
@@ -2878,7 +3072,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToVecIntPVMap()
     vec_intPVMap.at(id).pvs.CHTYPE = DBR_TIME_INT;
     vec_intPVMap.at(id).pvs.id = id;
     vec_intPVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
-    debugMessage("connectPV Passed a DBR_ARRAY_INT. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_ARRAY_INT. Entry with id =  ",id, " created");
     return &vec_intPVMap.at(id).pvs;
 }
 //______________________________________________________________________________
@@ -2890,7 +3084,7 @@ gmStructs::pvStruct* VCgeneralMonitor::addToVecFloatPVMap()
     vec_floatPVMap.at(id).pvs.CHTYPE = DBR_FLOAT;
     vec_floatPVMap.at(id).pvs.id = id;
     vec_floatPVMap.at(id).pvs.isArrayPV = true;     // get ARRAY SIZE() after connected
-    debugMessage("connectPV Passed a DBR_ARRAY_FLOAT. Entry with id =  ",id, " created");
+    message("connectPV Passed a DBR_ARRAY_FLOAT. Entry with id =  ",id, " created");
     return &vec_floatPVMap.at(id).pvs;
 }
 //______________________________________________________________________________

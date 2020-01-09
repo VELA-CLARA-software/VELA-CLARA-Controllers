@@ -38,7 +38,7 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         // no, i have no plans to do that at the moment
 
     public:
-        VCgeneralMonitor(const bool showmess = false,const bool  showdebug = false);
+        VCgeneralMonitor(const bool showmess = true,const bool  showdebug = true);
         ~VCgeneralMonitor();
         // should be base class functions?
 //        void setQuiet();
@@ -108,6 +108,7 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         bool isDoublePV(const std::string& id);
         bool isConnected(const std::string& id);
         bool isMonitoring(const std::string& id);
+        bool isArrayLongPV(const std::string& id);
         bool isArrayDoublePV(const std::string& id);
         bool isArrayIntPV(const std::string& id);
         bool isArrayFloatPV(const std::string& id);
@@ -168,7 +169,6 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         void killMonitor(gmStructs::pvStruct& pvs);
         void killChannel(gmStructs::pvStruct& pvs);
         bool deleteID(const std::string& id);
-
         void printTimeStamp(const epicsTimeStamp & stamp);
 
         std::map<std::string,gmStructs::pvData<int>>                  intPVMap;
@@ -180,15 +180,17 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         std::map<std::string,gmStructs::pvData<std::vector<double>> > vec_doublePVMap;
         std::map<std::string,gmStructs::pvData<std::vector<float>> >  vec_floatPVMap;
         std::map<std::string,gmStructs::pvData<std::vector<int>>>     vec_intPVMap;
+        std::map<std::string,gmStructs::pvData<std::vector<long>>>    vec_longPVMap;
         std::map<std::string,gmStructs::pvData<std::string>>          stringPVMap;
 
         const std::string stringPrefix,intPrefix,shortPrefix,floatPrefix,enumPrefix,
                           charPrefix,longPrefix,doublePrefix,vecdoublePrefix,vecintPrefix,
-                          vecfloatPrefix;
+                          vecfloatPrefix, veclongPrefix;
 
         void addSingleDouble(const std::string & id,const event_handler_args& args);
         void addSingleFloat(const std::string & id,const event_handler_args& args);
         void addArrayDouble(const std::string & id,const event_handler_args& args);
+        void addArrayLong(const std::string & id,const event_handler_args& args);
         void addArrayFloat(const std::string & id,const event_handler_args& args);
         void addArrayInt(const std::string & id,const event_handler_args& args);
 
@@ -199,6 +201,7 @@ class VCgeneralMonitor : public controller,  public  VCbase// inherits controlle
         gmStructs::pvStruct* addToDoublePVMap();
         gmStructs::pvStruct* addToCharPVMap();
         gmStructs::pvStruct* addToLongPVMap();
+        gmStructs::pvStruct* addToVecLongPVMap();
         gmStructs::pvStruct* addToEnumPVMap();
         gmStructs::pvStruct* addToVecDoublePVMap();
         gmStructs::pvStruct* addToVecIntPVMap();

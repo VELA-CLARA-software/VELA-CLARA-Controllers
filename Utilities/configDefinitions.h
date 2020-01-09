@@ -789,6 +789,7 @@ namespace UTL
      const std::string DBR_ENUM_STR	             = "DBR_ENUM";
      const std::string DBR_CHAR_STR	             = "DBR_CHAR";
      const std::string DBR_LONG_STR	             = "DBR_LONG";
+     const std::string DBR_ARRAY_LONG_STR        = "DBR_ARRAY_LONG";
      const std::string DBR_INT_STR	             = "DBR_INT";
      /// there are many others... e.g.
 //    DBR_STS_ENUM	10	DBR_TIME_DOUBLE	20	DBR_CTRL_INT

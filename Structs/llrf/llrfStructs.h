@@ -609,7 +609,15 @@ namespace llrfStructs
             num_traces_to_estimate_rep_rate(UTL::HUNDRED_SIZET),
             trace_rep_rate(UTL::DUMMY_DOUBLE),
             should_keep_alive(false),
-            last_keep_alive(UTL::ZERO_DOUBLE)
+            last_keep_alive(UTL::ZERO_DOUBLE),
+            /*
+                Adding this in to allow the masks to be different during "fast ramp mode"
+                We will use this mode when we return power from an event, instead of switching
+                on to close to the previous power we will ramp up to it "fast"
+                in this mode the high mask will be increased to the Klystorn Forward power level.
+            */
+            fast_ramp_mode(false)
+
             {}
         liberallrfInterface* interface;
         double kly_fwd_power_max,last_kly_fwd_power_max,active_pulse_kly_power_limit;
@@ -742,6 +750,8 @@ namespace llrfStructs
 
         bool drop_amp_on_breakdown;
         size_t num_extra_traces;
+
+        bool fast_ramp_mode;
     };
 }
 #endif

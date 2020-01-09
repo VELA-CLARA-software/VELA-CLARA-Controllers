@@ -487,25 +487,25 @@ void gunModInterface::updateWarmUpTime(const event_handler_args& args)
 void gunModInterface::updateCtRead(const event_handler_args& args)
 {
     gunMod.CtRead = getDBRdouble(args);
-    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",gunMod.CtRead);
+    //debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CT_READ = ",gunMod.CtRead);
 }
 //____________________________________________________________________________________________
 void gunModInterface::updateCvdRead(const event_handler_args& args)
 {
     gunMod.CvdRead = getDBRdouble(args);
-    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",gunMod.CvdRead);
+    //debugMessage("rfModStructs::GUN_MOD_PV_TYPE::CVD_READ = ",gunMod.CvdRead);
 }
 //____________________________________________________________________________________________
 void gunModInterface::updatePlswthRead(const event_handler_args& args)
 {
     gunMod.PlswthRead = getDBRdouble(args);
-    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ", gunMod.PlswthRead);
+    //debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_READ = ", gunMod.PlswthRead);
 }
 //____________________________________________________________________________________________
 void gunModInterface::updatePlswthFwhmRead(const event_handler_args& args)
 {
     gunMod.PlswthFwhmRead = getDBRdouble(args);
-    debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ", gunMod.PlswthFwhmRead);
+    //debugMessage("rfModStructs::GUN_MOD_PV_TYPE::PULSE_WIDTH_FWHM_READ = ", gunMod.PlswthFwhmRead);
 }
 //____________________________________________________________________________________________
 void gunModInterface::updateIlock_string(const event_handler_args& args, size_t ilock_number)
@@ -541,7 +541,7 @@ void gunModInterface::check_ilock_changed(const std::string& new_val,std::string
     else
     {
         present_val = new_val;
-        debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK",num,"_STR = ",present_val);
+        //debugMessage("rfModStructs::GUN_MOD_PV_TYPE::ILOCK",num,"_STR = ",present_val);
     }
 }
 //______________________________________________________________________________

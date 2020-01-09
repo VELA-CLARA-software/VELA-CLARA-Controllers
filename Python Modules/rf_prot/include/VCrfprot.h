@@ -175,8 +175,8 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
         ;
 
 
-    const char* gunProtKeyBitValues_doc = "key bit values";
-    const char* gunProtKeyBits_doc      = "which bits in cmi refer to physcial keys";
+    const char* protKeyBitValues_doc = "key bit values";
+    const char* protKeyBits_doc      = "which bits in cmi refer to physcial keys";
     const char* protType_doc            = "RF gun protection type";
     const char* pvRoot_doc              = "object PV Root";
     const char* status_doc              = "object status";
@@ -186,10 +186,10 @@ BOOST_PYTHON_MODULE(VELA_CLARA_RF_Protection_Control)
     using namespace boost;
     class_<rfProtObject,noncopyable>
         ("rfProtObject","rfProtObject member variables (read access only)", no_init)
-        .def_readonly("gunProtKeyBitValues",
-                      &rfProtObject::gunProtKeyBitValues,gunProtKeyBitValues_doc)
-        .def_readonly("gunProtKeyBits",
-                      &rfProtObject::gunProtKeyBits,gunProtKeyBits_doc)
+        .def_readonly("protKeyBitValues",
+                      &rfProtObject::protKeyBitValues,protKeyBitValues_doc)
+        .def_readonly("protKeyBits",
+                      &rfProtObject::protKeyBits,protKeyBits_doc)
         .def_readonly("protType",
                       &rfProtObject::protType,protType_doc)
         .def_readonly("pvRoot",

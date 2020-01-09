@@ -51,7 +51,7 @@ L01ProtConfigReader::~L01ProtConfigReader(){}
 bool L01ProtConfigReader::getrfProtObjects(std::map<std::string, rfProtStructs::rfProtObject>& mapToFill )
 {
     mapToFill.clear();
-    for(auto && it : gunProtObjects)
+    for(auto && it : protObjects)
     {
         mapToFill[it.name] = it;
 
@@ -199,40 +199,42 @@ void L01ProtConfigReader::addToProtObjectsV1(const std::vector<std::string> &key
         rfProtStructs::rfProtObject prot = rfProtStructs::rfProtObject();
         prot.name = keyVal[1];
         prot.numIlocks = (size_t)numIlocks;
-        gunProtObjects.push_back(prot);
-        debugMessage("Added ", gunProtObjects.back().name," ", gunProtObjects.size(), " objects");
+        protObjects.push_back(prot);
+        debugMessage("Added ", protObjects.back().name," ", protObjects.size(), " objects");
     }
     else if(keyVal[0] == UTL::PV_ROOT)
-        gunProtObjects.back().pvRoot = keyVal[1];
+        protObjects.back().pvRoot = keyVal[1];
     else if(keyVal[0] == UTL::GUN_PROT_KEY_BITS)
     {
-        gunProtObjects.back().gunProtKeyBits = getIntVector( keyVal[1] );
+        protObjects.back().protKeyBits = getIntVector( keyVal[1] );
 
-        for(auto && it : gunProtObjects.back().gunProtKeyBits )
+        for(auto && it : protObjects.back().protKeyBits )
         {
-            gunProtObjects.back().gunProtKeyBitValues.push_back(false);
+            protObjects.back().protKeyBitValues.push_back(false);
         }
     }
     else if(keyVal[0] == UTL::RF_PROT_TYPE)
     {
         if( keyVal[1] == UTL::ENABLE)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::ENABLE;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::ENABLE;
         else if( keyVal[1] == UTL::GENERAL)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::GENERAL;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::GENERAL;
         else if( keyVal[1] == UTL::CLARA_HRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_HRRG;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_HRRG;
         else if( keyVal[1] == UTL::VELA_LRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_LRRG;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_LRRG;
         else if( keyVal[1] == UTL::CLARA_LRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_LRRG;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::CLARA_LRRG;
         else if( keyVal[1] == UTL::VELA_HRRG)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_HRRG;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::VELA_HRRG;
         else if( keyVal[1] == UTL::TEST)
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::TEST;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::TEST;
+        else if( keyVal[1] == UTL::L01)
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::L01;
         else
-            gunProtObjects.back().protType = rfProtStructs::RF_PROT_TYPE::NOT_KNOWN;
+            protObjects.back().protType = rfProtStructs::RF_PROT_TYPE::NOT_KNOWN;
 
-        message(gunProtObjects.back().name," gunProtObjects.back().protType = ", ENUM_TO_STRING(gunProtObjects.back().protType));
+        message(protObjects.back().name," protObjects.back().protType = ", ENUM_TO_STRING(protObjects.back().protType));
     }
 }
 //______________________________________________________________________________

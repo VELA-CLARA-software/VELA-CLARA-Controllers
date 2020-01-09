@@ -62,7 +62,7 @@ class L01ProtConfigReader : public configReader
         void addToPVMonitorMapV1(const std::vector<std::string> &keyVal );
         void addToPVCommandMapV1(const std::vector<std::string> &keyVal );
 
-        std::vector<rfProtStructs::rfProtObject> gunProtObjects;
+        std::vector<rfProtStructs::rfProtObject> protObjects;
 
         void addToPVStruct(std::vector<rfProtStructs::pvStruct>& pvStruct_v,
                            const std::vector<std::string>& keyVal);

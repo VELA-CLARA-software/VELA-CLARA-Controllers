@@ -1107,6 +1107,21 @@ size_t liberaLLRFController::getTraceLength()const
     return localInterface.getTraceLength();
 }
 //______________________________________________________________________________
+
+void liberaLLRFController::fastRampModeOn()
+{
+    localInterface.fastRampModeOn();
+}
+void liberaLLRFController::fastRampModeOff()
+{
+    localInterface.fastRampModeOff();
+}
+bool liberaLLRFController::getFastRampModeState() const
+{
+    return localInterface.getFastRampModeState();
+}
+
+//______________________________________________________________________________
 //std::vector<std::string> liberaLLRFController::getChannelNames()
 //{
 //    return localInterface.getChannelNames();

@@ -244,13 +244,13 @@ void gunProtInterface::updateCMIBits(rfProtStructs::rfProtObject& obj)
     for(auto bit = 0; bit < 8; ++bit)//MAGIC_NUMBER
     {
         //message(obj.name, " bit ", bit, " value = ",  (obj.cmi &( 1 << bit)) >> bit);
-        if( std::find(obj.gunProtKeyBits.begin(),
-                      obj.gunProtKeyBits.end(), bit) != obj.gunProtKeyBits.end())
+        if( std::find(obj.protKeyBits.begin(),
+                      obj.protKeyBits.end(), bit) != obj.protKeyBits.end())
         {
-            obj.gunProtKeyBitValues[counter] = (obj.cmi &( 1 << bit)) >> bit;
-            //message("obj.gunProtKeyBitValues part ",
+            obj.protKeyBitValues[counter] = (obj.cmi &( 1 << bit)) >> bit;
+            //message("obj.protKeyBitValues part ",
             //        counter, " = ",
-            //        obj.gunProtKeyBitValues[counter]);
+            //        obj.protKeyBitValues[counter]);
             ++counter;
         }
     }
@@ -298,7 +298,7 @@ bool gunProtInterface::allkeybitsaregood(const rfProtStructs::rfProtObject& obj)
     if(isNotGeneralProt(obj.name) && isNotEnableProt(obj.name))
     {
         r = true;
-        for(auto&& it : obj.gunProtKeyBitValues)
+        for(auto&& it : obj.protKeyBitValues)
         {
             if(!it)
                 r = false;

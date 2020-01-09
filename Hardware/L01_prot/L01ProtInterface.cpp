@@ -244,13 +244,13 @@ void L01ProtInterface::updateCMIBits(rfProtStructs::rfProtObject& obj)
     for(auto bit = 0; bit < 8; ++bit)//MAGIC_NUMBER
     {
         //message(obj.name, " bit ", bit, " value = ",  (obj.cmi &( 1 << bit)) >> bit);
-        if( std::find(obj.gunProtKeyBits.begin(),
-                      obj.gunProtKeyBits.end(), bit) != obj.gunProtKeyBits.end())
+        if( std::find(obj.protKeyBits.begin(),
+                      obj.protKeyBits.end(), bit) != obj.protKeyBits.end())
         {
-            obj.gunProtKeyBitValues[counter] = (obj.cmi &( 1 << bit)) >> bit;
-            //message("obj.gunProtKeyBitValues part ",
+            obj.protKeyBitValues[counter] = (obj.cmi &( 1 << bit)) >> bit;
+            //message("obj.protKeyBitValues part ",
             //        counter, " = ",
-            //        obj.gunProtKeyBitValues[counter]);
+            //        obj.protKeyBitValues[counter]);
             ++counter;
         }
     }
@@ -287,7 +287,7 @@ bool L01ProtInterface::allkeybitsaregood(const rfProtStructs::rfProtObject& obj)
     if(isNotGeneralProt(obj.name) && isNotEnableProt(obj.name))
     {
         r = true;
-        for(auto&& it : obj.gunProtKeyBitValues)
+        for(auto&& it : obj.protKeyBitValues)
         {
             if(!it)
                 r = false;
@@ -320,20 +320,20 @@ void L01ProtInterface::updateProtStatus(rfProtStructs::rfProtObject& obj,
 //____________________________________________________________________________________________
 void L01ProtInterface::updateProtStatus(rfProtStructs::rfProtObject& obj,
                                         const unsigned short value)
-{   //message(obj.name , " value =  ", value, " updateProtStatus(obj,const long value)");
+{   //message("c++ L01 PROT ", obj.name , " value =  ", value, " updateProtStatus(obj,const long value)");
     switch(value)
     {
        case UTL::ZERO_US:
            obj.status = rfProtStructs::RF_PROT_STATUS::BAD;
-           //message(obj.name , " status = BAD ");
+           //message("c++ L01 PROT ",obj.name , " status = BAD ");
            break;
        case UTL::ONE_US:
            obj.status = rfProtStructs::RF_PROT_STATUS::GOOD;
-           //message(obj.name , " status = GOOD ");
+           //message("c++ L01 PROT ", obj.name , " status = GOOD ");
            break;
         default:
            obj.status = rfProtStructs::RF_PROT_STATUS::ERROR;
-           //message(obj.name , " status = ERROR ");
+           //message("c++ L01 PROT ", obj.name , " status = ERROR ");
     }
 }
 //____________________________________________________________________________________________
@@ -361,7 +361,7 @@ std::string L01ProtInterface::getEnableProtName() const
 //____________________________________________________________________________________________
 std::string L01ProtInterface::getCurrentModeProtName() const
 {
-    message("getCurrentModeProtName ", ENUM_TO_STRING(currentMode));
+    //message("getCurrentModeProtName ", ENUM_TO_STRING(currentMode));
     for(auto&& it : allL01Prots)
     {
         if( isProtOfType( it.first, currentMode))
@@ -621,6 +621,7 @@ const rfProtStructs::rfProtObject&
     {
         return allL01Prots.at(name);
     }
+    message("!!!ERROR!!! Can't find RF protection object with name = ", name);
     rfProtStructs::rfProtObject r = rfProtStructs::rfProtObject();
     return r;
 }
@@ -635,6 +636,7 @@ const rfProtStructs::rfProtObject&
             return allL01Prots.at(it.second.name);
         }
     }
+    message("!!!ERROR!!! Can't find RF protection object of  type = ", ENUM_TO_STRING(type));
     rfProtStructs::rfProtObject r = rfProtStructs::rfProtObject();
     return r;
 }

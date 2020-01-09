@@ -39,11 +39,11 @@ class L01ProtInterface;
 namespace rfProtStructs
 {
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_PV_TYPE, (RESET)
-                                                             (STATUS)
-                                                             (ON)
-                                                             (OFF)
-                                                             (CMI)
-                                                             (UNKNOWN_PV)
+                                                         (STATUS)
+                                                         (ON)
+                                                         (OFF)
+                                                         (CMI)
+                                                         (UNKNOWN_PV)
                                         )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_TYPE, (CLARA_HRRG)
@@ -59,9 +59,9 @@ namespace rfProtStructs
                                         )
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(RF_PROT_STATUS, (GOOD)
-                                                            (BAD)
-                                                            (ERROR)
-                                                            (UNKNOWN)
+                                                        (BAD)
+                                                        (ERROR)
+                                                        (UNKNOWN)
                                         )
 
     struct pvStruct
@@ -95,9 +95,9 @@ namespace rfProtStructs
         long       cmi;
         //unsigned long       cmi;
         // the bit position of the key bits in the prot cmi
-        std::vector<int>    gunProtKeyBits;
+        std::vector<int>    protKeyBits;
         // values of the key bits
-        std::vector<bool>   gunProtKeyBitValues;
+        std::vector<bool>   protKeyBitValues;
         size_t              numIlocks;
         RF_PROT_TYPE        protType;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::ILOCK_STATE> iLockStates;
@@ -114,15 +114,16 @@ namespace rfProtStructs
             interface_L01(nullptr),
             monType(UNKNOWN_PV)
             {}
-        RF_PROT_PV_TYPE monType;
-        rfProtObject*    rfProtObject;
-        gunProtInterface*   interface;
-        // hacking the belwo in before we move to CATAP 2.0 probably don't need two seperate objects here ... ??
-        // needs a bit of a re-wrrite
-        L01ProtInterface*   interface_L01;
+        RF_PROT_PV_TYPE   monType;
+        rfProtObject*     rfProtObject;
+        // !
+        gunProtInterface* interface;
+        // hacking the below in before we move to CATAP 2.0 probably don't need two seperate objects here ... ??
+        // needs a bit of a re-write
+        L01ProtInterface* interface_L01;
         // default values for epics types??
-        chtype              CHTYPE;
-        evid                EVID;
+        chtype            CHTYPE;
+        evid              EVID;
     };
 }
 //______________________________________________________________________________

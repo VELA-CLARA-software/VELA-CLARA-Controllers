@@ -602,8 +602,12 @@ class liberallrfInterface : public interface
 
 
 
-
-
+        /* NEW Dec 2019 - fast ramp mode, see llrf structs
+           "fast_ramp_mode" variable for more info.  */
+        void setFastRampMode(const bool state);
+        void fastRampModeOn();
+        void fastRampModeOff();
+        bool getFastRampModeState() const;
 
 
 
@@ -672,7 +676,6 @@ class liberallrfInterface : public interface
 //        int data_miss_count;// = -2;
 //        int evid_call_count;// = -2;
 //        int data_call_count;// = -2;
-
 
         bool can_ran_off;
 

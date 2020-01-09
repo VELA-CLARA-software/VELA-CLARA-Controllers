@@ -822,6 +822,29 @@ void liberallrfInterface::updateRollingAveragesAndMasks()
     }
 }
 //--------------------------------------------------------------------------------------------------
+void liberallrfInterface::setFastRampMode(const bool state)
+{
+    llrf.fast_ramp_mode = state;
+    message("llrf.fast_ramp_mode = ", llrf.fast_ramp_mode);
+}
+//--------------------------------------------------------------------------------------------------
+void liberallrfInterface::fastRampModeOn()
+{
+    setFastRampMode(true);
+}
+//--------------------------------------------------------------------------------------------------
+void liberallrfInterface::fastRampModeOff()
+{
+    setFastRampMode(false);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::getFastRampModeState() const
+{
+    return llrf.fast_ramp_mode;
+}
+
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
 {
     /*
@@ -926,9 +949,20 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
         hi_mask[i] = hi_max;
         lo_mask[i] = lo_min;
     }
+
+    /* FAST RAMP WE SET THE HI MASK FOR POWERS TO BE THE KFP MAX */
+    if(llrf.fast_ramp_mode)
+    {
+        if( stringIsSubString( data.name, "POWER"))
+        {
+            //message("Setting fast_ramp_hi_mask for ", data.name, " to ", llrf.kly_fwd_power_max);
+            std::fill(hi_mask.begin(), hi_mask.end(), llrf.kly_fwd_power_max);
+        }
+    }
     //message(mask_type," 5");
     data.lo_mask_set = true;
     data.hi_mask_set = true;
+
 }
 //--------------------------------------------------------------------------------------------------
 /*  ___  __        __   ___     __        __      ___  __   ___  __      ___  __  ___              ___    __
@@ -4723,12 +4757,6 @@ void liberallrfInterface::keepAlive()
         }
     }
 }
-
-
-
-
-
-
 
 //--------------------------------------------------------------------------------------------------
 /*   __             __   ___                    __        __

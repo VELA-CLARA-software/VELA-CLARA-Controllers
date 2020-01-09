@@ -206,11 +206,11 @@ void gunProtConfigReader::addToProtObjectsV1(const std::vector<std::string> &key
         gunProtObjects.back().pvRoot = keyVal[1];
     else if(keyVal[0] == UTL::GUN_PROT_KEY_BITS)
     {
-        gunProtObjects.back().gunProtKeyBits = getIntVector( keyVal[1] );
+        gunProtObjects.back().protKeyBits = getIntVector( keyVal[1] );
 
-        for(auto && it : gunProtObjects.back().gunProtKeyBits )
+        for(auto && it : gunProtObjects.back().protKeyBits )
         {
-            gunProtObjects.back().gunProtKeyBitValues.push_back(false);
+            gunProtObjects.back().protKeyBitValues.push_back(false);
         }
     }
     else if(keyVal[0] == UTL::RF_PROT_TYPE)

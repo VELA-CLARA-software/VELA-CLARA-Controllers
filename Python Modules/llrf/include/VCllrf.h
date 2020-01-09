@@ -571,6 +571,13 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
+        /* FAST RAMP MODE SETTERS  GETTER */
+        .def("fastRampModeOn",       &liberaLLRFController::fastRampModeOn,       "Enable Fast Ramp Mode"     )
+        .def("fastRampModeOff",      &liberaLLRFController::fastRampModeOff,      "Disable Fast Ramp Mode"    )
+        .def("getFastRampModeState", &liberaLLRFController::getFastRampModeState, "Get current state of fast ramp mode (true = enabled, false - disabled) "   )
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 

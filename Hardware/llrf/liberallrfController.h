@@ -308,8 +308,8 @@ class liberaLLRFController : public controller
 
 #ifdef BUILD_DLL
         bool setInfiniteMasks(const std::string& name);
-        bool setHighMask(const std::string& name,const  boost::python::list& value);
-        bool setLowMask(const std::string& name,const  boost::python::list& value);
+        bool setHighMask(const std::string& name,const boost::python::list& value);
+        bool setLowMask(const std::string& name, const boost::python::list& value);
         bool setCavRevPwrHiMask_Py(const boost::python::list& value);
         bool setCavRevPwrLoMask_Py(const boost::python::list& value);
 #endif
@@ -638,7 +638,9 @@ ___  __        __   ___     __        ___  ___  ___  __   __
         double getBreakDownRate();
 
 
-
+        void fastRampModeOn();
+        void fastRampModeOff();
+        bool getFastRampModeState() const;
 
 
         /* convert trace indices to times and vice-versa */
