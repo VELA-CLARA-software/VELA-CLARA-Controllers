@@ -1262,7 +1262,7 @@ bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool i
     //
 */
 //--------------------------------------------------------------------------------------------------
-bool liberallrfInterface::isGlobalCheckMask()
+bool liberallrfInterface::isGlobalCheckMask() const
 {
     std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return llrf.check_mask;
@@ -1301,7 +1301,7 @@ std::vector<double> liberallrfInterface::getLoMask(const std::string& name) cons
     return r;
 }
 //--------------------------------------------------------------------------------------------------
-double liberallrfInterface::getMaskValue(const std::string& name)
+double liberallrfInterface::getMaskValue(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1312,7 +1312,7 @@ double liberallrfInterface::getMaskValue(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberallrfInterface::getMaskStartIndex(const std::string& name)
+size_t liberallrfInterface::getMaskStartIndex(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1323,7 +1323,7 @@ size_t liberallrfInterface::getMaskStartIndex(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberallrfInterface::getMaskEndIndex(const std::string& name)
+size_t liberallrfInterface::getMaskEndIndex(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1334,7 +1334,7 @@ size_t liberallrfInterface::getMaskEndIndex(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-double liberallrfInterface::getMaskFloor(const std::string& name)
+double liberallrfInterface::getMaskFloor(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1345,7 +1345,7 @@ double liberallrfInterface::getMaskFloor(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberallrfInterface::getMaskWindowStartIndex(const std::string& name)
+size_t liberallrfInterface::getMaskWindowStartIndex(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1356,7 +1356,7 @@ size_t liberallrfInterface::getMaskWindowStartIndex(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberallrfInterface::getMaskWindowEndIndex(const std::string& name)
+size_t liberallrfInterface::getMaskWindowEndIndex(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1367,7 +1367,7 @@ size_t liberallrfInterface::getMaskWindowEndIndex(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-double liberallrfInterface::getMaskStartTime(const std::string& name)
+double liberallrfInterface::getMaskStartTime(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1378,7 +1378,7 @@ double liberallrfInterface::getMaskStartTime(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-double liberallrfInterface::getMaskEndTime(const std::string& name)
+double liberallrfInterface::getMaskEndTime(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1389,7 +1389,7 @@ double liberallrfInterface::getMaskEndTime(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-double liberallrfInterface::getMaskWindowStartTime(const std::string& name)
+double liberallrfInterface::getMaskWindowStartTime(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1400,7 +1400,7 @@ double liberallrfInterface::getMaskWindowStartTime(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
-double liberallrfInterface::getMaskWindowEndTime(const std::string& name)
+double liberallrfInterface::getMaskWindowEndTime(const std::string& name) const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -1411,11 +1411,22 @@ double liberallrfInterface::getMaskWindowEndTime(const std::string& name)
     return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------------------------
+size_t liberallrfInterface::getNumContinuousOutsideMaskCount(const std::string& name) const
+{
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
+    {
+        return getTime(llrf.trace_data.at(n).num_continuous_outside_mask_count);
+    }
+    message("liberallrfInterface::getNumContinuousOutsideMaskCount ERROR, trace ", n, " does not exist");
+    return UTL::ZERO_SIZET;
+}
+//--------------------------------------------------------------------------------------------------
 //
 //
 // MASKS
 //----------------------------------------------------------------------------------------------------------
-bool liberallrfInterface::isPercentMask(const std::string& name)
+bool liberallrfInterface::isPercentMask(const std::string& name)const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data,n))
@@ -1425,7 +1436,7 @@ bool liberallrfInterface::isPercentMask(const std::string& name)
     return false;
 }
 //----------------------------------------------------------------------------------------------------------
-bool liberallrfInterface::isAbsoluteMask(const std::string& name)
+bool liberallrfInterface::isAbsoluteMask(const std::string& name)const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data,n))
@@ -1435,7 +1446,7 @@ bool liberallrfInterface::isAbsoluteMask(const std::string& name)
     return false;
 }
 //____________________________________________________________________________________________
-bool liberallrfInterface::isCheckingMask(const std::string& name)
+bool liberallrfInterface::isCheckingMask(const std::string& name)const
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data,n))
@@ -1445,17 +1456,17 @@ bool liberallrfInterface::isCheckingMask(const std::string& name)
     return false;
 }
 //____________________________________________________________________________________________
-bool liberallrfInterface::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
+bool liberallrfInterface::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)const
 {
     return isCheckingMask(getLLRFChannelName(pv));
 }
 //____________________________________________________________________________________________
-bool liberallrfInterface::isNotCheckingMask(const std::string& name)
+bool liberallrfInterface::isNotCheckingMask(const std::string& name)const
 {
     return !isCheckingMask(name);
 }
 //____________________________________________________________________________________________
-bool liberallrfInterface::isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)
+bool liberallrfInterface::isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)const
 {
     return !isCheckingMask(pv);
 }
@@ -2425,6 +2436,26 @@ bool liberallrfInterface::setDropAmpOnOutsideMaskEventValue(const std::string& n
     return false;
 }
 //____________________________________________________________________________________________
+bool liberallrfInterface::getDropAmpOnOutsideMaskEvent(const std::string& name)const
+{   // whether to drop amp when detetcing an outside_mask_trace
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, fullLLRFTraceName(n)))
+    {
+        return llrf.trace_data.at(n).amp_drop_value;
+    }
+    return false;
+}
+//____________________________________________________________________________________________
+bool liberallrfInterface::getDropAmpOnOutsideMaskEventValue(const std::string& name)const
+{   // amplitude to set after detecting outside mask
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, fullLLRFTraceName(n)))
+    {
+        return llrf.trace_data.at(n).amp_drop_value;
+    }
+    return UTL::DUMMY_INT;
+}
+//____________________________________________________________________________________________
 llrfStructs::outside_mask_event_data liberallrfInterface::getOutsideMaskEventData()
 {
     return llrf.omed;
@@ -3285,7 +3316,7 @@ size_t liberallrfInterface::getMeanStartIndex(const std::string&name)const
     return UTL::ZERO_SIZET;
 }
 //-------------------------------------------------------------------------------------------------------------------
-bool  liberallrfInterface::setMeanStopIndex(const std::string&name, size_t  value)
+bool liberallrfInterface::setMeanStopIndex(const std::string&name, size_t  value)
 {
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
@@ -3298,6 +3329,16 @@ bool  liberallrfInterface::setMeanStopIndex(const std::string&name, size_t  valu
     }
     //message(name," NOT FOUND!");
     return false;
+}
+//-------------------------------------------------------------------------------------------------------------------
+double liberallrfInterface::getMeanStartTime(const std::string&name)const
+{
+    return getTime(getMeanStartIndex(name));
+}
+//-------------------------------------------------------------------------------------------------------------------
+double liberallrfInterface::getMeanStopTime(const std::string&name)const
+{
+    return getTime(getMeanStopIndex(name));
 }
 //-------------------------------------------------------------------------------------------------------------------
 void liberallrfInterface::updateTraceCutMeans()

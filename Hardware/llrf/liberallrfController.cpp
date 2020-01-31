@@ -75,6 +75,17 @@ bool liberaLLRFController::setMeanStopIndex(const std::string&name, size_t  valu
 {
     return localInterface.setMeanStopIndex(name, value);
 }
+
+double liberaLLRFController::getMeanStartTime(const std::string&name)const
+{
+    return localInterface.getMeanStartTime(name);
+}
+double liberaLLRFController::getMeanStopTime(const std::string&name)const
+{
+    return localInterface.getMeanStartTime(name);
+}
+
+
 double liberaLLRFController::getCutMean(const std::string&name)const
 {
     return getMean(name);
@@ -383,52 +394,58 @@ boost::python::list liberaLLRFController::getLoMask_Py(const std::string&name)
 }
 //--------------------------------------------------------------------------------------------------
 #endif
-double liberaLLRFController::getMaskValue(const std::string& name)
+double liberaLLRFController::getMaskValue(const std::string& name)const
 {
     return localInterface.getMaskValue(name);
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberaLLRFController::getMaskStartIndex(const std::string& name)
+size_t liberaLLRFController::getMaskStartIndex(const std::string& name)const
 {
     return localInterface.getMaskStartIndex(name);
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberaLLRFController::getMaskEndIndex(const std::string& name)
+size_t liberaLLRFController::getMaskEndIndex(const std::string& name)const
 {
     return localInterface.getMaskEndIndex(name);
 }
 //--------------------------------------------------------------------------------------------------
-double liberaLLRFController::getMaskFloor(const std::string& name)
+double liberaLLRFController::getMaskFloor(const std::string& name)const
 {
     return localInterface.getMaskFloor(name);
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberaLLRFController::getMaskWindowStartIndex(const std::string& name)
+size_t liberaLLRFController::getMaskWindowStartIndex(const std::string& name)const
 {
     return localInterface.getMaskWindowStartIndex(name);
 }
 //--------------------------------------------------------------------------------------------------
-size_t liberaLLRFController::getMaskWindowEndIndex(const std::string& name)
+size_t liberaLLRFController::getMaskWindowEndIndex(const std::string& name)const
 {
     return localInterface.getMaskWindowEndIndex(name);
 }
 //--------------------------------------------------------------------------------------------------
-double liberaLLRFController::getMaskStartTime(const std::string& name)
+double liberaLLRFController::getMaskStartTime(const std::string& name)const
 {
     return localInterface.getMaskStartTime(name);
 }
 //--------------------------------------------------------------------------------------------------
-double liberaLLRFController::getMaskEndTime(const std::string& name)
+double liberaLLRFController::getMaskEndTime(const std::string& name)const
 {
     return localInterface.getMaskEndTime(name);
 }
 //--------------------------------------------------------------------------------------------------
-double liberaLLRFController::getMaskWindowStartTime(const std::string& name)
+double liberaLLRFController::getMaskWindowStartTime(const std::string& name)const
 {
     return localInterface.getMaskWindowStartTime(name);
 }
 //--------------------------------------------------------------------------------------------------
-double liberaLLRFController::getMaskWindowEndTime(const std::string& name)
+double liberaLLRFController::getMaskWindowEndTime(const std::string& name)const
+{
+    return localInterface.getMaskWindowEndTime(name);
+}
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getNumContinuousOutsideMaskCount(const std::string& name)const
 {
     return localInterface.getMaskWindowEndTime(name);
 }
@@ -615,6 +632,16 @@ bool liberaLLRFController::setDropAmpOnOutsideMaskEventValue(const std::string& 
 {
     return localInterface.setDropAmpOnOutsideMaskEventValue(name, amp_val);
 }
+//______________________________________________________________________________
+bool liberaLLRFController::getDropAmpOnOutsideMaskEvent(const std::string& name)const
+{
+    return localInterface.getDropAmpOnOutsideMaskEvent(name);
+}
+bool liberaLLRFController::getDropAmpOnOutsideMaskEventValue(const std::string& name)const
+{
+    return localInterface.getDropAmpOnOutsideMaskEventValue(name);
+}
+
 //______________________________________________________________________________
 bool liberaLLRFController::isOutsideMaskEventDataCollecting()const
 {

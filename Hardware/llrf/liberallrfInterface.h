@@ -83,6 +83,8 @@ class liberallrfInterface : public interface
         size_t getMeanStopIndex(const std::string&name)const;
         double getMean(const std::string&name)const;
         double getCutMean(const std::string&name)const;
+        double getMeanStartTime(const std::string&name)const;
+        double getMeanStopTime(const std::string&name)const;
     private:
         void updateTraceCutMeans();
         void calculateTraceCutMean(llrfStructs::rf_trace_data& tracedata);
@@ -218,23 +220,24 @@ class liberallrfInterface : public interface
         std::vector<double> getLoMask(const std::string&name)const;
         std::vector<double> getHiMask(const std::string&name)const;
 
-        double getMaskValue(const std::string& name);
-        size_t getMaskStartIndex(const std::string& name);
-        size_t getMaskEndIndex(const std::string& name);
-        double getMaskFloor(const std::string& name);
-        size_t getMaskWindowStartIndex(const std::string& name);
-        size_t getMaskWindowEndIndex(const std::string& name);
-        double getMaskStartTime(const std::string& name);
-        double getMaskEndTime(const std::string& name);
-        double getMaskWindowStartTime(const std::string& name);
-        double getMaskWindowEndTime(const std::string& name);
-        bool isGlobalCheckMask();
-        bool isPercentMask(const std::string& name);
-        bool isAbsoluteMask(const std::string& name);
-        bool isCheckingMask(const std::string& name);
-        bool isNotCheckingMask(const std::string& name);
-        bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
-        bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv);
+        double getMaskValue(const std::string& name)const;
+        size_t getMaskStartIndex(const std::string& name)const;
+        size_t getMaskEndIndex(const std::string& name)const;
+        double getMaskFloor(const std::string& name)const;
+        size_t getMaskWindowStartIndex(const std::string& name)const;
+        size_t getMaskWindowEndIndex(const std::string& name)const;
+        double getMaskStartTime(const std::string& name)const;
+        double getMaskEndTime(const std::string& name)const;
+        double getMaskWindowStartTime(const std::string& name)const;
+        double getMaskWindowEndTime(const std::string& name)const;
+        size_t getNumContinuousOutsideMaskCount(const std::string& name)const;
+        bool isGlobalCheckMask()const;
+        bool isPercentMask(const std::string& name)const;
+        bool isAbsoluteMask(const std::string& name)const;
+        bool isCheckingMask(const std::string& name)const;
+        bool isNotCheckingMask(const std::string& name)const;
+        bool isCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)const;
+        bool isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)const;
 
 //--------------------------------------------------------------------------------------------------
         static size_t counter;
@@ -276,8 +279,10 @@ class liberallrfInterface : public interface
         void handleTraceInMaskResult(llrfStructs::rf_trace_data& trace, int result);
         void handlePassedMask(llrfStructs::rf_trace_data& trace);
         void handleFailedMask(llrfStructs::rf_trace_data& trace);
+
         void setTracesToSaveOnOutsideMaskEvent(const std::vector<std::string>& name);
         void setTracesToSaveOnOutsideMaskEvent(const std::string& name);
+
         void setNumExtraTracesOnOutsideMaskEvent(const size_t value);
         size_t getNumExtraTracesOnOutsideMaskEvent()const;
 
@@ -292,6 +297,9 @@ class liberallrfInterface : public interface
 
         bool setDropAmpOnOutsideMaskEvent(const std::string& name, bool state, double amp_val = 0.0);
         bool setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val);
+
+        bool getDropAmpOnOutsideMaskEvent(const std::string& name)const;
+        bool getDropAmpOnOutsideMaskEventValue(const std::string& name)const;
 
         std::vector<std::string> getTracesToSaveOnOutsideMaskEvent();
 

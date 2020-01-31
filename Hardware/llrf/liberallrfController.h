@@ -69,6 +69,9 @@ class liberaLLRFController : public controller
         bool setMeanStopIndex(const std::string&name, size_t  value);
         size_t getMeanStartIndex(const std::string&name)const;
         size_t getMeanStopIndex(const std::string&name)const;
+        double getMeanStartTime(const std::string&name)const;
+        double getMeanStopTime(const std::string&name)const;
+
         double getMean(const std::string&name)const;
         double getCutMean(const std::string&name)const;
         double getKlyFwdPwrCutMean()const;
@@ -210,16 +213,17 @@ class liberaLLRFController : public controller
         boost::python::list getHiMask_Py(const std::string&name);
         boost::python::list getLoMask_Py(const std::string&name);
 #endif
-        double getMaskValue(const std::string& name);
-        size_t getMaskStartIndex(const std::string& name);
-        size_t getMaskEndIndex(const std::string& name);
-        double getMaskFloor(const std::string& name);
-        size_t getMaskWindowStartIndex(const std::string& name);
-        size_t getMaskWindowEndIndex(const std::string& name);
-        double getMaskStartTime(const std::string& name);
-        double getMaskEndTime(const std::string& name);
-        double getMaskWindowStartTime(const std::string& name);
-        double getMaskWindowEndTime(const std::string& name);
+        double getMaskValue(const std::string& name)const;
+        size_t getMaskStartIndex(const std::string& name)const;
+        size_t getMaskEndIndex(const std::string& name)const;
+        double getMaskFloor(const std::string& name)const;
+        size_t getMaskWindowStartIndex(const std::string& name)const;
+        size_t getMaskWindowEndIndex(const std::string& name)const;
+        double getMaskStartTime(const std::string& name)const;
+        double getMaskEndTime(const std::string& name)const;
+        double getMaskWindowStartTime(const std::string& name)const;
+        double getMaskWindowEndTime(const std::string& name)const;
+        double getNumContinuousOutsideMaskCount(const std::string& name)const;
 
 //--------------------------------------------------------------------------------------------------
 
@@ -261,6 +265,8 @@ class liberaLLRFController : public controller
         size_t getPulseCount()const;
         bool setDropAmpOnOutsideMaskEvent(const std::string& name, bool state, double amp_val = 0.0);
         bool setDropAmpOnOutsideMaskEventValue(const std::string& name, double amp_val);
+        bool getDropAmpOnOutsideMaskEvent(const std::string& name)const;
+        bool getDropAmpOnOutsideMaskEventValue(const std::string& name)const;
 
 
         std::vector<std::string> getTracesToSaveOnOutsideMaskEvent();

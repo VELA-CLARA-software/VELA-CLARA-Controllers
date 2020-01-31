@@ -607,6 +607,7 @@ void interface::getDBRdouble_timestamp(const event_handler_args& args,
     val = p->value;
     //ts.etime = p->stamp;
     //updateTime(ts.etime, ts.time_ns, ts.time_Str);
+}    std::this_thread::sleep_for(x);
 }
 //______________________________________________________________________________
 void interface::pause_x(std::chrono::milliseconds x) const

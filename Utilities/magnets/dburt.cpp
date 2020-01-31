@@ -144,6 +144,8 @@ magnetStructs::magnetStateStruct dburt::actuallyReadTheDBURT(const std::string& 
     }
     return magState;
 }
+
+
 //______________________________________________________________________________
 magnetStructs::magnetStateStruct dburt::readDBURTv4(const std::string & pathandfile)
 {

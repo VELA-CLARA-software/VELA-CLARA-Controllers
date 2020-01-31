@@ -111,7 +111,7 @@ class magnetInterface : public interface
         magnetStructs::magnetStateStruct getDBURT(const std::string& filePath, const std::string& fileName);
         // get const refs and pointers to magnetObjects
         // we allow c++ users to have full read access to the entire magnetObject data
-        const magnetStructs::magnetObject &getMagObjConstRef(const std::string& magName)const;
+        const magnetStructs::magnetObject & getMagObjConstRef(const std::string& magName)const;
         const magnetStructs::magnetObject *getMagObjConstPtr(const std::string& magName)const;
 
         /* getters for object parameters

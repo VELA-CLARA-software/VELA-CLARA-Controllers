@@ -667,6 +667,10 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getMeanStartIndex",  &liberaLLRFController::getMeanStartIndex,(NAME_ARG),"Get trace 'name' start index for mean calculation")
         .def("getMeanStopIndex",  &liberaLLRFController::getMeanStopIndex,(NAME_ARG),"Get trace 'name' stop index for mean calculation")
+
+        .def("getMeanStartTime",  &liberaLLRFController::getMeanStartTime,(NAME_ARG),"Get trace 'name' start time for mean calculation")
+        .def("getMeanStopTime",  &liberaLLRFController::getMeanStopTime,(NAME_ARG),"Get trace 'name' stop time for mean calculation")
+
         .def("getMean",     &liberaLLRFController::getMean,(NAME_ARG),"Get trace 'name' mean value.")
         .def("getCutMean",  &liberaLLRFController::getCutMean,(NAME_ARG),"Get trace 'name' mean value between start and stop indices.")
         .def("getKlyFwdPwrCutMean",  &liberaLLRFController::getKlyFwdPwrCutMean,"Get Kly Fwd Pwr Trace cut mean (mean value between start and stop indices).")
@@ -880,7 +884,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getMaskEndTime",         &liberaLLRFController::getMaskEndTime,         (NAME_ARG),getMaskEndTime_ds)
         .def("getMaskWindowStartTime", &liberaLLRFController::getMaskWindowStartTime, (NAME_ARG),getMaskWindowStartTime_ds)
         .def("getMaskWindowEndTime", &liberaLLRFController::getMaskWindowEndTime, (NAME_ARG),getMaskWindowEndTime_ds)
-
+        .def("getNumContinuousOutsideMaskCount", &liberaLLRFController::getNumContinuousOutsideMaskCount, (NAME_ARG),getNumContinuousOutsideMaskCount_ds)
 
 
         .def("isGlobalCheckMask", &liberaLLRFController::isGlobalCheckMask, isGlobalCheckMask_ds)
@@ -896,6 +900,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getTracesToSaveOnOutsideMaskEvent",  &liberaLLRFController::getTracesToSaveOnOutsideMaskEvent_Py, getTracesToSaveOnOutsideMaskEvent_Py_ds)
         .def("setDropAmpOnOutsideMaskEvent", &liberaLLRFController::setDropAmpOnOutsideMaskEvent,(NAME_ARG, BOOL_ARG, VALUE_ARG),setDropAmpOnOutsideMaskEvent_ds)
         .def("setDropAmpOnOutsideMaskEventValue", &liberaLLRFController::setDropAmpOnOutsideMaskEventValue,(NAME_ARG, VALUE_ARG),setDropAmpOnOutsideMaskEventValue_ds)
+        .def("getDropAmpOnOutsideMaskEvent",  &liberaLLRFController::getDropAmpOnOutsideMaskEvent,(NAME_ARG),getDropAmpOnOutsideMaskEvent_ds)
+        .def("getDropAmpOnOutsideMaskEventValue",  &liberaLLRFController::getDropAmpOnOutsideMaskEventValue,(NAME_ARG),getDropAmpOnOutsideMaskEventValue_ds)
+
 
         .def("getOutsideMaskEventDataSize", &liberaLLRFController::getOutsideMaskEventDataSize, getOutsideMaskEventDataSize_ds)
 

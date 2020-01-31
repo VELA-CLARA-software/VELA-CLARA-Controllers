@@ -121,6 +121,7 @@ const char* getMaskStartTime_ds = "Get trace 'name' mask_start as a time (us)";
 const char* getMaskEndTime_ds = "Get trace 'name' mask_end as a time (us)";
 const char* getMaskWindowStartTime_ds = "Get trace 'name' mask_window_start as a time (us)";
 const char* getMaskWindowEndTime_ds = "Get trace 'name' mask_window_end as a time (us)";
+const char* getNumContinuousOutsideMaskCount_ds = "Get trace 'name' number of continuous outside mask count";
 
 const char* setTracesToSaveOnOutsideMaskEvent_Py_ds = "Set the traces to save when an outside_mask_event occurs to list 'names'.";
 const char* setTracesToSaveOnOutsideMaskEvent_2_ds  = "Set the traces to save when an outside_mask_event occurs to 'name'.";
@@ -129,8 +130,11 @@ const char* getTracesToSaveOnOutsideMaskEvent_Py_ds = "Get the names of traces t
 const char* setNumExtraTracesOnOutsideMaskEvent_ds = "Set the number of extra traces to save after an outside_mask_event to 'value'.";
 const char* getNumExtraTracesOnOutsideMaskEvent_ds = "Get the number of extra traces to save after an outside_mask_event.";
 
-const char* setDropAmpOnOutsideMaskEvent_ds = "On outside_mask_event for trace 'name' the amplitude will be dropped to 'value', if enabled by 'bool_arg'.";
-const char* setDropAmpOnOutsideMaskEventValue_ds = "Sets if to drop the amplitude  on outside_mask_event to 'bool_arg' for trace 'name'.";
+const char* setDropAmpOnOutsideMaskEventValue_ds= "On outside_mask_event for trace 'name' the amplitude will be dropped to 'value', if enabled by 'bool_arg'.";
+const char* setDropAmpOnOutsideMaskEvent_ds  = "Sets if to drop the amplitude  on outside_mask_event to 'bool_arg' for trace 'name'.";
+const char* getDropAmpOnOutsideMaskEvent_ds = "Gets if to drop the amplitude  on outside_mask_event for trace 'name' (false may elso mean 'name' does not exist).";
+const char* getDropAmpOnOutsideMaskEventValue_ds = "Gets the amplitude to set on outside_mask_event for trace 'name'.";
+
 
 const char* getOutsideMaskEventDataSize_ds = "Return the number of elements in outside_mask_traces";
 const char* getOutsideMaskEventData_ds = "Get the outside_mask_traces data as python dictionary.";
