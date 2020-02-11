@@ -611,6 +611,8 @@ namespace UTL
     const std::string HAS_YAG = "HAS_YAG";
     const std::string DEVICE_POSITIONS = "DEVICE_POSITIONS";
     const std::string DEVICES = "DEVICES";
+    const std::string STAGE_NUMBER = "STAGE_NUMBER";
+    const std::string PRECISION = "PRECISION";
 
 
 

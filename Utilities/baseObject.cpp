@@ -71,13 +71,25 @@ bool baseObject::polaritiesMatch(const std::vector<double>& vals) const
 //______________________________________________________________________________
 std::string baseObject::currentDateTime() const
 {
+  //  std::cout << "baseObject::currentDateTime() " << std::endl;
     time_t     now = timeNow();
     struct tm  tstruct;
     char       buf[UTL::BUFFER_EIGHTY];
+
+//    std::cout << "localtime_s 1 !" <<  std::endl;
+
+
     localtime_s(&tstruct, &now);
+
+   // std::cout << "localtime_s 2 !" <<  std::endl;
+   // std::cout << "sizeof(buf) " <<  sizeof(buf) <<  std::endl;
+
     // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
     // for more information about date/time format
-    strftime(buf, sizeof(buf), "%Y-%m-%d-%H%M%",&tstruct);
+    // strftime(buf, sizeof(buf), "%Y-%m-%d-%H%M%",&tstruct);
+    strftime(buf, sizeof(buf), "%c",&tstruct);
+   // std::cout << "buf = " << buf <<  std::endl;
+
     return buf;
 }
 //______________________________________________________________________________

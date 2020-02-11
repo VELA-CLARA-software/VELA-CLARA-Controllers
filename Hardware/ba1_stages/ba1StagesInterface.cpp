@@ -110,7 +110,7 @@ bool ba1StagesInterface::initObjects()
 //______________________________________________________________________________
 void ba1StagesInterface::initChids()
 {
-    message("\n", "Searching for Shutter chids...");
+    message("\n", "Searching for ba1Stage ChIds...");
     for(auto&& it1:allBA1StageData)
     {
 //        addILockChannels(it1.second.numIlocks,
@@ -128,7 +128,7 @@ void ba1StagesInterface::initChids()
         }
     }
     int status = sendToEpics("ca_create_channel",
-                             "Found Shutter chids.",
+                             "Found ba1Stage ChIds.",
                              "!!TIMEOUT!! Not all ba1Stages ChIds found.");
     if(status == ECA_TIMEOUT)
     {
@@ -256,6 +256,23 @@ void ba1StagesInterface::updateBa1StageValue(const ba1StagesStructs::BA1STAGE_PV
 //
 //______________________________________________________________________________
 
+size_t ba1StagesInterface::getStageNumber(const std::string& stage)const
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        return allBA1StageData.at(stage).stage_number;
+    }
+    return UTL::ZERO_SIZET;
+}
+//______________________________________________________________________________
+size_t ba1StagesInterface::getStagePrecision(const std::string& stage)const
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        return allBA1StageData.at(stage).precision;
+    }
+    return UTL::ZERO_SIZET;
+}
 //______________________________________________________________________________
 double ba1StagesInterface::getStageSetPosition(const std::string& stage)const
 {
@@ -279,24 +296,52 @@ bool ba1StagesInterface::setStagePosition(const std::string& stage, double val)
 {
     if(entryExists(allBA1StageData, stage))
     {
-        if(val >= allBA1StageData.at(stage).min_pos)
+        // test to see if the requested value is outside th emina / max position
+
+        bool can_move = true;
+
+        if(val < allBA1StageData.at(stage).min_pos)
         {
-            message(val," > ", allBA1StageData.at(stage).min_pos);
-            if(val <= allBA1StageData.at(stage).max_pos)
-            {
-                message(val," < ", allBA1StageData.at(stage).max_pos);
-                message("Attempting to move ", stage);
-                return  moveTo(allBA1StageData.at(stage).pvMonStructs.at(ba1StagesStructs::BA1STAGE_PV_TYPE::MPOS), val);
-            }
-            else
-            {
-                message(val, " > max  possible val (", allBA1StageData.at(stage).max_pos,")");
-            }
+            message(val, " < min_pos (", allBA1StageData.at(stage).min_pos,")");
+            can_move = false;
+        }
+        if(val > allBA1StageData.at(stage).max_pos)
+        {
+            message(val, " > max_pos (", allBA1StageData.at(stage).max_pos,")");
+            can_move = false;
+        }
+
+
+        if(can_move)
+        {
+            message(val," is in acceptable range, Attempting to move ", stage);
+            return  moveTo(allBA1StageData.at(stage).pvMonStructs.at(ba1StagesStructs::BA1STAGE_PV_TYPE::MPOS), val);
         }
         else
         {
-            message(val, " < min possible val (", allBA1StageData.at(stage).min_pos,")");
+            message(val, " was outside acceptable range, not moving");
         }
+
+//
+//
+//        if(val > allBA1StageData.at(stage).min_pos)
+//        {
+//            message(val," > ", allBA1StageData.at(stage).min_pos);
+//            if(val < allBA1StageData.at(stage).max_pos)
+//            {
+//                message(val," < ", allBA1StageData.at(stage).max_pos);
+//                message("Attempting to move ", stage);
+//                return  moveTo(allBA1StageData.at(stage).pvMonStructs.at(ba1StagesStructs::BA1STAGE_PV_TYPE::MPOS), val);
+//            }
+//            else
+//            {
+//                message(val, " > max  possible val (", allBA1StageData.at(stage).max_pos,")");
+//            }
+//        }
+//        else
+//        {
+//            message(val, " < min possible val (", allBA1StageData.at(stage).min_pos,")");
+//        }
     }
     else
     {
@@ -323,6 +368,26 @@ bool ba1StagesInterface::setDevice(const std::string& stage, const std::string& 
         message("Can't find stage = ", stage);
     }
     return false;
+}
+//--------------------------------------------------------------------------------
+double ba1StagesInterface::getDevicePos(const std::string& stage, const std::string& device)
+{
+    if(entryExists(allBA1StageData, stage))
+    {
+        if(entryExists(allBA1StageData.at(stage).device_position_map, device))
+        {
+            return allBA1StageData.at(stage).device_position_map.at(device);
+        }
+        else
+        {
+            message("Can't find device = ", device, " on stage = ", stage);
+        }
+    }
+    else
+    {
+        message("Can't find stage = ", stage);
+    }
+    return UTL::DUMMY_DOUBLE;
 }
 //--------------------------------------------------------------------------------
 bool ba1StagesInterface::moveTo(const ba1StagesStructs::pvStruct& pvs, double value)

@@ -76,6 +76,9 @@ namespace BOOST_PYTHON_INCLUDE
             .def("setStagePosition",   &ba1StagesController::setStagePosition,(UTL::NAME_ARG,UTL::DEVICE_ARG),"Sets stage 'name' to position for 'device'")
             .def("setDevice",   &ba1StagesController::setDevice,(UTL::NAME_ARG,UTL::VALUE_ARG),"Sets stage 'name' to position 'value'")
             .def("getDevices",   &ba1StagesController::getDevices_Py,(UTL::NAME_ARG),"Returns devices on stage 'name'")
+            .def("getStageNumber",   &ba1StagesController::getStageNumber,(UTL::NAME_ARG),"Returns stage number for stage = 'name'")
+            .def("getDevicePos",   &ba1StagesController::getDevicePos,(UTL::NAME_ARG,UTL::DEVICE_ARG),"Returns device position for stage = 'name' and device = device")
+            .def("getStagePrecision",   &ba1StagesController::getStagePrecision,(UTL::NAME_ARG),"Returns stage precision (number of decimal places on set/read) for stage = 'name'")
             .def("getStageDeviceAndPositionMap",   &ba1StagesController::getStageDeviceAndPositionMap_Py,(UTL::NAME_ARG,UTL::VALUE_ARG),"returns dictionary of devices and positions for stage 'name'")
             ;
     }

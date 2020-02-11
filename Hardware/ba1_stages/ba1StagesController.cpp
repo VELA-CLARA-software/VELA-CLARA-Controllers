@@ -55,6 +55,22 @@ std::vector<std::string> ba1StagesController::getStageNames()const
     return localInterface.getStageNames();
 }
 
+size_t ba1StagesController::getStagePrecision(const std::string& stage)const
+{
+    return localInterface.getStagePrecision(stage);
+}
+
+
+double ba1StagesController::getDevicePos(const std::string& stage, const std::string& device)
+{
+    return localInterface.getDevicePos(stage, device);
+}
+
+size_t ba1StagesController::getStageNumber(const std::string& stage)const
+{
+    return localInterface.getStageNumber(stage);
+}
+
 //--------------------------------------------------------------------------------
 double ba1StagesController::getStagePosition(const std::string& stage)const
 {

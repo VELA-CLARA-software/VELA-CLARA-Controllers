@@ -54,6 +54,10 @@ class ba1StagesController : public controller
         double getMinPos(const std::string& stage)const;
         double getMaxPos(const std::string& stage)const;
 
+        size_t getStagePrecision(const std::string& stage)const;
+        double getDevicePos(const std::string& stage, const std::string& device);
+
+        size_t getStageNumber(const std::string& stage)const;
         double getStagePosition(const std::string& stage)const;
         double getStageSetPosition(const std::string& stage)const;
         bool setDevice(const std::string& stage, const std::string& device);

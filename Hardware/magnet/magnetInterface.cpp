@@ -1290,11 +1290,11 @@ bool magnetInterface::isRIequalSI(const std::vector<std::string>& magNames)const
     bool ret = false;
     for(auto&&entry : magNames)
     {
-        if(entryExists(allMagnetData, magName))
+        if(entryExists(allMagnetData, entry))
         {
-            ret = areSame(allMagnetData.at(magName).riWithPol,
-                          allMagnetData.at(magName).siWithPol,
-                          allMagnetData.at(magName).riTolerance);
+            ret = areSame(allMagnetData.at(entry).riWithPol,
+                          allMagnetData.at(entry).siWithPol,
+                          allMagnetData.at(entry).riTolerance);
         }
         else
         {
@@ -1311,8 +1311,6 @@ bool magnetInterface::isRIequalSI(const std::vector<std::string>& magNames)const
     }
     return ret;
 }
-
-isRIequalSI
 
 
 /////
@@ -1656,10 +1654,11 @@ bool magnetInterface::writeDBURT(const magnetStructs::magnetStateStruct& ms,
                                  const std::string& comments,
                                  const std::string& keywords)
 {
+    //std::cout << "magnetInterface::writeDBURT CALLED!" << std::endl;
     // create a dburt object
     dburt dbr(SHOW_DEBUG_MESSAGES, SHOW_MESSAGES, myMachineArea);
     // write the file with the dburt  and return the result
-    message("myMachineArea =  ", ms.machineArea);
+    //message("myMachineArea =  ", ms.machineArea);
     return dbr.writeDBURT(ms, fileName, comments);
 }
 //______________________________________________________________________________

@@ -99,7 +99,9 @@ namespace ba1StagesStructs
             has_yag(false),
             min_pos(UTL::ZERO_DOUBLE),
             max_pos(UTL::ZERO_DOUBLE),
-            state(ERROR)
+            state(ERROR),
+            stage_number(UTL::ZERO_SIZET),
+            precision(UTL::ZERO_SIZET)
             {};
         std::string name, pvRoot;
         BA1STAGE_STATE state;
@@ -112,6 +114,7 @@ namespace ba1StagesStructs
         double r_position, m_position,yag_in_pos,yag_out_pos, min_pos, max_pos;
         std::map<BA1STAGE_PV_TYPE, pvStruct > pvMonStructs;
         std::map<BA1STAGE_PV_TYPE, pvStruct > pvComStructs;
+        size_t stage_number,precision;
     };
 }
 //______________________________________________________________________________

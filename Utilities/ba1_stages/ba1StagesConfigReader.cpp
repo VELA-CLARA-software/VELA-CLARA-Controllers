@@ -260,6 +260,17 @@ void ba1StagesConfigReader::addToBA1StageObjectsV1(const std::vector<std::string
     {
         ba1StagesObjects.back().positions = getNumVector<double>(keyVal[UTL::ONE_SIZET]);
     }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::STAGE_NUMBER)
+    {
+        ba1StagesObjects.back().stage_number = getSize(keyVal[UTL::ONE_SIZET]);
+    }
+    else if(keyVal[UTL::ZERO_SIZET] == UTL::PRECISION)
+    {
+        ba1StagesObjects.back().precision = getSize(keyVal[UTL::ONE_SIZET]);
+    }
+
+
+
 }
 //______________________________________________________________________________
 const std::vector< ba1StagesStructs::ba1StagesObject > ba1StagesConfigReader::getBA1StageObjects()

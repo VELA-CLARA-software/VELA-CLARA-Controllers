@@ -53,11 +53,17 @@ class ba1StagesInterface : public interface
 
         double getStagePosition(const std::string& stage)const;
 
+        size_t getStageNumber(const std::string& stage)const;
+        size_t getStagePrecision(const std::string& stage)const;
+
+
         double getStageSetPosition(const std::string& stage)const;
 
         bool setStagePosition(const std::string& stage, double val);
 
         bool setDevice(const std::string& stage, const std::string& device);
+
+        double getDevicePos(const std::string& stage, const std::string& device);
 
         bool screenIn(const std::string& stage);
         bool screenOut(const std::string& stage);

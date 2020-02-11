@@ -276,17 +276,26 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct& magState,
                        const std::string& comments,
                        const std::string& keywords)
 {
+    //std::cout << "writeDBURT CALLED!" << std::endl;
+
     bool success = false;
 
     std::string fn;
-    std::string cdt = currentDateTime();
 
-    message("cdt = ", cdt);
+
+    //std::cout << "getting CDT " << std::endl;
+    std::string cdt = currentDateTime();
+    //std::cout << "got CDT " << std::endl;
+
+    //message("cdt = ", cdt);
 
     if(fileName == "")
         fn = UTL::DBURT_PATH + UTL::SLASH_SLASH + cdt + UTL::dotDBURT;
     else
         fn = fileName;
+
+
+    //std::cout << "fileName FN = " << fn <<  std::endl;
 
     std::ofstream outputFile;
 
@@ -294,6 +303,8 @@ bool dburt::writeDBURT(const magnetStructs::magnetStateStruct& magState,
 
     if(outputFile)
     {
+        //std::cout << "outputFile file open " <<  std::endl;
+
         outputFile << UTL::DBURT_HEADER_V4   <<std::endl;
         outputFile << std::endl;
         outputFile << UTL::DBURT_HEADER_DT   <<cdt <<UTL::END_OF_LINE <<std::endl;
