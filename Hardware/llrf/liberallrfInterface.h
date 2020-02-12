@@ -366,6 +366,7 @@ class liberallrfInterface : public interface
     i.e. things to expose to python
 */
         double getMaxAmpSP()const;
+        double getKeepAliveValue() const;
         double getAmpFF()const;
         double getAmpSP()const;
         double getPhiFF()const;

@@ -610,6 +610,7 @@ namespace llrfStructs
             trace_rep_rate(UTL::DUMMY_DOUBLE),
             should_keep_alive(false),
             last_keep_alive(UTL::ZERO_DOUBLE),
+            keep_alive_value(UTL::ZERO_DOUBLE),
             /*
                 Adding this in to allow the masks to be different during "fast ramp mode"
                 We will use this mode when we return power from an event, instead of switching
@@ -630,6 +631,7 @@ namespace llrfStructs
         // should we send a keep_alive signal to a PV ?
         bool should_keep_alive;
         double last_keep_alive;
+        double keep_alive_value;
 
         /* interlock object */
         liberallrfInterlock llrf_interlock;

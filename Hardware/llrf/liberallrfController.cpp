@@ -1129,6 +1129,11 @@ double liberaLLRFController::getMaxAmpSP()const
     return localInterface.getMaxAmpSP();
 }
 //______________________________________________________________________________
+double liberaLLRFController::getKeepAliveValue() const
+{
+    return localInterface.getKeepAliveValue();
+}
+//______________________________________________________________________________
 size_t liberaLLRFController::getTraceLength()const
 {
     return localInterface.getTraceLength();

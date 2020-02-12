@@ -244,7 +244,14 @@ void liberallrfInterface::initChids()
     message("\n", "liberallrfInterface is searching for LLRF ChIds...");
     for(auto && it:llrf.pvMonStructs)
     {
-        addChannel(llrf.pvRoot, it.second);
+        if(it.second.pvType == llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE)
+        {
+            addChannel("", it.second);
+        }
+        else
+        {
+            addChannel(llrf.pvRoot, it.second);
+        }
     }
     /* command only PVs for the LLRF to set "high level" phase and amplitide */
     for(auto && it:llrf.pvComStructs)
@@ -415,6 +422,11 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
     using namespace llrfStructs;
     switch(pv)
     {
+        case LLRF_PV_TYPE::KEEP_ALIVE:
+            llrf.keep_alive_value = getDBRdouble(args);
+            std::cout << "NEW KEEP ALIVE  = " << llrf.keep_alive_value << std::endl;
+            break;
+
         case LLRF_PV_TYPE::PULSE_SHAPE:
             updatePulseShape(args);
             break;
@@ -4649,6 +4661,14 @@ double liberallrfInterface::getMaxAmpSP()const
     return llrf.maxAmp;
 }
 //____________________________________________________________________________________________
+
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getKeepAliveValue() const
+{
+    return llrf.keep_alive_value;
+}
+
+//____________________________________________________________________________________________
 double liberallrfInterface::getAmpFF()const
 {
     //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
@@ -4783,6 +4803,19 @@ void liberallrfInterface::keepAlive()
 {
     if(llrf.should_keep_alive)
     {
+        if(entryExists(llrf.pvMonStructs,llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE))
+        {
+            if( llrf.last_keep_alive == UTL::ZERO_DOUBLE)
+            {
+                setValue( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE), UTL::ONE_DOUBLE);
+                llrf.last_keep_alive = UTL::ONE_DOUBLE;
+            }
+            else
+            {
+                setValue( llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE), UTL::ZERO_DOUBLE);
+                llrf.last_keep_alive  = UTL::ZERO_DOUBLE;
+            }
+        }
         if(entryExists(llrf.pvComStructs,llrfStructs::LLRF_PV_TYPE::KEEP_ALIVE))
         {
             if( llrf.last_keep_alive == UTL::ZERO_DOUBLE)
@@ -4798,6 +4831,10 @@ void liberallrfInterface::keepAlive()
         }
     }
 }
+//--------------------------------------------------------------------------------------------------
+
+
+
 
 //--------------------------------------------------------------------------------------------------
 /*   __             __   ___                    __        __

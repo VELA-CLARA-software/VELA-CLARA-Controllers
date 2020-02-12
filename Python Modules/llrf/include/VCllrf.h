@@ -461,6 +461,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getType",    &liberaLLRFController::getType,"Return the Type of LLRF controller.")
         .def("getMaxAmpSP",   &liberaLLRFController::getMaxAmpSP,"Return Maximum Amplitude Setpoint allowed")
+        .def("getKeepAliveValue",   &liberaLLRFController::getKeepAliveValue,"Return current keep alive value (heartbeat)")
         .def("getAmpFF",   &liberaLLRFController::getAmpFF,"Return Amplitude(FF) in LLRF Units")
         .def("getAmpSP",   &liberaLLRFController::getAmpSP,"Return Amplitude(SP) in LLRF Units")
         .def("getAmpLLRF", &liberaLLRFController::getAmpLLRF,"Return Amplitude in LLRF Units")

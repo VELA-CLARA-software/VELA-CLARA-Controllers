@@ -369,6 +369,8 @@ class liberaLLRFController : public controller
 
         // GETTERS
         double getMaxAmpSP()const;
+        double getKeepAliveValue() const;
+
         double getAmpFF()const;
         double getAmpSP()const;
         double getPhiFF()const;
