@@ -424,7 +424,7 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
     {
         case LLRF_PV_TYPE::KEEP_ALIVE:
             llrf.keep_alive_value = getDBRdouble(args);
-            std::cout << "NEW KEEP ALIVE  = " << llrf.keep_alive_value << std::endl;
+            //std::cout << "NEW KEEP ALIVE  = " << llrf.keep_alive_value << std::endl;
             break;
 
         case LLRF_PV_TYPE::PULSE_SHAPE:
