@@ -456,7 +456,6 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
         case LLRF_PV_TYPE::LIB_RF_OUTPUT:
             updateBoolState(args, llrf.rf_output);
             //message("LIB_RF_OUTPUT = ", llrf.rf_output);
-
             break;
         case LLRF_PV_TYPE::LIB_AMP_FF:
             llrf.amp_ff = getDBRdouble(args);

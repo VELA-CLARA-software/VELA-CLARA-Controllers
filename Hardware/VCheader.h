@@ -389,6 +389,7 @@ namespace BOOST_PYTHON_INCLUDE
             .def_readonly("sig_y",          &analysis_data::sig_y,sig_y_ds)
             .def_readonly("sig_xy",         &analysis_data::sig_xy    ,sig_xy_ds    )
 
+            .def_readonly("avg_pix_beam_level",&analysis_data::avg_pix_beam_level,"the average pixel MUST be above this value to be abel to move the laser mirrors in the PILaser controoler"  )
             .def_readonly("x_pix",          &analysis_data::x_pix     ,x_pix_ds     )
             .def_readonly("y_pix",          &analysis_data::y_pix     ,y_pix_ds     )
             .def_readonly("sig_x_pix",      &analysis_data::sig_x_pix ,sig_x_pix_ds )

@@ -121,8 +121,10 @@ class pilaserController : public shutterController, public cameraControllerBase
         //const cameraStructs::camera_image_data& getVCDataObjConstRef() const;
 
 
+        void setAllRSBufferSize(size_t buffer_size);
         bool isRSBufferFull()const;
         size_t getRSBufferSize()const;
+        size_t getCurrentBufferSize()const;
 
     protected:
     private:

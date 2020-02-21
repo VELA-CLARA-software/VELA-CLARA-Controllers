@@ -111,6 +111,7 @@ class pilaserInterface : public cameraBase
 
         size_t getRSBufferSize()const;
 
+        size_t getCurrentBufferSize()const;
 
     private:
 

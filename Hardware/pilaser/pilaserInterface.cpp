@@ -380,21 +380,42 @@ void pilaserInterface::updatePixelResults(const event_handler_args& args)
     updateAnalysisBuffers();
 }
 //____________________________________________________________________________________________
+
+
+//______________________________________________________________________________
+void pilaserInterface::clearRunningValues()
+{
+    pilaser.Q_clear();
+    pilaser.energy_clear();
+//    pilaser.buffer_full = false;
+//    pilaser.buffer_count = UTL::ZERO_SIZET;
+}
+
+//____________________________________________________________________________________________
 void pilaserInterface::addToBuffer(const double val,std::vector<double>& buffer)
 {
     buffer.push_back(val);
-    pilaser.max_buffer_count += UTL::ONE_SIZET;
-    if(buffer.size()> pilaser.max_buffer_count )
+    //pilaser.buffer_count += UTL::ONE_SIZET;
+    if(buffer.size() > pilaser.max_buffer_count )
     {
+        message("buffer FULL, ", buffer.size() );
         buffer.erase(buffer.begin());
         pilaser.buffer_full = true;
         //message("BUFFER FULL!!! ");
-        pilaser.buffer_count -= UTL::ONE_SIZET;
+        //pilaser.buffer_count -= UTL::ONE_SIZET;
+    }
+    else if(buffer.size() == pilaser.max_buffer_count )
+    {
+        message("buffer FULL, ", buffer.size() );
+        pilaser.buffer_full = false;
     }
     else
     {
+        message("buffer NOT FULL, ", buffer.size() );
         pilaser.buffer_full = false;
     }
+    pilaser.buffer_count = buffer.size();
+
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::isRSBufferFull() const
@@ -406,7 +427,20 @@ size_t pilaserInterface::getRSBufferSize()const
 {
     return pilaser.max_buffer_count;
 }
+//____________________________________________________________________________________________
+size_t pilaserInterface::getCurrentBufferSize()const
+{
+    return pilaser.buffer_count;
+}
 
+bool pilaserInterface::setAllRSBufferSize(const size_t new_size)
+{
+    setBufferMaxCount_VC(new_size);
+    pilaser.max_buffer_count = new_size;
+    pilaser.Q_rs_buffer_size(new_size);
+    pilaser.energy_rs_buffer_size(new_size);
+    return true;
+}
 
 
 
@@ -738,12 +772,7 @@ bool pilaserInterface::move(chtype& cht, chid& chi,const double val,const char* 
     }
     return false;
 }
-//______________________________________________________________________________
-void pilaserInterface::clearRunningValues()
-{
-    pilaser.Q_clear();
-    pilaser.energy_clear();
-}
+
 //______________________________________________________________________________
 bool pilaserInterface::check_data_timestamps(const cameraStructs::cameraObject& cam)
 {
@@ -817,15 +846,7 @@ bool pilaserInterface::shortCaput(unsigned short comm, pilaserStructs::pvStruct&
 
 
 
-bool pilaserInterface::setAllRSBufferSize(const size_t new_size)
-{
-    setBufferMaxCount_VC(new_size);
-    pilaser.Q_rs_buffer_size(new_size);
-    pilaser.energy_rs_buffer_size(new_size);
 
-
-    return true;
-}
 
 
 //void staticEntry_set_VC_xpos(const double xpos, const time_t waitTime, pilaserInterface* interface)

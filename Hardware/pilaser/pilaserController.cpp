@@ -309,12 +309,7 @@ const pilaserStructs::pilaserObject& pilaserController::getPILObjConstRef() cons
 {
     return localInterface.getPILObjConstRef();
 }
-//______________________________________________________________________________
-void pilaserController::clearRunningValues()
-{
-    localInterface.clearRunningValues();
-    cameraControllerBase::clearRunningValues();
-}
+
 //______________________________________________________________________________
 bool pilaserController::can_move_test_1()
 {
@@ -698,8 +693,23 @@ size_t pilaserController::getRSBufferSize()const
 {
     return localInterface.getRSBufferSize();
 }
+//______________________________________________________________________________
+size_t pilaserController::getCurrentBufferSize()const
+{
+    return localInterface.getCurrentBufferSize();
+}
 
 //______________________________________________________________________________
+void pilaserController::setAllRSBufferSize(size_t buffer_size)
+{
+    localInterface.setAllRSBufferSize(buffer_size);
+}
+//______________________________________________________________________________
+void pilaserController::clearRunningValues()
+{
+    localInterface.clearRunningValues();
+    cameraControllerBase::clearRunningValues();
+}
 //______________________________________________________________________________
 //bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
 //{

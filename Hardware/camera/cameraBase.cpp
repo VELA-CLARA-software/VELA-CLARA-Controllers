@@ -1160,7 +1160,6 @@ void cameraBase::addToBuffer(const double val, std::deque<double>& buffer, analy
 //---------------------------------------------------------------------------------______________
 void cameraBase::updatePixelResults(const event_handler_args& args, cameraObject& cam)
 {
-
     /* if time _type get time and set where pValue points to */
     if(isTimeType(args.type))
     {
