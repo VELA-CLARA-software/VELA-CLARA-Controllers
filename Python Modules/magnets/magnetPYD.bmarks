@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
+	<File name="..\..\Utilities\magnets\dburtDefinitions.h" open="0" top="0" tabpos="15">
+		<Cursor position="501" topLine="10" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="5">
+		<Cursor position="4458" topLine="64" />
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11">
+		<Cursor position="671" topLine="0" />
+	</File>
+	<File name="..\..\Hardware\magnet\magnetController.h" open="0" top="0" tabpos="4">
+		<Cursor position="1583" topLine="0" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="12">
+		<Cursor position="8192" topLine="181" />
+	</File>
+	<File name="..\..\Utilities\magnets\magnetConfigReader.cpp" open="0" top="0" tabpos="11">
+		<Cursor position="2755" topLine="50" />
+	</File>
 	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="10">
 		<Cursor position="1558" topLine="0" />
+	</File>
+	<File name="..\..\Structs\magnets\magnetStructs.h" open="0" top="0" tabpos="3">
+		<Cursor position="10111" topLine="154" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="include\VCmagnets.h" open="0" top="0" tabpos="2">
+		<Cursor position="14289" topLine="283" />
+		<BrowseMarks positions="14289,11403" />
+	</File>
+	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0">
+		<Cursor position="3539" topLine="61" />
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="5">
+		<Cursor position="7600" topLine="171" />
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="3867" topLine="72" />
+	</File>
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2985" topLine="48" />
+	</File>
+	<File name="..\..\Utilities\magnets\magnetConfigReader.h" open="0" top="0" tabpos="4">
+		<Cursor position="2215" topLine="34" />
+	</File>
+	<File name="src\VCmagnets.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="2199" topLine="41" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Hardware\magnet\magnetInterface.h" open="0" top="0" tabpos="2">
+		<Cursor position="10798" topLine="179" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Hardware\magnet\magnetInterface.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="12270" topLine="283" />
+		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Utilities\magnets\dburt.h" open="0" top="0" tabpos="16">
+		<Cursor position="1426" topLine="15" />
+		<BrowseMarks positions="" />
 	</File>
 	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="15">
 		<Cursor position="11440" topLine="243" />
 	</File>
-	<File name="src\VCmagnets.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="18002" topLine="324" />
+	<File name="..\..\Hardware\interface.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="3155" topLine="130" />
 	</File>
 	<File name="..\..\Utilities\magnets\dburt.cpp" open="0" top="0" tabpos="17">
-		<Cursor position="15027" topLine="457" />
-	</File>
-	<File name="..\..\Utilities\magnets\dburtDefinitions.h" open="0" top="0" tabpos="15">
-		<Cursor position="1024" topLine="10" />
-	</File>
-	<File name="..\..\Hardware\magnet\magnetInterface.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="11842" topLine="270" />
+		<Cursor position="13686" topLine="218" />
 		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="7">
+		<Cursor position="4839" topLine="98" />
 	</File>
 	<File name="..\..\Hardware\magnet\magnetController.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="33447" topLine="675" />
 		<BrowseMarks positions="3589" />
 	</File>
-	<File name="include\VCmagnets.h" open="0" top="0" tabpos="2">
-		<Cursor position="28204" topLine="411" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\magnets\dburt.h" open="0" top="0" tabpos="16">
-		<Cursor position="711" topLine="18" />
-	</File>
-	<File name="..\..\Utilities\magnets\magnetConfigReader.h" open="0" top="0" tabpos="4">
-		<Cursor position="2215" topLine="34" />
-	</File>
-	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0">
-		<Cursor position="3539" topLine="61" />
-	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="12">
-		<Cursor position="8192" topLine="181" />
-	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="5">
-		<Cursor position="7600" topLine="171" />
+	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="14">
+		<Cursor position="1550" topLine="79" />
 	</File>
 	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3678" topLine="31" />
 	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="5">
-		<Cursor position="3234" topLine="56" />
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="7">
-		<Cursor position="3086" topLine="31" />
-	</File>
-	<File name="..\..\Structs\magnets\magnetStructs.h" open="0" top="0" tabpos="3">
-		<Cursor position="2299" topLine="36" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\magnet\magnetInterface.h" open="1" top="1" tabpos="2">
-		<Cursor position="8620" topLine="113" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\magnet\magnetController.h" open="0" top="0" tabpos="4">
-		<Cursor position="1583" topLine="0" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11">
-		<Cursor position="11187" topLine="215" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="3155" topLine="130" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\magnets\magnetConfigReader.cpp" open="0" top="0" tabpos="11">
-		<Cursor position="2755" topLine="50" />
-	</File>
-	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="5">
-		<Cursor position="4458" topLine="64" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2985" topLine="48" />
-	</File>
 	<File name="..\..\Structs\magnets\magnetStructs.cpp" open="0" top="0" tabpos="13">
-		<Cursor position="202" topLine="0" />
+		<Cursor position="828" topLine="0" />
 		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="14">
-		<Cursor position="1550" topLine="79" />
 	</File>
 </BrowseTracker_layout_file>
