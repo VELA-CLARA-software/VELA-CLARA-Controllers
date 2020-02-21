@@ -47,7 +47,7 @@
 #include <boost/python/overloads.hpp>
 #include <boost/python/stl_iterator.hpp>
 #include <boost/circular_buffer.hpp>
-#include <boost/python/numpy.hpp>
+//#include <boost/python/numpy.hpp>
 #endif
 //______________________________________________________________________________
 class baseObject
@@ -431,24 +431,24 @@ class baseObject
             the answer is probably in here:
             https://www.boost.org/doc/libs/1_63_0/libs/python/doc/html/numpy/tutorial/ndarray.html
         */
-        template <class T>
-        boost::python::numpy::ndarray toNumPyArray(const std::vector<T> & v )const
-        {
-            namespace p = boost::python;
-            namespace np = boost::python::numpy;
-            p::object own;
-            p::tuple shape = p::make_tuple(v.size());
-            p::tuple stride = p::make_tuple(sizeof(T));
-            np::dtype dt = np::dtype::get_builtin<T>();
-            return np::from_data(&v[0], dt, shape, stride, own);
-            //boost::python::numpy::ndarray r;
-            //return r;
-        }
-        template <class T>
-        boost::python::numpy::ndarray toNumPyArray(const std::deque<T> & d)const
-        {
-            return toNumPyArray<T>(deque_to_vector<T>(d));
-        }
+//        template <class T>
+//        boost::python::numpy::ndarray toNumPyArray(const std::vector<T> & v )const
+//        {
+//            namespace p = boost::python;
+//            namespace np = boost::python::numpy;
+//            p::object own;
+//            p::tuple shape = p::make_tuple(v.size());
+//            p::tuple stride = p::make_tuple(sizeof(T));
+//            np::dtype dt = np::dtype::get_builtin<T>();
+//            return np::from_data(&v[0], dt, shape, stride, own);
+//            //boost::python::numpy::ndarray r;
+//            //return r;
+//        }
+//        template <class T>
+//        boost::python::numpy::ndarray toNumPyArray(const std::deque<T> & d)const
+//        {
+//            return toNumPyArray<T>(deque_to_vector<T>(d));
+//        }
 
 #endif
 

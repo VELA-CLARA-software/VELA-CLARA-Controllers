@@ -140,7 +140,7 @@ class runningStat
             {
                 return false;
             }
-            if(m_n > max_n)
+            if(m_n == max_n)
             {
                 rs_complete = true;
                 return false;
