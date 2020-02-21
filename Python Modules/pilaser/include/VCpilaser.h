@@ -161,6 +161,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("Q_n",     &pilaserObject::Q_n,    Q_n_ds)
         .def_readonly("Q_sd",    &pilaserObject::Q_sd,   Q_sd_ds)
         .def_readonly("Q_clear", &pilaserObject::Q_clear, Q_clear_ds)
+        .def_readonly("Q_full", &pilaserObject::Q_full, "")
 
 //        .def_readonly("Q_full",  &pilaserObject::Q_full, Q_full_ds)
         //.def_readonly("energy_full",  &pilaserObject::energy_full,  energy_full_ds)
@@ -173,8 +174,15 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("energy_n",    &pilaserObject::energy_n,        energy_n_ds)
         .def_readonly("energy_sd",   &pilaserObject::energy_sd,       energy_sd_ds)
         .def_readonly("energy_clear",  &pilaserObject::energy_clear,  energy_clear_ds)
+        .def_readonly("energy_full",  &pilaserObject::energy_full,  energy_clear_ds)
         .def_readonly("setCharge",  &pilaserObject::setCharge,          setCharge_ds)
         .def_readonly("setVCPosState", &pilaserObject::setVCPosState, setVCPosState_ds)
+
+
+        .def_readonly("max_buffer_count", &pilaserObject::max_buffer_count, "")
+        .def_readonly("buffer_count", &pilaserObject::buffer_count, "")
+        .def_readonly("buffer_full", &pilaserObject::buffer_full, "")
+
         ;
 
 //    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
@@ -301,6 +309,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
         .def("isRSBufferFull",   &pilaserController::isRSBufferFull,   isRSBufferFull_doc   )
         .def("getRSBufferSize",   &pilaserController::getRSBufferSize,   getRSBufferSize_doc   )
+        .def("setAllRSBufferSize",   &pilaserController::setAllRSBufferSize,   ""   )
 
 
         .def("isSettingPos",   &pilaserController::isSettingPos,   "" )
