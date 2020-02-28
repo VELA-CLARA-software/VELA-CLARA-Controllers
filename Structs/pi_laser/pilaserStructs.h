@@ -69,6 +69,11 @@ namespace pilaserStructs
                                                         (POS_UPDATE)
                                                         (WCM_Q)
                                                         (UNKNOWN_PILASER_PV_TYPE)
+                                                        (ENERGY_RANGE_RB)
+                                                        (ENERGY_RANGE_SP)
+                                                        (ENERGY_RUN_RB)
+                                                        (ENERGY_RUN_SP)
+                                                        (ENERGY_OVERRANGE_RB)
                                                         )
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(VC_SET_POS_STATE,(SHUTTER_CLOSED)
                                                          (CAMERA_ANALYSIS_NOT_WORKING)
@@ -86,6 +91,12 @@ namespace pilaserStructs
                                                          (FAIL)
                                                          (RUNNING)
                                                          (NO_MASK_FEEDBACK)
+                                                         )
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(EM_RANGE,(TWO_HUNDRED_MICRO_J)
+                                                 (TWENTY_MICRO_J)
+                                                 (TWO_MICRO_J)
+                                                 (TWO_HUNDRED_NANO_J)
+                                                 (UNKNOWN_RANGE)
                                                          )
 
     struct monitorStruct
@@ -161,7 +172,10 @@ namespace pilaserStructs
             buffer_full(false),
             pvRootQ(UTL::UNKNOWN_STRING),
             pvRootE(UTL::UNKNOWN_STRING),
-            setVCPosState(UNKNOWN_STATE)
+            setVCPosState(UNKNOWN_STATE),
+            em_over_range(false),
+            em_is_running(false),
+            em_range(UNKNOWN_RANGE)
             {};
         /*
             buffers for pixel values
@@ -180,6 +194,19 @@ namespace pilaserStructs
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
         VC_SET_POS_STATE setVCPosState;
+
+
+
+        bool em_over_range, em_is_running;
+
+        EM_RANGE em_range;
+
+
+
+
+
+
+
         void   Q_clear();
         void   energy_clear();
         void   Q_rs_buffer_size(size_t new_size);
@@ -195,9 +222,6 @@ namespace pilaserStructs
         double energy_sd();
         size_t Q_n();
         size_t energy_n();
-
-
-
     };
 
     struct set_vc_position

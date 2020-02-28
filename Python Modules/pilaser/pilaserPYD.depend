@@ -877,7 +877,7 @@
 	<vector>
 	<map>
 
-1581073402 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+1582825848 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -989,7 +989,7 @@
 	<iostream>
 	<sstream>
 
-1582201899 source:c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
+1582830570 source:c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
 	"pilaserInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -998,7 +998,7 @@
 	<algorithm>
 	<thread>
 
-1582201265 c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
+1582832305 c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilaserinterface.h
 	"interface.h"
 	"pilaserStructs.h"
 	"cameraStructs.h"
@@ -1011,7 +1011,7 @@
 	<atomic>
 	<map>
 
-1552996640 c:\users\djs56\github\vela-clara-controllers\structs\pi_laser\pilaserstructs.h
+1582829349 c:\users\djs56\github\vela-clara-controllers\structs\pi_laser\pilaserstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	"cameraStructs.h"
@@ -1129,7 +1129,7 @@
 	<algorithm>
 	<ctype.h>
 
-1536821868 source:c:\users\djs56\github\vela-clara-controllers\utilities\pi_laser\pilaserconfigreader.cpp
+1582826133 source:c:\users\djs56\github\vela-clara-controllers\utilities\pi_laser\pilaserconfigreader.cpp
 	"pilaserConfigReader.h"
 	"pilaserStructs.h"
 	<iostream>
@@ -1157,7 +1157,7 @@
 	"VCpilaser.h"
 	<iostream>
 
-1582202096 c:\users\djs56\github\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
+1582832504 c:\users\djs56\github\vela-clara-controllers\python modules\pilaser\include\vcpilaser.h
 	<string>
 	<map>
 	"pilaserController.h"
@@ -1165,7 +1165,7 @@
 	"VCbase.h"
 	"expose_shutter.h"
 
-1582201260 c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
+1582832392 c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilasercontroller.h
 	<string>
 	<vector>
 	"pilaserInterface.h"
@@ -1209,7 +1209,7 @@
 	<sstream>
 	<chrono>
 
-1582201276 source:c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
+1582832519 source:c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilasercontroller.cpp
 	"pilaserController.h"
 	"running_stat.h"
 

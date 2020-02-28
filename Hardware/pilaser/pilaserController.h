@@ -109,6 +109,17 @@ class pilaserController : public shutterController, public cameraControllerBase
                       size_t max_it, size_t time_out);
 
 
+        bool setEnergyRange200uJ();
+        bool setEnergyRange20uJ();
+        bool setEnergyRange2uJ();
+        bool setEnergyRange200nJ();
+        bool startEM();
+        bool stopEM();
+        bool isRunning() const;
+        bool isOverRange() const;
+        std::string getEnergyRange() const;
+
+
         bool isSettingPos()const;
 
 #ifdef BUILD_DLL

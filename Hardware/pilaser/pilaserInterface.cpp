@@ -199,6 +199,18 @@ void pilaserInterface::initChids()
         {
             s = pilaser.pvRootE;
         }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY_RANGE_RB)
+        {
+            s = pilaser.pvRootE;
+        }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY_RUN_RB)
+        {
+            s = pilaser.pvRootE;
+        }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY_OVERRANGE_RB)
+        {
+            s = pilaser.pvRootE;
+        }
         else if(isVCMirror_PV(it.first))
         {
             //message(ENUM_TO_STRING(it.first), " is a mirror PV");
@@ -212,16 +224,31 @@ void pilaserInterface::initChids()
     for(auto&& it:pilaser.pvComStructs)
     {
         if(it.first == pilaserStructs::PILASER_PV_TYPE::WCM_Q)
+        {
             s = pilaser.pvRootQ;
-        if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY)
+        }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY)
+        {
             s = pilaser.pvRootE;
+        }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY_RANGE_SP)
+        {
+            s = pilaser.pvRootE;
+            std::cout<< "ENERGY_RANGE_SP s = " << s << std::endl;
+        }
+        else if(it.first == pilaserStructs::PILASER_PV_TYPE::ENERGY_RUN_SP)
+        {
+            s = pilaser.pvRootE;
+        }
         else if(isVCMirror_PV(it.first))
         {
             //message(ENUM_TO_STRING(it.first), " is a mirror PV");
             s = pilaser.mirror.pvRoot;
         }
         else
+        {
             s = pilaser.pvRoot;
+        }
         addChannel(s, it.second);
     }
     initCamChids(false);
@@ -321,6 +348,36 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
     using namespace pilaserStructs;
     switch(pv)
     {
+        case PILASER_PV_TYPE::ENERGY_RANGE_RB:
+            //std::cout << "ENERGY_RANGE_RB = " << getDBRunsignedShort(args) << std::endl;
+            updateEnergyRange(getDBRunsignedShort(args));
+            //pilaser.em_range = HWC_ENUM::STATE::ERR;
+            break;
+        case PILASER_PV_TYPE::ENERGY_RUN_RB:
+            if(getDBRunsignedShort(args) == UTL::ONE_US)
+            {
+                pilaser.em_is_running = true;
+                message("em_is_running = true " );
+            }
+            else
+            {
+                pilaser.em_is_running = false;
+                message("em_is_running = false ");
+            }
+            break;
+        case PILASER_PV_TYPE::ENERGY_OVERRANGE_RB:
+            //unsigned short val = getDBRunsignedShort(args);
+            if(  getDBRunsignedShort(args) == UTL::ONE_US)
+            {
+                pilaser.em_over_range = true;
+                message("em_over_range = true ");
+            }
+            else
+            {
+                pilaser.em_over_range = false;
+                message("em_over_range = false ");
+            }
+            break;
         case PILASER_PV_TYPE::STABILISATION:
             pilaser.stabilisation_status = HWC_ENUM::STATE::ERR;
             break;
@@ -331,6 +388,7 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
         case PILASER_PV_TYPE::HALF_WAVE_PLATE_READ:
             pilaser.HWP = getDBRdouble(args);
             break;
+
 
         case PILASER_PV_TYPE::WCM_Q:
             pilaser.Q = getDBRdouble(args);
@@ -380,6 +438,119 @@ void pilaserInterface::updatePixelResults(const event_handler_args& args)
     updateAnalysisBuffers();
 }
 //____________________________________________________________________________________________
+//____________________________________________________________________________________________
+void pilaserInterface::updateEnergyRange(const unsigned short value)
+{
+    using namespace pilaserStructs;
+    switch(value)
+    {
+        case UTL::ZERO_US:
+            pilaser.em_range = EM_RANGE::TWO_HUNDRED_MICRO_J;
+            break;
+        case UTL::ONE_US:
+            pilaser.em_range = EM_RANGE::TWENTY_MICRO_J;
+            break;
+        case UTL::TWO_US:
+            pilaser.em_range = EM_RANGE::TWO_MICRO_J;
+            break;
+        case UTL::THREE_US:
+            pilaser.em_range = EM_RANGE::TWO_HUNDRED_NANO_J;
+            break;
+        default:
+            pilaser.em_range = EM_RANGE::TWO_HUNDRED_NANO_J;
+    }
+    message("em_range = ",ENUM_TO_STRING(pilaser.em_range));
+}
+
+bool pilaserInterface::setEnergyRange200uJ()
+{
+    return setEnergyRange(pilaserStructs::EM_RANGE::TWO_HUNDRED_MICRO_J);
+}
+bool pilaserInterface::setEnergyRange20uJ()
+{
+    return setEnergyRange(pilaserStructs::EM_RANGE::TWENTY_MICRO_J);
+}
+bool pilaserInterface::setEnergyRange2uJ()
+{
+    return setEnergyRange(pilaserStructs::EM_RANGE::TWO_MICRO_J);
+}
+bool pilaserInterface::setEnergyRange200nJ()
+{
+    return setEnergyRange(pilaserStructs::EM_RANGE::TWO_HUNDRED_NANO_J);
+}
+
+bool pilaserInterface::setEnergyRange(const pilaserStructs::EM_RANGE new_range)
+{
+    using namespace pilaserStructs;
+    if( stopEM() )
+    {
+        pause_500();
+        unsigned short new_val = UTL::ZERO_US;
+        switch(new_range)
+        {
+            case EM_RANGE::TWO_HUNDRED_MICRO_J:
+                new_val = UTL::ZERO_US;
+                break;
+            case EM_RANGE::TWENTY_MICRO_J:
+                new_val = UTL::ONE_US;
+                break;
+            case EM_RANGE::TWO_MICRO_J:
+                new_val = UTL::TWO_US;;
+                break;
+            case EM_RANGE::TWO_HUNDRED_NANO_J:
+                new_val = UTL::THREE_US;
+                break;
+        }
+        if (caput<unsigned short>
+                (pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::ENERGY_RANGE_SP).CHTYPE,
+                 pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::ENERGY_RANGE_SP).CHID,
+                 new_val,
+                 "", "Timeout sending setEnergyRange")
+                 )
+        {
+            pause_500();
+            return startEM();
+        }
+
+    }
+    return false;
+}
+
+bool pilaserInterface::startEM()
+{
+    return caput<unsigned short>
+            (pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::ENERGY_RUN_SP).CHTYPE,
+             pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::ENERGY_RUN_SP).CHID,
+             UTL::ONE_US,
+             "", "Timeout sending EM START");
+}
+bool pilaserInterface::stopEM()
+{
+    return caput<unsigned short>
+            (pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::ENERGY_RUN_SP).CHTYPE,
+             pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::ENERGY_RUN_SP).CHID,
+             UTL::ZERO_US,
+             "", "Timeout sending EM START");
+}
+
+bool pilaserInterface::isRunning() const
+{
+    return pilaser.em_is_running;
+}
+bool pilaserInterface::isOverRange() const
+{
+    return pilaser.em_over_range;
+}
+
+std::string pilaserInterface::getEnergyRange() const
+{
+    return ENUM_TO_STRING(pilaser.em_range);
+}
+
+
+
+
+
 
 
 //______________________________________________________________________________
@@ -398,7 +569,7 @@ void pilaserInterface::addToBuffer(const double val,std::vector<double>& buffer)
     //pilaser.buffer_count += UTL::ONE_SIZET;
     if(buffer.size() > pilaser.max_buffer_count )
     {
-        message("buffer FULL, ", buffer.size() );
+        //message("buffer FULL, ", buffer.size() );
         buffer.erase(buffer.begin());
         pilaser.buffer_full = true;
         //message("BUFFER FULL!!! ");
@@ -406,12 +577,12 @@ void pilaserInterface::addToBuffer(const double val,std::vector<double>& buffer)
     }
     else if(buffer.size() == pilaser.max_buffer_count )
     {
-        message("buffer FULL, ", buffer.size() );
+        //message("buffer FULL, ", buffer.size() );
         pilaser.buffer_full = false;
     }
     else
     {
-        message("buffer NOT FULL, ", buffer.size() );
+        //message("buffer NOT FULL, ", buffer.size() );
         pilaser.buffer_full = false;
     }
     pilaser.buffer_count = buffer.size();

@@ -680,8 +680,45 @@ bool pilaserController::VCPositionEssentialRequirements_areBad()
         set_pos_struct.state = pilaserStructs::VC_SET_POS_STATE::NO_MASK_FEEDBACK;
         return true;
     }
-
     return false;
+}
+//______________________________________________________________________________
+bool pilaserController::setEnergyRange200uJ()
+{
+    return localInterface.setEnergyRange200uJ();
+}
+bool pilaserController::setEnergyRange20uJ()
+{
+    return localInterface.setEnergyRange20uJ();
+}
+bool pilaserController::setEnergyRange2uJ()
+{
+    return localInterface.setEnergyRange2uJ();
+}
+bool pilaserController::setEnergyRange200nJ()
+{
+    return localInterface.setEnergyRange200nJ();
+}
+bool pilaserController::startEM()
+{
+    return localInterface.startEM();
+}
+bool pilaserController::stopEM()
+{
+    return localInterface.stopEM();
+}
+bool pilaserController::isRunning() const
+{
+    return localInterface.isRunning();
+
+}
+bool pilaserController::isOverRange() const
+{
+    return localInterface.isOverRange();
+}
+std::string pilaserController::getEnergyRange() const
+{
+    return localInterface.getEnergyRange();
 }
 //______________________________________________________________________________
 bool pilaserController::isRSBufferFull()const

@@ -119,7 +119,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
             .value("RUNNING",  VC_SET_POS_STATE::RUNNING )
             ;
 
-
     const char* hPos_ds = "";
     const char* vPos_ds = "";
     const char* hStep_ds = "";
@@ -184,6 +183,15 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("buffer_full", &pilaserObject::buffer_full, "")
 
         ;
+//
+//    const char* EM_RANGE_ds= "ENUM defining states for energy meter range ";
+//    enum_<EM_RANGE>("EM_RANGE",EM_RANGE_ds)
+//            .value("TWO_HUNDRED_MICRO_J", EM_RANGE::TWO_HUNDRED_MICRO_J)
+//            .value("TWENTY_MICRO_J",  EM_RANGE::TWENTY_MICRO_J )
+//            .value("TWO_MICRO_J",  EM_RANGE::TWO_MICRO_J )
+//            .value("TWO_HUNDRED_NANO_J",  EM_RANGE::TWO_HUNDRED_NANO_J )
+//            .value("UNKNOWN_RANGE",  EM_RANGE::UNKNOWN_RANGE )
+//            ;
 
 //    const char* getShutterNames_Py_doc = "getShutterNames_Py_doc.";
 //    const char* closeAndWait_doc = "closeAndWait_doc.";
@@ -306,6 +314,17 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
         .def("clearRunningValues",   &pilaserController::clearRunningValues,   clearLaserRunningValues_doc )
 
+
+        .def("setEnergyRange200uJ",   &pilaserController::setEnergyRange200uJ,   "Set laser energy Meter Range to 200 uJ" )
+        .def("setEnergyRange20uJ",   &pilaserController::setEnergyRange20uJ,   "Set laser energy Meter Range to 20 uJ" )
+        .def("setEnergyRange2uJ",   &pilaserController::setEnergyRange2uJ,   "Set laser energy Meter Range to 2 uJ" )
+        .def("setEnergyRange200nJ",   &pilaserController::setEnergyRange200nJ,   "Set laser energy Meter Range to 200 nJ" )
+
+        .def("startEM",   &pilaserController::startEM,   "Start laser energy Meter" )
+        .def("stopEM",   &pilaserController::stopEM,   "Stop laser energy Meter " )
+        .def("isRunning",   &pilaserController::isRunning,   "Is laser energy Meter Running" )
+        .def("isOverRange",   &pilaserController::isOverRange,   "Is laser energy Meter OverRange?" )
+        .def("getEnergyRange",   &pilaserController::getEnergyRange,   "Get laser energy Meter Range" )
 
         .def("isRSBufferFull",   &pilaserController::isRSBufferFull,   isRSBufferFull_doc   )
         .def("getRSBufferSize",   &pilaserController::getRSBufferSize,   getRSBufferSize_doc   )

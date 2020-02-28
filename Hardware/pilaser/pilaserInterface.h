@@ -80,6 +80,16 @@ class pilaserInterface : public cameraBase
         double getHpos() const;
         double getVpos() const;
 
+        bool setEnergyRange200uJ();
+        bool setEnergyRange20uJ();
+        bool setEnergyRange2uJ();
+        bool setEnergyRange200nJ();
+
+        bool startEM();
+        bool stopEM();
+        bool isRunning() const;
+        bool isOverRange() const;
+        std::string getEnergyRange() const;
 
         double getQ()const;
         std::vector<double> getQBuffer()const;
@@ -114,9 +124,13 @@ class pilaserInterface : public cameraBase
         size_t getCurrentBufferSize()const;
 
     private:
+        bool setEnergyRange(const pilaserStructs::EM_RANGE new_range);
 
         bool moveH();
         bool moveV();
+
+        void updateEnergyRange(const unsigned short value);
+
 
         void initialise();
         bool initObjects();
