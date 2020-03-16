@@ -47,6 +47,11 @@ velaCameraConfigReader::~velaCameraConfigReader()
 //---------------------------------------------------------------------------------
 bool velaCameraConfigReader::readConfig()
 {
+    if(configFile1 == "")
+    {
+        message("Dummy config file sent to velaCameraConfigReader::readConfig() returning True ");
+        return true;
+    }
     debugMessage("\n", "**** Attempting to Read VELA camera Config File ****");
 
     std::string line, trimmedLine;
@@ -152,7 +157,7 @@ bool velaCameraConfigReader::readConfig()
         success = true;
     }
     else{
-        message("!!!! Error Can't Open PILaser Config File after searching in:  ", configFile1, " !!!!" );
+        message("!!!! Error Can't Open vela camera config File after searching in:  ", configFile1, " !!!!" );
     }
     return success;
 }
@@ -621,6 +626,7 @@ void velaCameraConfigReader::addToCameraObjects(const std::vector<std::string> &
     using namespace cameraStructs;
     using namespace UTL;
     std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
+    //debugMessage("key = ", keyVal[ZERO_SIZET], ", value = ", keyVal[ONE_SIZET] );
     if(keyVal[ZERO_SIZET] == NAME)
     {
         camObjects.push_back(cameraObject());
@@ -631,7 +637,7 @@ void velaCameraConfigReader::addToCameraObjects(const std::vector<std::string> &
     else if(keyVal[ZERO_SIZET] == UTL::CAM_TYPE)
     {
         camObjects.back().type = getCameType(keyVal[ONE_SIZET]);
-        //message(camObjects.back().name, " is a ", ENUM_TO_STRING(camObjects.back().type));
+        message(camObjects.back().name, " is a ", ENUM_TO_STRING(camObjects.back().type));
     }
     else if(keyVal[ZERO_SIZET] == PV_ROOT)
     {

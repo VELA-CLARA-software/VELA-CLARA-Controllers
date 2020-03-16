@@ -572,7 +572,9 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
     using namespace UTL;
     std::string key   = keyVal[ZERO_SIZET];//MAGIC_NUMBER
     std::string value = keyVal[ONE_SIZET];//MAGIC_NUMBER
+    debugMessage("key = ", key, ", value = ", value );
     if( key == NAME )
+
     {
         camObjects.push_back(cameraObject() );
         camObjects.back().name      = value;
@@ -697,10 +699,12 @@ void claraCameraConfigReader::addToCameraObjects(const std::vector<std::string> 
     else if(key == MAX_SHOTS_NUMBER)
     {
         camObjects.back().daq.maxShots = getNum(value);
+        std::cout << "maxShots  = " << camObjects.back().daq.maxShots << std::endl;
     }
     else if(key == SENSOR_MIN_TEMP)
     {
         camObjects.back().daq.sensorMinTemp = getNumD(value);
+        std::cout << "sensorMinTemp  = " << camObjects.back().daq.sensorMinTemp << std::endl;
     }
     else if(key == SENSOR_MAX_TEMP)
     {

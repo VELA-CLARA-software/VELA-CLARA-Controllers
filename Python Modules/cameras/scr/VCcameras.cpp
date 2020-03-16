@@ -41,7 +41,8 @@ offline_VELA_VC_Camera_Controller_Obj(nullptr),
 physical_VELA_VC_Camera_Controller_Obj(nullptr),
 claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG),
 velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
-velaCam2Config(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA2_CONFIG)
+velaCam2Config(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA2_CONFIG),
+allCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::ALL_CAMERA_CONFIG)
 {
     std::cout << "Instantiated a VCcameras in Quiet Mode" << std::endl;
     //ctor
@@ -145,7 +146,29 @@ cameraControllerBase& VCcameras::physical_NEW_VELA_Camera_Controller()
 
     return *physical_NEW_VELA_Camera_Controller_Obj;
 }
+//______________________________________________________________________________
+cameraControllerBase& VCcameras::physical_All_Camera_Controller()
+{
+    std::string name = "physical_All_Camera_Controller";
+    std::cout <<"physical_All_Camera_Controller" <<std::endl;
 
+
+    messageStates[physical_All_Camera_Controller_Obj].first     = shouldShowMessage;
+    messageStates.at(physical_All_Camera_Controller_Obj).second = shouldShowDebugMessage;
+    std::cout << "Creating " << name << " object" <<std::endl;
+    physical_All_Camera_Controller_Obj = new cameraControllerBase(messageStates.at(physical_All_Camera_Controller_Obj).first,
+                                        messageStates.at(physical_All_Camera_Controller_Obj).second,
+                                        withoutVM,
+                                        withEPICS,
+                                        name,
+                                        allCamConfig,
+                                        "",
+                                        HWC_ENUM::CONTROLLER_TYPE::CAMERA,
+                                        HWC_ENUM::MACHINE_AREA::CLARA_2_BA1_BA2,
+                                        false);
+
+    return *physical_All_Camera_Controller_Obj;
+}
 //______________________________________________________________________________
 cameraControllerBase& VCcameras::physical_Camera_Controller()
 {
@@ -333,9 +356,6 @@ cameraControllerBase& VCcameras::getController(cameraControllerBase*& cont,
             std::cout << "vcOnly " <<std::endl;
             vcOnly = true;
         }
-
-
-
         messageStates[cont].first     = shouldShowMessage;
         messageStates.at(cont).second = shouldShowDebugMessage;
         std::cout << "Creating " << name << " object" <<std::endl;

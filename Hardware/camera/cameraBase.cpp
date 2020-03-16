@@ -106,7 +106,7 @@ void cameraBase::killMonitor(cameraStructs::monitorStruct * ms)
     }
     else
     {
-        debugMessage("ERROR pilaserInterface: in killMonitor: "
+        debugMessage("ERROR cameraBase: in killMonitor: "
                      "ca_clear_subscription failed for ",
                      ms->objName, " ",
                      ENUM_TO_STRING(ms->monType));
@@ -186,10 +186,9 @@ void cameraBase::initialise(bool VConly)
 //---------------------------------------------------------------------------------
 bool cameraBase::readCamConfig()
 {
-    /*
-        read config files, vela cam not yet written
-    */
+    message("Reading claraCamConfigReader");
     bool clara_camera_data_read = claraCamConfigReader.readConfig();
+    message("Reading velaCamConfigReader");
     bool vela_camera_data_read = velaCamConfigReader.readConfig();;
     if(clara_camera_data_read && vela_camera_data_read)
         return true;
@@ -1415,6 +1414,10 @@ bool cameraBase::collectAndSave(const int numbOfShots)
     {
         return collectAndSave(selectedCamPtr->name, numbOfShots);
     }
+    else if(isAcquiringAndVelaClaraHybridCam(*selectedCamPtr))
+    {
+        return collectAndSave(selectedCamPtr->name, numbOfShots);
+    }
     else
     {
         message("isAcquiringAndClaraCam( ",selectedCamPtr->name," ) == FALSE,  can't collectAndSave");
@@ -2322,14 +2325,12 @@ bool cameraBase::isClaraCam_VC()const
 {
     return isClaraCam(*vcCamPtr);
 }
+
 //---------------------------------------------------------------------------------
 bool cameraBase::isClaraCam(const cameraStructs::cameraObject& cam)const
 {
     return cam.type == CAM_TYPE::CLARA_CAM;
 }
-//---------------------------------------------------------------------------------
-
-
 //---------------------------------------------------------------------------------
 bool cameraBase::isClaraCam(const std::string& cam)const
 {
@@ -2341,6 +2342,26 @@ bool cameraBase::isClaraCam()const
     return isClaraCam(*selectedCamPtr);
 }
 //---------------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaClaraHybridCam(const cameraStructs::cameraObject& cam)const
+{
+    return cam.type == CAM_TYPE::VELA_CLARA_HYBRID;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaClaraHybridCam(const std::string& cam)const
+{
+    return isVelaClaraHybridCam(getCamObj(cam));
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isVelaClaraHybridCam()const
+{
+    return isVelaClaraHybridCam(*selectedCamPtr);
+}
+//---------------------------------------------------------------------------------
+
+
+
 //---------------------------------------------------------------------------------
 bool cameraBase::isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)const
 {
@@ -2350,6 +2371,20 @@ bool cameraBase::isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)c
         if(isClaraCam(cam))
         {
             message(cam.name," is isClaraCam");
+            return true;
+        }
+    }
+    return false;
+}
+//---------------------------------------------------------------------------------
+bool cameraBase::isAcquiringAndVelaClaraHybridCam(const cameraStructs::cameraObject& cam)const
+{
+    if(isAcquiring(cam))
+    {
+        message(cam.name," is acquiring, ", ENUM_TO_STRING(cam.type));
+        if(isVelaClaraHybridCam(cam))
+        {
+            message(cam.name," is isVelaClaraHybridCam");
             return true;
         }
     }

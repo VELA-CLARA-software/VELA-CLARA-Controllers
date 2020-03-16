@@ -180,9 +180,15 @@ class cameraBase : public interface
         bool isClaraCam(const std::string& cam)const;
         bool isClaraCam()const;
 
+        bool isVelaClaraHybridCam(const cameraStructs::cameraObject& cam)const;
+        bool isVelaClaraHybridCam(const std::string& cam)const;
+        bool isVelaClaraHybridCam()const;
+
+
         /* this is used to make sure settings are only sent to the correct camera type*/
         bool isAcquiringAndClaraCam(const cameraStructs::cameraObject& cam)const;
         bool isAcquiringAndVelaCam(const cameraStructs::cameraObject& cam)const;
+        bool isAcquiringAndVelaClaraHybridCam(const cameraStructs::cameraObject& cam)const;
 
         bool isUsingBackground(const std::string& cam)const;
         bool isUsingBackground()const;

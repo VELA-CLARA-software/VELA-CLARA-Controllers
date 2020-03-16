@@ -909,6 +909,7 @@ namespace UTL
     const std::string CLARA_CAMERA_CONFIG  = "claraCam.config";
     const std::string VELA_CAMERA_CONFIG  = "velaCam.config";
     const std::string VELA_CAMERA2_CONFIG  = "velaCam2.config";
+    const std::string ALL_CAMERA_CONFIG  = "allCam.config";
 
    /// camera
     const std::string PV_SUFFIX_START     = "PV_SUFFIX_START";
