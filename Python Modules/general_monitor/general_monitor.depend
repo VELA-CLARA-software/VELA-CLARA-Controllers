@@ -200,7 +200,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1576075030 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+1584396090 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -208,7 +208,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1572620313 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
+1582197762 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -231,7 +231,6 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
-	<boost/python/numpy.hpp>
 
 1550840942 source:c:\users\djs56\github\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
@@ -284,7 +283,7 @@
 
 1550834994 source:c:\users\djs56\github\vela-clara-controllers\python modules\general_monitor\main.cpp
 
-1576074818 source:c:\users\djs56\github\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
+1576164508 source:c:\users\djs56\github\vela-clara-controllers\python modules\general_monitor\src\vcgeneralmonitor.cpp
 	<iostream>
 	<iomanip>
 	<numeric>
@@ -295,13 +294,13 @@
 	<epicsTime.h>
 	"VCgeneralMonitor.h"
 
-1576074890 c:\users\djs56\github\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
+1576076850 c:\users\djs56\github\vela-clara-controllers\python modules\general_monitor\include\vcgeneralmonitor.h
 	<string>
 	"VCheader.h"
 	"VCbase.h"
 	"gmStructs.h"
 
-1552996608 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
+1582304022 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -325,13 +324,13 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1551095810 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1583777557 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1550746492 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
+1583775069 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -354,6 +353,6 @@
 	<epicsTime.h>
 	"configDefinitions.h"
 
-1539598404 c:\users\djs56\github\vela-clara-controllers\utilities\running_stat.h
+1582202451 c:\users\djs56\github\vela-clara-controllers\utilities\running_stat.h
 	<iostream>
 

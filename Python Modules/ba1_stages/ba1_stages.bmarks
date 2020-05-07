@@ -1,62 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\Hardware\ba1_stages\expose_ba1Stages.h" open="0" top="0" tabpos="0">
-		<Cursor position="4406" topLine="51" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="3643" topLine="73" />
-	</File>
-	<File name="..\..\Utilities\ba1_stages\ba1StagesConfigReader.h" open="0" top="0" tabpos="0">
-		<Cursor position="1833" topLine="23" />
-	</File>
-	<File name="..\..\Hardware\ba1_stages\ba1StagesController.h" open="0" top="0" tabpos="0">
-		<Cursor position="2652" topLine="41" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\ba1_stages\ba1StagesConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="11015" topLine="247" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\ba1_stages\ba1StagesInterface.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="14979" topLine="328" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\ba1_stages\ba1StagesController.cpp" open="0" top="0" tabpos="10">
-		<Cursor position="2949" topLine="48" />
-		<BrowseMarks positions="" />
-	</File>
 	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1286" topLine="0" />
 	</File>
-	<File name="..\..\Structs\ba1_stages\ba1StagesStructs.h" open="0" top="0" tabpos="0">
-		<Cursor position="4519" topLine="85" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="src\VCba1stages.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2539" topLine="43" />
-		<BrowseMarks positions="" />
+	<File name="include\VCba1stages.h" open="0" top="0" tabpos="9">
+		<Cursor position="3242" topLine="60" />
 	</File>
 	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="2521" topLine="31" />
 		<BrowseMarks positions="22403" />
 	</File>
+	<File name="..\..\Hardware\ba1_stages\ba1StagesInterface.h" open="0" top="0" tabpos="0">
+		<Cursor position="2956" topLine="45" />
+	</File>
+	<File name="..\..\Hardware\ba1_stages\ba1StagesInterface.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="14979" topLine="328" />
+	</File>
+	<File name="..\..\Utilities\ba1_stages\ba1StagesConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="11015" topLine="247" />
+	</File>
+	<File name="..\..\Hardware\ba1_stages\ba1StagesController.cpp" open="0" top="0" tabpos="10">
+		<Cursor position="2949" topLine="48" />
+	</File>
+	<File name="..\..\Hardware\ba1_stages\expose_ba1Stages.h" open="0" top="0" tabpos="0">
+		<Cursor position="4406" topLine="51" />
+	</File>
 	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
 		<Cursor position="32157" topLine="549" />
 	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="11746" topLine="248" />
+	<File name="..\..\Utilities\ba1_stages\ba1StagesConfigReader.h" open="0" top="0" tabpos="0">
+		<Cursor position="1833" topLine="23" />
 	</File>
-	<File name="..\..\Hardware\ba1_stages\ba1StagesInterface.h" open="0" top="0" tabpos="0">
-		<Cursor position="2956" topLine="45" />
-		<BrowseMarks positions="" />
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3643" topLine="73" />
 	</File>
-	<File name="include\VCba1stages.h" open="0" top="0" tabpos="9">
-		<Cursor position="3242" topLine="60" />
-		<BrowseMarks positions="" />
+	<File name="..\..\Hardware\ba1_stages\ba1StagesController.h" open="0" top="0" tabpos="0">
+		<Cursor position="2652" topLine="41" />
 	</File>
 	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="0" topLine="45" />
+	</File>
+	<File name="..\..\Structs\ba1_stages\ba1StagesStructs.h" open="0" top="0" tabpos="0">
+		<Cursor position="4519" topLine="85" />
+	</File>
+	<File name="src\VCba1stages.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2539" topLine="43" />
+	</File>
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="11746" topLine="248" />
 	</File>
 </BrowseTracker_layout_file>

@@ -490,7 +490,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1576075030 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+1584396090 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -498,7 +498,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1572620313 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
+1582197762 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -521,7 +521,6 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
-	<boost/python/numpy.hpp>
 
 1561993848 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_prot\gunprotcontroller.cpp
 	"gunProtController.h"
@@ -620,7 +619,7 @@
 	"configReader.h"
 	"rfProtStructs.h"
 
-1576664320 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_prot\l01protinterface.cpp
+1576665571 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_prot\l01protinterface.cpp
 	"L01ProtInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -696,7 +695,7 @@
 	"VCHeader.h"
 	"configdEfinitions.h"
 
-1552996608 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
+1582304022 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -720,13 +719,13 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1551095810 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1583777557 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1550746492 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
+1583775069 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"

@@ -632,7 +632,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1572620313 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
+1582197762 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -655,7 +655,6 @@
 	<boost/python/overloads.hpp>
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
-	<boost/python/numpy.hpp>
 
 1542115696 c:\users\djs56\github\vela-clara-controllers\structs\structs.h
 	<string>
@@ -666,7 +665,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1581073402 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+1584396090 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -690,7 +689,7 @@
 	<boost/python.hpp>
 	<boost/circular_buffer.hpp>
 
-1539598404 c:\users\djs56\github\vela-clara-controllers\utilities\running_stat.h
+1582202451 c:\users\djs56\github\vela-clara-controllers\utilities\running_stat.h
 	<iostream>
 
 1539610072 c:\users\djs56\github\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.h
@@ -750,7 +749,7 @@
 	"VCbase.h"
 	"VCllrf_docstrings.h"
 
-1552996608 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
+1582304022 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -781,13 +780,13 @@
 	<map>
 	<utility>
 
-1551095810 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1583777557 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1550746492 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
+1583775069 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -830,7 +829,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1578656529 source:c:\users\djs56\github\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+1581961563 source:c:\users\djs56\github\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
 	"liberallrfInterface.h"
 	"configDefinitions.h"
 	<iostream>

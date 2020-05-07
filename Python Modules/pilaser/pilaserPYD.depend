@@ -866,7 +866,7 @@
 	<list>
 	<mutex>
 
-1550746492 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
+1583775069 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -877,7 +877,7 @@
 	<vector>
 	<map>
 
-1582825848 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+1584396090 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -970,7 +970,7 @@
 1551096044 source:c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.cpp
 	"cameraControllerBase.h"
 
-1551095810 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1583777557 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
@@ -989,7 +989,7 @@
 	<iostream>
 	<sstream>
 
-1582830570 source:c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
+1582885131 source:c:\users\djs56\github\vela-clara-controllers\hardware\pilaser\pilaserinterface.cpp
 	"pilaserInterface.h"
 	"configDefinitions.h"
 	<iostream>
