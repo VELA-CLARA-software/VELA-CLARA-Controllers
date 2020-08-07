@@ -212,7 +212,7 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
             updatePlswthFwhmRead(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ:
-            debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ", getDBRdouble(args));
+            //debugMessage("rfModStructs::GUN_MOD_PV_TYPE::IONP_PRESSURE_READ = ", getDBRdouble(args));
             gunMod.ionp = getDBRdouble(args);
             break;
         case rfModStructs::GUN_MOD_PV_TYPE::ILOCK1_STR:

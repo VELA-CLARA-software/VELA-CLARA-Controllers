@@ -387,10 +387,10 @@
 	<vector>
 	<map>
 
-1545318480 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.cpp
+1545322080 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.cpp
 	"gunModController.h"
 
-1545318480 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.h
+1545322080 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.h
 	<string>
 	<vector>
 	<map>
@@ -407,7 +407,7 @@
 	<boost/python/return_value_policy.hpp>
 	<boost/python/overloads.hpp>
 
-1545318480 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.h
+1545322080 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.h
 	"interface.h"
 	"rfModStructs.h"
 	"structs.h"
@@ -418,7 +418,7 @@
 	<atomic>
 	<map>
 
-1550840956 c:\users\djs56\github\vela-clara-controllers\hardware\interface.h
+1550844556 c:\users\djs56\github\vela-clara-controllers\hardware\interface.h
 	<cadef.h>
 	<iostream>
 	<map>
@@ -427,7 +427,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1582197762 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
+1582201362 c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.h
 	<string>
 	<vector>
 	<sstream>
@@ -451,7 +451,7 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1542115696 c:\users\djs56\github\vela-clara-controllers\structs\structs.h
+1542119296 c:\users\djs56\github\vela-clara-controllers\structs\structs.h
 	<string>
 	"configDefinitions.h"
 	<string>
@@ -460,7 +460,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1584396090 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
+1584399690 c:\users\djs56\github\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -468,7 +468,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1537794560 c:\users\djs56\github\vela-clara-controllers\structs\rf_mod\rfmodstructs.h
+1537798160 c:\users\djs56\github\vela-clara-controllers\structs\rf_mod\rfmodstructs.h
 	"structs.h"
 	"configDefinitions.h"
 	<vector>
@@ -476,7 +476,7 @@
 	<map>
 	<cadef.h>
 
-1534593094 c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.h
+1534596694 c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -484,7 +484,7 @@
 	"configReader.h"
 	"rfModStructs.h"
 
-1550570198 c:\users\djs56\github\vela-clara-controllers\utilities\configreader.h
+1550573798 c:\users\djs56\github\vela-clara-controllers\utilities\configreader.h
 	"configDefinitions.h"
 	"baseObject.h"
 	<string>
@@ -492,11 +492,11 @@
 	<vector>
 	<cadef.h>
 
-1534593082 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodhexstringmap.h
+1534596682 c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodhexstringmap.h
 	<string>
 	<map>
 
-1534593082 c:\users\djs56\github\vela-clara-controllers\hardware\controller.h
+1534596682 c:\users\djs56\github\vela-clara-controllers\hardware\controller.h
 	"structs.h"
 	"baseObject.h"
 	<map>
@@ -504,7 +504,7 @@
 	<boost/python/suite/indexing/vector_indexing_suite.hpp>
 	<boost/python/suite/indexing/map_indexing_suite.hpp>
 
-1545321752 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.cpp
+1576608173 source:c:\users\djs56\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.cpp
 	"gunModInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -512,21 +512,21 @@
 	<algorithm>
 	<thread>
 
-1537794058 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.cpp
+1537797658 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.cpp
 	"l01ModController.h"
 
-1537794062 c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.h
+1537797662 c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.h
 	"controller.h"
 	"l01ModInterface.h"
 
-1537794072 c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.h
+1537797672 c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.h
 	"interface.h"
 	"rfModStructs.h"
 	"structs.h"
 	"l01ModConfigReader.h"
 	<string>
 
-1534593094 c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.h
+1534596694 c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.h
 	<string>
 	<vector>
 	<map>
@@ -534,7 +534,7 @@
 	"configReader.h"
 	"rfModStructs.h"
 
-1537797838 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.cpp
+1537801438 source:c:\users\djs56\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.cpp
 	"l01ModInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -543,7 +543,7 @@
 	<algorithm>
 	<thread>
 
-1534593094 source:c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.cpp
+1534596694 source:c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.cpp
 	"gunModConfigReader.h"
 	"configDefinitions.h"
 	"rfModStructs.h"
@@ -556,7 +556,7 @@
 	<algorithm>
 	<ctype.h>
 
-1537798188 source:c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.cpp
+1537801788 source:c:\users\djs56\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.cpp
 	"l01ModConfigReader.h"
 	"configDefinitions.h"
 	"rfModStructs.h"
@@ -569,13 +569,13 @@
 	<algorithm>
 	<ctype.h>
 
-1534593090 source:c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\main.cpp
+1534596690 source:c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\main.cpp
 
-1537796564 source:c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\src\vcrfmod.cpp
+1537800164 source:c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\src\vcrfmod.cpp
 	"VCrfmod.h"
 	<iostream>
 
-1545318480 c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\include\vcrfmod.h
+1545322080 c:\users\djs56\github\vela-clara-controllers\python modules\rf_mod\include\vcrfmod.h
 	<string>
 	"gunModController.h"
 	"l01ModController.h"
@@ -584,7 +584,7 @@
 	"VCheader.h"
 	"VCbase.h"
 
-1582304022 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
+1582307622 c:\users\djs56\github\vela-clara-controllers\hardware\vcheader.h
 	"structs.h"
 	"VCbase.h"
 	"baseObject.h"
@@ -608,20 +608,20 @@
 	<boost/python/scope.hpp>
 	<boost/python/manage_new_object.hpp>
 
-1537795684 c:\users\djs56\github\vela-clara-controllers\hardware\vcbase.h
+1537799284 c:\users\djs56\github\vela-clara-controllers\hardware\vcbase.h
 	"structs.h"
 	<iostream>
 	<string>
 	<map>
 	<utility>
 
-1583777557 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+1583781157 c:\users\djs56\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
 	"cameraBase.h"
 	"controller.h"
 	<vector>
 	<deque>
 
-1583775069 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
+1583778669 c:\users\djs56\github\vela-clara-controllers\hardware\camera\camerabase.h
 	"configDefinitions.h"
 	"cameraStructs.h"
 	"structs.h"
@@ -632,28 +632,28 @@
 	<vector>
 	<map>
 
-1550745266 source:c:\users\djs56\github\vela-clara-controllers\hardware\controller.cpp
+1550748866 source:c:\users\djs56\github\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
 
-1550840942 source:c:\users\djs56\github\vela-clara-controllers\hardware\interface.cpp
+1580918453 source:c:\users\djs56\github\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	"structs.h"
 	<iostream>
 	<sstream>
 	<chrono>
 
-1550745290 source:c:\users\djs56\github\vela-clara-controllers\hardware\vcbase.cpp
+1550748890 source:c:\users\djs56\github\vela-clara-controllers\hardware\vcbase.cpp
 	"VCbase.h"
 	"configDefinitions.h"
 
-1572620359 source:c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.cpp
+1581002571 source:c:\users\djs56\github\vela-clara-controllers\utilities\baseobject.cpp
 	"baseObject.h"
 	"configDefinitions.h"
 	<time.h>
 
-1550570416 source:c:\users\djs56\github\vela-clara-controllers\utilities\configreader.cpp
+1550574016 source:c:\users\djs56\github\vela-clara-controllers\utilities\configreader.cpp
 	"configReader.h"
 	<iostream>
 	<time.h>

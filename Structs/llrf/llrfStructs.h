@@ -81,6 +81,7 @@ namespace llrfStructs
                                                      (PULSE_SHAPE)
                                                      (PULSE_SHAPE_APPLY)
                                                      (KEEP_ALIVE)
+                                                     (LLRF_MAX_AMP_SP)
                                                      (UNKNOWN)
 
                                         (CH1_INTERLOCK_STATUS)
@@ -238,9 +239,6 @@ namespace llrfStructs
         std::string    EVID_timeStr; // LLRF EVID string
         epicsTimeStamp EVID_etime;   // epics timestamp for value
 
-
-
-
         // when exposing a vector of rf_trace to python I ran into trouble...
         long long procStart, procEnd;
         //https://stackoverflow.com/questions/43107005/exposing-stdvectorstruct-with-boost-python
@@ -396,7 +394,10 @@ namespace llrfStructs
             drop_amp_on_breakdown(false),
             amp_drop_value(UTL::DUMMY_DOUBLE),
             phase_tolerance(UTL::DUMMY_DOUBLE),
-            endInfiniteMask_Trace_Set(false)
+            endInfiniteMask_Trace_Set(false),
+
+            hi_mask_is_always_inf(false)
+
             {}
 
 
@@ -412,7 +413,7 @@ namespace llrfStructs
         std::vector<double> hi_mask, lo_mask;
 
         size_t num_continuous_outside_mask_count,outside_mask_index;
-        bool   check_mask, use_percent_mask, use_abs_mask;
+        bool   check_mask, use_percent_mask, use_abs_mask, hi_mask_is_always_inf;
         double mask_value, mask_abs_min;
         size_t mask_end_by_power_index;
         double phase_tolerance;
@@ -677,6 +678,9 @@ namespace llrfStructs
         // WE SHOULD ONLY USE one of ff or sp (ff i think) but we have access to all of them)
         double phi_sp, phi_ff, crestPhi;
         double amp_sp, amp_ff,maxAmp;
+
+        double llrf_max_amp_sp;
+
         double pulse_length,pulse_offset;
         double breakdown_rate, amp_drop_value;
 
@@ -711,7 +715,6 @@ namespace llrfStructs
             this is the new all traces in one record object
         */
         llrf_trace_one_shot all_traces;
-
         /*
             Klystron Forward Power Running Stats
             These are the running mean adn sigma for the KlyFwdPow
@@ -724,7 +727,6 @@ namespace llrfStructs
         std::map<int, runningStat> amp_set_kly_fwd_rs;
         // this is the state of each running state, so we can save and re-apply settings
         std::map<int, std::tuple<size_t, double, double>> amp_set_kly_fwd_rs_state;
-
 
         /*
             Individual traces go here
@@ -754,6 +756,7 @@ namespace llrfStructs
         size_t num_extra_traces;
 
         bool fast_ramp_mode;
+        double fast_ramp_power_factor;
     };
 }
 #endif

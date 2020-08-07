@@ -193,6 +193,7 @@ class liberallrfInterface : public interface
         bool setCheckMask(const std::string& name, bool value);
         bool setHiMask(const std::string& name, const std::vector<double>& value);
         bool setLoMask(const std::string& name, const std::vector<double>& value);
+        bool setHiMaskIsAlwaysInfinite(const std::string& name, bool value);
         bool setNumContinuousOutsideMaskCount(size_t value);
         bool setNumContinuousOutsideMaskCount(const std::string&name, size_t value);
         bool clearMask(const std::string&name);
@@ -232,6 +233,7 @@ class liberallrfInterface : public interface
         double getMaskWindowEndTime(const std::string& name)const;
         size_t getNumContinuousOutsideMaskCount(const std::string& name)const;
         bool isGlobalCheckMask()const;
+        bool isHiMaskIsAlwaysInfinite(const std::string& name)const;
         bool isPercentMask(const std::string& name)const;
         bool isAbsoluteMask(const std::string& name)const;
         bool isCheckingMask(const std::string& name)const;
@@ -261,6 +263,7 @@ class liberallrfInterface : public interface
         bool setPercentTimeMask(const double s1,const double s2,const double s3,
                                 const double s4,const double value,const  std::string& name);
         bool setInfiniteMasks(const std::string& name);
+        bool setInfiniteHiMask(const std::string& name);
         bool setPercentMask(const size_t s1,const size_t s2,const size_t s3,
                             const size_t s4,const double value,const std::string& name);
         bool setAbsoluteMask(const size_t s1,const size_t s2,const size_t s3,
@@ -537,15 +540,14 @@ class liberallrfInterface : public interface
         size_t getNumTracesToEstimateRepRate() const;
         double getTraceRepRate() const;
 
+        double getLLRFMaxAmpSP()const;
+
         void startTimer();
         void offsetTimer(long long value);
         long long elapsedTime();
 
         double getBreakDownRate();
 
-//        bool setNumContinuousOutsideMaskCount(const std::string& name, size_t val);
-//        bool externalTriggerOff();
-//        bool externalTriggerOn();
 
         bool trigOff();
         bool trigExt();
@@ -614,6 +616,8 @@ class liberallrfInterface : public interface
         /* NEW Dec 2019 - fast ramp mode, see llrf structs
            "fast_ramp_mode" variable for more info.  */
         void setFastRampMode(const bool state);
+        void setFastRampHiMaskPowerFactor(double state);
+        double getFastRampHiMaskPowerFactor() const;
         void fastRampModeOn();
         void fastRampModeOff();
         bool getFastRampModeState() const;

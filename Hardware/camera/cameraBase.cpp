@@ -1461,7 +1461,7 @@ bool cameraBase::collectAndSave(const std::string& name, const int numbOfShots)
                     imageCollectStructs.at(n).numShots = numbOfShots;
                     imageCollectStructs.at(n).thread
                         = new std::thread(staticEntryImageCollectAndSave, std::ref(imageCollectStructs.at(n)));
-
+                    pause_500();
                     message("new imageCollectStruct created and running");
 
                     return true;
@@ -1479,7 +1479,7 @@ bool cameraBase::collectAndSave(const std::string& name, const int numbOfShots)
         }
         else
         {
-            message("!!!ERROR!!! imageCollectStructs has no entry ", n );
+            message("!!!errro!!! imageCollectStructs has no entry ", n );
         }
     }
     return false;
@@ -1618,10 +1618,10 @@ bool cameraBase::makeANewDirectoryAndName(cameraObject& camera,int numbOfShots)/
                         "-"+std::to_string(local_tm.tm_sec)+
                         "_"+std::to_string(numbOfShots)+"images";
     strcpy(newName, strName.c_str());
-   // message("File Directory would be: ",
-     //                   std::to_string(local_tm.tm_year + 1900)+
-     //                   "\\"+std::to_string(local_tm.tm_mon + 1)+
-     //                   "\\"+std::to_string(local_tm.tm_mday)+"\\");
+    message("File Directory would be: ",
+                        std::to_string(local_tm.tm_year + 1900)+
+                        "\\"+std::to_string(local_tm.tm_mon + 1)+
+                        "\\"+std::to_string(local_tm.tm_mday)+"\\");
     message("File name is: ",newName);
 
     ca_array_put(camera.pvComStructs.at(CAM_PV_TYPE::CAM_FILE_NAME).CHTYPE,

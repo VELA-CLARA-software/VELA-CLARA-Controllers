@@ -189,6 +189,8 @@ class liberaLLRFController : public controller
                                     double window_start, double window_end);
         bool setHiMask(const std::string&name,const std::vector<double>& value);
         bool setLoMask(const std::string&name,const std::vector<double>& value);
+        bool setHiMaskIsAlwaysInfinite(const std::string& name, bool value);
+
 #ifdef BUILD_DLL
         bool setHiMask_Py(const std::string&name, boost::python::list& value);
         bool setLoMask_Py(const std::string&name, boost::python::list& value);
@@ -314,6 +316,7 @@ class liberaLLRFController : public controller
 
 #ifdef BUILD_DLL
         bool setInfiniteMasks(const std::string& name);
+        bool setInfiniteHiMask(const std::string& name);
         bool setHighMask(const std::string& name,const boost::python::list& value);
         bool setLowMask(const std::string& name, const boost::python::list& value);
         bool setCavRevPwrHiMask_Py(const boost::python::list& value);
@@ -389,6 +392,7 @@ class liberaLLRFController : public controller
         bool trigExt();
         bool trigInt();
         bool isTrigExternal();
+        double getLLRFMaxAmpSP() const;
 
         /* These functions calculte the rep rate of data as received by this interface. */
         void setNumTracesToEstimateRepRate(size_t value);
@@ -646,6 +650,9 @@ ___  __        __   ___     __        ___  ___  ___  __   __
         double getBreakDownRate();
 
 
+        void setFastRampHiMaskPowerFactor(double state);
+        double getFastRampHiMaskPowerFactor() const;
+
         void fastRampModeOn();
         void fastRampModeOff();
         bool getFastRampModeState() const;
@@ -676,6 +683,7 @@ ___  __        __   ___     __        ___  ___  ___  __   __
         bool isGlobalCheckMask();
         bool isPercentMask(const std::string& name);
         bool isAbsoluteMask(const std::string& name);
+        bool isHiMaskIsAlwaysInfinite(const std::string& name)const;
 
         // Starters
 //        void startTraceMonitoring();

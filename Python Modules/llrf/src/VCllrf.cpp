@@ -99,7 +99,7 @@ liberaLLRFController& VCllrf::physical_CLARA_LRRG_LLRF_Controller()
 //______________________________________________________________________________
 liberaLLRFController& VCllrf::virtual_CLARA_HRRG_LLRF_Controller()
 {
-    std::string name  = "virtual_CLARA_HRRG_LLRF_Controller";
+    std::string name  = "virtual_CLARA_HRRG_LLRF_Controamp_spller";
     return getController(GUN_LLRF_Controller_Obj,
                          //CLARA_HRRG_LLRF_CONFIG,
                          name,

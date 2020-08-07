@@ -277,6 +277,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         const char* check_mask_ds      = "should check mask" ;
         const char* hi_mask_set_ds     = "is hi mask set";
         const char* low_mask_set_ds    = "is low mask set";
+        const char* hi_mask_is_always_inf_ds    = "always set hih mask to be +infinity ";
         const char* keep_rolling_average_ds= "should keep rolling average";
         const char* keep_next_trace_ds = "should keep next trace";
         const char* has_average_ds     = "has the trace calcualted an an average yet?";
@@ -317,6 +318,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("check_mask",      &rf_trace_data::check_mask,"should check mask")
         .def_readonly("hi_mask_set",     &rf_trace_data::hi_mask_set,"is hi mask set")
         .def_readonly("lo_mask_set",     &rf_trace_data::lo_mask_set,"is low mask set")
+        .def_readonly("hi_mask_is_always_inf",     &rf_trace_data::hi_mask_is_always_inf,hi_mask_is_always_inf_ds)
         .def_readonly("keep_rolling_average",&rf_trace_data::keep_rolling_average,"should keep rolling average")
         .def_readonly("keep_next_trace",&rf_trace_data::keep_next_trace,"should keep next trace")
         .def_readonly("has_average",     &rf_trace_data::has_average,"has the trace calcualted an an average yet?")
@@ -412,6 +414,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("can_increase_active_pulses",      &liberallrfObject::can_increase_active_pulses,"can_increase_active_pulses value")
         .def_readonly("num_traces_to_estimate_rep_rate",      &liberallrfObject::num_traces_to_estimate_rep_rate,"how many trace time stamps to use to calculwte rep-rate")
         .def_readonly("trace_rep_rate",      &liberallrfObject::trace_rep_rate,"Repetation rate last of num_traces_to_estimate_rep_rate traces")
+        .def_readonly("fast_ramp_mode",      &liberallrfObject::fast_ramp_mode,"flag for state of fast_ramp_mode, used during conditioning ")
+        .def_readonly("fast_ramp_power_factor",      &liberallrfObject::fast_ramp_power_factor,"fast_ramp_mode level, this is applied to each power trace Hi mask during conditioning (when fast_ramp_mode is true) ")
         ;
 
     using namespace UTL;
@@ -471,6 +475,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("getPhiLLRF", &liberaLLRFController::getPhiLLRF,"Return the Phase in LLRF Units")
         .def("getBreakDownRate", &liberaLLRFController::getBreakDownRate,"Return estimate of breakdowns per second.")
         .def("isTrigExternal", &liberaLLRFController::isTrigExternal,"Return true if trig is in external mode.")
+
+
+        .def("getLLRFMaxAmpSP", &liberaLLRFController::getLLRFMaxAmpSP ,"Return LLRF MAX AMP LEVEL.")
 
 
         .def("lockAmpFF", &liberaLLRFController::lockAmpFF,"Lock the amp FF check box.")
@@ -573,6 +580,9 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
         /* FAST RAMP MODE SETTERS  GETTER */
+        .def("setFastRampHiMaskPowerFactor",&liberaLLRFController::setFastRampHiMaskPowerFactor,(VALUE_ARG),"Set level used for fast_ramp_mode")
+        .def("getFastRampHiMaskPowerFactor",&liberaLLRFController::getFastRampHiMaskPowerFactor,"retrun level used in fast_ramp_mode")
+        .def("fastRampModeOn",       &liberaLLRFController::fastRampModeOn,       "Enable Fast Ramp Mode"     )
         .def("fastRampModeOn",       &liberaLLRFController::fastRampModeOn,       "Enable Fast Ramp Mode"     )
         .def("fastRampModeOff",      &liberaLLRFController::fastRampModeOff,      "Disable Fast Ramp Mode"    )
         .def("getFastRampModeState", &liberaLLRFController::getFastRampModeState, "Get current state of fast ramp mode (true = enabled, false - disabled) "   )
@@ -725,7 +735,8 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setPhiCalibration",  &liberaLLRFController::setPhiCalibration,(VALUE_ARG),"Set linear calibration of phase from LLRF units to degrees")
         .def("setAmpCalibration",  &liberaLLRFController::setAmpCalibration,(VALUE_ARG),"Set linear calibration of amplitude from LLRF units to MV/m")
         .def("setCrestPhiLLRF",  &liberaLLRFController::setCrestPhiLLRF,(VALUE_ARG),"Set the Crest Phi value in LLRF Units")
-        .def("setInfiniteMasks",  &liberaLLRFController::setInfiniteMasks,(boost::python::arg("name")),"Set infitine hi/lo masks for for trace 'name'")
+        .def("setInfiniteMasks",  &liberaLLRFController::setInfiniteMasks,(boost::python::arg("name")),"Set infitine hi/lo masks for trace 'name'")
+        .def("setInfiniteHiMask",  &liberaLLRFController::setInfiniteHiMask,(boost::python::arg("name")),"Set infitine hi masks for trace 'name'")
         .def("setHighMask",  setHighMask_1,(NAME_ARG,VALUE_ARG),"Set the Hi mask for trace 'name'")
         .def("setHighMask",  setHighMask_2,(NAME_ARG,VALUE_ARG),"Set the Hi mask for trace 'name'")
         .def("setLowMask",  setLowMask_1,(NAME_ARG,VALUE_ARG),"Set the Lo mask for trace 'name'")
@@ -855,6 +866,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("clearMask",            &liberaLLRFController::clearMask,     (NAME_ARG, VALUE_ARG),clearMask_ds)
         .def("setHiMask",            &liberaLLRFController::setHiMask_Py,  (NAME_ARG, VALUE_ARG),setHiMask_ds)
         .def("setLoMask",            &liberaLLRFController::setLoMask_Py,  (NAME_ARG, VALUE_ARG),setLoMask_ds)
+        .def("setHiMaskIsAlwaysInfinite",&liberaLLRFController::setHiMaskIsAlwaysInfinite,  (NAME_ARG, VALUE_ARG),"hi mask == inf, always ")
 
         .def("setMaskParamatersIndices", &liberaLLRFController::setMaskParamatersIndices,
             (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
@@ -892,6 +904,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("isPercentMask", &liberaLLRFController::isPercentMask, isPercentMask_ds)
         .def("isAbsoluteMask", &liberaLLRFController::isAbsoluteMask, isAbsoluteMask_ds)
+        .def("isHiMaskIsAlwaysInfinite", &liberaLLRFController::isHiMaskIsAlwaysInfinite, "")
 
 
         .def("setNumExtraTracesOnOutsideMaskEvent",  &liberaLLRFController::setNumExtraTracesOnOutsideMaskEvent,(VALUE_ARG),setNumExtraTracesOnOutsideMaskEvent_ds)

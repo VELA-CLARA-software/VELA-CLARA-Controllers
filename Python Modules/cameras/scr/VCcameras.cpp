@@ -323,7 +323,7 @@ cameraControllerBase& VCcameras::physical_VELA_Camera_Controller()
 {
     std::string name = "physical_VELA_Camera_Controller";
     std::cout <<"physical_VELA_Camera_Controller" <<std::endl;
-    return getController(physical_CLARA_Camera_Controller_Obj,
+    return getController(physical_VELA_Camera_Controller_Obj,
                          name,
                          withoutVM,
                          withEPICS,

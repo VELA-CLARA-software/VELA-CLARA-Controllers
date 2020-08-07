@@ -422,6 +422,10 @@ void liberallrfInterface::updateLLRFValue(const llrfStructs::LLRF_PV_TYPE pv, co
     using namespace llrfStructs;
     switch(pv)
     {
+        case LLRF_PV_TYPE::LLRF_MAX_AMP_SP:
+            llrf.llrf_max_amp_sp = getDBRdouble(args);
+            std::cout << "NEW LLRF_MAX_AMP_SP  " << llrf.llrf_max_amp_sp << std::endl;
+            break;
         case LLRF_PV_TYPE::KEEP_ALIVE:
             llrf.keep_alive_value = getDBRdouble(args);
             //std::cout << "NEW KEEP ALIVE  = " << llrf.keep_alive_value << std::endl;
@@ -853,8 +857,17 @@ bool liberallrfInterface::getFastRampModeState() const
 {
     return llrf.fast_ramp_mode;
 }
-
 //--------------------------------------------------------------------------------------------------
+void liberallrfInterface::setFastRampHiMaskPowerFactor(double level)
+{
+    llrf.fast_ramp_power_factor = level;
+    message("llrf.fast_ramp_power_factor = ", llrf.fast_ramp_power_factor);
+}
+//--------------------------------------------------------------------------------------------------
+double liberallrfInterface::getFastRampHiMaskPowerFactor() const
+{
+    return llrf.fast_ramp_power_factor;
+}
 //--------------------------------------------------------------------------------------------------
 void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
 {
@@ -961,13 +974,13 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
         lo_mask[i] = lo_min;
     }
 
-    /* FAST RAMP WE SET THE HI MASK FOR POWERS TO BE THE KFP MAX */
+    /* FAST RAMP WE SET THE HI MASK FOR POWERS TO BE prop-to THE KFP MAX */
     if(llrf.fast_ramp_mode)
     {
         if( stringIsSubString( data.name, "POWER"))
         {
-            //message("Setting fast_ramp_hi_mask for ", data.name, " to ", llrf.kly_fwd_power_max);
-            std::fill(hi_mask.begin(), hi_mask.end(), llrf.kly_fwd_power_max);
+            //message("Setting fast_ramp_hi_mask for ", data.name, " to ", llrf.fast_ramp_power_factor  * llrf.kly_fwd_power_max);
+            std::fill(hi_mask.begin(), hi_mask.end(), llrf.fast_ramp_power_factor * llrf.kly_fwd_power_max); // MAGIC NUMBER
         }
     }
     //message(mask_type," 5");
@@ -1015,6 +1028,14 @@ double liberallrfInterface::getTraceRepRate() const
 {
     return llrf.trace_rep_rate;
 }
+//--------------------------------------------------------------------------------------------------
+
+double liberallrfInterface::getLLRFMaxAmpSP() const
+{
+    return llrf.llrf_max_amp_sp;
+}
+
+
 //--------------------------------------------------------------------------------------------------
 /*             __           __   ___ ___ ___  ___  __   __
     |\/|  /\  /__` |__/    /__` |__   |   |  |__  |__) /__`
@@ -1437,6 +1458,16 @@ size_t liberallrfInterface::getNumContinuousOutsideMaskCount(const std::string& 
 //
 // MASKS
 //----------------------------------------------------------------------------------------------------------
+bool liberallrfInterface::isHiMaskIsAlwaysInfinite(const std::string& name)const
+{
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data,n))
+    {
+        return llrf.trace_data.at(n).hi_mask_is_always_inf;
+    }
+    return false;
+}
+//----------------------------------------------------------------------------------------------------------
 bool liberallrfInterface::isPercentMask(const std::string& name)const
 {
     const std::string n = fullLLRFTraceName(name);
@@ -1462,14 +1493,14 @@ bool liberallrfInterface::isCheckingMask(const std::string& name)const
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data,n))
     {
-        return llrf.trace_data.at(n).use_percent_mask;
+        return llrf.trace_data.at(n).check_mask;
     }
     return false;
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::isNotCheckingMask(const llrfStructs::LLRF_PV_TYPE pv)const
 {
-    return isCheckingMask(getLLRFChannelName(pv));
+    return !isCheckingMask(getLLRFChannelName(pv));
 }
 //____________________________________________________________________________________________
 bool liberallrfInterface::isNotCheckingMask(const std::string& name)const
@@ -1514,6 +1545,22 @@ bool liberallrfInterface::setInfiniteMasks(const std::string& name)
     return false;
 }
 //____________________________________________________________________________________________
+bool liberallrfInterface::setInfiniteHiMask(const std::string& name)
+{
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
+    {
+        std::vector<double> p_inf(llrf.trace_data.at(n).trace_size,  std::numeric_limits<double>::infinity());
+        llrf.trace_data.at(n).hi_mask = p_inf;
+        llrf.trace_data.at(n).hi_mask_set = true;
+        return true;
+    }
+    message("liberallrfInterface::setInfiniteHiMask ERROR, trace ", n, " does not exist");
+    return false;
+}
+
+
+//____________________________________________________________________________________________
 bool liberallrfInterface::setHiMask(const std::string&name,const std::vector<double>& value)
 {
     const std::string n = fullLLRFTraceName(name);
@@ -1546,6 +1593,17 @@ bool liberallrfInterface::setLoMask(const std::string&name,const std::vector<dou
     return false;
 }
 //--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::setHiMaskIsAlwaysInfinite(const std::string& name, bool value)
+{
+    const std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
+    {
+        llrf.trace_data.at(n).hi_mask_is_always_inf = value;
+    }
+    message("liberallrfInterface::setHiMaskIsAlwaysInfinite ERROR, trace ", n, " does not exist");
+    return false;
+}
+//--------------------------------------------------------------------------------------------------
 bool liberallrfInterface::setNumContinuousOutsideMaskCount(size_t value)
 {
     bool r = true;
@@ -1566,10 +1624,9 @@ bool liberallrfInterface::setNumContinuousOutsideMaskCount(const std::string&nam
     const std::string n = fullLLRFTraceName(name);
     if(entryExists(llrf.trace_data, n))
     {
-        llrf.trace_data.at(name).num_continuous_outside_mask_count = value;
+        llrf.trace_data.at(n).num_continuous_outside_mask_count = value;
         return true;
     }
-    message("liberallrfInterface::setInfiniteMasks ERROR, trace ", n, " does not exist");
     return false;
 }
 //--------------------------------------------------------------------------------------------------
@@ -1970,7 +2027,7 @@ void liberallrfInterface::getCutOneTraceData(std::vector<std::string>& ret_keys,
             updateTime( copydata_buffer[i].first, temp_d, timestamp);
 
 
-            message("data_buffer_it times_stamp = ", timestamp);
+            //message("data_buffer_it times_stamp = ", timestamp);
 
 
             /* iterate over each traces_to_get_when_dumping_all_traces_data_buffer */
@@ -2002,7 +2059,7 @@ void liberallrfInterface::getCutOneTraceData(std::vector<std::string>& ret_keys,
                     }
                     //message("numerical_trace_data_temp.size() = ", numerical_trace_data_temp.size());
                     //std::copy( data_start, data_end, numerical_trace_data_temp.begin() );
-                    message("Copy numbers fin ");
+                    //message("Copy numbers fin ");
 
                     std::string next_key = trace_name + "_" + counter_str;
                     //message("next_key = ",next_key );
@@ -2015,8 +2072,8 @@ void liberallrfInterface::getCutOneTraceData(std::vector<std::string>& ret_keys,
                     //message("next data = ", temp_d2);
                     ret_data.push_back( numerical_trace_data_temp );
 
-                    message(ret_keys.back());
-                    message(ret_timestamps.back());
+                    //message(ret_keys.back());
+                    //message(ret_timestamps.back());
                 }
 
             }
@@ -4156,6 +4213,7 @@ bool liberallrfInterface::setCavRevPwrLoMask(const std::vector<double>& value)
 {
     return setLoMask(fullLLRFTraceName(UTL::CAVITY_REVERSE_POWER),value);
 }
+
 //____________________________________________________________________________________________
 bool liberallrfInterface::setCavRevPwrMaskPercent(const size_t s1,const size_t s2,const size_t s3,const size_t s4,const double value)
 {
@@ -4308,7 +4366,7 @@ std::string liberallrfInterface::fullLLRFTraceName(const std::string& name_in)co
     }
     else if(name == CRPOW)
     {
-        name = CAVITY_REVERSE_PHASE;
+        name = CAVITY_REVERSE_POWER;
     }
     else if(name == CRPHA)
     {
@@ -4828,6 +4886,10 @@ void liberallrfInterface::keepAlive()
                 llrf.last_keep_alive  = UTL::ZERO_DOUBLE;
             }
         }
+    }
+    else
+    {
+
     }
 }
 //--------------------------------------------------------------------------------------------------

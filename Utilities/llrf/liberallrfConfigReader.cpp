@@ -337,12 +337,15 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
             addToPVStruct(pvs, LLRF_PV_TYPE::PULSE_SHAPE_APPLY,val);
         }
 
+        else if(key == PV_SUFFIX_LIB_MAX_AMP_SP)
+        {
+            message("PV_SUFFIX_LIB_MAX_AMP_SP");
+            addToPVStruct(pvs, LLRF_PV_TYPE::LLRF_MAX_AMP_SP,val);
+        }
         else if(key == PV_SUFFIX_LIB_KEEP_ALIVE)
         {
-            message("PV_SUFFIX_LIB_KEEP_ALIVE");
             addToPVStruct(pvs, LLRF_PV_TYPE::KEEP_ALIVE,val);
         }
-
 
         else if(key == PV_SUFFIX_LIB_PULSE_OFFSET)
         {

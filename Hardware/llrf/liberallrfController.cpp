@@ -319,6 +319,7 @@ bool liberaLLRFController::setNumContinuousOutsideMaskCount(size_t value)
 //--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setNumContinuousOutsideMaskCount(const std::string&name, size_t value)
 {
+    std::cout << "liberaLLRFController::setNumContinuousOutsideMaskCount name val called " << std::endl;
     return localInterface.setNumContinuousOutsideMaskCount(name, value);
 }
 //--------------------------------------------------------------------------------------------------
@@ -354,9 +355,19 @@ bool liberaLLRFController::isPercentMask(const std::string& name)
     return localInterface.isPercentMask(name);
 }
 //--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isHiMaskIsAlwaysInfinite(const std::string& name) const
+{
+    return localInterface.isHiMaskIsAlwaysInfinite(name);
+}
+//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::isAbsoluteMask(const std::string& name)
 {
     return localInterface.isAbsoluteMask(name);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setHiMaskIsAlwaysInfinite(const std::string& name, bool value)
+{
+    return localInterface.setHiMaskIsAlwaysInfinite(name, value);
 }
 //--------------------------------------------------------------------------------------------------
 #ifdef BUILD_DLL
@@ -1017,6 +1028,10 @@ double liberaLLRFController::getTraceRepRate() const
     return localInterface.getTraceRepRate();
 }
 //--------------------------------------------------------------------------------------------------
+double liberaLLRFController::getLLRFMaxAmpSP() const
+{
+    return localInterface.getLLRFMaxAmpSP();
+}
 
 
 
@@ -1152,7 +1167,14 @@ bool liberaLLRFController::getFastRampModeState() const
 {
     return localInterface.getFastRampModeState();
 }
-
+void liberaLLRFController::setFastRampHiMaskPowerFactor(double state)
+{
+    localInterface.setFastRampHiMaskPowerFactor(state);
+}
+double liberaLLRFController::getFastRampHiMaskPowerFactor() const
+{
+    return localInterface.getFastRampHiMaskPowerFactor();
+}
 //______________________________________________________________________________
 //std::vector<std::string> liberaLLRFController::getChannelNames()
 //{
@@ -1185,22 +1207,6 @@ bool liberaLLRFController::setPowerRemoteTraceSCAN10sec(const std::string& name)
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //______________________________________________________________________________
 
 //llrfStructs::rf_trace liberaLLRFController::getTraceData(const std::string& name)
@@ -1217,8 +1223,6 @@ bool liberaLLRFController::setPowerRemoteTraceSCAN10sec(const std::string& name)
 //    return localInterface.getTraceBuffer(name);
 //}
 //______________________________________________________________________________
-
-
 
 std::vector<double> liberaLLRFController::getTimeVector()const
 {
@@ -1256,8 +1260,6 @@ boost::python::list liberaLLRFController::getTraceNames_Py()
     return toPythonList(getTraceNames());
 }
 #endif
-
-
 //--------------------------------------------------------------------------------------------------
 /* ___  __        __   ___                         ___  __
     |  |__)  /\  /  ` |__     \  /  /\  |    |  | |__  /__`
@@ -1890,6 +1892,11 @@ bool liberaLLRFController::setCavFwdPwrMaskAbsolute(const size_t s1,const size_t
 bool liberaLLRFController::setInfiniteMasks(const std::string& name)
 {
     return localInterface.setInfiniteMasks(name);
+}
+//______________________________________________________________________________
+bool liberaLLRFController::setInfiniteHiMask(const std::string& name)
+{
+    return localInterface.setInfiniteHiMask(name);
 }
 //______________________________________________________________________________
 size_t liberaLLRFController::getIndex(const double time)
