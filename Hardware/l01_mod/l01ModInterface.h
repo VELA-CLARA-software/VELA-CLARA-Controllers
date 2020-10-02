@@ -55,9 +55,11 @@ class l01ModInterface : public interface
 
         rfModStructs::l01ModObject l01Mod;
 
+        void updateHoldRFOnState(const event_handler_args& args);
 
-        void l01ModInterface::updateL01_StateRead(const event_handler_args args);
-        void l01ModInterface::updateL01_Fault(const event_handler_args args);
+
+        void updateL01_StateRead(const event_handler_args args);
+        void updateL01_Fault(const event_handler_args args);
 
         void killMonitor(rfModStructs::l01_monitorStruct* ms);
 

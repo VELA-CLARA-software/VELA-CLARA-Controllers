@@ -662,3 +662,278 @@
 	"configDefinitions.h"
 	"structs.h"
 
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1601656692 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1600871857 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.cpp
+	"gunModController.h"
+
+1600871857 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_mod\gunmodcontroller.h
+	<string>
+	<vector>
+	<map>
+	"gunModInterface.h"
+	"controller.h"
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+
+1601651424 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.h
+	"interface.h"
+	"rfModStructs.h"
+	"structs.h"
+	"gunModConfigReader.h"
+	"gunModHexStringMap.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1601650977 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\rf_mod\rfmodstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<vector>
+	<string>
+	<map>
+	<cadef.h>
+
+1600871868 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfModStructs.h"
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1600871857 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_mod\gunmodhexstringmap.h
+	<string>
+	<map>
+
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	"structs.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1600871857 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.cpp
+	"l01ModController.h"
+
+1600871857 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_mod\l01modcontroller.h
+	"controller.h"
+	"l01ModInterface.h"
+
+1601651436 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.h
+	"interface.h"
+	"rfModStructs.h"
+	"structs.h"
+	"l01ModConfigReader.h"
+	<string>
+
+1600871868 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfModStructs.h"
+
+1601644639 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\rf_mod\main.cpp
+
+1601644639 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\rf_mod\src\vcrfmod.cpp
+	"VCrfmod.h"
+	<iostream>
+
+1601644639 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\rf_mod\include\vcrfmod.h
+	<string>
+	"gunModController.h"
+	"l01ModController.h"
+	"rfModStructs.h"
+	"rfModStructs.h"
+	"VCheader.h"
+	"VCbase.h"
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
+1601651708 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_mod\gunmodinterface.cpp
+	"gunModInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<algorithm>
+	<thread>
+
+1601651681 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_mod\l01modinterface.cpp
+	"l01ModInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<algorithm>
+	<thread>
+
+1601644631 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	"configDefinitions.h"
+	<time.h>
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1601655451 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_mod\gunmodconfigreader.cpp
+	"gunModConfigReader.h"
+	"configDefinitions.h"
+	"rfModStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1601650059 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_mod\l01modconfigreader.cpp
+	"l01ModConfigReader.h"
+	"configDefinitions.h"
+	"rfModStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+

@@ -268,7 +268,8 @@ namespace UTL
     const std::string PV_SUFFIX_GUN_MOD_ERR_SVAL  = "PV_SUFFIX_GUN_MOD_ERR_SVAL";
     const std::string PV_SUFFIX_GUN_MOD_WARMUPT   = "PV_SUFFIX_GUN_MOD_WARMUPT";
     const std::string PV_SUFFIX_GUN_MOD_CT_READ   = "PV_SUFFIX_GUN_MOD_CT_READ";
-    const std::string PV_SUFFIX_GUN_MOD_RESET         = "PV_SUFFIX_GUN_MOD_RESET";
+    const std::string PV_SUFFIX_GUN_MOD_RESET     = "PV_SUFFIX_GUN_MOD_RESET";
+    const std::string PV_SUFFIX_HOLD_RF_ON        = "PV_SUFFIX_HOLD_RF_ON";
 /// Magnets
     const std::string VELA_INJ_MAG_CONFIG  = "velaINJMagnets.config";
     const std::string VELA_BA1_MAG_CONFIG  = "velaBA1Magnets.config";

@@ -28,6 +28,7 @@ namespace rfModStructs
     // GUNS MODULATOR (SCANDINOVA)
     // enums for all the pvs we monitor/control
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(GUN_MOD_PV_TYPE, (IONP_PRESSURE_READ)
+                                                         (GUN_HOLD_RF_ON)
                                                          (PULSE_WIDTH_READ)
                                                          (MAGPS1_CURR_READ)
                                                          (MAGPS2_CURR_READ)
@@ -54,6 +55,7 @@ namespace rfModStructs
                                                          (RESET)
                                                          (PULSE_WIDTH_FWHM_READ)
 
+
                                                          // these are states you can request
                                                          (MAIN_STATE_READ) // i.e. off, HV_ON,TRIG etc
 
@@ -73,6 +75,14 @@ namespace rfModStructs
                                                            (GOOD)
                                                            (UNKNOWN)
                                        );
+
+
+    DEFINE_ENUM_WITH_STRING_CONVERSIONS(HOLD_RF_ON_STATE,(MANUAL_RF)
+                                                           (HOLD_RF_ON)
+                                                           (HOLD_RF_ON_CON)
+                                                           (UNKNOWN_HOLD_RF_STATE)
+                                       );
+
 //
 //    /// These are possible modulator main_states
 //    /// These come from CS3A_scandinova.db /home/controls/ioc/ebtf/CS3A/db
@@ -161,7 +171,8 @@ namespace rfModStructs
             ilock3(UTL::UNKNOWN_STRING),
             ilock4(UTL::UNKNOWN_STRING),
             ilock5(UTL::UNKNOWN_STRING),
-            state_set_read(UNKNOWN_SET_STATE)
+            state_set_read(UNKNOWN_SET_STATE),
+            hold_rf_on_state(HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE)
             {}
         std::string name, pvRoot, hex_state_str, main_state_string, state_set_read_string, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
         std::vector<std::vector<std::string>> interlock_history;
@@ -169,6 +180,7 @@ namespace rfModStructs
         GUN_MOD_STATE main_state;
         GUN_MOD_STATE_SET state_set_read;
         GUN_MOD_ERR_STATE error_state;
+        HOLD_RF_ON_STATE hold_rf_on_state;
         long   warmuptime;
         bool   safelyWarmedUP;
         double MagPs1CurrRead,MagPs2CurrRead,MagPs3CurrRead,MagPs4CurrRead,
@@ -192,6 +204,7 @@ namespace rfModStructs
 
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(L01_MOD_PV_TYPE, (SYSTEM_STATE_READ)
                                                           (SYSTEM_STATE_PUT)
+                                                          (LINAC_HOLD_RF_ON)
                                                           (HVPS_VOLTAGE_SET)
                                                           (HVPS_VOLTAGE_SET_READ)
                                                           (HVPS_VOLTAGE_LOW_ALARM_SET)
@@ -305,8 +318,10 @@ namespace rfModStructs
             hvps_voltage_set_read(UTL::DUMMY_DOUBLE),
             hvps_voltage_low_alarm_set_read(UTL::DUMMY_DOUBLE),
             hvps_voltage_hi_alarm_set_read(UTL::DUMMY_DOUBLE),
-            system_state_put(UTL::DUMMY_INT)
+            system_state_put(UTL::DUMMY_INT),
+            hold_rf_on_state(HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE)
             {}
+        HOLD_RF_ON_STATE hold_rf_on_state;
         std::string name, pvRoot;
         L01_MOD_STATE main_state;
         long          warmuptime;

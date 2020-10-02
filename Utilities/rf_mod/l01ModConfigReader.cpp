@@ -194,6 +194,10 @@ void l01ModConfigReader::addToPVStruct(std::vector<rfModStructs::l01_pvStruct>& 
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::ERROR_WORD_1;
         else if(keyVal[0] == UTL::PV_SUFFIX_ERROR_WORD_2 )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::ERROR_WORD_2;
+        else if(keyVal[0] == UTL::PV_SUFFIX_HOLD_RF_ON)
+        {
+            pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::LINAC_HOLD_RF_ON;
+        }
         else if(keyVal[0] == UTL::PV_SUFFIX_ERROR_WORD_3 )
             pvStruct_v.back().pvType = rfModStructs::L01_MOD_PV_TYPE::ERROR_WORD_3;
         else if(keyVal[0] == UTL::PV_SUFFIX_ERROR_WORD_4 )

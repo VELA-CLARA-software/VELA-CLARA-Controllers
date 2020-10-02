@@ -202,6 +202,11 @@ void gunModConfigReader::addToPVStruct(std::vector<rfModStructs::pvStruct>& pvSt
         {
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::RESET;
         }
+        else if(keyVal[0] == UTL::PV_SUFFIX_HOLD_RF_ON)
+        {
+            pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::GUN_HOLD_RF_ON;
+            message("PV_SUFFIX_HOLD_RF_ON FOUND ");
+        }
         else if(keyVal[0] == UTL::PV_SUFFIX_GUN_MOD_ERR_SVAL)
         {
             pvStruct_v.back().pvType = rfModStructs::GUN_MOD_PV_TYPE::ERROR_READ_HEX_STR;

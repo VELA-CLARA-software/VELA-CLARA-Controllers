@@ -92,6 +92,10 @@ void l01ModInterface::initChids()
 
     for(auto && it : l01Mod.pvMonStructs)
     {
+        if( it.second.pvType == rfModStructs::L01_MOD_PV_TYPE::LINAC_HOLD_RF_ON )
+        {
+            addChannel("", it.second);
+        }
         addChannel(l01Mod.pvRoot, it.second);
     }
     // currently there are no command only PVs for the PIL
@@ -212,6 +216,9 @@ void l01ModInterface::staticEntryL01ModMonitor(const event_handler_args args)
 
     switch(ms->monType)
     {
+        case rfModStructs::L01_MOD_PV_TYPE::LINAC_HOLD_RF_ON:
+            //ms->interface->message("L01_MOD_PV_TYPE::LINAC_HOLD_RF_ON = ",  (const char *)args.dbr);
+            ms->interface->updateHoldRFOnState(args);
         case rfModStructs::L01_MOD_PV_TYPE::ERROR_WORD_1:
             ms->interface->message("modErrorWords[0] = ",  (const char *)args.dbr);
             //ms->interface->updateErrorWordList(0, (const char *)args.dbr);
@@ -496,6 +503,25 @@ void l01ModInterface::staticEntryL01ModMonitor(const event_handler_args args)
         default:
             ms->interface->message("!!ERROR!! staticEntryL01ModMonitor passed unknown PV = ", ENUM_TO_STRING(ms->monType));
     }
+}
+//______________________________________________________________________________
+void l01ModInterface::updateHoldRFOnState(const event_handler_args& args)
+{
+    switch( getDBRunsignedShort(args) )
+    {
+        case 0:
+            l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::MANUAL_RF;
+            break;
+        case 1:
+            l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON;
+            break;
+        case 2:
+            l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON_CON;
+            break;
+        default:
+            l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE;
+    }
+    message("Linac hold rf on state = ", ENUM_TO_STRING(l01Mod.hold_rf_on_state));
 }
 //______________________________________________________________________________
 void l01ModInterface::updateL01_StateRead(const event_handler_args args)

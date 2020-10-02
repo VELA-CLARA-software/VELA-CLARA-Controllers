@@ -107,6 +107,8 @@ class gunModInterface : public interface
         bool isVOLT_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
         bool isCURR_PV(const rfModStructs::GUN_MOD_PV_TYPE pv) const;
 
+        void updateHoldRFOnState(const event_handler_args& args);
+
 
         const std::map<std::string,std::string> gun_mod_hex_map;
         bool convertHexStringToMessage();

@@ -100,7 +100,13 @@ void gunModInterface::initChids()
 
     for(auto && it : gunMod.pvMonStructs)
     {
-        addChannel(gunMod.pvRoot, it.second);
+        if( it.second.pvType == rfModStructs::GUN_MOD_PV_TYPE::GUN_HOLD_RF_ON )
+        {
+            addChannel("", it.second);
+        }
+        else{
+            addChannel(gunMod.pvRoot, it.second);
+        }
     }
     // currently there are no command only PVs for the PIL
     for(auto && it : gunMod.pvComStructs)
@@ -187,6 +193,9 @@ void gunModInterface::updateValue(const event_handler_args& args,const rfModStru
 {
     switch(pv)
     {
+        case rfModStructs::GUN_MOD_PV_TYPE::GUN_HOLD_RF_ON:
+            message("GUN_MOD_PV_TYPE::GUN_HOLD_RF_ON = ", (const char *)args.dbr);
+            updateHoldRFOnState(args);
         case rfModStructs::GUN_MOD_PV_TYPE::MAIN_STATE_READ:
             updateMainState(args);
             break;
@@ -319,6 +328,25 @@ size_t gunModInterface::getPVNum(const rfModStructs::GUN_MOD_PV_TYPE pv)
     const std::string pv_string = ENUM_TO_STRING(pv);
     std::size_t const n = pv_string.find_first_of("1234");
     return n;
+}
+//____________________________________________________________________________________________
+void gunModInterface::updateHoldRFOnState(const event_handler_args& args)
+{
+    switch( getDBRunsignedShort(args) )
+    {
+        case 0:
+            gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::MANUAL_RF;
+            break;
+        case 1:
+            gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON;
+            break;
+        case 2:
+            gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON_CON;
+            break;
+        default:
+            gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE;
+    }
+    message("Gun hold rf on state = ", ENUM_TO_STRING(gunMod.hold_rf_on_state));
 }
 //____________________________________________________________________________________________
 void gunModInterface::updateMainState(const event_handler_args& args)
