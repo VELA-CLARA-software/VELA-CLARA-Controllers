@@ -273,25 +273,6 @@ void liberallrfConfigReader::addToPVCommandMapV1(const  std::vector<std::string>
 //______________________________________________________________________________
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pvs, const std::vector<std::string>& keyVal)
 {// here i've hardcoded in the monitor or command PVs
 
@@ -346,7 +327,6 @@ void liberallrfConfigReader::addToPVMapV1(std::vector<llrfStructs::pvStruct>& pv
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::KEEP_ALIVE,val);
         }
-
         else if(key == PV_SUFFIX_LIB_PULSE_OFFSET)
         {
             addToPVStruct(pvs, LLRF_PV_TYPE::LIB_PULSE_OFFSET,val);
