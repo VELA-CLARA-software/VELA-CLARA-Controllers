@@ -96,7 +96,10 @@ void l01ModInterface::initChids()
         {
             addChannel("", it.second);
         }
-        addChannel(l01Mod.pvRoot, it.second);
+        else
+        {
+            addChannel(l01Mod.pvRoot, it.second);
+        }
     }
     // currently there are no command only PVs for the PIL
     for(auto && it : l01Mod.pvComStructs)
@@ -519,7 +522,7 @@ void l01ModInterface::updateHoldRFOnState(const event_handler_args& args)
             l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON_CON;
             break;
         default:
-            l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE;
+            l01Mod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_ON_STATE;
     }
     message("Linac hold rf on state = ", ENUM_TO_STRING(l01Mod.hold_rf_on_state));
 }

@@ -344,7 +344,7 @@ void gunModInterface::updateHoldRFOnState(const event_handler_args& args)
             gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON_CON;
             break;
         default:
-            gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE;
+            gunMod.hold_rf_on_state = rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_ON_STATE;
     }
     message("Gun hold rf on state = ", ENUM_TO_STRING(gunMod.hold_rf_on_state));
 }

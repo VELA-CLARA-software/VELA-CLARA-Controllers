@@ -180,6 +180,14 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .value("OFF",                rfModStructs::GUN_MOD_ERR_STATE::UNKNOWN)
         ;
 
+    enum_<rfModStructs::HOLD_RF_ON_STATE>("HOLD_RF_ON_STATE",
+                "HOLD_RF_ON_STATE: a named integer giving the error state of the GUN Modulator")
+        .value("MANUAL_RF",  rfModStructs::HOLD_RF_ON_STATE::MANUAL_RF)
+        .value("HOLD_RF_ON", rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON)
+        .value("HOLD_RF_ON_CON", rfModStructs::HOLD_RF_ON_STATE::HOLD_RF_ON_CON)
+        .value("UNKNOWN_HOLD_RF_ON_STATE", rfModStructs::HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_ON_STATE)
+        ;
+
     boost::python::class_<rfModStructs::gunModObject,boost::noncopyable>
         ("gunModObject","gunModObject Doc String", boost::python::no_init)
         .def_readonly("name",          &rfModStructs::gunModObject::name,"Modulator Object Name")
@@ -214,6 +222,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("hex_state_str", &rfModStructs::gunModObject::hex_state_str,"")
         .def_readonly("hex_state_message",&rfModStructs::gunModObject::hex_state_message,"")
         .def_readonly("error_state",      &rfModStructs::gunModObject::error_state,"")
+        .def_readonly("hold_rf_on_state",&rfModStructs::gunModObject::hold_rf_on_state,"")
         ;
 
     boost::python::class_<rfModStructs::l01ModObject,boost::noncopyable>
@@ -251,6 +260,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def_readonly("l01_fault",&rfModStructs::l01ModObject::l01_fault,"")
         .def_readonly("modErrorWords",&rfModStructs::l01ModObject::modErrorWordsL,"")
         .def_readonly("modErrorDescs",&rfModStructs::l01ModObject::modErrorDescsL,"")
+        .def_readonly("hold_rf_on_state",&rfModStructs::l01ModObject::hold_rf_on_state,"")
         ;
 
 }

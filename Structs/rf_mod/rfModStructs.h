@@ -80,7 +80,7 @@ namespace rfModStructs
     DEFINE_ENUM_WITH_STRING_CONVERSIONS(HOLD_RF_ON_STATE,(MANUAL_RF)
                                                            (HOLD_RF_ON)
                                                            (HOLD_RF_ON_CON)
-                                                           (UNKNOWN_HOLD_RF_STATE)
+                                                           (UNKNOWN_HOLD_RF_ON_STATE)
                                        );
 
 //
@@ -172,7 +172,7 @@ namespace rfModStructs
             ilock4(UTL::UNKNOWN_STRING),
             ilock5(UTL::UNKNOWN_STRING),
             state_set_read(UNKNOWN_SET_STATE),
-            hold_rf_on_state(HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE)
+            hold_rf_on_state(HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_ON_STATE)
             {}
         std::string name, pvRoot, hex_state_str, main_state_string, state_set_read_string, hex_state_message, ilock1,ilock2,ilock3,ilock4,ilock5;
         std::vector<std::vector<std::string>> interlock_history;
@@ -319,7 +319,7 @@ namespace rfModStructs
             hvps_voltage_low_alarm_set_read(UTL::DUMMY_DOUBLE),
             hvps_voltage_hi_alarm_set_read(UTL::DUMMY_DOUBLE),
             system_state_put(UTL::DUMMY_INT),
-            hold_rf_on_state(HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_STATE)
+            hold_rf_on_state(HOLD_RF_ON_STATE::UNKNOWN_HOLD_RF_ON_STATE)
             {}
         HOLD_RF_ON_STATE hold_rf_on_state;
         std::string name, pvRoot;
