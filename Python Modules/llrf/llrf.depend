@@ -845,3 +845,260 @@
 	<bitset>
 	<boost/circular_buffer.hpp>
 
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	"structs.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1601644638 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\llrf\main.cpp
+	"main.h"
+
+1601644638 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\llrf\main.h
+	<windows.h>
+
+1601644638 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\llrf\src\vcllrf.cpp
+	"VCllrf.h"
+	<iostream>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1601656692 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1601978208 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\llrf\include\vcllrf.h
+	<string>
+	"liberaLLRFController.h"
+	"llrfStructs.h"
+	"VCheader.h"
+	"VCbase.h"
+	"VCllrf_docstrings.h"
+
+1601975287 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\llrf\llrfstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	"running_stat.h"
+	<string>
+	<map>
+	<vector>
+	<deque>
+	<chrono>
+	<thread>
+	<tuple>
+	<utility>
+	<cadef.h>
+	<boost/python.hpp>
+	<boost/circular_buffer.hpp>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\running_stat.h
+	<iostream>
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
+1601644638 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\llrf\include\vcllrf_docstrings.h
+
+1601644631 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	"configDefinitions.h"
+	<time.h>
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1601978056 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\llrf\liberallrfcontroller.cpp
+	"liberaLLRFController.h"
+	<fstream>
+	<iostream>
+
+1601978252 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\llrf\liberallrfcontroller.h
+	<string>
+	<vector>
+	<map>
+	"liberallrfInterface.h"
+	"controller.h"
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+
+1601978005 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\llrf\liberallrfinterface.h
+	"interface.h"
+	"llrfStructs.h"
+	"structs.h"
+	"liberallrfConfigReader.h"
+	"running_stat.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+	<vector>
+	<thread>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"llrfStructs.h"
+
+1601979209 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\llrf\liberallrfinterface.cpp
+	"liberallrfInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<algorithm>
+	<numeric>
+	<thread>
+	<math.h>
+	<utility>
+	<mutex>
+	<chrono>
+	<stdlib.h>
+	<bitset>
+	<boost/circular_buffer.hpp>
+
+1601645306 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\llrf\liberallrfconfigreader.cpp
+	"liberallrfConfigReader.h"
+	"llrfStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\structs\llrf\llrfstructs.cpp
+	"llrfStructs.h"
+	"liberallrfInterface.h"
+

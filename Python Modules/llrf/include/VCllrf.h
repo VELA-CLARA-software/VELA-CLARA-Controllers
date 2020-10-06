@@ -175,6 +175,25 @@ bool(liberaLLRFController::*setUnwrapPhaseTolerance_1)(cstr& name, cdou value) =
 bool(liberaLLRFController::*setUnwrapPhaseTolerance_2)(cdou value) = &liberaLLRFController::setUnwrapPhaseTolerance;
 
 
+bool(liberaLLRFController::*setMaskParamatersIndices_1)(const std::string& name, bool isPercent,
+                                      double mask_value, double mask_floor, double mask_abs_min,
+                                      size_t start, size_t end, size_t window_start, size_t window_end) = &liberaLLRFController::setMaskParamatersIndices;
+bool(liberaLLRFController::*setMaskParamatersIndices_2)(const std::string& name, bool isPercent,
+                                       double mask_value_lo,double mask_value_hi, double mask_floor,
+                                       double mask_abs_min, size_t start, size_t end,
+                                       size_t window_start, size_t window_end) = &liberaLLRFController::setMaskParamatersIndices;
+
+
+bool(liberaLLRFController::*setMaskParamatersTimes_1)(const std::string& name, bool isPercent,
+                                    double mask_value, double mask_floor, double mask_abs_min,
+                                    double start, double end,
+                                    double window_start, double window_end) = &liberaLLRFController::setMaskParamatersTimes;
+bool(liberaLLRFController::*setMaskParamatersTimes_2)(const std::string& name, bool isPercent, double mask_value_lo,
+                                    double mask_value_hi, double mask_floor, double mask_abs_min,
+                                    double start, double end,
+                                    double window_start, double window_end) = &liberaLLRFController::setMaskParamatersTimes;
+
+
 //______________________________________________________________________________
 #include "VCllrf_docstrings.h"
 using namespace boost::python;
@@ -863,20 +882,32 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
         .def("setMaskFloor",         &liberaLLRFController::setMaskFloor,         (NAME_ARG, VALUE_ARG),setMaskFloor_ds)
         .def("setCheckMask",         &liberaLLRFController::setCheckMask,         (NAME_ARG, VALUE_ARG), setCheckMask_ds)
         .def("setMaskValue",         &liberaLLRFController::setMaskValue,         (VALUE_ARG),setMaskValue_ds)
+        .def("setMaskValueLoHi",     &liberaLLRFController::setMaskValueLoHi,     (VALUE_ARG),"")
+        .def("setMaskValue",         &liberaLLRFController::setMaskValue,         (VALUE_ARG),"")
         .def("clearMask",            &liberaLLRFController::clearMask,     (NAME_ARG, VALUE_ARG),clearMask_ds)
         .def("setHiMask",            &liberaLLRFController::setHiMask_Py,  (NAME_ARG, VALUE_ARG),setHiMask_ds)
         .def("setLoMask",            &liberaLLRFController::setLoMask_Py,  (NAME_ARG, VALUE_ARG),setLoMask_ds)
         .def("setHiMaskIsAlwaysInfinite",&liberaLLRFController::setHiMaskIsAlwaysInfinite,  (NAME_ARG, VALUE_ARG),"hi mask == inf, always ")
 
-        .def("setMaskParamatersIndices", &liberaLLRFController::setMaskParamatersIndices,
+        .def("setMaskParamatersIndices", setMaskParamatersIndices_1,
             (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
              boost::python::arg("start"), boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")
             ),setMaskParamatersIndices_ds)
-        .def("setMaskParamatersTimes", &liberaLLRFController::setMaskParamatersTimes,
-            (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
+        .def("setMaskParamatersIndices", setMaskParamatersIndices_2,
+            (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value_lo"),boost::python::arg("mask_value_hi"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
              boost::python::arg("start"),
              boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")
-            ),setMaskParamatersTimes_ds)
+            ),setMaskParamatersIndices_ds)
+
+        .def("setMaskParamatersTimes", setMaskParamatersIndices_2,
+            (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
+             boost::python::arg("start"), boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")
+            ),setMaskParamatersIndices_ds)
+        .def("setMaskParamatersTimes", setMaskParamatersIndices_2,
+            (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value_lo"),boost::python::arg("mask_value_hi"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
+             boost::python::arg("start"),
+             boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")
+            ),setMaskParamatersIndices_ds)
 
         .def("setNumContinuousOutsideMaskCount",  setNumContinuousOutsideMaskCount_1,  (NAME_ARG, VALUE_ARG),setNumContinuousOutsideMaskCount_1_ds)
         .def("setNumContinuousOutsideMaskCount",  setNumContinuousOutsideMaskCount_2,  (VALUE_ARG),          setNumContinuousOutsideMaskCount_2_ds)

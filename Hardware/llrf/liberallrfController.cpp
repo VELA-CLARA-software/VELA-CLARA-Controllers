@@ -225,6 +225,11 @@ bool liberaLLRFController::setMaskValue(const std::string& trace, double value)
     return localInterface.setMaskValue(trace,value);
 }
 //--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskValueLoHi(const std::string& name,const double value_lo,const double value_hi)
+{
+    return localInterface.setMaskValueLoHi(name, value_lo, value_hi);
+}
+//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setMaskStartIndex(const std::string& trace, size_t value)
 {
     return localInterface.setMaskStartIndex(trace,value);
@@ -303,12 +308,31 @@ bool liberaLLRFController::setMaskParamatersIndices(const std::string& name, boo
                                                    start, end, window_start, window_end);
 }
 //--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskParamatersIndices(const std::string& name, bool isPercent,
+                               double mask_value_lo,double mask_value_hi, double mask_floor,
+                               double mask_abs_min, size_t start, size_t end,
+                               size_t window_start, size_t window_end)
+{
+    return localInterface.setMaskParamatersIndices(name, isPercent, mask_value_lo, mask_value_hi, mask_floor, mask_abs_min,
+                                                   start, end, window_start, window_end);
+}
+//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::setMaskParamatersTimes(const std::string& name, bool isPercent,
                             double mask_value, double mask_floor, double mask_abs_min,
                             double start, double end,
                             double window_start, double window_end)
 {
     return localInterface.setMaskParamatersTimes(name, isPercent, mask_value, mask_floor, mask_abs_min,
+                                                 start, end, window_start, window_end);
+}
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::setMaskParamatersTimes(const std::string& name, bool isPercent,
+                                                   double mask_value_lo,double mask_value_hi, double mask_floor,
+                                                   double mask_abs_min,
+                                                    double start, double end,
+                                                    double window_start, double window_end)
+{
+    return localInterface.setMaskParamatersTimes(name, isPercent, mask_value_lo,  mask_value_hi, mask_floor, mask_abs_min,
                                                  start, end, window_start, window_end);
 }
 //--------------------------------------------------------------------------------------------------

@@ -180,6 +180,7 @@ class liberallrfInterface : public interface
         bool setUsePercentMask(const std::string& trace);
         bool setUseAbsoluteMask(const std::string& trace);
         bool setMaskValue(const std::string& trace,const double value);
+        bool setMaskValueLoHi(const std::string& name,const double value_lo,const double value_hi);
         bool setMaskStartIndex(const std::string& trace, size_t value);
         bool setMaskEndIndex(const std::string& trace, size_t value);
         bool setMaskAbsMinValue(const std::string& name, double value);
@@ -200,10 +201,18 @@ class liberallrfInterface : public interface
         bool setMaskParamatersIndices(const std::string& name, bool isPercent,
                                       double mask_value, double mask_floor, double mask_abs_min,
                                       size_t start, size_t end, size_t window_start, size_t window_end);
+        bool setMaskParamatersIndices(const std::string& name, bool isPercent,
+                                       double mask_value_lo,double mask_value_hi, double mask_floor,
+                                       double mask_abs_min, size_t start, size_t end,
+                                       size_t window_start, size_t window_end);
+
         bool setMaskParamatersTimes(const std::string& name, bool isPercent,
                                     double mask_value,   double mask_floor, double mask_abs_min,
                                     double start,        double end,
                                     double window_start, double window_end);
+        bool setMaskParamatersTimes(const std::string& name, bool isPercent, double mask_value_lo,
+                                    double mask_value_hi, double mask_floor, double mask_abs_min,
+                                    double start, double end, double window_start, double window_end);
         void setGlobalCheckMask(bool value);
         void setGlobalShouldCheckMask();
         void setGlobalShouldNotCheckMask();

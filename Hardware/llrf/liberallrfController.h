@@ -169,6 +169,7 @@ class liberaLLRFController : public controller
         bool setUsePercentMask(const std::string& name);
         bool setUseAbsoluteMask(const std::string& name);
         bool setMaskValue(const std::string& name, double value);
+        bool setMaskValueLoHi(const std::string& name,const double value_lo,const double value_hi);
         bool setMaskAbsMinValue(const std::string& name, double value);
         bool setMaskStartIndex(const std::string& name, size_t value);
         bool setMaskEndIndex(const std::string& name, size_t value);
@@ -183,8 +184,16 @@ class liberaLLRFController : public controller
         bool setMaskParamatersIndices(const std::string& name, bool isPercent,
                                       double mask_value, double mask_floor, double mask_abs_min,
                                       size_t start, size_t end, size_t window_start, size_t window_end);
+        bool setMaskParamatersIndices(const std::string& name, bool isPercent,
+                                       double mask_value_lo,double mask_value_hi, double mask_floor,
+                                       double mask_abs_min, size_t start, size_t end,
+                                       size_t window_start, size_t window_end);
         bool setMaskParamatersTimes(const std::string& name, bool isPercent,
                                     double mask_value, double mask_floor, double mask_abs_min,
+                                    double start, double end,
+                                    double window_start, double window_end);
+        bool setMaskParamatersTimes(const std::string& name, bool isPercent, double mask_value_lo,
+                                    double mask_value_hi, double mask_floor, double mask_abs_min,
                                     double start, double end,
                                     double window_start, double window_end);
         bool setHiMask(const std::string&name,const std::vector<double>& value);

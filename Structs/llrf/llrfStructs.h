@@ -381,6 +381,8 @@ namespace llrfStructs
             hi_mask_set(false),
             lo_mask_set(false),
             mask_value(UTL::ZERO_DOUBLE),
+            mask_value_hi(UTL::ZERO_DOUBLE),
+            mask_value_lo(UTL::ZERO_DOUBLE),
             mask_abs_min(UTL::ZERO_DOUBLE),
             mask_floor(UTL::ZERO_DOUBLE),
             mask_start(UTL::ZERO_SIZET),
@@ -415,6 +417,7 @@ namespace llrfStructs
         size_t num_continuous_outside_mask_count,outside_mask_index;
         bool   check_mask, use_percent_mask, use_abs_mask, hi_mask_is_always_inf;
         double mask_value, mask_abs_min;
+        double mask_value_hi, mask_value_lo;
         size_t mask_end_by_power_index;
         double phase_tolerance;
 

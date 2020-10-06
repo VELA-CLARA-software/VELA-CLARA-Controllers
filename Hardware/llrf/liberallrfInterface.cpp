@@ -905,7 +905,8 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
     // mask_value is what to add or subtrace from the
     // rolling_average to set the hi/lo mask
     //double mask_value = UTL::ZERO_DOUBLE;
-    double mask_value = data.mask_value;
+    double mask_value_hi = data.mask_value_hi;
+    double mask_value_lo = data.mask_value_lo;
 
     // MASK part 1
     for(auto i = UTL::ZERO_SIZET; i <= data.mask_start; ++i)
@@ -923,10 +924,12 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
         if(data.use_percent_mask)
         {
             /* data.mask_value is in units of percent, so mulitply by 0.01 */
-            mask_value = fabs(ra[i] * data.mask_value * UTL::ZERO_POINT_ZERO_ONE);
+            //mask_value = fabs(ra[i] * data.mask_value * UTL::ZERO_POINT_ZERO_ONE);
+            mask_value_lo = fabs(ra[i] * data.mask_value * UTL::ZERO_POINT_ZERO_ONE);
+            mask_value_hi = mask_value_lo;
         }
-        hi_mask[i] = ra[i] + mask_value;
-        lo_mask[i] = ra[i] - mask_value;
+        hi_mask[i] = ra[i] + mask_value_hi;
+        lo_mask[i] = ra[i] - mask_value_lo;
 
         if( lo_mask[i] < data.mask_abs_min )
         {
@@ -975,6 +978,7 @@ void liberallrfInterface::setNewMask(llrfStructs::rf_trace_data& data)
     }
 
     /* FAST RAMP WE SET THE HI MASK FOR POWERS TO BE prop-to THE KFP MAX */
+    // this is NOT used anymore, we do log-ramping in KF power
     if(llrf.fast_ramp_mode)
     {
         if( stringIsSubString( data.name, "POWER"))
@@ -1034,8 +1038,6 @@ double liberallrfInterface::getLLRFMaxAmpSP() const
 {
     return llrf.llrf_max_amp_sp;
 }
-
-
 //--------------------------------------------------------------------------------------------------
 /*             __           __   ___ ___ ___  ___  __   __
     |\/|  /\  /__` |__/    /__` |__   |   |  |__  |__) /__`
@@ -1155,11 +1157,39 @@ bool liberallrfInterface::setMaskValue(const std::string& name,const double valu
     if(entryExists(llrf.trace_data, n))
     {
         llrf.trace_data.at(n).mask_value  = value;
+        llrf.trace_data.at(n).mask_value_hi  = value;
+        llrf.trace_data.at(n).mask_value_lo  = value;
         return true;
     }
     message("liberallrfInterface::setMaskValue ERROR, trace ", n, " does not exist");
     return false;
 }
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::setMaskValueLoHi(const std::string& name,const double value_lo,const double value_hi)
+{
+    if(value_lo < UTL::ZERO_DOUBLE)
+    {
+        message("liberallrfInterface::setMaskValue ERROR, mask_value can not be < 0");
+        return false;
+    }
+    if(value_hi < UTL::ZERO_DOUBLE)
+    {
+        message("liberallrfInterface::setMaskValue ERROR, mask_value can not be < 0");
+        return false;
+    }
+    //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
+    std::string n = fullLLRFTraceName(name);
+    if(entryExists(llrf.trace_data, n))
+    {
+        llrf.trace_data.at(n).mask_value_hi  = value_hi;
+        llrf.trace_data.at(n).mask_value_lo  = value_lo;
+        return true;
+    }
+    message("liberallrfInterface::setMaskValue ERROR, trace ", n, " does not exist");
+    return false;
+}
+
+
 //--------------------------------------------------------------------------------------------------
 bool liberallrfInterface::setMaskStartIndex(const std::string& name, size_t value)
 {
@@ -1284,6 +1314,67 @@ bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool i
                                                    )
 {
     return setMaskParamatersIndices(name, isPercent, mask_value, mask_floor, mask_abs_min,
+                                    getIndex(start), getIndex(end),
+                                    getIndex(window_start),getIndex(window_end));
+}
+//--------------------------------------------------------------------------------------------------
+
+bool liberallrfInterface::setMaskParamatersIndices(const std::string& name, bool isPercent,
+                                                   double mask_value_lo,double mask_value_hi, double mask_floor,
+                                                   double mask_abs_min,
+                                                   size_t start, size_t end,
+                                                   size_t window_start, size_t window_end
+                                                   )
+{
+    // sanity check
+    if(UTL::ZERO_SIZET <= start && end <= llrf.all_traces.num_elements_per_trace_used)
+    {
+        if(start <= end && window_start <= window_end )
+        {
+            bool r = false;
+            if(isPercent)
+            {
+                r = setUsePercentMask(name);
+            }
+            else
+            {
+                r = setUseAbsoluteMask(name);
+            }
+            if(r)
+            {
+                if( setMaskValueLoHi(name, mask_value_lo,mask_value_hi) )
+                {
+                    if(setMaskStartIndex(name , start))
+                    {
+                        if( setMaskEndIndex(name, end))
+                        {
+                            if(setMaskWindowIndices(name, window_start, window_end))
+                            {
+                                if( setMaskAbsMinValue(name, mask_abs_min))
+                                {
+                                    if( setMaskFloor(name, mask_floor))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+//--------------------------------------------------------------------------------------------------
+bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool isPercent,
+                                                 double mask_value_lo, double mask_value_hi, double mask_floor, double mask_abs_min,
+                                                 double start, double end,
+                                                 double window_start, double window_end
+                                                   )
+{
+    return setMaskParamatersIndices(name, isPercent, mask_value_lo, mask_value_hi, mask_floor, mask_abs_min,
                                     getIndex(start), getIndex(end),
                                     getIndex(window_start),getIndex(window_end));
 }

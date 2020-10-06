@@ -34,7 +34,7 @@
 				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_RF_Modulator_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
-				<Option compiler="ms_visual_c_2012" />
+				<Option compiler="microsoft_visual_c_2019" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -109,11 +109,7 @@
 		<Unit filename="main.h" />
 		<Unit filename="src/VCrfmod.cpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
-			<fortran_project />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
