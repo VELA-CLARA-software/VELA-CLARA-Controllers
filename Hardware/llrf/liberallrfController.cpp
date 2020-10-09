@@ -1005,6 +1005,12 @@ bool liberaLLRFController::setInterlockNonActive()
     return localInterface.setInterlockNonActive();
 }
 
+//--------------------------------------------------------------------------------------------------
+bool liberaLLRFController::isAmpFFconnected()
+{
+    return localInterface.isAmpFFconnected();
+}
+//--------------------------------------------------------------------------------------------------
 bool liberaLLRFController::lockAmpFF()
 {
     return localInterface.lockAmpFF();

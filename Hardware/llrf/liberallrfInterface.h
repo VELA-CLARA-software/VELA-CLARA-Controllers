@@ -334,6 +334,8 @@ class liberallrfInterface : public interface
         bool isInterlockActive()const;
         bool isInterlockNotActive()const;
 
+
+        bool isAmpFFconnected();
         bool lockAmpFF();
         bool lockPhaseFF();
         bool unlockAmpFF();
@@ -357,9 +359,6 @@ class liberallrfInterface : public interface
 
         bool setUnwrapPhaseTolerance(const double value);
         bool setUnwrapPhaseTolerance(const std::string& name,const double value);
-
-
-
 
 
         bool canKeepAlive()const;
@@ -511,8 +510,6 @@ class liberallrfInterface : public interface
         void setAmpCalibration(double value);
         void setCrestPhiLLRF(double value); // in LLRF units
 
-
-
 /*   __   __
     /__` /  `  /\  |\ |
     .__/ \__, /~~\ | \|
@@ -541,9 +538,7 @@ class liberallrfInterface : public interface
         size_t getMaskInfiniteEndByPowerIndex(const std::string& name);
         double getMaskInfiniteEndByPowerTime(const std::string& name);
 
-
-
-        /* These functions calculte the rep rate of data as received by this interface. */
+        /* These functions calculate the rep rate of data as received by this interface. */
         void updateDAQFreqEstimate();
         void setNumTracesToEstimateRepRate(size_t value);
         size_t getNumTracesToEstimateRepRate() const;
@@ -571,8 +566,6 @@ class liberallrfInterface : public interface
 
         std::string fullLLRFTraceName(const std::string& name)const;
         std::string shortLLRFTraceName(const std::string& name_in)const;
-
-
 
 
         bool areLLRFTraceInterlocksGood() const;

@@ -1307,11 +1307,9 @@ bool liberallrfInterface::setMaskParamatersIndices(const std::string& name, bool
     return false;
 }
 //--------------------------------------------------------------------------------------------------
-bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool isPercent,
-                                                 double mask_value, double mask_floor, double mask_abs_min,
-                                                 double start, double end,
-                                                 double window_start, double window_end
-                                                   )
+bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool isPercent, double mask_value,
+                                                 double mask_floor, double mask_abs_min, double start,
+                                                 double end, double window_start, double window_end)
 {
     return setMaskParamatersIndices(name, isPercent, mask_value, mask_floor, mask_abs_min,
                                     getIndex(start), getIndex(end),
@@ -1319,12 +1317,9 @@ bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool i
 }
 //--------------------------------------------------------------------------------------------------
 
-bool liberallrfInterface::setMaskParamatersIndices(const std::string& name, bool isPercent,
-                                                   double mask_value_lo,double mask_value_hi, double mask_floor,
-                                                   double mask_abs_min,
-                                                   size_t start, size_t end,
-                                                   size_t window_start, size_t window_end
-                                                   )
+bool liberallrfInterface::setMaskParamatersIndices(const std::string& name, bool isPercent, double mask_value_lo,
+                                                   double mask_value_hi, double mask_floor, double mask_abs_min,
+                                                   size_t start, size_t end, size_t window_start, size_t window_end)
 {
     // sanity check
     if(UTL::ZERO_SIZET <= start && end <= llrf.all_traces.num_elements_per_trace_used)
@@ -1366,13 +1361,10 @@ bool liberallrfInterface::setMaskParamatersIndices(const std::string& name, bool
     }
     return false;
 }
-
 //--------------------------------------------------------------------------------------------------
-bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool isPercent,
-                                                 double mask_value_lo, double mask_value_hi, double mask_floor, double mask_abs_min,
-                                                 double start, double end,
-                                                 double window_start, double window_end
-                                                   )
+bool liberallrfInterface::setMaskParamatersTimes(const std::string& name, bool isPercent, double mask_value_lo,
+                                                 double mask_value_hi, double mask_floor, double mask_abs_min,
+                                                 double start, double end,double window_start, double window_end)
 {
     return setMaskParamatersIndices(name, isPercent, mask_value_lo, mask_value_hi, mask_floor, mask_abs_min,
                                     getIndex(start), getIndex(end),
@@ -5396,6 +5388,25 @@ bool liberallrfInterface::areLLRFTraceInterlocksBad() const
     if( getCh8Interlock() ) { return true;  }
     return false;
 }
+//______________________________________________________________________________
+bool liberallrfInterface::isAmpFFconnected()
+{
+    channel_state chidState  = ca_state(llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::LIB_FF_AMP_LOCK_STATE).CHID);
+    switch(chidState)
+    {
+        case cs_never_conn:
+            return false;
+        case cs_prev_conn:
+            return false;
+        case cs_conn:
+            return true;
+        case cs_closed:
+            return false;
+    }
+    return false;
+}
+
+
 
 
 

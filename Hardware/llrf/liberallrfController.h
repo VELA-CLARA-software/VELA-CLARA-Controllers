@@ -477,6 +477,7 @@ class liberaLLRFController : public controller
         bool isFFLocked()const;
         bool isFFNotLocked()const;
 
+        bool isAmpFFconnected();
         bool lockAmpFF();
         bool lockPhaseFF();
 
