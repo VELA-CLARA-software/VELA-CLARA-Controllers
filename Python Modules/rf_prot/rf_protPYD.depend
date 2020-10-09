@@ -736,3 +736,271 @@
 	<vector>
 	<map>
 
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1602168099 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_prot\gunprotcontroller.cpp
+	"gunProtController.h"
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_prot\gunprotcontroller.h
+	<string>
+	<vector>
+	<map>
+	"gunProtInterface.h"
+	"controller.h"
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_prot\gunprotinterface.h
+	"interface.h"
+	"rfProtStructs.h"
+	"structs.h"
+	"gunProtConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\rf_prot\rfprotstructs.h
+	"structs.h"
+	<vector>
+	<string>
+	<map>
+	<cadef.h>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_prot\gunprotconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfProtStructs.h"
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\gun_prot\gunprotinterface.cpp
+	"gunProtInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<algorithm>
+	<thread>
+	<stdlib.h>
+
+1601644640 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\rf_prot\src\vcrfprot.cpp
+	"VCrfprot.h"
+	<iostream>
+
+1601644640 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\rf_prot\include\vcrfprot.h
+	<string>
+	<map>
+	<utility>
+	"gunProtController.h"
+	"L01ProtController.h"
+	"rfProtStructs.h"
+	"VCbase.h"
+	"VCHeader.h"
+	"configdEfinitions.h"
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_prot\l01protcontroller.h
+	<string>
+	<vector>
+	<map>
+	"L01ProtInterface.h"
+	"controller.h"
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_prot\l01protinterface.h
+	"interface.h"
+	"rfProtStructs.h"
+	"structs.h"
+	"L01ProtConfigReader.h"
+	<vector>
+	<string>
+	<atomic>
+	<map>
+
+1601644645 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_prot\l01protconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"rfProtStructs.h"
+
+1601998109 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
+1602082772 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	"structs.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1601644631 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_prot\l01protcontroller.cpp
+	"L01ProtController.h"
+
+1601644631 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\l01_prot\l01protinterface.cpp
+	"L01ProtInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<algorithm>
+	<thread>
+	<stdlib.h>
+
+1602066296 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	"configDefinitions.h"
+	<time.h>
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_prot\gunprotconfigreader.cpp
+	"gunProtConfigReader.h"
+	"configDefinitions.h"
+	"rfProtStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
+1601644645 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\rf_prot\l01protconfigreader.cpp
+	"L01ProtConfigReader.h"
+	"configDefinitions.h"
+	"rfProtStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+

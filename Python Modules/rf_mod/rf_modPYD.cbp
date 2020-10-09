@@ -34,7 +34,7 @@
 				<Option output="\\apclara1\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_RF_Modulator_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
-				<Option compiler="microsoft_visual_c_2019" />
+				<Option compiler="ms_visual_c_2012" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -61,6 +61,7 @@
 					<Add directory="../../Hardware/shutter" />
 					<Add directory="../../Hardware/pilaser" />
 					<Add directory="../../Hardware/l01_mod" />
+					<Add directory="../../Hardware/llrf" />
 					<Add directory="../../Structs/rf_mod" />
 					<Add directory="../../Utilities" />
 				</Compiler>
@@ -69,8 +70,16 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
+					<Add after='cmd /c copy /y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
+				<MakeCommands>
+					<Build command="" />
+					<CompileFile command="" />
+					<Clean command="" />
+					<DistClean command="" />
+					<AskRebuildNeeded command="" />
+					<SilentBuild command=" &gt; $(CMD_NULL)" />
+				</MakeCommands>
 			</Target>
 		</Build>
 		<Unit filename="../../Hardware/VCbase.cpp" />

@@ -500,6 +500,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
 
         .def("lockAmpFF", &liberaLLRFController::lockAmpFF,"Lock the amp FF check box.")
+        .def("isAmpFFconnected", &liberaLLRFController::isAmpFFconnected,"check if the Lock Amp FF CHID is connected.")
         .def("lockPhaseFF", &liberaLLRFController::lockPhaseFF,"Lock the phase FF check box.")
 
         .def("getPhiCalibration", &liberaLLRFController::getPhiCalibration,"Return Linear Conversion of Phase from LLRF units to degrees")
@@ -899,11 +900,11 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
              boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")
             ),setMaskParamatersIndices_ds)
 
-        .def("setMaskParamatersTimes", setMaskParamatersIndices_2,
+        .def("setMaskParamatersTimes", setMaskParamatersTimes_1,
             (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
              boost::python::arg("start"), boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")
             ),setMaskParamatersIndices_ds)
-        .def("setMaskParamatersTimes", setMaskParamatersIndices_2,
+        .def("setMaskParamatersTimes", setMaskParamatersTimes_2,
             (NAME_ARG, boost::python::arg("isPercent"), boost::python::arg("mask_value_lo"),boost::python::arg("mask_value_hi"), boost::python::arg("mask_floor"), boost::python::arg("mask_abs_min"),
              boost::python::arg("start"),
              boost::python::arg("end"), boost::python::arg("window_start"), boost::python::arg("window_end")

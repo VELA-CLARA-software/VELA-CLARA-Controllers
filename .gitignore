@@ -15,3 +15,7 @@
 *.layout
 *.save-failed
 *.depend
+*.obj
+*.obj
+*.obj
+*.depend

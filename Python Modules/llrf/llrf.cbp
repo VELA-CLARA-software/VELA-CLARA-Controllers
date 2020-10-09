@@ -46,8 +46,16 @@
 					<Add library="user32" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='cmd /c copy /y &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
+					<Add after='cmd /c copy /y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).dll&quot; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pyd&quot;' />
 				</ExtraCommands>
+				<MakeCommands>
+					<Build command="" />
+					<CompileFile command="" />
+					<Clean command="" />
+					<DistClean command="" />
+					<AskRebuildNeeded command="" />
+					<SilentBuild command=" &gt; $(CMD_NULL)" />
+				</MakeCommands>
 			</Target>
 		</Build>
 		<Unit filename="../../Hardware/VCbase.cpp" />

@@ -31,7 +31,7 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
-				<Option output="\\claraserv3\apclara\test\Controllers\bin\stage\VELA_CLARA_RF_Protection_Control" prefix_auto="1" extension_auto="1" />
+				<Option output="\\claraserv3\claranet\test\Controllers\bin\stage\VELA_CLARA_RF_Protection_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="ms_visual_c_2012" />
@@ -105,11 +105,7 @@
 		<Unit filename="include/VCrfprot.h" />
 		<Unit filename="src/VCrfprot.cpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
-			<fortran_project />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
