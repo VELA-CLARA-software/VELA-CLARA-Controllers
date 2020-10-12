@@ -30,8 +30,8 @@ offline_Gun_Protection_Controller_Obj(nullptr),
 virtual_L01_Protection_Controller_Obj(nullptr),
 physical_L01_Protection_Controller_Obj(nullptr),
 offline_L01_Protection_Controller_Obj(nullptr),
-allGunProtsConf(UTL::APCLARA1_CONFIG_PATH + UTL::RF_GUN_PROTECTION_CONFIG),
-L01ProtsConf(UTL::APCLARA1_CONFIG_PATH + UTL::RF_L01_PROTECTION_CONFIG)
+allGunProtsConf(UTL::CLARANET_CONFIG_PATH + UTL::RF_GUN_PROTECTION_CONFIG),
+L01ProtsConf(UTL::CLARANET_CONFIG_PATH + UTL::RF_L01_PROTECTION_CONFIG)
 {
    std::cout << "Instantiated a VCrfprot " << std::endl;
     //ctor
