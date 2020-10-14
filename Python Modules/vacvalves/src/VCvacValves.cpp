@@ -181,7 +181,8 @@ vacuumValveController& VCvacValves::getController(vacuumValveController*& cont,
 vacuumValveController& VCvacValves::virtual_VELA_INJ_Vac_Valve_Controller()
 {
     std::string name  = "virtual_VELA_INJ_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
     return getController(virtual_VELA_INJ_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -193,7 +194,8 @@ vacuumValveController& VCvacValves::virtual_VELA_INJ_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::offline_VELA_INJ_Vac_Valve_Controller()
 {
     std::string name  = "offline_VELA_INJ_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
     return getController(offline_VELA_INJ_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -205,7 +207,8 @@ vacuumValveController& VCvacValves::offline_VELA_INJ_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::physical_VELA_INJ_Vac_Valve_Controller()
 {
     std::string name  = "physical_VELA_INJ_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
     return getController(physical_VELA_INJ_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -217,7 +220,8 @@ vacuumValveController& VCvacValves::physical_VELA_INJ_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::virtual_VELA_BA1_Vac_Valve_Controller()
 {
     std::string name  = "virtual_VELA_BA1_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
     return getController(virtual_VELA_BA1_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -229,7 +233,8 @@ vacuumValveController& VCvacValves::virtual_VELA_BA1_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::offline_VELA_BA1_Vac_Valve_Controller()
 {
     std::string name  = "offline_VELA_BA1_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
     return getController(offline_VELA_BA1_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -241,7 +246,8 @@ vacuumValveController& VCvacValves::offline_VELA_BA1_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::physical_VELA_BA1_Vac_Valve_Controller()
 {
     std::string name  = "physical_VELA_BA1_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_VALVE_CONFIG;
     return getController(physical_VELA_INJ_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -253,7 +259,8 @@ vacuumValveController& VCvacValves::physical_VELA_BA1_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::virtual_VELA_BA2_Vac_Valve_Controller()
 {
     std::string name  = "virtual_VELA_BA2_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
     return getController(virtual_VELA_BA2_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -265,7 +272,8 @@ vacuumValveController& VCvacValves::virtual_VELA_BA2_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::offline_VELA_BA2_Vac_Valve_Controller()
 {
     std::string name  = "offline_VELA_BA2_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
     return getController(offline_VELA_BA2_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -277,7 +285,8 @@ vacuumValveController& VCvacValves::offline_VELA_BA2_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::physical_VELA_BA2_Vac_Valve_Controller()
 {
     std::string name  = "physical_VELA_BA2_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_VALVE_CONFIG;
     return getController(physical_VELA_BA2_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -289,7 +298,8 @@ vacuumValveController& VCvacValves::physical_VELA_BA2_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller()
 {
     std::string name  = "virtual_CLARA_PH1_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
     return getController(virtual_CLARA_PH1_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -301,7 +311,8 @@ vacuumValveController& VCvacValves::virtual_CLARA_PH1_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller()
 {
     std::string name  = "offline_CLARA_PH1_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
     return getController(offline_CLARA_PH1_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -313,7 +324,8 @@ vacuumValveController& VCvacValves::offline_CLARA_PH1_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller()
 {
     std::string name  = "physical_CLARA_PH1_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_VALVE_CONFIG;
     return getController(physical_CLARA_PH1_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -326,7 +338,8 @@ vacuumValveController& VCvacValves::physical_CLARA_PH1_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::virtual_Vac_Valve_Controller()
 {
     std::string name  = "virtual_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
     return getController(virtual_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -338,7 +351,8 @@ vacuumValveController& VCvacValves::virtual_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::offline_Vac_Valve_Controller()
 {
     std::string name  = "offline_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
     return getController(offline_Vac_Valve_Controller_Obj,
                          conf1,
                          name,
@@ -350,7 +364,8 @@ vacuumValveController& VCvacValves::offline_Vac_Valve_Controller()
 vacuumValveController& VCvacValves::physical_Vac_Valve_Controller()
 {
     std::string name  = "physical_Vac_Valve_Controller";
-    const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
+    const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VAC_VALVE_CONFIG;
     return getController(physical_Vac_Valve_Controller_Obj,
                          conf1,
                          name,

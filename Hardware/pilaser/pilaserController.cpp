@@ -55,7 +55,8 @@ shutterController(show_messages,
                  show_debug_messages,
                  startVirtualMachine,
                  shouldStartEPICs,
-                 UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG,
+                 //UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG,
+                 UTL::CLARANET_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG,
                  "physical_PIL_Shutter_Controller")
 {
     if(localInterface.interfaceInitReport(shouldStartEPICs))

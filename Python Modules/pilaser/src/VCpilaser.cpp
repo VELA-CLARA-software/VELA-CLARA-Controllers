@@ -31,10 +31,14 @@ physical_VELA_pilaser_Controller_Obj(nullptr),
 virtual_CLARA_pilaser_Controller_Obj(nullptr),
 offline_CLARA_pilaser_Controller_Obj(nullptr),
 physical_CLARA_pilaser_Controller_Obj(nullptr),
-pilaserConf(UTL::APCLARA1_CONFIG_PATH + UTL::PI_LASER_CONFIG),
-velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
-piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG),
-claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
+//pilaserConf(UTL::APCLARA1_CONFIG_PATH + UTL::PI_LASER_CONFIG),
+pilaserConf(UTL::CLARANET_CONFIG_PATH + UTL::PI_LASER_CONFIG),
+//velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
+velaCamConfig(UTL::CLARANET_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
+//piLaserMirrorConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG),
+piLaserMirrorConf(UTL::CLARANET_CONFIG_PATH + UTL::PIL_MIRROR_CONFIG),
+//claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
+claraCamConfig(UTL::CLARANET_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG)
 {
     std::cout <<"Instantiated a VCpilaser in Quiet Mode" <<std::endl;
     //ctor
