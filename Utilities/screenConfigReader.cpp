@@ -317,6 +317,13 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
         scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_GRAT ] = getNumUS(keyVal[1]);
         scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_GRAT ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
     }
+
+    else if( keyVal[0] == UTL::V_COL )
+    {
+        scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::V_COL ] = true;
+        scrObjects.back().elementPositions[ screenStructs::SCREEN_STATE::V_COL ] = getNumUS(keyVal[1]);
+        scrObjects.back().elementDirection[ screenStructs::SCREEN_STATE::V_COL ] = screenStructs::DRIVER_DIRECTION::VERTICAL;
+    }
     else if( keyVal[0] == UTL::H_RETRACTED )
     {
         scrObjects.back().elementExists[    screenStructs::SCREEN_STATE::H_RETRACTED ] = true;
@@ -378,6 +385,10 @@ void screenConfigReader::addToScrObjectsV1( const std::vector<std::string> &keyV
     else if( keyVal[0] == UTL::V_MAX_POS )
     {
         scrObjects.back().devicePositions[ screenStructs::SCREEN_STATE::V_MAX ] = getNumD(keyVal[1]);
+    }
+    else if( keyVal[0] == UTL::V_COL_POS )
+    {
+        scrObjects.back().devicePositions[ screenStructs::SCREEN_STATE::V_COL ] = getNumD(keyVal[1]);
     }
     else if( keyVal[0] == UTL::V_SLIT_1_POS )
     {

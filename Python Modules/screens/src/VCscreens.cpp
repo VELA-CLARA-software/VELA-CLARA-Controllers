@@ -160,7 +160,7 @@ screenController & VCscreens::getController(screenController*& cont,
 screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
 {
     std::string name  = "virtual_VELA_INJ_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     return getController(virtual_VELA_INJ_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -172,7 +172,7 @@ screenController& VCscreens::virtual_VELA_INJ_Screen_Controller()
 screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
 {
     std::string name  = "offline_VELA_INJ_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     return getController(offline_VELA_INJ_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -184,7 +184,7 @@ screenController& VCscreens::offline_VELA_INJ_Screen_Controller()
 screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
 {
     std::string name  = "physical_VELA_INJ_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_SCREENS_CONFIG;
     return getController(physical_VELA_INJ_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -196,7 +196,7 @@ screenController& VCscreens::physical_VELA_INJ_Screen_Controller()
 screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
 {
     std::string name  = "virtual_VELA_BA1_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
     return getController(virtual_VELA_BA1_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -208,7 +208,7 @@ screenController& VCscreens::virtual_VELA_BA1_Screen_Controller()
 screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
 {
     std::string name  = "offline_VELA_BA1_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
     return getController(offline_VELA_BA1_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -220,7 +220,7 @@ screenController& VCscreens::offline_VELA_BA1_Screen_Controller()
 screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
 {
     std::string name  = "physical_VELA_BA1_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_SCREENS_CONFIG;
     return getController(physical_VELA_BA1_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -232,7 +232,7 @@ screenController& VCscreens::physical_VELA_BA1_Screen_Controller()
 screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
 {
     std::string name  = "virtual_VELA_BA2_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
     return getController(virtual_VELA_BA2_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -244,7 +244,7 @@ screenController& VCscreens::virtual_VELA_BA2_Screen_Controller()
 screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
 {
     std::string name  = "offline_VELA_BA2_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
     return getController(offline_VELA_BA2_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -256,7 +256,7 @@ screenController& VCscreens::offline_VELA_BA2_Screen_Controller()
 screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
 {
     std::string name  = "physical_VELA_BA2_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_SCREENS_CONFIG;
     return getController(physical_VELA_BA2_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -268,7 +268,7 @@ screenController& VCscreens::physical_VELA_BA2_Screen_Controller()
 screenController& VCscreens::virtual_CLARA_PH1_Screen_Controller()
 {
     std::string name  = "virtual_CLARA_PH1_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
     return getController(virtual_CLARA_PH1_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -280,7 +280,7 @@ screenController& VCscreens::virtual_CLARA_PH1_Screen_Controller()
 screenController& VCscreens::offline_CLARA_PH1_Screen_Controller()
 {
     std::string name  = "offline_CLARA_PH1_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
     return getController(offline_CLARA_PH1_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -292,7 +292,7 @@ screenController& VCscreens::offline_CLARA_PH1_Screen_Controller()
 screenController& VCscreens::physical_CLARA_PH1_Screen_Controller()
 {
     std::string name  = "physical_CLARA_PH1_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_SCREENS_CONFIG;
     return getController(physical_CLARA_PH1_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -304,7 +304,7 @@ screenController& VCscreens::physical_CLARA_PH1_Screen_Controller()
 screenController& VCscreens::virtual_C2B_Screen_Controller()
 {
     std::string name  = "virtual_C2B_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::C2B_SCREENS_CONFIG;
     return getController(virtual_C2B_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -316,7 +316,7 @@ screenController& VCscreens::virtual_C2B_Screen_Controller()
 screenController& VCscreens::offline_C2B_Screen_Controller()
 {
     std::string name  = "offline_C2B_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::C2B_SCREENS_CONFIG;
     return getController(offline_C2B_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -328,7 +328,7 @@ screenController& VCscreens::offline_C2B_Screen_Controller()
 screenController& VCscreens::physical_C2B_Screen_Controller()
 {
     std::string name  = "physical_C2B_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::C2B_SCREENS_CONFIG;
     return getController(physical_C2B_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -340,7 +340,7 @@ screenController& VCscreens::physical_C2B_Screen_Controller()
 screenController& VCscreens::offline_Screen_Controller()
 {
     std::string name  = "offline_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
     return getController(virtual_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -352,7 +352,7 @@ screenController& VCscreens::offline_Screen_Controller()
 screenController& VCscreens::virtual_Screen_Controller()
 {
     std::string name  = "virtual_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
     return getController(virtual_Screen_Controller_Obj,
                          screenconf,
                          name,
@@ -364,7 +364,7 @@ screenController& VCscreens::virtual_Screen_Controller()
 screenController& VCscreens::physical_Screen_Controller()
 {
     std::string name  = "physical_Screen_Controller";
-    const std::string screenconf = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
+    const std::string screenconf = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VELA_CLARA_SCREENS_CONFIG;
     return getController(physical_Screen_Controller_Obj,
                          screenconf,
                          name,

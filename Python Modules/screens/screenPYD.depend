@@ -570,3 +570,229 @@
 	<vector>
 	<map>
 
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1602235099 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1602694724 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1602235099 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\screen\screencontroller.cpp
+	"screenController.h"
+	<iostream>
+	<time.h>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\screen\screencontroller.h
+	"screenStructs.h"
+	"screenInterface.h"
+	"controller.h"
+	"structs.h"
+	<string>
+	<vector>
+
+1602235099 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\screenstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<string>
+	<map>
+	<thread>
+	<cadef.h>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\screen\screeninterface.h
+	"interface.h"
+	"screenStructs.h"
+	"screenConfigReader.h"
+	"structs.h"
+	<vector>
+	<string>
+	<atomic>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1602235099 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\screenconfigreader.h
+	<string>
+	<vector>
+	<map>
+	"configReader.h"
+	"baseObject.h"
+	"screenStructs.h"
+
+1602235099 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1601644632 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\screen\screeninterface.cpp
+	"screenInterface.h"
+	"configDefinitions.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<thread>
+
+1601644641 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\screens\main.cpp
+
+1602082772 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.cpp
+	"interface.h"
+	"structs.h"
+	<iostream>
+	<sstream>
+	<chrono>
+
+1602066296 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1601998109 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcbase.h
+	"structs.h"
+	<iostream>
+	<string>
+	<map>
+	<utility>
+
+1602235099 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.cpp
+	"baseObject.h"
+	"configDefinitions.h"
+	<time.h>
+
+1602235099 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1602765175 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\screens\src\vcscreens.cpp
+	"VCscreens.h"
+	<iostream>
+
+1601644641 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\screens\include\vcscreens.h
+	<string>
+	"screenController.h"
+	"VCheader.h"
+	"screenStructs.h"
+	"VCbase.h"
+	"configDefinitions.h"
+	<boost/python/detail/wrap_python.hpp>
+	<boost/config.hpp>
+	<boost/python.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/object/function.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/docstring_options.hpp>
+
+1601644631 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\cameracontrollerbase.h
+	"cameraBase.h"
+	"controller.h"
+	<vector>
+	<deque>
+
+1601644632 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\camera\camerabase.h
+	"configDefinitions.h"
+	"cameraStructs.h"
+	"structs.h"
+	"interface.h"
+	"claraCameraConfigReader.h"
+	"velaCameraConfigReader.h"
+	<string>
+	<vector>
+	<map>
+
+1602765925 source:c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\screenconfigreader.cpp
+	"screenConfigReader.h"
+	"screenStructs.h"
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<sstream>
+	<time.h>
+	<algorithm>
+	<ctype.h>
+
