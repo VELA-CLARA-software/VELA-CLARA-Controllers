@@ -600,3 +600,142 @@
 	<map>
 	<utility>
 
+1601641031 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\beampositionmonitor\beampositionmonitorcontroller.cpp
+	"beamPositionMonitorController.h"
+	<iostream>
+
+1601641031 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\beampositionmonitor\beampositionmonitorcontroller.h
+	"beamPositionMonitorInterface.h"
+	"controller.h"
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/circular_buffer.hpp>
+
+1601641032 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\beampositionmonitor\beampositionmonitorinterface.h
+	"interface.h"
+	"beamPositionMonitorStructs.h"
+	"beamPositionMonitorConfigReader.h"
+	"structs.h"
+	<vector>
+	<string>
+	<boost/circular_buffer.hpp>
+
+1601641032 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\interface.h
+	<cadef.h>
+	<iostream>
+	<map>
+	<chrono>
+	<thread>
+	"baseObject.h"
+	"structs.h"
+
+1602231499 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\baseobject.h
+	<string>
+	<vector>
+	<sstream>
+	<cmath>
+	<algorithm>
+	<utility>
+	<iostream>
+	<time.h>
+	<deque>
+	<boost/python.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python.hpp>
+	<boost/python/def.hpp>
+	<boost/python/slice.hpp>
+	<boost/python/args.hpp>
+	<boost/python/class.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/overloads.hpp>
+	<boost/python/stl_iterator.hpp>
+	<boost/circular_buffer.hpp>
+
+1602231499 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\structs.h
+	<string>
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<cadef.h>
+	<boost/preprocessor.hpp>
+
+1602691124 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configdefinitions.h
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<cadef.h>
+	<boost/python/def.hpp>
+
+1602231499 c:\users\dlerlp\documents\github\vela-clara-controllers\structs\beampositionmonitorstructs.h
+	"structs.h"
+	"configDefinitions.h"
+	<boost/circular_buffer.hpp>
+	<string>
+	<map>
+	<cadef.h>
+
+1602231499 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\beampositionmonitorconfigreader.h
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"configReader.h"
+	"beamPositionMonitorStructs.h"
+
+1602231499 c:\users\dlerlp\documents\github\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
+
+1601641032 c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.h
+	"structs.h"
+	"baseObject.h"
+	<map>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+
+1601641031 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\beampositionmonitor\beampositionmonitorinterface.cpp
+	"beamPositionMonitorInterface.h"
+	<iostream>
+	<sstream>
+	<chrono>
+	<numeric>
+	<thread>
+	<ctime>
+	<string>
+	<cstring>
+	<cmath>
+	<math.h>
+	<stdlib.h>
+	<epicsTime.h>
+	<boost/circular_buffer.hpp>
+
+1601641032 source:c:\users\dlerlp\documents\github\vela-clara-controllers\hardware\controller.cpp
+	"controller.h"
+	<iostream>
+	<sstream>
+
+1601641033 source:c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\bpms\main.cpp
+	"main.h"
+
+1601641033 c:\users\dlerlp\documents\github\vela-clara-controllers\python modules\bpms\main.h
+	<windows.h>
+

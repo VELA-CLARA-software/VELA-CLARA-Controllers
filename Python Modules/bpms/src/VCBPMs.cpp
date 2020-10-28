@@ -132,7 +132,8 @@ beamPositionMonitorController & VCBPMs::getController(beamPositionMonitorControl
 beamPositionMonitorController& VCBPMs::virtual_VELA_INJ_BPM_Controller()
 {
     std::string name  = "virtual_VELA_INJ_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
     return getController(virtual_VELA_INJ_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -144,7 +145,8 @@ beamPositionMonitorController& VCBPMs::virtual_VELA_INJ_BPM_Controller()
 beamPositionMonitorController& VCBPMs::offline_VELA_INJ_BPM_Controller()
 {
     std::string name  = "offline_VELA_INJ_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
     return getController(offline_VELA_INJ_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -156,7 +158,8 @@ beamPositionMonitorController& VCBPMs::offline_VELA_INJ_BPM_Controller()
 beamPositionMonitorController& VCBPMs::physical_VELA_INJ_BPM_Controller()
 {
     std::string name  = "physical_VELA_INJ_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_BPM_CONFIG;
     return getController(physical_VELA_INJ_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -168,7 +171,8 @@ beamPositionMonitorController& VCBPMs::physical_VELA_INJ_BPM_Controller()
 beamPositionMonitorController& VCBPMs::virtual_VELA_BA1_BPM_Controller()
 {
     std::string name  = "virtual_VELA_BA1_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
     return getController(virtual_VELA_BA1_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -180,7 +184,8 @@ beamPositionMonitorController& VCBPMs::virtual_VELA_BA1_BPM_Controller()
 beamPositionMonitorController& VCBPMs::offline_VELA_BA1_BPM_Controller()
 {
     std::string name  = "offline_VELA_BA1_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
     return getController(offline_VELA_BA1_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -192,7 +197,8 @@ beamPositionMonitorController& VCBPMs::offline_VELA_BA1_BPM_Controller()
 beamPositionMonitorController& VCBPMs::physical_VELA_BA1_BPM_Controller()
 {
     std::string name  = "physical_VELA_BA1_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_BPM_CONFIG;
     return getController(physical_VELA_BA1_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -204,7 +210,8 @@ beamPositionMonitorController& VCBPMs::physical_VELA_BA1_BPM_Controller()
 beamPositionMonitorController& VCBPMs::virtual_VELA_BA2_BPM_Controller()
 {
     std::string name  = "virtual_VELA_BA2_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
     return getController(virtual_VELA_BA2_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -216,7 +223,8 @@ beamPositionMonitorController& VCBPMs::virtual_VELA_BA2_BPM_Controller()
 beamPositionMonitorController& VCBPMs::offline_VELA_BA2_BPM_Controller()
 {
     std::string name  = "offline_VELA_BA2_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
     return getController(offline_VELA_BA2_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -228,7 +236,8 @@ beamPositionMonitorController& VCBPMs::offline_VELA_BA2_BPM_Controller()
 beamPositionMonitorController& VCBPMs::physical_VELA_BA2_BPM_Controller()
 {
     std::string name  = "physical_VELA_BA2_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_BPM_CONFIG;
     return getController(physical_VELA_BA2_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -240,7 +249,8 @@ beamPositionMonitorController& VCBPMs::physical_VELA_BA2_BPM_Controller()
 beamPositionMonitorController& VCBPMs::virtual_CLARA_PH1_BPM_Controller()
 {
     std::string name  = "virtual_CLARA_PH1_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
     return getController(virtual_CLARA_PH1_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -252,7 +262,8 @@ beamPositionMonitorController& VCBPMs::virtual_CLARA_PH1_BPM_Controller()
 beamPositionMonitorController& VCBPMs::offline_CLARA_PH1_BPM_Controller()
 {
     std::string name  = "offline_CLARA_PH1_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
     return getController(offline_CLARA_PH1_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -265,7 +276,8 @@ beamPositionMonitorController& VCBPMs::physical_CLARA_PH1_BPM_Controller()
 {
     std::string name  = "physical_CLARA_PH1_BPM_Controller";
     std::cout << name << std::endl;
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_BPM_CONFIG;
     return getController(physical_CLARA_PH1_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -277,7 +289,8 @@ beamPositionMonitorController& VCBPMs::physical_CLARA_PH1_BPM_Controller()
 beamPositionMonitorController& VCBPMs::virtual_C2B_BPM_Controller()
 {
     std::string name  = "virtual_C2B_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
     return getController(virtual_C2B_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -289,7 +302,8 @@ beamPositionMonitorController& VCBPMs::virtual_C2B_BPM_Controller()
 beamPositionMonitorController& VCBPMs::offline_C2B_BPM_Controller()
 {
     std::string name  = "offline_C2B_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
     return getController(offline_C2B_BPM_Controller_Obj,
                          bpmconf,
                          name,
@@ -301,7 +315,8 @@ beamPositionMonitorController& VCBPMs::offline_C2B_BPM_Controller()
 beamPositionMonitorController& VCBPMs::physical_C2B_BPM_Controller()
 {
     std::string name  = "physical_C2B_BPM_Controller";
-    const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    //const std::string bpmconf = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
+    const std::string bpmconf = UTL::CLARANET_CONFIG_PATH + UTL::C2B_BPM_CONFIG;
     return getController(physical_C2B_BPM_Controller_Obj,
                          bpmconf,
                          name,
