@@ -39,10 +39,10 @@ physical_CLARA_VC_Camera_Controller_Obj(nullptr),
 virtual_VELA_VC_Camera_Controller_Obj(nullptr),
 offline_VELA_VC_Camera_Controller_Obj(nullptr),
 physical_VELA_VC_Camera_Controller_Obj(nullptr),
-claraCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG),
-velaCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
-velaCam2Config(UTL::APCLARA1_CONFIG_PATH + UTL::VELA_CAMERA2_CONFIG),
-allCamConfig(UTL::APCLARA1_CONFIG_PATH + UTL::ALL_CAMERA_CONFIG)
+claraCamConfig(UTL::CLARANET_CONFIG_PATH + UTL::CLARA_CAMERA_CONFIG),
+velaCamConfig(UTL::CLARANET_CONFIG_PATH + UTL::VELA_CAMERA_CONFIG),
+velaCam2Config(UTL::CLARANET_CONFIG_PATH + UTL::VELA_CAMERA2_CONFIG),
+allCamConfig(UTL::CLARANET_CONFIG_PATH + UTL::ALL_CAMERA_CONFIG)
 {
     std::cout << "Instantiated a VCcameras in Quiet Mode" << std::endl;
     //ctor
