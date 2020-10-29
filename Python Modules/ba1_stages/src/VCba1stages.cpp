@@ -28,7 +28,7 @@ VCbase("VCba1Stages"),
 virtual_BA1_Stages_Controller_Obj(nullptr),
 physical_BA1_Stages_Controller_Obj(nullptr),
 offline_BA1_Stages_Controller_Obj(nullptr),
-ba1StageConf(UTL::APCLARA1_CONFIG_PATH + UTL::BA1_STAGES_CONFIG)
+ba1StageConf(UTL::CLARANET_CONFIG_PATH + UTL::BA1_STAGES_CONFIG)
 {
     std::cout << "Instantiated a VCba1Stages in Quiet Mode" << std::endl;
     //ctor
