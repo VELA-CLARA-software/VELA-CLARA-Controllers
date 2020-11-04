@@ -28,7 +28,8 @@ VCbase("VCshutter"),
 virtual_PIL_shutter_Controller_Obj(nullptr),
 physical_PIL_shutter_Controller_Obj(nullptr),
 offline_PIL_shutter_Controller_Obj(nullptr),
-piLaserShutterConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG)
+//piLaserShutterConf(UTL::APCLARA1_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG)
+piLaserShutterConf(UTL::CLARANET_CONFIG_PATH + UTL::PIL_SHUTTER_CONFIG)
 {
     std::cout << "Instantiated a VCshutter in Quiet Mode" << std::endl;
     //ctor

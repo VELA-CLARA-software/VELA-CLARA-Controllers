@@ -2646,12 +2646,15 @@ bool VCgeneralMonitor::disconnectPV(const std::string & id)
     gmStructs::pvStruct* pvs = getPVStruct_Ptr(id);
     if( pvs)
     {
+        message("getPVStruct found pvs for ",  id);
         if(pvs->MonitorConnected)
         {
+            message("killMonitor");
             killMonitor(*pvs);
         }
         if(pvs->CHIDConnected)
         {
+            message("killChannel");
             killChannel(*pvs);
         }
         return deleteID(id);
@@ -2719,21 +2722,21 @@ gmStructs::pvStruct* VCgeneralMonitor::getPVStruct_Ptr(const std::string& id)
         }
     }
     else if(isArrayDoublePV(id))
-    {//message("getPVStruct ",  id, " isDoublePV");
-        if( entryExists(doublePVMap, id))
+    {message("getPVStruct ",  id, " isArrayDoublePV");
+        if( entryExists(vec_doublePVMap, id))
         {
             pvs = &vec_doublePVMap[id].pvs;
 //            message("getPVStruct found ",  id, " in doublePVMap");
         }
     }
-    else if(isArrayDoublePV(id))
-    {//message("getPVStruct ",  id, " isDoublePV");
-        if( entryExists(doublePVMap, id))
-        {
-            pvs = &vec_doublePVMap[id].pvs;
-//            message("getPVStruct found ",  id, " in doublePVMap");
-        }
-    }
+//    else if(isArrayDoublePV(id))
+//    {//message("getPVStruct ",  id, " isDoublePV");
+//        if( entryExists(vec_doublePVMap, id))
+//        {
+//            pvs = &vec_doublePVMap[id].pvs;
+////            message("getPVStruct found ",  id, " in doublePVMap");
+//        }
+//    }
     if(pvs)
     {
         message("getPVStruct found ", id);
@@ -2840,6 +2843,10 @@ bool VCgeneralMonitor::deleteID(const std::string& id)
     else if(isStringPV(id))
     {
         r = deleteMapEntry(stringPVMap,id);
+    }
+    else if(isArrayDoublePV(id))
+    {
+        r = deleteMapEntry(vec_doublePVMap,id);
     }
     return r;
 }

@@ -328,6 +328,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
 
         .def("isRSBufferFull",   &pilaserController::isRSBufferFull,   isRSBufferFull_doc   )
         .def("getRSBufferSize",   &pilaserController::getRSBufferSize,   getRSBufferSize_doc   )
+        .def("getCurrentBufferSize",   &pilaserController::getCurrentBufferSize,   ""   )
         .def("setAllRSBufferSize",   &pilaserController::setAllRSBufferSize,   ""   )
 
 
