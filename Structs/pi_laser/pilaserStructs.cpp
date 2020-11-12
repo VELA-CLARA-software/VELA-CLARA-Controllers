@@ -92,3 +92,6 @@ bool pilaserStructs::pilaserObject::energy_full()
 {
      return energy_rs.Full();
 }
+//______________________________________________________________________________
+
+

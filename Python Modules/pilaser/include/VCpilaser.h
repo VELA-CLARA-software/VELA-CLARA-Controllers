@@ -177,7 +177,7 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("setCharge",  &pilaserObject::setCharge,          setCharge_ds)
         .def_readonly("setVCPosState", &pilaserObject::setVCPosState, setVCPosState_ds)
 
-
+        // these buffers are not necessary the running stats ones!! beware, and redo in CATAP
         .def_readonly("max_buffer_count", &pilaserObject::max_buffer_count, "")
         .def_readonly("buffer_count", &pilaserObject::buffer_count, "")
         .def_readonly("buffer_full", &pilaserObject::buffer_full, "")

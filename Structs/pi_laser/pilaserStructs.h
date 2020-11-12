@@ -194,34 +194,21 @@ namespace pilaserStructs
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;
         VC_SET_POS_STATE setVCPosState;
-
-
-
         bool em_over_range, em_is_running;
-
         EM_RANGE em_range;
-
-
-
-
-
-
-
         void   Q_clear();
         void   energy_clear();
         void   Q_rs_buffer_size(size_t new_size);
         void   energy_rs_buffer_size(size_t new_size);
-
         bool   Q_full();
         bool   energy_full();
-
-
         double Q_mean();
         double energy_mean();
         double Q_sd();
         double energy_sd();
         size_t Q_n();
         size_t energy_n();
+
     };
 
     struct set_vc_position

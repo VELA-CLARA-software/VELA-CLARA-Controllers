@@ -86,7 +86,7 @@ void beamPositionMonitorInterface::initialise()
         {
             if( shouldStartEPICs )
             {
-                std::cout << "WE ARE HERE" << std::endl;
+                //std::cout << "WE ARE HERE" << std::endl;
                 /// subscribe to the channel ids
                 initBPMChids();
                 /// start the monitors: set up the callback functions

@@ -52,6 +52,7 @@ class runningStat
             return max_n;
         }
 
+
         void Push(double x)
         {
             if(can_add())
