@@ -149,7 +149,7 @@ chargeController& VCcharge::getController(chargeController*& cont,
 chargeController& VCcharge::virtual_VELA_INJ_Charge_Controller()
 {
     std::string name  = "virtual_VELA_INJ_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_CHARGE_CONFIG;
     return getController(virtual_VELA_INJ_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -161,7 +161,7 @@ chargeController& VCcharge::virtual_VELA_INJ_Charge_Controller()
 chargeController & VCcharge::offline_VELA_INJ_Charge_Controller()
 {
     std::string name  = "offline_VELA_INJ_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_CHARGE_CONFIG;
     return getController(offline_VELA_INJ_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -173,7 +173,7 @@ chargeController & VCcharge::offline_VELA_INJ_Charge_Controller()
 chargeController & VCcharge::physical_VELA_INJ_Charge_Controller()
 {
     std::string name  = "physical_VELA_INJ_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_CHARGE_CONFIG;
     return getController(physical_VELA_INJ_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -185,7 +185,7 @@ chargeController & VCcharge::physical_VELA_INJ_Charge_Controller()
 chargeController & VCcharge::virtual_VELA_BA1_Charge_Controller()
 {
     std::string name  = "virtual_VELA_BA1_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_CHARGE_CONFIG;
     return getController(virtual_VELA_BA1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -197,7 +197,7 @@ chargeController & VCcharge::virtual_VELA_BA1_Charge_Controller()
 chargeController & VCcharge::offline_VELA_BA1_Charge_Controller()
 {
     std::string name  = "offline_VELA_BA1_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_CHARGE_CONFIG;
     return getController(offline_VELA_BA1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -209,7 +209,7 @@ chargeController & VCcharge::offline_VELA_BA1_Charge_Controller()
 chargeController & VCcharge::physical_VELA_BA1_Charge_Controller()
 {
     std::string name  = "physical_VELA_BA1_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA1_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA1_CHARGE_CONFIG;
     return getController(physical_VELA_BA1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -221,7 +221,7 @@ chargeController & VCcharge::physical_VELA_BA1_Charge_Controller()
 chargeController & VCcharge::virtual_VELA_BA2_Charge_Controller()
 {
     std::string name  = "virtual_VELA_BA2_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
     return getController(virtual_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -233,7 +233,7 @@ chargeController & VCcharge::virtual_VELA_BA2_Charge_Controller()
 chargeController & VCcharge::offline_VELA_BA2_Charge_Controller()
 {
     std::string name  = "offline_VELA_BA2_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
     return getController(offline_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -245,7 +245,7 @@ chargeController & VCcharge::offline_VELA_BA2_Charge_Controller()
 chargeController & VCcharge::physical_VELA_BA2_Charge_Controller()
 {
     std::string name  = "physical_VELA_BA2_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_BA2_CHARGE_CONFIG;
     return getController(physical_VELA_BA2_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -257,7 +257,7 @@ chargeController & VCcharge::physical_VELA_BA2_Charge_Controller()
 chargeController & VCcharge::virtual_CLARA_PH1_Charge_Controller()
 {
     std::string name  = "virtual_CLARA_PH1_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_CHARGE_CONFIG;
     return getController(virtual_CLARA_PH1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -269,7 +269,7 @@ chargeController & VCcharge::virtual_CLARA_PH1_Charge_Controller()
 chargeController & VCcharge::offline_CLARA_PH1_Charge_Controller()
 {
     std::string name  = "offline_CLARA_PH1_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_CHARGE_CONFIG;
     return getController(offline_CLARA_PH1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -281,7 +281,7 @@ chargeController & VCcharge::offline_CLARA_PH1_Charge_Controller()
 chargeController & VCcharge::physical_CLARA_PH1_Charge_Controller()
 {
     std::string name  = "physical_CLARA_PH1_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::CLARA_PH1_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::CLARA_PH1_CHARGE_CONFIG;
     return getController(physical_CLARA_PH1_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -293,7 +293,7 @@ chargeController & VCcharge::physical_CLARA_PH1_Charge_Controller()
 chargeController & VCcharge::virtual_C2B_Charge_Controller()
 {
     std::string name  = "virtual_C2B_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::C2B_CHARGE_CONFIG;
     return getController(virtual_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -305,7 +305,7 @@ chargeController & VCcharge::virtual_C2B_Charge_Controller()
 chargeController & VCcharge::offline_C2B_Charge_Controller()
 {
     std::string name  = "offline_C2B_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::C2B_CHARGE_CONFIG;
     return getController(offline_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -317,7 +317,7 @@ chargeController & VCcharge::offline_C2B_Charge_Controller()
 chargeController & VCcharge::physical_C2B_Charge_Controller()
 {
     std::string name  = "physical_C2B_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::C2B_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::C2B_CHARGE_CONFIG;
     return getController(physical_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -329,7 +329,7 @@ chargeController & VCcharge::physical_C2B_Charge_Controller()
 chargeController & VCcharge::virtual_Charge_Controller()
 {
     std::string name  = "virtual_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
     return getController(virtual_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -341,7 +341,7 @@ chargeController & VCcharge::virtual_Charge_Controller()
 chargeController & VCcharge::offline_Charge_Controller()
 {
     std::string name  = "offline_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
     return getController(offline_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
@@ -353,7 +353,7 @@ chargeController & VCcharge::offline_Charge_Controller()
 chargeController & VCcharge::physical_Charge_Controller()
 {
     std::string name  = "physical_Charge_Controller";
-    const std::string chargeconf1 = UTL::APCLARA1_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
+    const std::string chargeconf1 = UTL::CLARANET_CONFIG_PATH + UTL::ALL_VELA_CLARA_CHARGE_CONFIG;
     return getController(physical_C2B_Charge_Controller_Obj,
                          chargeconf1,
                          name,
