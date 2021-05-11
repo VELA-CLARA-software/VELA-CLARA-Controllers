@@ -4207,9 +4207,6 @@ bool cameraBase::startAcquiringMultiCam(const std::string& cam)
         return startAcquiring(getCamObj(cam),false);
     return false;
 }
-
-
-
 //---------------------------------------------------------------------------------
 bool cameraBase::startAcquiring()
 {
