@@ -139,7 +139,8 @@ namespace UTL
     //const std::string CONFIG_PATH = "\\\\fed.cclrc.ac.uk\\org\\NLab\\ASTeC\\Projects\\VELA\\Software\\VELA_CLARA_PYDs\\Config\\";
     //const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1.dl.ac.uk\\ControlRoomApps\\Controllers\\Config\\";
     //const std::string APCLARA1_CONFIG_PATH = "\\\\claraserv3\\apclara\\test\\Controllers\\Config\\"; GONE!!!
-    const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3\\claranet\\test\\Controllers\\Config\\";
+    // const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3\\claranet\\test\\Controllers\\Config\\";
+    const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Config\\";
     // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
     // config file names
@@ -1040,26 +1041,24 @@ namespace UTL
 
 
     // Camera Object Components
-    const std::string SCREEN_NAME               ="SCREEN_NAME";
-    const std::string X_MASK_RAD_DEF                ="X_MASK_RAD_DEF";
-    const std::string Y_MASK_RAD_DEF                ="Y_MASK_RAD_DEF";
-    const std::string X_MASK_RAD_MAX                ="X_MASK_RAD_MAX";
-    const std::string X_MASK_RAD_MIN                ="X_MASK_RAD_MIN";
-    const std::string Y_MASK_RAD_MAX                ="Y_MASK_RAD_MAX";
-    const std::string Y_MASK_RAD_MIN                ="Y_MASK_RAD_MIN";
-    const std::string X_MASK_DEF                    ="X_MASK_DEF";
-    const std::string Y_MASK_DEF                    ="Y_MASK_DEF";
-    const std::string X_CENTER_DEF                  ="X_CENTER_DEF";
-    const std::string Y_CENTER_DEF                  ="Y_CENTER_DEF";
-    const std::string PIX_2_MM_RATIO_DEF            ="PIX_2_MM_RATIO_DEF";
-    const std::string USE_MASK_RAD_LIMITS            ="USE_MASK_RAD_LIMITS";
+    const std::string SCREEN_NAME         ="SCREEN_NAME";
+    const std::string X_MASK_RAD_DEF      ="X_MASK_RAD_DEF";
+    const std::string Y_MASK_RAD_DEF      ="Y_MASK_RAD_DEF";
+    const std::string X_MASK_RAD_MAX      ="X_MASK_RAD_MAX";
+    const std::string X_MASK_RAD_MIN      ="X_MASK_RAD_MIN";
+    const std::string Y_MASK_RAD_MAX      ="Y_MASK_RAD_MAX";
+    const std::string Y_MASK_RAD_MIN      ="Y_MASK_RAD_MIN";
+    const std::string X_MASK_DEF          ="X_MASK_DEF";
+    const std::string Y_MASK_DEF          ="Y_MASK_DEF";
+    const std::string X_CENTER_DEF        ="X_CENTER_DEF";
+    const std::string Y_CENTER_DEF        ="Y_CENTER_DEF";
+    const std::string PIX_2_MM_RATIO_DEF  ="PIX_2_MM_RATIO_DEF";
+    const std::string USE_MASK_RAD_LIMITS ="USE_MASK_RAD_LIMITS";
 
     const std::string MIN_X_PIXEL_POS = "MIN_X_PIXEL_POS";
     const std::string MAX_X_PIXEL_POS = "MAX_X_PIXEL_POS";
     const std::string MIN_Y_PIXEL_POS = "MIN_Y_PIXEL_POS";
     const std::string MAX_Y_PIXEL_POS = "MAX_Y_PIXEL_POS";
-
-
 
     const std::string BINARY_NUM_PIX_X  = "BINARY_NUM_PIX_X";
     const std::string BINARY_NUM_PIX_Y  = "BINARY_NUM_PIX_Y";
@@ -1067,12 +1066,9 @@ namespace UTL
     const std::string ARRAY_DATA_NUM_PIX_Y  = "ARRAY_DATA_NUM_PIX_Y";
     const std::string ARRAY_DATA_X_PIX_2_MM  = "ARRAY_DATA_X_PIX_2_MM";
     const std::string ARRAY_DATA_Y_PIX_2_MM  = "ARRAY_DATA_Y_PIX_2_MM";
-
     const std::string SENSOR_MAX_TEMP = "SENSOR_MAX_TEMP";
     const std::string SENSOR_MIN_TEMP = "SENSOR_MIN_TEMP";
-
     const std::string AVG_PIXEL_VALUE_FOR_BEAM = "AVG_PIXEL_VALUE_FOR_BEAM";
-
     /*
         the VIRTUAL_CATHODE name is hardcoded, due to it being so
         fundamental to camera images and becauise its on a seperate
@@ -1080,14 +1076,9 @@ namespace UTL
         is changed some VC specific functions may not work
     */
     const std::string VIRTUAL_CATHODE = "VIRTUAL_CATHODE";
-
-
-    const std::string MAX_SHOTS_NUMBER          ="MAX_SHOTS_NUMBER";
-    const std::string IP_ADDRESS_STREAM         ="IP_ADDRESS_STREAM";
-
+    const std::string MAX_SHOTS_NUMBER  = "MAX_SHOTS_NUMBER";
+    const std::string IP_ADDRESS_STREAM = "IP_ADDRESS_STREAM";
 //______________________________________________________________________________
-
-
 
     /// SCREENS (VELA_PNEUMATIC_SCREEN and VELA_HV_MOVER_SCREEN)
     const std::string VELA_PNEUMATIC  =  "VELA_PNEUMATIC";
