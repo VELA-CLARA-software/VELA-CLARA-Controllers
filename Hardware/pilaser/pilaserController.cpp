@@ -206,6 +206,29 @@ double pilaserController::getHpos() const
     return localInterface.getHpos();
 }
 //______________________________________________________________________________
+
+HWC_ENUM::STATE pilaserController::getHWPEnableState()const
+{
+    return localInterface.getHWPEnableState();
+}
+bool pilaserController::isHWPDisabled()const
+{
+    return localInterface.isHWPDisabled();
+}
+bool pilaserController::isHWPEnabled()const
+{
+    return localInterface.isHWPEnabled();
+}
+bool pilaserController::enableHWP()
+{
+    return localInterface.enableHWP();
+}
+bool pilaserController::disableHWP()
+{
+    return localInterface.disableHWP();
+}
+
+//______________________________________________________________________________
 double pilaserController::getVpos() const
 {
     return localInterface.getVpos();
@@ -748,6 +771,10 @@ void pilaserController::clearRunningValues()
     localInterface.clearRunningValues();
     cameraControllerBase::clearRunningValues();
 }
+
+
+
+
 //______________________________________________________________________________
 //bool pilaserInterface::setVCPosition(const double xpos, const double ypos)
 //{

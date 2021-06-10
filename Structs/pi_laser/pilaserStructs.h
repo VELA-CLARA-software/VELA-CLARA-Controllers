@@ -55,6 +55,7 @@ namespace pilaserStructs
                                                         (STATUS)
                                                         (HALF_WAVE_PLATE_SET)
                                                         (HALF_WAVE_PLATE_READ)
+                                                        (HALF_WAVE_PLATE_ENABLE)
                                                         (VC_INTENSITY)
                                                         (H_POS)
                                                         (V_POS)
@@ -164,6 +165,7 @@ namespace pilaserStructs
             energy(UTL::DUMMY_DOUBLE),
             setCharge(UTL::DUMMY_DOUBLE),
             HWP(UTL::DUMMY_DOUBLE),
+            hwp_enable(HWC_ENUM::STATE::UNKNOWN),
             Q(UTL::DUMMY_DOUBLE),
             name(UTL::UNKNOWN_NAME),
             pvRoot(UTL::UNKNOWN_PVROOT),
@@ -189,7 +191,7 @@ namespace pilaserStructs
         std::vector<double> E_buf;
         runningStat Q_rs, energy_rs;
         pilMirrorObject mirror;
-        HWC_ENUM::STATE status, stabilisation_status;
+        HWC_ENUM::STATE status, stabilisation_status, hwp_enable;
         std::map<PILASER_PV_TYPE, pvStruct> pvMonStructs;
         std::map<PILASER_PV_TYPE, pvStruct> pvComStructs;
         std::map<HWC_ENUM::ILOCK_NUMBER, HWC_ENUM::iLockPVStruct> iLockPVStructs;

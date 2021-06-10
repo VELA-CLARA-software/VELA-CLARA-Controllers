@@ -389,16 +389,32 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
             pilaser.HWP = getDBRdouble(args);
             break;
 
-
+        case PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE:
+            {
+                auto v = getDBRunsignedShort(args);
+                if(v == UTL::ZERO_US)
+                {
+                    pilaser.hwp_enable = HWC_ENUM::STATE::OFF;
+                }
+                else if(v == UTL::ONE_US)
+                {
+                    pilaser.hwp_enable = HWC_ENUM::STATE::ON;
+                }
+                else
+                {
+                    pilaser.hwp_enable = HWC_ENUM::STATE::ERR;
+                }
+            }
+            break;
         case PILASER_PV_TYPE::WCM_Q:
             pilaser.Q = getDBRdouble(args);
             pilaser.Q_rs.Push(pilaser.Q);
-            addToBuffer(pilaser.Q,pilaser.Q_buf);
+            addToBuffer(pilaser.Q, pilaser.Q_buf);
             break;
         case PILASER_PV_TYPE::ENERGY:
             pilaser.energy = getDBRdouble(args);
             pilaser.energy_rs.Push(pilaser.energy);
-            addToBuffer(pilaser.energy,pilaser.E_buf);
+            addToBuffer(pilaser.energy, pilaser.E_buf);
             break;
 
         default:
@@ -793,6 +809,38 @@ bool pilaserInterface::isVCMirror_PV(const pilaserStructs::PILASER_PV_TYPE& pv)c
 double pilaserInterface::getHstep() const
 {
     return pilaser.mirror.hStep;
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::isHWPEnabled() const
+{
+    return pilaser.hwp_enable == HWC_ENUM::STATE::ON;
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::isHWPDisabled()const
+{
+    return pilaser.hwp_enable == HWC_ENUM::STATE::OFF;
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::getHWPEnableState()const
+{
+    return pilaser.hwp_enable;
+}
+
+//____________________________________________________________________________________________
+bool pilaserInterface::enableHWP()
+{
+    //need to figure out how to move th elaser from command line...
+    pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE);
+    dbr_enum_t c = (dbr_enum_t)UTL::ZERO_US;
+    return caput<dbr_enum_t>(pvs.CHTYPE,pvs.CHID, UTL::ZERO_U_SHORT, "", "");
+}
+//____________________________________________________________________________________________
+bool pilaserInterface::disableHWP()
+{
+    //need to figure out how to move the laser from command line...
+    pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE);
+    dbr_enum_t c = (dbr_enum_t)UTL::ZERO_US;
+    return caput<dbr_enum_t>(pvs.CHTYPE,pvs.CHID, UTL::ONE_U_SHORT, "", "");
 }
 //____________________________________________________________________________________________
 double pilaserInterface::getVstep() const

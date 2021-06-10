@@ -137,6 +137,12 @@ class pilaserController : public shutterController, public cameraControllerBase
         size_t getRSBufferSize()const;
         size_t getCurrentBufferSize()const;
 
+        HWC_ENUM::STATE getHWPEnableState()const;
+        bool isHWPEnabled()const;
+        bool isHWPDisabled()const;
+        bool enableHWP();
+        bool disableHWP();
+
     protected:
     private:
         pilaserInterface  localInterface;

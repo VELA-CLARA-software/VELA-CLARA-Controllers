@@ -72,8 +72,8 @@ class pilaserInterface : public cameraBase
         bool disableStabilisation();
         bool enableStabilisation();
 
-        const pilaserStructs::pilMirrorObject&  getpilMirrorObjConstRef() const;
-        const pilaserStructs::pilaserObject&    getPILObjConstRef() const;
+        const pilaserStructs::pilMirrorObject& getpilMirrorObjConstRef() const;
+        const pilaserStructs::pilaserObject&   getPILObjConstRef() const;
 
         //const cameraStructs::analysis_data& getVCDataObjConstRef() const;
 
@@ -109,6 +109,13 @@ class pilaserInterface : public cameraBase
 
         double getHstep()const;
         double getVstep()const;
+
+
+        HWC_ENUM::STATE getHWPEnableState()const;
+        bool isHWPEnabled()const;
+        bool isHWPDisabled()const;
+        bool enableHWP();
+        bool disableHWP();
 
         void clearRunningValues();
 

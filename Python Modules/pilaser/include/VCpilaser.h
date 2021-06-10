@@ -182,6 +182,15 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("buffer_count", &pilaserObject::buffer_count, "")
         .def_readonly("buffer_full", &pilaserObject::buffer_full, "")
 
+
+        .def_readonly("getHWPEnableState", &pilaserObject::getHWPEnableState, "")
+        .def_readonly("isHWPEnabled", &pilaserObject::isHWPEnabled, "")
+        .def_readonly("isHWPDisabled", &pilaserObject::isHWPDisabled, "")
+        .def_readonly("enableHWP", &pilaserObject::enableHWP, "")
+        .def_readonly("disableHWP", &pilaserObject::disableHWP, "")
+
+
+
         ;
 //
 //    const char* EM_RANGE_ds= "ENUM defining states for energy meter range ";
