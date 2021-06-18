@@ -183,13 +183,6 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def_readonly("buffer_full", &pilaserObject::buffer_full, "")
 
 
-        .def_readonly("getHWPEnableState", &pilaserObject::getHWPEnableState, "")
-        .def_readonly("isHWPEnabled", &pilaserObject::isHWPEnabled, "")
-        .def_readonly("isHWPDisabled", &pilaserObject::isHWPDisabled, "")
-        .def_readonly("enableHWP", &pilaserObject::enableHWP, "")
-        .def_readonly("disableHWP", &pilaserObject::disableHWP, "")
-
-
 
         ;
 //
@@ -339,6 +332,13 @@ BOOST_PYTHON_MODULE(VELA_CLARA_PILaser_Control)
         .def("getRSBufferSize",   &pilaserController::getRSBufferSize,   getRSBufferSize_doc   )
         .def("getCurrentBufferSize",   &pilaserController::getCurrentBufferSize,   ""   )
         .def("setAllRSBufferSize",   &pilaserController::setAllRSBufferSize,   ""   )
+
+//
+        .def("isHWPEnabled", &pilaserController::isHWPEnabled, "")
+        .def("getHWPEnableState", &pilaserController::getHWPEnableState, "")
+        .def("isHWPDisabled", &pilaserController::isHWPDisabled, "")
+        .def("enableHWP", &pilaserController::enableHWP, "")
+        .def("disableHWP", &pilaserController::disableHWP, "")
 
 
         .def("isSettingPos",   &pilaserController::isSettingPos,   "" )

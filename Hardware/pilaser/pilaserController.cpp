@@ -221,10 +221,12 @@ bool pilaserController::isHWPEnabled()const
 }
 bool pilaserController::enableHWP()
 {
+    std::cout << "pilaserController::enableHWP()" <<std::endl;
     return localInterface.enableHWP();
 }
 bool pilaserController::disableHWP()
 {
+    std::cout << "pilaserController::disableHWP()" <<std::endl;
     return localInterface.disableHWP();
 }
 

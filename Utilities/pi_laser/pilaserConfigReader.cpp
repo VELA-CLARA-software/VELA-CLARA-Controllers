@@ -167,6 +167,7 @@ void pilaserConfigReader::addToPVMonitorMapV1(const std::vector<std::string>& ke
         {
             addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE, keyVal[ONE_SIZET]);
         }
+
         else if(keyVal[ZERO_SIZET] == PV_SUFFIX_WCM_CHARGE)
         {
             addPVStruct(pvMonStructs, pilaserStructs::PILASER_PV_TYPE::WCM_Q, keyVal[ONE_SIZET]);
@@ -217,6 +218,10 @@ void pilaserConfigReader::addToPVCommandMapV1(const std::vector<std::string>& ke
         if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_STABILISATION)
         {
             addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::STABILISATION, keyVal[ONE_SIZET] );
+        }
+        else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_HALF_WAVE_PLATE_ENABLE)
+        {
+            addPVStruct(pvComStructs, pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE, keyVal[ONE_SIZET]);
         }
         else if(keyVal[ZERO_SIZET] == PV_SUFFIX_PIL_HALF_WAVE_PLATE_SET)
         {

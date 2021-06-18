@@ -395,14 +395,17 @@ void pilaserInterface::updateValue(const event_handler_args args,pilaserStructs:
                 if(v == UTL::ZERO_US)
                 {
                     pilaser.hwp_enable = HWC_ENUM::STATE::OFF;
+                    message("NEW hwp_enable = OFF ");
                 }
                 else if(v == UTL::ONE_US)
                 {
                     pilaser.hwp_enable = HWC_ENUM::STATE::ON;
+                    message("NEW hwp_enable = ON ");
                 }
                 else
                 {
                     pilaser.hwp_enable = HWC_ENUM::STATE::ERR;
+                    message("NEW hwp_enable = ERR ");
                 }
             }
             break;
@@ -821,7 +824,7 @@ bool pilaserInterface::isHWPDisabled()const
     return pilaser.hwp_enable == HWC_ENUM::STATE::OFF;
 }
 //____________________________________________________________________________________________
-bool pilaserInterface::getHWPEnableState()const
+HWC_ENUM::STATE pilaserInterface::getHWPEnableState()const
 {
     return pilaser.hwp_enable;
 }
@@ -829,18 +832,40 @@ bool pilaserInterface::getHWPEnableState()const
 //____________________________________________________________________________________________
 bool pilaserInterface::enableHWP()
 {
+    message("pilaserInterface::enableHWP ");
+    message("CHTYPE =  ",pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHTYPE);
+    message("CHID =  ",pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHID);
+//    pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE);
+//    dbr_enum_t c = (dbr_enum_t)UTL::ONE_US;
+
+
     //need to figure out how to move th elaser from command line...
-    pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE);
-    dbr_enum_t c = (dbr_enum_t)UTL::ZERO_US;
-    return caput<dbr_enum_t>(pvs.CHTYPE,pvs.CHID, UTL::ZERO_U_SHORT, "", "");
+    int status =  caput<unsigned short>(pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHTYPE,
+                             pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHID,
+                             UTL::ONE_U_SHORT, "", "");
+    if(status == ECA_NORMAL)
+    {
+        return true;
+    }
+    return false;
+
 }
 //____________________________________________________________________________________________
 bool pilaserInterface::disableHWP()
 {
+    message("pilaserInterface::disableHWP ");
+        message("CHTYPE =  ",pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHTYPE);
+    message("CHID =  ",pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHID);
     //need to figure out how to move the laser from command line...
-    pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE);
-    dbr_enum_t c = (dbr_enum_t)UTL::ZERO_US;
-    return caput<dbr_enum_t>(pvs.CHTYPE,pvs.CHID, UTL::ONE_U_SHORT, "", "");
+    //pilaserStructs::pvStruct& pvs = pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE);
+    int status =  caput<unsigned short>(pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHTYPE,
+                             pilaser.pvComStructs.at(pilaserStructs::PILASER_PV_TYPE::HALF_WAVE_PLATE_ENABLE).CHID,
+                             UTL::ZERO_U_SHORT, "", "");
+    if(status == ECA_NORMAL)
+    {
+        return true;
+    }
+    return false;
 }
 //____________________________________________________________________________________________
 double pilaserInterface::getVstep() const
