@@ -82,19 +82,19 @@ bool liberallrfConfigReader::getOneTraceConfig()
     switch(type)
     {
         case llrfStructs::LLRF_TYPE::CLARA_HRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
             break;
         case llrfStructs::LLRF_TYPE::CLARA_LRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
             break;
         case llrfStructs::LLRF_TYPE::VELA_HRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
             break;
         case llrfStructs::LLRF_TYPE::VELA_LRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_ONE_RECORD);
             break;
         case llrfStructs::LLRF_TYPE::L01:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::L01_LLRF_TRACES_ONE_RECORD);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::L01_LLRF_TRACES_ONE_RECORD);
             break;
         case llrfStructs::LLRF_TYPE::UNKNOWN_TYPE:
             return false;
@@ -111,19 +111,19 @@ bool liberallrfConfigReader::getSCANConfig()
     switch(type)
     {
         case llrfStructs::LLRF_TYPE::CLARA_HRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
             break;
         case llrfStructs::LLRF_TYPE::CLARA_LRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
             break;
         case llrfStructs::LLRF_TYPE::VELA_HRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
             break;
         case llrfStructs::LLRF_TYPE::VELA_LRRG:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::GUN_LLRF_TRACES_SCAN);
             break;
         case llrfStructs::LLRF_TYPE::L01:
-            readConfig(UTL::APCLARA1_CONFIG_PATH + UTL::L01_LLRF_TRACES_SCAN);
+            readConfig(UTL::CLARANET_CONFIG_PATH + UTL::L01_LLRF_TRACES_SCAN);
             break;
         case llrfStructs::LLRF_TYPE::UNKNOWN_TYPE:
             return false;

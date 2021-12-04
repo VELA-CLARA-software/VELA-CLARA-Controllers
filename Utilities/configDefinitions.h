@@ -140,7 +140,11 @@ namespace UTL
     //const std::string APCLARA1_CONFIG_PATH = "\\\\apclara1.dl.ac.uk\\ControlRoomApps\\Controllers\\Config\\";
     //const std::string APCLARA1_CONFIG_PATH = "\\\\claraserv3\\apclara\\test\\Controllers\\Config\\"; GONE!!!
     // const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3\\claranet\\test\\Controllers\\Config\\";
-    const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Config\\";
+
+
+    // CHANGE THIS TO WHEREVER YOU PUTH THE CONFIG FILES!!!!!
+    //const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Config\\";
+    const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Python38_x64\\Config";
     // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
     // config file names
@@ -212,7 +216,6 @@ namespace UTL
     const std::string MN                    = "MN";
     const std::string XN                    = "XN";
     const std::string YN                    = "YN";
-
 
 /// Qscope
     const std::string VELA_SCOPE_CONFIG                = "velaQScope.config";

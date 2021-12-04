@@ -3,72 +3,68 @@
 	<ActiveTarget name="Release" />
 	<File name="..\..\Hardware\screen\screenInterface.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="49095" topLine="108" />
-		<BrowseMarks positions="" />
+	</File>
+	<File name="..\..\Utilities\screenConfigReader.h" open="0" top="0" tabpos="8">
+		<Cursor position="2602" topLine="42" />
+	</File>
+	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="4750" topLine="64" />
+	</File>
+	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6006" topLine="97" />
+	</File>
+	<File name="src\VCscreens.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="15645" topLine="319" />
+	</File>
+	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
+		<Cursor position="2190" topLine="0" />
+	</File>
+	<File name="..\..\Utilities\screenConfigReader.cpp" open="0" top="0" tabpos="9">
+		<Cursor position="22509" topLine="199" />
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2341" topLine="31" />
+	</File>
+	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="218" topLine="0" />
+	</File>
+	<File name="..\..\Structs\screenStructs.h" open="0" top="0" tabpos="7">
+		<Cursor position="8371" topLine="113" />
+	</File>
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11">
+		<Cursor position="3084" topLine="38" />
+	</File>
+	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="2">
+		<Cursor position="114301" topLine="1722" />
 	</File>
 	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="1782" topLine="10" />
 	</File>
 	<File name="..\..\Hardware\screen\screenInterface.h" open="0" top="0" tabpos="3">
 		<Cursor position="5905" topLine="117" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="3">
-		<Cursor position="68342" topLine="1175" />
-	</File>
-	<File name="..\..\Hardware\VCheader.h" open="0" top="0" tabpos="2">
-		<Cursor position="114301" topLine="1722" />
-	</File>
-	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="6006" topLine="97" />
 	</File>
 	<File name="..\..\Utilities\configReader.h" open="0" top="0" tabpos="0">
 		<Cursor position="2286" topLine="36" />
 	</File>
-	<File name="..\..\Utilities\screenConfigReader.cpp" open="0" top="0" tabpos="9">
-		<Cursor position="22704" topLine="11" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\configReader.cpp" open="0" top="0" tabpos="6">
-		<Cursor position="4750" topLine="64" />
-	</File>
-	<File name="..\..\Hardware\screen\screenController.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="21042" topLine="420" />
-	</File>
-	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
-		<Cursor position="2688" topLine="30" />
-	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="12">
-		<Cursor position="11761" topLine="276" />
-	</File>
-	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="0">
-		<Cursor position="2190" topLine="0" />
-	</File>
-	<File name="src\VCscreens.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="6921" topLine="144" />
-	</File>
 	<File name="..\..\Hardware\screen\screenController.h" open="0" top="0" tabpos="2">
 		<Cursor position="1505" topLine="6" />
-	</File>
-	<File name="..\..\Structs\screenStructs.h" open="0" top="0" tabpos="7">
-		<Cursor position="8371" topLine="113" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2341" topLine="31" />
-	</File>
-	<File name="..\..\Utilities\screenConfigReader.h" open="0" top="0" tabpos="8">
-		<Cursor position="2602" topLine="42" />
-	</File>
-	<File name="..\..\Hardware\controller.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="218" topLine="0" />
 	</File>
 	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0">
 		<Cursor position="2789" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="11">
-		<Cursor position="3084" topLine="38" />
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="3">
+		<Cursor position="6198" topLine="137" />
 	</File>
 	<File name="include\VCscreens.h" open="0" top="0" tabpos="4">
-		<Cursor position="28946" topLine="386" />
+		<Cursor position="9656" topLine="196" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="12">
+		<Cursor position="11761" topLine="276" />
+	</File>
+	<File name="..\..\Hardware\screen\screenController.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="21042" topLine="12" />
+	</File>
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="2688" topLine="30" />
 	</File>
 </BrowseTracker_layout_file>

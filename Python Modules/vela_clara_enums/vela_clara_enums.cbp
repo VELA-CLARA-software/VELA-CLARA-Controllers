@@ -7,10 +7,10 @@
 		<Option compiler="ms_visual_c_2012" />
 		<Build>
 			<Target title="Release">
-				<Option output="\\claraserv3\claranet\test\Controllers\bin\stage\VELA_CLARA_enums" prefix_auto="1" extension_auto="1" />
+				<Option output="\\claraserv3.dl.ac.uk\claranet\packages\vcc\Python38_x64\bin\VELA_CLARA_enums" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
-				<Option compiler="ms_visual_c_2012" />
+				<Option compiler="microsoft_visual_studio_2019" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -45,6 +45,10 @@
 		</Unit>
 		<Extensions>
 			<lib_finder disable_auto="1" />
+			<code_completion />
+			<envvars />
+			<debugger />
+			<fortran_project />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

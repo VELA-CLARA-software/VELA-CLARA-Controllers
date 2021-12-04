@@ -36,7 +36,7 @@
 
 L01ProtConfigReader::L01ProtConfigReader(const bool& show_messages_ptr,
                                          const bool& show_debug_messages_ptr):
-configReader(UTL::CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr)
+configReader(UTL::CLARANET_CONFIG_PATH, show_messages_ptr, show_debug_messages_ptr)
 {}
 //______________________________________________________________________________
 L01ProtConfigReader::L01ProtConfigReader(const std::string& configFileLocation1,
