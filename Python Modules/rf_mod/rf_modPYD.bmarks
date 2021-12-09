@@ -1,78 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\Hardware\l01_mod\l01ModInterface.h" open="0" top="0" tabpos="5">
-		<Cursor position="619" topLine="0" />
-		<BrowseMarks positions="" />
-	</File>
-	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="5">
-		<Cursor position="5228" topLine="73" />
-	</File>
-	<File name="..\..\Hardware\gun_mod\gunModHexStringMap.h" open="0" top="0" tabpos="0">
-		<Cursor position="1681" topLine="0" />
-	</File>
-	<File name="..\..\Hardware\gun_mod\gunModController.h" open="0" top="0" tabpos="9">
-		<Cursor position="1891" topLine="14" />
-	</File>
 	<File name="..\..\Hardware\gun_mod\gunModInterface.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="26019" topLine="584" />
+	</File>
+	<File name="..\..\Structs\rf_mod\rfModStructs.h" open="0" top="0" tabpos="2">
+		<Cursor position="16430" topLine="166" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="7">
+		<Cursor position="12862" topLine="302" />
 	</File>
 	<File name="..\..\Hardware\gun_mod\gunModController.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="1552" topLine="9" />
 	</File>
-	<File name="include\VCrfmod.h" open="0" top="0" tabpos="4">
-		<Cursor position="7649" topLine="58" />
+	<File name="..\..\Hardware\l01_mod\l01ModInterface.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="27992" topLine="534" />
 	</File>
 	<File name="..\..\Hardware\gun_mod\gunModInterface.h" open="0" top="0" tabpos="4">
 		<Cursor position="3410" topLine="16" />
 	</File>
-	<File name="..\..\Hardware\l01_mod\l01ModInterface.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="27992" topLine="534" />
-		<BrowseMarks positions="" />
+	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="2098" topLine="31" />
 	</File>
-	<File name="..\..\Utilities\rf_mod\l01ModConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="9337" topLine="207" />
-		<BrowseMarks positions="3967,17623" />
+	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="10">
+		<Cursor position="1371" topLine="24" />
 	</File>
-	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="4014" topLine="84" />
+	<File name="..\..\Hardware\l01_mod\l01ModInterface.h" open="0" top="0" tabpos="5">
+		<Cursor position="619" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\l01_mod\l01ModController.h" open="0" top="0" tabpos="0">
-		<Cursor position="561" topLine="0" />
+	<File name="..\..\Hardware\gun_mod\gunModController.h" open="0" top="0" tabpos="9">
+		<Cursor position="1891" topLine="14" />
+	</File>
+	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
+		<Cursor position="1680" topLine="32" />
 	</File>
 	<File name="src\VCrfmod.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="6695" topLine="140" />
 	</File>
-	<File name="..\..\Hardware\VCbase.h" open="0" top="0" tabpos="0">
-		<Cursor position="2098" topLine="31" />
+	<File name="..\..\Hardware\gun_mod\gunModHexStringMap.h" open="0" top="0" tabpos="0">
+		<Cursor position="1681" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\l01_mod\l01ModController.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="755" topLine="5" />
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="8">
+		<Cursor position="3627" topLine="78" />
+	</File>
+	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4014" topLine="84" />
+	</File>
+	<File name="include\VCrfmod.h" open="0" top="0" tabpos="4">
+		<Cursor position="7649" topLine="58" />
 	</File>
 	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="5286" topLine="89" />
 		<BrowseMarks positions="5574" />
 	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="8">
-		<Cursor position="3627" topLine="78" />
+	<File name="..\..\Utilities\rf_mod\l01ModConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9337" topLine="207" />
+		<BrowseMarks positions="3967,17623" />
 	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="7">
-		<Cursor position="12862" topLine="302" />
+	<File name="..\..\Hardware\interface.h" open="0" top="0" tabpos="5">
+		<Cursor position="5228" topLine="73" />
 	</File>
-	<File name="..\..\Structs\rf_mod\rfModStructs.h" open="0" top="0" tabpos="2">
-		<Cursor position="16430" topLine="166" />
-		<BrowseMarks positions="" />
+	<File name="..\..\Utilities\rf_mod\gunModConfigReader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8211" topLine="140" />
 	</File>
-	<File name="..\..\Structs\structs.h" open="0" top="0" tabpos="10">
-		<Cursor position="1371" topLine="24" />
-	</File>
-	<File name="..\..\Utilities\configDefinitions.h" open="0" top="0" tabpos="0">
-		<Cursor position="1680" topLine="32" />
+	<File name="..\..\Hardware\l01_mod\l01ModController.h" open="0" top="0" tabpos="0">
+		<Cursor position="561" topLine="0" />
 	</File>
 	<File name="..\..\Hardware\controller.h" open="0" top="0" tabpos="0">
 		<Cursor position="2032" topLine="27" />
 	</File>
-	<File name="..\..\Utilities\rf_mod\gunModConfigReader.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="8211" topLine="140" />
+	<File name="..\..\Hardware\l01_mod\l01ModController.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="755" topLine="5" />
 	</File>
 </BrowseTracker_layout_file>

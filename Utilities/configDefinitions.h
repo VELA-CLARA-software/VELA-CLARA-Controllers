@@ -144,7 +144,7 @@ namespace UTL
 
     // CHANGE THIS TO WHEREVER YOU PUTH THE CONFIG FILES!!!!!
     //const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Config\\";
-    const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Python38_x64\\Config";
+    const std::string CLARANET_CONFIG_PATH = "\\\\claraserv3.dl.ac.uk\\claranet\\packages\\vcc\\Python38_x64\\Config\\";
     // Virtual Machine PVs have this prefix ENFORCED
     const std::string VM_PREFIX   = "VM-";
     // config file names
