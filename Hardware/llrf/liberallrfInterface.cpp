@@ -2556,7 +2556,6 @@ bool liberallrfInterface::canGetOutsideMaskEventData()const
 }
 //--------------------------------------------------------------------------------------------------
 
-
 //____________________________________________________________________________________________
 size_t liberallrfInterface::getOutsideMaskEventDataSize()
 {
@@ -4696,15 +4695,10 @@ std::vector<double> liberallrfInterface::getTimeVector()const
     //std::lock_guard<std::mutex> lg(mtx);  // This now locked your mutex mtx.lock();
     return llrf.time_vector;
 }
-
-
 //--------------------------------------------------------------------------------------------------
 bool liberallrfInterface::setPulseShape(std::vector<double>& values)
 {
     bool ret = false;
-
-
-
     if(entryExists(llrf.pvMonStructs,llrfStructs::LLRF_PV_TYPE::PULSE_SHAPE))
     {
         llrfStructs::pvStruct& pvs = llrf.pvMonStructs.at(llrfStructs::LLRF_PV_TYPE::PULSE_SHAPE);
@@ -4890,10 +4884,6 @@ const llrfStructs::liberallrfObject& liberallrfInterface::getLLRFObjConstRef()
 {
     return llrf;
 }
-
-
-
-
 //____________________________________________________________________________________________
 llrfStructs::LLRF_TYPE liberallrfInterface::getType()const
 {
@@ -4904,7 +4894,6 @@ size_t liberallrfInterface::getTraceLength()const
 {
     return llrf.traceLength;
 }
-
 //____________________________________________________________________________________________
 llrfStructs::TRIG liberallrfInterface::getTrigSource()const
 {

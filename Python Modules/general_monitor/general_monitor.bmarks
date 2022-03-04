@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="src\VCgeneralMonitor.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="90333" topLine="1047" />
+	<File name="include\VCgeneralMonitor.h" open="0" top="0" tabpos="2">
+		<Cursor position="7487" topLine="126" />
+	</File>
+	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="3786" topLine="25" />
 	</File>
 	<File name="main.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="578" topLine="0" />
 	</File>
-	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="6">
-		<Cursor position="3397" topLine="45" />
+	<File name="src\VCgeneralMonitor.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="90333" topLine="1047" />
 	</File>
 	<File name="main.h" open="0" top="0" tabpos="0">
 		<Cursor position="353" topLine="0" />
 	</File>
-	<File name="include\VCgeneralMonitor.h" open="0" top="0" tabpos="2">
-		<Cursor position="7487" topLine="126" />
-		<BrowseMarks positions="" />
-	</File>
 	<File name="..\..\Structs\gmStructs.h" open="0" top="0" tabpos="3">
 		<Cursor position="1986" topLine="0" />
 	</File>
+	<File name="..\..\Hardware\interface.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="3397" topLine="45" />
+	</File>
 	<File name="..\..\Hardware\VCbase.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3607" topLine="14" />
-	</File>
-	<File name="..\..\Utilities\baseObject.h" open="0" top="0" tabpos="0">
-		<Cursor position="3786" topLine="25" />
 	</File>
 	<File name="..\..\Utilities\baseObject.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="3620" topLine="42" />

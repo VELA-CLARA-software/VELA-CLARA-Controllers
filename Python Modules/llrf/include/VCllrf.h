@@ -512,7 +512,7 @@ BOOST_PYTHON_MODULE(MODULE_NAME)
 
         .def("getIndex",&liberaLLRFController::getIndex,(boost::python::arg("time")),"Return index from trace at time 'time' (at least this time?")
         .def("getTime",&liberaLLRFController::getTime,(boost::python::arg("index")),"Return trace_time at this index")
-        .def("getIndex",&liberaLLRFController::getIndex,(boost::python::arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
+        //.def("getIndex",&liberaLLRFController::getIndex,(boost::python::arg("time")),"Return index from trace at time 'time' (at lest thsi time?")
 
         .def("getPhiDEG",  &liberaLLRFController::getPhiDEG,"Get Current Phase relative to Crest [degrees] +ve sense?")
         .def("getPulseLength",  &liberaLLRFController::getPulseLength,"Return RF pulse length [micro-sec]")
