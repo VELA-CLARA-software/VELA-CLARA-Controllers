@@ -65,6 +65,7 @@ baseObject(show_messages, show_debug_messages,"from int")
     //message("Interface base constructor.");
     ca_context_create(ca_enable_preemptive_callback);
     thisCaContext = ca_current_context();
+    std::cout << " INTERFACE BASE CONSTRUCTOR " << std::endl;
 }
 //______________________________________________________________________________
 interface::~interface()
@@ -363,6 +364,7 @@ void interface::checkCHIDState(const chid& CHID, const std::string& name)
 //______________________________________________________________________________
 bool interface::interfaceInitReport() const
 {
+    std::cout << " INTERFACE INIT REPORT " << std::endl;
     bool ret = true;
 
     if(!configFileRead)
@@ -370,6 +372,7 @@ bool interface::interfaceInitReport() const
         ret = false;
         message("interfaceInitReport: Error Reading Config File");
     }
+    std::cout << " AFTER CONFIG BLOCK " << std::endl;
     if(shouldStartEPICs)
     {
         if(!allChidsInitialised)

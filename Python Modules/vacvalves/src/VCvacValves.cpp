@@ -154,6 +154,8 @@ vacuumValveController& VCvacValves::getController(vacuumValveController*& cont,
                                                  shouldEPICS,
                                                  shouldVM,
                                                  myMachineArea);
+                 std::cout << " CONTROLLER CONSTRUCTED FOR VELA INJ" << std::endl;
+                 break;
             case HWC_ENUM::MACHINE_AREA::CLARA_PH1:
                 cont = new vacuumValveController(conf1,
                                                  messageStates.at(cont).first,
@@ -209,6 +211,7 @@ vacuumValveController& VCvacValves::physical_VELA_INJ_Vac_Valve_Controller()
     std::string name  = "physical_VELA_INJ_Vac_Valve_Controller";
     //const std::string conf1 = UTL::APCLARA1_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
     const std::string conf1 = UTL::CLARANET_CONFIG_PATH + UTL::VELA_INJ_VALVE_CONFIG;
+    std::cout << conf1 << std::endl;
     return getController(physical_VELA_INJ_Vac_Valve_Controller_Obj,
                          conf1,
                          name,

@@ -30,7 +30,9 @@ localInterface( configFileLocation, show_messages, show_debug_messages, shouldSt
 shouldStartEPICs( shouldStartEPICs ),
 machineArea( myMachineArea )
 {
+    std::cout << "** VAC VALVE CONTROLLER CONSTRUCTOR ** " << std::endl;
     initialise();
+    std::cout << " ** CONTROLLER INITIALISE CALLED ** " << std::endl;
 }
 ////______________________________________________________________________________
 //vacuumValveController::vacuumValveController( const  bool show_messages, const bool show_debug_messages  )
@@ -41,8 +43,10 @@ machineArea( myMachineArea )
 //______________________________________________________________________________
 void vacuumValveController::initialise()
 {
-//    if( localInterface.interfaceInitReport( shouldStartEPICs ) )
-        message("vacuumValveController instantiation success.");
+  if( localInterface.interfaceInitReport( shouldStartEPICs ) )
+  {
+    message("vacuumValveController instantiation success.");
+  }
 }
 //______________________________________________________________________________
 vacuumValveController::~vacuumValveController(){}    //dtor

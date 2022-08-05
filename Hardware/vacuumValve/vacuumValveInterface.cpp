@@ -34,7 +34,10 @@ startVM( startVirtualMachine ),
 machineArea( myMachineArea ),
 dummyname("DUMMY")
 {
+    std::cout << " VAC VALV INTERFACE CONSTRUCTOR " << std::endl;
+    std::cout << "CONFIG LOCATION: " << configFileLocation << std::endl;
     initialise();
+    std::cout << " INITIALIZED IN INTERFACE VAC VALVE " << std::endl;
 }
 ////______________________________________________________________________________
 //vacuumValveInterface::vacuumValveInterface( const bool* show_messages_ptr, const bool * show_debug_messages_ptr )
@@ -67,8 +70,10 @@ void vacuumValveInterface::initialise( )
 
     configFileRead = configReader.readConfigFiles();
     std::this_thread::sleep_for(std::chrono::milliseconds( 2000 )); // MAGIC_NUMBER
+    std::cout << "** IN INITIALIZE FOR INTERFACE **" << std::endl;
     if( configFileRead )
     {
+        std::cout << "** CONFIG FILE READ **" << std::endl;
         /// initialise the objects based on what is read from the config file
 
         bool getDataSuccess = initVacValveObjects();
@@ -96,6 +101,7 @@ void vacuumValveInterface::initialise( )
 
         std::this_thread::sleep_for(std::chrono::milliseconds( 500 )); /// MAGIC NUMBER
     }
+    std::cout << " CONFIG FILE NOT READ " << std::endl;
     message(allVacValveData.size());
 }
 //______________________________________________________________________________

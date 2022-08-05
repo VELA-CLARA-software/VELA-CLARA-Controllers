@@ -19,7 +19,7 @@ vacValveConf( vacValveConf ),
 configReader( vacValveConf, show_messages_ptr, show_debug_messages_ptr ),
 usingVirtualMachine(startVirtualMachine)
 {
-
+    std::cout << " IN VALVE CONFIG READER " << std::endl;
 }
 ////______________________________________________________________________________
 //vacuumValveConfigReader::vacuumValveConfigReader( const std::string & configFile_Location,

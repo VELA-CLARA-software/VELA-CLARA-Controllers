@@ -757,7 +757,7 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1659086514 c:\users\ujo48515\documents\vela-clara-controllers\utilities\configdefinitions.h
+1659709763 c:\users\ujo48515\documents\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -765,7 +765,7 @@
 	<cadef.h>
 	<boost/python/def.hpp>
 
-1659086260 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\controller.cpp
+1659707335 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\controller.cpp
 	"controller.h"
 	<iostream>
 	<sstream>
@@ -787,7 +787,7 @@
 	<cadef.h>
 	<boost/preprocessor.hpp>
 
-1659086260 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\interface.cpp
+1659708501 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\interface.cpp
 	"interface.h"
 	"structs.h"
 	<iostream>
@@ -803,7 +803,7 @@
 	"baseObject.h"
 	"structs.h"
 
-1659086260 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
+1659710170 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\vacuumvalve\vacuumvalvecontroller.cpp
 	"vacuumValveController.h"
 	<iostream>
 	"vacuumValveInterface.h"
@@ -844,7 +844,7 @@
 	<vector>
 	<cadef.h>
 
-1659086260 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
+1659708860 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\vacuumvalve\vacuumvalveinterface.cpp
 	"vacuumValveInterface.h"
 	"configDefinitions.h"
 	<iostream>
@@ -872,7 +872,7 @@
 	"configDefinitions.h"
 	"structs.h"
 
-1659086284 source:c:\users\ujo48515\documents\vela-clara-controllers\utilities\vacuumvalveconfigreader.cpp
+1659707421 source:c:\users\ujo48515\documents\vela-clara-controllers\utilities\vacuumvalveconfigreader.cpp
 	"vacuumValveConfigReader.h"
 	"vacuumValveStructs.h"
 	<iostream>
@@ -889,4 +889,43 @@
 
 1659086280 c:\users\ujo48515\documents\vela-clara-controllers\python modules\vacvalves\main.h
 	<windows.h>
+
+1659709037 source:c:\users\ujo48515\documents\vela-clara-controllers\python modules\vacvalves\src\vcvacvalves.cpp
+	"VCvacValves.h"
+	<iostream>
+
+1659086280 c:\users\ujo48515\documents\vela-clara-controllers\python modules\vacvalves\include\vcvacvalves.h
+	"vacuumValveController.h"
+	"vacuumValveStructs.h"
+	"VCheader.h"
+	"VCbase.h"
+	"configDefinitions.h"
+	<string>
+	<vector>
+	<map>
+	<list>
+
+1659086259 c:\users\ujo48515\documents\vela-clara-controllers\hardware\vcheader.h
+	"structs.h"
+	"VCbase.h"
+	"baseObject.h"
+	"controller.h"
+	"interface.h"
+	"structs.h"
+	"cameraControllerBase.h"
+	<boost/config/auto_link.hpp>
+	<string>
+	<vector>
+	<boost/python.hpp>
+	<boost/python/suite/indexing/vector_indexing_suite.hpp>
+	<boost/python/detail/wrap_python.hpp>
+	<boost/python/suite/indexing/map_indexing_suite.hpp>
+	<boost/python/return_value_policy.hpp>
+	<boost/python/docstring_options.hpp>
+	<boost/python/operators.hpp>
+	<boost/python/class.hpp>
+	<boost/python/module.hpp>
+	<boost/python/def.hpp>
+	<boost/python/scope.hpp>
+	<boost/python/manage_new_object.hpp>
 

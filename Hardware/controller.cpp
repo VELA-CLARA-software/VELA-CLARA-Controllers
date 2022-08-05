@@ -60,6 +60,7 @@ controllerType(type),
 baseObject(show_messages, show_debug_messages, name),
 name(name)
 {
+    std::cout << "** BASE CONTROLLER CONSTRUCTOR ** " << std::endl;
     if(show_messages)
     {
         messagesOn();
@@ -76,6 +77,7 @@ name(name)
     {
         debugMessagesOff();
     }
+    std::cout << "** BASE CONTROLLER CONSTRUCTOR ** " << std::endl;
     //message(ENUM_TO_STRING(type)," controller base created");
 }
 //______________________________________________________________________________
