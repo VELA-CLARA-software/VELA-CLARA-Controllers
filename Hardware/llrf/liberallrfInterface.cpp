@@ -387,6 +387,7 @@ void liberallrfInterface::addTo_continuousMonitorStructs(const std::pair<llrfStr
     continuousMonitorStructs.back() -> llrfObj   = &llrf;
     continuousMonitorStructs.back() -> interface = this;
     continuousMonitorStructs.back() -> name      = ENUM_TO_STRING(llrf.type);
+    continuousMonitorStructs.back() -> name      = ENUM_TO_STRING(llrf.type);
 
     ca_create_subscription(it.second.CHTYPE,
                            it.second.COUNT,

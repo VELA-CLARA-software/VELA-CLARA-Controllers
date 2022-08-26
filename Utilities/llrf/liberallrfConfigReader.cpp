@@ -181,9 +181,15 @@ bool liberallrfConfigReader::readConfig(const std::string & configFile1)
                                 if(trimmedLine.find_first_of(UTL::EQUALS_SIGN) != std::string::npos)
                                 {
                                     std::vector<std::string> keyVal = getKeyVal(trimmedLine);
-
+                                    for (auto&& val : keyVal)
+                                    {
+                                        std::cout << " VAL :" << val << std::endl;
+                                    }
                                     if(readingObjs)
+                                    {
+                                        std::cout << " ADDING OBJ " << std::endl;
                                         addToliberallrfObjectsV1(keyVal);
+                                    }
 
                                     else if (readingCommandPVs)
                                         addToPVCommandMapV1(keyVal);
