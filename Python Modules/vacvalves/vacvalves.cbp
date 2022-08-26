@@ -4,13 +4,13 @@
 	<Project>
 		<Option title="vacvalves" />
 		<Option pch_mode="2" />
-		<Option compiler="ms_visual_c_2012" />
+		<Option compiler="microsoft_visual_c_2014" />
 		<Build>
 			<Target title="Debug">
 				<Option output="\\apclara1.dl.ac.uk\ControlRoomApps\Controllers\bin\stage\VELA_CLARA_Vac_Valve_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
-				<Option compiler="ms_visual_c_2012" />
+				<Option compiler="microsoft_visual_c_2014" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -36,7 +36,7 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Release">
-				<Option output="../../../VELA-CLARA-Controllers-build/PyModules/VELA_CLARA_Vac_Valve_Control" prefix_auto="1" extension_auto="1" />
+				<Option output="../../../VELA-CLARA-Controllers-build/PHYSICAL_PYModules/VELA_CLARA_Vac_Valve_Control" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="microsoft_visual_c_2014" />
