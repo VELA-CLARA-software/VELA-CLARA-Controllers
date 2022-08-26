@@ -491,7 +491,7 @@
 	<boost/python/stl_iterator.hpp>
 	<boost/circular_buffer.hpp>
 
-1659086514 c:\users\ujo48515\documents\vela-clara-controllers\utilities\configdefinitions.h
+1661530656 c:\users\ujo48515\documents\vela-clara-controllers\utilities\configdefinitions.h
 	<string>
 	<vector>
 	<map>
@@ -594,4 +594,25 @@
 
 1659086284 c:\users\ujo48515\documents\vela-clara-controllers\utilities\running_stat.h
 	<iostream>
+
+1659086259 source:c:\users\ujo48515\documents\vela-clara-controllers\hardware\vcbase.cpp
+	"VCbase.h"
+	"configDefinitions.h"
+
+1659086284 source:c:\users\ujo48515\documents\vela-clara-controllers\utilities\configreader.cpp
+	"configReader.h"
+	<iostream>
+	<time.h>
+	<algorithm>
+	<fstream>
+	"configDefinitions.h"
+	"structs.h"
+
+1659086284 c:\users\ujo48515\documents\vela-clara-controllers\utilities\configreader.h
+	"configDefinitions.h"
+	"baseObject.h"
+	<string>
+	<sstream>
+	<vector>
+	<cadef.h>
 
